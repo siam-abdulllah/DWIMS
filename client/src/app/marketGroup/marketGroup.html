@@ -1,0 +1,93 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <form novalidate autocomplete="off">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h3 class="card-title">Market Group</h3>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button class="btn btn-success btn-lg btn-block" type="submit"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button class="btn btn-info btn-lg btn-block"><i class="fa fa-search"></i>Search</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Group Code</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input class="form-control " placeholder="Auto Generated" name="groupCode" required>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Group Name</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input class="form-control" name="groupName" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <fieldset>
+                                <legend>Targeted Market</legend>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Market</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-control">
+                                        <option value="volvo">Volvo</option>
+                                        <option value="saab">Saab</option>
+                                        <option value="mercedes">Mercedes</option>
+                                        <option value="audi">Audi</option>
+                                    </select>
+                                        </div>
+                                        <div class="col-md-3"></div>
+                                        <div class="col-md-2">
+                                            <button class="btn btn-primary btn-lg btn-block"><i class="fa fa-plus"></i>&nbsp; Add</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <table class="table  table-bordered">
+                                        <tr>
+                                            <td>SL</td>
+                                            <td>Market Code</td>
+                                            <td>Market Name</td>
+                                            <td>SBU</td>
+                                        </tr>
+                                        <tr *ngFor="let market of markets">
+                                            <td>
+                                                {{market.slNo}}
+                                            </td>
+                                            <td>
+                                                {{market.marketCode}}
+                                            </td>
+                                            <td>
+                                                {{market.marketName}}
+                                            </td>
+                                            <td>
+                                                {{market.sbu}}
+                                            </td>
+                                            <td>
+                                                Details
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

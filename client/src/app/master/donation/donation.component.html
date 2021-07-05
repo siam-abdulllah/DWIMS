@@ -1,0 +1,100 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1></h1>
+            </div>
+            <div class="col-sm-6">
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <!-- form start -->
+                <form novalidate autocomplete="off" #form="ngForm" (submit)="onSubmit(form)">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h3 class="card-title">Donation Type</h3>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button class="btn btn-info btn-lg btn-block" type="submit" [disabled]="form.invalid">SUBMIT</button>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetForm(form)">RESET</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <input type="hidden" name="id" [value]="masterService.donationFormData.id" />
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Donation Type</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input class="form-control form-control-lg" placeholder="Donation" name="donationTypeName" #donationTypeName="ngModel" [(ngModel)]="masterService.donationFormData.donationTypeName" required [class.invalid]="donationTypeName.invalid && donationTypeName.touched">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Status</label></div>
+                                    <div class="col-md-3">
+                                        <select name="" id="" class="form-control form-control-lg" name="status" #status="ngModel" [(ngModel)]="masterService.donationFormData.status" required [class.invalid]="status.invalid && status.touched">
+                                          <option [ngValue]="null">Select Status</option>
+                                            <option value="Active">Active</option>
+                                          <option value="Inactive">Inactive</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Remarks</label></div>
+                                    <div class="col-md-8">
+                                        <textarea class="form-control form-control-lg" placeholder="Remarks" name="remarks" #remarks="ngModel" [(ngModel)]="masterService.donationFormData.remarks" required [class.invalid]="remarks.invalid && remarks.touched"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <table class="table">
+                                    <tr>
+                                        <td>Donation</td>
+                                        <td>Status</td>
+                                        <td>Remarks</td>
+                                    </tr>
+                                    <tr *ngFor="let donation of donations">
+                                        <td>
+                                            {{donation.donationTypeName}}
+                                        </td>
+                                        <td>
+                                            {{donation.status}}
+                                        </td>
+                                        <td>
+                                            {{donation.remarks}}
+                                        </td>
+                                        <td (click)="populateForm(donation)">
+                                            Details
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <!-- <div class="card-footer">
+                                Sample Demo by rijsat.com
+                            </div> -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                </form>
+            </div>
+            <!-- /.row -->
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>

@@ -1,0 +1,597 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <form novalidate autocomplete="off">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h3 class="card-title">Investment Initiation</h3>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button class="btn btn-success btn-lg btn-block" type="submit"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button class="btn btn-info btn-lg btn-block"><i class="fa fa-search"></i>Search</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Propose For</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select class="form-control " name="proposeFor">
+                                            <option value="BrandCampaign">Brand Campaign</option>
+                                            <option value="Others">Others</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Reference</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input class="form-control" placeholder="Auto Generated" name="reference" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Donation Type</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select class="form-control " name="fovationType">
+                                            <option value="Donation">Donation</option>
+                                            <option value="Gift">Gift</option>
+                                            <option value="Honorarium">Honorarium</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Donation To</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select class="form-control " name="fovationType">
+                                            <option value="Doctor">Doctor</option>
+                                            <option value="Institute">Institute</option>
+                                            <option value="Campaign">Campaign</option>
+                                            <option value="Bcds">Bcds</option>
+                                            <option value="Society">Society</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <fieldset>
+                                <legend>Docotor Profile</legend>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Docotor Id</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-control " name="docotorId">
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Docotor Name</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="docotorName" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Degree</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="degree" readonly>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Desifnation</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="designation" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Institution</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-control " name="institution">
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Docotr Category</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-control " name="docotrCategory">
+                                                <option value="Regular">Regular</option>
+                                                <option value="Migratory">Mirgratory</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Address</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="address" readonly>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Docotr Type</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-control " name="docotrType">
+                                                <option value="A">A</option>
+                                                <option value="B">B</option>
+                                                <option value="C">C</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>No. Of Prac. Day/ Month</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="pracDayMonth" readonly>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>No. Of Patients Day</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="patientsDay" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <legend>Institution Profile</legend>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Institution Id</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-control " name="institutionId">
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Institution Name</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="institutionName" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Address</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="address" readonly>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Institution Type</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="institutionType" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>No. Of Bed</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="noOfBed" readonly>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Department/ Unit</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="deptUnit" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Responsible Docotor Id</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-control " name="respDocotorId">
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Responsible Docotor Name</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="respDocotorName" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <legend>Campaign Info</legend>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Campaign Name</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-control " name="campaign">
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Sub-Campaign Name</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="subCampName" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Campaign Start date</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="campStartDate" readonly>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Campaign End Date</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="campEndDate" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <table class="table  table-bordered">
+                                            <tr>
+                                                <td>SL</td>
+                                                <td>Product Code</td>
+                                                <td>Product Name</td>
+                                            </tr>
+                                            <tr *ngFor="let product of products">
+                                                <td>
+                                                    {{product.slNo}}
+                                                </td>
+                                                <td>
+                                                    {{product.productCode}}
+                                                </td>
+                                                <td>
+                                                    {{product.productName}}
+                                                </td>
+                                                <td>
+                                                    Details
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <legend>BCDS</legend>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>BCDS Id</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-control " name="bcdsId">
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>BCDS Name</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="bcdsName" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>BCDS Address</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="address" readonly>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>No. Of Members</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="noOfMembers" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <legend>Society</legend>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Society Id</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-control " name="societyId">
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Society Name</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="societyName" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Society Address</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="address" readonly>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>No. Of Members</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="noOfMembers" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <legend>Investment Details</legend>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <table class="table  table-bordered">
+                                                    <tr>
+                                                        <td>Investment</td>
+                                                        <td>Commitment-All</td>
+                                                        <td>Commitment-Own</td>
+                                                        <td>Share-All</td>
+                                                        <td>Share-Own</td>
+                                                    </tr>
+                                                    <tr *ngFor="let docotor of docotors">
+                                                        <td>
+                                                            {{docotor.slNo}}
+                                                        </td>
+                                                        <td>
+                                                            {{docotor.allCommit}}
+                                                        </td>
+                                                        <td>
+                                                            {{docotor.ownCommit}}
+                                                        </td>
+                                                        <td>
+                                                            {{docotor.allShare}}
+                                                        </td>
+                                                        <td>
+                                                            {{docotor.ownShare}}
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <label>Prop. Inv.</label>
+                                                    </div>
+                                                    <div class="col-md-10">
+                                                        <select class="form-control " name="propInv">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <label>Purpose</label>
+                                                    </div>
+                                                    <div class="col-md-10">
+                                                        <input class="form-control" name="purpose">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <label>Duration</label>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input class="form-control" placeholder="From" name="fromDuration">
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input class="form-control" placeholder="To" name="toDuration">
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label>Total Month</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <input class="form-control" name="totalMonth" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <label>Commitment:</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label>All SBU </label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <input class="form-control" name="allSBU">
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label>%/</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label>Own SBU</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <input class="form-control" name="ownSBU">
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label>%</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <label>Payment Method</label>
+                                                    </div>
+                                                    <div class="col-md-10">
+                                                        <select class="form-control" name="paymentMethod">
+                                                            <option value="Cash">Cash</option>
+                                                            <option value="Cheque">Cheque</option>
+                                                            <option value="DD">DD</option>
+                                                            <option value="TT">TT</option>
+                                                            <option value="PO">PO</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <label>Cheque Title</label>
+                                                    </div>
+                                                    <div class="col-md-10">
+                                                        <input class="form-control" name="chequeTitle">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <legend>Targeted Products of SBU</legend>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Product</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-control" name="product">
+                                        <option value="volvo">Volvo</option>
+                                        <option value="saab">Saab</option>
+                                        <option value="mercedes">Mercedes</option>
+                                        <option value="audi">Audi</option>
+                                    </select>
+                                        </div>
+                                        <div class="col-md-3"></div>
+                                        <div class="col-md-2">
+                                            <button class="btn btn-primary btn-lg btn-block"><i class="fa fa-plus"></i>&nbsp; Add</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <table class="table  table-bordered">
+                                        <tr>
+                                            <td>SL</td>
+                                            <td>Product Code</td>
+                                            <td>Product Name</td>
+                                        </tr>
+                                        <tr *ngFor="let product of products">
+                                            <td>
+                                                {{product.slNo}}
+                                            </td>
+                                            <td>
+                                                {{product.productCode}}
+                                            </td>
+                                            <td>
+                                                {{product.productName}}
+                                            </td>
+                                            <td>
+                                                <input type="button" value="Edit">
+                                            </td>
+                                            <td>
+                                                <input type="button" value="Remove">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <legend>Targeted Group</legend>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Group</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-control" name="group">
+                                        <option value="volvo">Volvo</option>
+                                        <option value="saab">Saab</option>
+                                        <option value="mercedes">Mercedes</option>
+                                        <option value="audi">Audi</option>
+                                    </select>
+                                        </div>
+                                        <div class="col-md-3"></div>
+                                        <div class="col-md-2">
+                                            <button class="btn btn-primary btn-lg btn-block"><i class="fa fa-plus"></i>&nbsp; Add</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <table class="table  table-bordered">
+                                        <tr>
+                                            <td>SL</td>
+                                            <td>Employee Code</td>
+                                            <td>Employee Name</td>
+                                        </tr>
+                                        <tr *ngFor="let market of markets">
+                                            <td>
+                                                {{market.slNo}}
+                                            </td>
+                                            <td>
+                                                {{market.employeeCode}}
+                                            </td>
+                                            <td>
+                                                {{market.employeeName}}
+                                            </td>
+                                            <td>
+                                                <input class="" type="button" value="View">
+                                            </td>
+                                            <td>
+                                                <input type="button" value="Edit">
+                                            </td>
+                                            <td>
+                                                <input type="button" value="Remove">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

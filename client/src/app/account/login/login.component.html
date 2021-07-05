@@ -1,0 +1,45 @@
+<div class="d-flex justify-content-center mt-5">
+    <div class="col-3">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="text-center mb-4">
+          <h1 class="h3 mb-3 font-weight-normal">Login</h1>
+        </div>
+
+        <app-text-input formControlName="email" [label]="'Email Address'"></app-text-input>
+        <app-text-input formControlName="password" [label]="'Password'" [type]="'password'"></app-text-input>
+<!-- 
+        <div class="form-label-group">
+          <input formControlName="email" type="email" id="inputEmail" class="form-control" placeholder="Email Address" />
+          <label for="inputEmail"> Email Address</label>
+          <span class="text-danger" 
+          *ngIf="loginForm.get('email').invalid
+            && loginForm.get('email').touched
+            && loginForm.get('email').errors['required']">
+            Email address is required.
+          </span>
+          <span class="text-danger" 
+          *ngIf="loginForm.get('email').invalid
+            && loginForm.get('email').touched
+            && loginForm.get('email').errors['pattern']">
+            Email address is not valid.
+          </span>
+        </div> -->       
+        <button [disabled]="loginForm.invalid" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      </form>
+    </div>
+    <!-- <div class="col-4">
+      <p>
+        Form Satus: {{loginForm.status}}
+      </p>
+      <p>
+        Email Satus: {{loginForm.get('email').status}}
+      </p>
+      <p>
+        Email Touched: {{loginForm.get('email').touched}}
+      </p>
+      <p>
+        Email Dirty: {{loginForm.get('email').dirty}}
+      </p>
+      <pre>{{loginForm.value | json}}</pre>
+    </div> -->
+  </div> 
