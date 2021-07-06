@@ -11,7 +11,7 @@ import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 @Component({
   selector: 'app-regApproval',
-  templateUrl: './regApproval.html',
+  templateUrl: './regApproval.component.html',
   styles: [
   ]
 })

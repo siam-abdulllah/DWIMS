@@ -1,47 +1,64 @@
-import { Campaign, ICampaign } from '../shared/models/campaign';
-import { SubCampaign, ISubCampaign } from '../shared/models/subCampaign';
+
 import { Market, IMarket } from '../shared/models/market';
+import { MarketGroupMst, IMarketGroupMst } from '../shared/models/marketGroupMst';
+import { MarketGroupDtl, IMarketGroupDtl } from '../shared/models/marketGroupDtl';
 import { GenericParams } from '../shared/models/genericParams';
 import { Component, ElementRef, OnInit, ViewChild , TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
-//import { MasterService } from '../master.service';
+import { MarketGroupService } from '../_services/marketGroup.service';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 @Component({
   selector: 'app-marketGroup',
-  templateUrl: './marketGroup.html',
+  templateUrl: './marketGroup.component.html',
   styles: [
   ]
 })
 export class MarketGroupComponent implements OnInit {
-  @ViewChild('search', {static: false}) searchTerm: ElementRef;
- // @ViewChild('campaignModal', { static: false }) campaignModal: TemplateRef<any>;
-  // campaignModalRef: BsModalRef;
-  // genParams: GenericParams;
-  // campaigns: ICampaign[]; 
-  // subCampaigns: ISubCampaign[]; 
+  @ViewChild('marketGroupSearchModal', { static: false }) marketGroupSearchModal: TemplateRef<any>;
+  openMarketGroupSearchModalRef: BsModalRef;
+  
   markets: IMarket[];
+  marketGroupMsts: IMarketGroupMst[];
+  marketGroupDtls: IMarketGroupDtl[];
   totalCount = 0;
-  bsConfig: Partial<BsDatepickerConfig>;
-  bsValue: Date = new Date();
-  //constructor(public masterService: MasterService, private router: Router,
-    constructor( private router: Router,
-    private toastr: ToastrService) { }
+  config = {
+    keyboard: false,
+    class: 'modal-lg',
+    ignoreBackdropClick: true
+  };
+  constructor(public marketGroupService: MarketGroupService, private router: Router,
+    private toastr: ToastrService,private modalService: BsModalService) { }
 
   ngOnInit() {
-    //this.getCampaign();
-    this.bsConfig = Object.assign({}, { containerClass: 'theme-green' }, { dateInputFormat: 'DD/MM/YYYY' });
-    this.bsValue = new Date();
+    this.getMarket();
+    
   }
-  getCampaign(){
-    // this.masterService.getCampaign().subscribe(response => {
-    //   this.campaigns = response.data;
-    //   this.totalCount = response.count;
-    // }, error => {
-    //     console.log(error);
-    // });
+  getMarket(){
+     this.marketGroupService.getMarkets().subscribe(response => {
+      this.markets = response as IMarket[];
+     }, error => {
+         console.log(error);
+    });
+  }
+  getGroups(){
+     this.marketGroupService.getGroups().subscribe(response => {
+      this.marketGroupMsts = response as IMarketGroupMst[];
+      this.openMarketGroupSearchModal(this.marketGroupSearchModal);
+     }, error => {
+         console.log(error);
+    });
+  }
+  openMarketGroupSearchModal(template: TemplateRef<any>) {
+    this.openMarketGroupSearchModalRef = this.modalService.show(template, this.config);
+  }
+  getMarketGroups(){
+     this.marketGroupService.getMarketGroups(this.marketGroupService.marketGroupFormData.id).subscribe(response => {
+      this.marketGroupDtls = response as IMarketGroupDtl[];
+     }, error => {
+         console.log(error);
+    });
   }
   onSubmit(form: NgForm) {
     
@@ -74,26 +91,14 @@ export class MarketGroupComponent implements OnInit {
     //   err => { console.log(err); }
     // );
   }
-
-  populateForm(selectedRecord: ICampaign) {
-    //this.masterService.campaignFormData = Object.assign({}, selectedRecord);
+  selectMarketGroup(selectedRecord: IMarketGroupMst) {
+    
+   this.marketGroupService.marketGroupFormData = Object.assign({}, selectedRecord);
   }
-  resetForm(form: NgForm) {
-    form.form.reset();
-    //this.masterService.campaignFormData = new Campaign();
+  
+  resetPage(form: NgForm) {
+    form.reset();
+    
   }
-  SBUs = [
-    {id: 1, name: 'Chittagong/Chattogram' },
-    {id: 2, name: 'Sonamasjid'},
-    {id: 3, name: 'Benapole'},
-    {id: 4, name: 'Mongla'},
-    {id: 5, name: 'Hili'},
-    {id: 6, name: 'Darshana'},
-    {id: 7, name: 'Shahjalal International Airport'},
-    {id: 8, name: 'Banglabandha'},
-    {id: 9, name: 'Birol'},
-    {id: 10, name: 'Rohanpur'},
-    {id: 11, name: 'Vomra'},
-    {id: 12, name: 'Burimari'}
-  ];
+  
 }

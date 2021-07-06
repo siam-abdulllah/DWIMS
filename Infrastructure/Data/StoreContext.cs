@@ -26,6 +26,9 @@ namespace Infrastructure.Data
          public DbSet<Society> Society { get; set; }
          public DbSet<ApprovalAuthority> ApprovalAuthority { get; set; }
         public DbSet<ApprAuthConfig> ApprAuthConfig { get; set; }
+        public DbSet<Market> Market { get; set; }
+        public DbSet<MarketGroupMst> MarketGroupMst { get; set; }
+        public DbSet<MarketGroupDtl> MarketGroupDtl { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
