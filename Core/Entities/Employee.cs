@@ -18,16 +18,17 @@ namespace Core.Entities
         public string Phone { get; set; }
         public string Email { get; set; }
         public string PostingType { get; set; }
-        public string MarketId { get; set; }
+        public string MarketCode { get; set; }
         public string MarketName { get; set; }
-        public string RegionId { get; set; }
+        public string RegionCode { get; set; }
         public string RegionName { get; set; }
-        public string ZoneId { get; set; }
+        public string ZoneCode { get; set; }
         public string ZoneName { get; set; }
-        public string TerritoryId { get; set; }
+        public string TerritoryCode{ get; set; }
         public string TerritoryName { get; set; }
-        public string DivisionId { get; set; }
+        public string DivisionCode { get; set; }
         public string DivisionName { get; set; }
+        public string SBU { get; set; }
 
     }
 }
