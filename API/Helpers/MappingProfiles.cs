@@ -26,7 +26,12 @@ namespace API.Helpers
             CreateMap<ApprovalAuthority, ApprovalAuthorityToReturnDto>().ReverseMap();
             CreateMap<ApprAuthConfig, ApprAuthConfigDto>().ReverseMap();
             CreateMap<Employee, AuthEmployeeDto>().ReverseMap();
-
+            CreateMap<ApprovalTimeLimit, ApprovalTimeLimitDto>().ReverseMap();
+            CreateMap<ApprovalCeiling, ApprovalCeilingDto>().ReverseMap();
+            CreateMap<ApprovalAuthority, ApprovalAuthorityToReturnDto>().ReverseMap();
+            CreateMap<InvestmentType, InvestmentTypeDto>().ReverseMap();
+            CreateMap<SBU, SBUDto>().ReverseMap();
+            CreateMap<SBUWiseBudget, SBUWiseBudgetDto>().ReverseMap();
         }
     }
 }

@@ -69,3 +69,15 @@ E:\DWIMS\TestApplication\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.
 E:\DWIMS\TestApplication\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.csproj.CopyComplete
 E:\DWIMS\TestApplication\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.dll
 E:\DWIMS\TestApplication\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.pdb
+F:\Git\DWIMS\Infrastructure\bin\Debug\netstandard2.1\Infrastructure.deps.json
+F:\Git\DWIMS\Infrastructure\bin\Debug\netstandard2.1\Infrastructure.dll
+F:\Git\DWIMS\Infrastructure\bin\Debug\netstandard2.1\Infrastructure.pdb
+F:\Git\DWIMS\Infrastructure\bin\Debug\netstandard2.1\Core.dll
+F:\Git\DWIMS\Infrastructure\bin\Debug\netstandard2.1\Core.pdb
+F:\Git\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.csproj.AssemblyReference.cache
+F:\Git\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.AssemblyInfoInputs.cache
+F:\Git\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.AssemblyInfo.cs
+F:\Git\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.csproj.CoreCompileInputs.cache
+F:\Git\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.csproj.CopyComplete
+F:\Git\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.dll
+F:\Git\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.pdb

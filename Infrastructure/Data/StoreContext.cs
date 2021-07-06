@@ -26,6 +26,10 @@ namespace Infrastructure.Data
          public DbSet<Society> Society { get; set; }
          public DbSet<ApprovalAuthority> ApprovalAuthority { get; set; }
         public DbSet<ApprAuthConfig> ApprAuthConfig { get; set; }
+        public DbSet<ApprovalCeiling> ApprovalCeiling { get; set; }
+        public DbSet<InvestmentType> InvestmentType { get; set; }
+        public DbSet<SBU> SBU { get; set; }
+        public DbSet<SBUWiseBudget> SBUWiseBudget { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
