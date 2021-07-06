@@ -1,0 +1,125 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <form novalidate autocomplete="off">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h3 class="card-title">Market Group</h3>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button class="btn btn-success btn-lg btn-block" type="submit"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button class="btn btn-info btn-lg btn-block" (click)="getGroups()"><i class="fa fa-search"></i>Search</button>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button class="btn btn-danger btn-lg btn-block" (click)="resetPage(form)"><i class="fa fa-search"></i>Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Group Code</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="hidden" name="id" [value]="masterService.donationFormData.id" />
+                                        <input class="form-control" placeholder="Auto Generated" name="groupCode" readonly>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Group Name</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input class="form-control" name="groupName" #groupName="ngModel" [(ngModel)]="masterService.donationFormData.groupName" required [class.invalid]="groupName.invalid && groupName.touched">
+                                    </div>
+                                </div>
+                            </div>
+                            <fieldset>
+                                <legend>Targeted Market</legend>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Market</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-control form-control-lg" id="marketCode" name="marketCode" #marketCode="ngModel" [(ngModel)]="apprAuthConfigService.approvalAuthConfigFormData.marketCode" required [class.invalid]="marketCode.invalid && marketCode.touched" (change)="getApprovalAuthConfigs()">
+                                            <option  [ngValue]="null">Select Market</option>
+                                            <option *ngFor="let a of markets" [value]="a.marketCode">{{a.marketName}}</option>
+                                        </select>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <table class="table  table-bordered">
+                                        <tr>
+                                            <td>Market Code</td>
+                                            <td>Market Name</td>
+                                            <td>SBU</td>
+                                        </tr>
+                                        <tr *ngFor="let b of marketGroupDtls">
+
+                                            <td>
+                                                {{b.marketCode}}
+                                            </td>
+                                            <td>
+                                                {{b.marketName}}
+                                            </td>
+                                            <td>
+                                                {{b.sbu}}
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-danger btn-lg btn-block" (click)="removeMarketGroups(a)"></button>Remove</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<ng-template #marketGroupSearchModal>
+    <div class="modal-header" style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc));color: black;">
+        <h4 class="modal-title pull-left">Group Lists</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="openMarketGroupSearchModalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" style="padding: 20px 30px 20px 30px;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive" style="border: 1px solid #bed2c9; width: 100%;">
+                    <table class="table table-bordered table-responsive table-hover table-striped">
+                        <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc));">
+                            <tr>
+                                <th scope="col" style="width: 7%">Action</th>
+                                <th scope="col" style="width: 0;display:none;">Id</th>
+                                <th scope="col" style="width: 9%">Group Name</th>
+                                <th scope="col" style="width: 8%">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let a of marketGroupMsts">
+                                <td>
+                                    <button class="btn btn-sm btn-embossed btn-success" (click)="selectMarketGroup(a)">Select</button>
+
+                                </td>
+                                <td style="display:none;">{{a.id}}</td>
+                                <td>{{a.groupName}}</td>
+                                <td>{{a.status}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

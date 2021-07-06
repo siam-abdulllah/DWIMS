@@ -17,17 +17,12 @@ import { ApprovalAuthority, IApprovalAuthority } from '../shared/models/approval
 })
 export class ApprAuthConfigComponent implements OnInit {
   @ViewChild('search', {static: false}) searchTerm: ElementRef;
- // @ViewChild('campaignModal', { static: false }) campaignModal: TemplateRef<any>;
-  // campaignModalRef: BsModalRef;
-  // genParams: GenericParams;
   approvalAuthorities: IApprovalAuthority[];
   approvalAuthConfigs: IApprovalAuthConfig[]; 
-  // subCampaigns: ISubCampaign[]; 
   employees: IEmployee[];
   employeesForApprAuth: IEmployeeForApprAuth[];
   totalCount = 0;
   constructor(public apprAuthConfigService: ApprAuthConfigService, private router: Router,
-    //constructor( private router: Router,
     private toastr: ToastrService) { }
 
   ngOnInit() {

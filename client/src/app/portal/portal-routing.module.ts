@@ -18,14 +18,14 @@ const portalRoutes: Routes = [
         {path: 'apprAuthConfig', component: ApprAuthConfigComponent},
         {path: 'docHonAppr', component: DocHonApprComponent},
         {path: 'investmentInit', component: InvestmentInitComponent},
-         {path: '', component: PortalComponent},
-          {path: 'master', loadChildren: () => import('../master/master.module')
+        {path: 'marketGroup', component: MarketGroupComponent},
+        {path: 'regApproval', component: RegApprovalComponent},
+        {path: '', component: PortalComponent},
+        {path: 'master', loadChildren: () => import('../master/master.module')
        .then(mod => mod.MasterModule) , data: {breadcrumb: {skip: true}}}, 
         ]
 }
-
 ];
-
 @NgModule({
   imports: [RouterModule.forChild(portalRoutes)],
   exports: [RouterModule]
