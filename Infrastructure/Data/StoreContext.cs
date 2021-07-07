@@ -19,6 +19,8 @@ namespace Infrastructure.Data
          public DbSet<SubCampaign> SubCampaign { get; set; }
          public DbSet<CampaignMst> CampaignMst { get; set; }
          public DbSet<CampaignDtl> CampaignDtl { get; set; }
+         public DbSet<MarketGroupMst> MarketGroupMst { get; set; }
+         public DbSet<MarketGroupDtl> MarketGroupDtl { get; set; }
          public DbSet<CampaignDtlProduct> CampaignDtlProduct { get; set; }
          public DbSet<ProductInfo> ProductInfo { get; set; }
          public DbSet<BrandInfo> BrandInfo { get; set; }

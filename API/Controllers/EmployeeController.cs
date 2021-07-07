@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using API.Dtos;
+using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -32,6 +33,30 @@ namespace API.Controllers
                 throw ex;
             }
         }
-        
+        [HttpGet("marketForGroup")]
+        public async Task<IReadOnlyList<MarketDto>> GetMarketForGroup()
+        {
+            try
+            {
+                var data = await _employeeRepo.ListAllAsync();
+                //var market = data.GroupBy(p => p.MarketCode).Select(g => g.First()).ToList();
+                var market = (from r in data
+                              orderby r.MarketName
+                              select new MarketDto
+                              {
+                                  MarketCode = r.MarketCode,
+                                  MarketName = r.MarketName,
+                                  SBU = r.SBU
+                              }
+                              ).Distinct().ToList();
+                //var mappedMarket = _mapper.Map<IReadOnlyList<Employee>, IReadOnlyList<MarketDto>>(market);
+                return market;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

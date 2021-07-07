@@ -31,6 +31,7 @@ namespace API.Helpers
             CreateMap<ApprovalAuthority, ApprovalAuthorityToReturnDto>().ReverseMap();
             CreateMap<InvestmentType, InvestmentTypeDto>().ReverseMap();
             CreateMap<SBU, SBUDto>().ReverseMap();
+            CreateMap<Employee, MarketDto>().ReverseMap();
             CreateMap<SBUWiseBudget, SBUWiseBudgetDto>().ReverseMap();
         }
     }

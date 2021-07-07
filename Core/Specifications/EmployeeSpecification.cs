@@ -9,6 +9,7 @@ namespace Core.Specifications
       (string.IsNullOrEmpty(employeeparams.Search) || x.EmployeeName.ToLower().Contains(employeeparams.Search))
   )
         {
+            
             AddOrderBy(x => x.SetOn);
             ApplyPaging(employeeparams.PageSize * (employeeparams.PageIndex - 1), employeeparams.PageSize);
         }
