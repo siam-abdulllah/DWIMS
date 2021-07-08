@@ -2,6 +2,7 @@
 export interface IMarketGroupDtl {
     id: number;
     mstId: number;
+    marketCode: string;
     marketName: string;
     status: string; 
 }

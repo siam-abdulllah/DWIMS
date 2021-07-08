@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
-                <form novalidate autocomplete="off">
+                <form novalidate autocomplete="off" #form="ngForm" (submit)="onSubmit(form)">
                     <div class="card card-primary">
                         <div class="card-header">
                             <div class="row">
@@ -27,14 +27,14 @@
                                         <label>Group Code</label>
                                     </div>
                                     <div class="col-md-3">
-                                        <input type="hidden" name="id" [value]="masterService.donationFormData.id" />
+                                        <input type="hidden" name="id" [value]="marketGroupService.marketGroupFormData.id" />
                                         <input class="form-control" placeholder="Auto Generated" name="groupCode" readonly>
                                     </div>
                                     <div class="col-md-2">
                                         <label>Group Name</label>
                                     </div>
                                     <div class="col-md-3">
-                                        <input class="form-control" name="groupName" #groupName="ngModel" [(ngModel)]="masterService.donationFormData.groupName" required [class.invalid]="groupName.invalid && groupName.touched">
+                                        <input class="form-control" name="groupName" #groupName="ngModel" [(ngModel)]="marketGroupService.marketGroupFormData.groupName" required [class.invalid]="groupName.invalid && groupName.touched">
                                     </div>
                                 </div>
                             </div>
@@ -46,7 +46,7 @@
                                             <label>Market</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <select class="form-control form-control-lg" id="marketCode" name="marketCode" #marketCode="ngModel" [(ngModel)]="apprAuthConfigService.approvalAuthConfigFormData.marketCode" required [class.invalid]="marketCode.invalid && marketCode.touched" (change)="getApprovalAuthConfigs()">
+                                            <select class="form-control form-control-lg" id="marketCode" name="marketCode" required>
                                             <option  [ngValue]="null">Select Market</option>
                                             <option *ngFor="let a of markets" [value]="a.marketCode">{{a.marketName}}</option>
                                         </select>
@@ -73,7 +73,7 @@
                                                 {{b.sbu}}
                                             </td>
                                             <td>
-                                                <button class="btn btn-danger btn-lg btn-block" (click)="removeMarketGroups(a)"></button>Remove</button>
+                                                <button class="btn btn-danger btn-lg btn-block" (click)="removeMarketGroups(a)">Remove</button>
                                             </td>
                                         </tr>
                                     </table>

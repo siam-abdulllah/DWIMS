@@ -1,9 +1,11 @@
+import { IMarketGroupDtl } from "./marketGroupDtl";
 
 export interface IMarketGroupMst {
     id: number;
     groupName: string;
     employeeId: string; 
     status: string; 
+    marketGroupDtl:IMarketGroupDtl[];
 }
  
 export class MarketGroupMst implements IMarketGroupMst {
@@ -11,4 +13,5 @@ export class MarketGroupMst implements IMarketGroupMst {
     groupName: string=null;
     employeeId: string=null; 
     status: string; 
+    marketGroupDtl:IMarketGroupDtl[];
 }
