@@ -1,0 +1,100 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1></h1>
+            </div>
+            <div class="col-sm-6">
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <!-- form start -->
+                <form novalidate autocomplete="off" #form="ngForm" (submit)="onSubmit(form)">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h3 class="card-title">Approval Time Limit</h3>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button class="btn btn-success btn-lg btn-block" [disabled]="form.invalid" type="submit"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button class="btn btn-info btn-lg btn-block"><i class="fa fa-search"></i>Search</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <input type="hidden" name="id" [value]="approvalTimeService.approvalTimeLimitFormData.id" />
+                            <div class="form-group">
+                            </div>
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Approval Authority Level</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select name="" id="" class="form-control" name="approvalAuthorityId" #approvalAuthorityId="ngModel" [(ngModel)]="approvalTimeService.approvalTimeLimitFormData.approvalAuthorityId" required [class.invalid]="approvalAuthorityId.invalid && approvalAuthorityId.touched">
+                                            <option value="Level1">Level 1</option>
+                                            <option value="Level2">Level 2</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Time Limit</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select name="" id="" class="form-control" name="timeLimit" #timeLimit="ngModel" [(ngModel)]="approvalTimeService.approvalTimeLimitFormData.timeLimit" required [class.invalid]="timeLimit.invalid && timeLimit.touched">
+                                            <option value="OneDay">One Day</option>
+                                            <option value="TwoDay">Two Day</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Remarks</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <textarea class="form-control" placeholder="Remarks" name="remarks" #remarks="ngModel" [(ngModel)]="approvalTimeService.approvalTimeLimitFormData.remarks"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Approval Authority Level</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select name="" id="" class="form-control" name="status" #status="ngModel" [(ngModel)]="approvalTimeService.approvalTimeLimitFormData.status" required [class.invalid]="status.invalid && status.touched">
+                                            <option value="Active">Active</option>
+                                            <option value="Inactive">Inactive</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- <div class="card-footer">
+                              Sample Demo by rijsat.com
+                          </div> -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                </form>
+            </div>
+            <!-- /.row -->
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
