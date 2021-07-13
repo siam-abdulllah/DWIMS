@@ -10,13 +10,13 @@
                                     <h3 class="card-title">Market Group</h3>
                                 </div>
                                 <div class="col-sm-3">
-                                    <button class="btn btn-success btn-lg btn-block" type="submit"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                    <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="form.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
                                 </div>
                                 <div class="col-sm-3">
-                                    <button class="btn btn-info btn-lg btn-block" (click)="getGroups()"><i class="fa fa-search"></i>Search</button>
+                                    <button class="btn btn-info btn-lg btn-block" type="button" (click)="getGroups()"><i class="fa fa-search"></i>Search</button>
                                 </div>
                                 <div class="col-sm-3">
-                                    <button class="btn btn-danger btn-lg btn-block" (click)="resetPage(form)"><i class="fa fa-search"></i>Reset</button>
+                                    <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetPage(form)"><i class="fa fa-search"></i>Reset</button>
                                 </div>
                             </div>
                         </div>
@@ -24,17 +24,22 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-2">
-                                        <label>Group Code</label>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <input type="hidden" name="id" [value]="marketGroupService.marketGroupFormData.id" />
-                                        <input class="form-control" placeholder="Auto Generated" name="groupCode" readonly>
-                                    </div>
-                                    <div class="col-md-2">
                                         <label>Group Name</label>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
+                                        <input type="hidden" name="id" [value]="marketGroupService.marketGroupFormData.id" />
+
                                         <input class="form-control" name="groupName" #groupName="ngModel" [(ngModel)]="marketGroupService.marketGroupFormData.groupName" required [class.invalid]="groupName.invalid && groupName.touched">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Status</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <select name="" id="" class="form-control form-control-lg" name="status" #status="ngModel" [(ngModel)]="marketGroupService.marketGroupFormData.status" required [class.invalid]="status.invalid && status.touched">
+                                                <option [ngValue]="null">Select Status</option>
+                                                  <option value="Active">Active</option>
+                                                <option value="Inactive">Inactive</option>
+                                              </select>
                                     </div>
                                 </div>
                             </div>
@@ -46,10 +51,13 @@
                                             <label>Market</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <select class="form-control form-control-lg" id="marketCode" name="marketCode" required>
+                                            <select class="form-control form-control-lg" id="marketCode" name="marketCode" ng-model="marketCode">
                                             <option  [ngValue]="null">Select Market</option>
                                             <option *ngFor="let a of markets" [value]="a.marketCode">{{a.marketName}}</option>
                                         </select>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <button class="btn btn-info btn-lg btn-block" (click)="addMarket()"><i class="fa fa-plus"></i>Add</button>
                                         </div>
 
                                     </div>
@@ -89,7 +97,7 @@
 <ng-template #marketGroupSearchModal>
     <div class="modal-header" style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc));color: black;">
         <h4 class="modal-title pull-left">Group Lists</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="openMarketGroupSearchModalRef.hide()">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="marketGroupSearchModalRef.hide()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>

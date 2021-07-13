@@ -13,43 +13,32 @@ using System.Threading.Tasks;
 
 namespace API.Controllers
 {
-    
+
     public class MarketGroupController : BaseApiController
     {
         private readonly IGenericRepository<MarketGroupMst> _marketGroupMstRepo;
+        private readonly IGenericRepository<MarketGroupDtl> _marketGroupDtlRepo;
         private readonly IMapper _mapper;
-        public MarketGroupController(IGenericRepository<MarketGroupMst> bcdsRepo,
+        public MarketGroupController(IGenericRepository<MarketGroupMst> marketGroupMstRepo, IGenericRepository<MarketGroupDtl> marketGroupDtlRepo,
         IMapper mapper)
         {
             _mapper = mapper;
-            _marketGroupMstRepo = bcdsRepo;
+            _marketGroupMstRepo = marketGroupMstRepo;
+            _marketGroupDtlRepo = marketGroupDtlRepo;
         }
-        [HttpPost("insert")]
-        public ActionResult<MarketGroupMstDto> InsertMarketGroup(MarketGroupMstDto marketGroupMstDto)
+        [HttpPost("insertMst")]
+        public ActionResult<MarketGroupMstDto> InsertMarketGroupMst(MarketGroupMstDto marketGroupMstDto)
         {
+            var employeeId = 1;
             var marketGroupMsts = new MarketGroupMst
             {
                 GroupName = marketGroupMstDto.GroupName,
-                EmployeeId = marketGroupMstDto.EmployeeId,
+                EmployeeId = employeeId,
                 Status = marketGroupMstDto.Status,
                 SetOn = DateTimeOffset.Now
             };
             _marketGroupMstRepo.Add(marketGroupMsts);
             _marketGroupMstRepo.Savechange();
-
-            //if (!userObj.Succeeded) return BadRequest(new ApiResponse(400));
-            //var userEntity = await _userManager.FindByEmailAsync(user.Email);
-            //try
-            //{
-            //    string[] roles = setRegDto.RoleForm.UserRoles
-            //              .Select(ob => ob.Name).ToArray();
-            //    var roleObj = await _userManager.AddToRolesAsync(userEntity, roles);
-            //    if (!roleObj.Succeeded) return BadRequest(new ApiResponse(400, "User Role Set Faild."));
-            //}
-            //catch (Exception ex)
-            //{
-            //    await _userManager.DeleteAsync(user);
-            //}
 
             return new MarketGroupMstDto
             {
@@ -59,48 +48,86 @@ namespace API.Controllers
                 Status = marketGroupMsts.Status
             };
         }
-        [HttpPost("update")]
-        public ActionResult<MarketGroupMstDto> UpdateMarketGroup(MarketGroupMstDto marketGroupMstDto)
+        [HttpPost("insertDtl")]
+        public ActionResult<MarketGroupDtlDto> InsertMarketGroupDtl(MarketGroupDtlDto marketGroupDtlDto)
         {
-            // var user =  _marketGroupMstRepo.GetByIdAsync(marketGroupMstDto.Id);
-            // if (user == null) return Unauthorized(new ApiResponse(401));
-            var donation = new MarketGroupMst
+            try
+            {
+                var marketGroupDtls = new MarketGroupDtl
+                {
+                    MarketCode = marketGroupDtlDto.MarketCode,
+                    MarketName = marketGroupDtlDto.MarketName,
+                    MstId = marketGroupDtlDto.MstId,
+                    Status = "A",
+                    SetOn = DateTimeOffset.Now
+                };
+                _marketGroupDtlRepo.Add(marketGroupDtls);
+                _marketGroupDtlRepo.Savechange();
+
+                return new MarketGroupDtlDto
+                {
+                    Id = marketGroupDtls.Id,
+                    MarketCode = marketGroupDtlDto.MarketCode,
+                    MarketName = marketGroupDtlDto.MarketName,
+                    MstId = marketGroupDtlDto.MstId,
+                    Status = marketGroupDtlDto.Status
+                };
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        [HttpPost("updateMst")]
+        public ActionResult<MarketGroupMstDto> UpdateMarketGroupMst(MarketGroupMstDto marketGroupMstDto)
+        {
+            var marketGroupMsts = new MarketGroupMst
             {
                 Id = marketGroupMstDto.Id,
                 GroupName = marketGroupMstDto.GroupName,
-                EmployeeId = marketGroupMstDto.EmployeeId,
                 Status = marketGroupMstDto.Status,
                 ModifiedOn = DateTimeOffset.Now
 
             };
-            _marketGroupMstRepo.Update(donation);
+            _marketGroupMstRepo.Update(marketGroupMsts);
             _marketGroupMstRepo.Savechange();
-
-            //if (!userObj.Succeeded) return BadRequest(new ApiResponse(400));
-            //var userEntity = await _userManager.FindByEmailAsync(user.Email);
-            //try
-            //{
-            //    string[] roles = setRegDto.RoleForm.UserRoles
-            //              .Select(ob => ob.Name).ToArray();
-            //    var roleObj = await _userManager.AddToRolesAsync(userEntity, roles);
-            //    if (!roleObj.Succeeded) return BadRequest(new ApiResponse(400, "User Role Set Faild."));
-            //}
-            //catch (Exception ex)
-            //{
-            //    await _userManager.DeleteAsync(user);
-            //}
 
             return new MarketGroupMstDto
             {
                 Id = marketGroupMstDto.Id,
                 GroupName = marketGroupMstDto.GroupName,
-                EmployeeId = marketGroupMstDto.EmployeeId,
                 Status = marketGroupMstDto.Status
             };
         }
+        [HttpPost("updateDtl")]
+        public ActionResult<MarketGroupDtlDto> UpdateMarketGroupDtl(MarketGroupDtlDto marketGroupDtlDto)
+        {
+            var marketGroupDtls = new MarketGroupDtl
+            {
+                Id = marketGroupDtlDto.Id,
+                MarketCode = marketGroupDtlDto.MarketCode,
+                MarketName = marketGroupDtlDto.MarketName,
+                MstId = marketGroupDtlDto.MstId,
+                Status = "I",
+                ModifiedOn = DateTimeOffset.Now
 
-        [HttpGet("donations")]
-        public async Task<ActionResult<Pagination<MarketGroupMstDto>>> GetMarketGroups(
+            };
+            _marketGroupDtlRepo.Update(marketGroupDtls);
+            _marketGroupDtlRepo.Savechange();
+
+            return new MarketGroupDtlDto
+            {
+                Id = marketGroupDtlDto.Id,
+                MarketCode = marketGroupDtlDto.MarketCode,
+                MarketName = marketGroupDtlDto.MarketName,
+                MstId = marketGroupDtlDto.MstId,
+                Status = "A"
+            };
+        }
+
+        [HttpGet("marketGroupMsts")]
+        public async Task<ActionResult<Pagination<MarketGroupMstDto>>> GetMarketGroupMsts(
           [FromQuery] MarketGroupSpecParams marketGroupParrams)
         {
             try
@@ -117,6 +144,31 @@ namespace API.Controllers
                     .Map<IReadOnlyList<MarketGroupMst>, IReadOnlyList<MarketGroupMstDto>>(marketGroup);
 
                 return Ok(new Pagination<MarketGroupMstDto>(marketGroupParrams.PageIndex, marketGroupParrams.PageSize, totalItems, data));
+            }
+            catch (System.Exception e)
+            {
+
+                throw;
+            }
+        }
+        [HttpGet("marketGroupDtls")]
+        public async Task<ActionResult<Pagination<MarketGroupDtlDto>>> GetMarketGroupDtls(
+        [FromQuery] MarketGroupSpecParams marketGroupParrams, int mstId)
+        {
+            try
+            {
+                var spec = new MarketGroupSpecification(mstId);
+
+                var countSpec = new MarketGroupWithFiltersForCountSpecificication(mstId);
+
+                var totalItems = await _marketGroupMstRepo.CountAsync(countSpec);
+
+                var marketGroup = await _marketGroupMstRepo.ListAsync(spec);
+
+                var data = _mapper
+                    .Map<IReadOnlyList<MarketGroupMst>, IReadOnlyList<MarketGroupDtlDto>>(marketGroup);
+
+                return Ok(new Pagination<MarketGroupDtlDto>(marketGroupParrams.PageIndex, marketGroupParrams.PageSize, totalItems, data));
             }
             catch (System.Exception)
             {
