@@ -44,9 +44,9 @@ namespace API.Controllers
                               orderby r.MarketName
                               select new MarketDto
                               {
-                                  MarketCode = r.MarketCode,
-                                  MarketName = r.MarketName,
-                                  SBU = r.SBU
+                                  MarketCode = r.MarketCode.Trim(),
+                                  MarketName = r.MarketName.Trim(),
+                                  SBU = r.SBU.Trim()
                               }
                               ).Distinct().ToList();
                 //var mappedMarket = _mapper.Map<IReadOnlyList<Employee>, IReadOnlyList<MarketDto>>(market);

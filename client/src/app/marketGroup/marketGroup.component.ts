@@ -17,7 +17,7 @@ import { BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 })
 export class MarketGroupComponent implements OnInit {
   @ViewChild('marketGroupSearchModal', { static: false }) marketGroupSearchModal: TemplateRef<any>;
-  openMarketGroupSearchModalRef: BsModalRef;
+  marketGroupSearchModalRef: BsModalRef;
   
   markets: IMarket[];
   marketGroupMsts: IMarketGroupMst[];
@@ -44,14 +44,15 @@ export class MarketGroupComponent implements OnInit {
   }
   getGroups(){
      this.marketGroupService.getGroups().subscribe(response => {
-      this.marketGroupMsts = response as IMarketGroupMst[];
+       debugger;
+      this.marketGroupMsts = response.data;
       this.openMarketGroupSearchModal(this.marketGroupSearchModal);
      }, error => {
          console.log(error);
     });
   }
   openMarketGroupSearchModal(template: TemplateRef<any>) {
-    this.openMarketGroupSearchModalRef = this.modalService.show(template, this.config);
+    this.marketGroupSearchModalRef = this.modalService.show(template, this.config);
   }
   getMarketGroups(){
      this.marketGroupService.getMarketGroups(this.marketGroupService.marketGroupFormData.id).subscribe(response => {
@@ -62,38 +63,60 @@ export class MarketGroupComponent implements OnInit {
   }
   onSubmit(form: NgForm) {
     
-    // if (this.masterService.campaignFormData.id == 0)
-    //   this.insertCampaign(form);
-    // else
-    //   this.updateCampaign(form);
+    if (this.marketGroupService.marketGroupFormData.id == 0)
+      this.insertMarketGroup(form);
+    else
+      this.updateMarketGroup(form);
   }
 
-  insertCampaign(form: NgForm) {
-    // this.masterService.insertCampaign().subscribe(
-    //   res => {
-    //     debugger;
-    //     this.resetForm(form);
-    //     this.getCampaign();
-    //     this.toastr.success('Submitted successfully', 'Payment Detail Register')
-    //   },
-    //   err => { console.log(err); }
-    // );
+  insertMarketGroup(form: NgForm) {
+    this.marketGroupService.insertMarketGroup().subscribe(
+      res => {
+        debugger;
+        this.marketGroupService.marketGroupFormData=res as IMarketGroupMst;
+        this.toastr.success('Submitted successfully', 'Payment Detail Register')
+      },
+      err => { console.log(err); }
+    );
   }
 
-  updateCampaign(form: NgForm) {
-    // this.masterService.updateSubCampaign().subscribe(
-    //   res => {
-    //     debugger;
-    //     this.resetForm(form);
-    //     this.getCampaign();
-    //     this.toastr.info('Updated successfully', 'Payment Detail Register')
-    //   },
-    //   err => { console.log(err); }
-    // );
+  updateMarketGroup(form: NgForm) {
+    this.marketGroupService.updateMarketGroup().subscribe(
+      res => {
+        debugger;
+        this.marketGroupService.marketGroupFormData=res as IMarketGroupMst;
+        this.toastr.success('Submitted successfully', 'Payment Detail Register')
+      },
+      err => { console.log(err); }
+    );
+  
   }
+  
+addMarket() {
+  debugger;
+  
+  //var e = (document.getElementById("marketCode") as HTMLInputElement).value;
+  //var f = document.getElementById('marketCode');
+  var e = (document.getElementById("marketCode")) as HTMLSelectElement;
+    var sel = e.selectedIndex;
+    var opt = e.options[sel];
+    var selectedMarketCode = opt.value;
+    var selectedMarketName = opt.innerHTML;
+  if(this.marketGroupService.marketGroupFormData.id===0 || this.marketGroupService.marketGroupFormData.id===undefined)
+  {
+    alert("Please Insert group first!")
+    return false;
+  }
+  this.marketGroupService.insertMarketGroupDtl(this.marketGroupService.marketGroupFormData.id,selectedMarketCode,selectedMarketName).subscribe(response => {
+   debugger;
+   this.getMarketGroups();
+   }, error => {
+     console.log(error);
+  });
+}
   selectMarketGroup(selectedRecord: IMarketGroupMst) {
-    
    this.marketGroupService.marketGroupFormData = Object.assign({}, selectedRecord);
+   this.marketGroupSearchModalRef.hide()
   }
   
   resetPage(form: NgForm) {

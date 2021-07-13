@@ -23,6 +23,7 @@ import { PortalRoutingModule } from './portal/portal-routing.module';
 import { MasterModule } from './master/master.module';
 import { MasterRoutingModule } from './master/master-routing.module';
 import { AccountRoutingModule } from './account/account-routing.module';
+import { ModalModule } from 'ngx-bootstrap/modal';
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,6 +38,7 @@ import { AccountRoutingModule } from './account/account-routing.module';
     AppRoutingModule,
     BrowserAnimationsModule,
     BsDatepickerModule.forRoot(),
+    ModalModule.forRoot(),
     HttpClientModule,
     AccountModule,
     PortalModule,

@@ -26,26 +26,50 @@ export class MarketGroupService {
   constructor(private http: HttpClient, private router: Router) { }
 
   getGroups(){    
-    return this.http.get(this.baseUrl + 'marketGroup/getGroups');
+    let params = new HttpParams();
+    debugger;
+    if (this.genParams.search) {
+      params = params.append('search', this.genParams.search);
+    }
+    params = params.append('sort', this.genParams.sort);
+    params = params.append('pageIndex', this.genParams.pageNumber.toString());
+    params = params.append('pageSize', this.genParams.pageSize.toString());
+    return this.http.get<IMarketGroupPaginationMst>(this.baseUrl + 'marketGroup/marketGroupMsts', { observe: 'response', params })
+    //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
+    .pipe(
+      map(response => {
+        this.marketGroupMsts = [...this.marketGroupMsts, ...response.body.data]; 
+        this.marketGroupPaginationMst = response.body;
+        return this.marketGroupPaginationMst;
+      })
+    );
     
   }
+    
+    
   getMarketGroups(id:number){    
     return this.http.get(this.baseUrl + 'marketGroup/getMarketGroups/'+id);
     
   }
   
   getMarkets(){    
-  return this.http.get(this.baseUrl + 'market/getMArkets');
+  return this.http.get(this.baseUrl + 'employee/marketForGroup');
  
 }
 
 insertMarketGroup() {
   debugger;
-  return this.http.post(this.baseUrl+ 'marketGroup/insert', this.marketGroupFormData);
+  return this.http.post(this.baseUrl+ 'marketGroup/insertMst', this.marketGroupFormData);
+
+}
+insertMarketGroupDtl(id:number,marketCode:string,marketName:string) {
+  debugger;
+  var Indata = {'mstId': id, 'marketCode': marketCode, 'marketName':marketName};
+  return this.http.post(this.baseUrl+ 'marketGroup/insertDtl', Indata);
 
 }
  updateMarketGroup() {
-   return this.http.post(this.baseUrl+ 'marketGroup/update',  this.marketGroupFormData);
+   return this.http.post(this.baseUrl+ 'marketGroup/updateMst',  this.marketGroupFormData);
  }
 
 }

@@ -8,7 +8,7 @@ namespace API.Dtos
         public string GroupName { get; set; }
         public string Status { get; set; }
 
-        public MarketGrpEmployeeDto Employee { get; set; }
+        //public MarketGrpEmployeeDto Employee { get; set; }
         public int  EmployeeId { get; set; }
        
     }
