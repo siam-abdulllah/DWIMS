@@ -1,0 +1,103 @@
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1></h1>
+      </div>
+      <div class="col-sm-6">
+      </div>
+    </div>
+  </div>
+  <!-- /.container-fluid -->
+</section>
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+        <!-- form start -->
+        <form novalidate autocomplete="off" #form="ngForm" (submit)="onSubmit(form)">
+          <!-- general form elements -->
+          <div class="card card-primary">
+            <div class="card-header">
+              <div class="row">
+                <div class="col-sm-6">
+                  <h3 class="card-title">SBU Wise Budget</h3>
+                </div>
+                <div class="col-sm-3">
+                  <button class="btn btn-success btn-lg btn-block"  type="submit" [disabled]="form.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
+              </div>
+              <div class="col-sm-3">
+                  <button class="btn btn-info btn-lg btn-block"><i class="fa fa-search"></i>Search</button>
+              </div>
+              </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <input type="hidden" name="id" [value]="" />
+              <div class="form-group">
+              </div>
+<fieldset>
+  <legend>Duration</legend>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-2">
+                    <label>Duration: From Date</label>
+                  </div>
+                  <div class="col-md-3">
+                    <input class="form-control" name="fromdate" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" required>
+                  </div>
+
+                  <div class="col-md-2">
+                    <label>To Date</label>
+                  </div>
+                  <div class="col-md-3">
+                    <input class="form-control" name="todate" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig"  required>
+                  </div>
+
+                </div>
+              </div>
+            </fieldset>
+
+              <div class="form-group">
+                <table class="table table-bordered">
+                  <tr>
+                    <td>SL</td>
+                    <td>SBU</td>
+                    <td>Duration From To</td>
+                    <td>Budget Amount</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>
+
+                    </td>
+                    <td>
+
+                    </td>
+                    <td>
+
+                    </td>
+                    <td>
+
+                    </td>
+                    <td>
+
+                    </td>
+                    <td>
+
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+            </div>
+            <!-- /.card -->
+          </div>
+        </form>
+      </div>
+      <!-- /.row -->
+    </div>
+  </div>
+  <!-- /.container-fluid -->
+</section>
