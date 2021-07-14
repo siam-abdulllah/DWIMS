@@ -34,7 +34,7 @@ namespace API.Helpers
             CreateMap<Employee, MarketDto>().ReverseMap();
             CreateMap<SBUWiseBudget, SBUWiseBudgetDto>().ReverseMap();
             CreateMap<MarketGroupMst, MarketGroupMstDto>().ReverseMap();
-            CreateMap<MarketGroupMst, MarketGroupDtlDto>().ReverseMap();
+            CreateMap<MarketGroupDtl, MarketGroupDtlDto>().ReverseMap();
         }
     }
 }

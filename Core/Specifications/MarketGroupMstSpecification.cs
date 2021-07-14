@@ -2,10 +2,10 @@
 
 namespace Core.Specifications
 {
-    public class MarketGroupSpecification : BaseSpecification<MarketGroupMst>
+    public class MarketGroupMstSpecification : BaseSpecification<MarketGroupMst>
     {
 
-        public MarketGroupSpecification(MarketGroupSpecParams parrams)
+        public MarketGroupMstSpecification(MarketGroupMstSpecParams parrams)
            : base(x =>
                (string.IsNullOrEmpty(parrams.Search) || x.GroupName.ToLower().Contains(parrams.Search))
            )
@@ -31,8 +31,8 @@ namespace Core.Specifications
             // }
         }
 
-        public MarketGroupSpecification(int id)
-            : base(x => x.Id == id)
+        public MarketGroupMstSpecification(int id)
+            : base(x => x.Id == id )
         {
             AddInclude(x => x.MarketGroupDtls);
         }

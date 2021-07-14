@@ -56,7 +56,8 @@ export class MarketGroupComponent implements OnInit {
   }
   getMarketGroups(){
      this.marketGroupService.getMarketGroups(this.marketGroupService.marketGroupFormData.id).subscribe(response => {
-      this.marketGroupDtls = response as IMarketGroupDtl[];
+      debugger;
+      this.marketGroupDtls = response.data;
      }, error => {
          console.log(error);
     });
@@ -116,6 +117,7 @@ addMarket() {
 }
   selectMarketGroup(selectedRecord: IMarketGroupMst) {
    this.marketGroupService.marketGroupFormData = Object.assign({}, selectedRecord);
+   this.getMarketGroups();
    this.marketGroupSearchModalRef.hide()
   }
   

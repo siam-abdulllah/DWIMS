@@ -1763,10 +1763,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _shared_models_marketGroupPaginationMst__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../shared/models/marketGroupPaginationMst */ "Z0DN");
 /* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../environments/environment */ "AytR");
 /* harmony import */ var _shared_models_marketGroupMst__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../shared/models/marketGroupMst */ "CgFm");
-/* harmony import */ var _shared_models_genericParams__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../shared/models/genericParams */ "doBC");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ "fXoL");
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/router */ "tyNb");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ "kU1M");
+/* harmony import */ var _shared_models_genericParams__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../shared/models/genericParams */ "doBC");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/router */ "tyNb");
+
+
 
 
 
@@ -1782,27 +1785,46 @@ class MarketGroupService {
         this.marketGroupPaginationMst = new _shared_models_marketGroupPaginationMst__WEBPACK_IMPORTED_MODULE_0__["MarketGroupPaginationMst"]();
         this.marketGroupFormData = new _shared_models_marketGroupMst__WEBPACK_IMPORTED_MODULE_2__["MarketGroupMst"]();
         this.baseUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].apiUrl;
-        this.genParams = new _shared_models_genericParams__WEBPACK_IMPORTED_MODULE_3__["GenericParams"]();
+        this.genParams = new _shared_models_genericParams__WEBPACK_IMPORTED_MODULE_5__["GenericParams"]();
     }
     getGroups() {
-        return this.http.get(this.baseUrl + 'marketGroup/getGroups');
+        let params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpParams"]();
+        debugger;
+        if (this.genParams.search) {
+            params = params.append('search', this.genParams.search);
+        }
+        params = params.append('sort', this.genParams.sort);
+        params = params.append('pageIndex', this.genParams.pageNumber.toString());
+        params = params.append('pageSize', this.genParams.pageSize.toString());
+        return this.http.get(this.baseUrl + 'marketGroup/marketGroupMsts', { observe: 'response', params })
+            //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["map"])(response => {
+            this.marketGroupMsts = [...this.marketGroupMsts, ...response.body.data];
+            this.marketGroupPaginationMst = response.body;
+            return this.marketGroupPaginationMst;
+        }));
     }
     getMarketGroups(id) {
         return this.http.get(this.baseUrl + 'marketGroup/getMarketGroups/' + id);
     }
     getMarkets() {
-        return this.http.get(this.baseUrl + 'market/getMArkets');
+        return this.http.get(this.baseUrl + 'employee/marketForGroup');
     }
     insertMarketGroup() {
         debugger;
-        return this.http.post(this.baseUrl + 'marketGroup/insert', this.marketGroupFormData);
+        return this.http.post(this.baseUrl + 'marketGroup/insertMst', this.marketGroupFormData);
+    }
+    insertMarketGroupDtl(id, marketCode, marketName) {
+        debugger;
+        var Indata = { 'mstId': id, 'marketCode': marketCode, 'marketName': marketName };
+        return this.http.post(this.baseUrl + 'marketGroup/insertDtl', Indata);
     }
     updateMarketGroup() {
-        return this.http.post(this.baseUrl + 'marketGroup/update', this.marketGroupFormData);
+        return this.http.post(this.baseUrl + 'marketGroup/updateMst', this.marketGroupFormData);
     }
 }
-MarketGroupService.ɵfac = function MarketGroupService_Factory(t) { return new (t || MarketGroupService)(_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_5__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵinject"](_angular_router__WEBPACK_IMPORTED_MODULE_6__["Router"])); };
-MarketGroupService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineInjectable"]({ token: MarketGroupService, factory: MarketGroupService.ɵfac, providedIn: 'root' });
+MarketGroupService.ɵfac = function MarketGroupService_Factory(t) { return new (t || MarketGroupService)(_angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵinject"](_angular_router__WEBPACK_IMPORTED_MODULE_7__["Router"])); };
+MarketGroupService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵdefineInjectable"]({ token: MarketGroupService, factory: MarketGroupService.ɵfac, providedIn: 'root' });
 
 
 /***/ }),
@@ -1820,8 +1842,7 @@ __webpack_require__.r(__webpack_exports__);
 class MarketGroupMst {
     constructor() {
         this.id = 0;
-        this.groupName = null;
-        this.employeeId = null;
+        //marketGroupDtl:IMarketGroupDtl[];
     }
 }
 
@@ -4030,7 +4051,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _master_master_module__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./master/master.module */ "Nm5a");
 /* harmony import */ var _master_master_routing_module__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./master/master-routing.module */ "tNAB");
 /* harmony import */ var _account_account_routing_module__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./account/account-routing.module */ "sGj0");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var ngx_bootstrap_modal__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ngx-bootstrap/modal */ "K3ix");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @angular/core */ "fXoL");
 
 
 
@@ -4054,10 +4076,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 class AppModule {
 }
-AppModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_19__["ɵɵdefineNgModule"]({ type: AppModule, bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_2__["AppComponent"]] });
-AppModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_19__["ɵɵdefineInjector"]({ factory: function AppModule_Factory(t) { return new (t || AppModule)(); }, providers: [
+AppModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_20__["ɵɵdefineNgModule"]({ type: AppModule, bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_2__["AppComponent"]] });
+AppModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_20__["ɵɵdefineInjector"]({ factory: function AppModule_Factory(t) { return new (t || AppModule)(); }, providers: [
         { provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_5__["HTTP_INTERCEPTORS"], useClass: _core_interceptors_error_interceptor__WEBPACK_IMPORTED_MODULE_9__["ErrorInterceptor"], multi: true },
         { provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_5__["HTTP_INTERCEPTORS"], useClass: _core_interceptors_loading_interceptors__WEBPACK_IMPORTED_MODULE_7__["LoadingInterceptor"], multi: true },
         { provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_5__["HTTP_INTERCEPTORS"], useClass: _core_interceptors_jwt_interceptor__WEBPACK_IMPORTED_MODULE_8__["JwtInterceptor"], multi: true }
@@ -4067,6 +4091,7 @@ AppModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_19__["ɵɵdefineInjecto
             _app_routing_module__WEBPACK_IMPORTED_MODULE_1__["AppRoutingModule"],
             _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_11__["BrowserAnimationsModule"],
             ngx_bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_12__["BsDatepickerModule"].forRoot(),
+            ngx_bootstrap_modal__WEBPACK_IMPORTED_MODULE_19__["ModalModule"].forRoot(),
             _angular_common_http__WEBPACK_IMPORTED_MODULE_5__["HttpClientModule"],
             _account_account_module__WEBPACK_IMPORTED_MODULE_13__["AccountModule"],
             _portal_portal_module__WEBPACK_IMPORTED_MODULE_14__["PortalModule"],
@@ -4079,14 +4104,14 @@ AppModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_19__["ɵɵdefineInjecto
                 positionClass: 'toast-bottom-right'
             })
         ]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_19__["ɵɵsetNgModuleScope"](AppModule, { declarations: [_app_component__WEBPACK_IMPORTED_MODULE_2__["AppComponent"],
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_20__["ɵɵsetNgModuleScope"](AppModule, { declarations: [_app_component__WEBPACK_IMPORTED_MODULE_2__["AppComponent"],
         // TopnavComponent,
         // AsidenavComponent,
         // FooterComponent,
         _home_home_component__WEBPACK_IMPORTED_MODULE_3__["HomeComponent"]], imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
         _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormsModule"],
         _app_routing_module__WEBPACK_IMPORTED_MODULE_1__["AppRoutingModule"],
-        _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_11__["BrowserAnimationsModule"], ngx_bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_12__["BsDatepickerModule"], _angular_common_http__WEBPACK_IMPORTED_MODULE_5__["HttpClientModule"],
+        _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_11__["BrowserAnimationsModule"], ngx_bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_12__["BsDatepickerModule"], ngx_bootstrap_modal__WEBPACK_IMPORTED_MODULE_19__["ModalModule"], _angular_common_http__WEBPACK_IMPORTED_MODULE_5__["HttpClientModule"],
         _account_account_module__WEBPACK_IMPORTED_MODULE_13__["AccountModule"],
         _portal_portal_module__WEBPACK_IMPORTED_MODULE_14__["PortalModule"],
         _master_master_module__WEBPACK_IMPORTED_MODULE_16__["MasterModule"],
@@ -4429,18 +4454,18 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const _c0 = ["marketGroupSearchModal"];
-function MarketGroupComponent_option_51_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "option", 30);
+function MarketGroupComponent_option_58_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "option", 35);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const a_r6 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("value", a_r6.marketCode);
+    const a_r7 = ctx.$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("value", a_r7.marketCode);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](a_r6.marketName);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](a_r7.marketName);
 } }
-function MarketGroupComponent_tr_61_Template(rf, ctx) { if (rf & 1) {
-    const _r9 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+function MarketGroupComponent_tr_72_Template(rf, ctx) { if (rf & 1) {
+    const _r10 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "tr");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "td");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](2);
@@ -4452,31 +4477,31 @@ function MarketGroupComponent_tr_61_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](6);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](7, "td");
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](8, "button", 15);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function MarketGroupComponent_tr_61_Template_button_click_8_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r9); const ctx_r8 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r8.removeMarketGroups(ctx_r8.a); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](8, "button", 36);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function MarketGroupComponent_tr_72_Template_button_click_8_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r10); const ctx_r9 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r9.removeMarketGroups(ctx_r9.a); });
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](9, "Remove");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const b_r7 = ctx.$implicit;
+    const b_r8 = ctx.$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", b_r7.marketCode, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", b_r8.marketCode, " ");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", b_r7.marketName, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", b_r8.marketName, " ");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", b_r7.sbu, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", b_r8.sbu, " ");
 } }
-function MarketGroupComponent_ng_template_62_tr_22_Template(rf, ctx) { if (rf & 1) {
-    const _r13 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+function MarketGroupComponent_ng_template_73_tr_22_Template(rf, ctx) { if (rf & 1) {
+    const _r14 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "tr");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "td");
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "button", 44);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function MarketGroupComponent_ng_template_62_tr_22_Template_button_click_2_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r13); const a_r11 = ctx.$implicit; const ctx_r12 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2); return ctx_r12.selectMarketGroup(a_r11); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "button", 50);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function MarketGroupComponent_ng_template_73_tr_22_Template_button_click_2_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r14); const a_r12 = ctx.$implicit; const ctx_r13 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](2); return ctx_r13.selectMarketGroup(a_r12); });
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](3, "Select");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "td", 45);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "td", 51);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](5);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](6, "td");
@@ -4487,50 +4512,50 @@ function MarketGroupComponent_ng_template_62_tr_22_Template(rf, ctx) { if (rf & 
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const a_r11 = ctx.$implicit;
+    const a_r12 = ctx.$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](5);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](a_r11.id);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](a_r12.id);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](a_r11.groupName);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](a_r12.groupName);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](a_r11.status);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](a_r12.status);
 } }
-function MarketGroupComponent_ng_template_62_Template(rf, ctx) { if (rf & 1) {
-    const _r15 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 31);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "h4", 32);
+function MarketGroupComponent_ng_template_73_Template(rf, ctx) { if (rf & 1) {
+    const _r16 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 37);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "h4", 38);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](2, "Group Lists");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "button", 33);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function MarketGroupComponent_ng_template_62_Template_button_click_3_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r15); const ctx_r14 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r14.openMarketGroupSearchModalRef.hide(); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "span", 34);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "button", 39);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function MarketGroupComponent_ng_template_73_Template_button_click_3_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r16); const ctx_r15 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"](); return ctx_r15.marketGroupSearchModalRef.hide(); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "span", 40);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](5, "\u00D7");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](6, "div", 35);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](6, "div", 41);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](7, "div", 2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](8, "div", 36);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](9, "div", 37);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](10, "table", 38);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](11, "thead", 39);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](8, "div", 42);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](9, "div", 43);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](10, "table", 44);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](11, "thead", 45);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](12, "tr");
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](13, "th", 40);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](13, "th", 46);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](14, "Action");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](15, "th", 41);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](15, "th", 47);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](16, "Id");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](17, "th", 42);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](17, "th", 48);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](18, "Group Name");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](19, "th", 43);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](19, "th", 49);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](20, "Status");
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](21, "tbody");
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](22, MarketGroupComponent_ng_template_62_tr_22_Template, 10, 3, "tr", 28);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](22, MarketGroupComponent_ng_template_73_tr_22_Template, 10, 3, "tr", 33);
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
@@ -4538,9 +4563,9 @@ function MarketGroupComponent_ng_template_62_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const ctx_r5 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
+    const ctx_r6 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵnextContext"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](22);
-    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx_r5.marketGroupMsts);
+    _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx_r6.marketGroupMsts);
 } }
 class MarketGroupComponent {
     constructor(marketGroupService, router, toastr, modalService) {
@@ -4567,14 +4592,15 @@ class MarketGroupComponent {
     }
     getGroups() {
         this.marketGroupService.getGroups().subscribe(response => {
-            this.marketGroupMsts = response;
+            debugger;
+            this.marketGroupMsts = response.data;
             this.openMarketGroupSearchModal(this.marketGroupSearchModal);
         }, error => {
             console.log(error);
         });
     }
     openMarketGroupSearchModal(template) {
-        this.openMarketGroupSearchModalRef = this.modalService.show(template, this.config);
+        this.marketGroupSearchModalRef = this.modalService.show(template, this.config);
     }
     getMarketGroups() {
         this.marketGroupService.getMarketGroups(this.marketGroupService.marketGroupFormData.id).subscribe(response => {
@@ -4584,35 +4610,48 @@ class MarketGroupComponent {
         });
     }
     onSubmit(form) {
-        // if (this.masterService.campaignFormData.id == 0)
-        //   this.insertCampaign(form);
-        // else
-        //   this.updateCampaign(form);
+        if (this.marketGroupService.marketGroupFormData.id == 0)
+            this.insertMarketGroup(form);
+        else
+            this.updateMarketGroup(form);
     }
-    insertCampaign(form) {
-        // this.masterService.insertCampaign().subscribe(
-        //   res => {
-        //     debugger;
-        //     this.resetForm(form);
-        //     this.getCampaign();
-        //     this.toastr.success('Submitted successfully', 'Payment Detail Register')
-        //   },
-        //   err => { console.log(err); }
-        // );
+    insertMarketGroup(form) {
+        this.marketGroupService.insertMarketGroup().subscribe(res => {
+            debugger;
+            this.marketGroupService.marketGroupFormData = res;
+            this.toastr.success('Submitted successfully', 'Payment Detail Register');
+        }, err => { console.log(err); });
     }
-    updateCampaign(form) {
-        // this.masterService.updateSubCampaign().subscribe(
-        //   res => {
-        //     debugger;
-        //     this.resetForm(form);
-        //     this.getCampaign();
-        //     this.toastr.info('Updated successfully', 'Payment Detail Register')
-        //   },
-        //   err => { console.log(err); }
-        // );
+    updateMarketGroup(form) {
+        this.marketGroupService.updateMarketGroup().subscribe(res => {
+            debugger;
+            this.marketGroupService.marketGroupFormData = res;
+            this.toastr.success('Submitted successfully', 'Payment Detail Register');
+        }, err => { console.log(err); });
+    }
+    addMarket() {
+        debugger;
+        //var e = (document.getElementById("marketCode") as HTMLInputElement).value;
+        //var f = document.getElementById('marketCode');
+        var e = (document.getElementById("marketCode"));
+        var sel = e.selectedIndex;
+        var opt = e.options[sel];
+        var selectedMarketCode = opt.value;
+        var selectedMarketName = opt.innerHTML;
+        if (this.marketGroupService.marketGroupFormData.id === 0 || this.marketGroupService.marketGroupFormData.id === undefined) {
+            alert("Please Insert group first!");
+            return false;
+        }
+        this.marketGroupService.insertMarketGroupDtl(this.marketGroupService.marketGroupFormData.id, selectedMarketCode, selectedMarketName).subscribe(response => {
+            debugger;
+            this.getMarketGroups();
+        }, error => {
+            console.log(error);
+        });
     }
     selectMarketGroup(selectedRecord) {
         this.marketGroupService.marketGroupFormData = Object.assign({}, selectedRecord);
+        this.marketGroupSearchModalRef.hide();
     }
     resetPage(form) {
         form.reset();
@@ -4624,14 +4663,14 @@ MarketGroupComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdef
     } if (rf & 2) {
         let _t;
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵloadQuery"]()) && (ctx.marketGroupSearchModal = _t.first);
-    } }, decls: 64, vars: 7, consts: [[1, "content"], [1, "container-fluid"], [1, "row"], [1, "col-sm-12"], ["novalidate", "", "autocomplete", "off", 3, "submit"], ["form", "ngForm"], [1, "card", "card-primary"], [1, "card-header"], [1, "col-sm-6"], [1, "card-title"], [1, "col-sm-3"], ["type", "submit", 1, "btn", "btn-success", "btn-lg", "btn-block"], [1, "fa", "fa-save"], [1, "btn", "btn-info", "btn-lg", "btn-block", 3, "click"], [1, "fa", "fa-search"], [1, "btn", "btn-danger", "btn-lg", "btn-block", 3, "click"], [1, "card-body"], [1, "form-group"], [1, "col-md-2"], [1, "col-md-3"], ["type", "hidden", "name", "id", 3, "value"], ["placeholder", "Auto Generated", "name", "groupCode", "readonly", "", 1, "form-control"], ["name", "groupName", "required", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["groupName", "ngModel"], ["id", "marketCode", "name", "marketCode", "required", "", 1, "form-control", "form-control-lg"], [3, "ngValue"], [3, "value", 4, "ngFor", "ngForOf"], [1, "table", "table-bordered"], [4, "ngFor", "ngForOf"], ["marketGroupSearchModal", ""], [3, "value"], [1, "modal-header", 2, "background", "-webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc))", "color", "black"], [1, "modal-title", "pull-left"], ["type", "button", "aria-label", "Close", 1, "close", "pull-right", 3, "click"], ["aria-hidden", "true"], [1, "modal-body", 2, "padding", "20px 30px 20px 30px"], [1, "col-md-12"], [1, "table-responsive", 2, "border", "1px solid #bed2c9", "width", "100%"], [1, "table", "table-bordered", "table-responsive", "table-hover", "table-striped"], [2, "background", "-webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc))"], ["scope", "col", 2, "width", "7%"], ["scope", "col", 2, "width", "0", "display", "none"], ["scope", "col", 2, "width", "9%"], ["scope", "col", 2, "width", "8%"], [1, "btn", "btn-sm", "btn-embossed", "btn-success", 3, "click"], [2, "display", "none"]], template: function MarketGroupComponent_Template(rf, ctx) { if (rf & 1) {
-        const _r16 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
+    } }, decls: 75, vars: 12, consts: [[1, "content"], [1, "container-fluid"], [1, "row"], [1, "col-sm-12"], ["novalidate", "", "autocomplete", "off", 3, "submit"], ["form", "ngForm"], [1, "card", "card-primary"], [1, "card-header"], [1, "col-sm-6"], [1, "card-title"], [1, "col-sm-3"], ["type", "submit", 1, "btn", "btn-success", "btn-lg", "btn-block", 3, "disabled"], [1, "fa", "fa-save"], ["type", "button", 1, "btn", "btn-info", "btn-lg", "btn-block", 3, "click"], [1, "fa", "fa-search"], ["type", "button", 1, "btn", "btn-danger", "btn-lg", "btn-block", 3, "click"], [1, "card-body"], [1, "form-group"], [1, "col-md-2"], ["type", "hidden", "name", "id", 3, "value"], ["name", "groupName", "required", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["groupName", "ngModel"], ["name", "", "id", "", "name", "status", "required", "", 1, "form-control", "form-control-lg", 3, "ngModel", "ngModelChange"], ["status", "ngModel"], [3, "ngValue"], ["value", "Active"], ["value", "Inactive"], [1, "col-md-3"], ["id", "marketCode", "name", "marketCode", "ng-model", "marketCode", 1, "form-control", "form-control-lg"], [3, "value", 4, "ngFor", "ngForOf"], [1, "btn", "btn-info", "btn-lg", "btn-block", 3, "click"], [1, "fa", "fa-plus"], [1, "table", "table-bordered"], [4, "ngFor", "ngForOf"], ["marketGroupSearchModal", ""], [3, "value"], [1, "btn", "btn-danger", "btn-lg", "btn-block", 3, "click"], [1, "modal-header", 2, "background", "-webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc))", "color", "black"], [1, "modal-title", "pull-left"], ["type", "button", "aria-label", "Close", 1, "close", "pull-right", 3, "click"], ["aria-hidden", "true"], [1, "modal-body", 2, "padding", "20px 30px 20px 30px"], [1, "col-md-12"], [1, "table-responsive", 2, "border", "1px solid #bed2c9", "width", "100%"], [1, "table", "table-bordered", "table-responsive", "table-hover", "table-striped"], [2, "background", "-webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc))"], ["scope", "col", 2, "width", "7%"], ["scope", "col", 2, "width", "0", "display", "none"], ["scope", "col", 2, "width", "9%"], ["scope", "col", 2, "width", "8%"], [1, "btn", "btn-sm", "btn-embossed", "btn-success", 3, "click"], [2, "display", "none"]], template: function MarketGroupComponent_Template(rf, ctx) { if (rf & 1) {
+        const _r17 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "section", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "div", 2);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "div", 3);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "form", 4, 5);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("submit", function MarketGroupComponent_Template_form_submit_4_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r16); const _r0 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](5); return ctx.onSubmit(_r0); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("submit", function MarketGroupComponent_Template_form_submit_4_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r17); const _r0 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](5); return ctx.onSubmit(_r0); });
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](6, "div", 6);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](7, "div", 7);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](8, "div", 2);
@@ -4655,7 +4694,7 @@ MarketGroupComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdef
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](20, "div", 10);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](21, "button", 15);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function MarketGroupComponent_Template_button_click_21_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r16); const _r0 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](5); return ctx.resetPage(_r0); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function MarketGroupComponent_Template_button_click_21_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵrestoreView"](_r17); const _r0 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](5); return ctx.resetPage(_r0); });
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](22, "i", 14);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](23, "Reset");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
@@ -4667,85 +4706,112 @@ MarketGroupComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdef
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](26, "div", 2);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](27, "div", 18);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](28, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](29, "Group Code");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](29, "Group Name");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](30, "div", 19);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](31, "input", 20);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](32, "input", 21);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](33, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](34, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](35, "Group Name");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](30, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](31, "input", 19);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](32, "input", 20, 21);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngModelChange", function MarketGroupComponent_Template_input_ngModelChange_32_listener($event) { return ctx.marketGroupService.marketGroupFormData.groupName = $event; });
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](36, "div", 19);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](37, "input", 22, 23);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngModelChange", function MarketGroupComponent_Template_input_ngModelChange_37_listener($event) { return ctx.marketGroupService.marketGroupFormData.groupName = $event; });
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](34, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](35, "label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](36, "Status");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](37, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](38, "select", 22, 23);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngModelChange", function MarketGroupComponent_Template_select_ngModelChange_38_listener($event) { return ctx.marketGroupService.marketGroupFormData.status = $event; });
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](40, "option", 24);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](41, "Select Status");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](42, "option", 25);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](43, "Active");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](39, "fieldset");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](40, "legend");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](41, "Targeted Market");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](42, "div", 17);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](43, "div", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](44, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](45, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](46, "Market");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](47, "div", 19);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](48, "select", 24);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](49, "option", 25);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](50, "Select Market");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](51, MarketGroupComponent_option_51_Template, 2, 2, "option", 26);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](52, "div", 17);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](53, "table", 27);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](54, "tr");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](55, "td");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](56, "Market Code");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](57, "td");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](58, "Market Name");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](59, "td");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](60, "SBU");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](61, MarketGroupComponent_tr_61_Template, 10, 3, "tr", 28);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](44, "option", 26);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](45, "Inactive");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](46, "fieldset");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](47, "legend");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](48, "Targeted Market");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](49, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](50, "div", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](51, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](52, "label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](53, "Market");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](54, "div", 27);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](55, "select", 28);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](56, "option", 24);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](57, "Select Market");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](58, MarketGroupComponent_option_58_Template, 2, 2, "option", 29);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](59, "div", 10);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](60, "button", 30);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function MarketGroupComponent_Template_button_click_60_listener() { return ctx.addMarket(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](61, "i", 31);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](62, "Add");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](63, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](64, "table", 32);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](65, "tr");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](66, "td");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](67, "Market Code");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](68, "td");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](69, "Market Name");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](70, "td");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](71, "SBU");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](72, MarketGroupComponent_tr_72_Template, 10, 3, "tr", 33);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](62, MarketGroupComponent_ng_template_62_Template, 23, 1, "ng-template", null, 29, _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplateRefExtractor"]);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](73, MarketGroupComponent_ng_template_73_Template, 23, 1, "ng-template", null, 34, _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplateRefExtractor"]);
     } if (rf & 2) {
-        const _r1 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](38);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](31);
+        const _r0 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](5);
+        const _r1 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](33);
+        const _r2 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](39);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](13);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("disabled", _r0.invalid);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](18);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("value", ctx.marketGroupService.marketGroupFormData.id);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](6);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵclassProp"]("invalid", _r1.invalid && _r1.touched);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngModel", ctx.marketGroupService.marketGroupFormData.groupName);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](12);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](6);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵclassProp"]("invalid", _r2.invalid && _r2.touched);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngModel", ctx.marketGroupService.marketGroupFormData.status);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngValue", null);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](16);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngValue", null);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx.markets);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](10);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](14);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngForOf", ctx.marketGroupDtls);
-    } }, directives: [_angular_forms__WEBPACK_IMPORTED_MODULE_5__["ɵangular_packages_forms_forms_y"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["NgControlStatusGroup"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["NgForm"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["RequiredValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["NgModel"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["NgSelectOption"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ɵangular_packages_forms_forms_x"], _angular_common__WEBPACK_IMPORTED_MODULE_6__["NgForOf"]], encapsulation: 2 });
+    } }, directives: [_angular_forms__WEBPACK_IMPORTED_MODULE_5__["ɵangular_packages_forms_forms_y"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["NgControlStatusGroup"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["NgForm"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["RequiredValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["NgModel"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["SelectControlValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["NgSelectOption"], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ɵangular_packages_forms_forms_x"], _angular_common__WEBPACK_IMPORTED_MODULE_6__["NgForOf"]], encapsulation: 2 });
 
 
 /***/ }),

@@ -9,13 +9,13 @@
                                 <div class="col-sm-6">
                                     <h3 class="card-title">Market Group</h3>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                     <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="form.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                     <button class="btn btn-info btn-lg btn-block" type="button" (click)="getGroups()"><i class="fa fa-search"></i>Search</button>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                     <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetPage(form)"><i class="fa fa-search"></i>Reset</button>
                                 </div>
                             </div>
@@ -57,7 +57,7 @@
                                         </select>
                                         </div>
                                         <div class="col-sm-3">
-                                            <button class="btn btn-info btn-lg btn-block" (click)="addMarket()"><i class="fa fa-plus"></i>Add</button>
+                                            <button class="btn btn-info btn-lg btn-block" type="button" (click)="addMarket()"><i class="fa fa-plus"></i>Add</button>
                                         </div>
 
                                     </div>
