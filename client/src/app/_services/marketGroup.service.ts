@@ -82,14 +82,18 @@ insertMarketGroup() {
   return this.http.post(this.baseUrl+ 'marketGroup/insertMst', this.marketGroupFormData);
 
 }
-insertMarketGroupDtl(id:number,marketCode:string,marketName:string) {
+insertMarketGroupDtl(id:number,marketCode:string,marketName:string,sbu:string) {
   debugger;
-  var Indata = {'mstId': id, 'marketCode': marketCode, 'marketName':marketName};
+  var Indata = {'mstId': id, 'marketCode': marketCode, 'marketName':marketName, 'sbu':sbu};
   return this.http.post(this.baseUrl+ 'marketGroup/insertDtl', Indata);
 
 }
  updateMarketGroup() {
    return this.http.post(this.baseUrl+ 'marketGroup/updateMst',  this.marketGroupFormData);
+ }
+ removeMarketGroups(selectedRecord: IMarketGroupDtl) {
+   debugger;
+   return this.http.post(this.baseUrl+ 'marketGroup/updateDtl', selectedRecord);
  }
 
 }

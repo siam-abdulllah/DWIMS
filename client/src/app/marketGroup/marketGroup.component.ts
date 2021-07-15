@@ -18,7 +18,7 @@ import { BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 export class MarketGroupComponent implements OnInit {
   @ViewChild('marketGroupSearchModal', { static: false }) marketGroupSearchModal: TemplateRef<any>;
   marketGroupSearchModalRef: BsModalRef;
-  
+  sbu:string;
   markets: IMarket[];
   marketGroupMsts: IMarketGroupMst[];
   marketGroupDtls: IMarketGroupDtl[];
@@ -98,17 +98,32 @@ addMarket() {
   
   //var e = (document.getElementById("marketCode") as HTMLInputElement).value;
   //var f = document.getElementById('marketCode');
+  
   var e = (document.getElementById("marketCode")) as HTMLSelectElement;
     var sel = e.selectedIndex;
     var opt = e.options[sel];
     var selectedMarketCode = opt.value;
     var selectedMarketName = opt.innerHTML;
+    for (let i = 0; i < this.marketGroupDtls.length; i++) {
+      if(this.marketGroupDtls[i].marketCode===selectedMarketCode)
+      {
+      alert("market already exist in this Group!");
+      return false;
+      }
+    }
+    for (let i = 0; i < this.markets.length; i++) {
+    if(this.markets[i].marketCode===selectedMarketCode)
+    {
+      this.sbu=this.markets[i].sbu;
+      break;
+    }
+    }
   if(this.marketGroupService.marketGroupFormData.id===0 || this.marketGroupService.marketGroupFormData.id===undefined)
   {
     alert("Please Insert group first!")
     return false;
   }
-  this.marketGroupService.insertMarketGroupDtl(this.marketGroupService.marketGroupFormData.id,selectedMarketCode,selectedMarketName).subscribe(response => {
+  this.marketGroupService.insertMarketGroupDtl(this.marketGroupService.marketGroupFormData.id,selectedMarketCode,selectedMarketName,this.sbu).subscribe(response => {
    debugger;
    this.getMarketGroups();
    }, error => {
@@ -119,6 +134,18 @@ addMarket() {
    this.marketGroupService.marketGroupFormData = Object.assign({}, selectedRecord);
    this.getMarketGroups();
    this.marketGroupSearchModalRef.hide()
+  }
+  removeMarketGroups(selectedRecord: IMarketGroupDtl) {
+    debugger;
+    var c = confirm("Are you sure you want to remove that?");
+    if (c == true) {  
+      this.marketGroupService.removeMarketGroups(selectedRecord).subscribe(response => {
+        debugger;
+        this.getMarketGroups();
+        }, error => {
+          console.log(error);
+       });
+    }
   }
   
   resetPage(form: NgForm) {

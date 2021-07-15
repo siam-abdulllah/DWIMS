@@ -1,4 +1,5 @@
 ﻿using API.Dtos;
+using API.Errors;
 using API.Helpers;
 using AutoMapper;
 using Core.Entities;
@@ -84,7 +85,7 @@ namespace API.Controllers
         [HttpPost("updateMst")]
         public ActionResult<MarketGroupMstDto> UpdateMarketGroupMst(MarketGroupMstDto marketGroupMstDto)
         {
-             var employeeId = 1;
+            var employeeId = 1;
             var marketGroupMsts = new MarketGroupMst
             {
                 Id = marketGroupMstDto.Id,

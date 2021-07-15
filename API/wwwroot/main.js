@@ -1761,13 +1761,15 @@ const environment = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MarketGroupService", function() { return MarketGroupService; });
 /* harmony import */ var _shared_models_marketGroupPaginationMst__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../shared/models/marketGroupPaginationMst */ "Z0DN");
-/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../environments/environment */ "AytR");
-/* harmony import */ var _shared_models_marketGroupMst__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../shared/models/marketGroupMst */ "CgFm");
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ "kU1M");
-/* harmony import */ var _shared_models_genericParams__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../shared/models/genericParams */ "doBC");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ "fXoL");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/router */ "tyNb");
+/* harmony import */ var _shared_models_marketGroupPaginationDtl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../shared/models/marketGroupPaginationDtl */ "tTBQ");
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../environments/environment */ "AytR");
+/* harmony import */ var _shared_models_marketGroupMst__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../shared/models/marketGroupMst */ "CgFm");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ "kU1M");
+/* harmony import */ var _shared_models_genericParams__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../shared/models/genericParams */ "doBC");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/router */ "tyNb");
+
 
 
 
@@ -1783,12 +1785,14 @@ class MarketGroupService {
         this.router = router;
         this.marketGroupMsts = [];
         this.marketGroupPaginationMst = new _shared_models_marketGroupPaginationMst__WEBPACK_IMPORTED_MODULE_0__["MarketGroupPaginationMst"]();
-        this.marketGroupFormData = new _shared_models_marketGroupMst__WEBPACK_IMPORTED_MODULE_2__["MarketGroupMst"]();
-        this.baseUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].apiUrl;
-        this.genParams = new _shared_models_genericParams__WEBPACK_IMPORTED_MODULE_5__["GenericParams"]();
+        this.marketGroupDtls = [];
+        this.marketGroupPaginationDtl = new _shared_models_marketGroupPaginationDtl__WEBPACK_IMPORTED_MODULE_1__["MarketGroupPaginationDtl"]();
+        this.marketGroupFormData = new _shared_models_marketGroupMst__WEBPACK_IMPORTED_MODULE_3__["MarketGroupMst"]();
+        this.baseUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_2__["environment"].apiUrl;
+        this.genParams = new _shared_models_genericParams__WEBPACK_IMPORTED_MODULE_6__["GenericParams"]();
     }
     getGroups() {
-        let params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpParams"]();
+        let params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_4__["HttpParams"]();
         debugger;
         if (this.genParams.search) {
             params = params.append('search', this.genParams.search);
@@ -1798,14 +1802,29 @@ class MarketGroupService {
         params = params.append('pageSize', this.genParams.pageSize.toString());
         return this.http.get(this.baseUrl + 'marketGroup/marketGroupMsts', { observe: 'response', params })
             //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
-            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["map"])(response => {
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(response => {
             this.marketGroupMsts = [...this.marketGroupMsts, ...response.body.data];
             this.marketGroupPaginationMst = response.body;
             return this.marketGroupPaginationMst;
         }));
     }
     getMarketGroups(id) {
-        return this.http.get(this.baseUrl + 'marketGroup/getMarketGroups/' + id);
+        //return this.http.get(this.baseUrl + 'marketGroup/marketGroupDtls/'+id);
+        let params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_4__["HttpParams"]();
+        debugger;
+        if (this.genParams.search) {
+            params = params.append('search', this.genParams.search);
+        }
+        params = params.append('sort', this.genParams.sort);
+        params = params.append('pageIndex', this.genParams.pageNumber.toString());
+        params = params.append('pageSize', this.genParams.pageSize.toString());
+        return this.http.get(this.baseUrl + 'marketGroup/marketGroupDtls/' + id, { observe: 'response', params })
+            //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(response => {
+            this.marketGroupDtls = [...this.marketGroupDtls, ...response.body.data];
+            this.marketGroupPaginationDtl = response.body;
+            return this.marketGroupPaginationDtl;
+        }));
     }
     getMarkets() {
         return this.http.get(this.baseUrl + 'employee/marketForGroup');
@@ -1823,8 +1842,8 @@ class MarketGroupService {
         return this.http.post(this.baseUrl + 'marketGroup/updateMst', this.marketGroupFormData);
     }
 }
-MarketGroupService.ɵfac = function MarketGroupService_Factory(t) { return new (t || MarketGroupService)(_angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵinject"](_angular_router__WEBPACK_IMPORTED_MODULE_7__["Router"])); };
-MarketGroupService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵdefineInjectable"]({ token: MarketGroupService, factory: MarketGroupService.ɵfac, providedIn: 'root' });
+MarketGroupService.ɵfac = function MarketGroupService_Factory(t) { return new (t || MarketGroupService)(_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_4__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](_angular_router__WEBPACK_IMPORTED_MODULE_8__["Router"])); };
+MarketGroupService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefineInjectable"]({ token: MarketGroupService, factory: MarketGroupService.ɵfac, providedIn: 'root' });
 
 
 /***/ }),
@@ -4604,7 +4623,8 @@ class MarketGroupComponent {
     }
     getMarketGroups() {
         this.marketGroupService.getMarketGroups(this.marketGroupService.marketGroupFormData.id).subscribe(response => {
-            this.marketGroupDtls = response;
+            debugger;
+            this.marketGroupDtls = response.data;
         }, error => {
             console.log(error);
         });
@@ -4651,6 +4671,7 @@ class MarketGroupComponent {
     }
     selectMarketGroup(selectedRecord) {
         this.marketGroupService.marketGroupFormData = Object.assign({}, selectedRecord);
+        this.getMarketGroups();
         this.marketGroupSearchModalRef.hide();
     }
     resetPage(form) {
@@ -4663,7 +4684,7 @@ MarketGroupComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdef
     } if (rf & 2) {
         let _t;
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵloadQuery"]()) && (ctx.marketGroupSearchModal = _t.first);
-    } }, decls: 75, vars: 12, consts: [[1, "content"], [1, "container-fluid"], [1, "row"], [1, "col-sm-12"], ["novalidate", "", "autocomplete", "off", 3, "submit"], ["form", "ngForm"], [1, "card", "card-primary"], [1, "card-header"], [1, "col-sm-6"], [1, "card-title"], [1, "col-sm-3"], ["type", "submit", 1, "btn", "btn-success", "btn-lg", "btn-block", 3, "disabled"], [1, "fa", "fa-save"], ["type", "button", 1, "btn", "btn-info", "btn-lg", "btn-block", 3, "click"], [1, "fa", "fa-search"], ["type", "button", 1, "btn", "btn-danger", "btn-lg", "btn-block", 3, "click"], [1, "card-body"], [1, "form-group"], [1, "col-md-2"], ["type", "hidden", "name", "id", 3, "value"], ["name", "groupName", "required", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["groupName", "ngModel"], ["name", "", "id", "", "name", "status", "required", "", 1, "form-control", "form-control-lg", 3, "ngModel", "ngModelChange"], ["status", "ngModel"], [3, "ngValue"], ["value", "Active"], ["value", "Inactive"], [1, "col-md-3"], ["id", "marketCode", "name", "marketCode", "ng-model", "marketCode", 1, "form-control", "form-control-lg"], [3, "value", 4, "ngFor", "ngForOf"], [1, "btn", "btn-info", "btn-lg", "btn-block", 3, "click"], [1, "fa", "fa-plus"], [1, "table", "table-bordered"], [4, "ngFor", "ngForOf"], ["marketGroupSearchModal", ""], [3, "value"], [1, "btn", "btn-danger", "btn-lg", "btn-block", 3, "click"], [1, "modal-header", 2, "background", "-webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc))", "color", "black"], [1, "modal-title", "pull-left"], ["type", "button", "aria-label", "Close", 1, "close", "pull-right", 3, "click"], ["aria-hidden", "true"], [1, "modal-body", 2, "padding", "20px 30px 20px 30px"], [1, "col-md-12"], [1, "table-responsive", 2, "border", "1px solid #bed2c9", "width", "100%"], [1, "table", "table-bordered", "table-responsive", "table-hover", "table-striped"], [2, "background", "-webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc))"], ["scope", "col", 2, "width", "7%"], ["scope", "col", 2, "width", "0", "display", "none"], ["scope", "col", 2, "width", "9%"], ["scope", "col", 2, "width", "8%"], [1, "btn", "btn-sm", "btn-embossed", "btn-success", 3, "click"], [2, "display", "none"]], template: function MarketGroupComponent_Template(rf, ctx) { if (rf & 1) {
+    } }, decls: 75, vars: 12, consts: [[1, "content"], [1, "container-fluid"], [1, "row"], [1, "col-sm-12"], ["novalidate", "", "autocomplete", "off", 3, "submit"], ["form", "ngForm"], [1, "card", "card-primary"], [1, "card-header"], [1, "col-sm-6"], [1, "card-title"], [1, "col-sm-2"], ["type", "submit", 1, "btn", "btn-success", "btn-lg", "btn-block", 3, "disabled"], [1, "fa", "fa-save"], ["type", "button", 1, "btn", "btn-info", "btn-lg", "btn-block", 3, "click"], [1, "fa", "fa-search"], ["type", "button", 1, "btn", "btn-danger", "btn-lg", "btn-block", 3, "click"], [1, "card-body"], [1, "form-group"], [1, "col-md-2"], ["type", "hidden", "name", "id", 3, "value"], ["name", "groupName", "required", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["groupName", "ngModel"], ["name", "", "id", "", "name", "status", "required", "", 1, "form-control", "form-control-lg", 3, "ngModel", "ngModelChange"], ["status", "ngModel"], [3, "ngValue"], ["value", "Active"], ["value", "Inactive"], [1, "col-md-3"], ["id", "marketCode", "name", "marketCode", "ng-model", "marketCode", 1, "form-control", "form-control-lg"], [3, "value", 4, "ngFor", "ngForOf"], [1, "col-sm-3"], [1, "fa", "fa-plus"], [1, "table", "table-bordered"], [4, "ngFor", "ngForOf"], ["marketGroupSearchModal", ""], [3, "value"], [1, "btn", "btn-danger", "btn-lg", "btn-block", 3, "click"], [1, "modal-header", 2, "background", "-webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc))", "color", "black"], [1, "modal-title", "pull-left"], ["type", "button", "aria-label", "Close", 1, "close", "pull-right", 3, "click"], ["aria-hidden", "true"], [1, "modal-body", 2, "padding", "20px 30px 20px 30px"], [1, "col-md-12"], [1, "table-responsive", 2, "border", "1px solid #bed2c9", "width", "100%"], [1, "table", "table-bordered", "table-responsive", "table-hover", "table-striped"], [2, "background", "-webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc))"], ["scope", "col", 2, "width", "7%"], ["scope", "col", 2, "width", "0", "display", "none"], ["scope", "col", 2, "width", "9%"], ["scope", "col", 2, "width", "8%"], [1, "btn", "btn-sm", "btn-embossed", "btn-success", 3, "click"], [2, "display", "none"]], template: function MarketGroupComponent_Template(rf, ctx) { if (rf & 1) {
         const _r17 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵgetCurrentView"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "section", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 1);
@@ -4755,8 +4776,8 @@ MarketGroupComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdef
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtemplate"](58, MarketGroupComponent_option_58_Template, 2, 2, "option", 29);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](59, "div", 10);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](60, "button", 30);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](59, "div", 30);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](60, "button", 13);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("click", function MarketGroupComponent_Template_button_click_60_listener() { return ctx.addMarket(); });
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](61, "i", 31);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](62, "Add");
@@ -6460,6 +6481,25 @@ MasterRoutingModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵdefi
             _angular_router__WEBPACK_IMPORTED_MODULE_7__["RouterModule"].forChild(routes)
         ], _angular_router__WEBPACK_IMPORTED_MODULE_7__["RouterModule"]] });
 (function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_9__["ɵɵsetNgModuleScope"](MasterRoutingModule, { imports: [_angular_router__WEBPACK_IMPORTED_MODULE_7__["RouterModule"]], exports: [_angular_router__WEBPACK_IMPORTED_MODULE_7__["RouterModule"]] }); })();
+
+
+/***/ }),
+
+/***/ "tTBQ":
+/*!***********************************************************!*\
+  !*** ./src/app/shared/models/marketGroupPaginationDtl.ts ***!
+  \***********************************************************/
+/*! exports provided: MarketGroupPaginationDtl */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MarketGroupPaginationDtl", function() { return MarketGroupPaginationDtl; });
+class MarketGroupPaginationDtl {
+    constructor() {
+        this.data = [];
+    }
+}
 
 
 /***/ }),
