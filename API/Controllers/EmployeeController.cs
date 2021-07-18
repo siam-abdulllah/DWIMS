@@ -57,6 +57,27 @@ namespace API.Controllers
                 throw ex;
             }
         }
+        [HttpGet("getSBU")]
+        public async Task<IReadOnlyList<SBUDto>> GetSBU()
+        {
+            try
+            {
+                var data = await _employeeRepo.ListAllAsync();
+                var sbu = (from r in data
+                           orderby r.SBU
+                           select new SBUDto
+                           {
+                               SBUName = r.SBU.Trim()
+                           }
+                              ).Distinct().ToList();
+                //var mappedMarket = _mapper.Map<IReadOnlyList<Employee>, IReadOnlyList<MarketDto>>(market);
+                return sbu;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
 
     }
 }
