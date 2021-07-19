@@ -70,7 +70,6 @@ namespace API.Controllers
                                SBUName = r.SBU.Trim()
                            }
                               ).Distinct().ToList();
-                //var mappedMarket = _mapper.Map<IReadOnlyList<Employee>, IReadOnlyList<MarketDto>>(market);
                 return sbu;
             }
             catch (System.Exception ex)

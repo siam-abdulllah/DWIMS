@@ -28,6 +28,7 @@ namespace API.Controllers
             {
                 var data = await _productRepo.ListAllAsync();
                 var brand= (from r in data
+                            where r.Status=="Active"
                            orderby r.BrandName
                            select new BrandDto
                            {

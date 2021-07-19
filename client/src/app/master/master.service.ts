@@ -64,6 +64,10 @@ export class MasterService {
     return this.http.get(this.baseUrl + 'employee/getSBU');
     
   }
+  getBrand(){    
+    return this.http.get(this.baseUrl + 'product/getBrand');
+    
+  }
   getCampaign(){    
     let params = new HttpParams();
     debugger;

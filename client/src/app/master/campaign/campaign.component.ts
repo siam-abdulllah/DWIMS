@@ -33,6 +33,7 @@ export class CampaignComponent implements OnInit {
 
   ngOnInit() {
     this.getSBU();
+    this.getBrand();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-green' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
   }
@@ -44,7 +45,7 @@ export class CampaignComponent implements OnInit {
     });
   }
   getBrand(){
-    this.masterService.getSBU().subscribe(response => {
+    this.masterService.getBrand().subscribe(response => {
       this.SBUs = response as ISBU[];
     }, error => {
         console.log(error);
