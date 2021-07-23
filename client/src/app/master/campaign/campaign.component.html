@@ -26,20 +26,12 @@
                                     <div class="col-md-3">
                                         <ng-select [items]="SBUs" bindLabel="name" bindValue="name" placeholder="Select SBU" name="SBU" #SBU="ngModel" [(ngModel)]="masterService.campaignFormData.SBU" required [class.invalid]="SBU.invalid && SBU.touched">
                                         </ng-select>
-                                        <!-- <select id="" class="form-control form-control-lg" name="SBU" #SBU="ngModel" [(ngModel)]="masterService.campaignFormData.SBU" required [class.invalid]="SBU.invalid && SBU.touched">
-                                          <option value="Active">Active</option>
-                                          <option value="Inactive">Inactive</option>
-                                      </select> -->
                                     </div>
                                     <div class="col-md-2">
                                         <label>Brand</label></div>
                                     <div class="col-md-3">
-                                        <ng-select [items]="SBUs" bindLabel="name" bindValue="name" placeholder="Select Brand" name="brand" #brand="ngModel" [(ngModel)]="masterService.campaignFormData.brand" required [class.invalid]="brand.invalid && brand.touched">
+                                        <ng-select [items]="vrands" bindLabel="name" bindValue="name" placeholder="Select Brand" name="brand" #brand="ngModel" [(ngModel)]="masterService.campaignFormData.brand" required [class.invalid]="brand.invalid && brand.touched">
                                         </ng-select>
-                                        <!-- <select id="" class="form-control form-control-lg" name="brand" #brand="ngModel" [(ngModel)]="masterService.campaignFormData.brand" required [class.invalid]="brand.invalid && brand.touched">
-                                      <option value="Active">Active</option>
-                                      <option value="Inactive">Inactive</option>
-                                    </select> -->
                                     </div>
                                 </div>
                             </div>
@@ -67,10 +59,6 @@
                                     <div class="col-md-3">
                                         <ng-select [items]="SBUs" bindLabel="name" bindValue="name" placeholder="Select Brand" name="brand" #brand="ngModel" [(ngModel)]="masterService.campaignFormData.brand" required [class.invalid]="brand.invalid && brand.touched">
                                         </ng-select>
-                                        <!-- <select id="" class="form-control form-control-lg" name="subCampaign" #subCampaign="ngModel" [(ngModel)]="masterService.campaignFormData.subCampaign" required [class.invalid]="subCampaign.invalid && subCampaign.touched">
-                                          <option value="Active">Active</option>
-                                          <option value="Inactive">Inactive</option>
-                                      </select> -->
                                     </div>
                                     <div class="col-md-2">
                                         <label>Budget</label></div>

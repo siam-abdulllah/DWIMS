@@ -2,15 +2,15 @@
 
 namespace Core.Specifications
 {
-    public class MarketGroupSpecification : BaseSpecification<MarketGroupMst>
+    public class MarketGroupDtlSpecification : BaseSpecification<MarketGroupDtl>
     {
 
-        public MarketGroupSpecification(MarketGroupSpecParams parrams)
+        public MarketGroupDtlSpecification(MarketGroupDtlSpecParams parrams)
            : base(x =>
-               (string.IsNullOrEmpty(parrams.Search) || x.GroupName.ToLower().Contains(parrams.Search))
+               (string.IsNullOrEmpty(parrams.Search) || x.MarketCode.ToLower().Contains(parrams.Search))
            )
         {
-            AddInclude(x => x.Employee);
+            
             AddOrderBy(x => x.SetOn);
             ApplyPaging(parrams.PageSize * (parrams.PageIndex - 1), parrams.PageSize);
 
@@ -31,10 +31,13 @@ namespace Core.Specifications
             // }
         }
 
-        public MarketGroupSpecification(int id)
-            : base(x => x.Id == id)
+        public MarketGroupDtlSpecification(int id)
+            : base(x => x.MstId == id && x.Status=="A")
         {
-            AddInclude(x => x.MarketGroupDtls);
+        }
+        public MarketGroupDtlSpecification(int mstId,string marketCode,string status)
+            : base(x => x.MstId == mstId &&  x.MarketCode == marketCode && x.Status==status)
+        {
         }
       
 

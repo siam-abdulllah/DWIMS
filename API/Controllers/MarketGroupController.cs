@@ -1,4 +1,5 @@
 ﻿using API.Dtos;
+using API.Errors;
 using API.Helpers;
 using AutoMapper;
 using Core.Entities;
@@ -57,6 +58,7 @@ namespace API.Controllers
                 {
                     MarketCode = marketGroupDtlDto.MarketCode,
                     MarketName = marketGroupDtlDto.MarketName,
+                    SBU = marketGroupDtlDto.SBU,
                     MstId = marketGroupDtlDto.MstId,
                     Status = "A",
                     SetOn = DateTimeOffset.Now
@@ -69,6 +71,7 @@ namespace API.Controllers
                     Id = marketGroupDtls.Id,
                     MarketCode = marketGroupDtlDto.MarketCode,
                     MarketName = marketGroupDtlDto.MarketName,
+                    SBU = marketGroupDtlDto.SBU,
                     MstId = marketGroupDtlDto.MstId,
                     Status = marketGroupDtlDto.Status
                 };
@@ -82,10 +85,12 @@ namespace API.Controllers
         [HttpPost("updateMst")]
         public ActionResult<MarketGroupMstDto> UpdateMarketGroupMst(MarketGroupMstDto marketGroupMstDto)
         {
+            var employeeId = 1;
             var marketGroupMsts = new MarketGroupMst
             {
                 Id = marketGroupMstDto.Id,
                 GroupName = marketGroupMstDto.GroupName,
+                EmployeeId = employeeId,
                 Status = marketGroupMstDto.Status,
                 ModifiedOn = DateTimeOffset.Now
 
@@ -97,6 +102,7 @@ namespace API.Controllers
             {
                 Id = marketGroupMstDto.Id,
                 GroupName = marketGroupMstDto.GroupName,
+                EmployeeId = marketGroupMsts.EmployeeId,
                 Status = marketGroupMstDto.Status
             };
         }
@@ -108,6 +114,7 @@ namespace API.Controllers
                 Id = marketGroupDtlDto.Id,
                 MarketCode = marketGroupDtlDto.MarketCode,
                 MarketName = marketGroupDtlDto.MarketName,
+                SBU = marketGroupDtlDto.SBU,
                 MstId = marketGroupDtlDto.MstId,
                 Status = "I",
                 ModifiedOn = DateTimeOffset.Now
@@ -128,13 +135,13 @@ namespace API.Controllers
 
         [HttpGet("marketGroupMsts")]
         public async Task<ActionResult<Pagination<MarketGroupMstDto>>> GetMarketGroupMsts(
-          [FromQuery] MarketGroupSpecParams marketGroupParrams)
+          [FromQuery] MarketGroupMstSpecParams marketGroupMstParrams)
         {
             try
             {
-                var spec = new MarketGroupSpecification(marketGroupParrams);
+                var spec = new MarketGroupMstSpecification(marketGroupMstParrams);
 
-                var countSpec = new MarketGroupWithFiltersForCountSpecificication(marketGroupParrams);
+                var countSpec = new MarketGroupMstWithFiltersForCountSpecificication(marketGroupMstParrams);
 
                 var totalItems = await _marketGroupMstRepo.CountAsync(countSpec);
 
@@ -143,7 +150,7 @@ namespace API.Controllers
                 var data = _mapper
                     .Map<IReadOnlyList<MarketGroupMst>, IReadOnlyList<MarketGroupMstDto>>(marketGroup);
 
-                return Ok(new Pagination<MarketGroupMstDto>(marketGroupParrams.PageIndex, marketGroupParrams.PageSize, totalItems, data));
+                return Ok(new Pagination<MarketGroupMstDto>(marketGroupMstParrams.PageIndex, marketGroupMstParrams.PageSize, totalItems, data));
             }
             catch (System.Exception e)
             {
@@ -151,24 +158,24 @@ namespace API.Controllers
                 throw;
             }
         }
-        [HttpGet("marketGroupDtls")]
+        [HttpGet("marketGroupDtls/{mstId}")]
         public async Task<ActionResult<Pagination<MarketGroupDtlDto>>> GetMarketGroupDtls(
-        [FromQuery] MarketGroupSpecParams marketGroupParrams, int mstId)
+        [FromQuery] MarketGroupDtlSpecParams marketGroupDtlParrams, int mstId)
         {
             try
             {
-                var spec = new MarketGroupSpecification(mstId);
+                var spec = new MarketGroupDtlSpecification(mstId);
 
-                var countSpec = new MarketGroupWithFiltersForCountSpecificication(mstId);
+                var countSpec = new MarketGroupDtlWithFiltersForCountSpecificication(mstId);
 
-                var totalItems = await _marketGroupMstRepo.CountAsync(countSpec);
+                var totalItems = await _marketGroupDtlRepo.CountAsync(countSpec);
 
-                var marketGroup = await _marketGroupMstRepo.ListAsync(spec);
+                var marketGroup = await _marketGroupDtlRepo.ListAsync(spec);
 
                 var data = _mapper
-                    .Map<IReadOnlyList<MarketGroupMst>, IReadOnlyList<MarketGroupDtlDto>>(marketGroup);
+                    .Map<IReadOnlyList<MarketGroupDtl>, IReadOnlyList<MarketGroupDtlDto>>(marketGroup);
 
-                return Ok(new Pagination<MarketGroupDtlDto>(marketGroupParrams.PageIndex, marketGroupParrams.PageSize, totalItems, data));
+                return Ok(new Pagination<MarketGroupDtlDto>(marketGroupDtlParrams.PageIndex, marketGroupDtlParrams.PageSize, totalItems, data));
             }
             catch (System.Exception)
             {

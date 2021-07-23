@@ -1,6 +1,6 @@
 ﻿namespace Core.Specifications
 {
-    public class MarketGroupSpecParams
+    public class MarketGroupDtlSpecParams
     {
         private const int MaxPageSize = 50;
         public int PageIndex { get; set; } = 1;

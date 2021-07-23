@@ -60,6 +60,14 @@ export class MasterService {
   employeeFormData: EmployeeInfo = new EmployeeInfo();
   constructor(private http: HttpClient, private router: Router) { }
 
+  getSBU(){    
+    return this.http.get(this.baseUrl + 'employee/getSBU');
+    
+  }
+  getBrand(){    
+    return this.http.get(this.baseUrl + 'product/getBrand');
+    
+  }
   getCampaign(){    
     let params = new HttpParams();
     debugger;

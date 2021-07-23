@@ -1,4 +1,5 @@
 import { Campaign, ICampaign } from '../../shared/models/campaign';
+import { SBU, ISBU } from '../../shared/models/sbu';
 import { SubCampaign, ISubCampaign } from '../../shared/models/subCampaign';
 import { Product, IProduct } from '../../shared/models/product';
 import { GenericParams } from '../../shared/models/genericParams';
@@ -21,6 +22,7 @@ export class CampaignComponent implements OnInit {
   campaignModalRef: BsModalRef;
   genParams: GenericParams;
   campaigns: ICampaign[]; 
+  SBUs: ISBU[]; 
   subCampaigns: ISubCampaign[]; 
   products: IProduct[];
   totalCount = 0;
@@ -30,9 +32,24 @@ export class CampaignComponent implements OnInit {
     private toastr: ToastrService) { }
 
   ngOnInit() {
-    //this.getCampaign();
+    this.getSBU();
+    this.getBrand();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-green' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
+  }
+  getSBU(){
+    this.masterService.getSBU().subscribe(response => {
+      this.SBUs = response as ISBU[];
+    }, error => {
+        console.log(error);
+    });
+  }
+  getBrand(){
+    this.masterService.getBrand().subscribe(response => {
+      this.SBUs = response as ISBU[];
+    }, error => {
+        console.log(error);
+    });
   }
   getCampaign(){
     this.masterService.getCampaign().subscribe(response => {
@@ -81,18 +98,4 @@ export class CampaignComponent implements OnInit {
     form.form.reset();
     this.masterService.campaignFormData = new Campaign();
   }
-  SBUs = [
-    {id: 1, name: 'Chittagong/Chattogram' },
-    {id: 2, name: 'Sonamasjid'},
-    {id: 3, name: 'Benapole'},
-    {id: 4, name: 'Mongla'},
-    {id: 5, name: 'Hili'},
-    {id: 6, name: 'Darshana'},
-    {id: 7, name: 'Shahjalal International Airport'},
-    {id: 8, name: 'Banglabandha'},
-    {id: 9, name: 'Birol'},
-    {id: 10, name: 'Rohanpur'},
-    {id: 11, name: 'Vomra'},
-    {id: 12, name: 'Burimari'}
-  ];
 }
