@@ -15,7 +15,8 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { IDonation,Donation} from'../shared/models/donation';
 import { ISubCampaign,SubCampaign} from'../shared/models/subCampaign';
-import { ICampaign,Campaign} from'../shared/models/campaign';
+import { CampaignMst, ICampaignMst,CampaignDtl, ICampaignDtl,CampaignDtlProduct, ICampaignDtlProduct } from '../shared/models/campaign';
+
 import { IApprovalAuthority,ApprovalAuthority} from'../shared/models/approvalAuthority';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, ReplaySubject, of, from } from 'rxjs';
@@ -36,7 +37,7 @@ export class MasterService {
   approvalAuthorityPagination = new ApprovalAuthorityPagination();
   subCampaigns: ISubCampaign[]=[];
   subCampaignPagination = new SubCampaignPagination();
-  campaigns: ICampaign[]=[];
+  campaigns: ICampaignMst[]=[];
   campaignPagination = new CampaignPagination();
   
   baseUrl = environment.apiUrl;
@@ -44,7 +45,8 @@ export class MasterService {
 
   donationFormData: Donation = new Donation();
   subCampaignFormData: SubCampaign = new SubCampaign();
-  campaignFormData: Campaign = new Campaign();
+  campaignMstFormData: CampaignMst = new CampaignMst();
+  campaignDtlFormData: CampaignDtl = new CampaignDtl();
   approvalAuthorityFormData: ApprovalAuthority = new ApprovalAuthority();
   
   bcdsInfo: IBcdsInfo[]= [];
@@ -68,6 +70,10 @@ export class MasterService {
     return this.http.get(this.baseUrl + 'product/getBrand');
     
   }
+  getSubCampaignForCamp(){    
+    return this.http.get(this.baseUrl + 'subCampaign/subCampaignsForCamp');
+    
+  }
   getCampaign(){    
     let params = new HttpParams();
     debugger;
@@ -88,8 +94,8 @@ export class MasterService {
     );
     
   }
-  insertCampaign() {
-    return this.http.post(this.baseUrl+ 'campaign/insert', this.campaignFormData);
+  insertCampaignMst() {
+    return this.http.post(this.baseUrl+ 'campaign/insert', this.campaignMstFormData);
     // return this.http.post(this.baseUrl + 'account/register', values).pipe(
     //   map((user: IUser) => {
     //     if (user) {
@@ -100,8 +106,8 @@ export class MasterService {
     //   })
     // );
   }
-  updateCampaign() {
-    return this.http.post(this.baseUrl+ 'campaign/update',  this.campaignFormData);
+  updateCampaignMst() {
+    return this.http.post(this.baseUrl+ 'campaign/update',  this.campaignMstFormData);
 }
  
   getSubCampaign(){    

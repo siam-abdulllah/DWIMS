@@ -1,4 +1,4 @@
-import { Campaign, ICampaign } from '../shared/models/campaign';
+
 import { SubCampaign, ISubCampaign } from '../shared/models/subCampaign';
 import { Market, IMarket } from '../shared/models/market';
 import { GenericParams } from '../shared/models/genericParams';
@@ -11,7 +11,7 @@ import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 @Component({
   selector: 'app-investmentInit',
-  templateUrl: './investmentInit.html',
+  templateUrl: './investmentInit.component.html',
   styles: [
   ]
 })
@@ -75,7 +75,7 @@ export class InvestmentInitComponent implements OnInit {
     // );
   }
 
-  populateForm(selectedRecord: ICampaign) {
+  populateForm() {
     //this.masterService.campaignFormData = Object.assign({}, selectedRecord);
   }
   resetForm(form: NgForm) {

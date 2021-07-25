@@ -1,14 +1,14 @@
-import { ICampaign } from './campaign';
+import { ICampaignMst } from './campaign';
 export interface ICampaignPagination {
     pageIndex: number;
     pageSize: number;
     count: number;
-    data: ICampaign[];
+    data: ICampaignMst[];
 }
 
 export class CampaignPagination implements ICampaignPagination {
     pageIndex: number;
     pageSize: number;
     count: number;
-    data: ICampaign[] = [];
+    data: ICampaignMst[] = [];
 }

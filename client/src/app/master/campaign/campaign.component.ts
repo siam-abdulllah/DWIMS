@@ -1,4 +1,4 @@
-import { Campaign, ICampaign } from '../../shared/models/campaign';
+import { CampaignMst, ICampaignMst,CampaignDtl, ICampaignDtl,CampaignDtlProduct, ICampaignDtlProduct } from '../../shared/models/campaign';
 import { SBU, ISBU } from '../../shared/models/sbu';
 import { Brand, IBrand } from '../../shared/models/brand';
 import { SubCampaign, ISubCampaign } from '../../shared/models/subCampaign';
@@ -22,7 +22,9 @@ export class CampaignComponent implements OnInit {
   @ViewChild('campaignModal', { static: false }) campaignModal: TemplateRef<any>;
   campaignModalRef: BsModalRef;
   genParams: GenericParams;
-  campaigns: ICampaign[]; 
+  campaignMsts: ICampaignMst[]; 
+  campaigDtls: ICampaignDtl[]; 
+  campaigDtlProducts: ICampaignDtlProduct[]; 
   SBUs: ISBU[];
   brands: IBrand[];
    
@@ -37,6 +39,7 @@ export class CampaignComponent implements OnInit {
   ngOnInit() {
     this.getSBU();
     this.getBrand();
+    this.getSubCampaign();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-green' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
   }
@@ -54,9 +57,16 @@ export class CampaignComponent implements OnInit {
         console.log(error);
     });
   }
+  getSubCampaign(){
+    this.masterService.getSubCampaignForCamp().subscribe(response => {
+      this.subCampaigns = response as ISubCampaign[];
+    }, error => {
+        console.log(error);
+    });
+  }
   getCampaign(){
     this.masterService.getCampaign().subscribe(response => {
-      this.campaigns = response.data;
+      this.campaignMsts = response.data;
       this.totalCount = response.count;
     }, error => {
         console.log(error);
@@ -64,41 +74,44 @@ export class CampaignComponent implements OnInit {
   }
   onSubmit(form: NgForm) {
     debugger;
-    if (this.masterService.campaignFormData.id == 0)
+    if (this.masterService.campaignMstFormData.id == 0)
       this.insertCampaign(form);
     else
       this.updateCampaign(form);
   }
 
   insertCampaign(form: NgForm) {
-    this.masterService.insertCampaign().subscribe(
+    this.masterService.insertCampaignMst().subscribe(
       res => {
         debugger;
-        this.resetForm(form);
-        this.getCampaign();
-        this.toastr.success('Submitted successfully', 'Payment Detail Register')
+        //this.resetForm(form);
+        //this.getCampaign();
+        
+        this.masterService.campaignMstFormData=res as ICampaignMst;
+        this.toastr.success('Submitted successfully', 'Campaign Info')
       },
       err => { console.log(err); }
     );
   }
 
   updateCampaign(form: NgForm) {
-    this.masterService.updateSubCampaign().subscribe(
+    this.masterService.updateCampaignMst().subscribe(
       res => {
-        debugger;
-        this.resetForm(form);
-        this.getCampaign();
-        this.toastr.info('Updated successfully', 'Payment Detail Register')
+        this.masterService.campaignMstFormData=res as ICampaignMst;
+        this.toastr.info('Updated successfully', 'Campaign Info')
       },
       err => { console.log(err); }
     );
   }
 
-  populateForm(selectedRecord: ICampaign) {
-    this.masterService.campaignFormData = Object.assign({}, selectedRecord);
+  populateForm(selectedRecord: ICampaignMst) {
+    this.masterService.campaignMstFormData = Object.assign({}, selectedRecord);
+  }
+  addSubCampaign() {
+  
   }
   resetForm(form: NgForm) {
     form.form.reset();
-    this.masterService.campaignFormData = new Campaign();
+    this.masterService.campaignMstFormData = new CampaignMst();
   }
 }

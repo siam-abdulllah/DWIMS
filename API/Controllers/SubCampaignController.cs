@@ -8,6 +8,7 @@ using Core.Specifications;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace API.Controllers
@@ -32,7 +33,7 @@ namespace API.Controllers
                 Remarks = subCampaignToReturnDto.Remarks,
                 Status = subCampaignToReturnDto.Status,
                 SetOn = DateTimeOffset.Now
-        };
+            };
             _subCampaignRepo.Add(subCampaign);
             _subCampaignRepo.Savechange();
 
@@ -70,7 +71,7 @@ namespace API.Controllers
                 Status = subCampaignToReturnDto.Status,
                 ModifiedOn = DateTimeOffset.Now
 
-        };
+            };
             _subCampaignRepo.Update(subCampaign);
             _subCampaignRepo.Savechange();
             return new SubCampaignToReturnDto
@@ -107,5 +108,31 @@ namespace API.Controllers
                 throw;
             }
         }
+
+
+        [HttpGet("subCampaignsForCamp")]
+        public async Task<IReadOnlyList<SubCampaignToReturnDto>> GetSubCampaign()
+        {
+            try
+            {
+
+                var data = await _subCampaignRepo.ListAllAsync();
+                var subCampaign = (from r in data
+                                   where r.Status == "Active"
+                                   orderby r.SubCampaignName
+                                   select new SubCampaignToReturnDto
+                                   {
+                                       SubCampaignName = r.SubCampaignName.Trim(),
+                                       Id = r.Id
+                                   }
+                              ).Distinct().ToList();
+                return subCampaign;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

@@ -1,4 +1,4 @@
-import { Campaign, ICampaign } from '../shared/models/campaign';
+
 import { SubCampaign, ISubCampaign } from '../shared/models/subCampaign';
 import { Market, IMarket } from '../shared/models/market';
 import { GenericParams } from '../shared/models/genericParams';
@@ -75,7 +75,7 @@ export class RegApprovalComponent implements OnInit {
     // );
   }
 
-  populateForm(selectedRecord: ICampaign) {
+  populateForm() {
     //this.masterService.campaignFormData = Object.assign({}, selectedRecord);
   }
   resetForm(form: NgForm) {

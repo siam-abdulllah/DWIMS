@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "G:\\DIDS\\DIDS_GIT\\Core\\Core.csproj": {}
+    "E:\\DWIMS\\TestApplication\\Core\\Core.csproj": {}
   },
   "projects": {
-    "G:\\DIDS\\DIDS_GIT\\Core\\Core.csproj": {
+    "E:\\DWIMS\\TestApplication\\Core\\Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "G:\\DIDS\\DIDS_GIT\\Core\\Core.csproj",
+        "projectUniqueName": "E:\\DWIMS\\TestApplication\\Core\\Core.csproj",
         "projectName": "Core",
-        "projectPath": "G:\\DIDS\\DIDS_GIT\\Core\\Core.csproj",
-        "packagesPath": "C:\\Users\\Siam\\.nuget\\packages\\",
-        "outputPath": "G:\\DIDS\\DIDS_GIT\\Core\\obj\\",
+        "projectPath": "E:\\DWIMS\\TestApplication\\Core\\Core.csproj",
+        "packagesPath": "C:\\Users\\maaz\\.nuget\\packages\\",
+        "outputPath": "E:\\DWIMS\\TestApplication\\Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Siam\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\maaz\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
