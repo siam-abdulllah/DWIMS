@@ -1,5 +1,6 @@
 import { Campaign, ICampaign } from '../../shared/models/campaign';
 import { SBU, ISBU } from '../../shared/models/sbu';
+import { Brand, IBrand } from '../../shared/models/brand';
 import { SubCampaign, ISubCampaign } from '../../shared/models/subCampaign';
 import { Product, IProduct } from '../../shared/models/product';
 import { GenericParams } from '../../shared/models/genericParams';
@@ -22,7 +23,9 @@ export class CampaignComponent implements OnInit {
   campaignModalRef: BsModalRef;
   genParams: GenericParams;
   campaigns: ICampaign[]; 
-  SBUs: ISBU[]; 
+  SBUs: ISBU[];
+  brands: IBrand[];
+   
   subCampaigns: ISubCampaign[]; 
   products: IProduct[];
   totalCount = 0;
@@ -46,7 +49,7 @@ export class CampaignComponent implements OnInit {
   }
   getBrand(){
     this.masterService.getBrand().subscribe(response => {
-      this.SBUs = response as ISBU[];
+      this.brands = response as IBrand[];
     }, error => {
         console.log(error);
     });

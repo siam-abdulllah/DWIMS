@@ -30,7 +30,7 @@
                                     <div class="col-md-2">
                                         <label>Brand</label></div>
                                     <div class="col-md-3">
-                                        <ng-select [items]="vrands" bindLabel="name" bindValue="name" placeholder="Select Brand" name="brand" #brand="ngModel" [(ngModel)]="masterService.campaignFormData.brand" required [class.invalid]="brand.invalid && brand.touched">
+                                        <ng-select [items]="brands" bindLabel="name" bindValue="name" placeholder="Select Brand" name="brand" #brand="ngModel" [(ngModel)]="masterService.campaignFormData.brand" required [class.invalid]="brand.invalid && brand.touched">
                                         </ng-select>
                                     </div>
                                 </div>

@@ -81,3 +81,15 @@ E:\DWIMS\TestApplication\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.
 E:\DWIMS\TestApplication\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.csproj.CopyComplete
 E:\DWIMS\TestApplication\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.dll
 E:\DWIMS\TestApplication\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.pdb
+G:\DIDS\DIDS_GIT\Infrastructure\bin\Debug\netstandard2.1\Infrastructure.deps.json
+G:\DIDS\DIDS_GIT\Infrastructure\bin\Debug\netstandard2.1\Infrastructure.dll
+G:\DIDS\DIDS_GIT\Infrastructure\bin\Debug\netstandard2.1\Infrastructure.pdb
+G:\DIDS\DIDS_GIT\Infrastructure\bin\Debug\netstandard2.1\Core.dll
+G:\DIDS\DIDS_GIT\Infrastructure\bin\Debug\netstandard2.1\Core.pdb
+G:\DIDS\DIDS_GIT\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.csproj.AssemblyReference.cache
+G:\DIDS\DIDS_GIT\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.AssemblyInfoInputs.cache
+G:\DIDS\DIDS_GIT\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.AssemblyInfo.cs
+G:\DIDS\DIDS_GIT\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.csproj.CoreCompileInputs.cache
+G:\DIDS\DIDS_GIT\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.csproj.CopyComplete
+G:\DIDS\DIDS_GIT\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.dll
+G:\DIDS\DIDS_GIT\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.pdb
