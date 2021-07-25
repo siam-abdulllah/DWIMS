@@ -108,8 +108,48 @@ export class CampaignComponent implements OnInit {
     this.masterService.campaignMstFormData = Object.assign({}, selectedRecord);
   }
   addSubCampaign() {
-  
+    debugger;
+    if(this.masterService.campaignMstFormData.id==0){
+      return false;
+    }
+    if(this.masterService.campaignDtlFormData.subCampaignId==null ||this.masterService.campaignDtlFormData.subCampaignId==undefined){
+      return false;
+    }
+    if(this.masterService.campaignDtlFormData.budget=="" ||this.masterService.campaignDtlFormData.budget==null ||this.masterService.campaignDtlFormData.budget==undefined){ return false;
+    }
+    if(this.masterService.campaignDtlFormData.subCampStartDate==null ||this.masterService.campaignDtlFormData.subCampStartDate==undefined){ return false;
+    }
+    if(this.masterService.campaignDtlFormData.subCampEndDate==null ||this.masterService.campaignDtlFormData.subCampEndDate==undefined){ return false;
+    }
+    //this.masterService.campaignDtlFormData.subCampStartDate = new Date(this.masterService.campaignDtlFormData.subCampStartDate);
+    //this.masterService.campaignDtlFormData.subCampEndDate = new Date(this.masterService.campaignDtlFormData.subCampEndDate);
+    var StartDate = this.masterService.campaignDtlFormData.subCampStartDate;
+    var EndDate = this.masterService.campaignDtlFormData.subCampEndDate;
+
+    this.masterService.campaignDtlFormData.subCampStartDate = new Date(StartDate.setDate(StartDate.getDate()+1));
+    this.masterService.campaignDtlFormData.subCampEndDate = new Date(EndDate.setDate(EndDate.getDate() + 1));
+
+    this.masterService.campaignDtlFormData.mstId=this.masterService.campaignMstFormData.id;
+    if(this.masterService.campaignDtlFormData.id==0){
+    this.masterService.insertCampaignDtl().subscribe(
+      res => {
+        this.masterService.campaignDtlFormData=new CampaignDtl();
+        this.toastr.info('Insert successfully', 'Campaign Info')
+      },
+      err => { console.log(err); }
+    );
+    }
+    else{
+      this.masterService.updateCampaignDtl().subscribe(
+        res => {
+          this.masterService.campaignDtlFormData=new CampaignDtl();
+          this.toastr.info('Updated successfully', 'Campaign Info')
+        },
+        err => { console.log(err); }
+      );
+    }
   }
+  
   resetForm(form: NgForm) {
     form.form.reset();
     this.masterService.campaignMstFormData = new CampaignMst();

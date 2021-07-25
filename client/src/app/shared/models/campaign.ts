@@ -3,17 +3,17 @@ export interface ICampaignMst {
     id: number;
     campaignNo: string;
     campaignName: string;
-    SBU: string;
-    brand: string;
+    sbu: string;
+    brandCode: string;
     setOn: Date;
 }
  
 export class CampaignMst implements ICampaignMst {
-    id: number;
+    id: number=0;
     campaignNo: string;
     campaignName: string;
-    SBU: string=null;
-    brand: string=null;
+    sbu: string=null;
+    brandCode: string=null;
     setOn: Date;
 }
 export interface ICampaignDtl {
@@ -22,8 +22,8 @@ export interface ICampaignDtl {
     subCampaignId: number;
     subCampaignName: string;
     budget: string;
-    startDate: string;
-    endDate: string;
+    subCampStartDate: Date;
+    subCampEndDate: Date;
 }
  
 export class CampaignDtl implements ICampaignDtl {
@@ -32,8 +32,8 @@ export class CampaignDtl implements ICampaignDtl {
     subCampaignId: number=null;
     subCampaignName: string;
     budget: string;
-    startDate: string;
-    endDate: string;
+    subCampStartDate: Date;
+    subCampEndDate: Date;
 }
 export interface ICampaignDtlProduct {
     id: number;

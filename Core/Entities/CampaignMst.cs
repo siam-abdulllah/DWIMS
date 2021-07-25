@@ -9,9 +9,8 @@ namespace Core.Entities
         public string CampaignNo { get; set; }
         public string CampaignName { get; set; }
         public string SBU { get; set; }
-        public int BrandId { get; set; }
-        [ForeignKey("BrandId")]
-        public BrandInfo BrandInfo { get; set; }
+        public string BrandCode { get; set; }
+        
         [ForeignKey("MstId")]
         public virtual IEnumerable<CampaignDtl> CampaignDtls { get; set; }
         

@@ -95,7 +95,7 @@ export class MasterService {
     
   }
   insertCampaignMst() {
-    return this.http.post(this.baseUrl+ 'campaign/insert', this.campaignMstFormData);
+    return this.http.post(this.baseUrl+ 'campaign/insertMst', this.campaignMstFormData);
     // return this.http.post(this.baseUrl + 'account/register', values).pipe(
     //   map((user: IUser) => {
     //     if (user) {
@@ -106,8 +106,15 @@ export class MasterService {
     //   })
     // );
   }
+  insertCampaignDtl() {
+    return this.http.post(this.baseUrl+ 'campaign/insertDtl', this.campaignDtlFormData);
+    
+  }
   updateCampaignMst() {
-    return this.http.post(this.baseUrl+ 'campaign/update',  this.campaignMstFormData);
+    return this.http.post(this.baseUrl+ 'campaign/updateMst',  this.campaignMstFormData);
+}
+updateCampaignDtl() {
+  return this.http.post(this.baseUrl+ 'campaign/updateDtl',  this.campaignDtlFormData);
 }
  
   getSubCampaign(){    

@@ -21,40 +21,42 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-2">
-                                        <label>SBU</label>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <select class="form-control form-control-lg" id="SBU" name="SBU" #SBU="ngModel" [(ngModel)]="masterService.campaignMstFormData.SBU" required [class.invalid]="SBU.invalid && SBU.touched">
-                                            <option  [ngValue]="null">Select SBU</option>
-                                            <option *ngFor="let sbu of SBUs" [value]="sbu.sbuName">{{sbu.sbuName}}</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <label>Brand</label></div>
-                                    <div class="col-md-3">
-                                        <select class="form-control form-control-lg" id="brand" name="brand" #brand="ngModel" [(ngModel)]="masterService.campaignMstFormData.brand" required [class.invalid]="brand.invalid && brand.touched">
-                                            <option  [ngValue]="null">Select Brand</option>
-                                            <option *ngFor="let brand of brands" [value]="brand.brandCode">{{brand.brandName}}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-md-2">
                                         <label>Campaign Name</label>
                                     </div>
                                     <div class="col-md-3">
                                         <input class="form-control " placeholder="Campaign" name="campaignName" #campaignName="ngModel" [(ngModel)]="masterService.campaignMstFormData.campaignName" required [class.invalid]="campaignName.invalid && campaignName.touched">
                                     </div>
                                     <div class="col-md-2">
-                                        <label>Campaign Id</label>
+                                        <label>Campaign No</label>
                                     </div>
                                     <div class="col-md-3">
-                                        <input class="form-control " placeholder="Auto Generated" name="id" #id="ngModel" [(ngModel)]="masterService.campaignMstFormData.id" required [class.invalid]="id.invalid && id.touched" readonly>
+                                        <input class="form-control " placeholder="Campaign No" name="campaignNo" #campaignNo="ngModel" [(ngModel)]="masterService.campaignMstFormData.campaignNo" required [class.invalid]="campaignNo.invalid && campaignNo.touched">
+                                        <input class="form-control " placeholder="Auto Generated" name="id" #id="ngModel" [(ngModel)]="masterService.campaignMstFormData.id" required [class.invalid]="id.invalid && id.touched" readonly style="display: none;">
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>SBU</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select class="form-control form-control-lg" id="sbu" name="sbu" #sbu="ngModel" [(ngModel)]="masterService.campaignMstFormData.sbu" required [class.invalid]="sbu.invalid && sbu.touched">
+                                            <option  [ngValue]="null">Select SBU</option>
+                                            <option *ngFor="let a of SBUs" [value]="a.sbuName">{{a.sbuName}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Brand</label></div>
+                                    <div class="col-md-3">
+                                        <select class="form-control form-control-lg" id="brandCode" name="brandCode" #brandCode="ngModel" [(ngModel)]="masterService.campaignMstFormData.brandCode" required [class.invalid]="brandCode.invalid && brandCode.touched">
+                                            <option  [ngValue]="null">Select Brand</option>
+                                            <option *ngFor="let brand of brands" [value]="brand.brandCode">{{brand.brandName}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                           
                             <fieldset>
                                 <div class="form-group">
                                     <div class="row">
@@ -62,8 +64,8 @@
                                             <label>Sub Campaign</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <input class="form-control " placeholder="Auto Generated" name="id" #id="ngModel" [(ngModel)]="masterService.campaignDtlFormData.id" required [class.invalid]="id.invalid && id.touched" readonly style="display: none;">
-                                            <select class="form-control form-control-lg" id="subCampaignId" name="subCampaignId" #subCampaignId="ngModel" [(ngModel)]="masterService.campaignDtlFormData.subCampaignId" required [class.invalid]="subCampaignId.invalid && subCampaignId.touched">
+                                            <input class="form-control " placeholder="Auto Generated" name="id" #id="ngModel" [(ngModel)]="masterService.campaignDtlFormData.id"  [class.invalid]="id.invalid && id.touched" readonly style="display: none;">
+                                            <select class="form-control form-control-lg" id="subCampaignId" name="subCampaignId" #subCampaignId="ngModel" [(ngModel)]="masterService.campaignDtlFormData.subCampaignId"  [class.invalid]="subCampaignId.invalid && subCampaignId.touched">
                                             <option  [ngValue]="null">Select Sub Campaign</option>
                                             <option *ngFor="let subCampaign of subCampaigns" [value]="subCampaign.id">{{subCampaign.subCampaignName}}</option>
                                         </select>
@@ -73,7 +75,7 @@
                                         <div class="col-md-2">
                                             <label>Budget</label></div>
                                         <div class="col-md-3">
-                                            <input class="form-control " placeholder="Budget" name="budget" #budget="ngModel" [(ngModel)]="masterService.campaignDtlFormData.budget" required [class.invalid]="budget.invalid && budget.touched">
+                                            <input class="form-control " placeholder="Budget" name="budget" #budget="ngModel" [(ngModel)]="masterService.campaignDtlFormData.budget"  [class.invalid]="budget.invalid && budget.touched">
                                         </div>
                                     </div>
                                 </div>
@@ -83,12 +85,12 @@
                                             <label>Sub Campaign Start Date</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <input class="form-control" placeholder="Calender" name="startDate" #startDate="ngModel" [(ngModel)]="masterService.campaignDtlFormData.startDate" required [class.invalid]="startDate.invalid && startDate.touched" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
+                                            <input class="form-control" placeholder="Calender" name="subCampStartDate" #subCampStartDate="ngModel" [(ngModel)]="masterService.campaignDtlFormData.subCampStartDate"  [class.invalid]="subCampStartDate.invalid && subCampStartDate.touched" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
                                         </div>
                                         <div class="col-md-2">
                                             <label>Sub Campaign End Date</label></div>
                                         <div class="col-md-3">
-                                            <input class="form-control" placeholder="Calender" name="endDate" #endDate="ngModel" [(ngModel)]="masterService.campaignDtlFormData.endDate" required [class.invalid]="endDate.invalid && endDate.touched" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
+                                            <input class="form-control" placeholder="Calender" name="subCampEndDate" #subCampEndDate="ngModel" [(ngModel)]="masterService.campaignDtlFormData.subCampEndDate"  [class.invalid]="subCampEndDate.invalid && subCampEndDate.touched" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
                                         </div>
                                     </div>
                                 </div>
@@ -115,10 +117,10 @@
                                                 {{a.budget}}
                                             </td>
                                             <td>
-                                                {{a.startDate}}
+                                                {{a.subCampStartDate}}
                                             </td>
                                             <td>
-                                                {{a.endDate}}
+                                                {{a.subCampEndDate}}
                                             </td>
                                             <td (click)="populateForm(a)">
                                                 Details

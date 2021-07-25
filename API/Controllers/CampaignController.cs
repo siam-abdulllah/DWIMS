@@ -30,7 +30,7 @@ namespace API.Controllers
                 CampaignNo = campaignMstDto.CampaignNo,
                 CampaignName = campaignMstDto.CampaignName,
                 SBU = campaignMstDto.SBU,
-                BrandId = campaignMstDto.BrandId,
+                BrandCode = campaignMstDto.BrandCode,
                 SetOn = DateTimeOffset.Now
             };
             _campaignMstRepo.Add(campaignMsts);
@@ -42,42 +42,42 @@ namespace API.Controllers
                 CampaignNo = campaignMsts.CampaignNo,
                 CampaignName = campaignMsts.CampaignName,
                 SBU = campaignMsts.SBU,
-                BrandId = campaignMsts.BrandId
+                BrandCode = campaignMsts.BrandCode
             };
         }
-        //[HttpPost("insertDtl")]
-        //public ActionResult<MarketGroupDtlDto> InsertMarketGroupDtl(MarketGroupDtlDto marketGroupDtlDto)
-        //{
-        //    try
-        //    {
-        //        var marketGroupDtls = new MarketGroupDtl
-        //        {
-        //            MarketCode = marketGroupDtlDto.MarketCode,
-        //            MarketName = marketGroupDtlDto.MarketName,
-        //            SBU = marketGroupDtlDto.SBU,
-        //            MstId = marketGroupDtlDto.MstId,
-        //            Status = "A",
-        //            SetOn = DateTimeOffset.Now
-        //        };
-        //        _marketGroupDtlRepo.Add(marketGroupDtls);
-        //        _marketGroupDtlRepo.Savechange();
+        [HttpPost("insertDtl")]
+        public ActionResult<CampaignDtlDto> InsertCampaignDtl(CampaignDtlDto campaignDtlDto)
+        {
+            try
+            {
+                var campaignDtls = new CampaignDtl
+                {
+                    MstId = campaignDtlDto.MstId,
+                    SubCampaignId = campaignDtlDto.SubCampaignId,
+                    Budget = campaignDtlDto.Budget,
+                    SubCampStartDate = campaignDtlDto.SubCampStartDate,
+                    SubCampEndDate = campaignDtlDto.SubCampEndDate,
+                    SetOn = DateTimeOffset.Now
+                };
+                _campaignDtlRepo.Add(campaignDtls);
+                _campaignDtlRepo.Savechange();
 
-        //        return new MarketGroupDtlDto
-        //        {
-        //            Id = marketGroupDtls.Id,
-        //            MarketCode = marketGroupDtlDto.MarketCode,
-        //            MarketName = marketGroupDtlDto.MarketName,
-        //            SBU = marketGroupDtlDto.SBU,
-        //            MstId = marketGroupDtlDto.MstId,
-        //            Status = marketGroupDtlDto.Status
-        //        };
-        //    }
-        //    catch (Exception)
-        //    {
+                return new CampaignDtlDto
+                {
+                    Id = campaignDtls.Id,
+                    MstId = campaignDtlDto.MstId,
+                    SubCampaignId = campaignDtlDto.SubCampaignId,
+                    Budget = campaignDtlDto.Budget,
+                    SubCampStartDate = campaignDtlDto.SubCampStartDate,
+                    SubCampEndDate = campaignDtlDto.SubCampEndDate,
+                };
+            }
+            catch (Exception)
+            {
 
-        //        throw;
-        //    }
-        //}
+                throw;
+            }
+        }
         [HttpPost("updateMst")]
         public ActionResult<CampaignMstDto> UpdateCampaignMst(CampaignMstDto campaignMstDto)
         {
@@ -87,7 +87,7 @@ namespace API.Controllers
                 CampaignNo = campaignMstDto.CampaignNo,
                 CampaignName = campaignMstDto.CampaignName,
                 SBU = campaignMstDto.SBU,
-                BrandId = campaignMstDto.BrandId,
+                BrandCode = campaignMstDto.BrandCode,
                 ModifiedOn = DateTimeOffset.Now
 
             };
@@ -100,35 +100,36 @@ namespace API.Controllers
                 CampaignNo = campaignMstDto.CampaignNo,
                 CampaignName = campaignMstDto.CampaignName,
                 SBU = campaignMstDto.SBU,
-                BrandId = campaignMstDto.BrandId,
+                BrandCode = campaignMstDto.BrandCode
             };
         }
-        //[HttpPost("updateDtl")]
-        //public ActionResult<MarketGroupDtlDto> UpdateMarketGroupDtl(MarketGroupDtlDto marketGroupDtlDto)
-        //{
-        //    var marketGroupDtls = new MarketGroupDtl
-        //    {
-        //        Id = marketGroupDtlDto.Id,
-        //        MarketCode = marketGroupDtlDto.MarketCode,
-        //        MarketName = marketGroupDtlDto.MarketName,
-        //        SBU = marketGroupDtlDto.SBU,
-        //        MstId = marketGroupDtlDto.MstId,
-        //        Status = "I",
-        //        ModifiedOn = DateTimeOffset.Now
+        [HttpPost("updateDtl")]
+        public ActionResult<CampaignDtlDto> UpdateCampaignDtl(CampaignDtlDto campaignDtlDto)
+        {
+            var campaignDtls = new CampaignDtl
+            {
+                Id = campaignDtlDto.Id,
+                MstId = campaignDtlDto.MstId,
+                SubCampaignId = campaignDtlDto.SubCampaignId,
+                Budget = campaignDtlDto.Budget,
+                SubCampStartDate = campaignDtlDto.SubCampStartDate,
+                SubCampEndDate = campaignDtlDto.SubCampEndDate,
+                ModifiedOn = DateTimeOffset.Now
 
-        //    };
-        //    _marketGroupDtlRepo.Update(marketGroupDtls);
-        //    _marketGroupDtlRepo.Savechange();
+            };
+            _campaignDtlRepo.Update(campaignDtls);
+            _campaignDtlRepo.Savechange();
 
-        //    return new MarketGroupDtlDto
-        //    {
-        //        Id = marketGroupDtlDto.Id,
-        //        MarketCode = marketGroupDtlDto.MarketCode,
-        //        MarketName = marketGroupDtlDto.MarketName,
-        //        MstId = marketGroupDtlDto.MstId,
-        //        Status = "A"
-        //    };
-        //}
+            return new CampaignDtlDto
+            {
+                Id = campaignDtlDto.Id,
+                MstId = campaignDtlDto.MstId,
+                SubCampaignId = campaignDtlDto.SubCampaignId,
+                Budget = campaignDtlDto.Budget,
+                SubCampStartDate = campaignDtlDto.SubCampStartDate,
+                SubCampEndDate = campaignDtlDto.SubCampEndDate,
+            };
+        }
 
 
 
