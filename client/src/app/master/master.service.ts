@@ -1,6 +1,6 @@
 import { DonationPagination, IDonationPagination } from './../shared/models/donationPagination';
 import { SubCampaignPagination, ISubCampaignPagination } from './../shared/models/subCampaignPagination';
-import { CampaignPagination, ICampaignPagination } from './../shared/models/campaignPagination';
+import { CampaignMstPagination, ICampaignMstPagination,CampaignDtlPagination, ICampaignDtlPagination,CampaignDtlProductPagination, ICampaignDtlProductPagination } from './../shared/models/campaignPagination';
 import { ApprovalAuthorityPagination, IApprovalAuthorityPagination } from './../shared/models/approvalAuthorityPagination';
 import { IBcdsInfo, BcdsInfo } from './../shared/models/bcdsInfo';
 import { BcdsPagination, IBcdsPagination } from './../shared/models/bcdsPagination';
@@ -37,8 +37,12 @@ export class MasterService {
   approvalAuthorityPagination = new ApprovalAuthorityPagination();
   subCampaigns: ISubCampaign[]=[];
   subCampaignPagination = new SubCampaignPagination();
-  campaigns: ICampaignMst[]=[];
-  campaignPagination = new CampaignPagination();
+  campaignMsts: ICampaignMst[]=[];
+  campaignMstPagination = new CampaignMstPagination();
+  campaignDtls: ICampaignDtl[]=[];
+  campaignDtlProducts: ICampaignDtlProduct[]=[];
+  campaignDtlPagination = new CampaignDtlPagination();
+  campaignDtlProductPagination = new CampaignDtlProductPagination();
   
   baseUrl = environment.apiUrl;
   genParams = new GenericParams();
@@ -47,6 +51,7 @@ export class MasterService {
   subCampaignFormData: SubCampaign = new SubCampaign();
   campaignMstFormData: CampaignMst = new CampaignMst();
   campaignDtlFormData: CampaignDtl = new CampaignDtl();
+  campaignDtlProductFormData: CampaignDtlProduct = new CampaignDtlProduct();
   approvalAuthorityFormData: ApprovalAuthority = new ApprovalAuthority();
   
   bcdsInfo: IBcdsInfo[]= [];
@@ -70,8 +75,57 @@ export class MasterService {
     return this.http.get(this.baseUrl + 'product/getBrand');
     
   }
+  getProduct(){    
+    return this.http.get(this.baseUrl + 'product/getProduct');
+    
+  }
   getSubCampaignForCamp(){    
     return this.http.get(this.baseUrl + 'subCampaign/subCampaignsForCamp');
+  }
+  removeDtlProduct(selectedRecord:ICampaignDtlProduct){    
+    return this.http.post(this.baseUrl + 'campaign/removeDtlProduct',selectedRecord);
+  }
+  
+  getCampaignDtl(mstId:number){ 
+    let params = new HttpParams();
+    debugger;
+    if (this.genParams.search) {
+      params = params.append('search', this.genParams.search);
+    }
+    params = params.append('sort', this.genParams.sort);
+    params = params.append('pageIndex', this.genParams.pageNumber.toString());
+    params = params.append('pageSize', this.genParams.pageSize.toString());
+
+    return this.http.get<ICampaignDtlPagination>(this.baseUrl + 'campaign/campaignDtls/'+mstId, { observe: 'response', params })
+    .pipe(
+      map(response => {
+        this.campaignDtls = [...this.campaignDtls, ...response.body.data]; 
+        this.campaignDtlPagination = response.body;
+        return this.campaignDtlPagination;
+      })
+    );   
+    
+    
+  }
+  getCampaignDtlProduct(dtlId:number){ 
+    let params = new HttpParams();
+    debugger;
+    if (this.genParams.search) {
+      params = params.append('search', this.genParams.search);
+    }
+    params = params.append('sort', this.genParams.sort);
+    params = params.append('pageIndex', this.genParams.pageNumber.toString());
+    params = params.append('pageSize', this.genParams.pageSize.toString());
+
+    return this.http.get<ICampaignDtlProductPagination>(this.baseUrl + 'campaign/campaignDtlProducts/'+dtlId, { observe: 'response', params })
+    .pipe(
+      map(response => {
+        this.campaignDtlProducts = [...this.campaignDtlProducts, ...response.body.data]; 
+        this.campaignDtlProductPagination = response.body;
+        return this.campaignDtlProductPagination;
+      })
+    );   
+    
     
   }
   getCampaign(){    
@@ -84,12 +138,12 @@ export class MasterService {
     params = params.append('pageIndex', this.genParams.pageNumber.toString());
     params = params.append('pageSize', this.genParams.pageSize.toString());
 
-    return this.http.get<ICampaignPagination>(this.baseUrl + 'campaign/campaigns', { observe: 'response', params })
+    return this.http.get<ICampaignMstPagination>(this.baseUrl + 'campaign/campaignMsts', { observe: 'response', params })
     .pipe(
       map(response => {
-        this.campaigns = [...this.campaigns, ...response.body.data]; 
-        this.campaignPagination = response.body;
-        return this.campaignPagination;
+        this.campaignMsts = [...this.campaignMsts, ...response.body.data]; 
+        this.campaignMstPagination = response.body;
+        return this.campaignMstPagination;
       })
     );
     
@@ -110,11 +164,18 @@ export class MasterService {
     return this.http.post(this.baseUrl+ 'campaign/insertDtl', this.campaignDtlFormData);
     
   }
+  insertCampaignDtlProduct() {
+    return this.http.post(this.baseUrl+ 'campaign/insertDtlProduct', this.campaignDtlProductFormData);
+    
+  }
   updateCampaignMst() {
     return this.http.post(this.baseUrl+ 'campaign/updateMst',  this.campaignMstFormData);
 }
 updateCampaignDtl() {
   return this.http.post(this.baseUrl+ 'campaign/updateDtl',  this.campaignDtlFormData);
+}
+updateCampaignDtlProduct() {
+  return this.http.post(this.baseUrl+ 'campaign/updateDtlProduct',  this.campaignDtlProductFormData);
 }
  
   getSubCampaign(){    

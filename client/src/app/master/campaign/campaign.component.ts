@@ -19,12 +19,14 @@ import { BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 })
 export class CampaignComponent implements OnInit {
   @ViewChild('search', {static: false}) searchTerm: ElementRef;
-  @ViewChild('campaignModal', { static: false }) campaignModal: TemplateRef<any>;
-  campaignModalRef: BsModalRef;
+  @ViewChild('campaignMstSearchModal', { static: false }) campaignMstSearchModal: TemplateRef<any>;
+  @ViewChild('productSearchModal', { static: false }) productSearchModal: TemplateRef<any>;
+  campaignMstSearchodalRef: BsModalRef;
+  productSearchModalRef: BsModalRef;
   genParams: GenericParams;
   campaignMsts: ICampaignMst[]; 
-  campaigDtls: ICampaignDtl[]; 
-  campaigDtlProducts: ICampaignDtlProduct[]; 
+  campaignDtls: ICampaignDtl[]; 
+  campaignDtlProducts: ICampaignDtlProduct[]; 
   SBUs: ISBU[];
   brands: IBrand[];
    
@@ -33,13 +35,19 @@ export class CampaignComponent implements OnInit {
   totalCount = 0;
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date = new Date();
+  config = {
+    keyboard: false,
+    class: 'modal-lg',
+    ignoreBackdropClick: true
+  };
   constructor(public masterService: MasterService, private router: Router,
-    private toastr: ToastrService) { }
+    private toastr: ToastrService,private modalService: BsModalService) { }
 
   ngOnInit() {
     this.getSBU();
     this.getBrand();
     this.getSubCampaign();
+    this.getProduct();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-green' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
   }
@@ -57,6 +65,14 @@ export class CampaignComponent implements OnInit {
         console.log(error);
     });
   }
+  getProduct(){
+    this.masterService.getProduct().subscribe(response => {
+      debugger;
+      this.products = response as IProduct[];
+    }, error => {
+        console.log(error);
+    });
+  }
   getSubCampaign(){
     this.masterService.getSubCampaignForCamp().subscribe(response => {
       this.subCampaigns = response as ISubCampaign[];
@@ -66,11 +82,52 @@ export class CampaignComponent implements OnInit {
   }
   getCampaign(){
     this.masterService.getCampaign().subscribe(response => {
+
+      debugger;
       this.campaignMsts = response.data;
+      this.totalCount = response.count;
+      this.openCampaignMstSearchModal(this.campaignMstSearchModal);
+    }, error => {
+        console.log(error);
+    });
+  }
+  openCampaignMstSearchModal(template: TemplateRef<any>) {
+    this.campaignMstSearchodalRef = this.modalService.show(template, this.config);
+  }
+  
+  getCampaignDtl(){
+    this.campaignDtls =[];
+    this.masterService.getCampaignDtl(this.masterService.campaignMstFormData.id).subscribe(response => {
+      debugger;
+      this.campaignDtls = response.data;
+      // for(var i=0;this.campaignDtls.length<1;i++)
+      // {
+      //   const sDate = new Date(this.campaignDtls[i].subCampStartDate);
+      //   this.campaignDtls[i].subCampStartDate=new Date(sDate.getDate() + '/' + (sDate.getMonth() + 1) + '/' + sDate.getFullYear());
+      //   const eDate = new Date(this.campaignDtls[i].subCampEndDate);
+      //   this.campaignDtls[i].subCampEndDate=new Date(eDate.getDate() + '/' + (eDate.getMonth() + 1) + '/' + eDate.getFullYear());
+      //  }
       this.totalCount = response.count;
     }, error => {
         console.log(error);
     });
+  }
+  getCampaignDtlProduct(){
+    this.campaignDtlProducts =[];
+    this.masterService.getCampaignDtlProduct(this.masterService.campaignDtlFormData.id).subscribe(response => {
+      debugger;
+      this.campaignDtlProducts = response.data;
+      this.totalCount = response.count;
+    }, error => {
+        console.log(error);
+    });
+  }
+  getCampaignDtlProductClick(selectedRecord: ICampaignDtl){
+    this.masterService.campaignDtlFormData = Object.assign({}, selectedRecord);
+    this.masterService.campaignDtlFormData.subCampStartDate=new Date(selectedRecord.subCampStartDate);
+    this.masterService.campaignDtlFormData.subCampEndDate=new Date(selectedRecord.subCampEndDate);
+    
+    this.getCampaignDtlProduct();
   }
   onSubmit(form: NgForm) {
     debugger;
@@ -107,6 +164,12 @@ export class CampaignComponent implements OnInit {
   populateForm(selectedRecord: ICampaignMst) {
     this.masterService.campaignMstFormData = Object.assign({}, selectedRecord);
   }
+  populateDtlsForm(selectedRecord: ICampaignDtl) {
+    debugger;
+    this.masterService.campaignDtlFormData = Object.assign({}, selectedRecord);
+    this.masterService.campaignDtlFormData.subCampStartDate=new Date(selectedRecord.subCampStartDate);
+    this.masterService.campaignDtlFormData.subCampEndDate=new Date(selectedRecord.subCampEndDate);
+  }
   addSubCampaign() {
     debugger;
     if(this.masterService.campaignMstFormData.id==0){
@@ -126,14 +189,15 @@ export class CampaignComponent implements OnInit {
     var StartDate = this.masterService.campaignDtlFormData.subCampStartDate;
     var EndDate = this.masterService.campaignDtlFormData.subCampEndDate;
 
-    this.masterService.campaignDtlFormData.subCampStartDate = new Date(StartDate.setDate(StartDate.getDate()+1));
-    this.masterService.campaignDtlFormData.subCampEndDate = new Date(EndDate.setDate(EndDate.getDate() + 1));
+    //this.masterService.campaignDtlFormData.subCampStartDate = new Date(StartDate.setDate(StartDate.getDate()+1));
+    //this.masterService.campaignDtlFormData.subCampEndDate = new Date(EndDate.setDate(EndDate.getDate() + 1));
 
     this.masterService.campaignDtlFormData.mstId=this.masterService.campaignMstFormData.id;
     if(this.masterService.campaignDtlFormData.id==0){
     this.masterService.insertCampaignDtl().subscribe(
       res => {
         this.masterService.campaignDtlFormData=new CampaignDtl();
+        this.getCampaignDtl();
         this.toastr.info('Insert successfully', 'Campaign Info')
       },
       err => { console.log(err); }
@@ -143,15 +207,83 @@ export class CampaignComponent implements OnInit {
       this.masterService.updateCampaignDtl().subscribe(
         res => {
           this.masterService.campaignDtlFormData=new CampaignDtl();
+          this.getCampaignDtl();
           this.toastr.info('Updated successfully', 'Campaign Info')
         },
         err => { console.log(err); }
       );
     }
   }
-  
-  resetForm(form: NgForm) {
+  addProduct() {
+    debugger;
+    if(this.masterService.campaignMstFormData.id==0){
+      return false;
+    }
+    if(this.masterService.campaignDtlFormData.id==0){
+      return false;
+    }
+    if(this.masterService.campaignDtlProductFormData.productId==0 ||this.masterService.campaignDtlProductFormData.productId==null ||this.masterService.campaignDtlProductFormData.productId==undefined){
+      return false;
+    }
+    this.masterService.campaignDtlProductFormData.dtlId=this.masterService.campaignDtlFormData.id;
+    if(this.masterService.campaignDtlProductFormData.id==0){
+    this.masterService.insertCampaignDtlProduct().subscribe(
+      res => {
+        this.masterService.campaignDtlProductFormData=new CampaignDtlProduct();
+        this.getCampaignDtlProduct();
+        this.toastr.info('Insert successfully', 'Campaign Info');
+        this.productSearchModalRef.hide()
+      },
+      err => { console.log(err); }
+    );
+    }
+    else{
+      this.masterService.updateCampaignDtl().subscribe(
+        res => {
+          this.masterService.campaignDtlFormData=new CampaignDtl();
+          this.getCampaignDtl();
+          this.toastr.info('Updated successfully', 'Campaign Info')
+        },
+        err => { console.log(err); }
+      );
+    }
+  }
+  removeProduct(selectedRecord: ICampaignDtlProduct) {
+    var result = confirm("Want to delete?");
+if (result) {
+    this.masterService.removeDtlProduct(selectedRecord).subscribe(
+      res => {
+        this.masterService.campaignDtlProductFormData=new CampaignDtlProduct();
+        this.getCampaignDtlProduct();
+        this.toastr.info('Deleted successfully', 'Campaign Info');
+        this.productSearchModalRef.hide()
+      },
+      err => { console.log(err); }
+    );
+    }
+  }
+  showProductModal(selectedRecord: ICampaignDtl){
+      debugger;
+      this.masterService.campaignDtlFormData = Object.assign({}, selectedRecord);
+      this.masterService.campaignDtlFormData.subCampStartDate=new Date(selectedRecord.subCampStartDate);
+      this.masterService.campaignDtlFormData.subCampEndDate=new Date(selectedRecord.subCampEndDate);
+       this.openProductSearchModal(this.productSearchModal);
+  }
+  openProductSearchModal(template: TemplateRef<any>) {
+    this.productSearchModalRef = this.modalService.show(template, this.config);
+  }
+  selectCampaignMst(selectedRecord: ICampaignMst) {
+    this.masterService.campaignMstFormData = Object.assign({}, selectedRecord);
+    this.getCampaignDtl();
+    this.campaignMstSearchodalRef.hide()
+   }
+   resetPage(form: NgForm) {
     form.form.reset();
     this.masterService.campaignMstFormData = new CampaignMst();
+    this.masterService.campaignDtlFormData = new CampaignDtl();
+    this.masterService.campaignDtlProductFormData = new CampaignDtlProduct();
+    this.campaignMsts=[];
+    this.campaignDtls=[];
+    this.campaignDtlProducts=[];
   }
 }
