@@ -21,11 +21,18 @@ export class InvestmentInitService {
   
   constructor(private http: HttpClient, private router: Router) { }
 
-  getdonations(){    
+  getDonations(){    
     return this.http.get(this.baseUrl + 'donation/donations');
     
   }
-  
+  getMarkets(){    
+    return this.http.get(this.baseUrl + 'employee/marketForGroup');
+   
+  }
+  getProduct(){    
+    return this.http.get(this.baseUrl + 'product/getProduct');
+    
+  }
 getApprovalAuthority(){    
   return this.http.get(this.baseUrl + 'approvalAuthority/approvalAuthoritiesForConfig');
  

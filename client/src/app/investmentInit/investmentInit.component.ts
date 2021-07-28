@@ -3,6 +3,7 @@ import { InvestmentInit, IInvestmentInit,
   InvestmentDetail,IInvestmentDetail,InvestmentTargetedProd,IInvestmentTargetedProd } from '../shared/models/investment';
 import { SubCampaign, ISubCampaign } from '../shared/models/subCampaign';
 import { Donation, IDonation } from '../shared/models/donation';
+import { Docotor, IDocotor } from '../shared/models/docotor';
 import { GenericParams } from '../shared/models/genericParams';
 import { Component, ElementRef, OnInit, ViewChild , TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
@@ -11,6 +12,8 @@ import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
+import { Product, IProduct } from '../shared/models/product';
+import { Market, IMarket } from '../shared/models/market';
 @Component({
   selector: 'app-investmentInit',
   templateUrl: './investmentInit.component.html',
@@ -23,8 +26,12 @@ export class InvestmentInitComponent implements OnInit {
   // campaignModalRef: BsModalRef;
   // genParams: GenericParams;
   // campaigns: ICampaign[]; 
-  // subCampaigns: ISubCampaign[]; 
+  // subCampaigns: ISubCampaign[];
+  markets: IMarket[]; 
+  products: IProduct[];
+  docotors: IDocotor[];
   donations: IDonation[];
+  donationToVal:string;
   totalCount = 0;
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date = new Date();
@@ -37,12 +44,27 @@ export class InvestmentInitComponent implements OnInit {
     this.bsValue = new Date();
   }
   getDonation(){
-    this.investmentInitService.getdonations().subscribe(response => {
+    this.investmentInitService.getDonations().subscribe(response => {
       this.donations = response as IDonation[];
     }, error => {
         console.log(error);
     });
   }
+  getMarket(){
+    this.investmentInitService.getMarkets().subscribe(response => {
+     this.markets = response as IMarket[];
+    }, error => {
+        console.log(error);
+   });
+ }
+ getProduct(){
+  this.investmentInitService.getProduct().subscribe(response => {
+    debugger;
+    this.products = response as IProduct[];
+  }, error => {
+      console.log(error);
+  });
+}
   onSubmit(form: NgForm) {
     // if (this.investmentInitService.campaignFormData.id == 0)
     //   this.insertCampaign(form);
@@ -74,8 +96,8 @@ export class InvestmentInitComponent implements OnInit {
   populateForm() {
     //this.investmentInitService.campaignFormData = Object.assign({}, selectedRecord);
   }
-  resetForm(form: NgForm) {
-    form.form.reset();
-    //this.investmentInitService.campaignFormData = new Campaign();
+  resetPage(form: NgForm) {
+    form.reset();
+    
   }
 }

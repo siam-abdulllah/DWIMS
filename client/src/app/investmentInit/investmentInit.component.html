@@ -2,18 +2,21 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
-                <form novalidate autocomplete="off">
+                <form novalidate autocomplete="off" #form="ngForm" (submit)="onSubmit(form)">
                     <div class="card card-primary">
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-sm-6">
                                     <h3 class="card-title">Investment Initiation</h3>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                     <button class="btn btn-success btn-lg btn-block" type="submit"><i class="fa fa-save"></i>&nbsp; Save</button>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                     <button class="btn btn-info btn-lg btn-block"><i class="fa fa-search"></i>Search</button>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetPage(form)"><i class="fa fa-search"></i>Reset</button>
                                 </div>
                             </div>
                         </div>
@@ -24,7 +27,8 @@
                                         <label>Propose For</label>
                                     </div>
                                     <div class="col-md-3">
-                                        <select class="form-control " name="proposeFor">
+                                        <select class="form-control" id="proposeFor" name="proposeFor" #proposeFor="ngModel" [(ngModel)]="investmentInitService.investmentinitFormData.proposeFor" required [class.invalid]="proposeFor.invalid && proposeFor.touched">
+                                            <option  [ngValue]="null">Select Propose For</option>
                                             <option value="BrandCampaign">Brand Campaign</option>
                                             <option value="Others">Others</option>
                                         </select>
@@ -33,7 +37,7 @@
                                         <label>Reference</label>
                                     </div>
                                     <div class="col-md-3">
-                                        <input class="form-control" placeholder="Auto Generated" name="reference" readonly>
+                                        <input class="form-control" placeholder="Auto Generated" id="referenceNo" name="referenceNo" #referenceNo="ngModel" [(ngModel)]="investmentInitService.investmentinitFormData.referenceNo" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -43,7 +47,8 @@
                                         <label>Donation Type</label>
                                     </div>
                                     <div class="col-md-3">
-                                        <select class="form-control " name="fovationType">
+                                        <select class="form-control " id="donationType" name="donationType" #donationType="ngModel" [(ngModel)]="investmentInitService.investmentinitFormData.donationType" required [class.invalid]="donationType.invalid && donationType.touched">
+                                            <option  [ngValue]="null">Select Donation Type</option>
                                             <option value="Donation">Donation</option>
                                             <option value="Gift">Gift</option>
                                             <option value="Honorarium">Honorarium</option>
@@ -53,7 +58,8 @@
                                         <label>Donation To</label>
                                     </div>
                                     <div class="col-md-3">
-                                        <select class="form-control " name="fovationType">
+                                        <select class="form-control " id="donationTo" name="donationTo" #donationTo="ngModel" [(ngModel)]="investmentInitService.investmentinitFormData.donationTo" required [class.invalid]="donationTo.invalid && donationTo.touched">
+                                            <option  [ngValue]="null">Select Donation To</option>
                                             <option value="Doctor">Doctor</option>
                                             <option value="Institute">Institute</option>
                                             <option value="Campaign">Campaign</option>
@@ -63,7 +69,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <fieldset>
+                            <fieldset *ngIf="investmentInitService.investmentinitFormData.donationTo=='Doctor'">
                                 <legend>Docotor Profile</legend>
                                 <div class="form-group">
                                     <div class="row">
@@ -155,7 +161,7 @@
                                     </div>
                                 </div>
                             </fieldset>
-                            <fieldset>
+                            <fieldset *ngIf="investmentInitService.investmentinitFormData.donationTo=='Institute'">
                                 <legend>Institution Profile</legend>
                                 <div class="form-group">
                                     <div class="row">
@@ -224,7 +230,7 @@
                                     </div>
                                 </div>
                             </fieldset>
-                            <fieldset>
+                            <fieldset *ngIf="investmentInitService.investmentinitFormData.donationTo=='Campaign'">
                                 <legend>Campaign Info</legend>
                                 <div class="form-group">
                                     <div class="row">
@@ -285,7 +291,7 @@
                                     </div>
                                 </div>
                             </fieldset>
-                            <fieldset>
+                            <fieldset *ngIf="investmentInitService.investmentinitFormData.donationTo=='Bcds'">
                                 <legend>BCDS</legend>
                                 <div class="form-group">
                                     <div class="row">
@@ -321,7 +327,7 @@
                                     </div>
                                 </div>
                             </fieldset>
-                            <fieldset>
+                            <fieldset *ngIf="investmentInitService.investmentinitFormData.donationTo=='Society'">
                                 <legend>Society</legend>
                                 <div class="form-group">
                                     <div class="row">

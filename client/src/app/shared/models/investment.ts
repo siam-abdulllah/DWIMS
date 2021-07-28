@@ -11,9 +11,9 @@ export interface IInvestmentInit {
 export class InvestmentInit implements IInvestmentInit {
     id: number=0;
     referenceNo: string;
-    proposeFor: string;
-    donationType: string;
-    donationTo: string;
+    proposeFor: string=null;
+    donationType: string=null;
+    donationTo: string=null;
     EmployeeId: number;
 }
 export interface IInvestmentDetail {

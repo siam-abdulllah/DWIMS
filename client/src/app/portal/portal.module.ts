@@ -11,6 +11,7 @@ import { FooterComponent } from '../mastertheme/footer/footer.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {DatePipe} from '@angular/common';
 import { MarketGroupComponent } from '../marketGroup/marketGroup.component';
+import { InvestmentInitComponent } from '../investmentInit/investmentInit.component';
 import { ApprAuthConfigComponent } from '../apprAuthConfig/apprAuthConfig.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -38,7 +39,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     AsidenavComponent,
     FooterComponent,
     MarketGroupComponent,
-    ApprAuthConfigComponent
+    ApprAuthConfigComponent,
+    InvestmentInitComponent
   ],
   providers: [DatePipe]
 })
