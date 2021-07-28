@@ -13,6 +13,6 @@ export class ApprovalAuthority implements IApprovalAuthority {
     approvalAuthorityName: string;
     remarks: string; 
     priority: number=1;
-    status: string="Active"; 
+    status: string=null; 
     setOn: Date;
 }

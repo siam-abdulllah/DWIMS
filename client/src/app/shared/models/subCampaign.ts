@@ -11,6 +11,6 @@ export class SubCampaign implements ISubCampaign {
     id: number=0;
     subCampaignName: string;
     remarks: string; 
-    status: string="Active"; 
+    status: string=null; 
     setOn: Date;
 }
