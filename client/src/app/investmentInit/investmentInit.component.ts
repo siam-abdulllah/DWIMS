@@ -66,32 +66,31 @@ export class InvestmentInitComponent implements OnInit {
   });
 }
   onSubmit(form: NgForm) {
-    // if (this.investmentInitService.campaignFormData.id == 0)
-    //   this.insertCampaign(form);
-    // else
-    //   this.updateCampaign(form);
+    if (this.investmentInitService.investmentinitFormData.id == 0)
+      this.insertInvestment(form);
+    else
+      this.updateInvestment(form);
   }
   insertInvestment(form: NgForm) {
-    // this.investmentInitService.insertCampaign().subscribe(
-    //   res => {
-    //     debugger;
-    //     this.resetForm(form);
-    //     this.getCampaign();
-    //     this.toastr.success('Submitted successfully', 'Payment Detail Register')
-    //   },
-    //   err => { console.log(err); }
-    // );
+    this.investmentInitService.insertInvestmentInit().subscribe(
+      res => {
+        debugger;
+       
+        //this.getCampaign();
+        this.toastr.success('Submitted successfully', 'Payment Detail Register')
+      },
+      err => { console.log(err); }
+    );
   }
   updateInvestment(form: NgForm) {
-    // this.investmentInitService.updateSubCampaign().subscribe(
-    //   res => {
-    //     debugger;
-    //     this.resetForm(form);
-    //     this.getCampaign();
-    //     this.toastr.info('Updated successfully', 'Payment Detail Register')
-    //   },
-    //   err => { console.log(err); }
-    // );
+    this.investmentInitService.updateInvestmentInit().subscribe(
+      res => {
+        debugger;
+        //this.getCampaign();
+        this.toastr.info('Updated successfully', 'Payment Detail Register')
+      },
+      err => { console.log(err); }
+    );
   }
   populateForm() {
     //this.investmentInitService.campaignFormData = Object.assign({}, selectedRecord);

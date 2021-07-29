@@ -23,33 +23,27 @@ export class InvestmentInitService {
 
   getDonations(){    
     return this.http.get(this.baseUrl + 'donation/donations');
-    
   }
   getMarkets(){    
     return this.http.get(this.baseUrl + 'employee/marketForGroup');
-   
   }
   getProduct(){    
     return this.http.get(this.baseUrl + 'product/getProduct');
-    
   }
-getApprovalAuthority(){    
-  return this.http.get(this.baseUrl + 'approvalAuthority/approvalAuthoritiesForConfig');
- 
-}
-getEmployees(){    
-  return this.http.get(this.baseUrl + 'employee/employeesForConfig');
- 
-}
+  getApprovalAuthority(){    
+    return this.http.get(this.baseUrl + 'approvalAuthority/approvalAuthoritiesForConfig');
+  }
+  getEmployees(){    
+    return this.http.get(this.baseUrl + 'employee/employeesForConfig');
+  }
+  insertInvestmentInit() {
+    debugger;
+    return this.http.post(this.baseUrl+ 'investmentInit/insert', this.investmentinitFormData);
 
-insertInvestmentInit() {
-  debugger;
-  return this.http.post(this.baseUrl+ 'investmentInit/insert', this.investmentinitFormData);
-
-}
-updateInvestmentInit() {
-  return this.http.post(this.baseUrl+ 'approvalAuthorityConfig/update',  this.investmentinitFormData);
-}
+  }
+  updateInvestmentInit() {
+    return this.http.post(this.baseUrl+ 'approvalAuthorityConfig/update',  this.investmentinitFormData);
+  }
 
 }
 
