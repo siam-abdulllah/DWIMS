@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Data.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InitialCreate_3072021 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -63,6 +63,46 @@ namespace Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CampaignMst",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DataStatus = table.Column<int>(nullable: false),
+                    SetOn = table.Column<DateTimeOffset>(nullable: false),
+                    ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
+                    CampaignNo = table.Column<string>(nullable: true),
+                    CampaignName = table.Column<string>(nullable: true),
+                    SBU = table.Column<string>(nullable: true),
+                    BrandCode = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CampaignMst", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DoctorInfo",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DataStatus = table.Column<int>(nullable: false),
+                    SetOn = table.Column<DateTimeOffset>(nullable: false),
+                    ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
+                    DocotorCode = table.Column<string>(nullable: true),
+                    DocotorName = table.Column<string>(nullable: true),
+                    Degree = table.Column<string>(nullable: true),
+                    Designation = table.Column<string>(nullable: true),
+                    Address = table.Column<string>(nullable: true),
+                    Status = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DoctorInfo", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Donation",
                 columns: table => new
                 {
@@ -119,6 +159,27 @@ namespace Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "InstitutionInfo",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DataStatus = table.Column<int>(nullable: false),
+                    SetOn = table.Column<DateTimeOffset>(nullable: false),
+                    ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
+                    InstitutionCode = table.Column<string>(nullable: true),
+                    InstitutionName = table.Column<string>(nullable: true),
+                    Degree = table.Column<string>(nullable: true),
+                    Designation = table.Column<string>(nullable: true),
+                    Address = table.Column<string>(nullable: true),
+                    Status = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InstitutionInfo", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "InvestmentType",
                 columns: table => new
                 {
@@ -166,7 +227,10 @@ namespace Infrastructure.Data.Migrations
                     ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
                     ProductCode = table.Column<string>(nullable: true),
                     ProductName = table.Column<string>(nullable: true),
-                    Status = table.Column<string>(nullable: true)
+                    Status = table.Column<string>(nullable: true),
+                    BrandCode = table.Column<string>(nullable: true),
+                    BrandName = table.Column<string>(nullable: true),
+                    SBU = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -228,7 +292,7 @@ namespace Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CampaignMst",
+                name: "DoctorMarket",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -236,18 +300,17 @@ namespace Infrastructure.Data.Migrations
                     DataStatus = table.Column<int>(nullable: false),
                     SetOn = table.Column<DateTimeOffset>(nullable: false),
                     ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
-                    CampaignNo = table.Column<string>(nullable: true),
-                    CampaignName = table.Column<string>(nullable: true),
-                    SBU = table.Column<string>(nullable: true),
-                    BrandId = table.Column<int>(nullable: false)
+                    DoctorId = table.Column<int>(nullable: false),
+                    MarketCode = table.Column<string>(nullable: true),
+                    MarketName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CampaignMst", x => x.Id);
+                    table.PrimaryKey("PK_DoctorMarket", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CampaignMst_BrandInfo_BrandId",
-                        column: x => x.BrandId,
-                        principalTable: "BrandInfo",
+                        name: "FK_DoctorMarket_DoctorInfo_DoctorId",
+                        column: x => x.DoctorId,
+                        principalTable: "DoctorInfo",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -276,6 +339,32 @@ namespace Infrastructure.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ApprAuthConfig_Employee_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employee",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "InvestmentInit",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DataStatus = table.Column<int>(nullable: false),
+                    SetOn = table.Column<DateTimeOffset>(nullable: false),
+                    ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
+                    ReferenceNo = table.Column<string>(nullable: true),
+                    ProposeFor = table.Column<string>(nullable: true),
+                    DonationType = table.Column<string>(nullable: true),
+                    DonationTo = table.Column<string>(nullable: true),
+                    EmployeeId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InvestmentInit", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InvestmentInit_Employee_EmployeeId",
                         column: x => x.EmployeeId,
                         principalTable: "Employee",
                         principalColumn: "Id",
@@ -426,6 +515,219 @@ namespace Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "InvestmentBcds",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DataStatus = table.Column<int>(nullable: false),
+                    SetOn = table.Column<DateTimeOffset>(nullable: false),
+                    ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
+                    InvestmentInitId = table.Column<int>(nullable: false),
+                    BcdsId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InvestmentBcds", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InvestmentBcds_Bcds_BcdsId",
+                        column: x => x.BcdsId,
+                        principalTable: "Bcds",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_InvestmentBcds_InvestmentInit_InvestmentInitId",
+                        column: x => x.InvestmentInitId,
+                        principalTable: "InvestmentInit",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "InvestmentDetail",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DataStatus = table.Column<int>(nullable: false),
+                    SetOn = table.Column<DateTimeOffset>(nullable: false),
+                    ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
+                    ChequeTitle = table.Column<string>(nullable: true),
+                    PaymentMethod = table.Column<string>(nullable: true),
+                    CommitmentAllSBU = table.Column<string>(nullable: true),
+                    CommitmentOwnSBU = table.Column<string>(nullable: true),
+                    FromDate = table.Column<DateTime>(nullable: false),
+                    ToDate = table.Column<DateTime>(nullable: false),
+                    TotalMonth = table.Column<string>(nullable: true),
+                    ProposedAmount = table.Column<long>(nullable: false),
+                    Purpose = table.Column<string>(nullable: true),
+                    InvestmentInitId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InvestmentDetail", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InvestmentDetail_InvestmentInit_InvestmentInitId",
+                        column: x => x.InvestmentInitId,
+                        principalTable: "InvestmentInit",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "InvestmentDoctor",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DataStatus = table.Column<int>(nullable: false),
+                    SetOn = table.Column<DateTimeOffset>(nullable: false),
+                    ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
+                    InvestmentInitId = table.Column<int>(nullable: false),
+                    DoctorId = table.Column<int>(nullable: false),
+                    DocotrCategory = table.Column<string>(nullable: true),
+                    DocotrType = table.Column<string>(nullable: true),
+                    PracticeDayPerMonth = table.Column<string>(nullable: true),
+                    PatientsPerDay = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InvestmentDoctor", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InvestmentDoctor_DoctorInfo_DoctorId",
+                        column: x => x.DoctorId,
+                        principalTable: "DoctorInfo",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_InvestmentDoctor_InvestmentInit_InvestmentInitId",
+                        column: x => x.InvestmentInitId,
+                        principalTable: "InvestmentInit",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "InvestmentInstitution",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DataStatus = table.Column<int>(nullable: false),
+                    SetOn = table.Column<DateTimeOffset>(nullable: false),
+                    ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
+                    InvestmentInitId = table.Column<int>(nullable: false),
+                    InstitutionId = table.Column<int>(nullable: false),
+                    ResposnsibleDoctorId = table.Column<int>(nullable: false),
+                    NoOfBed = table.Column<string>(nullable: true),
+                    DepartmentUnit = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InvestmentInstitution", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InvestmentInstitution_InstitutionInfo_InstitutionId",
+                        column: x => x.InstitutionId,
+                        principalTable: "InstitutionInfo",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_InvestmentInstitution_InvestmentInit_InvestmentInitId",
+                        column: x => x.InvestmentInitId,
+                        principalTable: "InvestmentInit",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_InvestmentInstitution_DoctorInfo_ResposnsibleDoctorId",
+                        column: x => x.ResposnsibleDoctorId,
+                        principalTable: "DoctorInfo",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "InvestmentSociety",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DataStatus = table.Column<int>(nullable: false),
+                    SetOn = table.Column<DateTimeOffset>(nullable: false),
+                    ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
+                    InvestmentInitId = table.Column<int>(nullable: false),
+                    SocietyId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InvestmentSociety", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InvestmentSociety_InvestmentInit_InvestmentInitId",
+                        column: x => x.InvestmentInitId,
+                        principalTable: "InvestmentInit",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_InvestmentSociety_Society_SocietyId",
+                        column: x => x.SocietyId,
+                        principalTable: "Society",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "InvestmentTargetedGroup",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DataStatus = table.Column<int>(nullable: false),
+                    SetOn = table.Column<DateTimeOffset>(nullable: false),
+                    ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
+                    InvestmentInitId = table.Column<int>(nullable: false),
+                    MarketCode = table.Column<string>(nullable: true),
+                    MarketName = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InvestmentTargetedGroup", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InvestmentTargetedGroup_InvestmentInit_InvestmentInitId",
+                        column: x => x.InvestmentInitId,
+                        principalTable: "InvestmentInit",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "InvestmentTargetedProd",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DataStatus = table.Column<int>(nullable: false),
+                    SetOn = table.Column<DateTimeOffset>(nullable: false),
+                    ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
+                    InvestmentInitId = table.Column<int>(nullable: false),
+                    ProductId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InvestmentTargetedProd", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InvestmentTargetedProd_InvestmentInit_InvestmentInitId",
+                        column: x => x.InvestmentInitId,
+                        principalTable: "InvestmentInit",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_InvestmentTargetedProd_ProductInfo_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "ProductInfo",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "MarketGroupDtl",
                 columns: table => new
                 {
@@ -437,6 +739,7 @@ namespace Infrastructure.Data.Migrations
                     MstId = table.Column<int>(nullable: false),
                     MarketCode = table.Column<string>(nullable: true),
                     MarketName = table.Column<string>(nullable: true),
+                    SBU = table.Column<string>(nullable: true),
                     Status = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -475,6 +778,42 @@ namespace Infrastructure.Data.Migrations
                         name: "FK_CampaignDtlProduct_ProductInfo_ProductId",
                         column: x => x.ProductId,
                         principalTable: "ProductInfo",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "InvestmentCampaign",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DataStatus = table.Column<int>(nullable: false),
+                    SetOn = table.Column<DateTimeOffset>(nullable: false),
+                    ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
+                    InvestmentInitId = table.Column<int>(nullable: false),
+                    CampaignDtlId = table.Column<int>(nullable: false),
+                    DoctorId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InvestmentCampaign", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InvestmentCampaign_CampaignDtl_CampaignDtlId",
+                        column: x => x.CampaignDtlId,
+                        principalTable: "CampaignDtl",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_InvestmentCampaign_DoctorInfo_DoctorId",
+                        column: x => x.DoctorId,
+                        principalTable: "DoctorInfo",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_InvestmentCampaign_InvestmentInit_InvestmentInitId",
+                        column: x => x.InvestmentInitId,
+                        principalTable: "InvestmentInit",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -520,9 +859,94 @@ namespace Infrastructure.Data.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CampaignMst_BrandId",
-                table: "CampaignMst",
-                column: "BrandId");
+                name: "IX_DoctorMarket_DoctorId",
+                table: "DoctorMarket",
+                column: "DoctorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvestmentBcds_BcdsId",
+                table: "InvestmentBcds",
+                column: "BcdsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvestmentBcds_InvestmentInitId",
+                table: "InvestmentBcds",
+                column: "InvestmentInitId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvestmentCampaign_CampaignDtlId",
+                table: "InvestmentCampaign",
+                column: "CampaignDtlId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvestmentCampaign_DoctorId",
+                table: "InvestmentCampaign",
+                column: "DoctorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvestmentCampaign_InvestmentInitId",
+                table: "InvestmentCampaign",
+                column: "InvestmentInitId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvestmentDetail_InvestmentInitId",
+                table: "InvestmentDetail",
+                column: "InvestmentInitId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvestmentDoctor_DoctorId",
+                table: "InvestmentDoctor",
+                column: "DoctorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvestmentDoctor_InvestmentInitId",
+                table: "InvestmentDoctor",
+                column: "InvestmentInitId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvestmentInit_EmployeeId",
+                table: "InvestmentInit",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvestmentInstitution_InstitutionId",
+                table: "InvestmentInstitution",
+                column: "InstitutionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvestmentInstitution_InvestmentInitId",
+                table: "InvestmentInstitution",
+                column: "InvestmentInitId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvestmentInstitution_ResposnsibleDoctorId",
+                table: "InvestmentInstitution",
+                column: "ResposnsibleDoctorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvestmentSociety_InvestmentInitId",
+                table: "InvestmentSociety",
+                column: "InvestmentInitId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvestmentSociety_SocietyId",
+                table: "InvestmentSociety",
+                column: "SocietyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvestmentTargetedGroup_InvestmentInitId",
+                table: "InvestmentTargetedGroup",
+                column: "InvestmentInitId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvestmentTargetedProd_InvestmentInitId",
+                table: "InvestmentTargetedProd",
+                column: "InvestmentInitId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvestmentTargetedProd_ProductId",
+                table: "InvestmentTargetedProd",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MarketGroupDtl_MstId",
@@ -554,13 +978,40 @@ namespace Infrastructure.Data.Migrations
                 name: "ApprovalCeiling");
 
             migrationBuilder.DropTable(
-                name: "Bcds");
+                name: "BrandInfo");
 
             migrationBuilder.DropTable(
                 name: "CampaignDtlProduct");
 
             migrationBuilder.DropTable(
+                name: "DoctorMarket");
+
+            migrationBuilder.DropTable(
                 name: "Donation");
+
+            migrationBuilder.DropTable(
+                name: "InvestmentBcds");
+
+            migrationBuilder.DropTable(
+                name: "InvestmentCampaign");
+
+            migrationBuilder.DropTable(
+                name: "InvestmentDetail");
+
+            migrationBuilder.DropTable(
+                name: "InvestmentDoctor");
+
+            migrationBuilder.DropTable(
+                name: "InvestmentInstitution");
+
+            migrationBuilder.DropTable(
+                name: "InvestmentSociety");
+
+            migrationBuilder.DropTable(
+                name: "InvestmentTargetedGroup");
+
+            migrationBuilder.DropTable(
+                name: "InvestmentTargetedProd");
 
             migrationBuilder.DropTable(
                 name: "MarketGroupDtl");
@@ -572,16 +1023,28 @@ namespace Infrastructure.Data.Migrations
                 name: "SBUWiseBudget");
 
             migrationBuilder.DropTable(
-                name: "Society");
-
-            migrationBuilder.DropTable(
                 name: "ApprovalAuthority");
 
             migrationBuilder.DropTable(
                 name: "InvestmentType");
 
             migrationBuilder.DropTable(
+                name: "Bcds");
+
+            migrationBuilder.DropTable(
                 name: "CampaignDtl");
+
+            migrationBuilder.DropTable(
+                name: "InstitutionInfo");
+
+            migrationBuilder.DropTable(
+                name: "DoctorInfo");
+
+            migrationBuilder.DropTable(
+                name: "Society");
+
+            migrationBuilder.DropTable(
+                name: "InvestmentInit");
 
             migrationBuilder.DropTable(
                 name: "ProductInfo");
@@ -603,9 +1066,6 @@ namespace Infrastructure.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Employee");
-
-            migrationBuilder.DropTable(
-                name: "BrandInfo");
         }
     }
 }

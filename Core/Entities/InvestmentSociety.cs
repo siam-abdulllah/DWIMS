@@ -5,12 +5,13 @@ using System.Text;
 
 namespace Core.Entities
 {
-    public class InvestmentTargetedGroup : BaseEntity
+    public class InvestmentSociety : BaseEntity
     {
         public int InvestmentInitId { get; set; }
         [ForeignKey("InvestmentInitId")]
         public InvestmentInit InvestmentInit { get; set; }
-        public string MarketCode { get; set; }
-        public string MarketName { get; set; }
+        public int SocietyId { get; set; }
+        [ForeignKey("SocietyId")]
+        public Society Society { get; set; }
     }
 }

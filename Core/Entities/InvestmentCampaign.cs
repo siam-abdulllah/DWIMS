@@ -5,12 +5,16 @@ using System.Text;
 
 namespace Core.Entities
 {
-    public class InvestmentTargetedGroup : BaseEntity
+    public class InvestmentCampaign : BaseEntity
     {
         public int InvestmentInitId { get; set; }
         [ForeignKey("InvestmentInitId")]
         public InvestmentInit InvestmentInit { get; set; }
-        public string MarketCode { get; set; }
-        public string MarketName { get; set; }
+        public int CampaignDtlId { get; set; }
+        [ForeignKey("CampaignDtlId")]
+        public CampaignDtl CampaignDtl { get; set; }
+        public int DoctorId { get; set; }
+        [ForeignKey("DoctorId")]
+        public DoctorInfo DoctorInfo { get; set; }
     }
 }

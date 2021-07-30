@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Core.Entities
 {
-    class InvestmentTargetedProd : BaseEntity
+    public class InvestmentTargetedProd : BaseEntity
     {
         public int InvestmentInitId { get; set; }
         [ForeignKey("InvestmentInitId")]

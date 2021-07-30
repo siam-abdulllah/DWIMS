@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Core.Entities
 {
-    class InvestmentInit : BaseEntity
+    public class InvestmentInit : BaseEntity
     {
         public string ReferenceNo { get; set; }
         public string ProposeFor { get; set; }

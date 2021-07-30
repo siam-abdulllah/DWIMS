@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Core.Entities
 {
-    class InvestmentDetail : BaseEntity
+    public class InvestmentDetail : BaseEntity
     {
         public string ChequeTitle { get; set; }
         public string PaymentMethod { get; set; }
