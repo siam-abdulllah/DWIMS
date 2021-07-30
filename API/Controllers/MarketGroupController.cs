@@ -30,7 +30,7 @@ namespace API.Controllers
         [HttpPost("insertMst")]
         public ActionResult<MarketGroupMstDto> InsertMarketGroupMst(MarketGroupMstDto marketGroupMstDto)
         {
-            var employeeId = 1;
+            var employeeId = 2;
             var marketGroupMsts = new MarketGroupMst
             {
                 GroupName = marketGroupMstDto.GroupName,

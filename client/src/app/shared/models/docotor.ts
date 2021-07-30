@@ -12,7 +12,7 @@ export interface IDocotor {
     setOn: Date;
 }
  
-export class docotor implements IDocotor {
+export class Docotor implements IDocotor {
     id: number=0;
     doctorName: string;
     doctorCode: string;

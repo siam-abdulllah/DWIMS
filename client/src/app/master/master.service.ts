@@ -69,15 +69,12 @@ export class MasterService {
 
   getSBU(){    
     return this.http.get(this.baseUrl + 'employee/getSBU');
-    
   }
   getBrand(){    
     return this.http.get(this.baseUrl + 'product/getBrand');
-    
   }
   getProduct(){    
     return this.http.get(this.baseUrl + 'product/getProduct');
-    
   }
   getSubCampaignForCamp(){    
     return this.http.get(this.baseUrl + 'subCampaign/subCampaignsForCamp');
@@ -162,21 +159,19 @@ export class MasterService {
   }
   insertCampaignDtl() {
     return this.http.post(this.baseUrl+ 'campaign/insertDtl', this.campaignDtlFormData);
-    
   }
   insertCampaignDtlProduct() {
     return this.http.post(this.baseUrl+ 'campaign/insertDtlProduct', this.campaignDtlProductFormData);
-    
   }
   updateCampaignMst() {
     return this.http.post(this.baseUrl+ 'campaign/updateMst',  this.campaignMstFormData);
-}
-updateCampaignDtl() {
+  }
+  updateCampaignDtl() {
   return this.http.post(this.baseUrl+ 'campaign/updateDtl',  this.campaignDtlFormData);
-}
-updateCampaignDtlProduct() {
+  }
+  updateCampaignDtlProduct() {
   return this.http.post(this.baseUrl+ 'campaign/updateDtlProduct',  this.campaignDtlProductFormData);
-}
+  }
  
   getSubCampaign(){    
     let params = new HttpParams();
@@ -199,16 +194,7 @@ updateCampaignDtlProduct() {
     
   }
   insertSubCampaign() {
-    return this.http.post(this.baseUrl+ 'subCampaign/insert', this.subCampaignFormData);
-    // return this.http.post(this.baseUrl + 'account/register', values).pipe(
-    //   map((user: IUser) => {
-    //     if (user) {
-    //       // localStorage.setItem('token', user.token);
-    //       // this.currentUserSource.next(user);
-    //       return user;
-    //     }
-    //   })
-    // );
+    return this.http.post(this.baseUrl+ 'subCampaign/insert', this.subCampaignFormData); 
   }
   updateSubCampaign() {
     return this.http.post(this.baseUrl+ 'subCampaign/update',  this.subCampaignFormData);
@@ -236,7 +222,6 @@ getDonation(){
 }
 insertDonation() {
   return this.http.post(this.baseUrl+ 'donation/insert', this.donationFormData);
-
 }
 updateDonation() {
   return this.http.post(this.baseUrl+ 'donation/update',  this.donationFormData);
@@ -265,17 +250,13 @@ getApprovalAuthority(){
 }
 insertApprovalAuthority() {
   return this.http.post(this.baseUrl+ 'approvalAuthority/insert', this.approvalAuthorityFormData);
-
 }
 updateApprovalAuthority() {
   return this.http.post(this.baseUrl+ 'approvalAuthority/update',  this.approvalAuthorityFormData);
 }
 
-//#region BCDS Info
-
 getBcdsList(){    
   let params = new HttpParams();
-  //debugger;
   if (this.genParams.search) {
     params = params.append('search', this.genParams.search);
   }
@@ -301,10 +282,8 @@ updateBcds() {
   return this.http.post(this.baseUrl+ 'Bcds/ModifyBCDS',  this.bcdsFormData);
 }
 
-//#endregion
 getSocietyList(){    
   let params = new HttpParams();
-  //debugger;
   if (this.genParams.search) {
     params = params.append('search', this.genParams.search);
   }
@@ -329,12 +308,9 @@ insertSociety() {
 updateSociety() {
   return this.http.post(this.baseUrl+ 'Society/ModifySociety',  this.societyFormData);
 }
-//#endregion
-
 
 getEmployeeList(){    
   let params = new HttpParams();
-  //debugger;
   if (this.genParams.search) {
     params = params.append('search', this.genParams.search);
   }

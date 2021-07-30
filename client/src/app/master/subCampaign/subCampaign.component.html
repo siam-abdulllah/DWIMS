@@ -20,11 +20,14 @@
                     <div class="card card-primary">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-sm-8">
                                     <h3 class="card-title">Sub Campaign</h3>
                                 </div>
-                                <div class="col-sm-6">
-                                    <button class="btn btn-info btn-lg btn-block" type="submit" [disabled]="form.invalid">SUBMIT</button>
+                                <div class="col-sm-2">
+                                    <button class="btn btn-info  btn-block" type="submit" [disabled]="form.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button class="btn btn-danger  btn-block" type="button" (click)="resetForm(form)"><i class="fa fa-undo"></i>&nbsp; Reset</button>
                                 </div>
                             </div>
                         </div>
@@ -37,12 +40,13 @@
                                         <label>Donation</label>
                                     </div>
                                     <div class="col-md-3">
-                                        <input class="form-control form-control-lg" placeholder="Sub Campaign" name="subCampaignName" #subCampaignName="ngModel" [(ngModel)]="masterService.subCampaignFormData.subCampaignName" required [class.invalid]="subCampaignName.invalid && subCampaignName.touched">
+                                        <input class="form-control " placeholder="Sub Campaign" name="subCampaignName" #subCampaignName="ngModel" [(ngModel)]="masterService.subCampaignFormData.subCampaignName" required [class.invalid]="subCampaignName.invalid && subCampaignName.touched">
                                     </div>
                                     <div class="col-md-2">
                                         <label>Status</label></div>
                                     <div class="col-md-3">
-                                        <select id="" class="form-control form-control-lg" name="status" #status="ngModel" [(ngModel)]="masterService.subCampaignFormData.status" required [class.invalid]="status.invalid && status.touched">
+                                        <select id="" class="form-control " name="status" #status="ngModel" [(ngModel)]="masterService.subCampaignFormData.status" required [class.invalid]="status.invalid && status.touched">
+                                        <option [ngValue]="null">Select Status</option>
                                         <option value="Active">Active</option>
                                         <option value="Inactive">Inactive</option>
                                       </select>
@@ -54,7 +58,7 @@
                                     <div class="col-md-2">
                                         <label>Remarks</label></div>
                                     <div class="col-md-8">
-                                        <textarea class="form-control form-control-lg" placeholder="Remarks" name="remarks" #remarks="ngModel" [(ngModel)]="masterService.subCampaignFormData.remarks" [class.invalid]="remarks.invalid && remarks.touched"></textarea>
+                                        <textarea class="form-control " placeholder="Remarks" name="remarks" #remarks="ngModel" [(ngModel)]="masterService.subCampaignFormData.remarks" [class.invalid]="remarks.invalid && remarks.touched"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -75,8 +79,8 @@
                                         <td>
                                             {{subCampaign.remarks}}
                                         </td>
-                                        <td (click)="populateForm(subCampaign)">
-                                            Details
+                                        <td>
+                                            <button class="btn btn-info  btn-block" type="button" (click)="populateForm(subCampaign)"><i class="fa fa-pen"></i>&nbsp; Edit</button>
                                         </td>
                                     </tr>
                                 </table>

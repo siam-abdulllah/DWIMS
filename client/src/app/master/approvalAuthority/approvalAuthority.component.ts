@@ -77,8 +77,7 @@ export class ApprovalAuthorityComponent implements OnInit {
     this.masterService.approvalAuthorityFormData = Object.assign({}, selectedRecord);
   }
   resetForm(form: NgForm) {
-    form.form.reset();
-    this.masterService.approvalAuthorityFormData = new ApprovalAuthority();
+    form.reset();
   }
 
    foo = new Array(45);//create a 45 element array
