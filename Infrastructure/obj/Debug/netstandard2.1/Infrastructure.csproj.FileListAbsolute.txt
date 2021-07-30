@@ -93,3 +93,15 @@ G:\DIDS\DIDS_GIT\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.csproj.C
 G:\DIDS\DIDS_GIT\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.csproj.CopyComplete
 G:\DIDS\DIDS_GIT\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.dll
 G:\DIDS\DIDS_GIT\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.pdb
+G:\WORK\Git\Infrastructure\bin\Debug\netstandard2.1\Infrastructure.deps.json
+G:\WORK\Git\Infrastructure\bin\Debug\netstandard2.1\Infrastructure.dll
+G:\WORK\Git\Infrastructure\bin\Debug\netstandard2.1\Infrastructure.pdb
+G:\WORK\Git\Infrastructure\bin\Debug\netstandard2.1\Core.dll
+G:\WORK\Git\Infrastructure\bin\Debug\netstandard2.1\Core.pdb
+G:\WORK\Git\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.csproj.AssemblyReference.cache
+G:\WORK\Git\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.AssemblyInfoInputs.cache
+G:\WORK\Git\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.AssemblyInfo.cs
+G:\WORK\Git\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.csproj.CoreCompileInputs.cache
+G:\WORK\Git\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.csproj.CopyComplete
+G:\WORK\Git\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.dll
+G:\WORK\Git\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.pdb
