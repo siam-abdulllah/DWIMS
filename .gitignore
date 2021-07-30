@@ -23,3 +23,6 @@ Core/obj/Debug/netstandard2.1/Core.assets.cache
 *.cache
 *.v2
 *.cache
+API/appsettings.Development.json
+API/appsettings.Development.json
+API/appsettings.Development.json
