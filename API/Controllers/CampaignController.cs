@@ -1,7 +1,9 @@
 ﻿using API.Dtos;
+using API.Helpers;
 using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
+using Core.Specifications;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -14,13 +16,15 @@ namespace API.Controllers
     {
         private readonly IGenericRepository<CampaignMst> _campaignMstRepo;
         private readonly IGenericRepository<CampaignDtl> _campaignDtlRepo;
+        private readonly IGenericRepository<CampaignDtlProduct> _campaignDtlProductRepo;
         private readonly IMapper _mapper;
-        public CampaignController(IGenericRepository<CampaignMst> campaignMstRepo, IGenericRepository<CampaignDtl> campaignDtlRepo,
+        public CampaignController(IGenericRepository<CampaignMst> campaignMstRepo, IGenericRepository<CampaignDtlProduct> campaignDtlProductRepo, IGenericRepository<CampaignDtl> campaignDtlRepo,
        IMapper mapper)
         {
             _mapper = mapper;
             _campaignMstRepo = campaignMstRepo;
             _campaignDtlRepo = campaignDtlRepo;
+            _campaignDtlProductRepo = campaignDtlProductRepo;
         }
         [HttpPost("insertMst")]
         public ActionResult<CampaignMstDto> InsertCampaignMst(CampaignMstDto campaignMstDto)
@@ -70,6 +74,34 @@ namespace API.Controllers
                     Budget = campaignDtlDto.Budget,
                     SubCampStartDate = campaignDtlDto.SubCampStartDate,
                     SubCampEndDate = campaignDtlDto.SubCampEndDate,
+                };
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        [HttpPost("insertDtlProduct")]
+        public ActionResult<CampaignDtlProductDto> InsertCampaignDtlProduct(CampaignDtlProductDto campaignDtlProductDto)
+        {
+            try
+            {
+                var campaignDtlProducts = new CampaignDtlProduct
+                {
+                    //Id = campaignDtlProductDto.Id,
+                    DtlId = campaignDtlProductDto.DtlId,
+                    ProductId = campaignDtlProductDto.ProductId,
+                    SetOn = DateTimeOffset.Now
+                };
+                _campaignDtlProductRepo.Add(campaignDtlProducts);
+                _campaignDtlProductRepo.Savechange();
+
+                return new CampaignDtlProductDto
+                {
+                    Id = campaignDtlProductDto.Id,
+                    DtlId = campaignDtlProductDto.DtlId,
+                    ProductId = campaignDtlProductDto.ProductId,
                 };
             }
             catch (Exception)
@@ -130,8 +162,116 @@ namespace API.Controllers
                 SubCampEndDate = campaignDtlDto.SubCampEndDate,
             };
         }
+        [HttpPost("updateDtlProduct")]
+        public ActionResult<CampaignDtlProductDto> UpdateCampaignDtlProduct(CampaignDtlProductDto campaignDtlProductDto)
+        {
+            var campaignDtlProducts = new CampaignDtlProduct
+            {
+                Id = campaignDtlProductDto.Id,
+                DtlId = campaignDtlProductDto.DtlId,
+                ProductId = campaignDtlProductDto.ProductId,
+                ModifiedOn = DateTimeOffset.Now
 
+            };
+            _campaignDtlProductRepo.Update(campaignDtlProducts);
+            _campaignDtlProductRepo.Savechange();
 
+            return new CampaignDtlProductDto
+            {
+                Id = campaignDtlProductDto.Id,
+                DtlId = campaignDtlProductDto.DtlId,
+                ProductId = campaignDtlProductDto.ProductId,
+            };
+        }
+        [HttpGet("campaignMsts")]
+        public async Task<ActionResult<Pagination<CampaignMstDto>>> GetCampaignMsts(
+          [FromQuery] CampaignMstSpecParams campaignMstParrams)
+        {
+            try
+            {
+                var spec = new CampaignMstSpecification(campaignMstParrams);
+
+                var countSpec = new CampaignMstWithFiltersForCountSpecificication(campaignMstParrams);
+
+                var totalItems = await _campaignMstRepo.CountAsync(countSpec);
+
+                var campaignMst = await _campaignMstRepo.ListAsync(spec);
+
+                var data = _mapper
+                    .Map<IReadOnlyList<CampaignMst>, IReadOnlyList<CampaignMstDto>>(campaignMst);
+
+                return Ok(new Pagination<CampaignMstDto>(campaignMstParrams.PageIndex, campaignMstParrams.PageSize, totalItems, data));
+            }
+            catch (System.Exception e)
+            {
+
+                throw;
+            }
+        }
+        [HttpGet("campaignDtls/{mstId}")]
+        public async Task<ActionResult<Pagination<CampaignDtlDto>>> GetCampaignDtls(
+        [FromQuery] CampaignDtlSpecParams campaignDtlParrams, int mstId)
+        {
+            try
+            {
+                var spec = new CampaignDtlSpecification(campaignDtlParrams,mstId);
+
+                var countSpec = new CampaignDtlWithFiltersForCountSpecificication(mstId);
+
+                var totalItems = await _campaignDtlRepo.CountAsync(countSpec);
+
+                var campaignDtl = await _campaignDtlRepo.ListAsync(spec);
+
+                var data = _mapper
+                    .Map<IReadOnlyList<CampaignDtl>, IReadOnlyList<CampaignDtlDto>>(campaignDtl);
+
+                return Ok(new Pagination<CampaignDtlDto>(campaignDtlParrams.PageIndex, campaignDtlParrams.PageSize, totalItems, data));
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+        }
+        [HttpGet("campaignDtlProducts/{dtlId}")]
+        public async Task<ActionResult<Pagination<CampaignDtlProductDto>>> GetCampaignDtlProducts(
+        [FromQuery] CampaignDtlProductSpecParams campaignDtlProductParrams, int dtlId)
+        {
+            try
+            {
+                var spec = new CampaignDtlProductSpecification(campaignDtlProductParrams, dtlId);
+
+                var countSpec = new CampaignDtlProductWithFiltersForCountSpecificication(dtlId);
+
+                var totalItems = await _campaignDtlProductRepo.CountAsync(countSpec);
+
+                var campaignDtlProduct = await _campaignDtlProductRepo.ListAsync(spec);
+
+                var data = _mapper
+                    .Map<IReadOnlyList<CampaignDtlProduct>, IReadOnlyList<CampaignDtlProductDto>>(campaignDtlProduct);
+
+                return Ok(new Pagination<CampaignDtlProductDto>(campaignDtlProductParrams.PageIndex, campaignDtlProductParrams.PageSize, totalItems, data));
+            }
+            catch (System.Exception ex)
+            {
+
+                throw;
+            }
+        } 
+        [HttpPost("removeDtlProduct")]
+        public  void RemoveDtlProduct(CampaignDtlProduct campaignDtlProduct)
+        {
+            try
+            {
+                _campaignDtlProductRepo.Delete(campaignDtlProduct);
+                _campaignDtlProductRepo.Savechange();
+            }
+            catch (System.Exception ex)
+            {
+
+                throw;
+            }
+        }
 
 
     }

@@ -67,8 +67,7 @@ export class SubCampaignComponent implements OnInit {
     this.masterService.subCampaignFormData = Object.assign({}, selectedRecord);
   }
   resetForm(form: NgForm) {
-    form.form.reset();
-    this.masterService.subCampaignFormData = new SubCampaign();
+    form.reset();
   }
 
 }

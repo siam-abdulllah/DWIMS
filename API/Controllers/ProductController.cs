@@ -42,6 +42,21 @@ namespace API.Controllers
             {
                 throw ex;
             }
+        } 
+        [HttpGet("getProduct")]
+        public async Task<IReadOnlyList<ProductDto>> GetProduct()
+        {
+            try
+            {
+                var products = await _productRepo.ListAllAsync();
+                var data = _mapper
+                    .Map<IReadOnlyList<ProductInfo>, IReadOnlyList<ProductDto>>(products);
+                return data;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

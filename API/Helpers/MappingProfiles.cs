@@ -35,6 +35,10 @@ namespace API.Helpers
             CreateMap<SBUWiseBudget, SBUWiseBudgetDto>().ReverseMap();
             CreateMap<MarketGroupMst, MarketGroupMstDto>().ReverseMap();
             CreateMap<MarketGroupDtl, MarketGroupDtlDto>().ReverseMap();
+            CreateMap<CampaignMst, CampaignMstDto>().ReverseMap();
+            CreateMap<CampaignDtl, CampaignDtlDto>().ReverseMap();
+            CreateMap<CampaignDtlProduct, CampaignDtlProductDto>().ReverseMap();
+            CreateMap<ProductInfo, ProductDto>().ReverseMap();
         }
     }
 }

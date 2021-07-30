@@ -8,27 +8,26 @@
             </div>
         </div>
     </div>
-    <!-- /.container-fluid -->
 </section>
 <section class="content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
-                <!-- form start -->
                 <form novalidate autocomplete="off" #form="ngForm" (submit)="onSubmit(form)">
-                    <!-- general form elements -->
                     <div class="card card-primary">
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-sm-6">
                                     <h3 class="card-title">Approval Authority</h3>
                                 </div>
-                                <div class="col-sm-6">
-                                    <button class="btn btn-info btn-lg btn-block" type="submit" [disabled]="form.invalid">SUBMIT</button>
+                                <div class="col-sm-2">
+                                    <button class="btn btn-info  btn-block" type="submit" [disabled]="form.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button class="btn btn-danger  btn-block" type="button" (click)="resetForm(form)"><i class="fa fa-undo"></i>&nbsp; Reset</button>
                                 </div>
                             </div>
                         </div>
-                        <!-- /.card-header -->
                         <div class="card-body">
                             <input type="hidden" name="id" [value]="masterService.approvalAuthorityFormData.id" />
                             <div class="form-group">
@@ -37,12 +36,13 @@
                                         <label>Authority Name</label>
                                     </div>
                                     <div class="col-md-3">
-                                        <input class="form-control form-control-lg" placeholder="Name" name="approvalAuthorityName" #approvalAuthorityName="ngModel" [(ngModel)]="masterService.approvalAuthorityFormData.approvalAuthorityName" required [class.invalid]="approvalAuthorityName.invalid && approvalAuthorityName.touched">
+                                        <input class="form-control " placeholder="Name" name="approvalAuthorityName" #approvalAuthorityName="ngModel" [(ngModel)]="masterService.approvalAuthorityFormData.approvalAuthorityName" required [class.invalid]="approvalAuthorityName.invalid && approvalAuthorityName.touched">
                                     </div>
                                     <div class="col-md-2">
                                         <label>Status</label></div>
                                     <div class="col-md-3">
-                                        <select id="" class="form-control form-control-lg" name="status" #status="ngModel" [(ngModel)]="masterService.approvalAuthorityFormData.status" required [class.invalid]="status.invalid && status.touched">
+                                        <select id="" class="form-control " name="status" #status="ngModel" [(ngModel)]="masterService.approvalAuthorityFormData.status" required [class.invalid]="status.invalid && status.touched">
+                                        <option [ngValue]="null">Select Status</option>
                                           <option value="Active">Active</option>
                                           <option value="Inactive">Inactive</option>
                                         </select>
@@ -54,14 +54,14 @@
                                     <div class="col-md-2">
                                         <label>Priority</label></div>
                                     <div class="col-md-3">
-                                        <select id="" class="form-control form-control-lg" name="priority" #priority="ngModel" [(ngModel)]="masterService.approvalAuthorityFormData.priority" required [class.invalid]="priority.invalid && priority.touched">
+                                        <select id="" class="form-control " name="priority" #priority="ngModel" [(ngModel)]="masterService.approvalAuthorityFormData.priority" required [class.invalid]="priority.invalid && priority.touched">
                                             <option *ngFor="let priority of priorities" [value]="priority">{{priority}}</option>
                                         </select>
                                     </div>
                                     <div class="col-md-2">
                                         <label>Remarks</label></div>
                                     <div class="col-md-3">
-                                        <textarea class="form-control form-control-lg" rows="1" placeholder="Remarks" name="remarks" #remarks="ngModel" [(ngModel)]="masterService.approvalAuthorityFormData.remarks" required [class.invalid]="remarks.invalid && remarks.touched"></textarea>
+                                        <textarea class="form-control " rows="1" placeholder="Remarks" name="remarks" #remarks="ngModel" [(ngModel)]="masterService.approvalAuthorityFormData.remarks" required [class.invalid]="remarks.invalid && remarks.touched"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -86,22 +86,16 @@
                                         <td>
                                             {{approvalAuthority.remarks}}
                                         </td>
-                                        <td (click)="populateForm(approvalAuthority)">
-                                            Details
+                                        <td>
+                                            <button class="btn btn-info  btn-block" type="button" (click)="populateForm(approvalAuthority)"><i class="fa fa-pen"></i>&nbsp; Edit</button>
                                         </td>
                                     </tr>
                                 </table>
                             </div>
-                            <!-- <div class="card-footer">
-                                Sample Demo by rijsat.com
-                            </div> -->
                         </div>
-                        <!-- /.card -->
                     </div>
                 </form>
             </div>
-            <!-- /.row -->
         </div>
     </div>
-    <!-- /.container-fluid -->
 </section>

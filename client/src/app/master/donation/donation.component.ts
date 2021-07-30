@@ -70,11 +70,7 @@ export class DonationComponent implements OnInit {
     this.masterService.donationFormData = Object.assign({}, selectedRecord);
   }
   resetForm(form: NgForm) {
-    debugger;
     form.reset();
-    //this.masterService.donationFormData = Object.assign({},this.donations);
-    //this.masterService.donationFormData.status='Active';
-    this.masterService.donationFormData.status="Active";
   }
 
 }

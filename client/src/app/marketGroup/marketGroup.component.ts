@@ -104,6 +104,7 @@ addMarket() {
     var opt = e.options[sel];
     var selectedMarketCode = opt.value;
     var selectedMarketName = opt.innerHTML;
+    if(this.marketGroupDtls!==undefined){
     for (let i = 0; i < this.marketGroupDtls.length; i++) {
       if(this.marketGroupDtls[i].marketCode===selectedMarketCode)
       {
@@ -111,6 +112,7 @@ addMarket() {
       return false;
       }
     }
+  }
     for (let i = 0; i < this.markets.length; i++) {
     if(this.markets[i].marketCode===selectedMarketCode)
     {

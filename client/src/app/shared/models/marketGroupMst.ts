@@ -12,6 +12,6 @@ export class MarketGroupMst implements IMarketGroupMst {
     id: number=0;
     groupName: string;
     employeeId: string; 
-    status: string; 
+    status: string=null; 
     //marketGroupDtl:IMarketGroupDtl[];
 }

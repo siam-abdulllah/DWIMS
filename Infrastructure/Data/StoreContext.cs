@@ -13,25 +13,37 @@ namespace Infrastructure.Data
         public StoreContext(DbContextOptions<StoreContext> options) : base(options)
         {
         }
-         public DbSet<Post> Post { get; set; }
-         public DbSet<PostComments> PostComments { get; set; }
-         public DbSet<Donation> Donation { get; set; }
-         public DbSet<SubCampaign> SubCampaign { get; set; }
-         public DbSet<CampaignMst> CampaignMst { get; set; }
-         public DbSet<CampaignDtl> CampaignDtl { get; set; }
-         public DbSet<MarketGroupMst> MarketGroupMst { get; set; }
-         public DbSet<MarketGroupDtl> MarketGroupDtl { get; set; }
-         public DbSet<CampaignDtlProduct> CampaignDtlProduct { get; set; }
-         public DbSet<ProductInfo> ProductInfo { get; set; }
-         public DbSet<BrandInfo> BrandInfo { get; set; }
-         public DbSet<Bcds> Bcds { get; set; }
-         public DbSet<Society> Society { get; set; }
-         public DbSet<ApprovalAuthority> ApprovalAuthority { get; set; }
+        public DbSet<Post> Post { get; set; }
+        public DbSet<PostComments> PostComments { get; set; }
+        public DbSet<Donation> Donation { get; set; }
+        public DbSet<SubCampaign> SubCampaign { get; set; }
+        public DbSet<CampaignMst> CampaignMst { get; set; }
+        public DbSet<CampaignDtl> CampaignDtl { get; set; }
+        public DbSet<MarketGroupMst> MarketGroupMst { get; set; }
+        public DbSet<MarketGroupDtl> MarketGroupDtl { get; set; }
+        public DbSet<CampaignDtlProduct> CampaignDtlProduct { get; set; }
+        public DbSet<ProductInfo> ProductInfo { get; set; }
+        public DbSet<BrandInfo> BrandInfo { get; set; }
+        public DbSet<Bcds> Bcds { get; set; }
+        public DbSet<Society> Society { get; set; }
+        public DbSet<ApprovalAuthority> ApprovalAuthority { get; set; }
         public DbSet<ApprAuthConfig> ApprAuthConfig { get; set; }
         public DbSet<ApprovalCeiling> ApprovalCeiling { get; set; }
         public DbSet<InvestmentType> InvestmentType { get; set; }
         public DbSet<SBU> SBU { get; set; }
         public DbSet<SBUWiseBudget> SBUWiseBudget { get; set; }
+        public DbSet<DoctorInfo> DoctorInfo { get; set; }
+        public DbSet<DoctorMarket> DoctorMarket { get; set; }
+        public DbSet<InstitutionInfo> InstitutionInfo { get; set; }
+        public DbSet<InvestmentBcds> InvestmentBcds { get; set; }
+        public DbSet<InvestmentCampaign> InvestmentCampaign { get; set; }
+        public DbSet<InvestmentDetail> InvestmentDetail { get; set; }
+        public DbSet<InvestmentDoctor> InvestmentDoctor { get; set; }
+        public DbSet<InvestmentInit> InvestmentInit { get; set; }
+        public DbSet<InvestmentInstitution> InvestmentInstitution { get; set; }
+        public DbSet<InvestmentSociety> InvestmentSociety { get; set; }
+        public DbSet<InvestmentTargetedGroup> InvestmentTargetedGroup { get; set; }
+        public DbSet<InvestmentTargetedProd> InvestmentTargetedProd { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

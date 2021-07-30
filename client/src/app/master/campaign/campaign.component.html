@@ -9,11 +9,14 @@
                                 <div class="col-sm-6">
                                     <h3 class="card-title">Campaign</h3>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                     <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="form.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
                                 </div>
-                                <div class="col-sm-3">
-                                    <button class="btn btn-info btn-lg btn-block"><i class="fa fa-search"></i>Search</button>
+                                <div class="col-sm-2">
+                                    <button class="btn btn-info btn-lg btn-block" type="button" (click)="getCampaign()"><i class="fa fa-search"></i>Search</button>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetPage(form)"><i class="fa fa-search"></i>Reset</button>
                                 </div>
                             </div>
                         </div>
@@ -56,7 +59,7 @@
                                     </div>
                                 </div>
                             </div>
-                           
+
                             <fieldset>
                                 <div class="form-group">
                                     <div class="row">
@@ -64,8 +67,8 @@
                                             <label>Sub Campaign</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <input class="form-control " placeholder="Auto Generated" name="id" #id="ngModel" [(ngModel)]="masterService.campaignDtlFormData.id"  [class.invalid]="id.invalid && id.touched" readonly style="display: none;">
-                                            <select class="form-control form-control-lg" id="subCampaignId" name="subCampaignId" #subCampaignId="ngModel" [(ngModel)]="masterService.campaignDtlFormData.subCampaignId"  [class.invalid]="subCampaignId.invalid && subCampaignId.touched">
+                                            <input class="form-control " placeholder="Auto Generated" name="id" #id="ngModel" [(ngModel)]="masterService.campaignDtlFormData.id" [class.invalid]="id.invalid && id.touched" readonly style="display: none;">
+                                            <select class="form-control form-control-lg" id="subCampaignId" name="subCampaignId" #subCampaignId="ngModel" [(ngModel)]="masterService.campaignDtlFormData.subCampaignId" [class.invalid]="subCampaignId.invalid && subCampaignId.touched">
                                             <option  [ngValue]="null">Select Sub Campaign</option>
                                             <option *ngFor="let subCampaign of subCampaigns" [value]="subCampaign.id">{{subCampaign.subCampaignName}}</option>
                                         </select>
@@ -75,7 +78,7 @@
                                         <div class="col-md-2">
                                             <label>Budget</label></div>
                                         <div class="col-md-3">
-                                            <input class="form-control " placeholder="Budget" name="budget" #budget="ngModel" [(ngModel)]="masterService.campaignDtlFormData.budget"  [class.invalid]="budget.invalid && budget.touched">
+                                            <input class="form-control " placeholder="Budget" name="budget" #budget="ngModel" [(ngModel)]="masterService.campaignDtlFormData.budget" [class.invalid]="budget.invalid && budget.touched">
                                         </div>
                                     </div>
                                 </div>
@@ -85,12 +88,14 @@
                                             <label>Sub Campaign Start Date</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <input class="form-control" placeholder="Calender" name="subCampStartDate" #subCampStartDate="ngModel" [(ngModel)]="masterService.campaignDtlFormData.subCampStartDate"  [class.invalid]="subCampStartDate.invalid && subCampStartDate.touched" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
+                                            <input class="form-control" placeholder="Calender" name="subCampStartDate" #subCampStartDate="ngModel" [(ngModel)]="masterService.campaignDtlFormData.subCampStartDate" [class.invalid]="subCampStartDate.invalid && subCampStartDate.touched" [bsValue]="bsValue"
+                                                bsDatepicker [bsConfig]="bsConfig">
                                         </div>
                                         <div class="col-md-2">
                                             <label>Sub Campaign End Date</label></div>
                                         <div class="col-md-3">
-                                            <input class="form-control" placeholder="Calender" name="subCampEndDate" #subCampEndDate="ngModel" [(ngModel)]="masterService.campaignDtlFormData.subCampEndDate"  [class.invalid]="subCampEndDate.invalid && subCampEndDate.touched" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
+                                            <input class="form-control" placeholder="Calender" name="subCampEndDate" #subCampEndDate="ngModel" [(ngModel)]="masterService.campaignDtlFormData.subCampEndDate" [class.invalid]="subCampEndDate.invalid && subCampEndDate.touched" [bsValue]="bsValue" bsDatepicker
+                                                [bsConfig]="bsConfig">
                                         </div>
                                     </div>
                                 </div>
@@ -109,57 +114,63 @@
                                             <td>Start Date</td>
                                             <td>End Date</td>
                                         </tr>
-                                        <tr *ngFor="let a of campaigDtls">
+                                        <tr *ngFor="let a of campaignDtls">
                                             <td>
-                                                {{a.subCampaignName}}
+                                                {{a.subCampaign.subCampaignName}}
                                             </td>
                                             <td>
                                                 {{a.budget}}
                                             </td>
                                             <td>
-                                                {{a.subCampStartDate}}
+                                                {{a.subCampStartDate| date:'dd/MM/yyyy'}}
                                             </td>
                                             <td>
-                                                {{a.subCampEndDate}}
+                                                {{a.subCampEndDate| date:'dd/MM/yyyy'}}
                                             </td>
-                                            <td (click)="populateForm(a)">
-                                                Details
+                                            <td>
+                                                <button class="btn btn-sm btn-embossed btn-primary" type="button" (click)="populateDtlsForm(a)">Edit</button>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="showProductModal(a)">Add Product</button>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="getCampaignDtlProductClick(a)">view Product</button>
                                             </td>
                                         </tr>
                                     </table>
                                 </div>
                                 <legend>Saub Campaign List</legend>
                             </fieldset>
-                            <div class="form-group">
-                                <table class="table  table-bordered">
-                                    <tr>
-                                        <td>SL</td>
-                                        <td>Product Code</td>
-                                        <td>Product Name</td>
-                                    </tr>
-                                    <tr *ngFor="let b of campaigDtlProducts">
-                                        <td>
-                                            {{b.slNo}}
-                                        </td>
-                                        <td>
-                                            {{b.productCode}}
-                                        </td>
-                                        <td>
-                                            {{b.productName}}
-                                        </td>
-                                        <td (click)="populateForm(b)">
-                                            Details
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
+                            <fieldset>
+                                <legend>Product</legend>
+                                <div class="form-group">
+                                    <table class="table  table-bordered">
+                                        <tr>
+                                            <td>Product Code</td>
+                                            <td>Product Name</td>
+                                        </tr>
+                                        <tr *ngFor="let b of campaignDtlProducts">
+
+                                            <td>
+                                                {{b.productInfo.productCode}}
+                                            </td>
+                                            <td>
+                                                {{b.productInfo.productName}}
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-embossed btn-danger" type="button" (click)="removeProduct(b)">Remove</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </fieldset>
                         </div>
                     </div>
                 </form>
-                <ng-template #campaignModal>
+                <ng-template #campaignMstSearchModal>
                     <div class="modal-header" style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc));color: black;">
                         <h4 class="modal-title pull-left">{{campaignModalTitle}}</h4>
-                        <button type="button" class="close pull-right" aria-label="Close" (click)="campaignModalRef.hide()">
+                        <button type="button" class="close pull-right" aria-label="Close" (click)="campaignMstSearchodalRef.hide()">
                       <span aria-hidden="true">&times;</span>
                     </button>
                     </div>
@@ -170,161 +181,75 @@
                                     <legend class="scheduler-border">Campaign Information</legend>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <form [formGroup]="campaignForm" (submit)="addUpdateProduct()">
+                                            <div class="form-group">
+                                                <table class="table  table-bordered">
+                                                    <tr>
+                                                        <th scope="col" style="width: 7%">Action</th>
+                                                        <th scope="col" style="width: 0;display:none;">Id</th>
+                                                        <td>Campaign No</td>
+                                                        <td>Campaign Name</td>
+                                                        <td>SBU</td>
+                                                        <td>Brand Code</td>
+                                                    </tr>
+                                                    <tr *ngFor="let b of campaignMsts">
+                                                        <td>
+                                                            <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="selectCampaignMst(b)">Select</button>
+
+                                                        </td>
+                                                        <td style="display:none;">{{b.id}}</td>
+                                                        <td>
+                                                            {{b.campaignNo}}
+                                                        </td>
+                                                        <td>
+                                                            {{b.campaignName}}
+                                                        </td>
+                                                        <td>
+                                                            {{b.sbu}}
+                                                        </td>
+                                                        <td>
+                                                            {{b.brandCode}}
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template #productSearchModal>
+                    <div class="modal-header" style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc));color: black;">
+                        <h4 class="modal-title pull-left">{{campaignModalTitle}}</h4>
+                        <button type="button" class="close pull-right" aria-label="Close" (click)="productSearchModalRef.hide()">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body" style="padding: 20px 30px 20px 30px;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <fieldset class="scheduler-border">
+                                    <legend class="scheduler-border">Product Information</legend>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
                                                 <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <div class="input-group">
-                                                                <label for="product-name" class="control-label required">Product</label>
-                                                                <span style="color:red;">*</span>
-                                                                <input type="text" class="form-control" formControlName="prodName" placeholder="search" readonly [ngClass]="{'is-invalid': proformaInvoiceDtlForm.get('prodName').errors && proformaInvoiceDtlForm.get('prodName').touched}">
-                                                                <div class="input-group-append input-group-text">
-                                                                    <button type="button" class="btn btn-success btn-embossed" (click)="getProductListFromAnnualReq()"><i class="fa fa-search" style="color: white;"></i>Search</button>
-                                                                </div>
-                                                            </div>
-                                                            <div class="invalid-feedback" *ngIf="proformaInvoiceDtlForm.get('prodName').hasError('required')
-                                                         && proformaInvoiceDtlForm.get('prodName').touched">Product name required</div>
-                                                        </div>
+                                                    <div class="col-md-2">
+                                                        <label>Product</label>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <select class="form-control form-control-lg" id="productId" name="productId" #productId="ngModel" [(ngModel)]="masterService.campaignDtlProductFormData.productId" [class.invalid]="productId.invalid && productId.touched">
+                                                        <option  [ngValue]="null">Select Product</option>
+                                                        <option *ngFor="let product of products" [value]="product.id">{{product.productName}}</option>
+                                                    </select>
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <div class="form-group">
-                                                            <label for="product-name" class="control-label required">Product Type</label>
-                                                            <span style="color:red;">*</span>
-                                                            <input type="text" class="form-control" id="product-name" [ngClass]="{'is-invalid': proformaInvoiceDtlForm.get('prodType').errors && proformaInvoiceDtlForm.get('prodType').touched}" formControlName="prodType" readonly>
-                                                            <div class="invalid-feedback" *ngIf="proformaInvoiceDtlForm.get('prodType').hasError('required')
-                                                        && proformaInvoiceDtlForm.get('prodType').touched">Product type required</div>
-                                                            <div class="invalid-feedback" *ngIf="proformaInvoiceDtlForm.get('prodType').hasError('maxlength')
-                                                           && proformaInvoiceDtlForm.get('prodType').touched"> Product type can be max 500 Character long</div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <div class="form-group">
-                                                            <label for="product-name" class="control-label required">H.S. Code</label>
-                                                            <span style="color:red;">*</span>
-                                                            <input type="text" class="form-control" id="product-name" [ngClass]="{'is-invalid': proformaInvoiceDtlForm.get('hsCode').errors && proformaInvoiceDtlForm.get('hsCode').touched}" formControlName="hsCode" readonly>
-                                                            <div class="invalid-feedback" *ngIf="proformaInvoiceDtlForm.get('prodName').hasError('required')
-                                                        && proformaInvoiceDtlForm.get('hsCode').touched">H.S. code required</div>
-                                                            <div class="invalid-feedback" *ngIf="proformaInvoiceDtlForm.get('hsCode').hasError('maxlength')
-                                                           && proformaInvoiceDtlForm.get('hsCode').touched">H.S. code can be max 50 Character long</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="product-name" class="control-label required">Manufacturer</label>
-                                                            <span style="color:red;">*</span>
-                                                            <input type="text" class="form-control" id="manufacturer" [ngClass]="{'is-invalid': proformaInvoiceDtlForm.get('manufacturer').errors && proformaInvoiceDtlForm.get('manufacturer').touched}" formControlName="manufacturer">
-                                                            <div class="invalid-feedback" *ngIf="proformaInvoiceDtlForm.get('manufacturer').hasError('required')
-                                                        && proformaInvoiceDtlForm.get('manufacturer').touched">Manufacturer name required
-                                                            </div>
-                                                            <div class="invalid-feedback" *ngIf="proformaInvoiceDtlForm.get('manufacturer').hasError('maxlength')
-                                                           && proformaInvoiceDtlForm.get('manufacturer').touched"> Manufacturer name can be max 100 Character long</div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="product-name" class="control-label required">Pack Size</label>
-                                                            <span style="color:red;">*</span>
-                                                            <input type="text" class="form-control" id="manufacturer" [ngClass]="{'is-invalid': proformaInvoiceDtlForm.get('packSize').errors && proformaInvoiceDtlForm.get('packSize').touched}" formControlName="packSize" readonly>
-                                                            <div class="invalid-feedback" *ngIf="proformaInvoiceDtlForm.get('packSize').hasError('required')
-                                                    && proformaInvoiceDtlForm.get('packSize').touched">Pack size required</div>
-                                                            <div class="invalid-feedback" *ngIf="proformaInvoiceDtlForm.get('packSize').hasError('maxlength')
-                                                       && proformaInvoiceDtlForm.get('packSize').touched">Pack size can be max 100 Character long</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="product-name" class="control-label required">No of Unit (Units)</label>
-                                                            <small style="color:red;"> *</small>
-                                                            <small style="color:#888889;"> numeric value</small>
-                                                            <input type="text" class="form-control" id="manufacturer" autocomplete="off" [ngClass]="{'is-invalid': proformaInvoiceDtlForm.get('noOfUnits').errors && proformaInvoiceDtlForm.get('noOfUnits').touched}" (keyup)="calculateTotalPrice()" formControlName="noOfUnits"
-                                                                (input)="noOfUnitsValidation()">
-                                                            <div class="invalid-feedback" *ngIf="proformaInvoiceDtlForm.get('noOfUnits').hasError('required')
-                                                    && proformaInvoiceDtlForm.get('noOfUnits').touched">No of units required</div>
-                                                            <div class="invalid-feedback" *ngIf="proformaInvoiceDtlForm.get('noOfUnits').hasError('maxlength')
-                                                       && proformaInvoiceDtlForm.get('noOfUnits').touched">No of units can be max 8 Character long</div>
-                                                            <div class="invalid-feedback" *ngIf="proformaInvoiceDtlForm.get('noOfUnits').hasError('pattern')
-                                                       && proformaInvoiceDtlForm.get('noOfUnits').touched">Only numeric value</div>
-                                                            <div class="invalid-feedback" *ngIf="noOfUnitValidationErrorMsg">No of Unit exceeds Annual Requirements. Remaining Amount {{remainingAmountUnit| number : '1.2-2'}} Units.</div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="total-quantity" class="control-label required">Total Amount (Tons)</label>
-                                                            <small style="color:red;"> *</small>
-                                                            <small style="color:#888889;"> numeric value</small>
-                                                            <input type="text" class="form-control" id="total-quantity" autocomplete="off" (input)="totalAmountTonValidation()" [ngClass]="{'is-invalid': proformaInvoiceDtlForm.get('totalAmount').errors && proformaInvoiceDtlForm.get('totalAmount').touched}" formControlName="totalAmount">
-                                                            <div class="invalid-feedback" *ngIf="proformaInvoiceDtlForm.get('totalAmount').hasError('required')
-                                                            && proformaInvoiceDtlForm.get('totalAmount').touched">Total Amount required
-                                                            </div>
-                                                            <div class="invalid-feedback" *ngIf="proformaInvoiceDtlForm.get('totalAmount').hasError('maxlength')
-                                                              && proformaInvoiceDtlForm.get('totalAmount').touched">Total Amount can be max 20 Character long</div>
-                                                            <div class="invalid-feedback" *ngIf="proformaInvoiceDtlForm.get('totalAmount').hasError('maxlength') &&
-                                                            proformaInvoiceDtlForm.get('totalAmount').touched">Unit Price can be max 8 Character long</div>
-                                                            <div class="invalid-feedback" *ngIf="proformaInvoiceDtlForm.get('totalAmount').hasError('pattern')
-                                                              && proformaInvoiceDtlForm.get('totalAmount').touched">Only numeric value
-                                                            </div>
-                                                            <div class="invalid-feedback" *ngIf="totalAmountValidationErrorMsg">Total amount exceeds Annual Requirements. Remaining Amount {{remainingAmountTon| number : '1.2-2'}} Tons.</div>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="unit-price" class="control-label required">Unit Price in Foreign Currency</label>
-                                                            <small style="color:red;"> *</small>
-                                                            <small style="color:#888889;"> numeric value</small>
-                                                            <input type="text" class="form-control" id="unit-price" autocomplete="off" (keyup)="calculateTotalPrice()" [ngClass]="{'is-invalid': proformaInvoiceDtlForm.get('unitPrice').errors && proformaInvoiceDtlForm.get('unitPrice').touched}" formControlName="unitPrice">
-                                                            <div class="invalid-feedback" *ngIf="proformaInvoiceDtlForm.get('unitPrice').hasError('required') &&
-                                                  proformaInvoiceDtlForm.get('unitPrice').touched">Unit Price required</div>
-                                                            <div class="invalid-feedback" *ngIf="proformaInvoiceDtlForm.get('unitPrice').hasError('maxlength') &&
-                                                  proformaInvoiceDtlForm.get('unitPrice').touched">Unit Price can be max 6 Character long
-                                                            </div>
-                                                            <div class="invalid-feedback" *ngIf="proformaInvoiceDtlForm.get('unitPrice').hasError('pattern')
-                                                  && proformaInvoiceDtlForm.get('unitPrice').touched">Only numeric value</div>
-                                                        </div>
+                                                        <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="addProduct()">Select</button>
 
                                                     </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="exchange-rate" class="control-label required"> &nbsp;&nbsp; Exchange Rate in BDT</label>
-                                                            <span style="color:red;">*</span>
-                                                            <input type="text" class="form-control" id="exchange-rate" formControlName="exchangeRate" readonly>
-                                                        </div>
-                                                    </div>
-
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="total-price" class="control-label required">Total Price in Foreign Currency</label>
-                                                            <span style="color:red;">*</span>
-                                                            <input type="text" class="form-control" id="total-price" placeholder="auto generated" formControlName="totalPrice" readonly>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="total-price" class="control-label required">Total Price in BDT(Tk)</label>
-                                                            <span style="color:red;">*</span>
-                                                            <input type="text" class="form-control" id="total-price" placeholder="auto generated" formControlName="totalPriceInBdt" readonly>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-8">
-
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <button type="submit" *ngIf="addMode" class="btn btn-success btn-md" style="width: 100px;" [disabled]="!proformaInvoiceDtlForm.valid || totalAmountValidationErrorMsg">Add</button>
-                                                        <button type="submit" *ngIf="editMode" class="btn btn-success btn-md" style="width: 100px;" [disabled]="!proformaInvoiceDtlForm.valid || totalAmountValidationErrorMsg">Update</button>
-                                                        <button type="button" class="btn btn-danger btn-md" (click)="proformaInvoiceDtlModalRef.hide()" style="margin-right:20px;width: 100px; ">Cancel</button>
-                                                    </div>
-                                                </div>
-                                            </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </fieldset>

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20210707072122_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20210730122524_InitialCreate_3072021")]
+    partial class InitialCreate_3072021
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -275,8 +275,8 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("BrandId")
-                        .HasColumnType("int");
+                    b.Property<string>("BrandCode")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CampaignName")
                         .HasColumnType("nvarchar(max)");
@@ -298,9 +298,78 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BrandId");
-
                     b.ToTable("CampaignMst");
+                });
+
+            modelBuilder.Entity("Core.Entities.DoctorInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Degree")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Designation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DocotorCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DocotorName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DoctorInfo");
+                });
+
+            modelBuilder.Entity("Core.Entities.DoctorMarket", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DoctorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MarketCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MarketName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DoctorId");
+
+                    b.ToTable("DoctorMarket");
                 });
 
             modelBuilder.Entity("Core.Entities.Donation", b =>
@@ -423,6 +492,382 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("Employee");
                 });
 
+            modelBuilder.Entity("Core.Entities.InstitutionInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Degree")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Designation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("InstitutionCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("InstitutionName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("InstitutionInfo");
+                });
+
+            modelBuilder.Entity("Core.Entities.InvestmentBcds", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BcdsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InvestmentInitId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BcdsId");
+
+                    b.HasIndex("InvestmentInitId");
+
+                    b.ToTable("InvestmentBcds");
+                });
+
+            modelBuilder.Entity("Core.Entities.InvestmentCampaign", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CampaignDtlId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DoctorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InvestmentInitId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CampaignDtlId");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("InvestmentInitId");
+
+                    b.ToTable("InvestmentCampaign");
+                });
+
+            modelBuilder.Entity("Core.Entities.InvestmentDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ChequeTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CommitmentAllSBU")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CommitmentOwnSBU")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FromDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("InvestmentInitId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("PaymentMethod")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("ProposedAmount")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Purpose")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTime>("ToDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TotalMonth")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InvestmentInitId");
+
+                    b.ToTable("InvestmentDetail");
+                });
+
+            modelBuilder.Entity("Core.Entities.InvestmentDoctor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DocotrCategory")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DocotrType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DoctorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InvestmentInitId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("PatientsPerDay")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PracticeDayPerMonth")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("InvestmentInitId");
+
+                    b.ToTable("InvestmentDoctor");
+                });
+
+            modelBuilder.Entity("Core.Entities.InvestmentInit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DonationTo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DonationType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("ProposeFor")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReferenceNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("InvestmentInit");
+                });
+
+            modelBuilder.Entity("Core.Entities.InvestmentInstitution", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DepartmentUnit")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("InstitutionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InvestmentInitId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NoOfBed")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ResposnsibleDoctorId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InstitutionId");
+
+                    b.HasIndex("InvestmentInitId");
+
+                    b.HasIndex("ResposnsibleDoctorId");
+
+                    b.ToTable("InvestmentInstitution");
+                });
+
+            modelBuilder.Entity("Core.Entities.InvestmentSociety", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InvestmentInitId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("SocietyId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InvestmentInitId");
+
+                    b.HasIndex("SocietyId");
+
+                    b.ToTable("InvestmentSociety");
+                });
+
+            modelBuilder.Entity("Core.Entities.InvestmentTargetedGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InvestmentInitId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MarketCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MarketName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InvestmentInitId");
+
+                    b.ToTable("InvestmentTargetedGroup");
+                });
+
+            modelBuilder.Entity("Core.Entities.InvestmentTargetedProd", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InvestmentInitId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InvestmentInitId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("InvestmentTargetedProd");
+                });
+
             modelBuilder.Entity("Core.Entities.InvestmentType", b =>
                 {
                     b.Property<int>("Id")
@@ -477,6 +922,9 @@ namespace Infrastructure.Data.Migrations
 
                     b.Property<int>("MstId")
                         .HasColumnType("int");
+
+                    b.Property<string>("SBU")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("SetOn")
                         .HasColumnType("datetimeoffset");
@@ -601,6 +1049,12 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("BrandCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BrandName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
 
@@ -611,6 +1065,9 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProductName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SBU")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("SetOn")
@@ -812,11 +1269,140 @@ namespace Infrastructure.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Core.Entities.CampaignMst", b =>
+            modelBuilder.Entity("Core.Entities.DoctorMarket", b =>
                 {
-                    b.HasOne("Core.Entities.BrandInfo", "BrandInfo")
+                    b.HasOne("Core.Entities.DoctorInfo", "DoctorInfo")
                         .WithMany()
-                        .HasForeignKey("BrandId")
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Core.Entities.InvestmentBcds", b =>
+                {
+                    b.HasOne("Core.Entities.Bcds", "Bcds")
+                        .WithMany()
+                        .HasForeignKey("BcdsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.InvestmentInit", "InvestmentInit")
+                        .WithMany()
+                        .HasForeignKey("InvestmentInitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Core.Entities.InvestmentCampaign", b =>
+                {
+                    b.HasOne("Core.Entities.CampaignDtl", "CampaignDtl")
+                        .WithMany()
+                        .HasForeignKey("CampaignDtlId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.DoctorInfo", "DoctorInfo")
+                        .WithMany()
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.InvestmentInit", "InvestmentInit")
+                        .WithMany()
+                        .HasForeignKey("InvestmentInitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Core.Entities.InvestmentDetail", b =>
+                {
+                    b.HasOne("Core.Entities.InvestmentInit", "InvestmentInit")
+                        .WithMany()
+                        .HasForeignKey("InvestmentInitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Core.Entities.InvestmentDoctor", b =>
+                {
+                    b.HasOne("Core.Entities.DoctorInfo", "DoctorInfo")
+                        .WithMany()
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.InvestmentInit", "InvestmentInit")
+                        .WithMany()
+                        .HasForeignKey("InvestmentInitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Core.Entities.InvestmentInit", b =>
+                {
+                    b.HasOne("Core.Entities.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Core.Entities.InvestmentInstitution", b =>
+                {
+                    b.HasOne("Core.Entities.InstitutionInfo", "InstitutionInfo")
+                        .WithMany()
+                        .HasForeignKey("InstitutionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.InvestmentInit", "InvestmentInit")
+                        .WithMany()
+                        .HasForeignKey("InvestmentInitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.DoctorInfo", "DoctorInfo")
+                        .WithMany()
+                        .HasForeignKey("ResposnsibleDoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Core.Entities.InvestmentSociety", b =>
+                {
+                    b.HasOne("Core.Entities.InvestmentInit", "InvestmentInit")
+                        .WithMany()
+                        .HasForeignKey("InvestmentInitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.Society", "Society")
+                        .WithMany()
+                        .HasForeignKey("SocietyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Core.Entities.InvestmentTargetedGroup", b =>
+                {
+                    b.HasOne("Core.Entities.InvestmentInit", "InvestmentInit")
+                        .WithMany()
+                        .HasForeignKey("InvestmentInitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Core.Entities.InvestmentTargetedProd", b =>
+                {
+                    b.HasOne("Core.Entities.InvestmentInit", "InvestmentInit")
+                        .WithMany()
+                        .HasForeignKey("InvestmentInitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.ProductInfo", "ProductInfo")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

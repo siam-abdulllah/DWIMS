@@ -38,12 +38,14 @@ export class CampaignDtl implements ICampaignDtl {
 export interface ICampaignDtlProduct {
     id: number;
     dtlId: number;
-    ProductId: number;
+    productId: number;
+    productName: string;
     
 }
  
 export class CampaignDtlProduct implements ICampaignDtlProduct {
     id: number=0;
     dtlId: number;
-    ProductId: number;
+    productId: number=null;
+    productName: string;
 }
