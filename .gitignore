@@ -21,8 +21,5 @@ Infrastructure/obj/Debug/netstandard2.1/Infrastructure.csproj.AssemblyReference.
 API/obj/Debug/netcoreapp3.1/API.assets.cache
 Core/obj/Debug/netstandard2.1/Core.assets.cache
 *.cache
-*.v2
-*.cache
-API/appsettings.Development.json
-API/appsettings.Development.json
-API/appsettings.Development.json
+*.dll
+*.pdb

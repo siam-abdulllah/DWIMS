@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "G:\\DIDS\\DIDS_GIT\\API\\API.csproj": {}
+    "G:\\WORK\\Git\\API\\API.csproj": {}
   },
   "projects": {
-    "G:\\DIDS\\DIDS_GIT\\API\\API.csproj": {
+    "G:\\WORK\\Git\\API\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "G:\\DIDS\\DIDS_GIT\\API\\API.csproj",
+        "projectUniqueName": "G:\\WORK\\Git\\API\\API.csproj",
         "projectName": "API",
-        "projectPath": "G:\\DIDS\\DIDS_GIT\\API\\API.csproj",
-        "packagesPath": "C:\\Users\\Siam\\.nuget\\packages\\",
-        "outputPath": "G:\\DIDS\\DIDS_GIT\\API\\obj\\",
+        "projectPath": "G:\\WORK\\Git\\API\\API.csproj",
+        "packagesPath": "C:\\Users\\PalasH\\.nuget\\packages\\",
+        "outputPath": "G:\\WORK\\Git\\API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Siam\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\PalasH\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -31,8 +31,8 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "G:\\DIDS\\DIDS_GIT\\Infrastructure\\Infrastructure.csproj": {
-                "projectPath": "G:\\DIDS\\DIDS_GIT\\Infrastructure\\Infrastructure.csproj"
+              "G:\\WORK\\Git\\Infrastructure\\Infrastructure.csproj": {
+                "projectPath": "G:\\WORK\\Git\\Infrastructure\\Infrastructure.csproj"
               }
             }
           }
@@ -116,24 +116,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "G:\\DIDS\\DIDS_GIT\\Core\\Core.csproj": {
+    "G:\\WORK\\Git\\Core\\Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "G:\\DIDS\\DIDS_GIT\\Core\\Core.csproj",
+        "projectUniqueName": "G:\\WORK\\Git\\Core\\Core.csproj",
         "projectName": "Core",
-        "projectPath": "G:\\DIDS\\DIDS_GIT\\Core\\Core.csproj",
-        "packagesPath": "C:\\Users\\Siam\\.nuget\\packages\\",
-        "outputPath": "G:\\DIDS\\DIDS_GIT\\Core\\obj\\",
+        "projectPath": "G:\\WORK\\Git\\Core\\Core.csproj",
+        "packagesPath": "C:\\Users\\PalasH\\.nuget\\packages\\",
+        "outputPath": "G:\\WORK\\Git\\Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Siam\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\PalasH\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -195,24 +195,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "G:\\DIDS\\DIDS_GIT\\Infrastructure\\Infrastructure.csproj": {
+    "G:\\WORK\\Git\\Infrastructure\\Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "G:\\DIDS\\DIDS_GIT\\Infrastructure\\Infrastructure.csproj",
+        "projectUniqueName": "G:\\WORK\\Git\\Infrastructure\\Infrastructure.csproj",
         "projectName": "Infrastructure",
-        "projectPath": "G:\\DIDS\\DIDS_GIT\\Infrastructure\\Infrastructure.csproj",
-        "packagesPath": "C:\\Users\\Siam\\.nuget\\packages\\",
-        "outputPath": "G:\\DIDS\\DIDS_GIT\\Infrastructure\\obj\\",
+        "projectPath": "G:\\WORK\\Git\\Infrastructure\\Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\PalasH\\.nuget\\packages\\",
+        "outputPath": "G:\\WORK\\Git\\Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Siam\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\PalasH\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -226,8 +226,8 @@
           "netstandard2.1": {
             "targetAlias": "netstandard2.1",
             "projectReferences": {
-              "G:\\DIDS\\DIDS_GIT\\Core\\Core.csproj": {
-                "projectPath": "G:\\DIDS\\DIDS_GIT\\Core\\Core.csproj"
+              "G:\\WORK\\Git\\Core\\Core.csproj": {
+                "projectPath": "G:\\WORK\\Git\\Core\\Core.csproj"
               }
             }
           }
@@ -314,7 +314,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     }
