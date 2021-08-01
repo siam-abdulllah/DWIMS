@@ -14,7 +14,7 @@ export class InvestmentInit implements IInvestmentInit {
     proposeFor: string=null;
     donationType: string=null;
     donationTo: string=null;
-    EmployeeId: number;
+    EmployeeId: number=1;
 }
 export interface IInvestmentDetail {
     id: number;
@@ -58,4 +58,89 @@ export class InvestmentTargetedProd implements IInvestmentTargetedProd {
     investmentInitId: number;
     marketGroupId: number;
     productName: string;
+}
+export interface IInvestmentDoctor {
+    id: number;
+    investmentInitId: number;
+    institutionId: number;
+    doctorId: number;
+    doctorName: string;
+    degree: string;
+    designation: string;
+    docotrCategory: string;
+    docotrType: string;
+    practiceDayPerMonth: string;
+    patientsPerDay: string;
+    
+}
+ 
+export class InvestmentDoctor implements IInvestmentDoctor {
+    id: number=0;
+    investmentInitId: number;
+    institutionId: number=null;
+    doctorId: number=null;
+    degree: string;
+    designation: string;
+    docotrCategory: string;
+    doctorName: string;
+    docotrType: string;
+    practiceDayPerMonth: string;
+    patientsPerDay: string;
+}
+export interface IInvestmentInstitution {
+    id: number;
+    investmentInitId: number;
+    institutionId: number;
+    resposnsibleDoctorId: number;
+    noOfBed: string;
+    departmentUnit: string;
+    
+}
+ 
+export class InvestmentInstitution implements IInvestmentInstitution {
+    id: number=0;
+    investmentInitId: number;
+    institutionId: number;
+    resposnsibleDoctorId: number;
+    noOfBed: string;
+    departmentUnit: string;
+}
+export interface IInvestmentCampaign {
+    id: number;
+    investmentInitId: number;
+    campaignDtlId: number;
+    doctorId: number;
+    
+}
+ 
+export class InvestmentCampaign implements IInvestmentCampaign {
+    id: number=0;
+    investmentInitId: number;
+    campaignDtlId: number;
+    doctorId: number;
+}
+export interface IInvestmentBcds {
+    id: number;
+    investmentInitId: number;
+    bcdsId: number;
+    
+}
+ 
+export class InvestmentBcds implements IInvestmentBcds {
+    id: number=0;
+    investmentInitId: number;
+    bcdsId: number;
+}
+export interface IInvestmentSociety {
+    id: number;
+    investmentInitId: number;
+    societyId: number;
+   
+    
+}
+ 
+export class InvestmentSociety implements IInvestmentSociety {
+    id: number=0;
+    investmentInitId: number;
+    societyId: number;
 }
