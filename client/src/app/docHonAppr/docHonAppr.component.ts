@@ -1,6 +1,6 @@
 
 import { SubCampaign, ISubCampaign } from '../shared/models/subCampaign';
-import {  IDocotor } from '../shared/models/docotor';
+import {  IDoctor } from '../shared/models/docotor';
 import { GenericParams } from '../shared/models/genericParams';
 import { Component, ElementRef, OnInit, ViewChild , TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
@@ -22,7 +22,7 @@ export class DocHonApprComponent implements OnInit {
   // genParams: GenericParams;
   // campaigns: ICampaign[]; 
   // subCampaigns: ISubCampaign[]; 
-  docotors: IDocotor[];
+  doctors: IDoctor[];
   totalCount = 0;
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date = new Date();

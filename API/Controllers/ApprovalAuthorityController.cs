@@ -28,7 +28,7 @@ namespace API.Controllers
             {
                 ApprovalAuthorityName = ApprovalAuthorityToReturnDto.ApprovalAuthorityName,
                 Priority = ApprovalAuthorityToReturnDto.Priority,
-                 Remarks = ApprovalAuthorityToReturnDto.Remarks,
+                Remarks = ApprovalAuthorityToReturnDto.Remarks,
                 Status = ApprovalAuthorityToReturnDto.Status
             };
             _approvalAuthorityRepo.Add(ApprovalAuthority);

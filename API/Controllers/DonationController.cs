@@ -121,5 +121,20 @@ namespace API.Controllers
                 throw;
             }
         }
+
+        [HttpGet("donationsForInvestment")]
+        public async Task<IReadOnlyList<Donation>> GetEmployeesForConfig()
+        {
+            try
+            {
+                var data = new DonationWithCommentsSpecification("Active");
+                var donation = await _donationRepo.ListAsync(data);
+                return donation;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

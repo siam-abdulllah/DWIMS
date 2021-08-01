@@ -68,7 +68,11 @@ namespace Core.Specifications
         public DonationWithCommentsSpecification(int id)
             : base(x => x.Id == id)
         {
-            AddInclude(x => x.DonationTypeName);
+            
+        } public DonationWithCommentsSpecification(string  status)
+            : base(x => x.Status == status)
+        {
+           
         }
     }
 }
