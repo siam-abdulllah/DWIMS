@@ -45,6 +45,14 @@ namespace Infrastructure.Data
         public DbSet<InvestmentTargetedGroup> InvestmentTargetedGroup { get; set; }
         public DbSet<InvestmentTargetedProd> InvestmentTargetedProd { get; set; }
 
+        public DbSet<InvestmentApr> InvestmentApr { get; set; }
+        public DbSet<InvestmentAprComment> InvestmentAprComment { get; set; }
+        public DbSet<InvestmentAprProducts> InvestmentAprProducts { get; set; }
+        public DbSet<InvestmentRec> InvestmentRec { get; set; }
+        public DbSet<InvestmentRecComment> InvestmentRecComment { get; set; }
+        public DbSet<InvestmentRecProducts> InvestmentRecProducts { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
