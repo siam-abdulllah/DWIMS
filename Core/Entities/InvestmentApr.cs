@@ -5,7 +5,7 @@ namespace Core.Entities
 {
    public class InvestmentApr : BaseEntity
     {
-        public int InvestmentRecId { get; set; }
+        public int? InvestmentRecId { get; set; }
         [ForeignKey("InvestmentRecId")]
         public InvestmentRec InvestmentRec { get; set; }
         public double ProposedAmt { get; set; }

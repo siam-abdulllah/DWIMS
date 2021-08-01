@@ -24,11 +24,13 @@ import { Market, IMarket } from '../shared/models/market';
 })
 export class InvestmentInitComponent implements OnInit {
   @ViewChild('search', {static: false}) searchTerm: ElementRef;
- // @ViewChild('campaignModal', { static: false }) campaignModal: TemplateRef<any>;
-  // campaignModalRef: BsModalRef;
+  @ViewChild('investmentInitSearchModal', { static: false }) investmentInitSearchModal: TemplateRef<any>;
+  InvestmentInitSearchModalRef: BsModalRef;
   // genParams: GenericParams;
   // campaigns: ICampaign[]; 
-  // subCampaigns: ISubCampaign[];
+  investmentInits: IInvestmentInit[];
+  investmentDoctors: IInvestmentDoctor[];
+  isValid: boolean=false; 
   markets: IMarket[]; 
   products: IProduct[];
   doctors: IDoctor[];
@@ -38,42 +40,138 @@ export class InvestmentInitComponent implements OnInit {
   totalCount = 0;
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date = new Date();
+  config = {
+    keyboard: false,
+    class: 'modal-lg',
+    ignoreBackdropClick: true
+  };
   constructor(public investmentInitService: InvestmentInitService, private router: Router,
-    private toastr: ToastrService) { }
+    private toastr: ToastrService,private modalService: BsModalService) { }
 
+    openInvestmentInitSearchModal(template: TemplateRef<any>) {
+      this.InvestmentInitSearchModalRef = this.modalService.show(template, this.config);
+    }
+    selectInvestmentInit(selectedRecord: IInvestmentInit) {
+      this.investmentInitService.investmentInitFormData = Object.assign({}, selectedRecord);
+      this.investmentInitService.investmentDoctorFormData.investmentInitId =selectedRecord.id;
+      this.investmentInitService.investmentInstitutionFormData.investmentInitId =selectedRecord.id;
+      if(this.investmentInitService.investmentInitFormData.donationTo=="Doctor")
+    {
+      this.getDoctor();
+      this. getInstitution();
+      this.getInvestmentDoctor();
+    }
+      else if(this.investmentInitService.investmentInitFormData.donationTo=="Institution")
+    {
+      this.getDoctor();
+      this. getInstitution();
+      this.getInvestmentInstitution();
+    }
+      //this.getInvestmentInits();
+      this.isValid=true;
+      this.InvestmentInitSearchModalRef.hide()
+     }
+     getInvestmentInit(){
+      this.investmentInitService.getInvestmentInit().subscribe(response => {
+        //debugger;
+       this.investmentInits = response.data;
+       this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
+      }, error => {
+          console.log(error);
+     });
+   }
+   getInvestmentInstitution(){
+    this.investmentInitService.getInvestmentInstitutions(this.investmentInitService.investmentInstitutionFormData.investmentInitId).subscribe(response => {
+      debugger;
+      
+      var data=response[0] as IInvestmentInstitution;
+      if(data!==undefined)
+      {
+      this.investmentInitService.investmentInstitutionFormData=data;
+      this.onChangeInstitutionInInst();
+    }
+    else{
+      this.toastr.warning('No Data Found', 'Investment ');
+    }
+      
+    }, error => {
+        console.log(error);
+    });
+  }
+   getInvestmentDoctor(){
+    this.investmentInitService.getInvestmentDoctors(this.investmentInitService.investmentDoctorFormData.investmentInitId).subscribe(response => {
+      debugger;
+      var data=response[0] as IInvestmentDoctor;
+      if( data!==undefined)
+      {
+      this.investmentInitService.investmentDoctorFormData=data;
+      this.investmentInitService.investmentDoctorFormData.doctorName=String(data.doctorId);
+      this.onChangeDoctorInDoc();
+      this.onChangeInstitutionInDoc();
+    }
+    else{
+      this.toastr.warning('No Data Found', 'Investment ');
+    }
+      
+    }, error => {
+        console.log(error);
+    });
+  }
   ngOnInit() {
     this.getDonation();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-green' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
   }
   onChangeDonationTo(){
-debugger;
-    if(this.investmentInitService.investmentInitFormData.donationTo=="Doctor")
+    if(this.investmentInitService.investmentInitFormData.donationTo=="Doctor" )
     {
-this.getDoctor();
-this. getInstitution();
+      if(this.investmentInitService.investmentDoctorFormData.id==null || this.investmentInitService.investmentDoctorFormData.id==undefined || this.investmentInitService.investmentDoctorFormData.id==0)
+      {
+      this.investmentInitService.investmentDoctorFormData=new InvestmentDoctor();
+      this.getDoctor();
+      this. getInstitution();
+     }
+    }
+    else if(this.investmentInitService.investmentInitFormData.donationTo=="Institute")
+    {if(this.investmentInitService.investmentInstitutionFormData.id==null || this.investmentInitService.investmentInstitutionFormData.id==undefined || this.investmentInitService.investmentInstitutionFormData.id==0)
+      {
+      this.investmentInitService.investmentDoctorFormData=new InvestmentDoctor();
+      this.getDoctor();
+      this. getInstitution();
+      }
     }
   }
-  onChangeDoctor(form: NgForm){
-    debugger;
+  onChangeDoctorInDoc(){
     for(var i=0;i<this.doctors.length;i++){
-    if(this.doctors[i].id==this.investmentInitService.investmentDoctorFormData.doctorId)
+    if(this.doctors[i].id==parseInt(this.investmentInitService.investmentDoctorFormData.doctorName))
     {
-      this.investmentInitService.investmentDoctorFormData.doctorName=this.doctors[i].doctorName;
+      //this.investmentInitService.investmentDoctorFormData.doctorName=this.doctors[i].doctorName;
+      this.investmentInitService.investmentDoctorFormData.doctorId=this.doctors[i].id;
       this.investmentInitService.investmentDoctorFormData.degree=this.doctors[i].degree;
       this.investmentInitService.investmentDoctorFormData.designation=this.doctors[i].designation;
       break;
     }
   }
   }
-  onChangeInstitution(form: NgForm){
-    debugger;
+  onChangeInstitutionInDoc(){
+    //debugger;
     for(var i=0;i<this.doctors.length;i++){
-    if(this.doctors[i].id==this.investmentInitService.investmentDoctorFormData.doctorId)
+    if(this.institutions[i].id==this.investmentInitService.investmentDoctorFormData.institutionId)
     {
-      this.investmentInitService.investmentDoctorFormData.doctorName=this.doctors[i].doctorName;
-      this.investmentInitService.investmentDoctorFormData.degree=this.doctors[i].degree;
-      this.investmentInitService.investmentDoctorFormData.designation=this.doctors[i].designation;
+      this.investmentInitService.investmentDoctorFormData.address=this.institutions[i].address;
+      
+      break;
+    }
+  }
+  }
+  onChangeInstitutionInInst(){
+    //debugger;
+    for(var i=0;i<this.doctors.length;i++){
+    if(this.institutions[i].id==this.investmentInitService.investmentInstitutionFormData.institutionId)
+    {
+      this.investmentInitService.investmentInstitutionFormData.address=this.institutions[i].address;
+      this.investmentInitService.investmentInstitutionFormData.institutionType=this.institutions[i].institutionType;
+      
       break;
     }
   }
@@ -87,7 +185,7 @@ this. getInstitution();
   }
   getDoctor(){
     this.investmentInitService.getDoctors().subscribe(response => {
-      debugger;
+      //debugger;
       this.doctors = response as IDoctor[];
     }, error => {
         console.log(error);
@@ -109,7 +207,7 @@ this. getInstitution();
  }
  getProduct(){
   this.investmentInitService.getProduct().subscribe(response => {
-    debugger;
+    //debugger;
     this.products = response as IProduct[];
   }, error => {
       console.log(error);
@@ -117,27 +215,103 @@ this. getInstitution();
 }
   onSubmit(form: NgForm) {
     if (this.investmentInitService.investmentInitFormData.id == 0)
-      this.insertInvestment(form);
+      this.insertInvestment();
     else
-      this.updateInvestment(form);
+      this.updateInvestment();
   }
-  insertInvestment(form: NgForm) {
+  insertInvestment() {
     this.investmentInitService.insertInvestmentInit().subscribe(
       res => {
-        debugger;
+        //debugger;
        this.investmentInitService.investmentInitFormData=res as IInvestmentInit;
-        //this.getCampaign();
-        this.toastr.success('Submitted successfully', 'Payment Detail Register')
+       this.investmentInitService.investmentDoctorFormData.investmentInitId=this.investmentInitService.investmentInitFormData.id;
+       this.investmentInitService.investmentInstitutionFormData.investmentInitId=this.investmentInitService.investmentInitFormData.id;
+        this.isValid=true;
+        this.toastr.success('Submitted successfully', 'Investment ')
       },
       err => { console.log(err); }
     );
   }
-  updateInvestment(form: NgForm) {
+  
+  updateInvestment() {
     this.investmentInitService.updateInvestmentInit().subscribe(
       res => {
+        //debugger;
+        this.isValid=true;
+        this.investmentInitService.investmentDoctorFormData.investmentInitId=this.investmentInitService.investmentInitFormData.id;
+       this.investmentInitService.investmentInstitutionFormData.investmentInitId=this.investmentInitService.investmentInitFormData.id;
+        this.toastr.info('Updated successfully', 'Investment ')
+      },
+      err => { console.log(err); }
+    );
+  }
+  insertInvestmentDoctor() {
+    debugger;
+    if(this.investmentInitService.investmentDoctorFormData.investmentInitId==null || this.investmentInitService.investmentDoctorFormData.investmentInitId==undefined || this.investmentInitService.investmentDoctorFormData.investmentInitId==0)
+    {
+      this.toastr.warning('Insert Investment Initialisation First', 'Investment ');
+     return false;
+    }
+    if(this.investmentInitService.investmentInitFormData.donationTo!=="Doctor")
+    {
+      this.updateInvestment();
+    }
+    if(this.investmentInitService.investmentDoctorFormData.doctorId==null || this.investmentInitService.investmentDoctorFormData.doctorId==undefined || this.investmentInitService.investmentDoctorFormData.doctorId==0)
+    {
+      this.toastr.warning('Select Doctor First', 'Investment ', {
+        positionClass: 'toast-top-right' 
+     });
+     return false;
+    }
+    if(this.investmentInitService.investmentDoctorFormData.institutionId==null || this.investmentInitService.investmentDoctorFormData.institutionId==undefined || this.investmentInitService.investmentDoctorFormData.institutionId==0)
+    {
+      this.toastr.warning('Select Institute First', 'Investment ', {
+        positionClass: 'toast-top-right' 
+     });
+     return false;
+    }
+    this.investmentInitService.insertInvestmentDoctor().subscribe(
+      res => {
         debugger;
-        //this.getCampaign();
-        this.toastr.info('Updated successfully', 'Payment Detail Register')
+       this.investmentInitService.investmentDoctorFormData=res as IInvestmentDoctor;
+        this.toastr.success('Save successfully', 'Investment ');
+      },
+      err => { console.log(err); }
+    );
+  }
+  insertInvestmentInstitution() {
+    debugger;
+    if(this.investmentInitService.investmentInstitutionFormData.investmentInitId==null || this.investmentInitService.investmentInstitutionFormData.investmentInitId==undefined || this.investmentInitService.investmentInstitutionFormData.investmentInitId==0)
+    {
+      this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
+        positionClass: 'toast-top-right' 
+     });
+     return false;
+    }
+    if(this.investmentInitService.investmentInitFormData.donationTo!=="Institution")
+    {
+      this.updateInvestment();
+    }
+    if(this.investmentInitService.investmentInstitutionFormData.resposnsibleDoctorId==null || this.investmentInitService.investmentInstitutionFormData.resposnsibleDoctorId==undefined || this.investmentInitService.investmentInstitutionFormData.resposnsibleDoctorId==0)
+    {
+      this.toastr.warning('Select Institution First', 'Investment ', {
+        positionClass: 'toast-top-right' 
+     });
+     return false;
+    }
+    if(this.investmentInitService.investmentInstitutionFormData.institutionId==null || this.investmentInitService.investmentInstitutionFormData.institutionId==undefined || this.investmentInitService.investmentInstitutionFormData.institutionId==0)
+    {
+      this.toastr.warning('Select Institute First', 'Investment ', {
+        positionClass: 'toast-top-right' 
+     });
+     return false;
+    }
+    this.investmentInitService.insertInvestmentInstitution().subscribe(
+      res => {
+        debugger;
+       this.investmentInitService.investmentInstitutionFormData=res as IInvestmentInstitution;
+       this.onChangeInstitutionInInst();
+        this.toastr.success('Save successfully', 'Investment ');
       },
       err => { console.log(err); }
     );
@@ -148,5 +322,12 @@ this. getInstitution();
   resetPage(form: NgForm) {
     form.reset();
     this.investmentInitService.investmentInitFormData=new InvestmentInit();
+    this.isValid=false;
+  }
+  resetInvestmentDoctor() {
+    this.investmentInitService.investmentDoctorFormData=new InvestmentDoctor();
+  }
+  resetInvestmentInstitute() {
+    this.investmentInitService.investmentInstitutionFormData=new InvestmentInstitution();
   }
 }

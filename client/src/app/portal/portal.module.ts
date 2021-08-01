@@ -40,7 +40,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     FooterComponent,
     MarketGroupComponent,
     ApprAuthConfigComponent,
-    InvestmentInitComponent
+    InvestmentInitComponent,
   ],
   providers: [DatePipe]
 })

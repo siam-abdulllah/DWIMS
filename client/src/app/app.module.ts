@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TopnavComponent } from './mastertheme/topnav/topnav.component';
@@ -48,7 +47,9 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     MasterRoutingModule,
     NgxSpinnerModule,
     ToastrModule.forRoot({
-      positionClass :'toast-bottom-right'
+      timeOut: 10000,
+    positionClass: 'toast-top-right',
+    preventDuplicates: true,
     })
   ],
   providers: [

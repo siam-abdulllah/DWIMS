@@ -3,6 +3,7 @@ export interface IInstitution {
     id: number;
     institutionName: string;
     institutionCode: string;
+    address: string;
     institutionID: number;
     institutionType: string;
     status: string; 
@@ -13,6 +14,7 @@ export class Institution implements IInstitution {
     id: number=0;
     institutionName: string;
     institutionCode: string;
+    address: string;
     institutionID: number;
     institutionType: string;
     setOn: Date;

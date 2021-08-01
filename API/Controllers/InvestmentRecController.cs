@@ -106,7 +106,7 @@ namespace API.Controllers
             var invRec = new InvestmentRecComment
             {
                 //ReferenceNo = investmentInitDto.ReferenceNo,
-                InvestmenRecId = investmentRecDto.InvestmenRecId,
+                InvestmentRecId = investmentRecDto.InvestmentRecId,
                 //InvestmentInitId = investmentRecDto.InvestmenRecId,
                 EmployeeId = investmentRecDto.EmployeeId,
                 Comments = investmentRecDto.Comments,
@@ -119,7 +119,7 @@ namespace API.Controllers
             return new InvestmentRecCommentDto
             {
                 Id = invRec.Id,
-                InvestmenRecId = investmentRecDto.InvestmenRecId,
+                InvestmentRecId = investmentRecDto.InvestmentRecId,
                 EmployeeId = investmentRecDto.EmployeeId,
                 Comments = investmentRecDto.Comments,
                 RecStatus = investmentRecDto.RecStatus,
@@ -159,7 +159,7 @@ namespace API.Controllers
             var invRec = new InvestmentRecProducts
             {
                 //ReferenceNo = investmentInitDto.ReferenceNo,
-                InvestmenRecId = investmentRecDto.InvestmenRecId,
+                InvestmenRecCmntId = investmentRecDto.InvestmenRecCmntId,
                 ProductId = investmentRecDto.ProductId,
                 SetOn = DateTimeOffset.Now
             };
@@ -169,7 +169,7 @@ namespace API.Controllers
             return new InvestmentRecProductsDto
             {
                 Id = invRec.Id,
-                InvestmenRecId = investmentRecDto.InvestmenRecId,
+                InvestmenRecCmntId = investmentRecDto.InvestmenRecCmntId,
                 ProductId = investmentRecDto.ProductId,
             };
         }
@@ -182,7 +182,7 @@ namespace API.Controllers
             var invRec = new InvestmentRecProducts
             {
                 Id = investmentRecDto.Id,
-                InvestmenRecId = investmentRecDto.InvestmenRecId,
+                InvestmenRecCmntId = investmentRecDto.InvestmenRecCmntId,
                 ProductId = investmentRecDto.ProductId,
                 ModifiedOn = DateTimeOffset.Now,
             };
@@ -192,7 +192,7 @@ namespace API.Controllers
             return new InvestmentRecProductsDto
             {
                 Id = invRec.Id,
-                InvestmenRecId = investmentRecDto.InvestmenRecId,
+                InvestmenRecCmntId = investmentRecDto.InvestmenRecCmntId,
                 ProductId = investmentRecDto.ProductId,
             };
         }

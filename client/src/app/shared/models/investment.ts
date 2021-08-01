@@ -14,7 +14,7 @@ export class InvestmentInit implements IInvestmentInit {
     proposeFor: string=null;
     donationType: string=null;
     donationTo: string=null;
-    EmployeeId: number=1;
+    EmployeeId: number=2;
 }
 export interface IInvestmentDetail {
     id: number;
@@ -65,10 +65,11 @@ export interface IInvestmentDoctor {
     institutionId: number;
     doctorId: number;
     doctorName: string;
+    address: string;
     degree: string;
     designation: string;
-    docotrCategory: string;
-    docotrType: string;
+    doctorCategory: string;
+    doctorType: string;
     practiceDayPerMonth: string;
     patientsPerDay: string;
     
@@ -81,9 +82,10 @@ export class InvestmentDoctor implements IInvestmentDoctor {
     doctorId: number=null;
     degree: string;
     designation: string;
-    docotrCategory: string;
-    doctorName: string;
-    docotrType: string;
+    doctorCategory: string=null;
+    doctorName: string=null;
+    address: string;
+    doctorType: string=null;
     practiceDayPerMonth: string;
     patientsPerDay: string;
 }
@@ -92,6 +94,8 @@ export interface IInvestmentInstitution {
     investmentInitId: number;
     institutionId: number;
     resposnsibleDoctorId: number;
+    institutionType: string;
+    address: string;
     noOfBed: string;
     departmentUnit: string;
     
@@ -100,8 +104,10 @@ export interface IInvestmentInstitution {
 export class InvestmentInstitution implements IInvestmentInstitution {
     id: number=0;
     investmentInitId: number;
-    institutionId: number;
-    resposnsibleDoctorId: number;
+    institutionId: number=null;
+    resposnsibleDoctorId: number=null;
+    institutionType: string;
+    address: string;
     noOfBed: string;
     departmentUnit: string;
 }

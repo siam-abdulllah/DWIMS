@@ -16,8 +16,8 @@ namespace Core.Entities
         public int InstitutionId { get; set; }
         [ForeignKey("InstitutionId")]
         public InstitutionInfo InstitutionInfo { get; set; }
-        public string DocotrCategory { get; set; }
-        public string DocotrType { get; set; }
+        public string DoctorCategory { get; set; }
+        public string DoctorType { get; set; }
         public string PracticeDayPerMonth { get; set; }
         public string PatientsPerDay { get; set; }
     }

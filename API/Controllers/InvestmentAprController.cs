@@ -157,7 +157,7 @@ namespace API.Controllers
             var invApr = new InvestmentAprProducts
             {
                 //ReferenceNo = investmentInitDto.ReferenceNo,
-                InvestmentAprId = investmentAprDto.InvestmentAprId,
+                InvestmentAprCmntId = investmentAprDto.InvestmentAprCmntId,
                 ProductId = investmentAprDto.ProductId,
                 SetOn = DateTimeOffset.Now
             };
@@ -167,7 +167,7 @@ namespace API.Controllers
             return new InvestmentAprProductsDto
             {
                 Id = invApr.Id,
-                InvestmentAprId = investmentAprDto.InvestmentAprId,
+                InvestmentAprCmntId = investmentAprDto.InvestmentAprCmntId,
                 ProductId = investmentAprDto.ProductId,
             };
         }
@@ -180,7 +180,7 @@ namespace API.Controllers
             var invApr = new InvestmentAprProducts
             {
                 Id = investmentAprDto.Id,
-                InvestmentAprId = investmentAprDto.InvestmentAprId,
+                InvestmentAprCmntId = investmentAprDto.InvestmentAprCmntId,
                 ProductId = investmentAprDto.ProductId,
                 ModifiedOn = DateTimeOffset.Now,
             };
@@ -190,7 +190,7 @@ namespace API.Controllers
             return new InvestmentAprProductsDto
             {
                 Id = invApr.Id,
-                InvestmentAprId = investmentAprDto.InvestmentAprId,
+                InvestmentAprCmntId = investmentAprDto.InvestmentAprCmntId,
                 ProductId = investmentAprDto.ProductId,
             };
         }

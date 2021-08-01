@@ -5,10 +5,10 @@ namespace Core.Entities
 {
     public class InvestmentRecComment : BaseEntity
     {
-        public int InvestmenRecId { get; set; }
-        [ForeignKey("InvestmenRecId")]
-        public InvestmentRec InvestmentRec { get; set; }
+        public int? InvestmentRecId { get; set; }
+        [ForeignKey("InvestmentRecId")]
 
+        public InvestmentRec InvestmentRec { get; set; }
         public int EmployeeId { get; set; }
         public Employee Employee { get; set; }
 

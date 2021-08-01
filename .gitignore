@@ -23,3 +23,5 @@ Core/obj/Debug/netstandard2.1/Core.assets.cache
 *.cache
 *.dll
 *.pdb
+.vs/ShalimAhmed/v16/.suo
+API/bin/Debug/netcoreapp3.1/appsettings.Development.json

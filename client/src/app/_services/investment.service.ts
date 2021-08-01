@@ -52,14 +52,49 @@ export class InvestmentInitService {
   getDoctors(){    
     return this.http.get(this.baseUrl + 'doctor/doctorsForInvestment');
   }
+  getInvestmentDoctors(investmentInitId:number){    
+    return this.http.get(this.baseUrl + 'investment/investmentDoctors/'+investmentInitId);
+  }
+  getInvestmentInstitutions(investmentInitId:number){    
+    return this.http.get(this.baseUrl + 'investment/investmentInstitutions/'+investmentInitId);
+  }
+  getInvestmentInit(){    
+    let params = new HttpParams();
+    if (this.genParams.search) {
+      params = params.append('search', this.genParams.search);
+    }
+    params = params.append('sort', this.genParams.sort);
+    params = params.append('pageIndex', this.genParams.pageNumber.toString());
+    params = params.append('pageSize', this.genParams.pageSize.toString());
+    return this.http.get<IInvestmentInitPagination>(this.baseUrl + 'investment/investmentInits', { observe: 'response', params })
+    //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
+    .pipe(
+      map(response => {
+        this.investmentInits = [...this.investmentInits, ...response.body.data]; 
+        this.investmentInitPagination = response.body;
+        return this.investmentInitPagination;
+      })
+    );
+    
+  }
   insertInvestmentInit() {
     debugger;
     return this.http.post(this.baseUrl+ 'investment/insertInit', this.investmentInitFormData);
 
   }
+  
   updateInvestmentInit() {
     return this.http.post(this.baseUrl+ 'investment/updateInit',  this.investmentInitFormData);
   }
+  insertInvestmentDoctor() {
+    debugger;
+    return this.http.post(this.baseUrl+ 'investment/insertInvestmentDoctor', this.investmentDoctorFormData);
 
+  }
+  insertInvestmentInstitution() {
+    debugger;
+    return this.http.post(this.baseUrl+ 'investment/insertInvestmentInstitution', this.investmentInstitutionFormData);
+
+  }
 }
 
