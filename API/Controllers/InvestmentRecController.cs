@@ -107,6 +107,7 @@ namespace API.Controllers
             {
                 //ReferenceNo = investmentInitDto.ReferenceNo,
                 InvestmenRecId = investmentRecDto.InvestmenRecId,
+                //InvestmentInitId = investmentRecDto.InvestmenRecId,
                 EmployeeId = investmentRecDto.EmployeeId,
                 Comments = investmentRecDto.Comments,
                 RecStatus = investmentRecDto.RecStatus, 
