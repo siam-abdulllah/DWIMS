@@ -13,10 +13,10 @@
                                     <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="investmentInitForm.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
                                 </div>
                                 <div class="col-sm-2">
-                                    <button class="btn btn-info btn-lg btn-block" type="button" (click)="getInvestmentInit()"><i class="fa fa-search" ></i>Search</button>
+                                    <button class="btn btn-info btn-lg btn-block" type="button" (click)="getInvestmentInit()"><i class="fa fa-search" ></i>&nbsp; Search</button>
                                 </div>
                                 <div class="col-sm-2">
-                                    <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetPage(investmentInitForm)"><i class="fa fa-search"></i>Reset</button>
+                                    <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetPage(investmentInitForm)"><i class="fa fa-recycle"></i>&nbsp; Reset</button>
                                 </div>
                             </div>
                         </div>
@@ -51,17 +51,13 @@
                                         <select class="form-control " id="donationType" name="donationType" #donationType="ngModel" [(ngModel)]="investmentInitService.investmentInitFormData.donationType" required [class.invalid]="donationType.invalid && donationType.touched">
                                             <option  [ngValue]="null">Select Donation Type</option>
                                             <option *ngFor="let a of donations" [value]="a.donationTypeName">{{a.donationTypeName}}</option>
-                                   
-                                            <!-- <option value="Donation">Donation</option>
-                                            <option value="Gift">Gift</option>
-                                            <option value="Honorarium">Honorarium</option> -->
                                         </select>
                                     </div>
                                     <div class="col-md-2">
                                         <label>Donation To</label>
                                     </div>
                                     <div class="col-md-3">
-                                        <select class="form-control " (change)="onChangeDonationTo()" id="donationTo" name="donationTo" #donationTo="ngModel" [(ngModel)]="investmentInitService.investmentInitFormData.donationTo" required [class.invalid]="donationTo.invalid && donationTo.touched">
+                                        <select class="form-control " [disabled]="isDonationValid" (change)="onChangeDonationTo()" id="donationTo" name="donationTo" #donationTo="ngModel" [(ngModel)]="investmentInitService.investmentInitFormData.donationTo" required [class.invalid]="donationTo.invalid && donationTo.touched">
                                             <option  [ngValue]="null">Select Donation To</option>
                                             <option value="Doctor">Doctor</option>
                                             <option value="Institution">Institution</option>
@@ -74,7 +70,6 @@
                             </div>
                             <fieldset *ngIf="investmentInitService.investmentInitFormData.donationTo=='Doctor'">
                                 <!-- <legend>Doctor Profile</legend> -->
-
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-sm-6">
@@ -84,9 +79,9 @@
                                         <div class="col-sm-2" *ngIf="isValid">
                                             <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentDoctor()"><i class="fa fa-save"></i>&nbsp; Save</button>
                                         </div>
-                                        <!-- <div class="col-sm-2" *ngIf="isValid">
-                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetInvestmentDoctor()"><i class="fa fa-search"></i>Reset</button>
-                                        </div> -->
+                                        <div class="col-sm-2" *ngIf="isValid">
+                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentDoctor()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -198,9 +193,9 @@
                                         <div class="col-sm-2" *ngIf="isValid">
                                             <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentInstitution()"><i class="fa fa-save"></i>&nbsp; Save</button>
                                         </div>
-                                        <!-- <div class="col-sm-2" *ngIf="isValid">
-                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetInvestmentInstitution()"><i class="fa fa-search"></i>Reset</button>
-                                        </div> -->
+                                        <div class="col-sm-2" *ngIf="isValid">
+                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentInstitution()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
