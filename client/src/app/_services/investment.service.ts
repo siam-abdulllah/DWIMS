@@ -96,5 +96,17 @@ export class InvestmentInitService {
     return this.http.post(this.baseUrl+ 'investment/insertInvestmentInstitution', this.investmentInstitutionFormData);
 
   }
+  removeInvestmentDoctor() {
+    debugger;
+    return this.http.post(this.baseUrl+ 'investment/removeInvestmentDoctor', this.investmentDoctorFormData,
+    {responseType: 'text'});
+
+  }
+  removeInvestmentInstitution() {
+    debugger;
+    return this.http.post(this.baseUrl+ 'investment/removeInvestmentInstitution', this.investmentInstitutionFormData,
+    {responseType: 'text'});
+
+  }
 }
 

@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace API.Controllers
@@ -268,5 +270,57 @@ namespace API.Controllers
                 throw ex;
             }
         }
+        [HttpPost("removeInvestmentInstitution")]
+        public async Task<IActionResult> RemoveInvestmentInstitution(InvestmentInstitutionDto investmentInstitutionDto)
+        {
+            try
+            {
+                var alreadyExistSpec = new InvestmentInstitutionSpecification(investmentInstitutionDto.InvestmentInitId);
+                var alreadyExistInvestmentInstitutionList = await _investmentInstitutionRepo.ListAsync(alreadyExistSpec);
+                if (alreadyExistInvestmentInstitutionList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentInstitutionList)
+                    {
+                        _investmentInstitutionRepo.Delete(v);
+                        _investmentInstitutionRepo.Savechange();
+                    }
+
+                    return Ok();
+                }
+                return NotFound();
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        } [HttpPost("removeInvestmentDoctor")]
+        public async Task<IActionResult> RemoveInvestmentDoctor(InvestmentDoctorDto investmentDoctorDto)
+        {
+            try
+            {
+                //var response = new HttpResponseMessage();
+                var alreadyExistSpec = new InvestmentDoctorSpecification(investmentDoctorDto.InvestmentInitId);
+                var alreadyExistInvestmentDoctorList = await _investmentDoctorRepo.ListAsync(alreadyExistSpec);
+                if (alreadyExistInvestmentDoctorList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentDoctorList)
+                    {
+                        _investmentDoctorRepo.Delete(v);
+                        _investmentDoctorRepo.Savechange();
+                    }
+
+                    //response.Headers.Add("Message", "Succsessfuly Deleted!!!");
+                    //return response;
+                    return Ok("Succsessfuly Deleted!!!");
+                }
+                //response.Headers.Add("Message", "Failed!!!");
+                //return response;
+                return NotFound();
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        } 
     }
 }

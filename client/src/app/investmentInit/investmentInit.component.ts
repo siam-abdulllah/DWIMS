@@ -31,6 +31,7 @@ export class InvestmentInitComponent implements OnInit {
   investmentInits: IInvestmentInit[];
   investmentDoctors: IInvestmentDoctor[];
   isValid: boolean=false; 
+  isDonationValid: boolean=false; 
   markets: IMarket[]; 
   products: IProduct[];
   doctors: IDoctor[];
@@ -55,6 +56,7 @@ export class InvestmentInitComponent implements OnInit {
       this.investmentInitService.investmentInitFormData = Object.assign({}, selectedRecord);
       this.investmentInitService.investmentDoctorFormData.investmentInitId =selectedRecord.id;
       this.investmentInitService.investmentInstitutionFormData.investmentInitId =selectedRecord.id;
+      this.isDonationValid=true;
       if(this.investmentInitService.investmentInitFormData.donationTo=="Doctor")
     {
       this.getDoctor();
@@ -123,6 +125,7 @@ export class InvestmentInitComponent implements OnInit {
     this.bsValue = new Date();
   }
   onChangeDonationTo(){
+    debugger;
     if(this.investmentInitService.investmentInitFormData.donationTo=="Doctor" )
     {
       if(this.investmentInitService.investmentDoctorFormData.id==null || this.investmentInitService.investmentDoctorFormData.id==undefined || this.investmentInitService.investmentDoctorFormData.id==0)
@@ -132,7 +135,7 @@ export class InvestmentInitComponent implements OnInit {
       this. getInstitution();
      }
     }
-    else if(this.investmentInitService.investmentInitFormData.donationTo=="Institute")
+    else if(this.investmentInitService.investmentInitFormData.donationTo=="Institution")
     {if(this.investmentInitService.investmentInstitutionFormData.id==null || this.investmentInitService.investmentInstitutionFormData.id==undefined || this.investmentInitService.investmentInstitutionFormData.id==0)
       {
       this.investmentInitService.investmentDoctorFormData=new InvestmentDoctor();
@@ -154,7 +157,7 @@ export class InvestmentInitComponent implements OnInit {
   }
   }
   onChangeInstitutionInDoc(){
-    //debugger;
+    debugger;
     for(var i=0;i<this.doctors.length;i++){
     if(this.institutions[i].id==this.investmentInitService.investmentDoctorFormData.institutionId)
     {
@@ -215,11 +218,11 @@ export class InvestmentInitComponent implements OnInit {
 }
   onSubmit(form: NgForm) {
     if (this.investmentInitService.investmentInitFormData.id == 0)
-      this.insertInvestment();
+      this.insertInvestmentInit();
     else
-      this.updateInvestment();
+      this.updateInvestmentInit();
   }
-  insertInvestment() {
+  insertInvestmentInit() {
     this.investmentInitService.insertInvestmentInit().subscribe(
       res => {
         //debugger;
@@ -233,10 +236,10 @@ export class InvestmentInitComponent implements OnInit {
     );
   }
   
-  updateInvestment() {
+  updateInvestmentInit() {
     this.investmentInitService.updateInvestmentInit().subscribe(
       res => {
-        //debugger;
+        debugger;
         this.isValid=true;
         this.investmentInitService.investmentDoctorFormData.investmentInitId=this.investmentInitService.investmentInitFormData.id;
        this.investmentInitService.investmentInstitutionFormData.investmentInitId=this.investmentInitService.investmentInitFormData.id;
@@ -246,16 +249,15 @@ export class InvestmentInitComponent implements OnInit {
     );
   }
   insertInvestmentDoctor() {
-    debugger;
     if(this.investmentInitService.investmentDoctorFormData.investmentInitId==null || this.investmentInitService.investmentDoctorFormData.investmentInitId==undefined || this.investmentInitService.investmentDoctorFormData.investmentInitId==0)
     {
       this.toastr.warning('Insert Investment Initialisation First', 'Investment ');
      return false;
     }
-    if(this.investmentInitService.investmentInitFormData.donationTo!=="Doctor")
-    {
-      this.updateInvestment();
-    }
+    // if(this.investmentInitService.investmentInitFormData.donationTo!=="Doctor")
+    // {
+    //   this.updateInvestmentInit();
+    // }
     if(this.investmentInitService.investmentDoctorFormData.doctorId==null || this.investmentInitService.investmentDoctorFormData.doctorId==undefined || this.investmentInitService.investmentDoctorFormData.doctorId==0)
     {
       this.toastr.warning('Select Doctor First', 'Investment ', {
@@ -272,9 +274,13 @@ export class InvestmentInitComponent implements OnInit {
     }
     this.investmentInitService.insertInvestmentDoctor().subscribe(
       res => {
-        debugger;
-       this.investmentInitService.investmentDoctorFormData=res as IInvestmentDoctor;
-        this.toastr.success('Save successfully', 'Investment ');
+       var data=res as IInvestmentDoctor;
+       this.investmentInitService.investmentDoctorFormData=data;
+       this.investmentInitService.investmentDoctorFormData.doctorName=String(data.doctorId);
+       this.onChangeDoctorInDoc();
+       this.onChangeInstitutionInDoc();
+       this.updateInvestmentInit();
+       this.toastr.success('Save successfully', 'Investment ');
       },
       err => { console.log(err); }
     );
@@ -288,10 +294,10 @@ export class InvestmentInitComponent implements OnInit {
      });
      return false;
     }
-    if(this.investmentInitService.investmentInitFormData.donationTo!=="Institution")
-    {
-      this.updateInvestment();
-    }
+    // if(this.investmentInitService.investmentInitFormData.donationTo!=="Institution")
+    // {
+      
+    // }
     if(this.investmentInitService.investmentInstitutionFormData.resposnsibleDoctorId==null || this.investmentInitService.investmentInstitutionFormData.resposnsibleDoctorId==undefined || this.investmentInitService.investmentInstitutionFormData.resposnsibleDoctorId==0)
     {
       this.toastr.warning('Select Institution First', 'Investment ', {
@@ -311,6 +317,7 @@ export class InvestmentInitComponent implements OnInit {
         debugger;
        this.investmentInitService.investmentInstitutionFormData=res as IInvestmentInstitution;
        this.onChangeInstitutionInInst();
+       this.updateInvestmentInit();
         this.toastr.success('Save successfully', 'Investment ');
       },
       err => { console.log(err); }
@@ -324,10 +331,31 @@ export class InvestmentInitComponent implements OnInit {
     this.investmentInitService.investmentInitFormData=new InvestmentInit();
     this.isValid=false;
   }
-  resetInvestmentDoctor() {
-    this.investmentInitService.investmentDoctorFormData=new InvestmentDoctor();
+  removeInvestmentDoctor() {
+    var c = confirm("Are you sure you want to delete that?"); 
+    if (c == true) {  
+    this.investmentInitService.removeInvestmentDoctor().subscribe(
+      res => {
+        this.toastr.success(res);
+        this.isDonationValid=false;
+        this.investmentInitService.investmentDoctorFormData=new InvestmentDoctor();
+      },
+      err => { debugger;console.log(err); }
+    );
   }
-  resetInvestmentInstitute() {
-    this.investmentInitService.investmentInstitutionFormData=new InvestmentInstitution();
   }
+  removeInvestmentInstitute() {
+    var c = confirm("Are you sure you want to delete that?"); 
+    if (c == true) {  
+    this.investmentInitService.removeInvestmentInstitution().subscribe(
+      res => {
+        debugger;
+        this.toastr.success(res);
+        this.isDonationValid=true;
+        this.investmentInitService.investmentInstitutionFormData=new InvestmentInstitution();
+      },
+      err => { console.log(err); }
+    );
+  }
+}
 }
