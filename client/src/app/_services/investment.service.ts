@@ -73,6 +73,9 @@ export class InvestmentInitService {
   getInvestmentDoctors(investmentInitId:number){    
     return this.http.get(this.baseUrl + 'investment/investmentDoctors/'+investmentInitId);
   }
+  getInvestmentTargetedProds(investmentInitId:number){    
+    return this.http.get(this.baseUrl + 'investment/investmentTargetedProds/'+investmentInitId);
+  }
   getInvestmentInstitutions(investmentInitId:number){    
     return this.http.get(this.baseUrl + 'investment/investmentInstitutions/'+investmentInitId);
   }
@@ -84,6 +87,9 @@ export class InvestmentInitService {
   }
   getInvestmentSociety(investmentInitId:number){    
     return this.http.get(this.baseUrl + 'investment/investmentSociety/'+investmentInitId);
+  }
+  getInvestmentDetails(investmentInitId:number){    
+    return this.http.get(this.baseUrl + 'investment/investmentDetails/'+investmentInitId);
   }
   getInvestmentInit(){    
     let params = new HttpParams();
@@ -113,6 +119,14 @@ export class InvestmentInitService {
   updateInvestmentInit() {
     return this.http.post(this.baseUrl+ 'investment/updateInit',  this.investmentInitFormData);
   }
+  insertInvestmentDetail() {
+    debugger;
+    return this.http.post(this.baseUrl+ 'investment/insertDetail', this.investmentDetailFormData);
+  }
+  
+  updateInvestmentDetail() {
+    return this.http.post(this.baseUrl+ 'investment/updateDetail',  this.investmentDetailFormData);
+  }
   insertInvestmentDoctor() {
     debugger;
     return this.http.post(this.baseUrl+ 'investment/insertInvestmentDoctor', this.investmentDoctorFormData);
@@ -136,6 +150,11 @@ export class InvestmentInitService {
   insertInvestmentSociety() {
     debugger;
     return this.http.post(this.baseUrl+ 'investment/insertInvestmentSociety', this.investmentSocietyFormData);
+
+  }
+  insertInvestmentTargetedProd() {
+    debugger;
+    return this.http.post(this.baseUrl+ 'investment/insertInvestmentTargetedProd', this.investmentSocietyFormData);
 
   }
   removeInvestmentDoctor() {
@@ -165,6 +184,12 @@ export class InvestmentInitService {
   removeInvestmentSociety() {
     debugger;
     return this.http.post(this.baseUrl+ 'investment/removeInvestmentSociety', this.investmentSocietyFormData,
+    {responseType: 'text'});
+
+  }
+  removeInvestmentTargetedProd() {
+    debugger;
+    return this.http.post(this.baseUrl+ 'investment/removeInvestmentTargetedProd', this.investmentTargetedProdFormData,
     {responseType: 'text'});
 
   }

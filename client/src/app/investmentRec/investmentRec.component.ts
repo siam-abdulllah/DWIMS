@@ -35,8 +35,6 @@ export class InvestmentInitComponent implements OnInit {
   // genParams: GenericParams;
   // campaigns: ICampaign[]; 
   investmentInits: IInvestmentInit[];
-  investmentTargetedProds: IInvestmentTargetedProd[];
-  investmentDetails: IInvestmentDetail[];
   investmentDoctors: IInvestmentDoctor[];
   isValid: boolean=false; 
   isDonationValid: boolean=false; 
@@ -74,7 +72,6 @@ export class InvestmentInitComponent implements OnInit {
       this.investmentInitService.investmentCampaignFormData.investmentInitId =selectedRecord.id;
       this.investmentInitService.investmentBcdsFormData.investmentInitId =selectedRecord.id;
       this.investmentInitService.investmentSocietyFormData.investmentInitId =selectedRecord.id;
-      this.investmentInitService.investmentDetailFormData.investmentInitId =selectedRecord.id;
       this.isDonationValid=true;
       if(this.investmentInitService.investmentInitFormData.donationTo=="Doctor")
     {
@@ -107,7 +104,7 @@ export class InvestmentInitComponent implements OnInit {
       this.getSociety();
       this.getInvestmentSociety();
     }
-      this.getInvestmentDetails();
+      //this.getInvestmentInits();
       this.isValid=true;
       this.InvestmentInitSearchModalRef.hide()
      }
@@ -117,22 +114,6 @@ export class InvestmentInitComponent implements OnInit {
        this.investmentInits = response.data;
        this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
       }, error => {
-          console.log(error);
-     });
-   }
-   getInvestmentDetails(){
-      this.investmentInitService.getInvestmentDetails(this.investmentInitService.investmentDetailFormData.investmentInitId ).subscribe(response => {
-        debugger;
-        var data=response[0] as IInvestmentDetail;
-        if(data!==undefined)
-        {
-        this.investmentInitService.investmentDetailFormData=data;
-       this.investmentInitService.investmentDetailFormData.fromDate=new Date(data.fromDate);
-        this.investmentInitService.investmentDetailFormData.toDate=new Date(data.toDate);
-      } else{
-        this.toastr.warning('No Data Found', 'Investment ');
-      }
-         }, error => {
           console.log(error);
      });
    }
@@ -226,23 +207,6 @@ export class InvestmentInitComponent implements OnInit {
       this.investmentInitService.investmentDoctorFormData.doctorName=String(data.doctorId);
       this.onChangeDoctorInDoc();
       this.onChangeInstitutionInDoc();
-    }
-    else{
-      this.toastr.warning('No Data Found', 'Investment ');
-    }
-      
-    }, error => {
-        console.log(error);
-    });
-  }
-   getInvestmentTargetedProd(){
-    this.investmentInitService.getInvestmentTargetedProds(this.investmentInitService.investmentDoctorFormData.investmentInitId).subscribe(response => {
-      debugger;
-      var data=response as IInvestmentTargetedProd[];
-      if( data!==undefined)
-      {
-      this.investmentTargetedProds=data;
-     
     }
     else{
       this.toastr.warning('No Data Found', 'Investment ');
@@ -398,28 +362,6 @@ export class InvestmentInitComponent implements OnInit {
     
   
   }
-  changeDateInDetail(){
-    debugger;
-    
-    //this.printingDate=this.getDigitBanglaFromEnglish(this.datePipe.transform(value, "dd/MM/yyyy"));
-    if(this.investmentInitService.investmentDetailFormData.fromDate==null || this.investmentInitService.investmentDetailFormData.fromDate==undefined )
-    {
-      
-     return false;
-    }
-    if(this.investmentInitService.investmentDetailFormData.toDate==null || this.investmentInitService.investmentDetailFormData.toDate==undefined )
-    {
-      
-     return false;
-    }
-    let dateFrom = this.investmentInitService.investmentDetailFormData.fromDate;
-    let dateTo = this.investmentInitService.investmentDetailFormData.toDate;
-    //let dateFrom = new Date();
-    //let dateTo = new Date();
-
-    this.investmentInitService.investmentDetailFormData.totalMonth = String(dateTo.getMonth() - dateFrom.getMonth() + (12 * (dateTo.getFullYear() - dateFrom.getFullYear())));
-
-  }
   getDonation(){
     this.investmentInitService.getDonations().subscribe(response => {
       this.donations = response as IDonation[];
@@ -508,6 +450,7 @@ export class InvestmentInitComponent implements OnInit {
       err => { console.log(err); }
     );
   }
+  
   updateInvestmentInit() {
     this.investmentInitService.updateInvestmentInit().subscribe(
       res => {
@@ -519,98 +462,6 @@ export class InvestmentInitComponent implements OnInit {
       },
       err => { console.log(err); }
     );
-  }
-  insertInvestmentDetails() {
-    if(this.investmentInitService.investmentInitFormData.id==null || this.investmentInitService.investmentInitFormData.id==undefined || this.investmentInitService.investmentInitFormData.id==0)
-    {
-      this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
-        positionClass: 'toast-top-right' 
-     });
-     return false;
-    }
-    if(this.investmentInitService.investmentDetailFormData.proposedAmount==null || this.investmentInitService.investmentDetailFormData.proposedAmount==undefined || this.investmentInitService.investmentDetailFormData.proposedAmount=="")
-    {
-      this.toastr.warning('Enter Proposed Amount First', 'Investment ', {
-        positionClass: 'toast-top-right' 
-     });
-     return false;
-    }
-    if(this.investmentInitService.investmentDetailFormData.purpose==null || this.investmentInitService.investmentDetailFormData.purpose==undefined || this.investmentInitService.investmentDetailFormData.purpose=="")
-    {
-      this.toastr.warning('Enter Purpose First', 'Investment ', {
-        positionClass: 'toast-top-right' 
-     });
-     return false;
-    }
-    if(this.investmentInitService.investmentDetailFormData.fromDate==null || this.investmentInitService.investmentDetailFormData.fromDate==undefined )
-    {
-      this.toastr.warning('Select From Date  First', 'Investment ', {
-        positionClass: 'toast-top-right' 
-     });
-     return false;
-    }
-    if(this.investmentInitService.investmentDetailFormData.toDate==null || this.investmentInitService.investmentDetailFormData.toDate==undefined )
-    {
-      this.toastr.warning('Select To Date  First', 'Investment ', {
-        positionClass: 'toast-top-right' 
-     });
-     return false;
-    }
-    if(this.investmentInitService.investmentDetailFormData.commitmentAllSBU==null || this.investmentInitService.investmentDetailFormData.commitmentAllSBU==undefined || this.investmentInitService.investmentDetailFormData.commitmentAllSBU=="")
-    {
-      this.toastr.warning('Enter Commitment All SBU First', 'Investment ', {
-        positionClass: 'toast-top-right' 
-     });
-     return false;
-    }
-    if(this.investmentInitService.investmentDetailFormData.commitmentOwnSBU==null || this.investmentInitService.investmentDetailFormData.commitmentOwnSBU==undefined || this.investmentInitService.investmentDetailFormData.commitmentOwnSBU=="")
-    {
-      this.toastr.warning('Enter Commitment Own SBU First', 'Investment ', {
-        positionClass: 'toast-top-right' 
-     });
-     return false;
-    }
-    if(this.investmentInitService.investmentDetailFormData.paymentMethod==null || this.investmentInitService.investmentDetailFormData.paymentMethod==undefined || this.investmentInitService.investmentDetailFormData.paymentMethod=="")
-    {
-      this.toastr.warning('Select Payment Method First', 'Investment ', {
-        positionClass: 'toast-top-right' 
-     });
-     return false;
-    }
-    
-    
-    this.investmentInitService.investmentDetailFormData.investmentInitId =this.investmentInitService.investmentInitFormData.id;
-     
-    if(this.investmentInitService.investmentDetailFormData.id==null || this.investmentInitService.investmentDetailFormData.id==undefined || this.investmentInitService.investmentDetailFormData.id==0)
-    {
-      this.investmentInitService.insertInvestmentDetail().subscribe(
-        res => {
-         var data=res as IInvestmentDetail;
-         this.investmentInitService.investmentDetailFormData=data;
-         //this.investmentInitService.investmentDoctorFormData.doctorName=String(data.doctorId);
-         this.investmentInitService.investmentDetailFormData.fromDate=new Date(data.fromDate);
-        this.investmentInitService.investmentDetailFormData.toDate=new Date(data.toDate);
-         this.isDonationValid=true;
-         this.toastr.success('Save successfully', 'Investment ');
-        },
-        err => { console.log(err); }
-      );
-    }
-    else{
-      this.investmentInitService.updateInvestmentDetail().subscribe(
-        res => {
-         var data=res as IInvestmentDetail;
-         this.investmentInitService.investmentDetailFormData=data;
-         //this.investmentInitService.investmentDoctorFormData.doctorName=String(data.doctorId);
-         this.investmentInitService.investmentDetailFormData.fromDate=new Date(data.fromDate);
-        this.investmentInitService.investmentDetailFormData.toDate=new Date(data.toDate);
-         this.isDonationValid=true;
-         this.toastr.success('Save successfully', 'Investment ');
-        },
-        err => { console.log(err); }
-      );
-    }
-    
   }
   insertInvestmentDoctor() {
     if(this.investmentInitService.investmentInitFormData.id==null || this.investmentInitService.investmentInitFormData.id==undefined || this.investmentInitService.investmentInitFormData.id==0)
@@ -830,56 +681,6 @@ export class InvestmentInitComponent implements OnInit {
       err => { console.log(err); }
     );
   }
-  insertInvestmentProd() {
-    debugger;
-    if(this.investmentInitService.investmentInitFormData.id==null || this.investmentInitService.investmentInitFormData.id==undefined || this.investmentInitService.investmentInitFormData.id==0)
-    {
-      this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
-        positionClass: 'toast-top-right' 
-     });
-     return false;
-    }
-   
-    if(this.investmentInitService.investmentTargetedProdFormData.productId==null || this.investmentInitService.investmentTargetedProdFormData.productId==undefined || this.investmentInitService.investmentTargetedProdFormData.productId==0)
-    {
-      this.toastr.warning('Select Product First', 'Investment ', {
-        positionClass: 'toast-top-right' 
-     });
-     return false;
-    }
-    if(this.investmentTargetedProds!==undefined){
-      for (let i = 0; i < this.investmentTargetedProds.length; i++) {
-        if(this.investmentTargetedProds[i].productInfo.id===this.investmentInitService.investmentTargetedProdFormData.productId)
-        {
-        alert("product already exist !");
-        return false;
-        }
-      }
-    }
-    this.investmentInitService.investmentTargetedProdFormData.investmentInitId =this.investmentInitService.investmentInitFormData.id;
-   
-    this.investmentInitService.insertInvestmentTargetedProd().subscribe(
-      res => {
-        debugger;
-       //this.investmentTargetedProds=res as IInvestmentTargetedProd[];
-       
-       //this.updateInvestmentInit();
-       
-       this.isDonationValid=true;
-        this.toastr.success('Save successfully', 'Investment ');
-      },
-      err => { console.log(err); }
-    );
-  }
-  editInvestmentTargetedProd(selectedRecord: IInvestmentTargetedProd) {
-    this.investmentInitService.investmentTargetedProdFormData = Object.assign({}, selectedRecord);
-    var e = (document.getElementById("marketCode")) as HTMLSelectElement;
-    var sel = e.selectedIndex;
-    var opt = e.options[sel];
-    var selectedMarketCode = opt.value;
-    var selectedMarketName = opt.innerHTML;
-    
-  }
   populateForm() {
     //this.investmentInitService.campaignFormData = Object.assign({}, selectedRecord);
   }
@@ -947,21 +748,6 @@ export class InvestmentInitComponent implements OnInit {
     var c = confirm("Are you sure you want to delete that?"); 
     if (c == true) {  
     this.investmentInitService.removeInvestmentBcds().subscribe(
-      res => {
-        debugger;
-        this.toastr.success(res);
-        this.isDonationValid=false;
-        this.investmentInitService.investmentBcdsFormData=new InvestmentBcds();
-      },
-      err => { console.log(err); }
-    );
-  }
-}
-removeInvestmentTargetedProd(selectedRecord: IInvestmentTargetedProd) {
-  this.investmentInitService.investmentTargetedProdFormData = Object.assign({}, selectedRecord);
-  var c = confirm("Are you sure you want to delete that?"); 
-    if (c == true) {  
-    this.investmentInitService.removeInvestmentTargetedProd().subscribe(
       res => {
         debugger;
         this.toastr.success(res);

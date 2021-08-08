@@ -17,6 +17,8 @@ namespace API.Controllers
     public class InvestmentController : BaseApiController
     {
         private readonly IGenericRepository<InvestmentInit> _investmentInitRepo;
+        private readonly IGenericRepository<InvestmentDetail> _investmentDetailRepo;
+        private readonly IGenericRepository<InvestmentTargetedProd> _investmentTargetedProdRepo;
         private readonly IGenericRepository<InvestmentDoctor> _investmentDoctorRepo;
         private readonly IGenericRepository<InvestmentInstitution> _investmentInstitutionRepo;
         private readonly IGenericRepository<InvestmentCampaign> _investmentCampaignRepo;
@@ -24,11 +26,13 @@ namespace API.Controllers
         private readonly IGenericRepository<InvestmentSociety> _investmentSocietyRepo;
         private readonly IMapper _mapper;
 
-        public InvestmentController(IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<InvestmentDoctor> investmentDoctorRepo,
+        public InvestmentController(IGenericRepository<InvestmentTargetedProd> investmentTargetedProdRepo, IGenericRepository<InvestmentInit> investmentInitRepo,IGenericRepository<InvestmentDetail> investmentDetailRepo, IGenericRepository<InvestmentDoctor> investmentDoctorRepo,
             IGenericRepository<InvestmentSociety> investmentSocietyRepo, IGenericRepository<InvestmentBcds> investmentBcdsRepo, IGenericRepository<InvestmentCampaign> investmentCampaignRepo, IGenericRepository<InvestmentInstitution> investmentInstitutionRepo, IMapper mapper)
         {
             _mapper = mapper;
             _investmentInitRepo = investmentInitRepo;
+            _investmentDetailRepo = investmentDetailRepo;
+            _investmentTargetedProdRepo = investmentTargetedProdRepo;
             _investmentDoctorRepo = investmentDoctorRepo;
             _investmentInstitutionRepo = investmentInstitutionRepo;
             _investmentCampaignRepo = investmentCampaignRepo;
@@ -148,7 +152,113 @@ namespace API.Controllers
                 throw;
             }
         }
+        [HttpPost("insertDetail")]
+        public  ActionResult<InvestmentDetailDto> InsertInvestmentDetail(InvestmentDetailDto investmentDetailDto)
+        {
+            try
+            {
+                
+                var investmentDetail = new InvestmentDetail
+                {
 
+                    ChequeTitle = investmentDetailDto.ChequeTitle,
+                    PaymentMethod = investmentDetailDto.PaymentMethod,
+                    CommitmentAllSBU = investmentDetailDto.CommitmentAllSBU,
+                    CommitmentOwnSBU = investmentDetailDto.CommitmentOwnSBU,
+                    FromDate = investmentDetailDto.FromDate,
+                    ToDate = investmentDetailDto.ToDate,
+                    TotalMonth = investmentDetailDto.TotalMonth,
+                    ProposedAmount = investmentDetailDto.ProposedAmount,
+                    Purpose = investmentDetailDto.Purpose,
+                    InvestmentInitId = investmentDetailDto.InvestmentInitId,
+                    SetOn = DateTimeOffset.Now
+                };
+                _investmentDetailRepo.Add(investmentDetail);
+                _investmentDetailRepo.Savechange();
+
+                return new InvestmentDetailDto
+                {
+                    Id = investmentDetail.Id,
+                    ChequeTitle = investmentDetailDto.ChequeTitle,
+                    PaymentMethod = investmentDetailDto.PaymentMethod,
+                    CommitmentAllSBU = investmentDetailDto.CommitmentAllSBU,
+                    CommitmentOwnSBU = investmentDetailDto.CommitmentOwnSBU,
+                    FromDate = investmentDetailDto.FromDate,
+                    ToDate = investmentDetailDto.ToDate,
+                    TotalMonth = investmentDetailDto.TotalMonth,
+                    ProposedAmount = investmentDetailDto.ProposedAmount,
+                    Purpose = investmentDetailDto.Purpose,
+                    InvestmentInitId = investmentDetailDto.InvestmentInitId,
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        [HttpPost("updateDetail")]
+        public ActionResult<InvestmentDetailDto> UpdateInvestmentDetail(InvestmentDetailDto investmentDetailDto)
+        {
+            try
+            {
+                var investmentDetail = new InvestmentDetail
+                {
+                    Id = investmentDetailDto.Id,
+                    ChequeTitle = investmentDetailDto.ChequeTitle,
+                    PaymentMethod = investmentDetailDto.PaymentMethod,
+                    CommitmentAllSBU = investmentDetailDto.CommitmentAllSBU,
+                    CommitmentOwnSBU = investmentDetailDto.CommitmentOwnSBU,
+                    FromDate = investmentDetailDto.FromDate,
+                    ToDate = investmentDetailDto.ToDate,
+                    TotalMonth = investmentDetailDto.TotalMonth,
+                    ProposedAmount = investmentDetailDto.ProposedAmount,
+                    Purpose = investmentDetailDto.Purpose,
+                    InvestmentInitId = investmentDetailDto.InvestmentInitId,
+                    ModifiedOn = DateTimeOffset.Now,
+                };
+                _investmentDetailRepo.Update(investmentDetail);
+                _investmentDetailRepo.Savechange();
+
+                return new InvestmentDetailDto
+                {
+                    Id = investmentDetail.Id,
+                    ChequeTitle = investmentDetailDto.ChequeTitle,
+                    PaymentMethod = investmentDetailDto.PaymentMethod,
+                    CommitmentAllSBU = investmentDetailDto.CommitmentAllSBU,
+                    CommitmentOwnSBU = investmentDetailDto.CommitmentOwnSBU,
+                    FromDate = investmentDetailDto.FromDate,
+                    ToDate = investmentDetailDto.ToDate,
+                    TotalMonth = investmentDetailDto.TotalMonth,
+                    ProposedAmount = investmentDetailDto.ProposedAmount,
+                    Purpose = investmentDetailDto.Purpose,
+                    InvestmentInitId = investmentDetailDto.InvestmentInitId,
+                };
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        [HttpGet]
+        [Route("investmentDetails/{investmentInitId}")]
+        public async Task<IReadOnlyList<InvestmentDetail>> GetInvestmentDetails(int investmentInitId)
+        {
+            try
+            {
+                var spec = new InvestmentDetailSpecification(investmentInitId);
+                var investmentDetail = await _investmentDetailRepo.ListAsync(spec);
+                return investmentDetail;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
         [HttpGet]
         [Route("investmentDoctors/{investmentInitId}")]
         public async Task<IReadOnlyList<InvestmentDoctor>> GetInvestmentDoctors(int investmentInitId)
@@ -158,6 +268,21 @@ namespace API.Controllers
                 var spec = new InvestmentDoctorSpecification(investmentInitId);
                 var investmentDoctor = await _investmentDoctorRepo.ListAsync(spec);
                 return investmentDoctor;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpGet]
+        [Route("investmentTargetedProds/{investmentInitId}")]
+        public async Task<IReadOnlyList<InvestmentTargetedProd>> GetInvestmentTargetedProds(int investmentInitId)
+        {
+            try
+            {
+                var spec = new InvestmentTargetedProdSpecification(investmentInitId);
+                var investmentTargetedProd = await _investmentTargetedProdRepo.ListAsync(spec);
+                return investmentTargetedProd;
             }
             catch (System.Exception ex)
             {
@@ -207,6 +332,46 @@ namespace API.Controllers
                     DoctorCategory = investmentDoctorDto.DoctorCategory,
                     PatientsPerDay = investmentDoctorDto.PatientsPerDay,
                     PracticeDayPerMonth = investmentDoctorDto.PracticeDayPerMonth,
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+        [HttpPost("insertInvestmentTargetedProd")]
+        public async Task<InvestmentTargetedProdDto> InsertInvestmentTargetedProd(InvestmentTargetedProdDto investmentTargetedProdDto)
+        {
+            try
+            {
+                var alreadyExistSpec = new InvestmentTargetedProdSpecification(investmentTargetedProdDto.InvestmentInitId);
+                var alreadyExistInvestmentTargetedProdList = await _investmentTargetedProdRepo.ListAsync(alreadyExistSpec);
+                if (alreadyExistInvestmentTargetedProdList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentTargetedProdList)
+                    {
+                        _investmentTargetedProdRepo.Delete(v);
+                        _investmentTargetedProdRepo.Savechange();
+                    }
+                }
+                
+                var investmentTargetedProd = new InvestmentTargetedProd
+                {
+                    //ReferenceNo = investmentTargetedProdDto.ReferenceNo,
+                    InvestmentInitId = investmentTargetedProdDto.InvestmentInitId,
+                    ProductId = investmentTargetedProdDto.ProductId,
+                    SetOn = DateTimeOffset.Now,
+                    ModifiedOn = DateTimeOffset.Now
+                };
+                _investmentTargetedProdRepo.Add(investmentTargetedProd);
+                _investmentTargetedProdRepo.Savechange();
+
+                return new InvestmentTargetedProdDto
+                {
+                    Id = investmentTargetedProd.Id,
+                    InvestmentInitId = investmentTargetedProdDto.InvestmentInitId,
+                    ProductId = investmentTargetedProdDto.ProductId,
                 };
             }
             catch (Exception ex)
@@ -551,7 +716,6 @@ namespace API.Controllers
         {
             try
             {
-                //var response = new HttpResponseMessage();
                 var alreadyExistSpec = new InvestmentDoctorSpecification(investmentDoctorDto.InvestmentInitId);
                 var alreadyExistInvestmentDoctorList = await _investmentDoctorRepo.ListAsync(alreadyExistSpec);
                 if (alreadyExistInvestmentDoctorList.Count > 0)
@@ -562,12 +726,33 @@ namespace API.Controllers
                         _investmentDoctorRepo.Savechange();
                     }
 
-                    //response.Headers.Add("Message", "Succsessfuly Deleted!!!");
-                    //return response;
                     return Ok("Succsessfuly Deleted!!!");
                 }
-                //response.Headers.Add("Message", "Failed!!!");
-                //return response;
+                return NotFound();
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }  
+        [HttpPost("removeInvestmentTargetedProd")]
+        public async Task<IActionResult> RemoveInvestmentTargetedProd(InvestmentTargetedProdDto investmentTargetedProdDto)
+        {
+            try
+            {
+                //var response = new HttpResponseMessage();
+                var alreadyExistSpec = new InvestmentTargetedProdSpecification(investmentTargetedProdDto.InvestmentInitId);
+                var alreadyExistInvestmentTargetedProdList = await _investmentTargetedProdRepo.ListAsync(alreadyExistSpec);
+                if (alreadyExistInvestmentTargetedProdList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentTargetedProdList)
+                    {
+                        _investmentTargetedProdRepo.Delete(v);
+                        _investmentTargetedProdRepo.Savechange();
+                    }
+
+                    return Ok("Succsessfuly Deleted!!!");
+                }
                 return NotFound();
             }
             catch (System.Exception ex)

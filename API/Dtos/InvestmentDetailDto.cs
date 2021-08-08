@@ -1,12 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
-namespace Core.Entities
+namespace API.Dtos
 {
-    public class InvestmentDetail : BaseEntity
+    public class InvestmentDetailDto
     {
+        public int Id { get; set; }
         public string ChequeTitle { get; set; }
         public string PaymentMethod { get; set; }
         public string CommitmentAllSBU { get; set; }
@@ -17,7 +16,6 @@ namespace Core.Entities
         public long ProposedAmount { get; set; }
         public string Purpose { get; set; }
         public int InvestmentInitId { get; set; }
-        [ForeignKey("InvestmentInitId")]
-        public InvestmentInit InvestmentInit { get; set; }
+
     }
 }
