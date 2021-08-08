@@ -273,6 +273,77 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet("campaignMstsForInvestment")]
+        public async Task<IReadOnlyList<CampaignMstDto>> GetCampaignMstsForInvestment()
+        {
+            try
+            {
+                var mstData = await _campaignMstRepo.ListAllAsync();
+                var dtlData = await _campaignDtlRepo.ListAllAsync();
+                var data = (from m in mstData
+                              join d in dtlData on m.Id equals d.MstId
+                              where d.SubCampStartDate<=DateTime.Now && d.SubCampEndDate>=DateTime.Now
+                              orderby m.CampaignName
+                              select new CampaignMstDto
+                              {
+                                  CampaignName = m.CampaignName.Trim(),
+                                   Id= m.Id
+                              }
+                              ).Distinct().ToList();
+
+                
+
+               
+                return data;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpGet("campaignDtlsForInvestment/{mstId}")]
+        public async Task<IReadOnlyList<CampaignDtlDto>> GetSubCampaignDtlsForInvestment(int mstId)
+        {
+            try
+            {
+
+                var spec = new CampaignDtlSpecification(mstId);
+
+                var campaignDtl = await _campaignDtlRepo.ListAsync(spec);
+
+                var data = _mapper
+                    .Map<IReadOnlyList<CampaignDtl>, IReadOnlyList<CampaignDtlDto>>(campaignDtl);
+
+
+
+                return data;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        } [HttpGet("campaignDtlProductsForInvestment/{dtlId}")]
+        public async Task<IReadOnlyList<CampaignDtlProductDto>> GetSubCampaignDtlProductsForInvestment(int dtlId)
+        {
+            try
+            {
+
+                var spec = new CampaignDtlProductSpecification(dtlId);
+
+                var campaignDtlProduct = await _campaignDtlProductRepo.ListAsync(spec);
+
+                var data = _mapper
+                    .Map<IReadOnlyList<CampaignDtlProduct>, IReadOnlyList<CampaignDtlProductDto>>(campaignDtlProduct);
+
+
+
+                return data;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
 
     }
 }

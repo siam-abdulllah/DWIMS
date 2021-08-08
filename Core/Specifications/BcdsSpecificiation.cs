@@ -34,7 +34,10 @@ namespace Core.Specifications
         public BcdsSpecificiation(int id)
             : base(x => x.Id == id)
         {
-            AddInclude(x => x.BcdsName);
+        }
+        public BcdsSpecificiation()
+            : base(x => x.Status == "Active")
+        {
         }
 
     }

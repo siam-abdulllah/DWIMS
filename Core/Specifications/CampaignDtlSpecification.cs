@@ -37,7 +37,13 @@ namespace Core.Specifications
             AddInclude(x => x.SubCampaign);
             AddOrderBy(x => x.SetOn);
             ApplyPaging(parrams.PageSize * (parrams.PageIndex - 1), parrams.PageSize);
-        }
+        } public CampaignDtlSpecification(int id)
+            : base(x => x.MstId == id )
+        {
+            AddInclude(x => x.SubCampaign);
+            AddOrderBy(x => x.SubCampaign.SubCampaignName);
+        } 
+       
        
       
 

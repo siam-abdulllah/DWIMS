@@ -1,3 +1,4 @@
+import { ICampaignDtl } from "./campaign";
 
 export interface IInvestmentInit {
     id: number;
@@ -115,38 +116,54 @@ export interface IInvestmentCampaign {
     id: number;
     investmentInitId: number;
     campaignDtlId: number;
+    campaignMstId: number;
     doctorId: number;
-    
+    institutionId: number;
+    subCampStartDate:string;
+    subCampEndDate:string;
+    campaignDtl:ICampaignDtl;
 }
  
 export class InvestmentCampaign implements IInvestmentCampaign {
     id: number=0;
     investmentInitId: number;
-    campaignDtlId: number;
-    doctorId: number;
+    campaignDtlId: number=null;
+    campaignMstId: number=null;
+    doctorId: number=null;
+    institutionId: number=null;
+    subCampStartDate:string;
+    subCampEndDate:string;
+    campaignDtl:ICampaignDtl;
 }
 export interface IInvestmentBcds {
     id: number;
     investmentInitId: number;
     bcdsId: number;
+    bcdsAddress: string;
+    noOfMember: string;
     
 }
  
 export class InvestmentBcds implements IInvestmentBcds {
     id: number=0;
     investmentInitId: number;
-    bcdsId: number;
+    bcdsId: number=null;
+    bcdsAddress: string;
+    noOfMember: string;
 }
 export interface IInvestmentSociety {
     id: number;
     investmentInitId: number;
     societyId: number;
-   
+    societyAddress: string;
+    noOfMember: string;
     
 }
  
 export class InvestmentSociety implements IInvestmentSociety {
     id: number=0;
     investmentInitId: number;
-    societyId: number;
+    societyId: number=null;
+    societyAddress: string;
+    noOfMember: string;
 }

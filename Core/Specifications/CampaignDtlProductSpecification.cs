@@ -38,6 +38,12 @@ namespace Core.Specifications
             AddOrderBy(x => x.SetOn);
             ApplyPaging(parrams.PageSize * (parrams.PageIndex - 1), parrams.PageSize);
         }
+        public CampaignDtlProductSpecification(int id)
+            : base(x => x.DtlId == id )
+        {
+            AddInclude(x => x.ProductInfo);
+            AddOrderBy(x => x.SetOn);
+        }
        
       
 

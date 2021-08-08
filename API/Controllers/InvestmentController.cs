@@ -19,15 +19,21 @@ namespace API.Controllers
         private readonly IGenericRepository<InvestmentInit> _investmentInitRepo;
         private readonly IGenericRepository<InvestmentDoctor> _investmentDoctorRepo;
         private readonly IGenericRepository<InvestmentInstitution> _investmentInstitutionRepo;
+        private readonly IGenericRepository<InvestmentCampaign> _investmentCampaignRepo;
+        private readonly IGenericRepository<InvestmentBcds> _investmentBcdsRepo;
+        private readonly IGenericRepository<InvestmentSociety> _investmentSocietyRepo;
         private readonly IMapper _mapper;
 
         public InvestmentController(IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<InvestmentDoctor> investmentDoctorRepo,
-            IGenericRepository<InvestmentInstitution> investmentInstitutionRepo, IMapper mapper)
+            IGenericRepository<InvestmentSociety> investmentSocietyRepo, IGenericRepository<InvestmentBcds> investmentBcdsRepo, IGenericRepository<InvestmentCampaign> investmentCampaignRepo, IGenericRepository<InvestmentInstitution> investmentInstitutionRepo, IMapper mapper)
         {
             _mapper = mapper;
             _investmentInitRepo = investmentInitRepo;
             _investmentDoctorRepo = investmentDoctorRepo;
             _investmentInstitutionRepo = investmentInstitutionRepo;
+            _investmentCampaignRepo = investmentCampaignRepo;
+            _investmentBcdsRepo = investmentBcdsRepo;
+            _investmentSocietyRepo = investmentSocietyRepo;
         }
         [HttpGet("investmentInits")]
         public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetInvestmentInits(
@@ -255,6 +261,134 @@ namespace API.Controllers
                 throw;
             }
         }
+        [HttpPost("insertInvestmentCampaign")]
+        public async Task<InvestmentCampaignDto> InsertInvestmentCampaign(InvestmentCampaignDto investmentCampaignDto)
+        {
+            try
+            {
+                var alreadyExistSpec = new InvestmentCampaignSpecification(investmentCampaignDto.InvestmentInitId);
+                var alreadyExistInvestmentCampaignList = await _investmentCampaignRepo.ListAsync(alreadyExistSpec);
+                if (alreadyExistInvestmentCampaignList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentCampaignList)
+                    {
+                        _investmentCampaignRepo.Delete(v);
+                        _investmentCampaignRepo.Savechange();
+                    }
+                }
+                
+                var investmentCampaign = new InvestmentCampaign
+                {
+                    //ReferenceNo = investmentCampaignDto.ReferenceNo,
+                    InvestmentInitId = investmentCampaignDto.InvestmentInitId,
+                    CampaignDtlId = investmentCampaignDto.CampaignDtlId,
+                    DoctorId = investmentCampaignDto.DoctorId,
+                    InstitutionId = investmentCampaignDto.InstitutionId,
+                    SetOn = DateTimeOffset.Now,
+                    ModifiedOn = DateTimeOffset.Now
+                };
+                _investmentCampaignRepo.Add(investmentCampaign);
+                _investmentCampaignRepo.Savechange();
+
+                return new InvestmentCampaignDto
+                {
+                    Id = investmentCampaign.Id,
+                    InvestmentInitId = investmentCampaignDto.InvestmentInitId,
+                    CampaignDtlId = investmentCampaignDto.CampaignDtlId,
+                    DoctorId = investmentCampaignDto.DoctorId,
+                    InstitutionId = investmentCampaignDto.InstitutionId
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+        
+        [HttpPost("insertInvestmentBcds")]
+        public async Task<InvestmentBcdsDto> InsertInvestmentBcds(InvestmentBcdsDto investmentBcdsDto)
+        {
+            try
+            {
+                var alreadyExistSpec = new InvestmentBcdsSpecification(investmentBcdsDto.InvestmentInitId);
+                var alreadyExistInvestmentBcdsList = await _investmentBcdsRepo.ListAsync(alreadyExistSpec);
+                if (alreadyExistInvestmentBcdsList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentBcdsList)
+                    {
+                        _investmentBcdsRepo.Delete(v);
+                        _investmentBcdsRepo.Savechange();
+                    }
+                }
+                
+                var investmentBcds = new InvestmentBcds
+                {
+                    //ReferenceNo = investmentBcdsDto.ReferenceNo,
+                    InvestmentInitId = investmentBcdsDto.InvestmentInitId,
+                    BcdsId = investmentBcdsDto.BcdsId,
+                    
+                    SetOn = DateTimeOffset.Now,
+                    ModifiedOn = DateTimeOffset.Now
+                };
+                _investmentBcdsRepo.Add(investmentBcds);
+                _investmentBcdsRepo.Savechange();
+
+                return new InvestmentBcdsDto
+                {
+                    Id = investmentBcds.Id,
+                    InvestmentInitId = investmentBcdsDto.InvestmentInitId,
+                    BcdsId = investmentBcdsDto.BcdsId,
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+         [HttpPost("insertInvestmentSociety")]
+        public async Task<InvestmentSocietyDto> InsertInvestmentSociety(InvestmentSocietyDto investmentSocietyDto)
+        {
+            try
+            {
+                var alreadyExistSpec = new InvestmentSocietySpecification(investmentSocietyDto.InvestmentInitId);
+                var alreadyExistInvestmentSocietyList = await _investmentSocietyRepo.ListAsync(alreadyExistSpec);
+                if (alreadyExistInvestmentSocietyList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentSocietyList)
+                    {
+                        _investmentSocietyRepo.Delete(v);
+                        _investmentSocietyRepo.Savechange();
+                    }
+                }
+                
+                var investmentSociety = new InvestmentSociety
+                {
+                    //ReferenceNo = investmentSocietyDto.ReferenceNo,
+                    InvestmentInitId = investmentSocietyDto.InvestmentInitId,
+                    SocietyId = investmentSocietyDto.SocietyId,
+                    
+                    SetOn = DateTimeOffset.Now,
+                    ModifiedOn = DateTimeOffset.Now
+                };
+                _investmentSocietyRepo.Add(investmentSociety);
+                _investmentSocietyRepo.Savechange();
+
+                return new InvestmentSocietyDto
+                {
+                    Id = investmentSociety.Id,
+                    InvestmentInitId = investmentSocietyDto.InvestmentInitId,
+                    SocietyId = investmentSocietyDto.SocietyId,
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+        
         [HttpGet]
         [Route("investmentInstitutions/{investmentInitId}")]
         public async Task<IReadOnlyList<InvestmentInstitution>> GetInvestmentInstitutions(int investmentInitId)
@@ -269,7 +403,51 @@ namespace API.Controllers
             {
                 throw ex;
             }
+        }[HttpGet]
+        
+        [Route("investmentCampaigns/{investmentInitId}")]
+        public async Task<IReadOnlyList<InvestmentCampaign>> GetInvestmentCampaigns(int investmentInitId)
+        {
+            try
+            {
+                var spec = new InvestmentCampaignSpecification(investmentInitId);
+                var investmentCampaign = await _investmentCampaignRepo.ListAsync(spec);
+                return investmentCampaign;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
         }
+        [Route("investmentBcds/{investmentInitId}")]
+        public async Task<IReadOnlyList<InvestmentBcds>> GetInvestmentBcds(int investmentInitId)
+        {
+            try
+            {
+                var spec = new InvestmentBcdsSpecification(investmentInitId);
+                var investmentBcds = await _investmentBcdsRepo.ListAsync(spec);
+                return investmentBcds;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }[Route("investmentSociety/{investmentInitId}")]
+        public async Task<IReadOnlyList<InvestmentSociety>> GetInvestmentSociety(int investmentInitId)
+        {
+            try
+            {
+                var spec = new InvestmentSocietySpecification(investmentInitId);
+                var investmentSociety = await _investmentSocietyRepo.ListAsync(spec);
+                return investmentSociety;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+        
+
         [HttpPost("removeInvestmentInstitution")]
         public async Task<IActionResult> RemoveInvestmentInstitution(InvestmentInstitutionDto investmentInstitutionDto)
         {
@@ -285,7 +463,7 @@ namespace API.Controllers
                         _investmentInstitutionRepo.Savechange();
                     }
 
-                    return Ok();
+                    return Ok("Succsessfuly Deleted!!!");
                 }
                 return NotFound();
             }
@@ -293,7 +471,82 @@ namespace API.Controllers
             {
                 throw ex;
             }
-        } [HttpPost("removeInvestmentDoctor")]
+        } 
+      
+        [HttpPost("removeInvestmentCampaign")]
+        public async Task<IActionResult> RemoveInvestmentCampaign(InvestmentCampaignDto investmentCampaignDto)
+        {
+            try
+            {
+                var alreadyExistSpec = new InvestmentCampaignSpecification(investmentCampaignDto.InvestmentInitId);
+                var alreadyExistInvestmentCampaignList = await _investmentCampaignRepo.ListAsync(alreadyExistSpec);
+                if (alreadyExistInvestmentCampaignList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentCampaignList)
+                    {
+                        _investmentCampaignRepo.Delete(v);
+                        _investmentCampaignRepo.Savechange();
+                    }
+
+                    return Ok("Succsessfuly Deleted!!!");
+                }
+                return NotFound();
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        } 
+        
+        [HttpPost("removeInvestmentBcds")]
+        public async Task<IActionResult> RemoveInvestmentBcds(InvestmentBcdsDto investmentBcdsDto)
+        {
+            try
+            {
+                var alreadyExistSpec = new InvestmentBcdsSpecification(investmentBcdsDto.InvestmentInitId);
+                var alreadyExistInvestmentBcdsList = await _investmentBcdsRepo.ListAsync(alreadyExistSpec);
+                if (alreadyExistInvestmentBcdsList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentBcdsList)
+                    {
+                        _investmentBcdsRepo.Delete(v);
+                        _investmentBcdsRepo.Savechange();
+                    }
+
+                    return Ok("Succsessfuly Deleted!!!");
+                }
+                return NotFound();
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        } [HttpPost("removeInvestmentSociety")]
+        public async Task<IActionResult> RemoveInvestmentSociety(InvestmentSociety investmentSociety)
+        {
+            try
+            {
+                var alreadyExistSpec = new InvestmentSocietySpecification(investmentSociety.InvestmentInitId);
+                var alreadyExistInvestmentSocietyList = await _investmentSocietyRepo.ListAsync(alreadyExistSpec);
+                if (alreadyExistInvestmentSocietyList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentSocietyList)
+                    {
+                        _investmentSocietyRepo.Delete(v);
+                        _investmentSocietyRepo.Savechange();
+                    }
+
+                    return Ok("Succsessfuly Deleted!!!");
+                }
+                return NotFound();
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        } 
+       
+        [HttpPost("removeInvestmentDoctor")]
         public async Task<IActionResult> RemoveInvestmentDoctor(InvestmentDoctorDto investmentDoctorDto)
         {
             try

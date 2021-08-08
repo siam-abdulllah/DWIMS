@@ -52,11 +52,38 @@ export class InvestmentInitService {
   getDoctors(){    
     return this.http.get(this.baseUrl + 'doctor/doctorsForInvestment');
   }
+  getBcds(){    
+    return this.http.get(this.baseUrl + 'bcds/bcdsForInvestment');
+  }
+  getSociety(){    
+    return this.http.get(this.baseUrl + 'society/societyForInvestment');
+  }
+  getCampaignMsts(){    
+    return this.http.get(this.baseUrl + 'campaign/campaignMstsForInvestment');
+  }
+  getCampaignDtls(mstId:number){    
+    return this.http.get(this.baseUrl + 'campaign/campaignDtlsForInvestment/'+mstId);
+  }
+  getCampaignDtlProducts(dtlId:number){    
+    return this.http.get(this.baseUrl + 'campaign/campaignDtlProductsForInvestment/'+dtlId);
+  }
+  getSubCampaigns(){    
+    return this.http.get(this.baseUrl + 'campaign/subCampaignsForInvestment');
+  }
   getInvestmentDoctors(investmentInitId:number){    
     return this.http.get(this.baseUrl + 'investment/investmentDoctors/'+investmentInitId);
   }
   getInvestmentInstitutions(investmentInitId:number){    
     return this.http.get(this.baseUrl + 'investment/investmentInstitutions/'+investmentInitId);
+  }
+  getInvestmentCampaigns(investmentInitId:number){    
+    return this.http.get(this.baseUrl + 'investment/investmentCampaigns/'+investmentInitId);
+  }
+  getInvestmentBcds(investmentInitId:number){    
+    return this.http.get(this.baseUrl + 'investment/investmentBcds/'+investmentInitId);
+  }
+  getInvestmentSociety(investmentInitId:number){    
+    return this.http.get(this.baseUrl + 'investment/investmentSociety/'+investmentInitId);
   }
   getInvestmentInit(){    
     let params = new HttpParams();
@@ -96,6 +123,21 @@ export class InvestmentInitService {
     return this.http.post(this.baseUrl+ 'investment/insertInvestmentInstitution', this.investmentInstitutionFormData);
 
   }
+  insertInvestmentCampaign() {
+    debugger;
+    return this.http.post(this.baseUrl+ 'investment/insertInvestmentCampaign', this.investmentCampaignFormData);
+
+  }
+  insertInvestmentBcds() {
+    debugger;
+    return this.http.post(this.baseUrl+ 'investment/insertInvestmentBcds', this.investmentBcdsFormData);
+
+  }
+  insertInvestmentSociety() {
+    debugger;
+    return this.http.post(this.baseUrl+ 'investment/insertInvestmentSociety', this.investmentSocietyFormData);
+
+  }
   removeInvestmentDoctor() {
     debugger;
     return this.http.post(this.baseUrl+ 'investment/removeInvestmentDoctor', this.investmentDoctorFormData,
@@ -105,6 +147,24 @@ export class InvestmentInitService {
   removeInvestmentInstitution() {
     debugger;
     return this.http.post(this.baseUrl+ 'investment/removeInvestmentInstitution', this.investmentInstitutionFormData,
+    {responseType: 'text'});
+
+  }
+  removeInvestmentCampaign() {
+    debugger;
+    return this.http.post(this.baseUrl+ 'investment/removeInvestmentCampaign', this.investmentCampaignFormData,
+    {responseType: 'text'});
+
+  }
+  removeInvestmentBcds() {
+    debugger;
+    return this.http.post(this.baseUrl+ 'investment/removeInvestmentBcds', this.investmentBcdsFormData,
+    {responseType: 'text'});
+
+  }
+  removeInvestmentSociety() {
+    debugger;
+    return this.http.post(this.baseUrl+ 'investment/removeInvestmentSociety', this.investmentSocietyFormData,
     {responseType: 'text'});
 
   }

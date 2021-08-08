@@ -18,8 +18,10 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { MasterModule } from '../master/master.module';
 import { MasterRoutingModule } from '../master/master-routing.module';
 import { ModalModule } from 'ngx-bootstrap/modal';
+
 @NgModule({
   imports: [
+    
     CommonModule,
     //Ashiq added
     ModalModule,

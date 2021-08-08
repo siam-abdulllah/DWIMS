@@ -13,6 +13,8 @@ namespace Core.Entities
         public int BcdsId { get; set; }
         [ForeignKey("BcdsId")]
         public Bcds Bcds { get; set; }
-       
+
+        
+
     }
 }

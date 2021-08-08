@@ -13,6 +13,9 @@ namespace Core.Entities
         public int CampaignDtlId { get; set; }
         [ForeignKey("CampaignDtlId")]
         public CampaignDtl CampaignDtl { get; set; }
+        public int InstitutionId { get; set; }
+        [ForeignKey("InstitutionId")]
+        public InstitutionInfo InstitutionInfo { get; set; }
         public int DoctorId { get; set; }
         [ForeignKey("DoctorId")]
         public DoctorInfo DoctorInfo { get; set; }

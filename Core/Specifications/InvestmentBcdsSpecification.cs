@@ -2,15 +2,15 @@
 
 namespace Core.Specifications
 {
-    public class CampaignMstSpecification : BaseSpecification<CampaignMst>
+    public class InvestmentBcdsSpecification : BaseSpecification<InvestmentBcds>
     {
 
-        public CampaignMstSpecification(CampaignMstSpecParams parrams)
+        public InvestmentBcdsSpecification(InvestmentBcdsSpecParams parrams)
            : base(x =>
-               (string.IsNullOrEmpty(parrams.Search) || x.CampaignName.ToLower().Contains(parrams.Search))
+               (string.IsNullOrEmpty(parrams.Search))
            )
         {
-            //AddInclude(x => x.Employee);
+            
             AddOrderBy(x => x.SetOn);
             ApplyPaging(parrams.PageSize * (parrams.PageIndex - 1), parrams.PageSize);
 
@@ -31,17 +31,21 @@ namespace Core.Specifications
             // }
         }
 
-        public CampaignMstSpecification(int id)
-            : base(x => x.Id == id )
+        public InvestmentBcdsSpecification(int id)
+            : base(x => x.InvestmentInitId == id)
         {
-            AddInclude(x => x.CampaignDtls);
-        }public CampaignMstSpecification()
-            : base()
-        {
-            AddInclude(x => x.CampaignDtls);
-           // AddInclude(x => x.CampaignDtls.SubCampaign);
+            AddInclude(x=>x.Bcds);
         }
-      
+        //public InvestmentDoctorSpecification(int employeeId,string status)
+        //    : base(x => x.EmployeeId == employeeId && x.Status == status)
+        //{
+
+        //}
+        //public InvestmentDoctorSpecification(int employeeId,int authId,string status)
+        //    : base(x => x.EmployeeId == employeeId && x.ApprovalAuthorityId == authId && x.Status == status)
+        //{
+
+        //}
 
     }
 }

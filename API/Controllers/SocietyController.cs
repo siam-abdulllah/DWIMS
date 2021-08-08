@@ -43,6 +43,26 @@ namespace API.Controllers
 
             return Ok(new Pagination<SocietyDto>(societyParrams.PageIndex, societyParrams.PageSize, totalItems, data));
 
+        }[HttpGet("societyForInvestment")]
+        // [Authorize(Roles = "Owner,Administrator")]
+        // [Authorize(Policy = "DetailUserPolicy")]
+        public async Task<IReadOnlyList<SocietyDto>> GetSocietyForInvestment()
+        {
+            try
+            {
+
+          
+            var spec = new SocietySpecification();
+            var posts = await _societyRepo.ListAsync(spec);
+            var data = _mapper.Map<IReadOnlyList<Society>, IReadOnlyList<SocietyDto>>(posts);
+
+            return data;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
 
 
