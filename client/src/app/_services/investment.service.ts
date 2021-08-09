@@ -1,7 +1,8 @@
 import { InvestmentInitPagination, IInvestmentInitPagination } from '../shared/models/investmentPagination';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { InvestmentInit, IInvestmentInit,InvestmentDetail,IInvestmentDetail,InvestmentTargetedProd,IInvestmentTargetedProd } from '../shared/models/investment';
+import { InvestmentInit, IInvestmentInit,InvestmentDetail,IInvestmentDetail,
+  InvestmentTargetedProd,IInvestmentTargetedProd,InvestmentTargetedGroup,IInvestmentTargetedGroup } from '../shared/models/investment';
 import { InvestmentDoctor, IInvestmentDoctor,InvestmentInstitution,IInvestmentInstitution,InvestmentCampaign,IInvestmentCampaign } from '../shared/models/investment';
 import { InvestmentBcds, IInvestmentBcds,InvestmentSociety,IInvestmentSociety } from '../shared/models/investment';
 
@@ -20,6 +21,7 @@ export class InvestmentInitService {
   investmentInitFormData: InvestmentInit = new InvestmentInit();
   investmentDetailFormData: InvestmentDetail = new InvestmentDetail();
   investmentTargetedProdFormData: InvestmentTargetedProd = new InvestmentTargetedProd();
+  investmentTargetedGroupFormData: InvestmentTargetedGroup = new InvestmentTargetedGroup();
   investmentDoctorFormData: InvestmentDoctor = new InvestmentDoctor();
   investmentInstitutionFormData: InvestmentInstitution = new InvestmentInstitution();
   investmentCampaignFormData: InvestmentCampaign = new InvestmentCampaign();
@@ -39,6 +41,9 @@ export class InvestmentInitService {
   }
   getProduct(){    
     return this.http.get(this.baseUrl + 'product/getProductForInvestment');
+  }
+  getMarketGroupMsts(){    
+    return this.http.get(this.baseUrl + 'marketGroup/getMarketGroupMstsForInvestment');
   }
   getApprovalAuthority(){    
     return this.http.get(this.baseUrl + 'approvalAuthority/approvalAuthoritiesForConfig');
@@ -154,7 +159,12 @@ export class InvestmentInitService {
   }
   insertInvestmentTargetedProd() {
     debugger;
-    return this.http.post(this.baseUrl+ 'investment/insertInvestmentTargetedProd', this.investmentSocietyFormData);
+    return this.http.post(this.baseUrl+ 'investment/insertInvestmentTargetedProd', this.investmentTargetedProdFormData);
+
+  }
+  updateInvestmentTargetedProd() {
+    debugger;
+    return this.http.post(this.baseUrl+ 'investment/updateInvestmentTargetedProd', this.investmentTargetedProdFormData);
 
   }
   removeInvestmentDoctor() {

@@ -5,7 +5,7 @@ export interface IMarketGroupMst {
     groupName: string;
     employeeId: string; 
     status: string; 
-    //marketGroupDtl:IMarketGroupDtl[];
+    marketGroupDtls:IMarketGroupDtl[];
 }
  
 export class MarketGroupMst implements IMarketGroupMst {
@@ -13,5 +13,5 @@ export class MarketGroupMst implements IMarketGroupMst {
     groupName: string;
     employeeId: string; 
     status: string=null; 
-    //marketGroupDtl:IMarketGroupDtl[];
+    marketGroupDtls:IMarketGroupDtl[];
 }

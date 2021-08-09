@@ -1,4 +1,5 @@
 import { ICampaignDtl } from "./campaign";
+import { IMarketGroupMst } from "./marketGroupMst";
 import { IProduct } from "./product";
 
 export interface IInvestmentInit {
@@ -64,17 +65,20 @@ export class InvestmentTargetedProd implements IInvestmentTargetedProd {
 }
 export interface IInvestmentTargetedGroup {
     id: number;
+    marketGroupMstId: number;
     investmentInitId: number;
     marketCode: string;
     marketName: string;
-    
+    marketGroup:IMarketGroupMst;
 }
  
 export class InvestmentTargetedGroup implements IInvestmentTargetedGroup {
     id: number=0;
+    marketGroupMstId: number=null;
     investmentInitId: number;
     marketCode: string;
     marketName: string;
+    marketGroup:IMarketGroupMst;
 }
 export interface IInvestmentDoctor {
     id: number;

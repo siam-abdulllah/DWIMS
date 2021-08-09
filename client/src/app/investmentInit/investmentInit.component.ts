@@ -1,5 +1,6 @@
 
-import { InvestmentInit, IInvestmentInit,InvestmentDetail,IInvestmentDetail,InvestmentTargetedProd,IInvestmentTargetedProd } from '../shared/models/investment';
+import { InvestmentInit, IInvestmentInit,InvestmentDetail,IInvestmentDetail,
+  InvestmentTargetedProd,IInvestmentTargetedProd,InvestmentTargetedGroup,IInvestmentTargetedGroup } from '../shared/models/investment';
 import { InvestmentDoctor, IInvestmentDoctor,InvestmentInstitution,IInvestmentInstitution,InvestmentCampaign,IInvestmentCampaign } from '../shared/models/investment';
 import { InvestmentBcds, IInvestmentBcds,InvestmentSociety,IInvestmentSociety } from '../shared/models/investment';
 import { SubCampaign, ISubCampaign } from '../shared/models/subCampaign';
@@ -20,7 +21,8 @@ import { CampaignMst, ICampaignMst,CampaignDtl, ICampaignDtl,CampaignDtlProduct,
 import { DatePipe } from '@angular/common';
 import { IBcdsInfo } from '../shared/models/bcdsInfo';
 import { ISocietyInfo } from '../shared/models/societyInfo';
-
+import { MarketGroupMst, IMarketGroupMst } from '../shared/models/marketGroupMst';
+import { MarketGroupDtl, IMarketGroupDtl } from '../shared/models/marketGroupDtl';
 @Component({
   selector: 'app-investmentInit',
   templateUrl: './investmentInit.component.html',
@@ -36,6 +38,7 @@ export class InvestmentInitComponent implements OnInit {
   // campaigns: ICampaign[]; 
   investmentInits: IInvestmentInit[];
   investmentTargetedProds: IInvestmentTargetedProd[];
+  investmentTargetedGroups: IInvestmentTargetedGroup[];
   investmentDetails: IInvestmentDetail[];
   investmentDoctors: IInvestmentDoctor[];
   isValid: boolean=false; 
@@ -52,6 +55,7 @@ export class InvestmentInitComponent implements OnInit {
   campaignMsts: ICampaignMst[]; 
   campaignDtls: ICampaignDtl[]; 
   campaignDtlProducts: ICampaignDtlProduct[]; 
+  marketGroupMsts: IMarketGroupMst[];
   donationToVal:string;
   totalCount = 0;
   bsConfig: Partial<BsDatepickerConfig>;
@@ -108,6 +112,7 @@ export class InvestmentInitComponent implements OnInit {
       this.getInvestmentSociety();
     }
       this.getInvestmentDetails();
+      this.getInvestmentTargetedProd();
       this.isValid=true;
       this.InvestmentInitSearchModalRef.hide()
      }
@@ -254,8 +259,11 @@ export class InvestmentInitComponent implements OnInit {
   }
   ngOnInit() {
     this.getDonation();
+    this.getProduct();
+    this.getMarketGroupMsts();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-green' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
+
   }
   onChangeDonationTo(){
     debugger;
@@ -398,6 +406,31 @@ export class InvestmentInitComponent implements OnInit {
     
   
   }
+  onChangeMarketGroupInTargetedGroup(){
+    debugger;
+    // for(var i=0;i<this.society.length;i++){
+    // if(this.marketGroupMsts[i].id==this.investmentInitService.investmentTargetedGroupFormData.marketGroupMstId)
+    // {
+    //   this.investmentInitService.investmentSocietyFormData.societyAddress=this.society[i].societyAddress;
+    //   this.investmentInitService.investmentSocietyFormData.noOfMember=this.society[i].noOfMember;
+      
+    //   break;
+    // }}
+    for (let i = 0; i < this.marketGroupMsts.length; i++) {
+      if(this.marketGroupMsts[i].id==this.investmentInitService.investmentTargetedGroupFormData.marketGroupMstId)
+      {
+        for (let j = 1; j <= this.marketGroupMsts[i].marketGroupDtls.length; j++) {
+          this.investmentTargetedGroups[j].marketGroupMstId=this.marketGroupMsts[i].marketGroupDtls[j].mstId;
+          this.investmentTargetedGroups[j].marketCode=this.marketGroupMsts[i].marketGroupDtls[j].marketCode;
+          this.investmentTargetedGroups[j].marketName=this.marketGroupMsts[i].marketGroupDtls[j].marketName;
+        }
+      break 
+      }
+    }
+  
+    
+  
+  }
   changeDateInDetail(){
     debugger;
     
@@ -488,6 +521,14 @@ export class InvestmentInitComponent implements OnInit {
   }, error => {
       console.log(error);
   });
+}
+getMarketGroupMsts(){
+  this.investmentInitService.getMarketGroupMsts().subscribe(response => {
+    debugger;
+   this.marketGroupMsts = response as IMarketGroupMst[];
+  }, error => {
+      console.log(error);
+ });
 }
   onSubmit(form: NgForm) {
     if (this.investmentInitService.investmentInitFormData.id == 0)
@@ -857,27 +898,43 @@ export class InvestmentInitComponent implements OnInit {
       }
     }
     this.investmentInitService.investmentTargetedProdFormData.investmentInitId =this.investmentInitService.investmentInitFormData.id;
-   
+    if(this.investmentInitService.investmentTargetedProdFormData.id==null || this.investmentInitService.investmentTargetedProdFormData.id==undefined || this.investmentInitService.investmentTargetedProdFormData.id==0)
+    {
     this.investmentInitService.insertInvestmentTargetedProd().subscribe(
       res => {
         debugger;
-       //this.investmentTargetedProds=res as IInvestmentTargetedProd[];
+       this.investmentInitService.investmentTargetedProdFormData=new InvestmentTargetedProd();
        
-       //this.updateInvestmentInit();
+       this.getInvestmentTargetedProd();
        
        this.isDonationValid=true;
         this.toastr.success('Save successfully', 'Investment ');
       },
       err => { console.log(err); }
     );
+    }
+    else{
+      this.investmentInitService.updateInvestmentTargetedProd().subscribe(
+        res => {
+          debugger;
+         this.investmentInitService.investmentTargetedProdFormData=new InvestmentTargetedProd();
+         
+         this.getInvestmentTargetedProd();
+         
+         this.isDonationValid=true;
+          this.toastr.success('Update successfully', 'Investment ');
+        },
+        err => { console.log(err); }
+      );
+    }
   }
   editInvestmentTargetedProd(selectedRecord: IInvestmentTargetedProd) {
     this.investmentInitService.investmentTargetedProdFormData = Object.assign({}, selectedRecord);
-    var e = (document.getElementById("marketCode")) as HTMLSelectElement;
-    var sel = e.selectedIndex;
-    var opt = e.options[sel];
-    var selectedMarketCode = opt.value;
-    var selectedMarketName = opt.innerHTML;
+    // var e = (document.getElementById("marketCode")) as HTMLSelectElement;
+    // var sel = e.selectedIndex;
+    // var opt = e.options[sel];
+    // var selectedMarketCode = opt.value;
+    // var selectedMarketName = opt.innerHTML;
     
   }
   populateForm() {
@@ -965,8 +1022,9 @@ removeInvestmentTargetedProd(selectedRecord: IInvestmentTargetedProd) {
       res => {
         debugger;
         this.toastr.success(res);
-        this.isDonationValid=false;
-        this.investmentInitService.investmentBcdsFormData=new InvestmentBcds();
+        //this.isDonationValid=false;
+        this.investmentInitService.investmentTargetedProdFormData=new InvestmentTargetedProd();
+        this.getInvestmentTargetedProd();
       },
       err => { console.log(err); }
     );

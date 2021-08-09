@@ -158,6 +158,26 @@ namespace API.Controllers
                 throw;
             }
         }
+        [HttpGet("getMarketGroupMstsForInvestment")]
+        public async Task<IReadOnlyList<MarketGroupMst>> GetMarketGroupMstsForInvestment()
+        {
+            try
+            {
+                var spec = new MarketGroupMstSpecification();
+
+
+                var marketGroup = await _marketGroupMstRepo.ListAsync(spec);
+
+                //var data = _mapper
+                //    .Map<IReadOnlyList<MarketGroupMst>, IReadOnlyList<MarketGroupMstDto>>(marketGroup);
+                return marketGroup;
+                  }
+            catch (System.Exception e)
+            {
+
+                throw;
+            }
+        }
         [HttpGet("marketGroupDtls/{mstId}")]
         public async Task<ActionResult<Pagination<MarketGroupDtlDto>>> GetMarketGroupDtls(
         [FromQuery] MarketGroupDtlSpecParams marketGroupDtlParrams, int mstId)

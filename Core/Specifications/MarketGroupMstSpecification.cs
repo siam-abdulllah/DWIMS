@@ -35,6 +35,10 @@ namespace Core.Specifications
             : base(x => x.Id == id )
         {
             AddInclude(x => x.MarketGroupDtls);
+        } public MarketGroupMstSpecification()
+            : base(x => x.Status == "Active" )
+        {
+            AddInclude(x => x.MarketGroupDtls);
         }
       
 

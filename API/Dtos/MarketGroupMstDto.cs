@@ -9,6 +9,7 @@ namespace API.Dtos
         public string Status { get; set; }
 
         //public MarketGrpEmployeeDto Employee { get; set; }
+        public MarketGroupDtlDto MarketGroupDtlDto { get; set; }
         public int  EmployeeId { get; set; }
        
     }

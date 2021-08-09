@@ -1062,6 +1062,9 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("MarketCode")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("MarketGroupMstId")
+                        .HasColumnType("int");
+
                     b.Property<string>("MarketName")
                         .HasColumnType("nvarchar(max)");
 
@@ -1074,6 +1077,8 @@ namespace Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("InvestmentInitId");
+
+                    b.HasIndex("MarketGroupMstId");
 
                     b.ToTable("InvestmentTargetedGroup");
                 });
@@ -1161,7 +1166,7 @@ namespace Infrastructure.Data.Migrations
                     b.Property<DateTimeOffset>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int>("MstId")
+                    b.Property<int?>("MstId")
                         .HasColumnType("int");
 
                     b.Property<string>("SBU")
@@ -1709,6 +1714,10 @@ namespace Infrastructure.Data.Migrations
                         .HasForeignKey("InvestmentInitId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Core.Entities.MarketGroupDtl", "MarketGroupMst")
+                        .WithMany()
+                        .HasForeignKey("MarketGroupMstId");
                 });
 
             modelBuilder.Entity("Core.Entities.InvestmentTargetedProd", b =>
@@ -1730,9 +1739,7 @@ namespace Infrastructure.Data.Migrations
                 {
                     b.HasOne("Core.Entities.MarketGroupMst", null)
                         .WithMany("MarketGroupDtls")
-                        .HasForeignKey("MstId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MstId");
                 });
 
             modelBuilder.Entity("Core.Entities.MarketGroupMst", b =>

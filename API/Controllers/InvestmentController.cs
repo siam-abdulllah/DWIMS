@@ -341,20 +341,20 @@ namespace API.Controllers
             }
         }
         [HttpPost("insertInvestmentTargetedProd")]
-        public async Task<InvestmentTargetedProdDto> InsertInvestmentTargetedProd(InvestmentTargetedProdDto investmentTargetedProdDto)
+        public  ActionResult<InvestmentTargetedProdDto> InsertInvestmentTargetedProd(InvestmentTargetedProdDto investmentTargetedProdDto)
         {
             try
             {
-                var alreadyExistSpec = new InvestmentTargetedProdSpecification(investmentTargetedProdDto.InvestmentInitId);
-                var alreadyExistInvestmentTargetedProdList = await _investmentTargetedProdRepo.ListAsync(alreadyExistSpec);
-                if (alreadyExistInvestmentTargetedProdList.Count > 0)
-                {
-                    foreach (var v in alreadyExistInvestmentTargetedProdList)
-                    {
-                        _investmentTargetedProdRepo.Delete(v);
-                        _investmentTargetedProdRepo.Savechange();
-                    }
-                }
+                //var alreadyExistSpec = new InvestmentTargetedProdSpecification(investmentTargetedProdDto.InvestmentInitId);
+                //var alreadyExistInvestmentTargetedProdList = await _investmentTargetedProdRepo.ListAsync(alreadyExistSpec);
+                //if (alreadyExistInvestmentTargetedProdList.Count > 0)
+                //{
+                //    foreach (var v in alreadyExistInvestmentTargetedProdList)
+                //    {
+                //        _investmentTargetedProdRepo.Delete(v);
+                //        _investmentTargetedProdRepo.Savechange();
+                //    }
+                //}
                 
                 var investmentTargetedProd = new InvestmentTargetedProd
                 {
@@ -380,21 +380,44 @@ namespace API.Controllers
                 throw;
             }
         }
+        [HttpPost("updateInvestmentTargetedProd")]
+        public  ActionResult<InvestmentTargetedProdDto> UpdateInvestmentTargetedProd(InvestmentTargetedProdDto investmentTargetedProdDto)
+        {
+            try
+            {
+               
+                var investmentTargetedProd = new InvestmentTargetedProd
+                {
+                    Id = investmentTargetedProdDto.Id,
+                    InvestmentInitId = investmentTargetedProdDto.InvestmentInitId,
+                    ProductId = investmentTargetedProdDto.ProductId,
+                    SetOn = DateTimeOffset.Now,
+                    ModifiedOn = DateTimeOffset.Now
+                };
+                _investmentTargetedProdRepo.Update(investmentTargetedProd);
+                _investmentTargetedProdRepo.Savechange();
+
+                return new InvestmentTargetedProdDto
+                {
+                    Id = investmentTargetedProd.Id,
+                    InvestmentInitId = investmentTargetedProdDto.InvestmentInitId,
+                    ProductId = investmentTargetedProdDto.ProductId,
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+       
+       
         [HttpPost("insertInvestmentInstitution")]
         public async Task<InvestmentInstitutionDto> InsertInvestmentInstitution(InvestmentInstitutionDto investmentInstitutionDto)
         {
             try
             {
-                var alreadyExistSpec = new InvestmentInstitutionSpecification(investmentInstitutionDto.InvestmentInitId);
-                var alreadyExistInvestmentInstitutionList = await _investmentInstitutionRepo.ListAsync(alreadyExistSpec);
-                if (alreadyExistInvestmentInstitutionList.Count > 0)
-                {
-                    foreach (var v in alreadyExistInvestmentInstitutionList)
-                    {
-                        _investmentInstitutionRepo.Delete(v);
-                        _investmentInstitutionRepo.Savechange();
-                    }
-                }
+                
                 
                 var investmentInstitution = new InvestmentInstitution
                 {
@@ -426,6 +449,7 @@ namespace API.Controllers
                 throw;
             }
         }
+        
         [HttpPost("insertInvestmentCampaign")]
         public async Task<InvestmentCampaignDto> InsertInvestmentCampaign(InvestmentCampaignDto investmentCampaignDto)
         {
