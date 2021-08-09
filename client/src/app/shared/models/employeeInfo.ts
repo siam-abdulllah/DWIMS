@@ -3,8 +3,11 @@ export interface IEmployeeInfo {
     empSapCode : string;
     employeeName : string;
     departmentId : number;
+    departmentName : string;
     designationId : number;
+    designationName : string;
     companyId : number;
+    companyName : number;
     joiningDate : Date;
     joiningPlace : string;
     phone : string;
@@ -27,8 +30,11 @@ export class EmployeeInfo implements IEmployeeInfo {
     empSapCode : string;
     employeeName : string;
     departmentId : number;
+    departmentName : string;
     designationId : number;
+    designationName : string;
     companyId : number;
+    companyName : number;
     joiningDate : Date;
     joiningPlace : string;
     phone : string;

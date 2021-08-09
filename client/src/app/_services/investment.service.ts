@@ -81,6 +81,9 @@ export class InvestmentInitService {
   getInvestmentTargetedProds(investmentInitId:number){    
     return this.http.get(this.baseUrl + 'investment/investmentTargetedProds/'+investmentInitId);
   }
+  getInvestmentTargetedGroups(investmentInitId:number){    
+    return this.http.get(this.baseUrl + 'investment/investmentTargetedGroups/'+investmentInitId);
+  }
   getInvestmentInstitutions(investmentInitId:number){    
     return this.http.get(this.baseUrl + 'investment/investmentInstitutions/'+investmentInitId);
   }
@@ -167,6 +170,12 @@ export class InvestmentInitService {
     return this.http.post(this.baseUrl+ 'investment/updateInvestmentTargetedProd', this.investmentTargetedProdFormData);
 
   }
+  insertInvestmentTargetedGroup(investmentTargetedGroups:IInvestmentTargetedGroup[]) {
+    debugger;
+    return this.http.post(this.baseUrl+ 'investment/insertInvestmentTargetedGroup', investmentTargetedGroups,
+    {responseType: 'text'});
+
+  }
   removeInvestmentDoctor() {
     debugger;
     return this.http.post(this.baseUrl+ 'investment/removeInvestmentDoctor', this.investmentDoctorFormData,
@@ -200,6 +209,12 @@ export class InvestmentInitService {
   removeInvestmentTargetedProd() {
     debugger;
     return this.http.post(this.baseUrl+ 'investment/removeInvestmentTargetedProd', this.investmentTargetedProdFormData,
+    {responseType: 'text'});
+
+  }
+  removeInvestmentTargetedGroup(investmentTargetedGroups:IInvestmentTargetedGroup[]) {
+    debugger;
+    return this.http.post(this.baseUrl+ 'investment/removeInvestmentTargetedGroup', investmentTargetedGroups,
     {responseType: 'text'});
 
   }

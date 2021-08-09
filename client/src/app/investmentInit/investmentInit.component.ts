@@ -84,21 +84,21 @@ export class InvestmentInitComponent implements OnInit {
     {
       
       this.getDoctor();
-      this. getInstitution();
+      this.getInstitution();
       this.getInvestmentDoctor();
     }
       else if(this.investmentInitService.investmentInitFormData.donationTo=="Institution")
     {
       
       this.getDoctor();
-      this. getInstitution();
+      this.getInstitution();
       this.getInvestmentInstitution();
     }
       else if(this.investmentInitService.investmentInitFormData.donationTo=="Campaign")
     {
       this.getCampaignMst();
       this.getDoctor();
-      this. getInstitution();
+      this.getInstitution();
       this.getInvestmentCampaign();
     }
       else if(this.investmentInitService.investmentInitFormData.donationTo=="Bcds")
@@ -113,6 +113,7 @@ export class InvestmentInitComponent implements OnInit {
     }
       this.getInvestmentDetails();
       this.getInvestmentTargetedProd();
+      this.getInvestmentTargetedGroup();
       this.isValid=true;
       this.InvestmentInitSearchModalRef.hide()
      }
@@ -241,12 +242,29 @@ export class InvestmentInitComponent implements OnInit {
     });
   }
    getInvestmentTargetedProd(){
-    this.investmentInitService.getInvestmentTargetedProds(this.investmentInitService.investmentDoctorFormData.investmentInitId).subscribe(response => {
+    this.investmentInitService.getInvestmentTargetedProds(this.investmentInitService.investmentInitFormData.id).subscribe(response => {
       debugger;
       var data=response as IInvestmentTargetedProd[];
       if( data!==undefined)
       {
       this.investmentTargetedProds=data;
+     
+    }
+    else{
+      this.toastr.warning('No Data Found', 'Investment ');
+    }
+      
+    }, error => {
+        console.log(error);
+    });
+  }
+   getInvestmentTargetedGroup(){
+    this.investmentInitService.getInvestmentTargetedGroups(this.investmentInitService.investmentInitFormData.id).subscribe(response => {
+      debugger;
+      var data=response as IInvestmentTargetedGroup[];
+      if( data!==undefined)
+      {
+      this.investmentTargetedGroups=data;
      
     }
     else{
@@ -408,28 +426,31 @@ export class InvestmentInitComponent implements OnInit {
   }
   onChangeMarketGroupInTargetedGroup(){
     debugger;
-    // for(var i=0;i<this.society.length;i++){
-    // if(this.marketGroupMsts[i].id==this.investmentInitService.investmentTargetedGroupFormData.marketGroupMstId)
-    // {
-    //   this.investmentInitService.investmentSocietyFormData.societyAddress=this.society[i].societyAddress;
-    //   this.investmentInitService.investmentSocietyFormData.noOfMember=this.society[i].noOfMember;
-      
-    //   break;
-    // }}
+    
+    if(this.investmentTargetedGroups==null || this.investmentTargetedGroups.length==0)
+    {
     for (let i = 0; i < this.marketGroupMsts.length; i++) {
       if(this.marketGroupMsts[i].id==this.investmentInitService.investmentTargetedGroupFormData.marketGroupMstId)
       {
-        for (let j = 1; j <= this.marketGroupMsts[i].marketGroupDtls.length; j++) {
-          this.investmentTargetedGroups[j].marketGroupMstId=this.marketGroupMsts[i].marketGroupDtls[j].mstId;
-          this.investmentTargetedGroups[j].marketCode=this.marketGroupMsts[i].marketGroupDtls[j].marketCode;
-          this.investmentTargetedGroups[j].marketName=this.marketGroupMsts[i].marketGroupDtls[j].marketName;
+        var data = []; 
+        for (let j = 0; j < this.marketGroupMsts[i].marketGroupDtls.length; j++) {
+         var marketGroupMstId=this.marketGroupMsts[i].marketGroupDtls[j].mstId;
+          var marketCode=this.marketGroupMsts[i].marketGroupDtls[j].marketCode;
+          var marketName=this.marketGroupMsts[i].marketGroupDtls[j].marketName;
+          
+          data.push({id:0,investmentInitId:this.investmentInitService.investmentInitFormData.id,marketGroupMst:this.marketGroupMsts[i],marketGroupMstId:marketGroupMstId,marketCode:marketCode,marketName:marketName});
+          //this.investmentTargetedGroups.push({id:0,investmentInitId:this.investmentInitService.investmentInitFormData.id,marketGroup:null,marketGroupMstId:this.marketGroupMsts[i].marketGroupDtls[j].mstId,marketCode:this.marketGroupMsts[i].marketGroupDtls[j].marketCode,marketName:this.marketGroupMsts[i].marketGroupDtls[j].marketName});
         }
+        this.investmentTargetedGroups=data;
       break 
       }
     }
-  
-    
-  
+  }
+  else{
+    this.toastr.warning('Already Market Group Exist', 'Investment ', {
+      positionClass: 'toast-top-right' 
+   });
+  }
   }
   changeDateInDetail(){
     debugger;
@@ -871,7 +892,7 @@ getMarketGroupMsts(){
       err => { console.log(err); }
     );
   }
-  insertInvestmentProd() {
+  insertInvestmentTargetedProd() {
     debugger;
     if(this.investmentInitService.investmentInitFormData.id==null || this.investmentInitService.investmentInitFormData.id==undefined || this.investmentInitService.investmentInitFormData.id==0)
     {
@@ -927,6 +948,46 @@ getMarketGroupMsts(){
         err => { console.log(err); }
       );
     }
+  }
+  insertInvestmentTargetedGroup() {
+    debugger;
+    if(this.investmentInitService.investmentInitFormData.id==null || this.investmentInitService.investmentInitFormData.id==undefined || this.investmentInitService.investmentInitFormData.id==0)
+    {
+      this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
+        positionClass: 'toast-top-right' 
+     });
+     return false;
+    }
+   
+    if(this.investmentInitService.investmentTargetedGroupFormData.marketGroupMstId==null || this.investmentInitService.investmentTargetedGroupFormData.marketGroupMstId==undefined || this.investmentInitService.investmentTargetedGroupFormData.marketGroupMstId==0)
+    {
+      this.toastr.warning('Select Market Group First', 'Investment ', {
+        positionClass: 'toast-top-right' 
+     });
+     return false;
+    }
+    if(this.investmentTargetedGroups!=null && this.investmentTargetedGroups.length>0)
+    {
+    this.investmentInitService.investmentTargetedGroupFormData.investmentInitId =this.investmentInitService.investmentInitFormData.id;
+    
+    this.investmentInitService.insertInvestmentTargetedGroup(this.investmentTargetedGroups).subscribe(
+      res => {
+        debugger;
+       this.investmentInitService.investmentTargetedProdFormData=new InvestmentTargetedProd();
+       
+       this.getInvestmentTargetedGroup();
+       
+       this.isDonationValid=true;
+        this.toastr.success(res);
+      },
+      err => { console.log(err); }
+    );
+  }
+  else{
+    this.toastr.warning('Select Market Group First', 'Investment ', {
+      positionClass: 'toast-top-right' 
+   });
+  }
   }
   editInvestmentTargetedProd(selectedRecord: IInvestmentTargetedProd) {
     this.investmentInitService.investmentTargetedProdFormData = Object.assign({}, selectedRecord);
@@ -1030,4 +1091,29 @@ removeInvestmentTargetedProd(selectedRecord: IInvestmentTargetedProd) {
     );
   }
 }
+removeInvestmentTargetedGroup() {
+  //this.investmentInitService.investmentTargetedProdFormData = Object.assign({}, selectedRecord);
+  if(this.investmentTargetedGroups!=null && this.investmentTargetedGroups.length>0)
+    {
+  var c = confirm("Are you sure you want to delete that?"); 
+    if (c == true) {  
+    this.investmentInitService.removeInvestmentTargetedGroup(this.investmentTargetedGroups).subscribe(
+      res => {
+        debugger;
+        this.toastr.success(res);
+        //this.isDonationValid=false;
+        this.investmentInitService.investmentTargetedGroupFormData=new InvestmentTargetedGroup();
+        this.getInvestmentTargetedGroup();
+      },
+      err => { console.log(err); }
+    );
+  }
 }
+  else{
+    this.toastr.warning('No Market Group Found', 'Investment ', {
+      positionClass: 'toast-top-right' 
+   });
+  }
+}
+}
+

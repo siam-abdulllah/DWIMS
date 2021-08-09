@@ -77,6 +77,22 @@ namespace API.Controllers
                 throw ex;
             }
         }
+        
+        [HttpGet("employeeValidateById/{employeeId}")]
+        public async Task<ActionResult<Employee>> GetEmployeeValidateById(int employeeId)
+        {
+            try
+            {
+                var data = await _employeeRepo.GetByIdAsync(employeeId);
+                return data;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
 
     }
 }

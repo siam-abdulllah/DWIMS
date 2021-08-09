@@ -4,6 +4,8 @@ import { ApprAuthConfigComponent } from '../apprAuthConfig/apprAuthConfig.compon
 import { DocHonApprComponent } from '../docHonAppr/docHonAppr.component';
 import { RegApprovalComponent } from '../regApproval/regApproval.component';
 import { InvestmentInitComponent } from '../investmentInit/investmentInit.component';
+import { InvestmentRecComponent } from '../investmentRec/investmentRec.component';
+import { InvestmentAprComponent } from '../investmentApr/investmentApr.component';
 import { NgModule } from '@angular/core';
 //import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
@@ -18,6 +20,8 @@ const portalRoutes: Routes = [
         {path: 'apprAuthConfig', component: ApprAuthConfigComponent},
         {path: 'docHonAppr', component: DocHonApprComponent},
         {path: 'investmentInit', component: InvestmentInitComponent},
+        {path: 'investmentRec', component: InvestmentRecComponent},
+        {path: 'investmentApr', component: InvestmentAprComponent},
         {path: 'marketGroup', component: MarketGroupComponent},
         {path: 'regApproval', component: RegApprovalComponent},
         {path: '', component: PortalComponent},

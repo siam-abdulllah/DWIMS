@@ -468,7 +468,21 @@
                                 </div>
                             </fieldset>
                             <fieldset>
-                                <legend>Investment Details</legend>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h3 class="card-title"><strong>Investment Details</strong></h3>
+                                        </div>
+                                        <div class="col-sm-2"></div>
+                                        <div class="col-sm-2" *ngIf="isValid">
+                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentDetails()"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                        </div>
+                                        <!-- <div class="col-sm-2" *ngIf="isValid">
+                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentBcds()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
+                                        </div> -->
+
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-6">
@@ -481,21 +495,21 @@
                                                         <td>Share-All</td>
                                                         <td>Share-Own</td>
                                                     </tr>
-                                                    <tr *ngFor="let doctor of doctors">
+                                                    <tr *ngFor="let a of investmentDetails">
                                                         <td>
-                                                            {{doctor.slNo}}
+                                                            {{a.purpose}}
                                                         </td>
                                                         <td>
-                                                            {{doctor.allCommit}}
+                                                            {{a.commitmentAllSBU}}
                                                         </td>
                                                         <td>
-                                                            {{doctor.ownCommit}}
+                                                            {{a.commitmentOwnSBU}}
                                                         </td>
                                                         <td>
-                                                            {{doctor.allShare}}
+                                                            {{a.shareAllSBU}}
                                                         </td>
                                                         <td>
-                                                            {{doctor.ownShare}}
+                                                            {{a.shareOwnSBU}}
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -508,8 +522,7 @@
                                                         <label>Prop. Inv.</label>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <select class="form-control " name="propInv">
-                                                        </select>
+                                                        <input class="form-control" name="proposedAmount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.proposedAmount">
                                                     </div>
                                                 </div>
                                             </div>
@@ -519,7 +532,7 @@
                                                         <label>Purpose</label>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" name="purpose">
+                                                        <input class="form-control" name="purpose" id="purpose" #purpose="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.purpose">
                                                     </div>
                                                 </div>
                                             </div>
@@ -529,16 +542,20 @@
                                                         <label>Duration</label>
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input class="form-control" placeholder="From" name="fromDuration">
+                                                        <input class="form-control" placeholder="Calender" (onHidden)="changeDateInDetail()" name="fromDate" #fromDate="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched" [bsValue]="bsValue"
+                                                            bsDatepicker [bsConfig]="bsConfig">
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input class="form-control" placeholder="To" name="toDuration">
+                                                        <input class="form-control" placeholder="Calender" (onHidden)="changeDateInDetail()" name="toDate" #toDate="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched" [bsValue]="bsValue"
+                                                            bsDatepicker [bsConfig]="bsConfig">
+
                                                     </div>
                                                     <div class="col-md-2">
                                                         <label>Total Month</label>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <input class="form-control" name="totalMonth" readonly>
+                                                        <input class="form-control" name="totalMonth" id="totalMonth" #totalMonth="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.totalMonth" readonly>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -551,7 +568,7 @@
                                                         <label>All SBU </label>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <input class="form-control" name="allSBU">
+                                                        <input class="form-control" name="commitmentAllSBU" id="commitmentAllSBU" #commitmentAllSBU="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.commitmentAllSBU">
                                                     </div>
                                                     <div class="col-md-1">
                                                         <label>%/</label>
@@ -560,7 +577,7 @@
                                                         <label>Own SBU</label>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <input class="form-control" name="ownSBU">
+                                                        <input class="form-control" name="commitmentOwnSBU" id="commitmentOwnSBU" #commitmentOwnSBU="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.commitmentOwnSBU">
                                                     </div>
                                                     <div class="col-md-1">
                                                         <label>%</label>
@@ -573,7 +590,9 @@
                                                         <label>Payment Method</label>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <select class="form-control" name="paymentMethod">
+                                                        <select class="form-control" name="paymentMethod" id="paymentMethod" #paymentMethod="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.paymentMethod">
+                                                        
+                                                            <option  [ngValue]="null">Select Payment Method</option>
                                                             <option value="Cash">Cash</option>
                                                             <option value="Cheque">Cheque</option>
                                                             <option value="DD">DD</option>
@@ -589,7 +608,7 @@
                                                         <label>Cheque Title</label>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" name="chequeTitle">
+                                                        <input class="form-control" name="chequeTitle" id="chequeTitle" #chequeTitle="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.chequeTitle">
                                                     </div>
                                                 </div>
                                             </div>
@@ -598,23 +617,31 @@
                                 </div>
                             </fieldset>
                             <fieldset>
-                                <legend>Targeted Products of SBU</legend>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h3 class="card-title"><strong>Targeted Products of SBU</strong></h3>
+                                        </div>
+                                        <div class="col-sm-2"></div>
+                                        <!-- <div class="col-sm-2">
+                                            <button class="btn btn-success btn-lg btn-block" type="button"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                        </div> -->
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-2">
                                             <label>Product</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <select class="form-control" name="product">
-                                        <option value="volvo">Volvo</option>
-                                        <option value="saab">Saab</option>
-                                        <option value="mercedes">Mercedes</option>
-                                        <option value="audi">Audi</option>
-                                    </select>
+                                            <select class="form-control " id="productId" name="productId" #productId="ngModel" [(ngModel)]="investmentInitService.investmentTargetedProdFormData.productId" [class.invalid]="productId.invalid && productId.touched">
+                                                <option  [ngValue]="null">Select Product</option>
+                                                <option *ngFor="let product of products" [value]="product.id">{{product.productName}}</option>
+                                            </select>
                                         </div>
                                         <div class="col-md-3"></div>
-                                        <div class="col-md-2">
-                                            <button class="btn btn-primary btn-lg btn-block"><i class="fa fa-plus"></i>&nbsp; Add</button>
+                                        <div class="col-md-2" *ngIf="isValid">
+                                            <button class="btn btn-primary btn-lg btn-block" type="button" (click)="insertInvestmentTargetedProd()"><i class="fa fa-plus"></i>&nbsp; Add</button>
 
                                         </div>
                                     </div>
@@ -622,48 +649,59 @@
                                 <div class="form-group">
                                     <table class="table  table-bordered">
                                         <tr>
-                                            <td>SL</td>
+
                                             <td>Product Code</td>
                                             <td>Product Name</td>
                                         </tr>
-                                        <tr *ngFor="let product of products">
+                                        <tr *ngFor="let a of investmentTargetedProds">
                                             <td>
-                                                {{product.slNo}}
+                                                {{a.productInfo.productCode}}
                                             </td>
                                             <td>
-                                                {{product.productCode}}
+                                                {{a.productInfo.productName}}
                                             </td>
                                             <td>
-                                                {{product.productName}}
+                                                <input type="button" (click)="editInvestmentTargetedProd(a)" value="Edit">
                                             </td>
                                             <td>
-                                                <input type="button" value="Edit">
-                                            </td>
-                                            <td>
-                                                <input type="button" value="Remove">
+                                                <input type="button" (click)="removeInvestmentTargetedProd(a)" value="Remove">
                                             </td>
                                         </tr>
                                     </table>
                                 </div>
                             </fieldset>
                             <fieldset>
-                                <legend>Targeted Group</legend>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h3 class="card-title"><strong>Targeted Group</strong></h3>
+                                        </div>
+                                        <div class="col-sm-2"></div>
+                                        <!-- <div class="col-sm-2">
+                                            <button class="btn btn-success btn-lg btn-block" type="button"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                        </div> -->
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-2">
                                             <label>Group</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <select class="form-control" name="group">
-                                        <option value="volvo">Volvo</option>
-                                        <option value="saab">Saab</option>
-                                        <option value="mercedes">Mercedes</option>
-                                        <option value="audi">Audi</option>
+                                            <select class="form-control" name="marketGroupMstId" name="marketGroupMstId" #marketGroupMstId="ngModel" (change)="onChangeMarketGroupInTargetedGroup()" [(ngModel)]="investmentInitService.investmentTargetedGroupFormData.marketGroupMstId" [class.invalid]="marketGroupMstId.invalid && marketGroupMstId.touched">
+                                                
+                                                <option  [ngValue]="null">Select Market Group</option>
+                                                <option *ngFor="let a of marketGroupMsts" [value]="a.id">{{a.groupName}}</option>
+                                         
                                     </select>
                                         </div>
                                         <div class="col-md-3"></div>
-                                        <div class="col-md-2">
-                                            <button class="btn btn-primary btn-lg btn-block"><i class="fa fa-plus"></i>&nbsp; Add</button>
+                                        <div class="col-md-2" *ngIf="isValid">
+                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentTargetedGroup()"><i class="fa fa-plus"></i>&nbsp; Save</button>
+
+                                        </div>
+                                        <div class="col-md-2" *ngIf="isValid">
+                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentTargetedGroup()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
 
                                         </div>
                                     </div>
@@ -671,29 +709,24 @@
                                 <div class="form-group">
                                     <table class="table  table-bordered">
                                         <tr>
-                                            <td>SL</td>
-                                            <td>Employee Code</td>
-                                            <td>Employee Name</td>
+                                            <td>Market Group Name</td>
+                                            <td>Market Code</td>
+                                            <td>Market Name</td>
                                         </tr>
-                                        <tr *ngFor="let market of markets">
+                                        <tr *ngFor="let a of investmentTargetedGroups">
+
                                             <td>
-                                                {{market.slNo}}
+                                                {{a.marketGroupMst.groupName}}
                                             </td>
                                             <td>
-                                                {{market.employeeCode}}
+                                                {{a.marketCode}}
                                             </td>
                                             <td>
-                                                {{market.employeeName}}
+                                                {{a.marketName}}
                                             </td>
-                                            <td>
-                                                <input class="" type="button" value="View">
-                                            </td>
-                                            <td>
-                                                <input type="button" value="Edit">
-                                            </td>
-                                            <td>
-                                                <input type="button" value="Remove">
-                                            </td>
+                                            <!-- <td>
+                                                <input type="button" (click)="removeInvestmentTargetedProd(a)" value="Remove">
+                                            </td> -->
                                         </tr>
                                     </table>
                                 </div>

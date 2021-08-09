@@ -1,0 +1,111 @@
+<div class="d-flex justify-content-center mt-4">
+
+    <div class="col-12">
+        <app-stepper [linearModeSelected]="true" #appStepper>
+            <cdk-step [label]="'User Registration'">
+                <div [formGroup]="registerForm">
+                    <div class="card" formGroupName="userForm">
+                        <div class="card-body">
+                            <div class="VendorInfo">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <app-text-input formControlName="employeeId" [label]="'Employee Id'"></app-text-input>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <button class="btn btn-primary" type="button" (click)="employeeValidateById()">
+                                        <i class="fa fa-check"></i>Validate</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <app-text-input formControlName="employeeName" [label]="'Employee Name'"></app-text-input>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <app-text-input formControlName="designationName" [label]="'Designation'"></app-text-input>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <app-text-input formControlName="departmentName" [label]="'Department'"></app-text-input>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <app-text-input formControlName="phoneNumber" [label]="'Mobile No'"></app-text-input>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <app-text-input formControlName="displayName" [label]="'Display Name'" aria-readonly="displayName"></app-text-input>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <app-text-input formControlName="email" [label]="'Email Address'"></app-text-input>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <app-text-input formControlName="password" [label]="'Password'" [type]="'password'">
+                                        </app-text-input>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <ul class="text-danger list-unstyled" *ngIf="errors">
+                                            <li *ngFor="let error of errors">
+                                                {{error}}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="float-none d-flex justify-content-between flex-column flex-lg-row">
+                                            <button class="btn" cdkStepperPrevious></button>
+                                            <!-- <button [disabled]="registerForm.get('userForm').invalid" class="btn btn-primary" cdkStepperNext>
+                        Next <i class="fa fa-angle-right"></i>
+                      </button> -->
+                                            <button [disabled]="registerForm.invalid" class="btn btn-primary" (click)="onSubmit()">
+                        <i class="fa fa-save"></i> SAVE 
+                        <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+                      </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+            </cdk-step>
+            <!-- <cdk-step [label]="'Role Information'">
+                <div [formGroup]="registerForm">
+                    <div class="card" formGroupName="roleForm">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <ng-multiselect-dropdown formControlName="userRoles" [placeholder]="'Role'" [settings]="roleDropdownSettings" [data]="roleList" [(ngModel)]="selectedRole" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                                    </ng-multiselect-dropdown>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="float-none d-flex justify-content-between flex-column flex-lg-row mb-5">
+                                        <button class="btn btn-outline-primary" cdkStepperPrevious>
+                      <i class="fa fa-angle-left"></i> Back to User Information
+                    </button>
+
+                                        <button [disabled]="registerForm.invalid" class="btn btn-primary" (click)="onSubmit()">
+                      <i class="fa fa-save"></i> SAVE 
+                      <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+                    </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </cdk-step> -->
+        </app-stepper>

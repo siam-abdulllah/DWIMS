@@ -12,6 +12,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {DatePipe} from '@angular/common';
 import { MarketGroupComponent } from '../marketGroup/marketGroup.component';
 import { InvestmentInitComponent } from '../investmentInit/investmentInit.component';
+import { InvestmentRecComponent } from '../investmentRec/investmentRec.component';
+import { InvestmentAprComponent } from '../investmentApr/investmentApr.component';
 import { ApprAuthConfigComponent } from '../apprAuthConfig/apprAuthConfig.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -43,6 +45,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     MarketGroupComponent,
     ApprAuthConfigComponent,
     InvestmentInitComponent,
+    InvestmentRecComponent,
+    InvestmentAprComponent,
   ],
   providers: [DatePipe]
 })

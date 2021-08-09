@@ -69,7 +69,7 @@ export interface IInvestmentTargetedGroup {
     investmentInitId: number;
     marketCode: string;
     marketName: string;
-    marketGroup:IMarketGroupMst;
+    marketGroupMst:IMarketGroupMst;
 }
  
 export class InvestmentTargetedGroup implements IInvestmentTargetedGroup {
@@ -78,7 +78,7 @@ export class InvestmentTargetedGroup implements IInvestmentTargetedGroup {
     investmentInitId: number;
     marketCode: string;
     marketName: string;
-    marketGroup:IMarketGroupMst;
+    marketGroupMst:IMarketGroupMst;
 }
 export interface IInvestmentDoctor {
     id: number;

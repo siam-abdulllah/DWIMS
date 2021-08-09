@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { IAddress } from '../shared/models/address';
 import { GenericParams } from '../shared/models/genericParams';
 import { IPagination, Pagination } from '../shared/models/pagination';
+import { IEmployeeInfo } from '../shared/models/employeeInfo';
 
 @Injectable({
   providedIn: 'root'
@@ -68,6 +69,17 @@ export class AccountService {
           // localStorage.setItem('token', user.token);
           // this.currentUserSource.next(user);
           return user;
+        }
+      })
+    );
+  }
+  employeeValidateById(employeeId: number) {
+    return this.http.get(this.baseUrl + 'employee/employeeValidateById/'+employeeId).pipe(
+      map((employeeInfo: IEmployeeInfo) => {
+        if (employeeInfo) {
+          // localStorage.setItem('token', user.token);
+          // this.currentUserSource.next(user);
+          return employeeInfo;
         }
       })
     );

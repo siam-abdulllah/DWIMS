@@ -19,6 +19,7 @@ namespace API.Controllers
         private readonly IGenericRepository<InvestmentInit> _investmentInitRepo;
         private readonly IGenericRepository<InvestmentDetail> _investmentDetailRepo;
         private readonly IGenericRepository<InvestmentTargetedProd> _investmentTargetedProdRepo;
+        private readonly IGenericRepository<InvestmentTargetedGroup> _investmentTargetedGroupRepo;
         private readonly IGenericRepository<InvestmentDoctor> _investmentDoctorRepo;
         private readonly IGenericRepository<InvestmentInstitution> _investmentInstitutionRepo;
         private readonly IGenericRepository<InvestmentCampaign> _investmentCampaignRepo;
@@ -26,13 +27,14 @@ namespace API.Controllers
         private readonly IGenericRepository<InvestmentSociety> _investmentSocietyRepo;
         private readonly IMapper _mapper;
 
-        public InvestmentController(IGenericRepository<InvestmentTargetedProd> investmentTargetedProdRepo, IGenericRepository<InvestmentInit> investmentInitRepo,IGenericRepository<InvestmentDetail> investmentDetailRepo, IGenericRepository<InvestmentDoctor> investmentDoctorRepo,
+        public InvestmentController(IGenericRepository<InvestmentTargetedGroup> investmentTargetedGroupRepo, IGenericRepository<InvestmentTargetedProd> investmentTargetedProdRepo, IGenericRepository<InvestmentInit> investmentInitRepo,IGenericRepository<InvestmentDetail> investmentDetailRepo, IGenericRepository<InvestmentDoctor> investmentDoctorRepo,
             IGenericRepository<InvestmentSociety> investmentSocietyRepo, IGenericRepository<InvestmentBcds> investmentBcdsRepo, IGenericRepository<InvestmentCampaign> investmentCampaignRepo, IGenericRepository<InvestmentInstitution> investmentInstitutionRepo, IMapper mapper)
         {
             _mapper = mapper;
             _investmentInitRepo = investmentInitRepo;
             _investmentDetailRepo = investmentDetailRepo;
             _investmentTargetedProdRepo = investmentTargetedProdRepo;
+            _investmentTargetedGroupRepo = investmentTargetedGroupRepo;
             _investmentDoctorRepo = investmentDoctorRepo;
             _investmentInstitutionRepo = investmentInstitutionRepo;
             _investmentCampaignRepo = investmentCampaignRepo;
@@ -288,6 +290,20 @@ namespace API.Controllers
             {
                 throw ex;
             }
+        }[HttpGet]
+        [Route("investmentTargetedGroups/{investmentInitId}")]
+        public async Task<IReadOnlyList<InvestmentTargetedGroup>> GetInvestmentTargetedGroups(int investmentInitId)
+        {
+            try
+            {
+                var spec = new InvestmentTargetedGroupSpecification(investmentInitId);
+                var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(spec);
+                return investmentTargetedGroup;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
         }
         
 
@@ -379,7 +395,9 @@ namespace API.Controllers
 
                 throw;
             }
-        }
+        } 
+      
+        
         [HttpPost("updateInvestmentTargetedProd")]
         public  ActionResult<InvestmentTargetedProdDto> UpdateInvestmentTargetedProd(InvestmentTargetedProdDto investmentTargetedProdDto)
         {
@@ -410,8 +428,48 @@ namespace API.Controllers
                 throw;
             }
         }
-       
-       
+
+        [HttpPost("insertInvestmentTargetedGroup")]
+        public async Task<IActionResult> InsertInvestmentTargetedGroup(List<InvestmentTargetedGroupDto> investmentTargetedGroupDto)
+        {
+            try
+            {
+                var alreadyExistSpec = new InvestmentTargetedGroupSpecification(investmentTargetedGroupDto[0].InvestmentInitId, investmentTargetedGroupDto[0].MarketGroupMstId);
+                var alreadyExistInvestmentTargetedGroupList = await _investmentTargetedGroupRepo.ListAsync(alreadyExistSpec);
+                if (alreadyExistInvestmentTargetedGroupList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentTargetedGroupList)
+                    {
+                        _investmentTargetedGroupRepo.Delete(v);
+                        _investmentTargetedGroupRepo.Savechange();
+                    }
+                }
+                foreach (var v in investmentTargetedGroupDto)
+                {
+                    var investmentTargetedGroup = new InvestmentTargetedGroup
+                    {
+                        //ReferenceNo = investmentTargetedGroupDto.ReferenceNo,
+                        InvestmentInitId = v.InvestmentInitId,
+                        MarketCode = v.MarketCode,
+                        MarketName = v.MarketName,
+                        MarketGroupMstId = v.MarketGroupMstId,
+                        SetOn = DateTimeOffset.Now,
+                        ModifiedOn = DateTimeOffset.Now
+                    };
+                    _investmentTargetedGroupRepo.Add(investmentTargetedGroup);
+                }
+                    
+                _investmentTargetedGroupRepo.Savechange();
+
+                return Ok("Succsessfuly Saved!!!");
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
         [HttpPost("insertInvestmentInstitution")]
         public async Task<InvestmentInstitutionDto> InsertInvestmentInstitution(InvestmentInstitutionDto investmentInstitutionDto)
         {
@@ -773,6 +831,31 @@ namespace API.Controllers
                     {
                         _investmentTargetedProdRepo.Delete(v);
                         _investmentTargetedProdRepo.Savechange();
+                    }
+
+                    return Ok("Succsessfuly Deleted!!!");
+                }
+                return NotFound();
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        } 
+        [HttpPost("removeInvestmentTargetedGroup")]
+        public async Task<IActionResult> RemoveInvestmentTargetedGroup(List<InvestmentTargetedGroupDto> investmentTargetedGroupDto)
+        {
+            try
+            {
+                //var response = new HttpResponseMessage();
+                var alreadyExistSpec = new InvestmentTargetedGroupSpecification(investmentTargetedGroupDto[0].InvestmentInitId,investmentTargetedGroupDto[0].MarketGroupMstId);
+                var alreadyExistInvestmentTargetedGroupList = await _investmentTargetedGroupRepo.ListAsync(alreadyExistSpec);
+                if (alreadyExistInvestmentTargetedGroupList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentTargetedGroupList)
+                    {
+                        _investmentTargetedGroupRepo.Delete(v);
+                        _investmentTargetedGroupRepo.Savechange();
                     }
 
                     return Ok("Succsessfuly Deleted!!!");

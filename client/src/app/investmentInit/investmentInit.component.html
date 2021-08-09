@@ -641,7 +641,7 @@
                                         </div>
                                         <div class="col-md-3"></div>
                                         <div class="col-md-2" *ngIf="isValid">
-                                            <button class="btn btn-primary btn-lg btn-block" type="button" (click)="insertInvestmentProd()"><i class="fa fa-plus"></i>&nbsp; Add</button>
+                                            <button class="btn btn-primary btn-lg btn-block" type="button" (click)="insertInvestmentTargetedProd()"><i class="fa fa-plus"></i>&nbsp; Add</button>
 
                                         </div>
                                     </div>
@@ -688,16 +688,20 @@
                                             <label>Group</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <select class="form-control" name="marketGroupMstId"  name="marketGroupMstId" #marketGroupMstId="ngModel"(change)="onChangeMarketGroupInTargetedGroup()" [(ngModel)]="investmentInitService.investmentTargetedGroupFormData.marketGroupMstId" [class.invalid]="marketGroupMstId.invalid && marketGroupMstId.touched">
+                                            <select class="form-control" name="marketGroupMstId" name="marketGroupMstId" #marketGroupMstId="ngModel" (change)="onChangeMarketGroupInTargetedGroup()" [(ngModel)]="investmentInitService.investmentTargetedGroupFormData.marketGroupMstId" [class.invalid]="marketGroupMstId.invalid && marketGroupMstId.touched">
                                                 
-                                                <option  [ngValue]="null">Select Product</option>
+                                                <option  [ngValue]="null">Select Market Group</option>
                                                 <option *ngFor="let a of marketGroupMsts" [value]="a.id">{{a.groupName}}</option>
                                          
                                     </select>
                                         </div>
                                         <div class="col-md-3"></div>
-                                        <div class="col-md-2">
-                                            <button class="btn btn-primary btn-lg btn-block" type="button" (click)="insertInvestmentProd()"><i class="fa fa-plus"></i>&nbsp; Add</button>
+                                        <div class="col-md-2" *ngIf="isValid">
+                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentTargetedGroup()"><i class="fa fa-plus"></i>&nbsp; Save</button>
+
+                                        </div>
+                                        <div class="col-md-2" *ngIf="isValid">
+                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentTargetedGroup()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
 
                                         </div>
                                     </div>
@@ -710,9 +714,9 @@
                                             <td>Market Name</td>
                                         </tr>
                                         <tr *ngFor="let a of investmentTargetedGroups">
-                                           
+
                                             <td>
-                                                {{a.marketGroup.groupName}}
+                                                {{a.marketGroupMst.groupName}}
                                             </td>
                                             <td>
                                                 {{a.marketCode}}
@@ -720,9 +724,9 @@
                                             <td>
                                                 {{a.marketName}}
                                             </td>
-                                            <td>
+                                            <!-- <td>
                                                 <input type="button" (click)="removeInvestmentTargetedProd(a)" value="Remove">
-                                            </td>
+                                            </td> -->
                                         </tr>
                                     </table>
                                 </div>

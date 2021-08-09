@@ -14,6 +14,6 @@ namespace Core.Entities
         public string MarketName { get; set; }
         public int? MarketGroupMstId { get; set; }
         [ForeignKey("MarketGroupMstId")]
-        public MarketGroupDtl MarketGroupMst { get; set; }
+        public MarketGroupMst MarketGroupMst { get; set; }
     }
 }
