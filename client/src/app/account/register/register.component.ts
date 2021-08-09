@@ -90,17 +90,18 @@ export class RegisterComponent implements OnInit {
       userForm: this.fb.group({
         displayName: [null, [Validators.required]],
         employeeId: [null, [Validators.required]],
-        employeeName: [null, [Validators.required]],
-        designationName: [null, [Validators.required]],
-        departmentName: [null, [Validators.required]],
-        email: [null, [Validators.required]],
+        employeeName: [{value: null, disabled: true}],
+        designationName: [{value: null, disabled: true}],
+        departmentName: [{value: null, disabled: true}],
+        email: [null,  [Validators.required]],
         password: [null, [Validators.required]],
-        phoneNumber: [null, [Validators.required]],
+        phoneNumber: [{value: null, disabled: true}],
       }),
       // roleForm: this.fb.group({
       //   userRoles: [null, [Validators.required]],
       // }),
     });
+    
   }
 
   //############ Role ########.
@@ -160,6 +161,7 @@ export class RegisterComponent implements OnInit {
 
   async registerUser()
   {
+    debugger;
     this.accountService.register(this.registerForm.value).subscribe(
       (response) => {
         this.loading = false;
@@ -180,12 +182,20 @@ export class RegisterComponent implements OnInit {
       (response) => {
         debugger;
         this.loading = false;
-        this.registerForm.reset();
-        this.toastr.success('Data Saved Successfully.');
-        this.registerForm.value.userForm.employeeId=response.id;
+        //this.registerForm.reset(); 
+        this.toastr.success('Employee information found.');
+        this.registerForm.controls.userForm.get('employeeId').setValue(response.id);
+        this.registerForm.controls.userForm.get('employeeName').setValue(response.employeeName);
+        this.registerForm.controls.userForm.get('designationName').setValue(response.designationName);
+        this.registerForm.controls.userForm.get('departmentName').setValue(response.departmentName);
+        this.registerForm.controls.userForm.get('email').setValue(response.email);
+        this.registerForm.controls.userForm.get('phoneNumber').setValue(response.phone);
+        this.registerForm.controls.userForm.get('phoneNumber')['controls'].disable();
+        
       },
       (error) => {
         console.log(error);
+        this.loading = false;
         this.loading = false;
         this.errors = error.errors;
       }

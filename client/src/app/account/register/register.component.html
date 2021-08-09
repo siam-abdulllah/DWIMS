@@ -9,7 +9,8 @@
                             <div class="VendorInfo">
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <app-text-input formControlName="employeeId" [label]="'Employee Id'"></app-text-input>
+                                        <input type="text" class="form-control" id="employeeId" placeholder="Employee Id"
+                                        formControlName="employeeId" >
                                     </div>
                                     <div class="col-lg-6">
                                         <button class="btn btn-primary" type="button" (click)="employeeValidateById()">
@@ -18,32 +19,38 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <app-text-input formControlName="employeeName" [label]="'Employee Name'"></app-text-input>
+                                        <input type="text" class="form-control" id="employeeName" placeholder=" Employee Name"
+                                        formControlName="employeeName" >
                                     </div>
                                     <div class="col-lg-6">
-                                        <app-text-input formControlName="designationName" [label]="'Designation'"></app-text-input>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <app-text-input formControlName="departmentName" [label]="'Department'"></app-text-input>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <app-text-input formControlName="phoneNumber" [label]="'Mobile No'"></app-text-input>
+                                        <input type="text" class="form-control" id="designationName" placeholder="Designation Name"
+                                        formControlName="designationName" >
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <app-text-input formControlName="displayName" [label]="'Display Name'" aria-readonly="displayName"></app-text-input>
+                                        <input type="text" class="form-control" id="departmentName" placeholder="Department Name"
+                                        formControlName="departmentName" >
                                     </div>
                                     <div class="col-lg-6">
-                                        <app-text-input formControlName="email" [label]="'Email Address'"></app-text-input>
+                                        <input type="text" class="form-control" id="phoneNumber" placeholder="Phone Number"
+                                        formControlName="phoneNumber" >
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <app-text-input formControlName="password" [label]="'Password'" [type]="'password'">
-                                        </app-text-input>
+                                         <input type="text" class="form-control" id="displayName" placeholder="Display Name"
+                                        formControlName="displayName" >
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <input type="text" class="form-control" id="email" placeholder="Email"
+                                        formControlName="email" readonly>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <input type="password" class="form-control" id="password" placeholder="Password"
+                                        formControlName="password" >
                                     </div>
                                 </div>
                                 <div class="row">

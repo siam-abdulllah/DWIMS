@@ -157,6 +157,7 @@ namespace API.Controllers
 
             var user = new AppUser
             {
+                EmployeeId = setRegDto.UserForm.EmployeeId,
                 DisplayName = setRegDto.UserForm.DisplayName,
                 Email = setRegDto.UserForm.Email,
                 UserName = setRegDto.UserForm.Email,
@@ -166,17 +167,17 @@ namespace API.Controllers
             };
             var userObj = await _userManager.CreateAsync(user, setRegDto.UserForm.Password);
             if (!userObj.Succeeded) return BadRequest(new ApiResponse(400));
-            var userEntity = await _userManager.FindByEmailAsync(user.Email);
-            try{
-                  string[] roles = setRegDto.RoleForm.UserRoles
-                            .Select(ob=>ob.Name).ToArray();
-                  var roleObj = await _userManager.AddToRolesAsync(userEntity, roles);
-                  if(!roleObj.Succeeded) return BadRequest(new ApiResponse(400, "User Role Set Faild."));
-            }
-            catch(Exception )
-            {
-                await _userManager.DeleteAsync(user);               
-            }
+           // var userEntity = await _userManager.FindByEmailAsync(user.Email);
+            //try{
+            //      string[] roles = setRegDto.RoleForm.UserRoles
+            //                .Select(ob=>ob.Name).ToArray();
+            //      var roleObj = await _userManager.AddToRolesAsync(userEntity, roles);
+            //      if(!roleObj.Succeeded) return BadRequest(new ApiResponse(400, "User Role Set Faild."));
+            //}
+            //catch(Exception )
+            //{
+            //    await _userManager.DeleteAsync(user);               
+            //}
             
             return new UserDto
             {

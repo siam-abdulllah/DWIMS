@@ -63,6 +63,7 @@ export class AccountService {
 
   // tslint:disable-next-line: typedef
   register(values: any) {
+    debugger;
     return this.http.post(this.baseUrl + 'account/register', values).pipe(
       map((user: IUser) => {
         if (user) {
