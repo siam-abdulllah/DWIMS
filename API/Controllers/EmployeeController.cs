@@ -1,6 +1,7 @@
 ﻿using API.Dtos;
 using AutoMapper;
 using Core.Entities;
+using Core.Entities.Identity;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,12 +14,14 @@ namespace API.Controllers
     public class EmployeeController : BaseApiController
     {
         private readonly IGenericRepository<Employee> _employeeRepo;
+        private readonly IGenericIdentityRepository<AppUser> _userRepo;
         private readonly IMapper _mapper;
-        public EmployeeController(IGenericRepository<Employee> employeeRepo,
+        public EmployeeController(IGenericRepository<Employee> employeeRepo, IGenericIdentityRepository<AppUser> userRepo,
         IMapper mapper)
         {
             _mapper = mapper;
             _employeeRepo = employeeRepo;
+            _userRepo = userRepo;
         }
         [HttpGet("employeesForConfig")]
         public async Task<IReadOnlyList<Employee>> GetEmployeesForConfig()
@@ -77,13 +80,89 @@ namespace API.Controllers
                 throw ex;
             }
         }
-        
+
         [HttpGet("employeeValidateById/{employeeId}")]
         public async Task<ActionResult<Employee>> GetEmployeeValidateById(int employeeId)
         {
             try
             {
                 var data = await _employeeRepo.GetByIdAsync(employeeId);
+                return data;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpGet("employeeForApproval")]
+        public async Task<IReadOnlyList<RegApprovalDto>> GetEmployeeForApproval()
+        {
+            try
+            {
+                var employeeData = await _employeeRepo.ListAllAsync();
+                var userData = await _userRepo.ListAllAsync();
+                var data = (from e in employeeData
+                            join u in userData on e.Id equals u.EmployeeId
+                            where u.EmailConfirmed == false
+                            orderby e.EmployeeName
+                            select new RegApprovalDto
+                            {
+                                UserId = u.Id,
+                                EmployeeId = e.Id,
+                                EmployeeSAPCode = e.EmployeeSAPCode,
+                                EmployeeName = e.EmployeeName,
+                                DepartmentName = e.DepartmentName,
+                                DesignationName = e.DesignationName,
+                                Phone = e.Phone,
+                                Email = e.Email,
+                                MarketName = e.MarketName,
+                                RegionName = e.RegionName,
+                                ZoneName = e.ZoneName,
+                                TerritoryName = e.TerritoryName,
+                                DivisionName = e.DivisionName,
+                                SBU = e.SBU,
+                                ApprovalStatus = u.EmailConfirmed==true ? "Approved":"Not Approved"
+                            }
+                              ).Distinct().ToList();
+
+                return data;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpGet("employeeApproved")]
+        public async Task<IReadOnlyList<RegApprovalDto>> GetEmployeeForApproved()
+        {
+            try
+            {
+                var employeeData = await _employeeRepo.ListAllAsync();
+                var userData = await _userRepo.ListAllAsync();
+                var data = (from e in employeeData
+                            join u in userData on e.Id equals u.EmployeeId
+                            where u.EmailConfirmed == true
+                            orderby e.EmployeeName
+                            select new RegApprovalDto
+                            {
+                                UserId = u.Id,
+                                EmployeeId = e.Id,
+                                EmployeeSAPCode = e.EmployeeSAPCode,
+                                EmployeeName = e.EmployeeName,
+                                DepartmentName = e.DepartmentName,
+                                DesignationName = e.DesignationName,
+                                Phone = e.Phone,
+                                Email = e.Email,
+                                MarketName = e.MarketName,
+                                RegionName = e.RegionName,
+                                ZoneName = e.ZoneName,
+                                TerritoryName = e.TerritoryName,
+                                DivisionName = e.DivisionName,
+                                SBU = e.SBU,
+                                ApprovalStatus = u.EmailConfirmed==true ? "Approved":"Not Approved"
+                            }
+                              ).Distinct().ToList();
+
                 return data;
             }
             catch (System.Exception ex)

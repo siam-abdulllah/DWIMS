@@ -1,14 +1,15 @@
 
-import { SubCampaign, ISubCampaign } from '../shared/models/subCampaign';
-import { Market, IMarket } from '../shared/models/market';
+import { IRegApproval,RegApproval} from'../shared/models/regApproval';
 import { GenericParams } from '../shared/models/genericParams';
 import { Component, ElementRef, OnInit, ViewChild , TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
-//import { MasterService } from '../master.service';
+//import { regApprovalService } from '../master.service';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
+import {FormGroup,FormBuilder,Validators,AsyncValidatorFn} from '@angular/forms';
+import {RegApprovalService} from '../_services/regApproval.service';
 @Component({
   selector: 'app-regApproval',
   templateUrl: './regApproval.component.html',
@@ -17,70 +18,86 @@ import { BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 })
 export class RegApprovalComponent implements OnInit {
   @ViewChild('search', {static: false}) searchTerm: ElementRef;
- // @ViewChild('campaignModal', { static: false }) campaignModal: TemplateRef<any>;
-  // campaignModalRef: BsModalRef;
+  @ViewChild('regApprovalSearchModal', { static: false }) regApprovalSearchModal: TemplateRef<any>;
+  RegApprovalSearchModalRef: BsModalRef;
   // genParams: GenericParams;
   // campaigns: ICampaign[]; 
   // subCampaigns: ISubCampaign[]; 
-  markets: IMarket[];
+  regApprovals: IRegApproval[];
   totalCount = 0;
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date = new Date();
-  //constructor(public masterService: MasterService, private router: Router,
-    constructor( private router: Router,
-    private toastr: ToastrService) { }
+  config = {
+    keyboard: false,
+    class: 'modal-lg',
+    ignoreBackdropClick: true
+  };
+    constructor( 
+      private router: Router,
+      private toastr: ToastrService,
+      private fb: FormBuilder,
+      public regApprovalService: RegApprovalService,
+      private modalService: BsModalService,
+    ) { }
 
   ngOnInit() {
     //this.getCampaign();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-green' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
   }
-  getCampaign(){
-    // this.masterService.getCampaign().subscribe(response => {
-    //   this.campaigns = response.data;
-    //   this.totalCount = response.count;
-    // }, error => {
-    //     console.log(error);
-    // });
+  openRegApprovalSearchModal(template: TemplateRef<any>) {
+    this.RegApprovalSearchModalRef = this.modalService.show(template, this.config);
+  }
+    
+  getEmployeeFormApproval(){
+    this.regApprovalService.getEmployeeFormApproval().subscribe(response => {
+      debugger;
+      this.regApprovals = response as IRegApproval[];
+      this.openRegApprovalSearchModal(this.regApprovalSearchModal);
+      //this.totalCount = response.count;
+    }, error => {
+        console.log(error);
+    });
+  }
+  getRegApproved(){
+    this.regApprovalService.getRegApproved().subscribe(response => {
+      debugger;
+      this.regApprovals = response as IRegApproval[];
+      this.openRegApprovalSearchModal(this.regApprovalSearchModal);
+      //this.totalCount = response.count;
+    }, error => {
+        console.log(error);
+    });
+  }
+  selectRegApproval(selectedRecord: IRegApproval) {
+    this.regApprovalService.regApprovalFormData = Object.assign({}, selectedRecord);
+    this.RegApprovalSearchModalRef.hide()
   }
   onSubmit(form: NgForm) {
     
-    // if (this.masterService.campaignFormData.id == 0)
-    //   this.insertCampaign(form);
-    // else
-    //   this.updateCampaign(form);
+    
+      this.updateRegApproval(form);
   }
 
-  insertCampaign(form: NgForm) {
-    // this.masterService.insertCampaign().subscribe(
-    //   res => {
-    //     debugger;
-    //     this.resetForm(form);
-    //     this.getCampaign();
-    //     this.toastr.success('Submitted successfully', 'Payment Detail Register')
-    //   },
-    //   err => { console.log(err); }
-    // );
-  }
+  
 
-  updateCampaign(form: NgForm) {
-    // this.masterService.updateSubCampaign().subscribe(
-    //   res => {
-    //     debugger;
-    //     this.resetForm(form);
-    //     this.getCampaign();
-    //     this.toastr.info('Updated successfully', 'Payment Detail Register')
-    //   },
-    //   err => { console.log(err); }
-    // );
+  updateRegApproval(form: NgForm) {
+    this.regApprovalService.updateRegApproval().subscribe(
+      res => {
+        debugger;
+        this.resetForm(form);
+        this.toastr.info('Updated successfully', 'User registration Approval')
+      },
+      err => { console.log(err); }
+    );
   }
 
   populateForm() {
-    //this.masterService.campaignFormData = Object.assign({}, selectedRecord);
+    //this.regApprovalService.campaignFormData = Object.assign({}, selectedRecord);
   }
   resetForm(form: NgForm) {
     form.form.reset();
-    //this.masterService.campaignFormData = new Campaign();
+    //this.regApprovalService.campaignFormData = new Campaign();
   }
   SBUs = [
     {id: 1, name: 'Chittagong/Chattogram' },

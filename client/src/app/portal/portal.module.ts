@@ -11,6 +11,7 @@ import { FooterComponent } from '../mastertheme/footer/footer.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {DatePipe} from '@angular/common';
 import { MarketGroupComponent } from '../marketGroup/marketGroup.component';
+import { RegApprovalComponent } from '../regApproval/regApproval.component';
 import { InvestmentInitComponent } from '../investmentInit/investmentInit.component';
 import { InvestmentRecComponent } from '../investmentRec/investmentRec.component';
 import { InvestmentAprComponent } from '../investmentApr/investmentApr.component';
@@ -47,6 +48,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     InvestmentInitComponent,
     InvestmentRecComponent,
     InvestmentAprComponent,
+    RegApprovalComponent
   ],
   providers: [DatePipe]
 })
