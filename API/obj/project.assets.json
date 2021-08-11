@@ -4372,7 +4372,7 @@
       ]
     },
     "System.Collections.Specialized/4.3.0": {
-      "sha512": "Epx8PoVZR0iuOnJJDzp7pWvdfMMOAvpUo95pC4ScH2mJuXkKA2Y4aR3cG9qt2klHgSons1WFh4kcGW7cSXvrxg==",
+      "sha512": "NoPBj0ykejqAWW4p4gGtrrL+3c84ZLSvGnHgq422ew1Rj4WKj1FA8/BCybqC111EtgcqUl6ZJNFYYS22HLgbjA==",
       "type": "package",
       "path": "system.collections.specialized/4.3.0",
       "files": [
@@ -6433,7 +6433,7 @@
       ]
     },
     "System.Runtime.Serialization.Primitives/4.3.0": {
-      "sha512": "Wz+0KOukJGAlXjtKr+5Xpuxf8+c8739RI1C+A2BoQZT+wMCCoMDDdO8/4IRHfaVINqL78GO8dW8G2lW/e45Mcw==",
+      "sha512": "2Z5t70a2SwMsfQDp9KOclaZNyQhfIga2gppq9lIUDM1A4ohTshn4JqT7ir8bvIhXgorWKYDAr6rPzEbi/nTGKg==",
       "type": "package",
       "path": "system.runtime.serialization.primitives/4.3.0",
       "files": [
@@ -7644,23 +7644,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\zahid\\.nuget\\packages\\": {},
+    "C:\\Users\\maaz\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\Git\\DWIMS\\API\\API.csproj",
+      "projectUniqueName": "E:\\DWIMS\\TestApplication\\API\\API.csproj",
       "projectName": "API",
-      "projectPath": "F:\\Git\\DWIMS\\API\\API.csproj",
-      "packagesPath": "C:\\Users\\zahid\\.nuget\\packages\\",
-      "outputPath": "F:\\Git\\DWIMS\\API\\obj\\",
+      "projectPath": "E:\\DWIMS\\TestApplication\\API\\API.csproj",
+      "packagesPath": "C:\\Users\\maaz\\.nuget\\packages\\",
+      "outputPath": "E:\\DWIMS\\TestApplication\\API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\zahid\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\maaz\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -7674,8 +7674,8 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "F:\\Git\\DWIMS\\Infrastructure\\Infrastructure.csproj": {
-              "projectPath": "F:\\Git\\DWIMS\\Infrastructure\\Infrastructure.csproj"
+            "E:\\DWIMS\\TestApplication\\Infrastructure\\Infrastructure.csproj": {
+              "projectPath": "E:\\DWIMS\\TestApplication\\Infrastructure\\Infrastructure.csproj"
             }
           }
         }
@@ -7759,7 +7759,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
       }
     }
   }

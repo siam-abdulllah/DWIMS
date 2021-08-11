@@ -1,4 +1,6 @@
 import { ICampaignDtl } from "./campaign";
+import { IMarketGroupMst } from "./marketGroupMst";
+import { IProduct } from "./product";
 
 export interface IInvestmentInit {
     id: number;
@@ -24,41 +26,59 @@ export interface IInvestmentDetail {
     paymentMethod: string;
     commitmentAllSBU: string;
     commitmentOwnSBU: string;
+    shareAllSBU: string;
+    shareOwnSBU: string;
     totalMonth: string;
     proposedAmount: string;
     purpose: string;
-    FromDate: Date;
-    ToDate: Date;
-    subCampEndDate: Date;
+    fromDate: Date;
+    toDate: Date;
 }
  
 export class InvestmentDetail implements IInvestmentDetail {
     id: number=0;
     investmentInitId: number;
     chequeTitle: string;
-    paymentMethod: string;
+    paymentMethod: string=null;
     commitmentAllSBU: string;
     commitmentOwnSBU: string;
+    shareAllSBU: string;
+    shareOwnSBU: string;
     totalMonth: string;
     proposedAmount: string;
     purpose: string;
-    FromDate: Date;
-    ToDate: Date;
-    subCampEndDate: Date;
+    fromDate: Date;
+    toDate: Date;
 }
 export interface IInvestmentTargetedProd {
     id: number;
     investmentInitId: number;
-    marketGroupId: number;
-    productName: string;
-    
+    productId: number;
+    productInfo:IProduct;
 }
  
 export class InvestmentTargetedProd implements IInvestmentTargetedProd {
     id: number=0;
     investmentInitId: number;
-    marketGroupId: number;
-    productName: string;
+    productId: number=null;
+    productInfo:IProduct;
+}
+export interface IInvestmentTargetedGroup {
+    id: number;
+    marketGroupMstId: number;
+    investmentInitId: number;
+    marketCode: string;
+    marketName: string;
+    marketGroupMst:IMarketGroupMst;
+}
+ 
+export class InvestmentTargetedGroup implements IInvestmentTargetedGroup {
+    id: number=0;
+    marketGroupMstId: number=null;
+    investmentInitId: number;
+    marketCode: string;
+    marketName: string;
+    marketGroupMst:IMarketGroupMst;
 }
 export interface IInvestmentDoctor {
     id: number;

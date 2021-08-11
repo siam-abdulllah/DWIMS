@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { IAddress } from '../shared/models/address';
 import { GenericParams } from '../shared/models/genericParams';
 import { IPagination, Pagination } from '../shared/models/pagination';
+import { IEmployeeInfo } from '../shared/models/employeeInfo';
 
 @Injectable({
   providedIn: 'root'
@@ -62,12 +63,24 @@ export class AccountService {
 
   // tslint:disable-next-line: typedef
   register(values: any) {
+    debugger;
     return this.http.post(this.baseUrl + 'account/register', values).pipe(
       map((user: IUser) => {
         if (user) {
           // localStorage.setItem('token', user.token);
           // this.currentUserSource.next(user);
           return user;
+        }
+      })
+    );
+  }
+  employeeValidateById(employeeId: number) {
+    return this.http.get(this.baseUrl + 'employee/employeeValidateById/'+employeeId).pipe(
+      map((employeeInfo: IEmployeeInfo) => {
+        if (employeeInfo) {
+          // localStorage.setItem('token', user.token);
+          // this.currentUserSource.next(user);
+          return employeeInfo;
         }
       })
     );

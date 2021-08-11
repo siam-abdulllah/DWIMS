@@ -63,7 +63,9 @@ namespace Infrastructure.Data
         {
             _context.Set<T>().Remove(entity);
         }
-
-     
+        public int Savechange()
+        {
+            return _context.SaveChanges();
+        }
     }
 }

@@ -157,6 +157,7 @@ namespace API.Controllers
 
             var user = new AppUser
             {
+                EmployeeId = setRegDto.UserForm.EmployeeId,
                 DisplayName = setRegDto.UserForm.DisplayName,
                 Email = setRegDto.UserForm.Email,
                 UserName = setRegDto.UserForm.Email,
@@ -166,17 +167,17 @@ namespace API.Controllers
             };
             var userObj = await _userManager.CreateAsync(user, setRegDto.UserForm.Password);
             if (!userObj.Succeeded) return BadRequest(new ApiResponse(400));
-            var userEntity = await _userManager.FindByEmailAsync(user.Email);
-            try{
-                  string[] roles = setRegDto.RoleForm.UserRoles
-                            .Select(ob=>ob.Name).ToArray();
-                  var roleObj = await _userManager.AddToRolesAsync(userEntity, roles);
-                  if(!roleObj.Succeeded) return BadRequest(new ApiResponse(400, "User Role Set Faild."));
-            }
-            catch(Exception )
-            {
-                await _userManager.DeleteAsync(user);               
-            }
+           // var userEntity = await _userManager.FindByEmailAsync(user.Email);
+            //try{
+            //      string[] roles = setRegDto.RoleForm.UserRoles
+            //                .Select(ob=>ob.Name).ToArray();
+            //      var roleObj = await _userManager.AddToRolesAsync(userEntity, roles);
+            //      if(!roleObj.Succeeded) return BadRequest(new ApiResponse(400, "User Role Set Faild."));
+            //}
+            //catch(Exception )
+            //{
+            //    await _userManager.DeleteAsync(user);               
+            //}
             
             return new UserDto
             {
@@ -242,7 +243,57 @@ namespace API.Controllers
             return Ok(new Pagination<UsersToReturnDto>(postParrams.PageIndex, postParrams.PageSize, totalItems, data));
         }
 
+        //[HttpPost("updateRegApproval")]
+        //public Task<ActionResult<UserDto>> UpdateRegApproval(RegApprovalDto regApprovalDto)
+        //{
 
+        //    var user = new AppUser
+        //    {
+        //        Id= regApprovalDto.UserId
+        //    };
+        //    if (regApprovalDto.ApprovalStatus == "Approved")
+        //    {
+        //        user.EmailConfirmed = true;
+        //    }
+        //    else {
+        //        user.EmailConfirmed = false;
+        //    }
+        //    _userManager.UpdateAsync(user);
+        //    //_userRepo.Savechange();
 
+        //    return new UserDto
+        //    {
+        //        DisplayName = user.DisplayName,
+        //        PhoneNumber = user.PhoneNumber,
+        //        Email = user.Email
+        //    };
+        //}
+
+        [HttpPost("updateRegApproval")]
+        public async Task<ActionResult<UserDto>> UpdateRegisterUserAppr(RegApprovalDto regApprovalDto)
+        {
+            var user = await _userManager.FindByIdAsync(regApprovalDto.UserId);
+            if (user == null) return Unauthorized(new ApiResponse(401));
+
+            //user = new AppUser
+            //{
+            //};
+            if (regApprovalDto.ApprovalStatus == "Approved")
+            {
+                user.EmailConfirmed = true;
+            }
+            else
+            {
+                user.EmailConfirmed = false;
+            }
+            var userObj = await _userManager.UpdateAsync(user);
+
+            if (!userObj.Succeeded) return BadRequest(new ApiResponse(400));
+
+            return new UserDto
+            {
+                Email = user.Email
+            };
+        }
     }
 } 

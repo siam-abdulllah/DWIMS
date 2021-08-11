@@ -9,8 +9,8 @@ namespace API.Dtos
         public int SubCampaignId { get; set; }
         public SubCampaignToReturnDto SubCampaign { get; set; }
         public long Budget { get; set; }
-        public DateTime SubCampStartDate { get; set; }
-        public DateTime SubCampEndDate { get; set; }
+        public DateTimeOffset SubCampStartDate { get; set; }
+        public DateTimeOffset SubCampEndDate { get; set; }
 
     }
 }

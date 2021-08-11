@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "F:\\Git\\DWIMS\\Core\\Core.csproj": {}
+    "E:\\DWIMS\\TestApplication\\Core\\Core.csproj": {}
   },
   "projects": {
-    "F:\\Git\\DWIMS\\Core\\Core.csproj": {
+    "E:\\DWIMS\\TestApplication\\Core\\Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\Git\\DWIMS\\Core\\Core.csproj",
+        "projectUniqueName": "E:\\DWIMS\\TestApplication\\Core\\Core.csproj",
         "projectName": "Core",
-        "projectPath": "F:\\Git\\DWIMS\\Core\\Core.csproj",
-        "packagesPath": "C:\\Users\\zahid\\.nuget\\packages\\",
-        "outputPath": "F:\\Git\\DWIMS\\Core\\obj\\",
+        "projectPath": "E:\\DWIMS\\TestApplication\\Core\\Core.csproj",
+        "packagesPath": "C:\\Users\\maaz\\.nuget\\packages\\",
+        "outputPath": "E:\\DWIMS\\TestApplication\\Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\zahid\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\maaz\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -79,7 +79,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     }

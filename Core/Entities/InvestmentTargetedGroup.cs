@@ -12,5 +12,8 @@ namespace Core.Entities
         public InvestmentInit InvestmentInit { get; set; }
         public string MarketCode { get; set; }
         public string MarketName { get; set; }
+        public int? MarketGroupMstId { get; set; }
+        [ForeignKey("MarketGroupMstId")]
+        public MarketGroupMst MarketGroupMst { get; set; }
     }
 }
