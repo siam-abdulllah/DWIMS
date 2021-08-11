@@ -7644,23 +7644,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Siam\\.nuget\\packages\\": {},
+    "C:\\Users\\zahid\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "G:\\DIDS\\DIDS_GIT\\API\\API.csproj",
+      "projectUniqueName": "F:\\Git\\DWIMS\\API\\API.csproj",
       "projectName": "API",
-      "projectPath": "G:\\DIDS\\DIDS_GIT\\API\\API.csproj",
-      "packagesPath": "C:\\Users\\Siam\\.nuget\\packages\\",
-      "outputPath": "G:\\DIDS\\DIDS_GIT\\API\\obj\\",
+      "projectPath": "F:\\Git\\DWIMS\\API\\API.csproj",
+      "packagesPath": "C:\\Users\\zahid\\.nuget\\packages\\",
+      "outputPath": "F:\\Git\\DWIMS\\API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Siam\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\zahid\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -7674,8 +7674,8 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "G:\\DIDS\\DIDS_GIT\\Infrastructure\\Infrastructure.csproj": {
-              "projectPath": "G:\\DIDS\\DIDS_GIT\\Infrastructure\\Infrastructure.csproj"
+            "F:\\Git\\DWIMS\\Infrastructure\\Infrastructure.csproj": {
+              "projectPath": "F:\\Git\\DWIMS\\Infrastructure\\Infrastructure.csproj"
             }
           }
         }
