@@ -217,11 +217,11 @@ namespace Infrastructure.Data.Migrations
                     b.Property<DateTimeOffset>("SetOn")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<DateTime>("SubCampEndDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("SubCampEndDate")
+                        .HasColumnType("datetimeoffset");
 
-                    b.Property<DateTime>("SubCampStartDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("SubCampStartDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<int>("SubCampaignId")
                         .HasColumnType("int");
@@ -691,6 +691,9 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("DoctorId")
                         .HasColumnType("int");
 
+                    b.Property<int>("InstitutionId")
+                        .HasColumnType("int");
+
                     b.Property<int>("InvestmentInitId")
                         .HasColumnType("int");
 
@@ -705,6 +708,8 @@ namespace Infrastructure.Data.Migrations
                     b.HasIndex("CampaignDtlId");
 
                     b.HasIndex("DoctorId");
+
+                    b.HasIndex("InstitutionId");
 
                     b.HasIndex("InvestmentInitId");
 
@@ -730,8 +735,8 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("FromDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("FromDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<int>("InvestmentInitId")
                         .HasColumnType("int");
@@ -751,8 +756,8 @@ namespace Infrastructure.Data.Migrations
                     b.Property<DateTimeOffset>("SetOn")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<DateTime>("ToDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("ToDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("TotalMonth")
                         .HasColumnType("nvarchar(max)");
@@ -1057,6 +1062,9 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("MarketCode")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("MarketGroupMstId")
+                        .HasColumnType("int");
+
                     b.Property<string>("MarketName")
                         .HasColumnType("nvarchar(max)");
 
@@ -1069,6 +1077,8 @@ namespace Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("InvestmentInitId");
+
+                    b.HasIndex("MarketGroupMstId");
 
                     b.ToTable("InvestmentTargetedGroup");
                 });
@@ -1156,7 +1166,7 @@ namespace Infrastructure.Data.Migrations
                     b.Property<DateTimeOffset>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int>("MstId")
+                    b.Property<int?>("MstId")
                         .HasColumnType("int");
 
                     b.Property<string>("SBU")
@@ -1576,6 +1586,12 @@ namespace Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Core.Entities.InstitutionInfo", "InstitutionInfo")
+                        .WithMany()
+                        .HasForeignKey("InstitutionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Core.Entities.InvestmentInit", "InvestmentInit")
                         .WithMany()
                         .HasForeignKey("InvestmentInitId")
@@ -1698,6 +1714,10 @@ namespace Infrastructure.Data.Migrations
                         .HasForeignKey("InvestmentInitId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Core.Entities.MarketGroupMst", "MarketGroupMst")
+                        .WithMany()
+                        .HasForeignKey("MarketGroupMstId");
                 });
 
             modelBuilder.Entity("Core.Entities.InvestmentTargetedProd", b =>
@@ -1719,9 +1739,7 @@ namespace Infrastructure.Data.Migrations
                 {
                     b.HasOne("Core.Entities.MarketGroupMst", null)
                         .WithMany("MarketGroupDtls")
-                        .HasForeignKey("MstId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MstId");
                 });
 
             modelBuilder.Entity("Core.Entities.MarketGroupMst", b =>

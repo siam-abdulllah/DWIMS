@@ -8,6 +8,8 @@ namespace API.Dtos
     {
          public string Id { get; set; }
         [Required]
+        public int EmployeeId { get; set; } 
+        [Required]
         public string DisplayName { get; set; }
         [Required]
         [EmailAddress]
