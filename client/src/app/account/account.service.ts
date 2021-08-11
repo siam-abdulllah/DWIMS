@@ -11,11 +11,12 @@ import { IAddress } from '../shared/models/address';
 import { GenericParams } from '../shared/models/genericParams';
 import { IPagination, Pagination } from '../shared/models/pagination';
 import { IEmployeeInfo } from '../shared/models/employeeInfo';
-
+import { JwtHelperService } from '@auth0/angular-jwt';
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
+  jwtHelper = new JwtHelperService();
   roles: IRole[] = [];
   users: IUserResponse[] = [];
   pagination = new UserPagination();
@@ -43,6 +44,7 @@ export class AccountService {
         if (user) {
           localStorage.setItem('token', user.token);
           this.currentUserSource.next(user);
+          
         }
       })
     );
@@ -55,7 +57,12 @@ export class AccountService {
         debugger;
         if (user) {
           localStorage.setItem('token', user.token);
+          localStorage.setItem('empID', String(user.employeeId));
           this.currentUserSource.next(user);
+          const empID = localStorage.getItem('empID');
+          const token = localStorage.getItem('token');
+          const r =  this.jwtHelper.decodeToken(token);
+          alert(r.email)
         }
       })
     );

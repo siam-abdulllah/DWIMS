@@ -1,5 +1,6 @@
 export interface IUser {
     id:string;
+    employeeId: number;
     email: string;
     displayName: string;
     token: string;
