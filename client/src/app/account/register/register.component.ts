@@ -175,6 +175,7 @@ export class RegisterComponent implements OnInit {
       }
     );
   }
+
   async employeeValidateById()
   {
     //debugger;
@@ -191,7 +192,6 @@ export class RegisterComponent implements OnInit {
         this.registerForm.controls.userForm.get('email').setValue(response.email);
         this.registerForm.controls.userForm.get('phoneNumber').setValue(response.phone);
         this.registerForm.controls.userForm.get('phoneNumber')['controls'].disable();
-        
       },
       (error) => {
         console.log(error);
