@@ -9,7 +9,6 @@ namespace Core.Entities
         public string ProductCode { get; set; }
         public string ProductName { get; set; }
         public string SBU { get; set; }
-
         public string MarketCode { get; set; }
         public string TerritoryCode { get; set; }
         public string RegionCode { get; set; }
