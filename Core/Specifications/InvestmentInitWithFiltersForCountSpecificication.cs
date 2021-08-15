@@ -6,7 +6,7 @@ namespace Core.Specifications
     {
          public InvestmentInitWithFiltersForCountSpecificication(InvestmentInitSpecParams InvestmentInitParrams) 
             : base(x => 
-                (string.IsNullOrEmpty(InvestmentInitParrams.Search) || x.Employee.EmployeeName.ToLower().Contains(InvestmentInitParrams.Search))
+                (string.IsNullOrEmpty(InvestmentInitParrams.Search) || x.Employee.SBU.ToLower().Contains(InvestmentInitParrams.Search))
             )
         {
         } 

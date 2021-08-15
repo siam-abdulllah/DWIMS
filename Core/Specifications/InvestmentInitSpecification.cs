@@ -7,7 +7,7 @@ namespace Core.Specifications
 
         public InvestmentInitSpecification(InvestmentInitSpecParams parrams)
            : base(x =>
-               (string.IsNullOrEmpty(parrams.Search) || x.Employee.EmployeeName.ToLower().Contains(parrams.Search))
+               (string.IsNullOrEmpty(parrams.Search) || x.Employee.SBU.ToLower().Contains(parrams.Search))
            )
         {
             AddInclude(x => x.Employee);

@@ -36,7 +36,9 @@ namespace Core.Specifications
         public InvestmentCampaignSpecification(int id)
             : base(x => x.InvestmentInitId == id)
         {
+            AddInclude(x => x.DoctorInfo);
             AddInclude(x => x.CampaignDtl);
+            AddInclude(x => x.InstitutionInfo);
         }
         //public InvestmentDoctorSpecification(int employeeId,string status)
         //    : base(x => x.EmployeeId == employeeId && x.Status == status)

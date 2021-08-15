@@ -13,7 +13,7 @@
                                     <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="investmentRecForm.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
                                 </div>
                                 <div class="col-sm-2">
-                                    <button class="btn btn-info btn-lg btn-block" type="button" (click)="getInvestmentRec()"><i class="fa fa-search" ></i>Search</button>
+                                    <button class="btn btn-info btn-lg btn-block" type="button" (click)="getInvestmentRecommended()"><i class="fa fa-search" ></i>Search</button>
                                 </div>
                                 <div class="col-sm-2">
                                     <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetPage(investmentRecForm)"><i class="fa fa-search"></i>Reset</button>
@@ -28,9 +28,8 @@
                                     </div>
                                     <div class="col-md-3">
                                         <input class="form-control" id="id" name="id" #id="ngModel" [(ngModel)]="investmentRecService.investmentRecFormData.id" readonly style="display: none;">
-                                        <input class="form-control" placeholder="Please Double Click Here" (dblclick)="func2()" id="referenceNo" name="referenceNo" #referenceNo="ngModel" [(ngModel)]="investmentRecService.investmentRecFormData.referenceNo" readonly>
+                                        <input class="form-control" placeholder="Please Double Click Here" (dblclick)="getInvestmentInit()" id="referenceNo" name="referenceNo" #referenceNo="ngModel" [(ngModel)]="investmentRecService.investmentRecFormData.referenceNo" readonly>
                                     </div>
-                                </div>
                                 <div class="col-md-2">
                                     <label>Propose For</label>
                                 </div>
@@ -43,7 +42,7 @@
                                             <option value="Others">Others</option>
                                         </select> -->
                                 </div>
-
+                            </div>
                             </div>
                             <div class="form-group">
                                 <div class="row">
@@ -473,7 +472,7 @@
                                         </div>
                                         <div class="col-sm-2"></div>
                                         <div class="col-sm-2" *ngIf="isValid">
-                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="updateInvestmentDetails()"><i class="fa fa-save"></i>&nbsp; UpDate</button>
+                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="updateInvestmentDetails()"><i class="fa fa-save"></i>&nbsp; Update</button>
                                         </div>
                                         <!-- <div class="col-sm-2" *ngIf="isValid">
                                             <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentBcds()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
@@ -621,9 +620,7 @@
                                             <h3 class="card-title"><strong>Targeted Products of SBU</strong></h3>
                                         </div>
                                         <div class="col-sm-2"></div>
-                                        <!-- <div class="col-sm-2">
-                                            <button class="btn btn-success btn-lg btn-block" type="button"><i class="fa fa-save"></i>&nbsp; Save</button>
-                                        </div> -->
+                                       
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -639,7 +636,7 @@
                                         </div>
                                         <div class="col-md-3"></div>
                                         <div class="col-md-2" *ngIf="isValid">
-                                            <button class="btn btn-primary btn-lg btn-block" type="button" (click)="insertInvestmentTargetedProd()"><i class="fa fa-plus"></i>&nbsp; Add</button>
+                                            <button class="btn btn-primary btn-lg btn-block" type="button" (click)="addInvestmentTargetedProd()"><i class="fa fa-plus"></i>&nbsp; Add</button>
 
                                         </div>
                                     </div>
@@ -681,30 +678,6 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <label>Group</label>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <select class="form-control" name="marketGroupMstId" name="marketGroupMstId" #marketGroupMstId="ngModel" (change)="onChangeMarketGroupInTargetedGroup()" [(ngModel)]="investmentRecService.investmentTargetedGroupFormData.marketGroupMstId" [class.invalid]="marketGroupMstId.invalid && marketGroupMstId.touched">
-                                                
-                                                <option  [ngValue]="null">Select Market Group</option>
-                                                <option *ngFor="let a of marketGroupMsts" [value]="a.id">{{a.groupName}}</option>
-                                         
-                                    </select>
-                                        </div>
-                                        <div class="col-md-3"></div>
-                                        <div class="col-md-2" *ngIf="isValid">
-                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentTargetedGroup()"><i class="fa fa-plus"></i>&nbsp; Save</button>
-
-                                        </div>
-                                        <div class="col-md-2" *ngIf="isValid">
-                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentTargetedGroup()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
                                     <table class="table  table-bordered">
                                         <tr>
                                             <td>Market Group Name</td>
@@ -728,6 +701,41 @@
                                         </tr>
                                     </table>
                                 </div>
+                            </fieldset>
+                            <fieldset>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h3 class="card-title"><strong>Recommendation Status</strong></h3>
+                                        </div>
+                                        <div class="col-sm-2"></div>
+                                        <!-- <div class="col-sm-2">
+                                            <button class="btn btn-success btn-lg btn-block" type="button"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                        </div> -->
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Recommendation Status</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-control" id="recStatus" name="recStatus" #recStatus="ngModel"  [(ngModel)]="investmentRecService.investmentRecCommentFormData.recStatus" [class.invalid]="recStatus.invalid && recStatus.touched">
+                                                
+                                                <option  [ngValue]="null">Select Status</option>
+                                                <option  value="Recommended">Recommended</option>
+                                                <option  value="Not Recommended">Not Recommended</option>
+                                                </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Comments</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="comments" id="comments" #comments="ngModel" [(ngModel)]="investmentRecService.investmentRecCommentFormData.comments">
+                                        </div>
+                                        </div>
+                                        </div>
+                                
                             </fieldset>
                         </div>
                     </div>

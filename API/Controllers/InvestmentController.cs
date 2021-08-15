@@ -53,10 +53,10 @@ namespace API.Controllers
 
                 var totalItems = await _investmentInitRepo.CountAsync(countSpec);
 
-                var marketGroup = await _investmentInitRepo.ListAsync(spec);
+                var investmentInits = await _investmentInitRepo.ListAsync(spec);
 
                 var data = _mapper
-                    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(marketGroup);
+                    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(investmentInits);
 
                 return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, totalItems, data));
             }
@@ -261,21 +261,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
-        [HttpGet]
-        [Route("investmentDoctors/{investmentInitId}")]
-        public async Task<IReadOnlyList<InvestmentDoctor>> GetInvestmentDoctors(int investmentInitId)
-        {
-            try
-            {
-                var spec = new InvestmentDoctorSpecification(investmentInitId);
-                var investmentDoctor = await _investmentDoctorRepo.ListAsync(spec);
-                return investmentDoctor;
-            }
-            catch (System.Exception ex)
-            {
-                throw ex;
-            }
-        }
+        
         [HttpGet]
         [Route("investmentTargetedProds/{investmentInitId}")]
         public async Task<IReadOnlyList<InvestmentTargetedProd>> GetInvestmentTargetedProds(int investmentInitId)
@@ -635,7 +621,23 @@ namespace API.Controllers
                 throw;
             }
         }
-        
+
+
+        [HttpGet]
+        [Route("investmentDoctors/{investmentInitId}")]
+        public async Task<IReadOnlyList<InvestmentDoctor>> GetInvestmentDoctors(int investmentInitId)
+        {
+            try
+            {
+                var spec = new InvestmentDoctorSpecification(investmentInitId);
+                var investmentDoctor = await _investmentDoctorRepo.ListAsync(spec);
+                return investmentDoctor;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
         [HttpGet]
         [Route("investmentInstitutions/{investmentInitId}")]
         public async Task<IReadOnlyList<InvestmentInstitution>> GetInvestmentInstitutions(int investmentInitId)
@@ -818,12 +820,12 @@ namespace API.Controllers
             }
         }  
         [HttpPost("removeInvestmentTargetedProd")]
-        public async Task<IActionResult> RemoveInvestmentTargetedProd(InvestmentTargetedProdDto investmentTargetedProdDto)
+        public async Task<IActionResult> RemoveInvestmentTargetedProd(InvestmentTargetedProd investmentTargetedProd)
         {
             try
             {
                 //var response = new HttpResponseMessage();
-                var alreadyExistSpec = new InvestmentTargetedProdSpecification(investmentTargetedProdDto.InvestmentInitId);
+                var alreadyExistSpec = new InvestmentTargetedProdSpecification(investmentTargetedProd.InvestmentInitId, investmentTargetedProd.ProductId);
                 var alreadyExistInvestmentTargetedProdList = await _investmentTargetedProdRepo.ListAsync(alreadyExistSpec);
                 if (alreadyExistInvestmentTargetedProdList.Count > 0)
                 {

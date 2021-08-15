@@ -1,4 +1,4 @@
-import { IInvestmentRec } from './investment';
+import { IInvestmentRec } from './investmentRec';
 
 export interface IInvestmentRecPagination {
     pageIndex: number;

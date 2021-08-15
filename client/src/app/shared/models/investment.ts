@@ -19,25 +19,7 @@ export class InvestmentInit implements IInvestmentInit {
     donationTo: string=null;
     EmployeeId: number=2;
 }
-export interface IInvestmentRec {
-    id: number;
-    investmentInitId: number;
-    referenceNo: string;
-    proposeFor: string;
-    donationType: string;
-    donationTo: string;
-    EmployeeId: number;
-}
- 
-export class InvestmentRec implements InvestmentRec {
-    id: number=0;
-    investmentInitId: number;
-    referenceNo: string;
-    proposeFor: string=null;
-    donationType: string=null;
-    donationTo: string=null;
-    EmployeeId: number=2;
-}
+
 export interface IInvestmentDetail {
     id: number;
     investmentInitId: number;

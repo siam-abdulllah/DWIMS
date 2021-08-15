@@ -969,7 +969,7 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("InvestmentRecId")
+                    b.Property<int?>("InvestmentInitId")
                         .HasColumnType("int");
 
                     b.Property<DateTimeOffset>("ModifiedOn")
@@ -985,7 +985,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.HasIndex("InvestmentRecId");
+                    b.HasIndex("InvestmentInitId");
 
                     b.ToTable("InvestmentRecComment");
                 });
@@ -1000,7 +1000,7 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
 
-                    b.Property<int?>("InvestmenRecCmntId")
+                    b.Property<int?>("InvestmentInitId")
                         .HasColumnType("int");
 
                     b.Property<DateTimeOffset>("ModifiedOn")
@@ -1009,12 +1009,15 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
+                    b.Property<string>("SBU")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTimeOffset>("SetOn")
                         .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("InvestmenRecCmntId");
+                    b.HasIndex("InvestmentInitId");
 
                     b.HasIndex("ProductId");
 
@@ -1107,6 +1110,9 @@ namespace Infrastructure.Data.Migrations
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
+
+                    b.Property<string>("SBU")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("SetOn")
                         .HasColumnType("datetimeoffset");
@@ -1857,16 +1863,16 @@ namespace Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Core.Entities.InvestmentRec", "InvestmentRec")
+                    b.HasOne("Core.Entities.InvestmentInit", "InvestmentInit")
                         .WithMany()
-                        .HasForeignKey("InvestmentRecId");
+                        .HasForeignKey("InvestmentInitId");
                 });
 
             modelBuilder.Entity("Core.Entities.InvestmentRecProducts", b =>
                 {
-                    b.HasOne("Core.Entities.InvestmentRecComment", "InvestmentRecComment")
+                    b.HasOne("Core.Entities.InvestmentInit", "InvestmentInit")
                         .WithMany()
-                        .HasForeignKey("InvestmenRecCmntId");
+                        .HasForeignKey("InvestmentInitId");
 
                     b.HasOne("Core.Entities.ProductInfo", "ProductInfo")
                         .WithMany()
