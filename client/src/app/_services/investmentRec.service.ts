@@ -35,15 +35,29 @@ export class InvestmentRecService {
   constructor(private http: HttpClient, private router: Router) { }
 
   
-  getProduct(){    
-    return this.http.get(this.baseUrl + 'product/getProductForInvestment');
+  getProduct(sbu:string){    
+    return this.http.get(this.baseUrl + 'product/getProductForInvestment/'+sbu);
   }
-  
+  getCampaignMsts(){    
+    return this.http.get(this.baseUrl + 'campaign/campaignMstsForInvestment');
+  }
   getInvestmentDoctors(investmentInitId:number){    
     return this.http.get(this.baseUrl + 'investment/investmentDoctors/'+investmentInitId);
   }
-  getInvestmentTargetedProds(investmentInitId:number){    
-    return this.http.get(this.baseUrl + 'investment/investmentTargetedProds/'+investmentInitId);
+  getInvestmentRecComment(investmentInitId:number,empId:string){    
+    return this.http.get(this.baseUrl + 'investmentRec/getInvestmentRecComment/'+investmentInitId+'/'+parseInt(empId));
+  }
+  getInvestmentDetails(investmentInitId:number){    
+    return this.http.get(this.baseUrl + 'investment/investmentDetails/'+investmentInitId);
+  }
+  getInvestmentTargetedProds(investmentInitId:number,sbu:string){    
+    return this.http.get(this.baseUrl + 'investment/investmentTargetedProdsForRec/'+investmentInitId+'/'+sbu);
+  }
+  getInvestmentRecDetails(investmentInitId:number){    
+    return this.http.get(this.baseUrl + 'investmentRec/investmentRecDetails/'+investmentInitId);
+  }
+  getInvestmentRecProducts(investmentInitId:number,sbu:string){    
+    return this.http.get(this.baseUrl + 'investmentRec/investmentRecProducts/'+investmentInitId+'/'+sbu);
   }
   getInvestmentTargetedGroups(investmentInitId:number){    
     return this.http.get(this.baseUrl + 'investment/investmentTargetedGroups/'+investmentInitId);
@@ -54,6 +68,9 @@ export class InvestmentRecService {
   getInvestmentCampaigns(investmentInitId:number){    
     return this.http.get(this.baseUrl + 'investment/investmentCampaigns/'+investmentInitId);
   }
+  getCampaignDtls(mstId:number){    
+    return this.http.get(this.baseUrl + 'campaign/campaignDtlsForInvestment/'+mstId);
+  }
   getCampaignDtlProducts(dtlId:number){    
     return this.http.get(this.baseUrl + 'campaign/campaignDtlProductsForInvestment/'+dtlId);
   }
@@ -63,10 +80,8 @@ export class InvestmentRecService {
   getInvestmentSociety(investmentInitId:number){    
     return this.http.get(this.baseUrl + 'investment/investmentSociety/'+investmentInitId);
   }
-  getInvestmentDetails(investmentInitId:number){    
-    return this.http.get(this.baseUrl + 'investment/investmentDetails/'+investmentInitId);
-  }
-  getInvestmentInit(){    
+  
+  getInvestmentInit(sbu:string){    
     let params = new HttpParams();
     if (this.genParams.search) {
       params = params.append('search', this.genParams.search);
@@ -74,7 +89,7 @@ export class InvestmentRecService {
     params = params.append('sort', this.genParams.sort);
     params = params.append('pageIndex', this.genParams.pageNumber.toString());
     params = params.append('pageSize', this.genParams.pageSize.toString());
-    return this.http.get<IInvestmentRecPagination>(this.baseUrl + 'investmentRec/investmentInits', { observe: 'response', params })
+    return this.http.get<IInvestmentRecPagination>(this.baseUrl + 'investmentRec/investmentInits/'+sbu, { observe: 'response', params })
     //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
     .pipe(
       map(response => {
@@ -85,7 +100,7 @@ export class InvestmentRecService {
     );
     
   }
-  getInvestmentRecommended(){    
+  getInvestmentRecommended(sbu:string){    
     let params = new HttpParams();
     if (this.genParams.search) {
       params = params.append('search', this.genParams.search);
@@ -93,7 +108,7 @@ export class InvestmentRecService {
     params = params.append('sort', this.genParams.sort);
     params = params.append('pageIndex', this.genParams.pageNumber.toString());
     params = params.append('pageSize', this.genParams.pageSize.toString());
-    return this.http.get<IInvestmentRecPagination>(this.baseUrl + 'investmentRec/investmentRecommended', { observe: 'response', params })
+    return this.http.get<IInvestmentRecPagination>(this.baseUrl + 'investmentRec/investmentRecommended/'+sbu, { observe: 'response', params })
     //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
     .pipe(
       map(response => {
@@ -106,79 +121,34 @@ export class InvestmentRecService {
   }
   insertInvestmentRec() {
     debugger;
-    return this.http.post(this.baseUrl+ 'investment/insertInit', this.investmentRecCommentFormData);
+    return this.http.post(this.baseUrl+ 'investmentRec/insertRecCom', this.investmentRecCommentFormData);
 
   }
   
   updateInvestmentRec() {
-    return this.http.post(this.baseUrl+ 'investment/updateInit',  this.investmentRecCommentFormData);
+    return this.http.post(this.baseUrl+ 'investmentRec/updateRecCom',  this.investmentRecCommentFormData);
   }
   insertInvestmentDetail() {
     debugger;
-    return this.http.post(this.baseUrl+ 'investmentRec/insertDetail', this.investmentDetailFormData);
+    return this.http.post(this.baseUrl+ 'investmentRec/insertRec', this.investmentDetailFormData);
+  
   }
   
-  updateInvestmentDetail() {
-    return this.http.post(this.baseUrl+ 'investmentRec/updateDetail',  this.investmentDetailFormData);
+ 
+  
+  insertInvestmentTargetedProd(investmentTargetedProds:IInvestmentTargetedProd[]) {
+    debugger;
+    return this.http.post(this.baseUrl+ 'investmentRec/insertRecProd', investmentTargetedProds,
+    {responseType: 'text'});
+
   }
   
-  insertInvestmentTargetedProd() {
-    debugger;
-    return this.http.post(this.baseUrl+ 'investmentRec/insertRecProd', this.investmentTargetedProdFormData);
-
-  }
-  updateInvestmentTargetedProd() {
-    debugger;
-    return this.http.post(this.baseUrl+ 'investmentRec/updateRecProd', this.investmentTargetedProdFormData);
-
-  }
-  insertInvestmentTargetedGroup(investmentTargetedGroups:IInvestmentTargetedGroup[]) {
-    debugger;
-    return this.http.post(this.baseUrl+ 'investment/insertInvestmentTargetedGroup', investmentTargetedGroups,
-    {responseType: 'text'});
-
-  }
-  removeInvestmentDoctor() {
-    debugger;
-    return this.http.post(this.baseUrl+ 'investment/removeInvestmentDoctor', this.investmentDoctorFormData,
-    {responseType: 'text'});
-
-  }
-  removeInvestmentInstitution() {
-    debugger;
-    return this.http.post(this.baseUrl+ 'investment/removeInvestmentInstitution', this.investmentInstitutionFormData,
-    {responseType: 'text'});
-
-  }
-  removeInvestmentCampaign() {
-    debugger;
-    return this.http.post(this.baseUrl+ 'investment/removeInvestmentCampaign', this.investmentCampaignFormData,
-    {responseType: 'text'});
-
-  }
-  removeInvestmentBcds() {
-    debugger;
-    return this.http.post(this.baseUrl+ 'investment/removeInvestmentBcds', this.investmentBcdsFormData,
-    {responseType: 'text'});
-
-  }
-  removeInvestmentSociety() {
-    debugger;
-    return this.http.post(this.baseUrl+ 'investment/removeInvestmentSociety', this.investmentSocietyFormData,
-    {responseType: 'text'});
-
-  }
   removeInvestmentTargetedProd() {
     debugger;
     return this.http.post(this.baseUrl+ 'investment/removeInvestmentTargetedProd', this.investmentTargetedProdFormData,
     {responseType: 'text'});
 
   }
-  removeInvestmentTargetedGroup(investmentTargetedGroups:IInvestmentTargetedGroup[]) {
-    debugger;
-    return this.http.post(this.baseUrl+ 'investment/removeInvestmentTargetedGroup', investmentTargetedGroups,
-    {responseType: 'text'});
-
-  }
+  
 }
 

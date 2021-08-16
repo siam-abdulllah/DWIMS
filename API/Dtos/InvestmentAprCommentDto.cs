@@ -5,8 +5,8 @@ namespace API.Dtos
     public class InvestmentAprCommentDto
     {
         public int Id { get; set; }
-        public int InvestmentAprId { get; set; }
-        public InvestmentApr InvestmentApr { get; set; }
+        public int InvestmentInitId { get; set; }
+        public InvestmentInit InvestmentInit { get; set; }
 
         public int EmployeeId { get; set; }
         public Employee Employee { get; set; }

@@ -115,8 +115,8 @@ export interface IInvestmentDoctor {
     doctorType: string;
     practiceDayPerMonth: string;
     patientsPerDay: string;
-    doctor:IDoctor;
-    institution:IInstitution;
+    doctorInfo:IDoctor;
+    institutionInfo:IInstitution;
     
 }
  
@@ -134,8 +134,8 @@ export class InvestmentDoctor implements IInvestmentDoctor {
     doctorType: string=null;
     practiceDayPerMonth: string;
     patientsPerDay: string;
-    doctor:IDoctor;
-    institution:IInstitution;
+    doctorInfo:IDoctor;
+    institutionInfo:IInstitution;
 }
 export interface IInvestmentInstitution {
     id: number;
@@ -148,8 +148,8 @@ export interface IInvestmentInstitution {
     address: string;
     noOfBed: string;
     departmentUnit: string;
-    institution:IInstitution;
-    doctor:IDoctor;
+    institutionInfo:IInstitution;
+    doctorInfo:IDoctor;
     
 }
  
@@ -164,8 +164,8 @@ export class InvestmentInstitution implements IInvestmentInstitution {
     address: string;
     noOfBed: string;
     departmentUnit: string;
-    institution:IInstitution;
-    doctor:IDoctor;
+    institutionInfo:IInstitution;
+    doctorInfo:IDoctor;
 }
 export interface IInvestmentCampaign {
     id: number;
@@ -174,12 +174,16 @@ export interface IInvestmentCampaign {
     campaignMstId: number;
     doctorId: number;
     institutionId: number;
+    campaignName:string;
+    subCampaignName:string;
+    doctorName:string;
+    institutionName:string;
     subCampStartDate:string;
     subCampEndDate:string;
     campaignMst:ICampaignMst;
     campaignDtl:ICampaignDtl;
-    doctor:IDoctor;
-    institution:IInstitution;
+    doctorInfo:IDoctor;
+    institutionInfo:IInstitution;
 }
  
 export class InvestmentCampaign implements IInvestmentCampaign {
@@ -189,12 +193,16 @@ export class InvestmentCampaign implements IInvestmentCampaign {
     campaignMstId: number=null;
     doctorId: number=null;
     institutionId: number=null;
+    campaignName:string;
+    subCampaignName:string;
+    doctorName:string;
+    institutionName:string;
     subCampStartDate:string;
     subCampEndDate:string;
     campaignMst:ICampaignMst;
     campaignDtl:ICampaignDtl;
-    doctor:IDoctor;
-    institution:IInstitution;
+    doctorInfo:IDoctor;
+    institutionInfo:IInstitution;
 }
 export interface IInvestmentBcds {
     id: number;

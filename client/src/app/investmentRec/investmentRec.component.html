@@ -27,22 +27,22 @@
                                         <label>Reference</label>
                                     </div>
                                     <div class="col-md-3">
-                                        <input class="form-control" id="id" name="id" #id="ngModel" [(ngModel)]="investmentRecService.investmentRecFormData.id" readonly style="display: none;">
+                                        <input class="form-control" id="id" name="id" #id="ngModel" [(ngModel)]="investmentRecService.investmentRecFormData.id" readonly style="display: none;" required>
                                         <input class="form-control" placeholder="Please Double Click Here" (dblclick)="getInvestmentInit()" id="referenceNo" name="referenceNo" #referenceNo="ngModel" [(ngModel)]="investmentRecService.investmentRecFormData.referenceNo" readonly>
                                     </div>
-                                <div class="col-md-2">
-                                    <label>Propose For</label>
-                                </div>
-                                <div class="col-md-3">
-                                    <input class="form-control" id="proposeFor" name="proposeFor" #proposeFor="ngModel" [(ngModel)]="investmentRecService.investmentRecFormData.proposeFor" readonly>
+                                    <div class="col-md-2">
+                                        <label>Propose For</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input class="form-control" id="proposeFor" name="proposeFor" #proposeFor="ngModel" [(ngModel)]="investmentRecService.investmentRecFormData.proposeFor" readonly>
 
-                                    <!-- <select class="form-control" id="proposeFor" name="proposeFor" #proposeFor="ngModel" [(ngModel)]="investmentRecService.investmentRecFormData.proposeFor" required [class.invalid]="proposeFor.invalid && proposeFor.touched">
+                                        <!-- <select class="form-control" id="proposeFor" name="proposeFor" #proposeFor="ngModel" [(ngModel)]="investmentRecService.investmentRecFormData.proposeFor" required [class.invalid]="proposeFor.invalid && proposeFor.touched">
                                             <option  [ngValue]="null">Select Propose For</option>
                                             <option value="BrandCampaign">Brand Campaign</option>
                                             <option value="Others">Others</option>
                                         </select> -->
+                                    </div>
                                 </div>
-                            </div>
                             </div>
                             <div class="form-group">
                                 <div class="row">
@@ -146,7 +146,7 @@
                                             <label>Doctor Category</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <input class="form-control" name="doctorCategory" id="doctorCategory" #donationType="ngModel" [(ngModel)]="investmentRecService.investmentDoctorFormData.doctorCategory">
+                                            <input class="form-control" name="doctorCategory" id="doctorCategory" #donationType="ngModel" [(ngModel)]="investmentRecService.investmentDoctorFormData.doctorCategory" readonly>
 
                                             <!-- <select class="form-control " name="doctorCategory" id="doctorCategory" #donationType="ngModel" [(ngModel)]="investmentRecService.investmentDoctorFormData.doctorCategory">
                                             <option  [ngValue]="null">Select Doctor Category</option>
@@ -471,9 +471,9 @@
                                             <h3 class="card-title"><strong>Investment Details</strong></h3>
                                         </div>
                                         <div class="col-sm-2"></div>
-                                        <div class="col-sm-2" *ngIf="isValid">
+                                        <!-- <div class="col-sm-2" *ngIf="isValid">
                                             <button class="btn btn-success btn-lg btn-block" type="button" (click)="updateInvestmentDetails()"><i class="fa fa-save"></i>&nbsp; Update</button>
-                                        </div>
+                                        </div> -->
                                         <!-- <div class="col-sm-2" *ngIf="isValid">
                                             <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentBcds()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
                                         </div> -->
@@ -620,7 +620,7 @@
                                             <h3 class="card-title"><strong>Targeted Products of SBU</strong></h3>
                                         </div>
                                         <div class="col-sm-2"></div>
-                                       
+
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -720,7 +720,7 @@
                                             <label>Recommendation Status</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <select class="form-control" id="recStatus" name="recStatus" #recStatus="ngModel"  [(ngModel)]="investmentRecService.investmentRecCommentFormData.recStatus" [class.invalid]="recStatus.invalid && recStatus.touched">
+                                            <select class="form-control" id="recStatus" name="recStatus" #recStatus="ngModel" [(ngModel)]="investmentRecService.investmentRecCommentFormData.recStatus" [class.invalid]="recStatus.invalid && recStatus.touched" required>
                                                 
                                                 <option  [ngValue]="null">Select Status</option>
                                                 <option  value="Recommended">Recommended</option>
@@ -733,9 +733,9 @@
                                         <div class="col-md-3">
                                             <input class="form-control" name="comments" id="comments" #comments="ngModel" [(ngModel)]="investmentRecService.investmentRecCommentFormData.comments">
                                         </div>
-                                        </div>
-                                        </div>
-                                
+                                    </div>
+                                </div>
+
                             </fieldset>
                         </div>
                     </div>
@@ -745,6 +745,47 @@
         </div>
     </div>
 </section>
+<ng-template #investmentInitSearchModal>
+    <div class="modal-header" style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc));color: black;">
+        <h4 class="modal-title pull-left">Investment Initialization</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="InvestmentInitSearchModalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" style="padding: 20px 30px 20px 30px;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive" style="border: 1px solid #bed2c9; width: 100%;">
+                    <table class="table table-bordered table-responsive table-hover table-striped">
+                        <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc));">
+                            <tr>
+                                <th scope="col" style="width: 7%">Action</th>
+                                <th scope="col" style="width: 0;display:none;">Id</th>
+                                <th scope="col" style="width: 9%">Reference No</th>
+                                <th scope="col" style="width: 8%">Propose For</th>
+                                <th scope="col" style="width: 8%">Donation Type</th>
+                                <th scope="col" style="width: 8%">Donation To</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let a of investmentRecs">
+                                <td>
+                                    <button class="btn btn-sm btn-embossed btn-success" (click)="selectInvestmentInit(a)">Select</button>
+
+                                </td>
+                                <td style="display:none;">{{a.id}}</td>
+                                <td>{{a.referenceNo}}</td>
+                                <td>{{a.proposeFor}}</td>
+                                <td>{{a.donationType}}</td>
+                                <td>{{a.donationTo}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
 <ng-template #investmentRecSearchModal>
     <div class="modal-header" style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc));color: black;">
         <h4 class="modal-title pull-left">Investment Initialization</h4>

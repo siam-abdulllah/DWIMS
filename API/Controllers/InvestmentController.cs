@@ -276,7 +276,23 @@ namespace API.Controllers
             {
                 throw ex;
             }
-        }[HttpGet]
+        }
+        [HttpGet]
+        [Route("investmentTargetedProdsForRec/{investmentInitId}/{sbu}")]
+        public async Task<IReadOnlyList<InvestmentTargetedProd>> GetInvestmentTargetedProds(int investmentInitId,string ssbu)
+        {
+            try
+            {
+                var spec = new InvestmentTargetedProdSpecification(investmentInitId);
+                var investmentTargetedProd = await _investmentTargetedProdRepo.ListAsync(spec);
+                return investmentTargetedProd;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpGet]
         [Route("investmentTargetedGroups/{investmentInitId}")]
         public async Task<IReadOnlyList<InvestmentTargetedGroup>> GetInvestmentTargetedGroups(int investmentInitId)
         {

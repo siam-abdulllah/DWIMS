@@ -1,8 +1,8 @@
 
-import { InvestmentInit, IInvestmentInit,InvestmentDetail,IInvestmentDetail,
-  InvestmentTargetedProd,IInvestmentTargetedProd,InvestmentTargetedGroup,IInvestmentTargetedGroup } from '../shared/models/investment';
-import { InvestmentDoctor, IInvestmentDoctor,InvestmentInstitution,IInvestmentInstitution,InvestmentCampaign,IInvestmentCampaign } from '../shared/models/investment';
-import { InvestmentBcds, IInvestmentBcds,InvestmentSociety,IInvestmentSociety } from '../shared/models/investment';
+import { InvestmentApr, IInvestmentApr,InvestmentInit,IInvestmentInit,
+  InvestmentTargetedProd,IInvestmentTargetedProd,InvestmentTargetedGroup,IInvestmentTargetedGroup, IInvestmentAprComment } from '../shared/models/investmentApr';
+import { InvestmentDoctor, IInvestmentDoctor,InvestmentInstitution,IInvestmentInstitution,InvestmentCampaign,IInvestmentCampaign } from '../shared/models/investmentApr';
+import { InvestmentBcds, IInvestmentBcds,InvestmentSociety,IInvestmentSociety } from '../shared/models/investmentApr';
 import { SubCampaign, ISubCampaign } from '../shared/models/subCampaign';
 import { Donation, IDonation } from '../shared/models/donation';
 import { Doctor, IDoctor } from '../shared/models/docotor';
@@ -10,7 +10,7 @@ import { Institution, IInstitution } from '../shared/models/institution';
 import { GenericParams } from '../shared/models/genericParams';
 import { Component, ElementRef, OnInit, ViewChild , TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { InvestmentInitService } from '../_services/investment.service';
+import { InvestmentAprService } from '../_services/investmentApr.service';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
@@ -23,6 +23,7 @@ import { IBcdsInfo } from '../shared/models/bcdsInfo';
 import { ISocietyInfo } from '../shared/models/societyInfo';
 import { MarketGroupMst, IMarketGroupMst } from '../shared/models/marketGroupMst';
 import { MarketGroupDtl, IMarketGroupDtl } from '../shared/models/marketGroupDtl';
+import { AccountService } from '../account/account.service';
 @Component({
   selector: 'app-investmentApr',
   templateUrl: './investmentApr.component.html',
@@ -33,13 +34,15 @@ import { MarketGroupDtl, IMarketGroupDtl } from '../shared/models/marketGroupDtl
 export class InvestmentAprComponent implements OnInit {
   @ViewChild('search', {static: false}) searchTerm: ElementRef;
   @ViewChild('investmentInitSearchModal', { static: false }) investmentInitSearchModal: TemplateRef<any>;
+  @ViewChild('investmentAprSearchModal', { static: false }) investmentAprSearchModal: TemplateRef<any>;
   InvestmentInitSearchModalRef: BsModalRef;
+  InvestmentAprSearchModalRef: BsModalRef;
   // genParams: GenericParams;
   // campaigns: ICampaign[]; 
-  investmentInits: IInvestmentInit[];
+  investmentAprs: IInvestmentApr[];
   investmentTargetedProds: IInvestmentTargetedProd[];
   investmentTargetedGroups: IInvestmentTargetedGroup[];
-  investmentDetails: IInvestmentDetail[];
+  investmentDetails: IInvestmentApr[];
   investmentDoctors: IInvestmentDoctor[];
   isValid: boolean=false; 
   isDonationValid: boolean=false; 
@@ -60,103 +63,165 @@ export class InvestmentAprComponent implements OnInit {
   totalCount = 0;
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date = new Date();
+  empId:string;
+  sbu:string;
   config = {
     keyboard: false,
     class: 'modal-lg',
     ignoreBackdropClick: true
   };
-  constructor(public investmentInitService: InvestmentInitService, private router: Router,
+  constructor(private accountService: AccountService,public investmentAprService: InvestmentAprService, private router: Router,
     private toastr: ToastrService,private modalService: BsModalService,private datePipe: DatePipe) { }
 
     openInvestmentInitSearchModal(template: TemplateRef<any>) {
       this.InvestmentInitSearchModalRef = this.modalService.show(template, this.config);
     }
-    selectInvestmentInit(selectedRecord: IInvestmentInit) {
-      this.investmentInitService.investmentInitFormData = Object.assign({}, selectedRecord);
-      this.investmentInitService.investmentDoctorFormData.investmentInitId =selectedRecord.id;
-      this.investmentInitService.investmentInstitutionFormData.investmentInitId =selectedRecord.id;
-      this.investmentInitService.investmentCampaignFormData.investmentInitId =selectedRecord.id;
-      this.investmentInitService.investmentBcdsFormData.investmentInitId =selectedRecord.id;
-      this.investmentInitService.investmentSocietyFormData.investmentInitId =selectedRecord.id;
-      this.investmentInitService.investmentDetailFormData.investmentInitId =selectedRecord.id;
+    openInvestmentAprSearchModal(template: TemplateRef<any>) {
+      this.InvestmentAprSearchModalRef = this.modalService.show(template, this.config);
+    }
+    selectInvestmentInit(selectedAprord: IInvestmentInit) {
+      //debugger;
+      this.investmentAprService.investmentAprFormData = Object.assign({}, selectedAprord);
+      this.investmentAprService.investmentDetailFormData.investmentInitId =selectedAprord.id;
+      this.investmentAprService.investmentAprCommentFormData.investmentInitId =selectedAprord.id;
       this.isDonationValid=true;
-      if(this.investmentInitService.investmentInitFormData.donationTo=="Doctor")
-    {
+      if(this.investmentAprService.investmentAprFormData.donationTo=="Doctor")
+      {
       
-      this.getDoctor();
-      this.getInstitution();
       this.getInvestmentDoctor();
-    }
-      else if(this.investmentInitService.investmentInitFormData.donationTo=="Institution")
-    {
+     }
+      else if(this.investmentAprService.investmentAprFormData.donationTo=="Institution")
+     {
       
-      this.getDoctor();
-      this.getInstitution();
       this.getInvestmentInstitution();
-    }
-      else if(this.investmentInitService.investmentInitFormData.donationTo=="Campaign")
-    {
-      this.getCampaignMst();
-      this.getDoctor();
-      this.getInstitution();
+      }
+      else if(this.investmentAprService.investmentAprFormData.donationTo=="Campaign")
+      {
+      //this.getCampaignMst();
       this.getInvestmentCampaign();
-    }
-      else if(this.investmentInitService.investmentInitFormData.donationTo=="Bcds")
-    {
-      this.getBcds();
+      }
+      else if(this.investmentAprService.investmentAprFormData.donationTo=="Bcds")
+      {
       this.getInvestmentBcds();
-    }
-      else if(this.investmentInitService.investmentInitFormData.donationTo=="Society")
-    {
-      this.getSociety();
+      }
+      else if(this.investmentAprService.investmentAprFormData.donationTo=="Society")
+      {
       this.getInvestmentSociety();
-    }
+      }
       this.getInvestmentDetails();
       this.getInvestmentTargetedProd();
       this.getInvestmentTargetedGroup();
       this.isValid=true;
       this.InvestmentInitSearchModalRef.hide()
+      }
+    selectInvestmentApr(selectedAprord: IInvestmentInit) {
+      //debugger;
+      this.investmentAprService.investmentAprFormData = Object.assign({}, selectedAprord);
+      this.investmentAprService.investmentDetailFormData.investmentInitId =selectedAprord.id;
+      this.investmentAprService.investmentAprCommentFormData.investmentInitId =selectedAprord.id;
+      this.isDonationValid=true;
+      if(this.investmentAprService.investmentAprFormData.donationTo=="Doctor")
+      {
+      
+      this.getInvestmentDoctor();
      }
-     getInvestmentInit(){
-      this.investmentInitService.getInvestmentInit().subscribe(response => {
+      else if(this.investmentAprService.investmentAprFormData.donationTo=="Institution")
+     {
+      
+      this.getInvestmentInstitution();
+      }
+      else if(this.investmentAprService.investmentAprFormData.donationTo=="Campaign")
+      {
+      //this.getCampaignMst();
+      this.getInvestmentCampaign();
+      }
+      else if(this.investmentAprService.investmentAprFormData.donationTo=="Bcds")
+      {
+      this.getInvestmentBcds();
+      }
+      else if(this.investmentAprService.investmentAprFormData.donationTo=="Society")
+      {
+      this.getInvestmentSociety();
+      }
+      this.getInvestmentAprDetails();
+      this.getInvestmentAprProducts();
+      this.getInvestmentAprComment();
+      this.getInvestmentTargetedGroup();
+      this.isValid=true;
+      this.InvestmentAprSearchModalRef.hide()
+      }
+      getCampaignMst(){
+        this.investmentAprService.getCampaignMsts().subscribe(response => {
+          //debugger;
+          this.campaignMsts = response as ICampaignMst[];
+        }, error => {
+            console.log(error);
+        });
+      }
+      getInvestmentInit(){
+      this.investmentAprService.getInvestmentInit(this.sbu).subscribe(response => {
         //debugger;
-       this.investmentInits = response.data;
+       this.investmentAprs = response.data;
        this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
+      }, error => {
+          console.log(error);
+      });
+    }
+    getInvestmentApproved(){
+      this.investmentAprService.getInvestmentApproved(this.sbu).subscribe(response => {
+        //debugger;
+       this.investmentAprs = response.data;
+       this.openInvestmentAprSearchModal(this.investmentAprSearchModal);
       }, error => {
           console.log(error);
      });
    }
-   getInvestmentDetails(){
-      this.investmentInitService.getInvestmentDetails(this.investmentInitService.investmentDetailFormData.investmentInitId ).subscribe(response => {
-        debugger;
-        var data=response[0] as IInvestmentDetail;
-        if(data!==undefined)
-        {
-        this.investmentInitService.investmentDetailFormData=data;
-       this.investmentInitService.investmentDetailFormData.fromDate=new Date(data.fromDate);
-        this.investmentInitService.investmentDetailFormData.toDate=new Date(data.toDate);
-      } else{
-        this.toastr.warning('No Data Found', 'Investment ');
-      }
-         }, error => {
-          console.log(error);
-     });
-   }
+   
    getInvestmentCampaign(){
-    this.investmentInitService.getInvestmentCampaigns(this.investmentInitService.investmentCampaignFormData.investmentInitId).subscribe(response => {
+    this.investmentAprService.getInvestmentCampaigns(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
       debugger;
       
       var data=response[0] as IInvestmentCampaign;
       if(data!==undefined)
       {
-      this.investmentInitService.investmentCampaignFormData=data;
-
-      this.investmentInitService.investmentCampaignFormData.campaignMstId=data.campaignDtl.mstId;
-      this.investmentInitService.investmentCampaignFormData.subCampStartDate=new DatePipe('en-US').transform(data.campaignDtl.subCampStartDate, 'dd/MM/yyyy');
-      this.investmentInitService.investmentCampaignFormData.subCampEndDate=new DatePipe('en-US').transform(data.campaignDtl.subCampEndDate, 'dd/MM/yyyy');
+      this.investmentAprService.investmentCampaignFormData=data;
+      this.investmentAprService.investmentCampaignFormData.campaignMstId=data.campaignDtl.mstId;
+      this.investmentAprService.investmentCampaignFormData.subCampaignName=data.campaignDtl.subCampaignName;
+      this.investmentAprService.investmentCampaignFormData.doctorName=data.doctorInfo.doctorName;
+      this.investmentAprService.investmentCampaignFormData.institutionName=data.institutionInfo.institutionName;
+      this.investmentAprService.investmentCampaignFormData.subCampStartDate=new DatePipe('en-US').transform(data.campaignDtl.subCampStartDate, 'dd/MM/yyyy');
+      this.investmentAprService.investmentCampaignFormData.subCampEndDate=new DatePipe('en-US').transform(data.campaignDtl.subCampEndDate, 'dd/MM/yyyy')
+      this.investmentAprService.getCampaignMsts().subscribe(response => {
+        this.campaignMsts = response as ICampaignMst[];
+        for (let i = 0; i < this.campaignMsts.length; i++) {
+          if(this.campaignMsts[i].id==this.investmentAprService.investmentCampaignFormData.campaignDtl.mstId)
+          {
+            this.investmentAprService.investmentCampaignFormData.campaignName=this.campaignMsts[i].campaignName;
+          }
+        }
+        this.investmentAprService.getCampaignDtls(data.campaignDtl.mstId).subscribe(response => {
+          debugger;
+          this.campaignDtls = response as ICampaignDtl[];
+          for (let i = 0; i < this.campaignDtls.length; i++) {
+            if(this.campaignDtls[i].id==data.campaignDtl.id)
+            {
+              this.investmentAprService.investmentCampaignFormData.subCampaignName=this.campaignDtls[i].subCampaign.subCampaignName;
+            }
+          }
+        }, error => {
+            console.log(error);
+        });
+      }, error => {
+          console.log(error);
+      });
      
-      this.onChangeCampaignInCamp();
-      this.onChangeSubCampaignInCamp();
+     
+      this.investmentAprService.getCampaignDtlProducts(data.campaignDtl.id).subscribe(response => {
+        debugger;
+        this.campaignDtlProducts = response as ICampaignDtlProduct[];
+      }, error => {
+          console.log(error);
+      });
     }
     else{
       this.toastr.warning('No Data Found', 'Investment ');
@@ -165,17 +230,20 @@ export class InvestmentAprComponent implements OnInit {
     }, error => {
         console.log(error);
     });
+    
   }
    getInvestmentBcds(){
-    this.investmentInitService.getInvestmentBcds(this.investmentInitService.investmentBcdsFormData.investmentInitId).subscribe(response => {
-      debugger;
+    this.investmentAprService.getInvestmentBcds(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
+      //debugger;
       
       var data=response[0] as IInvestmentBcds;
       if(data!==undefined)
       {
-      this.investmentInitService.investmentBcdsFormData=data;
-      
-      this.onChangeBcdsInBcds();
+      this.investmentAprService.investmentBcdsFormData=data;
+      this.investmentAprService.investmentBcdsFormData.bcdsName=data.bcds.bcdsName;
+      this.investmentAprService.investmentBcdsFormData.bcdsAddress=data.bcds.bcdsAddress;
+      this.investmentAprService.investmentBcdsFormData.noOfMember=data.bcds.noOfMember;
+      //this.onChangeBcdsInBcds();
     }
     else{
       this.toastr.warning('No Data Found', 'Investment ');
@@ -186,15 +254,18 @@ export class InvestmentAprComponent implements OnInit {
     });
   }
    getInvestmentSociety(){
-    this.investmentInitService.getInvestmentSociety(this.investmentInitService.investmentSocietyFormData.investmentInitId).subscribe(response => {
-      debugger;
+    this.investmentAprService.getInvestmentSociety(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
+      //debugger;
       
       var data=response[0] as IInvestmentSociety;
       if(data!==undefined)
       {
-      this.investmentInitService.investmentSocietyFormData=data;
+      this.investmentAprService.investmentSocietyFormData=data;
+      this.investmentAprService.investmentSocietyFormData.societyName=data.society.societyName;
+      this.investmentAprService.investmentSocietyFormData.noOfMember=data.society.noOfMember;
+      this.investmentAprService.investmentSocietyFormData.societyAddress=data.society.societyAddress;
       
-      this.onChangeSocietyInSociety();
+      //this.onChangeSocietyInSociety();
     }
     else{
       this.toastr.warning('No Data Found', 'Investment ');
@@ -205,14 +276,18 @@ export class InvestmentAprComponent implements OnInit {
     });
   }
    getInvestmentInstitution(){
-    this.investmentInitService.getInvestmentInstitutions(this.investmentInitService.investmentInstitutionFormData.investmentInitId).subscribe(response => {
-      debugger;
+    this.investmentAprService.getInvestmentInstitutions(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
+      //debugger;
       
       var data=response[0] as IInvestmentInstitution;
       if(data!==undefined)
       {
-      this.investmentInitService.investmentInstitutionFormData=data;
-      this.onChangeInstitutionInInst();
+      this.investmentAprService.investmentInstitutionFormData=data;
+      this.investmentAprService.investmentInstitutionFormData.resposnsibleDoctorName=data.doctorInfo.doctorName;
+      this.investmentAprService.investmentInstitutionFormData.institutionName=data.institutionInfo.institutionName;
+      this.investmentAprService.investmentInstitutionFormData.address=data.institutionInfo.address;
+      this.investmentAprService.investmentInstitutionFormData.institutionType=data.institutionInfo.institutionType;
+      //this.onChangeInstitutionInInst();
     }
     else{
       this.toastr.warning('No Data Found', 'Investment ');
@@ -223,15 +298,19 @@ export class InvestmentAprComponent implements OnInit {
     });
   }
    getInvestmentDoctor(){
-    this.investmentInitService.getInvestmentDoctors(this.investmentInitService.investmentDoctorFormData.investmentInitId).subscribe(response => {
-      debugger;
+    this.investmentAprService.getInvestmentDoctors(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
+      //debugger;
       var data=response[0] as IInvestmentDoctor;
       if( data!==undefined)
       {
-      this.investmentInitService.investmentDoctorFormData=data;
-      this.investmentInitService.investmentDoctorFormData.doctorName=String(data.doctorId);
-      this.onChangeDoctorInDoc();
-      this.onChangeInstitutionInDoc();
+      this.investmentAprService.investmentDoctorFormData=data;
+      this.investmentAprService.investmentDoctorFormData.doctorName=data.doctorInfo.doctorName;
+      this.investmentAprService.investmentDoctorFormData.degree=data.doctorInfo.degree;
+      this.investmentAprService.investmentDoctorFormData.designation=data.doctorInfo.designation;
+      this.investmentAprService.investmentDoctorFormData.institutionName=data.institutionInfo.institutionName;
+      this.investmentAprService.investmentDoctorFormData.address=data.institutionInfo.address;
+      //this.onChangeDoctorInDoc();
+      //this.onChangeInstitutionInDoc();
     }
     else{
       this.toastr.warning('No Data Found', 'Investment ');
@@ -241,9 +320,79 @@ export class InvestmentAprComponent implements OnInit {
         console.log(error);
     });
   }
+  getInvestmentAprComment(){
+    this.investmentAprService.getInvestmentAprComment(this.investmentAprService.investmentAprFormData.id,this.empId).subscribe(response => {
+      //debugger;
+      var data=response[0] as IInvestmentAprComment;
+      if( data!==undefined)
+      {
+      this.investmentAprService.investmentAprCommentFormData=data;
+      
+    }
+    else{
+      this.toastr.warning('No Data Found', 'Investment ');
+    }
+      
+    }, error => {
+        console.log(error);
+    });
+  }
+  getInvestmentDetails(){
+    this.investmentAprService.getInvestmentDetails(this.investmentAprService.investmentAprFormData.id ).subscribe(response => {
+      //debugger;
+      var data=response[0] as IInvestmentApr;
+      if(data!==undefined)
+      {
+      this.investmentAprService.investmentDetailFormData=data;
+      this.investmentAprService.investmentDetailFormData.id=0;
+     this.investmentAprService.investmentDetailFormData.fromDate=new Date(data.fromDate);
+      this.investmentAprService.investmentDetailFormData.toDate=new Date(data.toDate);
+    } else{
+      this.toastr.warning('No Data Found', 'Investment ');
+    }
+       }, error => {
+        console.log(error);
+   });
+ }
    getInvestmentTargetedProd(){
-    this.investmentInitService.getInvestmentTargetedProds(this.investmentInitService.investmentInitFormData.id).subscribe(response => {
-      debugger;
+    this.investmentAprService.getInvestmentTargetedProds(this.investmentAprService.investmentAprFormData.id,this.sbu).subscribe(response => {
+      //debugger;
+      var data=response as IInvestmentTargetedProd[];
+      if( data!==undefined)
+      {
+      this.investmentTargetedProds=data;
+     
+    }
+    else{
+      this.toastr.warning('No Data Found', 'Investment ');
+    }
+      
+    }, error => {
+        console.log(error);
+    });
+  }
+  getInvestmentAprDetails(){
+    //debugger;
+    this.investmentAprService.getInvestmentAprDetails(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
+      
+      var data=response[0] as IInvestmentApr;
+      if(data!==undefined)
+      {
+      this.investmentAprService.investmentDetailFormData=data;
+      this.investmentAprService.investmentDetailFormData.id=0;
+     this.investmentAprService.investmentDetailFormData.fromDate=new Date(data.fromDate);
+      this.investmentAprService.investmentDetailFormData.toDate=new Date(data.toDate);
+    } else{
+      this.toastr.warning('No Data Found', 'Investment ');
+    }
+       }, error => {
+        console.log(error);
+   });
+ }
+   getInvestmentAprProducts(){
+    //debugger;
+    this.investmentAprService.getInvestmentAprProducts(this.investmentAprService.investmentAprFormData.id,this.sbu).subscribe(response => {
+      
       var data=response as IInvestmentTargetedProd[];
       if( data!==undefined)
       {
@@ -259,8 +408,8 @@ export class InvestmentAprComponent implements OnInit {
     });
   }
    getInvestmentTargetedGroup(){
-    this.investmentInitService.getInvestmentTargetedGroups(this.investmentInitService.investmentInitFormData.id).subscribe(response => {
-      debugger;
+    this.investmentAprService.getInvestmentTargetedGroups(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
+      //debugger;
       var data=response as IInvestmentTargetedGroup[];
       if( data!==undefined)
       {
@@ -275,364 +424,154 @@ export class InvestmentAprComponent implements OnInit {
         console.log(error);
     });
   }
+
   ngOnInit() {
-    this.getDonation();
+    this.getEmployeeId();
     this.getProduct();
-    this.getMarketGroupMsts();
+    //this.getMarketGroupMsts();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-green' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
 
   }
-  onChangeDonationTo(){
-    debugger;
-    
-    if(this.investmentInitService.investmentInitFormData.donationTo=="Doctor" )
-    {
-      if(this.investmentInitService.investmentDoctorFormData.id==null || this.investmentInitService.investmentDoctorFormData.id==undefined || this.investmentInitService.investmentDoctorFormData.id==0)
-      {
-      this.investmentInitService.investmentDoctorFormData=new InvestmentDoctor();
-      this.getDoctor();
-      this. getInstitution();
-     }
-    }
-    else if(this.investmentInitService.investmentInitFormData.donationTo=="Institution")
-    {if(this.investmentInitService.investmentInstitutionFormData.id==null || this.investmentInitService.investmentInstitutionFormData.id==undefined || this.investmentInitService.investmentInstitutionFormData.id==0)
-      {
-      this.investmentInitService.investmentDoctorFormData=new InvestmentDoctor();
-      this.getDoctor();
-      this. getInstitution();
-      }
-    }
-    else if(this.investmentInitService.investmentInitFormData.donationTo=="Campaign")
-    {if(this.investmentInitService.investmentCampaignFormData.id==null || this.investmentInitService.investmentCampaignFormData.id==undefined || this.investmentInitService.investmentCampaignFormData.id==0)
-      {
-      this.investmentInitService.investmentCampaignFormData=new InvestmentCampaign();
-      this.getCampaignMst();
-      this.getDoctor();
-      this. getInstitution();
-      }
-    }
-    else if(this.investmentInitService.investmentInitFormData.donationTo=="Bcds")
-    {if(this.investmentInitService.investmentBcdsFormData.id==null || this.investmentInitService.investmentBcdsFormData.id==undefined || this.investmentInitService.investmentBcdsFormData.id==0)
-      {
-      this.investmentInitService.investmentBcdsFormData=new InvestmentBcds();
-      this.getBcds();
-      }
-    }
-    else if(this.investmentInitService.investmentInitFormData.donationTo=="Society")
-    {if(this.investmentInitService.investmentSocietyFormData.id==null || this.investmentInitService.investmentSocietyFormData.id==undefined || this.investmentInitService.investmentSocietyFormData.id==0)
-      {
-      this.investmentInitService.investmentSocietyFormData=new InvestmentSociety();
-      this.getSociety();
-      }
-    }
-    if(this.investmentInitService.investmentInitFormData.id!=null && this.investmentInitService.investmentInitFormData.id!=undefined && this.investmentInitService.investmentInitFormData.id!=0)
-    {
-      this.investmentInitService.investmentDoctorFormData.investmentInitId =this.investmentInitService.investmentInitFormData.id;
-      this.investmentInitService.investmentInstitutionFormData.investmentInitId =this.investmentInitService.investmentInitFormData.id;
-      this.investmentInitService.investmentCampaignFormData.investmentInitId =this.investmentInitService.investmentInitFormData.id;
-      this.investmentInitService.investmentBcdsFormData.investmentInitId =this.investmentInitService.investmentInitFormData.id;
-      this.investmentInitService.investmentSocietyFormData.investmentInitId =this.investmentInitService.investmentInitFormData.id;
-    }
-  }
-  onChangeDoctorInDoc(){
-    for(var i=0;i<this.doctors.length;i++){
-    if(this.doctors[i].id==parseInt(this.investmentInitService.investmentDoctorFormData.doctorName))
-    {
-      //this.investmentInitService.investmentDoctorFormData.doctorName=this.doctors[i].doctorName;
-      this.investmentInitService.investmentDoctorFormData.doctorId=this.doctors[i].id;
-      this.investmentInitService.investmentDoctorFormData.degree=this.doctors[i].degree;
-      this.investmentInitService.investmentDoctorFormData.designation=this.doctors[i].designation;
-      break;
-    }
-  }
-  }
-  onChangeInstitutionInDoc(){
-    debugger;
-    for(var i=0;i<this.institutions.length;i++){
-    if(this.institutions[i].id==this.investmentInitService.investmentDoctorFormData.institutionId)
-    {
-      this.investmentInitService.investmentDoctorFormData.address=this.institutions[i].address;
-      
-      break;
-    }
-  }
-  }
-  onChangeInstitutionInInst(){
-    //debugger;
-    for(var i=0;i<this.institutions.length;i++){
-    if(this.institutions[i].id==this.investmentInitService.investmentInstitutionFormData.institutionId)
-    {
-      this.investmentInitService.investmentInstitutionFormData.address=this.institutions[i].address;
-      this.investmentInitService.investmentInstitutionFormData.institutionType=this.institutions[i].institutionType;
-      
-      break;
-    }
-  }
-  }
-  onChangeCampaignInCamp(){
-    debugger;
-    this.investmentInitService.getCampaignDtls(this.investmentInitService.investmentCampaignFormData.campaignMstId).subscribe(response => {
-      debugger;
-      this.campaignDtls = response as ICampaignDtl[];
-    }, error => {
-        console.log(error);
-    });
-  }
-  onChangeBcdsInBcds(){
-    debugger;
-    for(var i=0;i<this.bcds.length;i++){
-      if(this.bcds[i].id==this.investmentInitService.investmentBcdsFormData.bcdsId)
-      {
-        this.investmentInitService.investmentBcdsFormData.bcdsAddress=this.bcds[i].bcdsAddress;
-        this.investmentInitService.investmentBcdsFormData.noOfMember=this.bcds[i].noOfMember;
-        
-        break;
-      }
-    }
-  }
-  onChangeSubCampaignInCamp(){
-    debugger;
-    for(var i=0;i<this.campaignDtls.length;i++){
-    if(this.campaignDtls[i].id==this.investmentInitService.investmentCampaignFormData.campaignDtlId)
-    {
-      this.investmentInitService.investmentCampaignFormData.subCampStartDate=new DatePipe('en-US').transform(this.campaignDtls[i].subCampStartDate, 'dd/MM/yyyy');
-      this.investmentInitService.investmentCampaignFormData.subCampEndDate=new DatePipe('en-US').transform(this.campaignDtls[i].subCampEndDate, 'dd/MM/yyyy');
-      
-      break;
-    }
-  }
-    this.investmentInitService.getCampaignDtlProducts(this.investmentInitService.investmentCampaignFormData.campaignDtlId).subscribe(response => {
-      debugger;
-      this.campaignDtlProducts = response as ICampaignDtlProduct[];
-    }, error => {
-        console.log(error);
-    });
-  
-  }
-  onChangeSocietyInSociety(){
-    debugger;
-    for(var i=0;i<this.society.length;i++){
-    if(this.society[i].id==this.investmentInitService.investmentSocietyFormData.societyId)
-    {
-      this.investmentInitService.investmentSocietyFormData.societyAddress=this.society[i].societyAddress;
-      this.investmentInitService.investmentSocietyFormData.noOfMember=this.society[i].noOfMember;
-      
-      break;
-    }
-  }
-    
-  
-  }
-  onChangeMarketGroupInTargetedGroup(){
-    debugger;
-    
-    if(this.investmentTargetedGroups==null || this.investmentTargetedGroups.length==0)
-    {
-    for (let i = 0; i < this.marketGroupMsts.length; i++) {
-      if(this.marketGroupMsts[i].id==this.investmentInitService.investmentTargetedGroupFormData.marketGroupMstId)
-      {
-        var data = []; 
-        for (let j = 0; j < this.marketGroupMsts[i].marketGroupDtls.length; j++) {
-         var marketGroupMstId=this.marketGroupMsts[i].marketGroupDtls[j].mstId;
-          var marketCode=this.marketGroupMsts[i].marketGroupDtls[j].marketCode;
-          var marketName=this.marketGroupMsts[i].marketGroupDtls[j].marketName;
-          
-          data.push({id:0,investmentInitId:this.investmentInitService.investmentInitFormData.id,marketGroupMst:this.marketGroupMsts[i],marketGroupMstId:marketGroupMstId,marketCode:marketCode,marketName:marketName});
-          //this.investmentTargetedGroups.push({id:0,investmentInitId:this.investmentInitService.investmentInitFormData.id,marketGroup:null,marketGroupMstId:this.marketGroupMsts[i].marketGroupDtls[j].mstId,marketCode:this.marketGroupMsts[i].marketGroupDtls[j].marketCode,marketName:this.marketGroupMsts[i].marketGroupDtls[j].marketName});
-        }
-        this.investmentTargetedGroups=data;
-      break 
-      }
-    }
-  }
-  else{
-    this.toastr.warning('Already Market Group Exist', 'Investment ', {
-      positionClass: 'toast-top-right' 
-   });
-  }
-  }
+ 
   changeDateInDetail(){
-    debugger;
+    //debugger;
     
     //this.printingDate=this.getDigitBanglaFromEnglish(this.datePipe.transform(value, "dd/MM/yyyy"));
-    if(this.investmentInitService.investmentDetailFormData.fromDate==null || this.investmentInitService.investmentDetailFormData.fromDate==undefined )
+    if(this.investmentAprService.investmentDetailFormData.fromDate==null || this.investmentAprService.investmentDetailFormData.fromDate==undefined )
     {
       
      return false;
     }
-    if(this.investmentInitService.investmentDetailFormData.toDate==null || this.investmentInitService.investmentDetailFormData.toDate==undefined )
+    if(this.investmentAprService.investmentDetailFormData.toDate==null || this.investmentAprService.investmentDetailFormData.toDate==undefined )
     {
       
      return false;
     }
-    let dateFrom = this.investmentInitService.investmentDetailFormData.fromDate;
-    let dateTo = this.investmentInitService.investmentDetailFormData.toDate;
+    let dateFrom = this.investmentAprService.investmentDetailFormData.fromDate;
+    let dateTo = this.investmentAprService.investmentDetailFormData.toDate;
     //let dateFrom = new Date();
     //let dateTo = new Date();
 
-    this.investmentInitService.investmentDetailFormData.totalMonth = String(dateTo.getMonth() - dateFrom.getMonth() + (12 * (dateTo.getFullYear() - dateFrom.getFullYear())));
+    this.investmentAprService.investmentDetailFormData.totalMonth = String(dateTo.getMonth() - dateFrom.getMonth() + (12 * (dateTo.getFullYear() - dateFrom.getFullYear())));
 
   }
-  getDonation(){
-    this.investmentInitService.getDonations().subscribe(response => {
-      this.donations = response as IDonation[];
-    }, error => {
-        console.log(error);
-    });
-  }
-  getSubCampaign(){
-    this.investmentInitService.getSubCampaigns().subscribe(response => {
-      //debugger;
-      this.subCampaigns = response as ISubCampaign[];
-    }, error => {
-        console.log(error);
-    });
-  }
-  getDoctor(){
-    this.investmentInitService.getDoctors().subscribe(response => {
-      //debugger;
-      this.doctors = response as IDoctor[];
-    }, error => {
-        console.log(error);
-    });
-  }
-  getCampaignMst(){
-    this.investmentInitService.getCampaignMsts().subscribe(response => {
-      //debugger;
-      this.campaignMsts = response as ICampaignMst[];
-    }, error => {
-        console.log(error);
-    });
-  }
-  getSociety(){
-    this.investmentInitService.getSociety().subscribe(response => {
-      //debugger;
-      this.society = response as ISocietyInfo[];
-    }, error => {
-        console.log(error);
-    });
-  }
-  getBcds(){
-    this.investmentInitService.getBcds().subscribe(response => {
-      //debugger;
-      this.bcds = response as IBcdsInfo[];
-    }, error => {
-        console.log(error);
-    });
-  }
-  getInstitution(){
-    this.investmentInitService.getInstitutions().subscribe(response => {
-      this.institutions = response as IInstitution[];
-    }, error => {
-        console.log(error);
-    });
-  }
-  getMarket(){
-    this.investmentInitService.getMarkets().subscribe(response => {
-     this.markets = response as IMarket[];
-    }, error => {
-        console.log(error);
-   });
- }
+  
  getProduct(){
-  this.investmentInitService.getProduct().subscribe(response => {
+  this.investmentAprService.getProduct(this.sbu).subscribe(response => {
     //debugger;
     this.products = response as IProduct[];
   }, error => {
       console.log(error);
   });
 }
-getMarketGroupMsts(){
-  this.investmentInitService.getMarketGroupMsts().subscribe(response => {
-    debugger;
-   this.marketGroupMsts = response as IMarketGroupMst[];
-  }, error => {
-      console.log(error);
- });
+getEmployeeId(){
+  //debugger;
+  this.empId=this.accountService.getEmployeeId();
+  this.investmentAprService.investmentAprCommentFormData.employeeId=parseInt(this.empId);
+  this.getEmployeeSbu();
 }
-  onSubmit(form: NgForm) {
-    if (this.investmentInitService.investmentInitFormData.id == 0)
-      this.insertInvestmentInit();
-    else
-      this.updateInvestmentInit();
+ getEmployeeSbu()
+  {
+    //debugger;
+    this.accountService.getEmployeeSbu(this.investmentAprService.investmentAprCommentFormData.employeeId).subscribe(
+      (response) => {
+        //debugger;
+        this.sbu= response.sbu;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
-  insertInvestmentInit() {
-    this.investmentInitService.insertInvestmentInit().subscribe(
+  onSubmit(form: NgForm) {
+    if(this.investmentAprService.investmentAprCommentFormData.id==null || this.investmentAprService.investmentAprCommentFormData.id==undefined || this.investmentAprService.investmentAprCommentFormData.id==0)
+   
+      this.insertInvestmentApr();
+    else
+      this.updateInvestmentApr();
+  }
+  insertInvestmentApr() {
+    this.investmentAprService.insertInvestmentApr().subscribe(
       res => {
         //debugger;
-       this.investmentInitService.investmentInitFormData=res as IInvestmentInit;
-       this.investmentInitService.investmentDoctorFormData.investmentInitId=this.investmentInitService.investmentInitFormData.id;
-       this.investmentInitService.investmentInstitutionFormData.investmentInitId=this.investmentInitService.investmentInitFormData.id;
+        this.investmentAprService.investmentAprCommentFormData=res as IInvestmentAprComment;
+       //this.investmentAprService.investmentDoctorFormData.investmentInitId=this.investmentAprService.investmentAprFormData.id;
+       //this.investmentAprService.investmentInstitutionFormData.investmentInitId=this.investmentAprService.investmentAprFormData.id;
         this.isValid=true;
-        this.toastr.success('Submitted successfully', 'Investment ')
+        this.insertInvestmentDetails();
+        this.insertInvestmentTargetedProd();
+        this.toastr.success('Save successfully', 'Investment ')
       },
       err => { console.log(err); }
     );
   }
-  updateInvestmentInit() {
-    this.investmentInitService.updateInvestmentInit().subscribe(
+  updateInvestmentApr() {
+    this.investmentAprService.updateInvestmentApr().subscribe(
       res => {
-        debugger;
+        //debugger;
         this.isValid=true;
-        this.investmentInitService.investmentDoctorFormData.investmentInitId=this.investmentInitService.investmentInitFormData.id;
-       this.investmentInitService.investmentInstitutionFormData.investmentInitId=this.investmentInitService.investmentInitFormData.id;
+        this.investmentAprService.investmentAprCommentFormData=res as IInvestmentAprComment;
+        this.insertInvestmentDetails();
+        this.insertInvestmentTargetedProd();
+        //this.investmentAprService.investmentDoctorFormData.investmentInitId=this.investmentAprService.investmentAprFormData.id;
+      // this.investmentAprService.investmentInstitutionFormData.investmentInitId=this.investmentAprService.investmentAprFormData.id;
         this.toastr.info('Updated successfully', 'Investment ')
       },
       err => { console.log(err); }
     );
   }
   insertInvestmentDetails() {
-    if(this.investmentInitService.investmentInitFormData.id==null || this.investmentInitService.investmentInitFormData.id==undefined || this.investmentInitService.investmentInitFormData.id==0)
+    if(this.investmentAprService.investmentAprFormData.id==null || this.investmentAprService.investmentAprFormData.id==undefined || this.investmentAprService.investmentAprFormData.id==0)
     {
       this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
         positionClass: 'toast-top-right' 
      });
      return false;
     }
-    if(this.investmentInitService.investmentDetailFormData.proposedAmount==null || this.investmentInitService.investmentDetailFormData.proposedAmount==undefined || this.investmentInitService.investmentDetailFormData.proposedAmount=="")
+    if(this.investmentAprService.investmentDetailFormData.proposedAmount==null || this.investmentAprService.investmentDetailFormData.proposedAmount==undefined || this.investmentAprService.investmentDetailFormData.proposedAmount=="")
     {
       this.toastr.warning('Enter Proposed Amount First', 'Investment ', {
         positionClass: 'toast-top-right' 
      });
      return false;
     }
-    if(this.investmentInitService.investmentDetailFormData.purpose==null || this.investmentInitService.investmentDetailFormData.purpose==undefined || this.investmentInitService.investmentDetailFormData.purpose=="")
+    if(this.investmentAprService.investmentDetailFormData.purpose==null || this.investmentAprService.investmentDetailFormData.purpose==undefined || this.investmentAprService.investmentDetailFormData.purpose=="")
     {
       this.toastr.warning('Enter Purpose First', 'Investment ', {
         positionClass: 'toast-top-right' 
      });
      return false;
     }
-    if(this.investmentInitService.investmentDetailFormData.fromDate==null || this.investmentInitService.investmentDetailFormData.fromDate==undefined )
+    if(this.investmentAprService.investmentDetailFormData.fromDate==null || this.investmentAprService.investmentDetailFormData.fromDate==undefined )
     {
       this.toastr.warning('Select From Date  First', 'Investment ', {
         positionClass: 'toast-top-right' 
      });
      return false;
     }
-    if(this.investmentInitService.investmentDetailFormData.toDate==null || this.investmentInitService.investmentDetailFormData.toDate==undefined )
+    if(this.investmentAprService.investmentDetailFormData.toDate==null || this.investmentAprService.investmentDetailFormData.toDate==undefined )
     {
       this.toastr.warning('Select To Date  First', 'Investment ', {
         positionClass: 'toast-top-right' 
      });
      return false;
     }
-    if(this.investmentInitService.investmentDetailFormData.commitmentAllSBU==null || this.investmentInitService.investmentDetailFormData.commitmentAllSBU==undefined || this.investmentInitService.investmentDetailFormData.commitmentAllSBU=="")
+    if(this.investmentAprService.investmentDetailFormData.commitmentAllSBU==null || this.investmentAprService.investmentDetailFormData.commitmentAllSBU==undefined || this.investmentAprService.investmentDetailFormData.commitmentAllSBU=="")
     {
       this.toastr.warning('Enter Commitment All SBU First', 'Investment ', {
         positionClass: 'toast-top-right' 
      });
      return false;
     }
-    if(this.investmentInitService.investmentDetailFormData.commitmentOwnSBU==null || this.investmentInitService.investmentDetailFormData.commitmentOwnSBU==undefined || this.investmentInitService.investmentDetailFormData.commitmentOwnSBU=="")
+    if(this.investmentAprService.investmentDetailFormData.commitmentOwnSBU==null || this.investmentAprService.investmentDetailFormData.commitmentOwnSBU==undefined || this.investmentAprService.investmentDetailFormData.commitmentOwnSBU=="")
     {
       this.toastr.warning('Enter Commitment Own SBU First', 'Investment ', {
         positionClass: 'toast-top-right' 
      });
      return false;
     }
-    if(this.investmentInitService.investmentDetailFormData.paymentMethod==null || this.investmentInitService.investmentDetailFormData.paymentMethod==undefined || this.investmentInitService.investmentDetailFormData.paymentMethod=="")
+    if(this.investmentAprService.investmentDetailFormData.paymentMethod==null || this.investmentAprService.investmentDetailFormData.paymentMethod==undefined || this.investmentAprService.investmentDetailFormData.paymentMethod=="")
     {
       this.toastr.warning('Select Payment Method First', 'Investment ', {
         positionClass: 'toast-top-right' 
@@ -641,290 +580,88 @@ getMarketGroupMsts(){
     }
     
     
-    this.investmentInitService.investmentDetailFormData.investmentInitId =this.investmentInitService.investmentInitFormData.id;
+    this.investmentAprService.investmentDetailFormData.investmentInitId =this.investmentAprService.investmentAprFormData.id;
      
-    if(this.investmentInitService.investmentDetailFormData.id==null || this.investmentInitService.investmentDetailFormData.id==undefined || this.investmentInitService.investmentDetailFormData.id==0)
-    {
-      this.investmentInitService.insertInvestmentDetail().subscribe(
+    //if(this.investmentAprService.investmentDetailFormData.id==null || this.investmentAprService.investmentDetailFormData.id==undefined || this.investmentAprService.investmentDetailFormData.id==0)
+    //{
+      this.investmentAprService.insertInvestmentDetail().subscribe(
         res => {
-         var data=res as IInvestmentDetail;
-         this.investmentInitService.investmentDetailFormData=data;
-         //this.investmentInitService.investmentDoctorFormData.doctorName=String(data.doctorId);
-         this.investmentInitService.investmentDetailFormData.fromDate=new Date(data.fromDate);
-        this.investmentInitService.investmentDetailFormData.toDate=new Date(data.toDate);
+         var data=res as IInvestmentApr;
+         this.investmentAprService.investmentDetailFormData=data;
+         //this.investmentAprService.investmentDoctorFormData.doctorName=String(data.doctorId);
+         this.investmentAprService.investmentDetailFormData.fromDate=new Date(data.fromDate);
+        this.investmentAprService.investmentDetailFormData.toDate=new Date(data.toDate);
          this.isDonationValid=true;
          this.toastr.success('Save successfully', 'Investment ');
         },
         err => { console.log(err); }
       );
-    }
-    else{
-      this.investmentInitService.updateInvestmentDetail().subscribe(
-        res => {
-         var data=res as IInvestmentDetail;
-         this.investmentInitService.investmentDetailFormData=data;
-         //this.investmentInitService.investmentDoctorFormData.doctorName=String(data.doctorId);
-         this.investmentInitService.investmentDetailFormData.fromDate=new Date(data.fromDate);
-        this.investmentInitService.investmentDetailFormData.toDate=new Date(data.toDate);
-         this.isDonationValid=true;
-         this.toastr.success('Save successfully', 'Investment ');
-        },
-        err => { console.log(err); }
-      );
-    }
-    
-  }
-  insertInvestmentDoctor() {
-    if(this.investmentInitService.investmentInitFormData.id==null || this.investmentInitService.investmentInitFormData.id==undefined || this.investmentInitService.investmentInitFormData.id==0)
-    {
-      this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
-        positionClass: 'toast-top-right' 
-     });
-     return false;
-    }
-    // if(this.investmentInitService.investmentInitFormData.donationTo!=="Doctor")
-    // {
-    //   this.updateInvestmentInit();
     // }
-    if(this.investmentInitService.investmentDoctorFormData.doctorId==null || this.investmentInitService.investmentDoctorFormData.doctorId==undefined || this.investmentInitService.investmentDoctorFormData.doctorId==0)
-    {
-      this.toastr.warning('Select Doctor First', 'Investment ', {
-        positionClass: 'toast-top-right' 
-     });
-     return false;
-    }
-    if(this.investmentInitService.investmentDoctorFormData.institutionId==null || this.investmentInitService.investmentDoctorFormData.institutionId==undefined || this.investmentInitService.investmentDoctorFormData.institutionId==0)
-    {
-      this.toastr.warning('Select Institute First', 'Investment ', {
-        positionClass: 'toast-top-right' 
-     });
-     return false;
-    }
-    this.investmentInitService.investmentDoctorFormData.investmentInitId =this.investmentInitService.investmentInitFormData.id;
-     
-    this.investmentInitService.insertInvestmentDoctor().subscribe(
-      res => {
-       var data=res as IInvestmentDoctor;
-       this.investmentInitService.investmentDoctorFormData=data;
-       this.investmentInitService.investmentDoctorFormData.doctorName=String(data.doctorId);
-       this.onChangeDoctorInDoc();
-       this.onChangeInstitutionInDoc();
-       this.updateInvestmentInit();
-       this.isDonationValid=true;
-       this.toastr.success('Save successfully', 'Investment ');
-      },
-      err => { console.log(err); }
-    );
-  }
-  insertInvestmentInstitution() {
-    debugger;
-    if(this.investmentInitService.investmentInitFormData.id==null || this.investmentInitService.investmentInitFormData.id==undefined || this.investmentInitService.investmentInitFormData.id==0)
-    {
-      this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
-        positionClass: 'toast-top-right' 
-     });
-     return false;
-    }
-    // if(this.investmentInitService.investmentInitFormData.donationTo!=="Institution")
-    // {
-      
+    // else{
+    //   this.investmentAprService.updateInvestmentDetail().subscribe(
+    //     res => {
+    //      var data=res as IInvestmentApr;
+    //      this.investmentAprService.investmentDetailFormData=data;
+    //      //this.investmentAprService.investmentDoctorFormData.doctorName=String(data.doctorId);
+    //      this.investmentAprService.investmentDetailFormData.fromDate=new Date(data.fromDate);
+    //     this.investmentAprService.investmentDetailFormData.toDate=new Date(data.toDate);
+    //      this.isDonationValid=true;
+    //      this.toastr.success('Save successfully', 'Investment ');
+    //     },
+    //     err => { console.log(err); }
+    //   );
     // }
-    if(this.investmentInitService.investmentInstitutionFormData.resposnsibleDoctorId==null || this.investmentInitService.investmentInstitutionFormData.resposnsibleDoctorId==undefined || this.investmentInitService.investmentInstitutionFormData.resposnsibleDoctorId==0)
-    {
-      this.toastr.warning('Select Institution First', 'Investment ', {
-        positionClass: 'toast-top-right' 
-     });
-     return false;
-    }
-    if(this.investmentInitService.investmentInstitutionFormData.institutionId==null || this.investmentInitService.investmentInstitutionFormData.institutionId==undefined || this.investmentInitService.investmentInstitutionFormData.institutionId==0)
-    {
-      this.toastr.warning('Select Institute First', 'Investment ', {
-        positionClass: 'toast-top-right' 
-     });
-     return false;
-    }
-      this.investmentInitService.investmentInstitutionFormData.investmentInitId =this.investmentInitService.investmentInitFormData.id;
-      
-    this.investmentInitService.insertInvestmentInstitution().subscribe(
-      res => {
-        debugger;
-       this.investmentInitService.investmentInstitutionFormData=res as IInvestmentInstitution;
-       this.onChangeInstitutionInInst();
-       this.updateInvestmentInit();
-       this.isDonationValid=true;
-        this.toastr.success('Save successfully', 'Investment ');
-      },
-      err => { console.log(err); }
-    );
+    
   }
-  insertInvestmentCampaign() {
-    debugger;
-    if(this.investmentInitService.investmentInitFormData.id==null || this.investmentInitService.investmentInitFormData.id==undefined || this.investmentInitService.investmentInitFormData.id==0)
-    {
-      this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
-        positionClass: 'toast-top-right' 
-     });
-     return false;
-    }
-    // if(this.investmentInitService.investmentInitFormData.donationTo!=="Institution")
-    // {
-      
-    // }
-    if(this.investmentInitService.investmentCampaignFormData.campaignMstId==null || this.investmentInitService.investmentCampaignFormData.campaignMstId==undefined || this.investmentInitService.investmentCampaignFormData.campaignMstId==0)
-    {
-      this.toastr.warning('Select Campaign First', 'Investment ', {
-        positionClass: 'toast-top-right' 
-     });
-     return false;
-    }
-    if(this.investmentInitService.investmentCampaignFormData.campaignDtlId==null || this.investmentInitService.investmentCampaignFormData.campaignDtlId==undefined || this.investmentInitService.investmentCampaignFormData.campaignDtlId==0)
-    {
-      this.toastr.warning('Select Sub-Campaign First', 'Investment ', {
-        positionClass: 'toast-top-right' 
-     });
-     return false;
-    }
-    if(this.investmentInitService.investmentCampaignFormData.doctorId==null || this.investmentInitService.investmentCampaignFormData.doctorId==undefined || this.investmentInitService.investmentCampaignFormData.doctorId==0)
-    {
-      this.toastr.warning('Select Doctor First', 'Investment ', {
-        positionClass: 'toast-top-right' 
-     });
-     return false;
-    }
-    if(this.investmentInitService.investmentCampaignFormData.institutionId==null || this.investmentInitService.investmentCampaignFormData.institutionId==undefined || this.investmentInitService.investmentCampaignFormData.institutionId==0)
-    {
-      this.toastr.warning('Select Institute First', 'Investment ', {
-        positionClass: 'toast-top-right' 
-     });
-     return false;
-    }
-      this.investmentInitService.investmentCampaignFormData.investmentInitId =this.investmentInitService.investmentInitFormData.id;
-      
-    var tempMstId=this.investmentInitService.investmentCampaignFormData.campaignMstId;
-    this.investmentInitService.insertInvestmentCampaign().subscribe(
-      res => {
-        debugger;
-       this.investmentInitService.investmentCampaignFormData=res as IInvestmentCampaign;
-       this.investmentInitService.investmentCampaignFormData.campaignMstId=tempMstId;
-       this.onChangeCampaignInCamp();
-       this.onChangeSubCampaignInCamp();
-       this.updateInvestmentInit();
-       
-       this.isDonationValid=true;
-        this.toastr.success('Save successfully', 'Investment ');
-      },
-      err => { console.log(err); }
-    );
-  }
-  insertInvestmentSociety() {
-    debugger;
-    if(this.investmentInitService.investmentInitFormData.id==null || this.investmentInitService.investmentInitFormData.id==undefined || this.investmentInitService.investmentInitFormData.id==0)
-    {
-      this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
-        positionClass: 'toast-top-right' 
-     });
-     return false;
-    }
-    // if(this.investmentInitService.investmentInitFormData.donationTo!=="Institution")
-    // {
-      
-    // }
-    if(this.investmentInitService.investmentSocietyFormData.societyId==null || this.investmentInitService.investmentSocietyFormData.societyId==undefined || this.investmentInitService.investmentSocietyFormData.societyId==0)
-    {
-      this.toastr.warning('Select Society First', 'Investment ', {
-        positionClass: 'toast-top-right' 
-     });
-     return false;
-    }
-    
-    
-    
-       this.investmentInitService.investmentSocietyFormData.investmentInitId =this.investmentInitService.investmentInitFormData.id;
-   
-    this.investmentInitService.insertInvestmentSociety().subscribe(
-      res => {
-        debugger;
-       this.investmentInitService.investmentSocietyFormData=res as IInvestmentSociety;
-       this.onChangeSocietyInSociety();
-       this.updateInvestmentInit();
-       
-       this.isDonationValid=true;
-        this.toastr.success('Save successfully', 'Investment ');
-      },
-      err => { console.log(err); }
-    );
-  }
-  insertInvestmentBcds() {
-    debugger;
-    if(this.investmentInitService.investmentInitFormData.id==null || this.investmentInitService.investmentInitFormData.id==undefined || this.investmentInitService.investmentInitFormData.id==0)
-    {
-      this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
-        positionClass: 'toast-top-right' 
-     });
-     return false;
-    }
-    // if(this.investmentInitService.investmentInitFormData.donationTo!=="Institution")
-    // {
-      
-    // }
-    if(this.investmentInitService.investmentBcdsFormData.bcdsId==null || this.investmentInitService.investmentBcdsFormData.bcdsId==undefined || this.investmentInitService.investmentBcdsFormData.bcdsId==0)
-    {
-      this.toastr.warning('Select Bcds First', 'Investment ', {
-        positionClass: 'toast-top-right' 
-     });
-     return false;
-    }
-    
-    
-    
-       this.investmentInitService.investmentBcdsFormData.investmentInitId =this.investmentInitService.investmentInitFormData.id;
-   
-    this.investmentInitService.insertInvestmentBcds().subscribe(
-      res => {
-        debugger;
-       this.investmentInitService.investmentBcdsFormData=res as IInvestmentBcds;
-       this.onChangeBcdsInBcds();
-       this.updateInvestmentInit();
-       
-       this.isDonationValid=true;
-        this.toastr.success('Save successfully', 'Investment ');
-      },
-      err => { console.log(err); }
-    );
-  }
+ 
+ 
+  
   insertInvestmentTargetedProd() {
-    debugger;
-    if(this.investmentInitService.investmentInitFormData.id==null || this.investmentInitService.investmentInitFormData.id==undefined || this.investmentInitService.investmentInitFormData.id==0)
+    //debugger;
+    if(this.investmentAprService.investmentAprFormData.id==null || this.investmentAprService.investmentAprFormData.id==undefined || this.investmentAprService.investmentAprFormData.id==0)
     {
       this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
         positionClass: 'toast-top-right' 
      });
      return false;
     }
+    // if(this.investmentAprService.investmentDetailFormData.id==null || this.investmentAprService.investmentDetailFormData.id==undefined || this.investmentAprService.investmentDetailFormData.id==0)
+    // {
+    //   this.toastr.warning('Insert Investment Detail First', 'Investment ', {
+    //     positionClass: 'toast-top-right' 
+    //  });
+    //  return false;
+    // }
    
-    if(this.investmentInitService.investmentTargetedProdFormData.productId==null || this.investmentInitService.investmentTargetedProdFormData.productId==undefined || this.investmentInitService.investmentTargetedProdFormData.productId==0)
-    {
-      this.toastr.warning('Select Product First', 'Investment ', {
-        positionClass: 'toast-top-right' 
-     });
-     return false;
-    }
+    // if(this.investmentAprService.investmentTargetedProdFormData.productId==null || this.investmentAprService.investmentTargetedProdFormData.productId==undefined || this.investmentAprService.investmentTargetedProdFormData.productId==0)
+    // {
+    //   this.toastr.warning('Select Product First', 'Investment ', {
+    //     positionClass: 'toast-top-right' 
+    //  });
+    //  return false;
+    // }
     if(this.investmentTargetedProds!==undefined){
       for (let i = 0; i < this.investmentTargetedProds.length; i++) {
-        if(this.investmentTargetedProds[i].productInfo.id===this.investmentInitService.investmentTargetedProdFormData.productId)
+        if(this.investmentTargetedProds[i].productInfo.id==this.investmentAprService.investmentTargetedProdFormData.productId)
         {
         alert("product already exist !");
         return false;
         }
       }
     }
-    this.investmentInitService.investmentTargetedProdFormData.investmentInitId =this.investmentInitService.investmentInitFormData.id;
-    if(this.investmentInitService.investmentTargetedProdFormData.id==null || this.investmentInitService.investmentTargetedProdFormData.id==undefined || this.investmentInitService.investmentTargetedProdFormData.id==0)
-    {
-    this.investmentInitService.insertInvestmentTargetedProd().subscribe(
+    else{
+         this.toastr.warning('Select Product First', 'Investment ', {
+        positionClass: 'toast-top-right' 
+     });
+      return false;
+    }
+    this.investmentAprService.investmentTargetedProdFormData.investmentInitId =this.investmentAprService.investmentAprFormData.id;
+    //if(this.investmentAprService.investmentTargetedProdFormData.id==null || this.investmentAprService.investmentTargetedProdFormData.id==undefined || this.investmentAprService.investmentTargetedProdFormData.id==0)
+    //{
+    this.investmentAprService.insertInvestmentTargetedProd(this.investmentTargetedProds).subscribe(
       res => {
-        debugger;
-       this.investmentInitService.investmentTargetedProdFormData=new InvestmentTargetedProd();
+        //debugger;
+       //this.investmentAprService.investmentTargetedProdFormData=new InvestmentTargetedProd();
        
        this.getInvestmentTargetedProd();
        
@@ -933,64 +670,67 @@ getMarketGroupMsts(){
       },
       err => { console.log(err); }
     );
-    }
-    else{
-      this.investmentInitService.updateInvestmentTargetedProd().subscribe(
-        res => {
-          debugger;
-         this.investmentInitService.investmentTargetedProdFormData=new InvestmentTargetedProd();
+    // }
+    // else{
+    //   this.investmentAprService.updateInvestmentTargetedProd().subscribe(
+    //     res => {
+    //       debugger;
+    //      this.investmentAprService.investmentTargetedProdFormData=new InvestmentTargetedProd();
          
-         this.getInvestmentTargetedProd();
+    //      this.getInvestmentTargetedProd();
          
-         this.isDonationValid=true;
-          this.toastr.success('Update successfully', 'Investment ');
-        },
-        err => { console.log(err); }
-      );
-    }
+    //      this.isDonationValid=true;
+    //       this.toastr.success('Update successfully', 'Investment ');
+    //     },
+    //     err => { console.log(err); }
+    //   );
+    // }
   }
-  insertInvestmentTargetedGroup() {
-    debugger;
-    if(this.investmentInitService.investmentInitFormData.id==null || this.investmentInitService.investmentInitFormData.id==undefined || this.investmentInitService.investmentInitFormData.id==0)
+  addInvestmentTargetedProd() {
+    //debugger;
+    if(this.investmentAprService.investmentTargetedProdFormData.productId==null || this.investmentAprService.investmentTargetedProdFormData.productId==undefined || this.investmentAprService.investmentTargetedProdFormData.productId==0)
     {
-      this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
+      this.toastr.warning('Select Product First', 'Investment ', {
         positionClass: 'toast-top-right' 
      });
      return false;
     }
-   
-    if(this.investmentInitService.investmentTargetedGroupFormData.marketGroupMstId==null || this.investmentInitService.investmentTargetedGroupFormData.marketGroupMstId==undefined || this.investmentInitService.investmentTargetedGroupFormData.marketGroupMstId==0)
-    {
-      this.toastr.warning('Select Market Group First', 'Investment ', {
-        positionClass: 'toast-top-right' 
-     });
-     return false;
+    if(this.investmentTargetedProds!==undefined){
+      for (let i = 0; i < this.investmentTargetedProds.length; i++) {
+        if(this.investmentTargetedProds[i].productInfo.id==this.investmentAprService.investmentTargetedProdFormData.productId)
+        {
+        alert("product already exist !");
+        return false;
+        }
+
+      }
+      for (let i = 0; i < this.products.length; i++) {
+        if(this.products[i].id==this.investmentAprService.investmentTargetedProdFormData.productId)
+        {
+          let data=new InvestmentTargetedProd();
+          data.id=0;
+          data.investmentInitId=this.investmentAprService.investmentAprFormData.id;
+          data.productId=this.investmentAprService.investmentTargetedProdFormData.productId;
+          data.productInfo=this.products[i];
+          //data.productInfo.push({ id: this.products[i].id, productName: this.products[i].productName,productCode: this.products[i].productCode});
+          
+          //data.productInfo.productName=this.products[i].productName;
+          //data.productInfo.productCode=this.products[i].productCode;
+          this.investmentTargetedProds.push(data);
+        return false;
+        }
+
+      }
+      
+      
+      // this.investmentTargetedProds.push(      
+      //   { id: 0, investmentInitId: this.investmentAprService.investmentAprFormData.id,productId:0 });
     }
-    if(this.investmentTargetedGroups!=null && this.investmentTargetedGroups.length>0)
-    {
-    this.investmentInitService.investmentTargetedGroupFormData.investmentInitId =this.investmentInitService.investmentInitFormData.id;
     
-    this.investmentInitService.insertInvestmentTargetedGroup(this.investmentTargetedGroups).subscribe(
-      res => {
-        debugger;
-       this.investmentInitService.investmentTargetedProdFormData=new InvestmentTargetedProd();
-       
-       this.getInvestmentTargetedGroup();
-       
-       this.isDonationValid=true;
-        this.toastr.success(res);
-      },
-      err => { console.log(err); }
-    );
   }
-  else{
-    this.toastr.warning('Select Market Group First', 'Investment ', {
-      positionClass: 'toast-top-right' 
-   });
-  }
-  }
-  editInvestmentTargetedProd(selectedRecord: IInvestmentTargetedProd) {
-    this.investmentInitService.investmentTargetedProdFormData = Object.assign({}, selectedRecord);
+  
+  editInvestmentTargetedProd(selectedAprord: IInvestmentTargetedProd) {
+    this.investmentAprService.investmentTargetedProdFormData = Object.assign({}, selectedAprord);
     // var e = (document.getElementById("marketCode")) as HTMLSelectElement;
     // var sel = e.selectedIndex;
     // var opt = e.options[sel];
@@ -999,121 +739,38 @@ getMarketGroupMsts(){
     
   }
   populateForm() {
-    //this.investmentInitService.campaignFormData = Object.assign({}, selectedRecord);
+    //this.investmentAprService.campaignFormData = Object.assign({}, selectedAprord);
   }
   resetPage(form: NgForm) {
     form.reset();
-    this.investmentInitService.investmentInitFormData=new InvestmentInit();
+    this.investmentAprService.investmentAprFormData=new InvestmentInit();
     this.isValid=false;
   }
-  removeInvestmentDoctor() {
-    var c = confirm("Are you sure you want to delete that?"); 
-    if (c == true) {  
-    this.investmentInitService.removeInvestmentDoctor().subscribe(
-      res => {
-        this.toastr.success(res);
-        this.isDonationValid=false;
-        this.investmentInitService.investmentDoctorFormData=new InvestmentDoctor();
-      },
-      err => { debugger;console.log(err); }
-    );
-  }
-  }
-  removeInvestmentInstitution() {
-    var c = confirm("Are you sure you want to delete that?"); 
-    if (c == true) {  
-    this.investmentInitService.removeInvestmentInstitution().subscribe(
-      res => {
-        debugger;
-        this.toastr.success(res);
-        this.isDonationValid=false;
-        this.investmentInitService.investmentInstitutionFormData=new InvestmentInstitution();
-      },
-      err => { console.log(err); }
-    );
-  }
-}
-  removeInvestmentCampaign() {
-    var c = confirm("Are you sure you want to delete that?"); 
-    if (c == true) {  
-    this.investmentInitService.removeInvestmentCampaign().subscribe(
-      res => {
-        debugger;
-        this.toastr.success(res);
-        this.isDonationValid=false;
-        this.investmentInitService.investmentCampaignFormData=new InvestmentCampaign();
-      },
-      err => { console.log(err); }
-    );
-  }
-}
-  removeInvestmentSociety() {
-    var c = confirm("Are you sure you want to delete that?"); 
-    if (c == true) {  
-    this.investmentInitService.removeInvestmentSociety().subscribe(
-      res => {
-        debugger;
-        this.toastr.success(res);
-        this.isDonationValid=false;
-        this.investmentInitService.investmentSocietyFormData=new InvestmentSociety();
-      },
-      err => { console.log(err); }
-    );
-  }
-}
-  removeInvestmentBcds() {
-    var c = confirm("Are you sure you want to delete that?"); 
-    if (c == true) {  
-    this.investmentInitService.removeInvestmentBcds().subscribe(
-      res => {
-        debugger;
-        this.toastr.success(res);
-        this.isDonationValid=false;
-        this.investmentInitService.investmentBcdsFormData=new InvestmentBcds();
-      },
-      err => { console.log(err); }
-    );
-  }
-}
-removeInvestmentTargetedProd(selectedRecord: IInvestmentTargetedProd) {
-  this.investmentInitService.investmentTargetedProdFormData = Object.assign({}, selectedRecord);
+  
+  removeInvestmentTargetedProd(selectedAprord: IInvestmentTargetedProd) {
+  if (this.investmentTargetedProds.find(x => x.productId == selectedAprord.productId)) {
+    this.investmentTargetedProds.splice(this.investmentTargetedProds.findIndex(x => x.productId == selectedAprord.productId), 1);
+   }
+  if(this.investmentAprService.investmentAprCommentFormData.id==null || this.investmentAprService.investmentAprCommentFormData.id==undefined || this.investmentAprService.investmentAprCommentFormData.id==0)
+    {
+      return false;
+    }
+  this.investmentAprService.investmentTargetedProdFormData = Object.assign({}, selectedAprord);
   var c = confirm("Are you sure you want to delete that?"); 
     if (c == true) {  
-    this.investmentInitService.removeInvestmentTargetedProd().subscribe(
+    this.investmentAprService.removeInvestmentTargetedProd().subscribe(
       res => {
-        debugger;
+        //debugger;
         this.toastr.success(res);
         //this.isDonationValid=false;
-        this.investmentInitService.investmentTargetedProdFormData=new InvestmentTargetedProd();
+        this.investmentAprService.investmentTargetedProdFormData=new InvestmentTargetedProd();
         this.getInvestmentTargetedProd();
       },
       err => { console.log(err); }
     );
   }
-}
-removeInvestmentTargetedGroup() {
-  //this.investmentInitService.investmentTargetedProdFormData = Object.assign({}, selectedRecord);
-  if(this.investmentTargetedGroups!=null && this.investmentTargetedGroups.length>0)
-    {
-  var c = confirm("Are you sure you want to delete that?"); 
-    if (c == true) {  
-    this.investmentInitService.removeInvestmentTargetedGroup(this.investmentTargetedGroups).subscribe(
-      res => {
-        debugger;
-        this.toastr.success(res);
-        //this.isDonationValid=false;
-        this.investmentInitService.investmentTargetedGroupFormData=new InvestmentTargetedGroup();
-        this.getInvestmentTargetedGroup();
-      },
-      err => { console.log(err); }
-    );
+
   }
-}
-  else{
-    this.toastr.warning('No Market Group Found', 'Investment ', {
-      positionClass: 'toast-top-right' 
-   });
-  }
-}
+
 }
 

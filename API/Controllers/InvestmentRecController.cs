@@ -30,46 +30,91 @@ namespace API.Controllers
             _investmentRecCommentRepo = investmentRecCommentRepo;
             _investmentRecProductRepo = investmentRecProductRepo;
         }
-        [HttpGet("investmentInits")]
-        public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetInvestmentInits(
+        [HttpGet("investmentInits/{sbu}")]
+        public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetInvestmentInits(string sbu,
           [FromQuery] InvestmentInitSpecParams investmentInitParrams,
-          [FromQuery] InvestmentRecSpecParams investmentRecParrams,
           [FromQuery] InvestmentRecCommentSpecParams investmentRecCommentParrams)
         {
             try
             {
+                investmentInitParrams.Search = sbu;
+                investmentRecCommentParrams.Search = sbu;
                 var investmentInitSpec = new InvestmentInitSpecification(investmentInitParrams);
-                var investmentRecSpec = new InvestmentRecSpecification(investmentRecParrams);
                 var investmentRecCommentSpec = new InvestmentRecCommentSpecification(investmentRecCommentParrams);
 
-               
+
 
                 var investmentInits = await _investmentInitRepo.ListAsync(investmentInitSpec);
-                var investmentRecs = await _investmentRecRepo.ListAsync(investmentRecSpec);
                 var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
-                
-                var market = (from i in investmentInits
-                    where ! (from  rc in investmentRecComments 
-                              select rc.InvestmentInitId).Contains(i.Id)
-                              orderby i.ReferenceNo
-                              select new InvestmentInitDto
-                              {
-                                  ReferenceNo = i.ReferenceNo.Trim(),
-                                  ProposeFor = i.ProposeFor.Trim(),
-                                  DonationType = i.DonationType.Trim(),
-                                  DonationTo = i.DonationTo.Trim(),
-                                  EmployeeId = i.EmployeeId,
-                              }
+
+                var investmentInitFormRec = (from i in investmentInits
+                                             where !(from rc in investmentRecComments
+                                                     select rc.InvestmentInitId).Contains(i.Id)
+                                             orderby i.ReferenceNo
+                                             select new InvestmentInitDto
+                                             {
+                                                 Id = i.Id,
+                                                 ReferenceNo = i.ReferenceNo.Trim(),
+                                                 ProposeFor = i.ProposeFor.Trim(),
+                                                 DonationType = i.DonationType.Trim(),
+                                                 DonationTo = i.DonationTo.Trim(),
+                                                 EmployeeId = i.EmployeeId,
+                                             }
                               ).Distinct().ToList();
 
                 var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
 
                 var totalItems = await _investmentInitRepo.CountAsync(countSpec);
 
-                var data = _mapper
-                    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(investmentInits);
 
-                return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, totalItems, data));
+
+                return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, totalItems, investmentInitFormRec));
+            }
+            catch (System.Exception e)
+            {
+
+                throw;
+            }
+        }
+        [HttpGet("investmentRecommended/{sbu}")]
+        public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetinvestmentRecommended(string sbu,
+          [FromQuery] InvestmentInitSpecParams investmentInitParrams,
+          [FromQuery] InvestmentRecCommentSpecParams investmentRecCommentParrams)
+        {
+            try
+            {
+                investmentInitParrams.Search = sbu;
+                investmentRecCommentParrams.Search = sbu;
+                var investmentInitSpec = new InvestmentInitSpecification(investmentInitParrams);
+                var investmentRecCommentSpec = new InvestmentRecCommentSpecification(investmentRecCommentParrams);
+
+
+
+                var investmentInits = await _investmentInitRepo.ListAsync(investmentInitSpec);
+                var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
+
+                var investmentInitFormRec = (from i in investmentInits
+                                             where (from rc in investmentRecComments
+                                                    select rc.InvestmentInitId).Contains(i.Id)
+                                             orderby i.ReferenceNo
+                                             select new InvestmentInitDto
+                                             {
+                                                 Id = i.Id,
+                                                 ReferenceNo = i.ReferenceNo.Trim(),
+                                                 ProposeFor = i.ProposeFor.Trim(),
+                                                 DonationType = i.DonationType.Trim(),
+                                                 DonationTo = i.DonationTo.Trim(),
+                                                 EmployeeId = i.EmployeeId,
+                                             }
+                              ).Distinct().ToList();
+
+                var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
+
+                var totalItems = await _investmentInitRepo.CountAsync(countSpec);
+
+
+
+                return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, totalItems, investmentInitFormRec));
             }
             catch (System.Exception e)
             {
@@ -86,16 +131,27 @@ namespace API.Controllers
         [HttpPost("insertRec")]
         public async Task<InvestmentRecDto> InsertInvestmentRecomendation(InvestmentRecDto investmentRecDto)
         {
+            var alreadyExistSpec = new InvestmentRecSpecification(investmentRecDto.InvestmentInitId);
+            var alreadyExistInvestmentRecList = await _investmentRecRepo.ListAsync(alreadyExistSpec);
+            if (alreadyExistInvestmentRecList.Count > 0)
+            {
+                foreach (var v in alreadyExistInvestmentRecList)
+                {
+                    _investmentRecRepo.Delete(v);
+                    _investmentRecRepo.Savechange();
+                }
+            }
             var invRec = new InvestmentRec
             {
                 //ReferenceNo = investmentInitDto.ReferenceNo,
                 InvestmentInitId = investmentRecDto.InvestmentInitId,
-                ProposedAmt = investmentRecDto.ProposedAmt,
-                InvestmentPurpose = investmentRecDto.InvestmentPurpose,
+                ProposedAmount = investmentRecDto.ProposedAmount,
+                Purpose = investmentRecDto.Purpose,
                 CommitmentAllSBU = investmentRecDto.CommitmentAllSBU,
                 CommitmentOwnSBU = investmentRecDto.CommitmentOwnSBU,
                 FromDate = investmentRecDto.FromDate,
                 ToDate = investmentRecDto.ToDate,
+                TotalMonth = investmentRecDto.TotalMonth,
                 PaymentMethod = investmentRecDto.PaymentMethod,
                 ChequeTitle = investmentRecDto.ChequeTitle,
                 SetOn = DateTimeOffset.Now
@@ -106,66 +162,30 @@ namespace API.Controllers
             return new InvestmentRecDto
             {
                 Id = invRec.Id,
-                InvestmentInitId = investmentRecDto.InvestmentInitId,
-                ProposedAmt = investmentRecDto.ProposedAmt,
-                InvestmentPurpose = investmentRecDto.InvestmentPurpose,
-                CommitmentAllSBU = investmentRecDto.CommitmentAllSBU,
-                CommitmentOwnSBU = investmentRecDto.CommitmentOwnSBU,
-                FromDate = investmentRecDto.FromDate,
-                ToDate = investmentRecDto.ToDate,
-                PaymentMethod = investmentRecDto.PaymentMethod,
-                ChequeTitle = investmentRecDto.ChequeTitle,
+                InvestmentInitId = invRec.InvestmentInitId,
+                ProposedAmount = invRec.ProposedAmount,
+                Purpose = invRec.Purpose,
+                CommitmentAllSBU = invRec.CommitmentAllSBU,
+                CommitmentOwnSBU = invRec.CommitmentOwnSBU,
+                FromDate = invRec.FromDate,
+                ToDate = invRec.ToDate,
+                TotalMonth = investmentRecDto.TotalMonth,
+                PaymentMethod = invRec.PaymentMethod,
+                ChequeTitle = invRec.ChequeTitle,
             };
         }
 
-        [HttpPost("updateRec")]
-        public ActionResult<InvestmentRecDto> UpdateInvestmentRecomendation(InvestmentRecDto investmentRecDto)
-        {
-            // var user =  _approvalAuthorityRepo.GetByIdAsync(ApprovalAuthorityToReturnDto.Id);
-            // if (user == null) return Unauthorized(new ApiResponse(401));
-            var invRec = new InvestmentRec
-            {
-                Id = investmentRecDto.Id,
-                InvestmentInitId = investmentRecDto.InvestmentInitId,
-                ProposedAmt = investmentRecDto.ProposedAmt,
-                InvestmentPurpose = investmentRecDto.InvestmentPurpose,
-                CommitmentAllSBU = investmentRecDto.CommitmentAllSBU,
-                CommitmentOwnSBU = investmentRecDto.CommitmentOwnSBU,
-                FromDate = investmentRecDto.FromDate,
-                ToDate = investmentRecDto.ToDate,
-                PaymentMethod = investmentRecDto.PaymentMethod,
-                ChequeTitle = investmentRecDto.ChequeTitle,
-                ModifiedOn = DateTimeOffset.Now,
-            };
-            _investmentRecRepo.Update(invRec);
-            _investmentRecRepo.Savechange();
 
-            return new InvestmentRecDto
-            {
-                Id = investmentRecDto.Id,
-                InvestmentInitId = investmentRecDto.InvestmentInitId,
-                ProposedAmt = investmentRecDto.ProposedAmt,
-                InvestmentPurpose = investmentRecDto.InvestmentPurpose,
-                CommitmentAllSBU = investmentRecDto.CommitmentAllSBU,
-                CommitmentOwnSBU = investmentRecDto.CommitmentOwnSBU,
-                FromDate = investmentRecDto.FromDate,
-                ToDate = investmentRecDto.ToDate,
-                PaymentMethod = investmentRecDto.PaymentMethod,
-                ChequeTitle = investmentRecDto.ChequeTitle,
-            };
-        }
 
         [HttpPost("insertRecCom")]
         public async Task<InvestmentRecCommentDto> InsertInvestmentRecomendationComment(InvestmentRecCommentDto investmentRecDto)
         {
             var invRec = new InvestmentRecComment
             {
-                //ReferenceNo = investmentInitDto.ReferenceNo,
                 InvestmentInitId = investmentRecDto.InvestmentInitId,
-                //InvestmentInitId = investmentRecDto.InvestmenRecId,
                 EmployeeId = investmentRecDto.EmployeeId,
                 Comments = investmentRecDto.Comments,
-                RecStatus = investmentRecDto.RecStatus, 
+                RecStatus = investmentRecDto.RecStatus,
                 SetOn = DateTimeOffset.Now
             };
             _investmentRecCommentRepo.Add(invRec);
@@ -174,10 +194,10 @@ namespace API.Controllers
             return new InvestmentRecCommentDto
             {
                 Id = invRec.Id,
-                InvestmentInitId = investmentRecDto.InvestmentInitId,
-                EmployeeId = investmentRecDto.EmployeeId,
-                Comments = investmentRecDto.Comments,
-                RecStatus = investmentRecDto.RecStatus,
+                InvestmentInitId = invRec.InvestmentInitId,
+                EmployeeId = invRec.EmployeeId,
+                Comments = invRec.Comments,
+                RecStatus = invRec.RecStatus,
             };
         }
 
@@ -189,6 +209,7 @@ namespace API.Controllers
             var invRec = new InvestmentRecComment
             {
                 Id = investmentRecDto.Id,
+                InvestmentInitId = investmentRecDto.InvestmentInitId,
                 EmployeeId = investmentRecDto.EmployeeId,
                 Comments = investmentRecDto.Comments,
                 RecStatus = investmentRecDto.RecStatus,
@@ -199,34 +220,57 @@ namespace API.Controllers
 
             return new InvestmentRecCommentDto
             {
-                Id = investmentRecDto.Id,
-                EmployeeId = investmentRecDto.EmployeeId,
-                Comments = investmentRecDto.Comments,
-                RecStatus = investmentRecDto.RecStatus,
+                Id = invRec.Id,
+                InvestmentInitId = invRec.InvestmentInitId,
+                EmployeeId = invRec.EmployeeId,
+                Comments = invRec.Comments,
+                RecStatus = invRec.RecStatus,
             };
         }
 
 
 
         [HttpPost("insertRecProd")]
-        public async Task<InvestmentRecProductsDto> InsertInvestmentRecomendationProduct(InvestmentRecProductsDto investmentRecDto)
+        public async Task<IActionResult> InsertInvestmentRecomendationProduct(List<InvestmentRecProductsDto> investmentRecProductDto)
         {
-            var invRec = new InvestmentRecProducts
+            try
             {
-                //ReferenceNo = investmentInitDto.ReferenceNo,
-                InvestmentInitId = investmentRecDto.InvestmentInitId,
-                ProductId = investmentRecDto.ProductId,
-                SetOn = DateTimeOffset.Now
-            };
-            _investmentRecProductRepo.Add(invRec);
-            _investmentRecProductRepo.Savechange();
+                foreach (var i in investmentRecProductDto)
+                {
+                    var alreadyExistSpec = new InvestmentRecProductSpecification(i.InvestmentInitId, i.ProductId);
+                    var alreadyExistInvestmentRecProductList = await _investmentRecProductRepo.ListAsync(alreadyExistSpec);
+                    if (alreadyExistInvestmentRecProductList.Count > 0)
+                    {
+                        foreach (var v in alreadyExistInvestmentRecProductList)
+                        {
+                            _investmentRecProductRepo.Delete(v);
+                            _investmentRecProductRepo.Savechange();
+                        }
+                    }
+                }
+                    
+                foreach (var v in investmentRecProductDto)
+                {
+                    var investmentRecProduct = new InvestmentRecProducts
+                    {
+                        //ReferenceNo = investmentRecDto.ReferenceNo,
+                        InvestmentInitId = v.InvestmentInitId,
+                        ProductId = v.ProductId,
+                        SetOn = DateTimeOffset.Now,
+                        ModifiedOn = DateTimeOffset.Now
+                    };
+                    _investmentRecProductRepo.Add(investmentRecProduct);
+                }
 
-            return new InvestmentRecProductsDto
+                _investmentRecProductRepo.Savechange();
+
+                return Ok("Succsessfuly Saved!!!");
+            }
+            catch (Exception ex)
             {
-                Id = invRec.Id,
-                InvestmentInitId = investmentRecDto.InvestmentInitId,
-                ProductId = investmentRecDto.ProductId,
-            };
+
+                throw;
+            }
         }
 
         [HttpPost("updateRecProd")]
@@ -250,6 +294,68 @@ namespace API.Controllers
                 InvestmentInitId = investmentRecDto.InvestmentInitId,
                 ProductId = investmentRecDto.ProductId,
             };
+        }
+
+        [HttpGet]
+        [Route("investmentRecProducts/{investmentInitId}/{sbu}")]
+        public async Task<IReadOnlyList<InvestmentRecProducts>> GetInvestmentRecProducts(int investmentInitId, string sbu)
+        {
+            try
+            {
+                var spec = new InvestmentRecProductSpecification(investmentInitId,sbu);
+                var investmentTargetedProd = await _investmentRecProductRepo.ListAsync(spec);
+                return investmentTargetedProd;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpGet]
+        [Route("investmentRecDetails/{investmentInitId}")]
+        public async Task<IReadOnlyList<InvestmentRec>> GetInvestmentDetails(int investmentInitId)
+        {
+            try
+            {
+                var spec = new InvestmentRecSpecification(investmentInitId);
+                var investmentDetail = await _investmentRecRepo.ListAsync(spec);
+                return investmentDetail;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpGet]
+        [Route("getInvestmentRecComment/{investmentInitId}/{empId}")]
+        public async Task<IReadOnlyList<InvestmentRecComment>> GetInvestmentRecComment(int investmentInitId,int empId)
+        {
+            try
+            {
+                var spec = new InvestmentRecCommentSpecification(investmentInitId,empId);
+                var investmentDetail = await _investmentRecCommentRepo.ListAsync(spec);
+                return investmentDetail;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpGet]
+        [Route("getInvestmentRecComments/{investmentInitId}")]
+        public async Task<IReadOnlyList<InvestmentRecComment>> GetInvestmentRecComments(int investmentInitId)
+        {
+            try
+            {
+                var spec = new InvestmentRecCommentSpecification(investmentInitId);
+                var investmentDetail = await _investmentRecCommentRepo.ListAsync(spec);
+                return investmentDetail;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

@@ -551,13 +551,10 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("FromDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("FromDate")
+                        .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("InvestmentPurpose")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("InvestmentRecId")
+                    b.Property<int?>("InvestmentInitId")
                         .HasColumnType("int");
 
                     b.Property<DateTimeOffset>("ModifiedOn")
@@ -566,18 +563,24 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("PaymentMethod")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("ProposedAmt")
-                        .HasColumnType("float");
+                    b.Property<long>("ProposedAmount")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Purpose")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("SetOn")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<DateTime>("ToDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("ToDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("TotalMonth")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("InvestmentRecId");
+                    b.HasIndex("InvestmentInitId");
 
                     b.ToTable("InvestmentApr");
                 });
@@ -598,7 +601,7 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("InvestmentAprId")
+                    b.Property<int?>("InvestmentInitId")
                         .HasColumnType("int");
 
                     b.Property<DateTimeOffset>("ModifiedOn")
@@ -614,7 +617,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.HasIndex("InvestmentAprId");
+                    b.HasIndex("InvestmentInitId");
 
                     b.ToTable("InvestmentAprComment");
                 });
@@ -629,7 +632,7 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
 
-                    b.Property<int?>("InvestmentAprCmntId")
+                    b.Property<int?>("InvestmentInitId")
                         .HasColumnType("int");
 
                     b.Property<DateTimeOffset>("ModifiedOn")
@@ -638,12 +641,15 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
+                    b.Property<string>("SBU")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTimeOffset>("SetOn")
                         .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("InvestmentAprCmntId");
+                    b.HasIndex("InvestmentInitId");
 
                     b.HasIndex("ProductId");
 
@@ -922,14 +928,11 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("FromDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("FromDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<int?>("InvestmentInitId")
                         .HasColumnType("int");
-
-                    b.Property<string>("InvestmentPurpose")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
@@ -937,14 +940,20 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("PaymentMethod")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("ProposedAmt")
-                        .HasColumnType("float");
+                    b.Property<long>("ProposedAmount")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Purpose")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("SetOn")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<DateTime>("ToDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("ToDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("TotalMonth")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -1715,9 +1724,9 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Core.Entities.InvestmentApr", b =>
                 {
-                    b.HasOne("Core.Entities.InvestmentRec", "InvestmentRec")
+                    b.HasOne("Core.Entities.InvestmentInit", "InvestmentInit")
                         .WithMany()
-                        .HasForeignKey("InvestmentRecId");
+                        .HasForeignKey("InvestmentInitId");
                 });
 
             modelBuilder.Entity("Core.Entities.InvestmentAprComment", b =>
@@ -1728,16 +1737,16 @@ namespace Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Core.Entities.InvestmentApr", "InvestmentApr")
+                    b.HasOne("Core.Entities.InvestmentInit", "InvestmentInit")
                         .WithMany()
-                        .HasForeignKey("InvestmentAprId");
+                        .HasForeignKey("InvestmentInitId");
                 });
 
             modelBuilder.Entity("Core.Entities.InvestmentAprProducts", b =>
                 {
-                    b.HasOne("Core.Entities.InvestmentAprComment", "InvestmentAprComment")
+                    b.HasOne("Core.Entities.InvestmentInit", "InvestmentInit")
                         .WithMany()
-                        .HasForeignKey("InvestmentAprCmntId");
+                        .HasForeignKey("InvestmentInitId");
 
                     b.HasOne("Core.Entities.ProductInfo", "ProductInfo")
                         .WithMany()

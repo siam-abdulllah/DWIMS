@@ -23,6 +23,7 @@ export interface IEmployeeInfo {
     territoryId : number;
     divisionName : string;
     divisionId : number;
+    sbu:string;
 }
 
 export class EmployeeInfo implements IEmployeeInfo {
@@ -50,4 +51,5 @@ export class EmployeeInfo implements IEmployeeInfo {
     territoryId : number;
     divisionName : string;
     divisionId : number;
+    sbu:string;
 }

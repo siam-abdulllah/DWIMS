@@ -35,7 +35,12 @@ namespace Core.Specifications
             : base(x => x.InvestmentInitId == id)
         {
             AddInclude(x => x.ProductInfo);
-        } public InvestmentTargetedProdSpecification(int id,int prodId)
+        } public InvestmentTargetedProdSpecification(int id,string sbu)
+            : base(x => x.InvestmentInitId == id && x.ProductInfo.SBU==sbu)
+        {
+            AddInclude(x => x.ProductInfo);
+        } 
+        public InvestmentTargetedProdSpecification(int id,int prodId)
             : base(x => x.InvestmentInitId == id && x.ProductId==prodId)
         {
             //AddInclude(x => x.ProductInfo);

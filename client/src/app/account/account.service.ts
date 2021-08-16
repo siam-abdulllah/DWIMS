@@ -67,6 +67,31 @@ export class AccountService {
       })
     );
   }
+  getEmployeeId() {
+          //localStorage.setItem('token', user.token);
+          //localStorage.setItem('empID', String(user.employeeId));
+          //this.currentUserSource.next(user);
+          //const empID = localStorage.getItem('empID');
+          //const token = localStorage.getItem('token');
+          //const r =  this.jwtHelper.decodeToken(token);
+          //alert(r);
+          const employeeId = localStorage.getItem('empID');
+          //const r =  this.jwtHelper.decodeToken(token);
+          return employeeId;
+      
+  }
+  getEmployeeSbu(employeeId:number) {
+    return this.http.get(this.baseUrl + 'employee/getEmployeeSbuById/'+employeeId).pipe(
+      map((employeeInfo: IEmployeeInfo) => {
+        if (employeeInfo) {
+          // localStorage.setItem('token', user.token);
+          // this.currentUserSource.next(user);
+          return employeeInfo;
+        }
+      })
+    );
+      
+  }
 
   // tslint:disable-next-line: typedef
   register(values: any) {

@@ -1,3 +1,4 @@
+import { ISubCampaign } from "./subCampaign";
 
 export interface ICampaignMst {
     id: number;
@@ -24,6 +25,7 @@ export interface ICampaignDtl {
     budget: string;
     subCampStartDate: Date;
     subCampEndDate: Date;
+    subCampaign:ISubCampaign;
 }
  
 export class CampaignDtl implements ICampaignDtl {
@@ -34,6 +36,7 @@ export class CampaignDtl implements ICampaignDtl {
     budget: string;
     subCampStartDate: Date;
     subCampEndDate: Date;
+    subCampaign:ISubCampaign;
 }
 export interface ICampaignDtlProduct {
     id: number;
