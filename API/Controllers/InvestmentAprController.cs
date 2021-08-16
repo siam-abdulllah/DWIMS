@@ -1,4 +1,4 @@
-﻿using API.Dtos;
+﻿ using API.Dtos;
 using API.Helpers;
 using AutoMapper;
 using Core.Entities;
@@ -56,7 +56,7 @@ namespace API.Controllers
                 var investmentInitFormAppr = (from i in investmentInits
                                               join rc in investmentRecComments on i.Id equals rc.InvestmentInitId
                                               where !(from  ac in  investmentAprComments 
-                                                     select rc.InvestmentInitId).Contains(i.Id)
+                                                     select ac.InvestmentInitId).Contains(i.Id)
                                              orderby i.ReferenceNo
                                              select new InvestmentInitDto
                                              {
@@ -107,7 +107,7 @@ namespace API.Controllers
                 var investmentInitForAppr = (from i in investmentInits
                                              where (from rc in investmentRecComments
                                                      join ac in investmentAprComments on rc.InvestmentInitId equals ac.InvestmentInitId
-                                                     select rc.InvestmentInitId).Contains(i.Id)
+                                                     select ac.InvestmentInitId).Contains(i.Id)
                                              orderby i.ReferenceNo
                                              select new InvestmentInitDto
                                              {
@@ -217,6 +217,7 @@ namespace API.Controllers
             var invApr = new InvestmentAprComment
             {
                 Id = investmentAprDto.Id,
+                InvestmentInitId = investmentAprDto.InvestmentInitId,
                 EmployeeId = investmentAprDto.EmployeeId,
                 Comments = investmentAprDto.Comments,
                 RecStatus = investmentAprDto.RecStatus,

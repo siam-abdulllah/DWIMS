@@ -67,6 +67,15 @@ export class AccountService {
       })
     );
   }
+  loggedIn() {
+    const token = localStorage.getItem('token');
+    return !this.jwtHelper.isTokenExpired(token);
+  }
+  getUserRole() {
+    const token = localStorage.getItem('token');
+    const r =  this.jwtHelper.decodeToken(token);
+    return r.role;
+  }
   getEmployeeId() {
           //localStorage.setItem('token', user.token);
           //localStorage.setItem('empID', String(user.employeeId));

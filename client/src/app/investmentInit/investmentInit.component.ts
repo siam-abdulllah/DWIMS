@@ -23,6 +23,7 @@ import { IBcdsInfo } from '../shared/models/bcdsInfo';
 import { ISocietyInfo } from '../shared/models/societyInfo';
 import { MarketGroupMst, IMarketGroupMst } from '../shared/models/marketGroupMst';
 import { MarketGroupDtl, IMarketGroupDtl } from '../shared/models/marketGroupDtl';
+import { AccountService } from '../account/account.service';
 @Component({
   selector: 'app-investmentInit',
   templateUrl: './investmentInit.component.html',
@@ -36,6 +37,8 @@ export class InvestmentInitComponent implements OnInit {
   InvestmentInitSearchModalRef: BsModalRef;
   // genParams: GenericParams;
   // campaigns: ICampaign[]; 
+  empId:string;
+  sbu:string;
   investmentInits: IInvestmentInit[];
   investmentTargetedProds: IInvestmentTargetedProd[];
   investmentTargetedGroups: IInvestmentTargetedGroup[];
@@ -65,7 +68,7 @@ export class InvestmentInitComponent implements OnInit {
     class: 'modal-lg',
     ignoreBackdropClick: true
   };
-  constructor(public investmentInitService: InvestmentInitService, private router: Router,
+  constructor(private accountService: AccountService,public investmentInitService: InvestmentInitService, private router: Router,
     private toastr: ToastrService,private modalService: BsModalService,private datePipe: DatePipe) { }
 
     openInvestmentInitSearchModal(template: TemplateRef<any>) {
@@ -276,6 +279,7 @@ export class InvestmentInitComponent implements OnInit {
     });
   }
   ngOnInit() {
+    this.getEmployeeId();
     this.getDonation();
     this.getProduct();
     this.getMarketGroupMsts();
@@ -283,6 +287,25 @@ export class InvestmentInitComponent implements OnInit {
     this.bsValue = new Date();
 
   }
+  getEmployeeId(){
+    //debugger;
+    this.empId=this.accountService.getEmployeeId();
+    this.investmentInitService.investmentInitFormData.employeeId=parseInt(this.empId);
+    this.getEmployeeSbu();
+  }
+   getEmployeeSbu()
+    {
+      //debugger;
+      this.accountService.getEmployeeSbu(this.investmentInitService.investmentInitFormData.employeeId).subscribe(
+        (response) => {
+          //debugger;
+          this.sbu= response.sbu;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
   onChangeDonationTo(){
     debugger;
     

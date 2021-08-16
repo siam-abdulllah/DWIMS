@@ -8,7 +8,7 @@ export interface IInvestmentInit {
     proposeFor: string;
     donationType: string;
     donationTo: string;
-    EmployeeId: number;
+    employeeId: number;
 }
  
 export class InvestmentInit implements IInvestmentInit {
@@ -17,7 +17,7 @@ export class InvestmentInit implements IInvestmentInit {
     proposeFor: string=null;
     donationType: string=null;
     donationTo: string=null;
-    EmployeeId: number=2;
+    employeeId: number;
 }
 
 export interface IInvestmentDetail {

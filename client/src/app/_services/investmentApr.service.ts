@@ -48,10 +48,10 @@ export class InvestmentAprService {
     return this.http.get(this.baseUrl + 'investmentApr/getInvestmentAprComment/'+investmentInitId+'/'+parseInt(empId));
   }
   getInvestmentDetails(investmentInitId:number){    
-    return this.http.get(this.baseUrl + 'investment/investmentDetails/'+investmentInitId);
+    return this.http.get(this.baseUrl + 'investmentRec/investmentRecDetails/'+investmentInitId);
   }
   getInvestmentTargetedProds(investmentInitId:number,sbu:string){    
-    return this.http.get(this.baseUrl + 'investment/investmentTargetedProdsForApr/'+investmentInitId+'/'+sbu);
+    return this.http.get(this.baseUrl + 'investmentRec/investmentRecProducts/'+investmentInitId+'/'+sbu);
   }
   getInvestmentAprDetails(investmentInitId:number){    
     return this.http.get(this.baseUrl + 'investmentApr/investmentAprDetails/'+investmentInitId);
