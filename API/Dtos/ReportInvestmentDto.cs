@@ -1,7 +1,11 @@
-﻿
-namespace Core.Entities
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace API.Dtos
 {
-    public class ReportInvestmentInfo : BaseEntity
+    public class ReportInvestmentDto
     {
         public string MarketCode { get; set; }
         public string MarketName { get; set; }
@@ -15,11 +19,11 @@ namespace Core.Entities
         public string DivisionName { get; set; }
         public string NationalCode { get; set; }
         public string SocietyId { get; set; }
-        public InvestmentSociety InvestmentSociety { get; set; }
+        public InvestmentSocietyDto InvestmentSociety { get; set; }
         public string DoctorId { get; set; }
-        public DoctorInfo DoctorInfo { get; set; }
+        public DoctorInfoDto DoctorInfo { get; set; }
         public string InstituteId { get; set; }
-        public InstitutionInfo InstitutionInfo { get; set; }
+        public InstitutionInfoDto InstitutionInfo { get; set; }
         public string DonationType { get; set; }
         public string ExpenseDetail { get; set; }
         public string InvestmentAmount { get; set; }
