@@ -24,8 +24,12 @@ export class ApprovalCeilingService {
   approvalCeilingFormData: ApprovalCeiling = new ApprovalCeiling();
 
   constructor(private http: HttpClient, private router: Router) { }
-
-
+  getApprovalAuthority(){    
+    return this.http.get(this.baseUrl + 'approvalAuthority/approvalAuthoritiesForConfig');
+  }
+  getDonations(){    
+    return this.http.get(this.baseUrl + 'donation/donationsForInvestment');
+  }
   getApprovalCeiling(){    
     let params = new HttpParams();
     debugger;
@@ -36,7 +40,7 @@ export class ApprovalCeilingService {
     params = params.append('pageIndex', this.genParams.pageNumber.toString());
     params = params.append('pageSize', this.genParams.pageSize.toString());
 
-    return this.http.get<IApprovalCeilingPagination>(this.baseUrl + 'ApprovalCeiling/GetAllData', { observe: 'response', params })
+    return this.http.get<IApprovalCeilingPagination>(this.baseUrl + 'approvalCeiling/GetAllData', { observe: 'response', params })
     .pipe(
       map(response => {
         this.approvalCeiling = [...this.approvalCeiling, ...response.body.data]; 
@@ -47,10 +51,10 @@ export class ApprovalCeilingService {
   }
 
   insertApprovalCeiling() {
-    return this.http.post(this.baseUrl+ 'ApprovalCeiling/CreateApprovalCeiling', this.approvalCeilingFormData);
+    return this.http.post(this.baseUrl+ 'approvalCeiling/CreateApprovalCeiling', this.approvalCeilingFormData);
   }
   updateApprovalCeiling() {
-    return this.http.post(this.baseUrl+ 'ApprovalCeiling/ModifyApprovalCeiling',  this.approvalCeilingFormData);
+    return this.http.post(this.baseUrl+ 'approvalCeiling/ModifyApprovalCeiling',  this.approvalCeilingFormData);
 }
 
 }

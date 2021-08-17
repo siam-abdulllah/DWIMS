@@ -9,6 +9,12 @@ namespace Core.Specifications
                 (string.IsNullOrEmpty(approvalParrams.Search) || x.Remarks.ToLower().Contains(approvalParrams.Search))
             )
         {
+            AddInclude(x=>x.ApprovalAuthority);
+        }
+        public ApprovalTimeWithFiltersForCountSpecificication(int id) 
+            : base(x =>  x.ApprovalAuthorityId==id)
+        {
+            
         }
     }
 }

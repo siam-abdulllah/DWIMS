@@ -126,7 +126,7 @@ namespace API.Controllers
         {
             try
             {
-                var spec = new ApprovalAuthoritySpecification("A");
+                var spec = new ApprovalAuthoritySpecification("Active");
                 var totalAmtValidityDto = await _approvalAuthorityRepo.ListAsync(spec);
                 return totalAmtValidityDto;
             }

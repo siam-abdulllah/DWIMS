@@ -1,136 +1,158 @@
 <section class="content-header">
-  <div class="container-fluid">
-    <div class="row mb-2">
-      <div class="col-sm-6">
-        <h1></h1>
-      </div>
-      <div class="col-sm-6">
-      </div>
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1></h1>
+            </div>
+            <div class="col-sm-6">
+            </div>
+        </div>
     </div>
-  </div>
-  <!-- /.container-fluid -->
+    <!-- /.container-fluid -->
 </section>
 <section class="content">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-sm-12">
-        <!-- form start -->
-        <form novalidate autocomplete="off">
-          <!-- general form elements -->
-          <div class="card card-primary">
-            <div class="card-header">
-              <div class="row">
-                <div class="col-sm-6">
-                  <h3 class="card-title">Approval Ceiling</h3>
-                </div>
-                <div class="col-sm-3">
-                  <button class="btn btn-success btn-lg btn-block" type="submit"><i class="fa fa-save"></i>&nbsp; Save</button>
-              </div>
-              <div class="col-sm-3">
-                  <button class="btn btn-info btn-lg btn-block"><i class="fa fa-search"></i>Search</button>
-              </div>
-              </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <!-- form start -->
+                <form novalidate autocomplete="off" #form="ngForm" (submit)="onSubmit(form)">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h3 class="card-title">Approval Ceiling</h3>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button class="btn btn-info btn-lg btn-block" type="submit" [disabled]="form.invalid">Save</button>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button type="button" class="btn btn-danger btn-lg btn-block" style="float: right;" (click)="resetForm(form)">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <input type="hidden" name="id" [value]="approvalCeilingService.approvalCeilingFormData.id" />
+
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Approval Authority level</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select class="form-control" id="approvalAuthorityId" name="approvalAuthorityId" #approvalAuthorityId="ngModel" [(ngModel)]="approvalCeilingService.approvalCeilingFormData.approvalAuthorityId" required [class.invalid]="approvalAuthorityId.invalid && approvalAuthorityId.touched">
+                              <option  [ngValue]="null">Select Authority</option>
+                              <option *ngFor="let approvalAuthority of approvalAuthorities" [value]="approvalAuthority.id">{{approvalAuthority.approvalAuthorityName}}</option>
+                          </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Donation Type</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select class="form-control " id="donationType" name="donationType" #donationType="ngModel" [(ngModel)]="approvalCeilingService.approvalCeilingFormData.donationType" required [class.invalid]="donationType.invalid && donationType.touched">
+                                          <option  [ngValue]="null">Select Donation Type</option>
+                                          <option *ngFor="let a of donations" [value]="a.donationTypeName">{{a.donationTypeName}}</option>
+                                      </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label> From Date</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input class="form-control" placeholder="Calender" name="investmentFrom" #investmentFrom="ngModel" [(ngModel)]="approvalCeilingService.approvalCeilingFormData.investmentFrom" [class.invalid]="investmentFrom.invalid && investmentFrom.touched" [bsValue]="bsValue"
+                                            bsDatepicker [bsConfig]="bsConfig">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>To Date</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input class="form-control" placeholder="Calender" name="investmentTo" #investmentTo="ngModel" [(ngModel)]="approvalCeilingService.approvalCeilingFormData.investmentTo" [class.invalid]="investmentTo.invalid && investmentTo.touched" [bsValue]="bsValue"
+                                            bsDatepicker [bsConfig]="bsConfig">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Amount Per Transaction</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input class="form-control" name="amountPerTransacion" id="amountPerTransacion" #amountPerTransacion="ngModel" [(ngModel)]="approvalCeilingService.approvalCeilingFormData.amountPerTransacion">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Amount Per Month</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input class="form-control" name="amountPerMonth" id="amountPerMonth" #amountPerMonth="ngModel" [(ngModel)]="approvalCeilingService.approvalCeilingFormData.amountPerMonth">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Additional</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input class="form-control" placeholder="additional" name="additional" #additional="ngModel" [(ngModel)]="approvalCeilingService.approvalCeilingFormData.additional">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Remarks</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <textarea class="form-control" placeholder="Remarks" name="remarks" #remarks="ngModel" [(ngModel)]="approvalCeilingService.approvalCeilingFormData.remarks"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <fieldset>
+                                <div class="form-group">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <td>Approval Authority</td>
+                                            <td>Investment Type</td>
+                                            <td>Amount Per Transaction</td>
+                                            <td>Amount Per Month</td>
+                                            <td>Additional</td>
+                                            <td>Remarks</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr *ngFor="let a of approvalCeilings">
+                                            <td>
+                                                {{a.approvalAuthority.approvalAuthorityName}}
+                                            </td>
+                                            <td>
+                                                {{a.donationType}}
+                                            </td>
+                                            <td>
+                                                {{a.amountPerTransacion}}
+                                            </td>
+                                            <td>
+                                                {{a.amountPerMonth}}
+                                            </td>
+                                            <td>
+                                                {{a.additional}}
+                                            </td>
+                                            <td>
+                                                {{a.remarks}}
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-embossed btn-primary" type="button" (click)="populateForm(a)">Edit</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                </form>
             </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-              <input type="hidden" name="id" [value]="" />
-              <div class="form-group">
-              </div>
-
-              <div class="form-group">
-                <div class="row">
-                  <div class="col-md-2">
-                    <label>Approval Authority Level</label>
-                  </div>
-                  <div class="col-md-3">
-                    <select name="" id="" class="form-control" name="authoritylevel" required>
-                      <option value="Level1">Level 1</option>
-                      <option value="Level2">Level 2</option>
-                    </select>
-                  </div>
-
-                </div>
-              </div>
-              <fieldset>
-              <div class="form-group">
-                <table class="table table-bordered">
-                  <tr>
-                    <td>Investment Type</td>
-                    <td>Amount Per Transaction</td>
-                    <td>Amount Per Month</td>
-                    <td>Additional</td>
-                    <td>Remarks</td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
-                  </tr>
-                </table>
-              </div>
-            </fieldset>
-            <fieldset>
-              <legend>Details</legend>
-                <div class="form-group">
-                <table class="table table-bordered">
-                  <tr>
-                    <td>Investment Type</td>
-                    <td>Month</td>
-                    <td>Amount Per Transaction</td>
-                    <td>Amount Per Month</td>
-                    <td>Additional</td>
-                    <td>Remarks</td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
-                  </tr>
-                </table>
-              </div>
-            </fieldset>
-            </div>
-            <!-- /.card -->
-          </div>
-        </form>
-      </div>
-      <!-- /.row -->
+            <!-- /.row -->
+        </div>
     </div>
-  </div>
-  <!-- /.container-fluid -->
+    <!-- /.container-fluid -->
 </section>

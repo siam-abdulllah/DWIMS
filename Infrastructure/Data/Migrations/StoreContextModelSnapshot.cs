@@ -96,20 +96,26 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("Additional")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("AmountPerMonth")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AmountPerTransacion")
+                        .HasColumnType("int");
+
                     b.Property<int>("ApprovalAuthorityId")
                         .HasColumnType("int");
 
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("InvestmentFrom")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("DonationType")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("InvestmentTo")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("InvestmentFrom")
+                        .HasColumnType("datetimeoffset");
 
-                    b.Property<int>("InvestmentTypeId")
-                        .HasColumnType("int");
+                    b.Property<DateTimeOffset?>("InvestmentTo")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<DateTimeOffset>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
@@ -123,14 +129,9 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int>("TransacionAmount")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ApprovalAuthorityId");
-
-                    b.HasIndex("InvestmentTypeId");
 
                     b.ToTable("ApprovalCeiling");
                 });
@@ -164,6 +165,8 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApprovalAuthorityId");
 
                     b.ToTable("ApprovalTimeLimit");
                 });
@@ -1658,8 +1661,8 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("FromDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("FromDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<DateTimeOffset>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
@@ -1667,18 +1670,16 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("Remarks")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SBUId")
-                        .HasColumnType("int");
+                    b.Property<string>("SBU")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("SetOn")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<DateTime?>("ToDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset?>("ToDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("SBUId");
 
                     b.ToTable("SBUWiseBudget");
                 });
@@ -1768,10 +1769,13 @@ namespace Infrastructure.Data.Migrations
                         .HasForeignKey("ApprovalAuthorityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
 
-                    b.HasOne("Core.Entities.InvestmentType", "InvestmentType")
+            modelBuilder.Entity("Core.Entities.ApprovalTimeLimit", b =>
+                {
+                    b.HasOne("Core.Entities.ApprovalAuthority", "ApprovalAuthority")
                         .WithMany()
-                        .HasForeignKey("InvestmentTypeId")
+                        .HasForeignKey("ApprovalAuthorityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -2079,15 +2083,6 @@ namespace Infrastructure.Data.Migrations
                     b.HasOne("Core.Entities.InvestmentSociety", "InvestmentSociety")
                         .WithMany()
                         .HasForeignKey("InvestmentSocietyId");
-                });
-
-            modelBuilder.Entity("Core.Entities.SBUWiseBudget", b =>
-                {
-                    b.HasOne("Core.Entities.SBU", "SBU")
-                        .WithMany()
-                        .HasForeignKey("SBUId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -25,7 +25,10 @@ export class ApprovalTimeLimitService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
-
+  getApprovalAuthority(){    
+    return this.http.get(this.baseUrl + 'approvalAuthority/approvalAuthoritiesForConfig');
+   
+  }
   getApprovalTimeLimit(){    
     let params = new HttpParams();
     debugger;

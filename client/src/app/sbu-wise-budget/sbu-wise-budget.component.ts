@@ -28,6 +28,7 @@ export class SbuWiseBudgetComponent implements OnInit {
   ngOnInit() {
     this.getSBU();
     this.getSBUWiseBudget();
+    this.bsValue = new Date();
   }
   getSBU(){
     this.sbuWiseBudgetService.getSBU().subscribe(response => {
@@ -63,7 +64,9 @@ export class SbuWiseBudgetComponent implements OnInit {
         this.getSBUWiseBudget();
         this.toastr.success('Data Saved successfully', 'SBU Wise Budget ')
       },
-      err => { console.log(err); }
+      err => { debugger;
+        this.toastr.error(err.errors[0], 'SBU Wise Budget ')
+        console.log(err); }
     );
   }
 

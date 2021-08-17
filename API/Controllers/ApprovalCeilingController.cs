@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Dtos;
@@ -49,13 +50,15 @@ namespace API.Controllers
         {
             var appr = new ApprovalCeiling
             {
-                InvestmentTypeId = apprclngDto.InvestmentTypeId,
+                DonationType = apprclngDto.DonationType,
                 InvestmentFrom = apprclngDto.InvestmentFrom,
                 InvestmentTo = apprclngDto.InvestmentTo,
-                TransacionAmount = apprclngDto.TransacionAmount,
+                AmountPerMonth = apprclngDto.AmountPerMonth,
+                AmountPerTransacion = apprclngDto.AmountPerTransacion,
                 ApprovalAuthorityId = apprclngDto.ApprovalAuthorityId,
                 Additional = apprclngDto.Additional,
                 Remarks = apprclngDto.Remarks,
+                SetOn = DateTimeOffset.Now
             };
 
             _aptimeRepo.Add(apprclngDto);
@@ -63,14 +66,15 @@ namespace API.Controllers
 
             return new ApprovalCeiling
             {
-                Id = apprclngDto.Id,
-                InvestmentTypeId = apprclngDto.InvestmentTypeId,
-                InvestmentFrom = apprclngDto.InvestmentFrom,
-                InvestmentTo = apprclngDto.InvestmentTo,
-                TransacionAmount = apprclngDto.TransacionAmount,
-                ApprovalAuthorityId = apprclngDto.ApprovalAuthorityId,
-                Additional = apprclngDto.Additional,
-                Remarks = apprclngDto.Remarks,
+                Id = appr.Id,
+                DonationType = appr.DonationType,
+                InvestmentFrom = appr.InvestmentFrom,
+                InvestmentTo = appr.InvestmentTo,
+                AmountPerMonth = appr.AmountPerMonth,
+                AmountPerTransacion = appr.AmountPerTransacion,
+                ApprovalAuthorityId = appr.ApprovalAuthorityId,
+                Additional = appr.Additional,
+                Remarks = appr.Remarks,
             };
         }
 
@@ -81,13 +85,15 @@ namespace API.Controllers
             var appr = new ApprovalCeiling
             {
                 Id = apprclngDto.Id,
-                InvestmentTypeId = apprclngDto.InvestmentTypeId,
+                DonationType = apprclngDto.DonationType,
                 InvestmentFrom = apprclngDto.InvestmentFrom,
                 InvestmentTo = apprclngDto.InvestmentTo,
-                TransacionAmount = apprclngDto.TransacionAmount,
+                AmountPerMonth = apprclngDto.AmountPerMonth,
+                AmountPerTransacion = apprclngDto.AmountPerTransacion,
                 ApprovalAuthorityId = apprclngDto.ApprovalAuthorityId,
                 Additional = apprclngDto.Additional,
                 Remarks = apprclngDto.Remarks,
+                ModifiedOn = DateTimeOffset.Now
             };
 
             _aptimeRepo.Update(apprclngDto);
@@ -95,14 +101,15 @@ namespace API.Controllers
 
             return new ApprovalCeiling
             {
-                Id = apprclngDto.Id,
-                InvestmentTypeId = apprclngDto.InvestmentTypeId,
-                InvestmentFrom = apprclngDto.InvestmentFrom,
-                InvestmentTo = apprclngDto.InvestmentTo,
-                TransacionAmount = apprclngDto.TransacionAmount,
-                ApprovalAuthorityId = apprclngDto.ApprovalAuthorityId,
-                Additional = apprclngDto.Additional,
-                Remarks = apprclngDto.Remarks,
+                Id = appr.Id,
+                DonationType = appr.DonationType,
+                InvestmentFrom = appr.InvestmentFrom,
+                InvestmentTo = appr.InvestmentTo,
+                AmountPerMonth = appr.AmountPerMonth,
+                AmountPerTransacion = appr.AmountPerTransacion,
+                ApprovalAuthorityId = appr.ApprovalAuthorityId,
+                Additional = appr.Additional,
+                Remarks = appr.Remarks,
             };
         }
 

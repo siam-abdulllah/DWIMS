@@ -5,6 +5,10 @@ import { Router } from '@angular/router';
 //import { MasterService } from '../master.service';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { ApprovalCeilingService } from '../_services/approval-ceiling.service';
+import { IApprovalAuthority } from '../shared/models/approvalAuthority';
+import { IDonation } from '../shared/models/donation';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 
 @Component({
   selector: 'app-approval-ceiling',
@@ -14,63 +18,83 @@ export class ApprovalCeilingComponent implements OnInit {
 
   @ViewChild('search', {static: false}) searchTerm: ElementRef;
   genParams: GenericParams;
-  approvalCeiling: IApprovalCeiling[];
+  approvalCeilings: IApprovalCeiling[];
   totalCount = 0;
-  //constructor(public masterService: MasterService, private router: Router, private toastr: ToastrService) { }
-  constructor(private router: Router, private toastr: ToastrService) { }
+  approvalAuthorities: IApprovalAuthority[];
+  donations: IDonation[];
+  bsConfig: Partial<BsDatepickerConfig>;
+  bsValue: Date = new Date();
+  //constructor(public approvalCeilingService: MasterService, private router: Router, private toastr: ToastrService) { }
+  constructor(public approvalCeilingService: ApprovalCeilingService,private router: Router, private toastr: ToastrService) { }
   ngOnInit() {
-    // this.getBcds();
+    this.getApprovalAuthority();
+    this. getDonation();
+  }
+  getApprovalAuthority(){
+    this.approvalCeilingService.getApprovalAuthority().subscribe(response => {
+      this.approvalAuthorities = response as IApprovalAuthority[];
+     }, error => {
+        console.log(error);
+     });
+  }
+  getDonation(){
+    this.approvalCeilingService.getDonations().subscribe(response => {
+      this.donations = response as IDonation[];
+    }, error => {
+        console.log(error);
+    });
+  }
+  getApprovalCeiling(){
+    this.approvalCeilingService.getApprovalCeiling().subscribe(response => {
+      debugger;
+      this.approvalCeilings = response.data;
+      this.totalCount = response.count;
+    }, error => {
+        console.log(error);
+    });
   }
 
-  // getBcds(){
-  //   this.masterService.getBcdsList().subscribe(response => {
-  //     debugger;
-  //     this.bcdsInfo = response.data;
-  //     this.totalCount = response.count;
-  //   }, error => {
-  //       console.log(error);
-  //   });
-  // }
-
-  // onSubmit(form: NgForm) {
-  //   debugger;
-  //   if (this.masterService.approvaltimelimitFormData.id == 0)
-  //     this.insertBcds(form);
-  //   else
-  //     this.updateBcds(form);
-  // }
+  onSubmit(form: NgForm) {
+    debugger;
+    if (this.approvalCeilingService.approvalCeilingFormData.id == 0)
+      this.insertApprovalCeiling(form);
+    else
+      this.updateApprovalCeiling(form);
+  }
 
 
-  // insertBcds(form: NgForm) {
-  //   this.masterService.insertBcds().subscribe(
-  //     res => {
-  //       debugger;
-  //       this.resetForm(form);
-  //       this.getBcds();
-  //       this.toastr.success('Data Saved successfully', 'BCDS Information')
-  //     },
-  //     err => { console.log(err); }
-  //   );
-  // }
+  insertApprovalCeiling(form: NgForm) {
+    this.approvalCeilingService.insertApprovalCeiling().subscribe(
+      res => {
+        debugger;
+        this.resetForm(form);
+        this.getApprovalCeiling();
+        this.toastr.success('Data Saved successfully', 'Approval Ceiling')
+      },
+      err => { console.log(err); }
+    );
+  }
 
-  // updateBcds(form: NgForm) {
-  //   this.masterService.updateBcds().subscribe(
-  //     res => {
-  //       debugger;
-  //       this.resetForm(form);
-  //       this.getBcds();
-  //       this.toastr.info('Data Updated Successfully', 'BCDS Information')
-  //     },
-  //     err => { console.log(err); }
-  //   );
-  // }
+  updateApprovalCeiling(form: NgForm) {
+    this.approvalCeilingService.updateApprovalCeiling().subscribe(
+      res => {
+        debugger;
+        this.resetForm(form);
+        this.getApprovalCeiling();
+        this.toastr.info('Data Updated Successfully', 'Approval Ceiling')
+      },
+      err => { console.log(err); }
+    );
+  }
 
-  // populateForm(selectedRecord: IBcdsInfo) {
-  //   this.masterService.bcdsFormData = Object.assign({}, selectedRecord);
-  // }
-  // resetForm(form: NgForm) {
-  //   form.form.reset();
-  //   this.masterService.bcdsFormData = new BcdsInfo();
-  // }
+  populateForm(selectedRecord: IApprovalCeiling) {
+    this.approvalCeilingService.approvalCeilingFormData = Object.assign({}, selectedRecord);
+  }
+
+  resetForm(form: NgForm) {
+    form.form.reset();
+    this.approvalCeilingService.approvalCeilingFormData = new ApprovalCeiling();
+    this.approvalCeilings=[];
+  }
 
 }

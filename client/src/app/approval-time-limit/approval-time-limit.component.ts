@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ApprovalTimeLimitService } from '../_services/approval-time-limit.service';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { IApprovalAuthority } from '../shared/models/approvalAuthority';
 
 @Component({
   selector: 'app-approval-time-limit',
@@ -16,12 +17,21 @@ export class ApprovalTimeLimitComponent implements OnInit {
   genParams: GenericParams;
   approvalTimeLimit: IApprovalTimeLimit[];
   totalCount = 0;
+  approvalAuthorities: IApprovalAuthority[];
+  timeLimits =Array.from({length: 100}, (_, i) => i + 1);
   constructor(public approvalTimeService: ApprovalTimeLimitService, private router: Router, private toastr: ToastrService) { }
   //constructor(private router: Router, private toastr: ToastrService) { }
   ngOnInit() {
      this.getApprovalTimeLimit();
+     this.getApprovalAuthority();
   }
-
+  getApprovalAuthority(){
+    this.approvalTimeService.getApprovalAuthority().subscribe(response => {
+      this.approvalAuthorities = response as IApprovalAuthority[];
+     }, error => {
+        console.log(error);
+     });
+  }
   getApprovalTimeLimit(){
     this.approvalTimeService.getApprovalTimeLimit().subscribe(response => {
       debugger;

@@ -49,6 +49,16 @@ namespace API.Controllers
         [HttpPost("CreateApprovalTimeLimit")]
         public async Task<ActionResult<ApprovalTimeLimitDto>> SaveApprovalTimeLimit(ApprovalTimeLimitDto setApprovalDto)
         {
+            var alreadyExistSpec = new ApprovalTimeWithFiltersForCountSpecificication(setApprovalDto.ApprovalAuthorityId);
+            var alreadyExistApprovalTimeLimitList = await _aptimeRepo.ListAsync(alreadyExistSpec);
+            if (alreadyExistApprovalTimeLimitList.Count > 0)
+            {
+                foreach (var v in alreadyExistApprovalTimeLimitList)
+                {
+                    _aptimeRepo.Delete(v);
+                    _aptimeRepo.Savechange();
+                }
+            }
             var approvaltime = new ApprovalTimeLimit
             {
                 ApprovalAuthorityId = setApprovalDto.ApprovalAuthorityId,
@@ -85,7 +95,7 @@ namespace API.Controllers
                 Status = setApprovalDto.Status,
             };
 
-            _aptimeRepo.Add(approvaltime);
+            _aptimeRepo.Update(approvaltime);
             _aptimeRepo.Savechange();
 
             return new ApprovalTimeLimitDto

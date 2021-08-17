@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using System;
 
 namespace Core.Specifications
 {
@@ -12,6 +13,11 @@ namespace Core.Specifications
         }
         public SBUWiseBudgetWithFiltersForCountSpecificication(int id)
             : base(x => x.Id == id)
+        {
+            
+        } 
+        public SBUWiseBudgetWithFiltersForCountSpecificication(SBUWiseBudget sbuBdgt)
+            : base(x => x.SBU == sbuBdgt.SBU && x.FromDate.Value.Date == sbuBdgt.FromDate.Value.Date && x.ToDate.Value.Date == sbuBdgt.ToDate.Value.Date)
         {
             
         }

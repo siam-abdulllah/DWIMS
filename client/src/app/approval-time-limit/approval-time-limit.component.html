@@ -34,28 +34,28 @@
                         <!-- /.card-header -->
                         <div class="card-body">
                             <input type="hidden" name="id" [value]="approvalTimeService.approvalTimeLimitFormData.id" />
-                            <div class="form-group">
-                            </div>
+
 
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-2">
-                                        <label>Approval Authority Level</label>
+                                        <label>Approval Authority level</label>
                                     </div>
                                     <div class="col-md-3">
-                                        <select name="" id="" class="form-control" name="approvalAuthorityId" #approvalAuthorityId="ngModel" [(ngModel)]="approvalTimeService.approvalTimeLimitFormData.approvalAuthorityId" required [class.invalid]="approvalAuthorityId.invalid && approvalAuthorityId.touched">
-                                            <option value="Level1">Level 1</option>
-                                            <option value="Level2">Level 2</option>
+                                        <select class="form-control form-control-lg" id="approvalAuthorityId" name="approvalAuthorityId" #approvalAuthorityId="ngModel" [(ngModel)]="approvalTimeService.approvalTimeLimitFormData.approvalAuthorityId" required [class.invalid]="approvalAuthorityId.invalid && approvalAuthorityId.touched">
+                                            <option  [ngValue]="null">Select Authority</option>
+                                            <option *ngFor="let approvalAuthority of approvalAuthorities" [value]="approvalAuthority.id">{{approvalAuthority.approvalAuthorityName}}</option>
                                         </select>
                                     </div>
                                     <div class="col-md-2">
                                         <label>Time Limit</label>
                                     </div>
                                     <div class="col-md-3">
-                                        <select name="" id="" class="form-control" name="timeLimit" #timeLimit="ngModel" [(ngModel)]="approvalTimeService.approvalTimeLimitFormData.timeLimit" required [class.invalid]="timeLimit.invalid && timeLimit.touched">
-                                            <option value="OneDay">One Day</option>
-                                            <option value="TwoDay">Two Day</option>
+                                        <select id="" class="form-control " name="timeLimit" #timeLimit="ngModel" [(ngModel)]="approvalTimeService.approvalTimeLimitFormData.timeLimit" required [class.invalid]="timeLimit.invalid && timeLimit.touched">
+                                            <option  [ngValue]="null">Select Time Limit</option>
+                                            <option *ngFor="let a of timeLimits" [value]="a">{{a}}</option>
                                         </select>
+
                                     </div>
                                 </div>
                             </div>
@@ -78,13 +78,39 @@
                                     </div>
                                     <div class="col-md-3">
                                         <select name="" id="" class="form-control" name="status" #status="ngModel" [(ngModel)]="approvalTimeService.approvalTimeLimitFormData.status" required [class.invalid]="status.invalid && status.touched">
+                                            <option  [ngValue]="null">Select Status</option>
                                             <option value="Active">Active</option>
                                             <option value="Inactive">Inactive</option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td>Approval Authority</td>
+                                        <td>timeLimit</td>
+                                        <td>status</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr *ngFor="let a of approvalAuthorities">
+                                        <td>
+                                            {{a.approvalAuthority.approvalAuthorityName}}
+                                        </td>
+                                        <td>
+                                            {{a.timeLimit}}
+                                        </td>
+                                        <td>
+                                            {{a.status}}
+                                        </td>
 
+                                        <td>
+                                            <button class="btn btn-sm btn-embossed btn-primary" type="button" (click)="populateForm(a)">Edit</button>
+                                        </td>
+
+                                    </tr>
+                                </table>
+                            </div>
                             <!-- <div class="card-footer">
                               Sample Demo by rijsat.com
                           </div> -->

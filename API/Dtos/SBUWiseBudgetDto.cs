@@ -9,8 +9,8 @@ namespace API.Dtos
     {
         public int Id { get; set; }
         public string SBU { get; set; }
-        public DateTime? FromDate { get; set; }
-        public DateTime? ToDate { get; set; }
+        public DateTimeOffset? FromDate { get; set; }
+        public DateTimeOffset? ToDate { get; set; }
         public long Amount { get; set; }
         public string Remarks { get; set; }
         public DateTimeOffset SetOn { get; set; }

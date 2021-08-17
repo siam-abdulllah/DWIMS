@@ -22,6 +22,7 @@ export class ApprAuthConfigComponent implements OnInit {
   employees: IEmployee[];
   employeesForApprAuth: IEmployeeForApprAuth[];
   totalCount = 0;
+ 
   constructor(public apprAuthConfigService: ApprAuthConfigService, private router: Router,
     private toastr: ToastrService) { }
 
