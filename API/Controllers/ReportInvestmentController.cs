@@ -22,14 +22,37 @@ namespace API.Controllers
             _investRepo = investRepo;
         }
 
-        [HttpGet("GetInstituteInvestment")]
+        [HttpGet("GetInsSocietyBCDSWiseInvestment")]
         //[Authorize(Roles = "Owner,Administrator")]
         //[Authorize(Policy = "DetailUserPolicy")]
         public async Task<ActionResult<IReadOnlyList<ReportInvestmentDto>>> GetInstituteInvestment([FromQuery] ReportInvestmentInfoSpecParams rptParrams)
         {
-            string from = "", to = "";
+    
 
-            var spec = new ReportInvestmentInfoSpecification(from, to);
+            var spec = new ReportInvestmentInfoSpecification(rptParrams);
+
+            var countSpec = new ReportInvestmentInfoSpecParamsWithFiltersForCountSpecificication(rptParrams);
+
+            var totalItems = await _investRepo.CountAsync(countSpec);
+
+            var posts = await _investRepo.ListAsync(spec);
+
+            //var t = from x in posts
+
+
+            var data = _mapper.Map<IReadOnlyList<ReportInvestmentInfo>, IReadOnlyList<ReportInvestmentDto>>(posts);
+
+            return Ok(new Pagination<ReportInvestmentDto>(rptParrams.PageIndex, rptParrams.PageSize, totalItems, data));
+        }
+
+
+
+        [HttpGet("GetDoctorWiseLeadership")]
+        //[Authorize(Roles = "Owner,Administrator")]
+        //[Authorize(Policy = "DetailUserPolicy")]
+        public async Task<ActionResult<IReadOnlyList<ReportInvestmentDto>>> GetDoctorWiseLeadership([FromQuery] ReportInvestmentInfoSpecParams rptParrams, ReportSearchDto search)
+        {
+            var spec = new ReportInvestmentInfoSpecification(search.FromDate.ToString(), search.ToDate.ToString());
 
             var countSpec = new ReportInvestmentInfoSpecParamsWithFiltersForCountSpecificication(rptParrams);
 

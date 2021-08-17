@@ -1,3 +1,4 @@
+import { ReportInvestmentComponent } from './../report-investment/report-investment.component';
 import { PortalComponent } from './portal.component';
 import { MarketGroupComponent } from '../marketGroup/marketGroup.component';
 import { ApprAuthConfigComponent } from '../apprAuthConfig/apprAuthConfig.component';
@@ -24,6 +25,7 @@ const portalRoutes: Routes = [
         {path: 'investmentApr', component: InvestmentAprComponent},
         {path: 'marketGroup', component: MarketGroupComponent},
         {path: 'regApproval', component: RegApprovalComponent},
+        {path: 'rptInvestment', component: ReportInvestmentComponent},
         {path: '', component: PortalComponent},
         {path: 'master', loadChildren: () => import('../master/master.module')
        .then(mod => mod.MasterModule) , data: {breadcrumb: {skip: true}}}, 

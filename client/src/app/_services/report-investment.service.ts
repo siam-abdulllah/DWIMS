@@ -20,8 +20,13 @@ export class ReportInvestmentService {
   constructor(private http: HttpClient, private router: Router) { }
 
   getInsSocietyBCDSWiseInvestment(model: any) {
-     return this.http.post(this.baseUrl + 'GetDateWiseProformaByImporter', model);
+     return this.http.post(this.baseUrl + 'reportInvestment/GetInsSocietyBCDSWiseInvestment', model);
   }
+
+
+  getDoctorWiseLeadership(model: any) {
+    return this.http.post(this.baseUrl + 'reportInvestment/GetDoctorWiseLeadership', model);
+ }
 
   // getImporterWiseCurrentYearProforma(model: any) {
   //   return this.http.post(this.baseUrl + 'GetImporterWiseCurrentYearProforma', model);

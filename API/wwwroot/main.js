@@ -1,5 +1,24 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([["main"],{
 
+/***/ "+8pS":
+/*!**********************************************************!*\
+  !*** ./src/app/shared/models/investmentAprPagination.ts ***!
+  \**********************************************************/
+/*! exports provided: InvestmentAprPagination */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InvestmentAprPagination", function() { return InvestmentAprPagination; });
+class InvestmentAprPagination {
+    constructor() {
+        this.data = [];
+    }
+}
+
+
+/***/ }),
+
 /***/ "+Czb":
 /*!**************************************************************!*\
   !*** ./src/app/shared/models/approvalAuthorityPagination.ts ***!
@@ -89,7 +108,7 @@ PagingHeaderComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵde
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! G:\DIDS\DIDS_GIT\DWIMS\client\src\main.ts */"zUnb");
+module.exports = __webpack_require__(/*! F:\Git\DWIMS\client\src\main.ts */"zUnb");
 
 
 /***/ }),
@@ -271,6 +290,36 @@ class AccountService {
                 //const token = localStorage.getItem('token');
                 //const r =  this.jwtHelper.decodeToken(token);
                 //alert(r);
+            }
+        }));
+    }
+    loggedIn() {
+        const token = localStorage.getItem('token');
+        return !this.jwtHelper.isTokenExpired(token);
+    }
+    getUserRole() {
+        const token = localStorage.getItem('token');
+        const r = this.jwtHelper.decodeToken(token);
+        return r.role;
+    }
+    getEmployeeId() {
+        //localStorage.setItem('token', user.token);
+        //localStorage.setItem('empID', String(user.employeeId));
+        //this.currentUserSource.next(user);
+        //const empID = localStorage.getItem('empID');
+        //const token = localStorage.getItem('token');
+        //const r =  this.jwtHelper.decodeToken(token);
+        //alert(r);
+        const employeeId = localStorage.getItem('empID');
+        //const r =  this.jwtHelper.decodeToken(token);
+        return employeeId;
+    }
+    getEmployeeSbu(employeeId) {
+        return this.http.get(this.baseUrl + 'employee/getEmployeeSbuById/' + employeeId).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["map"])((employeeInfo) => {
+            if (employeeInfo) {
+                // localStorage.setItem('token', user.token);
+                // this.currentUserSource.next(user);
+                return employeeInfo;
             }
         }));
     }
@@ -894,16 +943,16 @@ ApprovalAuthorityComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["�
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InvestmentRecComponent", function() { return InvestmentRecComponent; });
-/* harmony import */ var _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../shared/models/investment */ "eIik");
+/* harmony import */ var _shared_models_investmentRec__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../shared/models/investmentRec */ "oUQ1");
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "ofXK");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "fXoL");
-/* harmony import */ var _services_investmentRec_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../_services/investmentRec.service */ "zhnG");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "tyNb");
-/* harmony import */ var ngx_toastr__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ngx-toastr */ "5eHb");
-/* harmony import */ var ngx_bootstrap_modal__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ngx-bootstrap/modal */ "K3ix");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
-/* harmony import */ var ngx_bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ngx-bootstrap/datepicker */ "hzby");
-
+/* harmony import */ var _account_account_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../account/account.service */ "2rwd");
+/* harmony import */ var _services_investmentRec_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../_services/investmentRec.service */ "zhnG");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ "tyNb");
+/* harmony import */ var ngx_toastr__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ngx-toastr */ "5eHb");
+/* harmony import */ var ngx_bootstrap_modal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ngx-bootstrap/modal */ "K3ix");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
+/* harmony import */ var ngx_bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ngx-bootstrap/datepicker */ "hzby");
 
 
 
@@ -916,9 +965,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const _c0 = ["search"];
-const _c1 = ["investmentRecSearchModal"];
+const _c1 = ["investmentInitSearchModal"];
+const _c2 = ["investmentRecSearchModal"];
 function InvestmentRecComponent_fieldset_55_Template(rf, ctx) { if (rf & 1) {
-    const _r43 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
+    const _r44 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "fieldset");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "div", 17);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "div", 2);
@@ -939,11 +989,11 @@ function InvestmentRecComponent_fieldset_55_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](12, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](13, "input", 20, 21);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_55_Template_input_ngModelChange_13_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r43); const ctx_r42 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r42.investmentRecService.investmentDoctorFormData.id = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](13, "input", 72, 21);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_55_Template_input_ngModelChange_13_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r44); const ctx_r43 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r43.investmentRecService.investmentDoctorFormData.id = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](15, "input", 69, 70);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_55_Template_input_ngModelChange_15_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r43); const ctx_r44 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r44.investmentRecService.investmentDoctorFormData.doctorName = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](15, "input", 73, 74);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_55_Template_input_ngModelChange_15_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r44); const ctx_r45 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r45.investmentRecService.investmentDoctorFormData.doctorName = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](17, "div", 18);
@@ -952,8 +1002,8 @@ function InvestmentRecComponent_fieldset_55_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](20, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](21, "input", 71, 70);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_55_Template_input_ngModelChange_21_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r43); const ctx_r45 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r45.investmentRecService.investmentDoctorFormData.doctorId = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](21, "input", 75, 74);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_55_Template_input_ngModelChange_21_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r44); const ctx_r46 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r46.investmentRecService.investmentDoctorFormData.doctorId = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
@@ -966,8 +1016,8 @@ function InvestmentRecComponent_fieldset_55_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](28, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](29, "input", 72, 73);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_55_Template_input_ngModelChange_29_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r43); const ctx_r46 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r46.investmentRecService.investmentDoctorFormData.degree = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](29, "input", 76, 77);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_55_Template_input_ngModelChange_29_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r44); const ctx_r47 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r47.investmentRecService.investmentDoctorFormData.degree = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](31, "div", 18);
@@ -976,8 +1026,8 @@ function InvestmentRecComponent_fieldset_55_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](34, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](35, "input", 74, 75);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_55_Template_input_ngModelChange_35_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r43); const ctx_r47 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r47.investmentRecService.investmentDoctorFormData.designation = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](35, "input", 78, 79);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_55_Template_input_ngModelChange_35_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r44); const ctx_r48 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r48.investmentRecService.investmentDoctorFormData.designation = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
@@ -990,8 +1040,8 @@ function InvestmentRecComponent_fieldset_55_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](42, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](43, "input", 76, 77);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_55_Template_input_ngModelChange_43_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r43); const ctx_r48 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r48.investmentRecService.investmentDoctorFormData.institutionId = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](43, "input", 80, 81);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_55_Template_input_ngModelChange_43_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r44); const ctx_r49 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r49.investmentRecService.investmentDoctorFormData.institutionId = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](45, "div", 18);
@@ -1000,8 +1050,8 @@ function InvestmentRecComponent_fieldset_55_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](48, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](49, "input", 78, 27);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_55_Template_input_ngModelChange_49_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r43); const ctx_r49 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r49.investmentRecService.investmentDoctorFormData.doctorCategory = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](49, "input", 82, 27);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_55_Template_input_ngModelChange_49_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r44); const ctx_r50 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r50.investmentRecService.investmentDoctorFormData.doctorCategory = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
@@ -1014,8 +1064,8 @@ function InvestmentRecComponent_fieldset_55_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](56, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](57, "input", 79, 80);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_55_Template_input_ngModelChange_57_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r43); const ctx_r50 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r50.investmentRecService.investmentDoctorFormData.address = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](57, "input", 83, 84);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_55_Template_input_ngModelChange_57_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r44); const ctx_r51 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r51.investmentRecService.investmentDoctorFormData.address = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](59, "div", 18);
@@ -1024,8 +1074,8 @@ function InvestmentRecComponent_fieldset_55_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](62, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](63, "input", 81, 82);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_55_Template_input_ngModelChange_63_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r43); const ctx_r51 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r51.investmentRecService.investmentDoctorFormData.doctorType = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](63, "input", 85, 86);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_55_Template_input_ngModelChange_63_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r44); const ctx_r52 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r52.investmentRecService.investmentDoctorFormData.doctorType = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
@@ -1038,8 +1088,8 @@ function InvestmentRecComponent_fieldset_55_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](70, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](71, "input", 83, 84);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_55_Template_input_ngModelChange_71_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r43); const ctx_r52 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r52.investmentRecService.investmentDoctorFormData.practiceDayPerMonth = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](71, "input", 87, 88);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_55_Template_input_ngModelChange_71_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r44); const ctx_r53 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r53.investmentRecService.investmentDoctorFormData.practiceDayPerMonth = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](73, "div", 18);
@@ -1048,8 +1098,8 @@ function InvestmentRecComponent_fieldset_55_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](76, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](77, "input", 85, 86);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_55_Template_input_ngModelChange_77_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r43); const ctx_r53 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r53.investmentRecService.investmentDoctorFormData.patientsPerDay = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](77, "input", 89, 90);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_55_Template_input_ngModelChange_77_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r44); const ctx_r54 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r54.investmentRecService.investmentDoctorFormData.patientsPerDay = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
@@ -1081,7 +1131,7 @@ function InvestmentRecComponent_fieldset_55_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r6.investmentRecService.investmentDoctorFormData.patientsPerDay);
 } }
 function InvestmentRecComponent_fieldset_56_Template(rf, ctx) { if (rf & 1) {
-    const _r61 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
+    const _r62 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "fieldset");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "div", 17);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "div", 2);
@@ -1102,8 +1152,8 @@ function InvestmentRecComponent_fieldset_56_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](12, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](13, "input", 87, 88);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_56_Template_input_ngModelChange_13_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r61); const ctx_r60 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r60.investmentRecService.investmentInstitutionFormData.institutionName = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](13, "input", 91, 92);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_56_Template_input_ngModelChange_13_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r62); const ctx_r61 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r61.investmentRecService.investmentInstitutionFormData.institutionName = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](15, "div", 18);
@@ -1112,8 +1162,8 @@ function InvestmentRecComponent_fieldset_56_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](18, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](19, "input", 89, 90);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_56_Template_input_ngModelChange_19_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r61); const ctx_r62 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r62.investmentRecService.investmentInstitutionFormData.resposnsibleDoctorName = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](19, "input", 93, 94);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_56_Template_input_ngModelChange_19_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r62); const ctx_r63 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r63.investmentRecService.investmentInstitutionFormData.resposnsibleDoctorName = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
@@ -1126,8 +1176,8 @@ function InvestmentRecComponent_fieldset_56_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](26, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](27, "input", 91, 80);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_56_Template_input_ngModelChange_27_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r61); const ctx_r63 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r63.investmentRecService.investmentInstitutionFormData.address = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](27, "input", 95, 84);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_56_Template_input_ngModelChange_27_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r62); const ctx_r64 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r64.investmentRecService.investmentInstitutionFormData.address = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](29, "div", 18);
@@ -1136,8 +1186,8 @@ function InvestmentRecComponent_fieldset_56_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](32, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](33, "input", 92, 93);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_56_Template_input_ngModelChange_33_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r61); const ctx_r64 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r64.investmentRecService.investmentInstitutionFormData.institutionType = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](33, "input", 96, 97);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_56_Template_input_ngModelChange_33_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r62); const ctx_r65 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r65.investmentRecService.investmentInstitutionFormData.institutionType = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
@@ -1150,8 +1200,8 @@ function InvestmentRecComponent_fieldset_56_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](40, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](41, "input", 94, 95);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_56_Template_input_ngModelChange_41_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r61); const ctx_r65 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r65.investmentRecService.investmentInstitutionFormData.noOfBed = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](41, "input", 98, 99);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_56_Template_input_ngModelChange_41_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r62); const ctx_r66 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r66.investmentRecService.investmentInstitutionFormData.noOfBed = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](43, "div", 18);
@@ -1160,8 +1210,8 @@ function InvestmentRecComponent_fieldset_56_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](46, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](47, "input", 96, 97);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_56_Template_input_ngModelChange_47_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r61); const ctx_r66 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r66.investmentRecService.investmentInstitutionFormData.departmentUnit = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](47, "input", 100, 101);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_56_Template_input_ngModelChange_47_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r62); const ctx_r67 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r67.investmentRecService.investmentInstitutionFormData.departmentUnit = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
@@ -1195,14 +1245,14 @@ function InvestmentRecComponent_fieldset_57_tr_57_Template(rf, ctx) { if (rf & 1
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const a_r74 = ctx.$implicit;
+    const a_r75 = ctx.$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r74.productInfo.productCode, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r75.productInfo.productCode, " ");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r74.productInfo.productName, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r75.productInfo.productName, " ");
 } }
 function InvestmentRecComponent_fieldset_57_Template(rf, ctx) { if (rf & 1) {
-    const _r76 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
+    const _r77 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "fieldset");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "div", 17);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "div", 2);
@@ -1223,8 +1273,8 @@ function InvestmentRecComponent_fieldset_57_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](12, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](13, "input", 98, 99);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_57_Template_input_ngModelChange_13_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r76); const ctx_r75 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r75.investmentRecService.investmentCampaignFormData.campaignName = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](13, "input", 102, 103);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_57_Template_input_ngModelChange_13_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r77); const ctx_r76 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r76.investmentRecService.investmentCampaignFormData.campaignName = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](15, "div", 18);
@@ -1233,8 +1283,8 @@ function InvestmentRecComponent_fieldset_57_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](18, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](19, "input", 100, 101);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_57_Template_input_ngModelChange_19_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r76); const ctx_r77 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r77.investmentRecService.investmentCampaignFormData.subCampaignName = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](19, "input", 104, 105);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_57_Template_input_ngModelChange_19_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r77); const ctx_r78 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r78.investmentRecService.investmentCampaignFormData.subCampaignName = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
@@ -1247,8 +1297,8 @@ function InvestmentRecComponent_fieldset_57_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](26, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](27, "input", 102, 103);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_57_Template_input_ngModelChange_27_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r76); const ctx_r78 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r78.investmentRecService.investmentCampaignFormData.subCampStartDate = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](27, "input", 106, 107);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_57_Template_input_ngModelChange_27_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r77); const ctx_r79 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r79.investmentRecService.investmentCampaignFormData.subCampStartDate = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](29, "div", 18);
@@ -1257,8 +1307,8 @@ function InvestmentRecComponent_fieldset_57_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](32, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](33, "input", 104, 105);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_57_Template_input_ngModelChange_33_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r76); const ctx_r79 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r79.investmentRecService.investmentCampaignFormData.subCampEndDate = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](33, "input", 108, 109);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_57_Template_input_ngModelChange_33_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r77); const ctx_r80 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r80.investmentRecService.investmentCampaignFormData.subCampEndDate = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
@@ -1271,8 +1321,8 @@ function InvestmentRecComponent_fieldset_57_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](40, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](41, "input", 106, 107);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_57_Template_input_ngModelChange_41_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r76); const ctx_r80 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r80.investmentRecService.investmentCampaignFormData.doctorName = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](41, "input", 110, 111);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_57_Template_input_ngModelChange_41_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r77); const ctx_r81 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r81.investmentRecService.investmentCampaignFormData.doctorName = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](43, "div", 18);
@@ -1281,15 +1331,15 @@ function InvestmentRecComponent_fieldset_57_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](46, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](47, "input", 108, 88);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_57_Template_input_ngModelChange_47_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r76); const ctx_r81 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r81.investmentRecService.investmentCampaignFormData.institutionName = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](47, "input", 112, 92);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_57_Template_input_ngModelChange_47_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r77); const ctx_r82 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r82.investmentRecService.investmentCampaignFormData.institutionName = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](49, "div", 17);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](50, "div", 17);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](51, "table", 33);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](51, "table", 32);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](52, "tr");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](53, "td");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](54, "Product Code");
@@ -1298,7 +1348,7 @@ function InvestmentRecComponent_fieldset_57_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](56, "Product Name");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](57, InvestmentRecComponent_fieldset_57_tr_57_Template, 7, 2, "tr", 34);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](57, InvestmentRecComponent_fieldset_57_tr_57_Template, 7, 2, "tr", 33);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
@@ -1321,7 +1371,7 @@ function InvestmentRecComponent_fieldset_57_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx_r8.campaignDtlProducts);
 } }
 function InvestmentRecComponent_fieldset_58_Template(rf, ctx) { if (rf & 1) {
-    const _r86 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
+    const _r87 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "fieldset");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "div", 17);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "div", 2);
@@ -1342,8 +1392,8 @@ function InvestmentRecComponent_fieldset_58_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](12, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](13, "input", 109, 110);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_58_Template_input_ngModelChange_13_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r86); const ctx_r85 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r85.investmentRecService.investmentBcdsFormData.bcdsName = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](13, "input", 113, 114);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_58_Template_input_ngModelChange_13_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r87); const ctx_r86 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r86.investmentRecService.investmentBcdsFormData.bcdsName = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
@@ -1356,8 +1406,8 @@ function InvestmentRecComponent_fieldset_58_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](20, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](21, "input", 111, 112);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_58_Template_input_ngModelChange_21_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r86); const ctx_r87 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r87.investmentRecService.investmentBcdsFormData.bcdsAddress = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](21, "input", 115, 116);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_58_Template_input_ngModelChange_21_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r87); const ctx_r88 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r88.investmentRecService.investmentBcdsFormData.bcdsAddress = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](23, "div", 18);
@@ -1366,8 +1416,8 @@ function InvestmentRecComponent_fieldset_58_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](26, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](27, "input", 113, 114);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_58_Template_input_ngModelChange_27_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r86); const ctx_r88 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r88.investmentRecService.investmentBcdsFormData.noOfMember = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](27, "input", 117, 118);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_58_Template_input_ngModelChange_27_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r87); const ctx_r89 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r89.investmentRecService.investmentBcdsFormData.noOfMember = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
@@ -1383,7 +1433,7 @@ function InvestmentRecComponent_fieldset_58_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r9.investmentRecService.investmentBcdsFormData.noOfMember);
 } }
 function InvestmentRecComponent_fieldset_59_Template(rf, ctx) { if (rf & 1) {
-    const _r93 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
+    const _r94 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "fieldset");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "div", 17);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "div", 2);
@@ -1404,8 +1454,8 @@ function InvestmentRecComponent_fieldset_59_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](12, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](13, "input", 115, 116);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_59_Template_input_ngModelChange_13_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r93); const ctx_r92 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r92.investmentRecService.investmentSocietyFormData.societyName = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](13, "input", 119, 120);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_59_Template_input_ngModelChange_13_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r94); const ctx_r93 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r93.investmentRecService.investmentSocietyFormData.societyName = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
@@ -1418,8 +1468,8 @@ function InvestmentRecComponent_fieldset_59_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](20, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](21, "input", 117, 118);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_59_Template_input_ngModelChange_21_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r93); const ctx_r94 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r94.investmentRecService.investmentSocietyFormData.societyAddress = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](21, "input", 121, 122);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_59_Template_input_ngModelChange_21_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r94); const ctx_r95 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r95.investmentRecService.investmentSocietyFormData.societyAddress = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](23, "div", 18);
@@ -1428,8 +1478,8 @@ function InvestmentRecComponent_fieldset_59_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](26, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](27, "input", 119, 114);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_59_Template_input_ngModelChange_27_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r93); const ctx_r95 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r95.investmentRecService.investmentSocietyFormData.noOfMember = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](27, "input", 123, 118);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_fieldset_59_Template_input_ngModelChange_27_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r94); const ctx_r96 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r96.investmentRecService.investmentSocietyFormData.noOfMember = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
@@ -1444,17 +1494,7 @@ function InvestmentRecComponent_fieldset_59_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](6);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r10.investmentRecService.investmentSocietyFormData.noOfMember);
 } }
-function InvestmentRecComponent_div_68_Template(rf, ctx) { if (rf & 1) {
-    const _r97 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 10);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "button", 120);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentRecComponent_div_68_Template_button_click_1_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r97); const ctx_r96 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r96.updateInvestmentDetails(); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](2, "i", 12);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](3, "\u00A0 Update");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} }
-function InvestmentRecComponent_tr_85_Template(rf, ctx) { if (rf & 1) {
+function InvestmentRecComponent_tr_84_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "tr");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "td");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](2);
@@ -1473,40 +1513,40 @@ function InvestmentRecComponent_tr_85_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const a_r98 = ctx.$implicit;
+    const a_r97 = ctx.$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r98.purpose, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r97.purpose, " ");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r98.commitmentAllSBU, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r97.commitmentAllSBU, " ");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r98.commitmentOwnSBU, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r97.commitmentOwnSBU, " ");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r98.shareAllSBU, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r97.shareAllSBU, " ");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r98.shareOwnSBU, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r97.shareOwnSBU, " ");
 } }
-function InvestmentRecComponent_option_193_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "option", 121);
+function InvestmentRecComponent_option_188_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "option", 124);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const product_r99 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("value", product_r99.id);
+    const product_r98 = ctx.$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("value", product_r98.id);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](product_r99.productName);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](product_r98.productName);
 } }
-function InvestmentRecComponent_div_195_Template(rf, ctx) { if (rf & 1) {
-    const _r101 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
+function InvestmentRecComponent_div_190_Template(rf, ctx) { if (rf & 1) {
+    const _r100 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "button", 122);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentRecComponent_div_195_Template_button_click_1_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r101); const ctx_r100 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r100.insertInvestmentTargetedProd(); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](2, "i", 123);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "button", 125);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentRecComponent_div_190_Template_button_click_1_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r100); const ctx_r99 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r99.addInvestmentTargetedProd(); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](2, "i", 126);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](3, "\u00A0 Add");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } }
-function InvestmentRecComponent_tr_203_Template(rf, ctx) { if (rf & 1) {
-    const _r104 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
+function InvestmentRecComponent_tr_198_Template(rf, ctx) { if (rf & 1) {
+    const _r103 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "tr");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "td");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](2);
@@ -1515,34 +1555,24 @@ function InvestmentRecComponent_tr_203_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](4);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](5, "td");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](6, "input", 124);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentRecComponent_tr_203_Template_input_click_6_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r104); const a_r102 = ctx.$implicit; const ctx_r103 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r103.editInvestmentTargetedProd(a_r102); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](6, "input", 127);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentRecComponent_tr_198_Template_input_click_6_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r103); const a_r101 = ctx.$implicit; const ctx_r102 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r102.editInvestmentTargetedProd(a_r101); });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](7, "td");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](8, "input", 125);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentRecComponent_tr_203_Template_input_click_8_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r104); const a_r102 = ctx.$implicit; const ctx_r105 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r105.removeInvestmentTargetedProd(a_r102); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](8, "input", 128);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentRecComponent_tr_198_Template_input_click_8_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r103); const a_r101 = ctx.$implicit; const ctx_r104 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r104.removeInvestmentTargetedProd(a_r101); });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const a_r102 = ctx.$implicit;
+    const a_r101 = ctx.$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r102.productInfo.productCode, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r101.productInfo.productCode, " ");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r102.productInfo.productName, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r101.productInfo.productName, " ");
 } }
-function InvestmentRecComponent_option_222_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "option", 121);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} if (rf & 2) {
-    const a_r106 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("value", a_r106.id);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r106.groupName);
-} }
-function InvestmentRecComponent_tr_233_Template(rf, ctx) { if (rf & 1) {
+function InvestmentRecComponent_tr_216_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "tr");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "td");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](2);
@@ -1555,24 +1585,24 @@ function InvestmentRecComponent_tr_233_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const a_r107 = ctx.$implicit;
+    const a_r105 = ctx.$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r107.marketGroupMst.groupName, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r105.marketGroupMst.groupName, " ");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r107.marketCode, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r105.marketCode, " ");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r107.marketName, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r105.marketName, " ");
 } }
-function InvestmentRecComponent_ng_template_234_tr_26_Template(rf, ctx) { if (rf & 1) {
-    const _r111 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
+function InvestmentRecComponent_ng_template_245_tr_26_Template(rf, ctx) { if (rf & 1) {
+    const _r109 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "tr");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "td");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "button", 139);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentRecComponent_ng_template_234_tr_26_Template_button_click_2_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r111); const a_r109 = ctx.$implicit; const ctx_r110 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](2); return ctx_r110.selectInvestmentRec(a_r109); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "button", 142);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentRecComponent_ng_template_245_tr_26_Template_button_click_2_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r109); const a_r107 = ctx.$implicit; const ctx_r108 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](2); return ctx_r108.selectInvestmentInit(a_r107); });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](3, "Select");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](4, "td", 140);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](4, "td", 143);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](5);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](6, "td");
@@ -1589,60 +1619,60 @@ function InvestmentRecComponent_ng_template_234_tr_26_Template(rf, ctx) { if (rf
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const a_r109 = ctx.$implicit;
+    const a_r107 = ctx.$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](5);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r109.id);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r107.id);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r109.referenceNo);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r107.referenceNo);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r109.proposeFor);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r107.proposeFor);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r109.donationType);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r107.donationType);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r109.donationTo);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r107.donationTo);
 } }
-function InvestmentRecComponent_ng_template_234_Template(rf, ctx) { if (rf & 1) {
-    const _r113 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 126);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "h4", 127);
+function InvestmentRecComponent_ng_template_245_Template(rf, ctx) { if (rf & 1) {
+    const _r111 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 129);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "h4", 130);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](2, "Investment Initialization");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](3, "button", 128);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentRecComponent_ng_template_234_Template_button_click_3_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r113); const ctx_r112 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r112.InvestmentRecSearchModalRef.hide(); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](4, "span", 129);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](3, "button", 131);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentRecComponent_ng_template_245_Template_button_click_3_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r111); const ctx_r110 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r110.InvestmentInitSearchModalRef.hide(); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](4, "span", 132);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](5, "\u00D7");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](6, "div", 130);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](6, "div", 133);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](7, "div", 2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](8, "div", 131);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](9, "div", 132);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](10, "table", 133);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](11, "thead", 134);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](8, "div", 134);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](9, "div", 135);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](10, "table", 136);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](11, "thead", 137);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](12, "tr");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](13, "th", 135);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](13, "th", 138);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](14, "Action");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](15, "th", 136);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](15, "th", 139);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](16, "Id");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](17, "th", 137);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](17, "th", 140);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](18, "Reference No");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](19, "th", 138);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](19, "th", 141);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](20, "Propose For");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](21, "th", 138);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](21, "th", 141);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](22, "Donation Type");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](23, "th", 138);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](23, "th", 141);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](24, "Donation To");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](25, "tbody");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](26, InvestmentRecComponent_ng_template_234_tr_26_Template, 14, 5, "tr", 34);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](26, InvestmentRecComponent_ng_template_245_tr_26_Template, 14, 5, "tr", 33);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
@@ -1650,12 +1680,104 @@ function InvestmentRecComponent_ng_template_234_Template(rf, ctx) { if (rf & 1) 
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const ctx_r30 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
+    const ctx_r29 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](26);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx_r30.investmentRecs);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx_r29.investmentRecs);
+} }
+function InvestmentRecComponent_ng_template_247_tr_26_Template(rf, ctx) { if (rf & 1) {
+    const _r115 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "tr");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "td");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "button", 142);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentRecComponent_ng_template_247_tr_26_Template_button_click_2_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r115); const a_r113 = ctx.$implicit; const ctx_r114 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](2); return ctx_r114.selectInvestmentRec(a_r113); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](3, "Select");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](4, "td", 143);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](5);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](6, "td");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](7);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](8, "td");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](9);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](10, "td");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](11);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](12, "td");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](13);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+} if (rf & 2) {
+    const a_r113 = ctx.$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](5);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r113.id);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r113.referenceNo);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r113.proposeFor);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r113.donationType);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r113.donationTo);
+} }
+function InvestmentRecComponent_ng_template_247_Template(rf, ctx) { if (rf & 1) {
+    const _r117 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 129);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "h4", 130);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](2, "Investment Initialization");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](3, "button", 131);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentRecComponent_ng_template_247_Template_button_click_3_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r117); const ctx_r116 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r116.InvestmentRecSearchModalRef.hide(); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](4, "span", 132);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](5, "\u00D7");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](6, "div", 133);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](7, "div", 2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](8, "div", 134);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](9, "div", 135);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](10, "table", 136);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](11, "thead", 137);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](12, "tr");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](13, "th", 138);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](14, "Action");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](15, "th", 139);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](16, "Id");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](17, "th", 140);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](18, "Reference No");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](19, "th", 141);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](20, "Propose For");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](21, "th", 141);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](22, "Donation Type");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](23, "th", 141);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](24, "Donation To");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](25, "tbody");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](26, InvestmentRecComponent_ng_template_247_tr_26_Template, 14, 5, "tr", 33);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+} if (rf & 2) {
+    const ctx_r31 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](26);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx_r31.investmentRecs);
 } }
 class InvestmentRecComponent {
-    constructor(investmentRecService, router, toastr, modalService, datePipe) {
+    constructor(accountService, investmentRecService, router, toastr, modalService, datePipe) {
+        this.accountService = accountService;
         this.investmentRecService = investmentRecService;
         this.router = router;
         this.toastr = toastr;
@@ -1671,50 +1793,88 @@ class InvestmentRecComponent {
             ignoreBackdropClick: true
         };
     }
+    openInvestmentInitSearchModal(template) {
+        this.InvestmentInitSearchModalRef = this.modalService.show(template, this.config);
+    }
     openInvestmentRecSearchModal(template) {
         this.InvestmentRecSearchModalRef = this.modalService.show(template, this.config);
     }
-    selectInvestmentRec(selectedRecord) {
+    selectInvestmentInit(selectedRecord) {
+        //debugger;
         this.investmentRecService.investmentRecFormData = Object.assign({}, selectedRecord);
-        // this.investmentRecService.investmentDoctorFormData.investmentInitId =selectedRecord.id;
-        // this.investmentRecService.investmentInstitutionFormData.investmentInitId =selectedRecord.id;
-        // this.investmentRecService.investmentCampaignFormData.investmentInitId =selectedRecord.id;
-        // this.investmentRecService.investmentBcdsFormData.investmentInitId =selectedRecord.id;
-        // this.investmentRecService.investmentSocietyFormData.investmentInitId =selectedRecord.id;
-        // this.investmentRecService.investmentDetailFormData.investmentInitId =selectedRecord.id;
+        this.investmentRecService.investmentDetailFormData.investmentInitId = selectedRecord.id;
+        this.investmentRecService.investmentRecCommentFormData.investmentInitId = selectedRecord.id;
         this.isDonationValid = true;
         if (this.investmentRecService.investmentRecFormData.donationTo == "Doctor") {
-            this.getDoctor();
-            this.getInstitution();
             this.getInvestmentDoctor();
         }
         else if (this.investmentRecService.investmentRecFormData.donationTo == "Institution") {
-            this.getDoctor();
-            this.getInstitution();
             this.getInvestmentInstitution();
         }
         else if (this.investmentRecService.investmentRecFormData.donationTo == "Campaign") {
-            this.getCampaignMst();
-            this.getDoctor();
-            this.getInstitution();
+            //this.getCampaignMst();
             this.getInvestmentCampaign();
         }
         else if (this.investmentRecService.investmentRecFormData.donationTo == "Bcds") {
-            this.getBcds();
             this.getInvestmentBcds();
         }
         else if (this.investmentRecService.investmentRecFormData.donationTo == "Society") {
-            this.getSociety();
             this.getInvestmentSociety();
         }
         this.getInvestmentDetails();
         this.getInvestmentTargetedProd();
         this.getInvestmentTargetedGroup();
         this.isValid = true;
+        this.InvestmentInitSearchModalRef.hide();
+    }
+    selectInvestmentRec(selectedRecord) {
+        //debugger;
+        this.investmentRecService.investmentRecFormData = Object.assign({}, selectedRecord);
+        this.investmentRecService.investmentDetailFormData.investmentInitId = selectedRecord.id;
+        this.investmentRecService.investmentRecCommentFormData.investmentInitId = selectedRecord.id;
+        this.isDonationValid = true;
+        if (this.investmentRecService.investmentRecFormData.donationTo == "Doctor") {
+            this.getInvestmentDoctor();
+        }
+        else if (this.investmentRecService.investmentRecFormData.donationTo == "Institution") {
+            this.getInvestmentInstitution();
+        }
+        else if (this.investmentRecService.investmentRecFormData.donationTo == "Campaign") {
+            //this.getCampaignMst();
+            this.getInvestmentCampaign();
+        }
+        else if (this.investmentRecService.investmentRecFormData.donationTo == "Bcds") {
+            this.getInvestmentBcds();
+        }
+        else if (this.investmentRecService.investmentRecFormData.donationTo == "Society") {
+            this.getInvestmentSociety();
+        }
+        this.getInvestmentRecDetails();
+        this.getInvestmentRecProducts();
+        this.getInvestmentRecComment();
+        this.getInvestmentTargetedGroup();
+        this.isValid = true;
         this.InvestmentRecSearchModalRef.hide();
     }
+    getCampaignMst() {
+        this.investmentRecService.getCampaignMsts().subscribe(response => {
+            //debugger;
+            this.campaignMsts = response;
+        }, error => {
+            console.log(error);
+        });
+    }
     getInvestmentInit() {
-        this.investmentRecService.getInvestmentInit().subscribe(response => {
+        this.investmentRecService.getInvestmentInit(this.sbu).subscribe(response => {
+            //debugger;
+            this.investmentRecs = response.data;
+            this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
+        }, error => {
+            console.log(error);
+        });
+    }
+    getInvestmentRecommended() {
+        this.investmentRecService.getInvestmentRecommended(this.sbu).subscribe(response => {
             //debugger;
             this.investmentRecs = response.data;
             this.openInvestmentRecSearchModal(this.investmentRecSearchModal);
@@ -1722,21 +1882,150 @@ class InvestmentRecComponent {
             console.log(error);
         });
     }
-    getInvestmentRec() {
-        this.investmentRecService.getInvestmentRec().subscribe(response => {
+    getInvestmentCampaign() {
+        this.investmentRecService.getInvestmentCampaigns(this.investmentRecService.investmentRecFormData.id).subscribe(response => {
+            debugger;
+            var data = response[0];
+            if (data !== undefined) {
+                this.investmentRecService.investmentCampaignFormData = data;
+                this.investmentRecService.investmentCampaignFormData.campaignMstId = data.campaignDtl.mstId;
+                this.investmentRecService.investmentCampaignFormData.subCampaignName = data.campaignDtl.subCampaignName;
+                this.investmentRecService.investmentCampaignFormData.doctorName = data.doctorInfo.doctorName;
+                this.investmentRecService.investmentCampaignFormData.institutionName = data.institutionInfo.institutionName;
+                this.investmentRecService.investmentCampaignFormData.subCampStartDate = new _angular_common__WEBPACK_IMPORTED_MODULE_1__["DatePipe"]('en-US').transform(data.campaignDtl.subCampStartDate, 'dd/MM/yyyy');
+                this.investmentRecService.investmentCampaignFormData.subCampEndDate = new _angular_common__WEBPACK_IMPORTED_MODULE_1__["DatePipe"]('en-US').transform(data.campaignDtl.subCampEndDate, 'dd/MM/yyyy');
+                this.investmentRecService.getCampaignMsts().subscribe(response => {
+                    this.campaignMsts = response;
+                    for (let i = 0; i < this.campaignMsts.length; i++) {
+                        if (this.campaignMsts[i].id == this.investmentRecService.investmentCampaignFormData.campaignDtl.mstId) {
+                            this.investmentRecService.investmentCampaignFormData.campaignName = this.campaignMsts[i].campaignName;
+                        }
+                    }
+                    this.investmentRecService.getCampaignDtls(data.campaignDtl.mstId).subscribe(response => {
+                        debugger;
+                        this.campaignDtls = response;
+                        for (let i = 0; i < this.campaignDtls.length; i++) {
+                            if (this.campaignDtls[i].id == data.campaignDtl.id) {
+                                this.investmentRecService.investmentCampaignFormData.subCampaignName = this.campaignDtls[i].subCampaign.subCampaignName;
+                            }
+                        }
+                    }, error => {
+                        console.log(error);
+                    });
+                }, error => {
+                    console.log(error);
+                });
+                this.investmentRecService.getCampaignDtlProducts(data.campaignDtl.id).subscribe(response => {
+                    debugger;
+                    this.campaignDtlProducts = response;
+                }, error => {
+                    console.log(error);
+                });
+            }
+            else {
+                this.toastr.warning('No Data Found', 'Investment ');
+            }
+        }, error => {
+            console.log(error);
+        });
+    }
+    getInvestmentBcds() {
+        this.investmentRecService.getInvestmentBcds(this.investmentRecService.investmentRecFormData.id).subscribe(response => {
             //debugger;
-            this.investmentRecs = response.data;
-            this.openInvestmentRecSearchModal(this.investmentRecSearchModal);
+            var data = response[0];
+            if (data !== undefined) {
+                this.investmentRecService.investmentBcdsFormData = data;
+                this.investmentRecService.investmentBcdsFormData.bcdsName = data.bcds.bcdsName;
+                this.investmentRecService.investmentBcdsFormData.bcdsAddress = data.bcds.bcdsAddress;
+                this.investmentRecService.investmentBcdsFormData.noOfMember = data.bcds.noOfMember;
+                //this.onChangeBcdsInBcds();
+            }
+            else {
+                this.toastr.warning('No Data Found', 'Investment ');
+            }
+        }, error => {
+            console.log(error);
+        });
+    }
+    getInvestmentSociety() {
+        this.investmentRecService.getInvestmentSociety(this.investmentRecService.investmentRecFormData.id).subscribe(response => {
+            //debugger;
+            var data = response[0];
+            if (data !== undefined) {
+                this.investmentRecService.investmentSocietyFormData = data;
+                this.investmentRecService.investmentSocietyFormData.societyName = data.society.societyName;
+                this.investmentRecService.investmentSocietyFormData.noOfMember = data.society.noOfMember;
+                this.investmentRecService.investmentSocietyFormData.societyAddress = data.society.societyAddress;
+                //this.onChangeSocietyInSociety();
+            }
+            else {
+                this.toastr.warning('No Data Found', 'Investment ');
+            }
+        }, error => {
+            console.log(error);
+        });
+    }
+    getInvestmentInstitution() {
+        this.investmentRecService.getInvestmentInstitutions(this.investmentRecService.investmentRecFormData.id).subscribe(response => {
+            //debugger;
+            var data = response[0];
+            if (data !== undefined) {
+                this.investmentRecService.investmentInstitutionFormData = data;
+                this.investmentRecService.investmentInstitutionFormData.resposnsibleDoctorName = data.doctorInfo.doctorName;
+                this.investmentRecService.investmentInstitutionFormData.institutionName = data.institutionInfo.institutionName;
+                this.investmentRecService.investmentInstitutionFormData.address = data.institutionInfo.address;
+                this.investmentRecService.investmentInstitutionFormData.institutionType = data.institutionInfo.institutionType;
+                //this.onChangeInstitutionInInst();
+            }
+            else {
+                this.toastr.warning('No Data Found', 'Investment ');
+            }
+        }, error => {
+            console.log(error);
+        });
+    }
+    getInvestmentDoctor() {
+        this.investmentRecService.getInvestmentDoctors(this.investmentRecService.investmentRecFormData.id).subscribe(response => {
+            //debugger;
+            var data = response[0];
+            if (data !== undefined) {
+                this.investmentRecService.investmentDoctorFormData = data;
+                this.investmentRecService.investmentDoctorFormData.doctorName = data.doctorInfo.doctorName;
+                this.investmentRecService.investmentDoctorFormData.degree = data.doctorInfo.degree;
+                this.investmentRecService.investmentDoctorFormData.designation = data.doctorInfo.designation;
+                this.investmentRecService.investmentDoctorFormData.institutionName = data.institutionInfo.institutionName;
+                this.investmentRecService.investmentDoctorFormData.address = data.institutionInfo.address;
+                //this.onChangeDoctorInDoc();
+                //this.onChangeInstitutionInDoc();
+            }
+            else {
+                this.toastr.warning('No Data Found', 'Investment ');
+            }
+        }, error => {
+            console.log(error);
+        });
+    }
+    getInvestmentRecComment() {
+        this.investmentRecService.getInvestmentRecComment(this.investmentRecService.investmentRecFormData.id, this.empId).subscribe(response => {
+            //debugger;
+            var data = response[0];
+            if (data !== undefined) {
+                this.investmentRecService.investmentRecCommentFormData = data;
+            }
+            else {
+                this.toastr.warning('No Data Found', 'Investment ');
+            }
         }, error => {
             console.log(error);
         });
     }
     getInvestmentDetails() {
-        this.investmentRecService.getInvestmentDetails(this.investmentRecService.investmentDetailFormData.investmentInitId).subscribe(response => {
-            debugger;
+        this.investmentRecService.getInvestmentDetails(this.investmentRecService.investmentRecFormData.id).subscribe(response => {
+            //debugger;
             var data = response[0];
             if (data !== undefined) {
                 this.investmentRecService.investmentDetailFormData = data;
+                this.investmentRecService.investmentDetailFormData.id = 0;
                 this.investmentRecService.investmentDetailFormData.fromDate = new Date(data.fromDate);
                 this.investmentRecService.investmentDetailFormData.toDate = new Date(data.toDate);
             }
@@ -1747,90 +2036,40 @@ class InvestmentRecComponent {
             console.log(error);
         });
     }
-    getInvestmentCampaign() {
-        this.investmentRecService.getInvestmentCampaigns(this.investmentRecService.investmentCampaignFormData.investmentInitId).subscribe(response => {
-            debugger;
-            var data = response[0];
-            if (data !== undefined) {
-                this.investmentRecService.investmentCampaignFormData = data;
-                this.investmentRecService.investmentCampaignFormData.campaignMstId = data.campaignDtl.mstId;
-                this.investmentRecService.investmentCampaignFormData.subCampStartDate = new _angular_common__WEBPACK_IMPORTED_MODULE_1__["DatePipe"]('en-US').transform(data.campaignDtl.subCampStartDate, 'dd/MM/yyyy');
-                this.investmentRecService.investmentCampaignFormData.subCampEndDate = new _angular_common__WEBPACK_IMPORTED_MODULE_1__["DatePipe"]('en-US').transform(data.campaignDtl.subCampEndDate, 'dd/MM/yyyy');
-                this.onChangeCampaignInCamp();
-                this.onChangeSubCampaignInCamp();
-            }
-            else {
-                this.toastr.warning('No Data Found', 'Investment ');
-            }
-        }, error => {
-            console.log(error);
-        });
-    }
-    getInvestmentBcds() {
-        this.investmentRecService.getInvestmentBcds(this.investmentRecService.investmentBcdsFormData.investmentInitId).subscribe(response => {
-            debugger;
-            var data = response[0];
-            if (data !== undefined) {
-                this.investmentRecService.investmentBcdsFormData = data;
-                this.onChangeBcdsInBcds();
-            }
-            else {
-                this.toastr.warning('No Data Found', 'Investment ');
-            }
-        }, error => {
-            console.log(error);
-        });
-    }
-    getInvestmentSociety() {
-        this.investmentRecService.getInvestmentSociety(this.investmentRecService.investmentSocietyFormData.investmentInitId).subscribe(response => {
-            debugger;
-            var data = response[0];
-            if (data !== undefined) {
-                this.investmentRecService.investmentSocietyFormData = data;
-                this.onChangeSocietyInSociety();
-            }
-            else {
-                this.toastr.warning('No Data Found', 'Investment ');
-            }
-        }, error => {
-            console.log(error);
-        });
-    }
-    getInvestmentInstitution() {
-        this.investmentRecService.getInvestmentInstitutions(this.investmentRecService.investmentInstitutionFormData.investmentInitId).subscribe(response => {
-            debugger;
-            var data = response[0];
-            if (data !== undefined) {
-                this.investmentRecService.investmentInstitutionFormData = data;
-                this.onChangeInstitutionInInst();
-            }
-            else {
-                this.toastr.warning('No Data Found', 'Investment ');
-            }
-        }, error => {
-            console.log(error);
-        });
-    }
-    getInvestmentDoctor() {
-        this.investmentRecService.getInvestmentDoctors(this.investmentRecService.investmentDoctorFormData.investmentInitId).subscribe(response => {
-            debugger;
-            var data = response[0];
-            if (data !== undefined) {
-                this.investmentRecService.investmentDoctorFormData = data;
-                this.investmentRecService.investmentDoctorFormData.doctorName = String(data.doctorId);
-                this.onChangeDoctorInDoc();
-                this.onChangeInstitutionInDoc();
-            }
-            else {
-                this.toastr.warning('No Data Found', 'Investment ');
-            }
-        }, error => {
-            console.log(error);
-        });
-    }
     getInvestmentTargetedProd() {
-        this.investmentRecService.getInvestmentTargetedProds(this.investmentRecService.investmentRecFormData.id).subscribe(response => {
-            debugger;
+        this.investmentRecService.getInvestmentTargetedProds(this.investmentRecService.investmentRecFormData.id, this.sbu).subscribe(response => {
+            //debugger;
+            var data = response;
+            if (data !== undefined) {
+                this.investmentTargetedProds = data;
+            }
+            else {
+                this.toastr.warning('No Data Found', 'Investment ');
+            }
+        }, error => {
+            console.log(error);
+        });
+    }
+    getInvestmentRecDetails() {
+        //debugger;
+        this.investmentRecService.getInvestmentRecDetails(this.investmentRecService.investmentRecFormData.id).subscribe(response => {
+            var data = response[0];
+            if (data !== undefined) {
+                this.investmentRecService.investmentDetailFormData = data;
+                this.investmentRecService.investmentDetailFormData.id = 0;
+                this.investmentRecService.investmentDetailFormData.fromDate = new Date(data.fromDate);
+                this.investmentRecService.investmentDetailFormData.toDate = new Date(data.toDate);
+            }
+            else {
+                this.toastr.warning('No Data Found', 'Investment ');
+            }
+        }, error => {
+            console.log(error);
+        });
+    }
+    getInvestmentRecProducts() {
+        //debugger;
+        this.investmentRecService.getInvestmentRecProducts(this.investmentRecService.investmentRecFormData.id, this.sbu).subscribe(response => {
             var data = response;
             if (data !== undefined) {
                 this.investmentTargetedProds = data;
@@ -1844,7 +2083,7 @@ class InvestmentRecComponent {
     }
     getInvestmentTargetedGroup() {
         this.investmentRecService.getInvestmentTargetedGroups(this.investmentRecService.investmentRecFormData.id).subscribe(response => {
-            debugger;
+            //debugger;
             var data = response;
             if (data !== undefined) {
                 this.investmentTargetedGroups = data;
@@ -1857,157 +2096,14 @@ class InvestmentRecComponent {
         });
     }
     ngOnInit() {
-        this.getDonation();
+        this.getEmployeeId();
         this.getProduct();
-        this.getMarketGroupMsts();
+        //this.getMarketGroupMsts();
         this.bsConfig = Object.assign({}, { containerClass: 'theme-green' }, { dateInputFormat: 'DD/MM/YYYY' });
         this.bsValue = new Date();
     }
-    onChangeDonationTo() {
-        debugger;
-        if (this.investmentRecService.investmentRecFormData.donationTo == "Doctor") {
-            if (this.investmentRecService.investmentDoctorFormData.id == null || this.investmentRecService.investmentDoctorFormData.id == undefined || this.investmentRecService.investmentDoctorFormData.id == 0) {
-                this.investmentRecService.investmentDoctorFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__["InvestmentDoctor"]();
-                this.getDoctor();
-                this.getInstitution();
-            }
-        }
-        else if (this.investmentRecService.investmentRecFormData.donationTo == "Institution") {
-            if (this.investmentRecService.investmentInstitutionFormData.id == null || this.investmentRecService.investmentInstitutionFormData.id == undefined || this.investmentRecService.investmentInstitutionFormData.id == 0) {
-                this.investmentRecService.investmentDoctorFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__["InvestmentDoctor"]();
-                this.getDoctor();
-                this.getInstitution();
-            }
-        }
-        else if (this.investmentRecService.investmentRecFormData.donationTo == "Campaign") {
-            if (this.investmentRecService.investmentCampaignFormData.id == null || this.investmentRecService.investmentCampaignFormData.id == undefined || this.investmentRecService.investmentCampaignFormData.id == 0) {
-                this.investmentRecService.investmentCampaignFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__["InvestmentCampaign"]();
-                this.getCampaignMst();
-                this.getDoctor();
-                this.getInstitution();
-            }
-        }
-        else if (this.investmentRecService.investmentRecFormData.donationTo == "Bcds") {
-            if (this.investmentRecService.investmentBcdsFormData.id == null || this.investmentRecService.investmentBcdsFormData.id == undefined || this.investmentRecService.investmentBcdsFormData.id == 0) {
-                this.investmentRecService.investmentBcdsFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__["InvestmentBcds"]();
-                this.getBcds();
-            }
-        }
-        else if (this.investmentRecService.investmentRecFormData.donationTo == "Society") {
-            if (this.investmentRecService.investmentSocietyFormData.id == null || this.investmentRecService.investmentSocietyFormData.id == undefined || this.investmentRecService.investmentSocietyFormData.id == 0) {
-                this.investmentRecService.investmentSocietyFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__["InvestmentSociety"]();
-                this.getSociety();
-            }
-        }
-        if (this.investmentRecService.investmentRecFormData.id != null && this.investmentRecService.investmentRecFormData.id != undefined && this.investmentRecService.investmentRecFormData.id != 0) {
-            this.investmentRecService.investmentDoctorFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
-            this.investmentRecService.investmentInstitutionFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
-            this.investmentRecService.investmentCampaignFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
-            this.investmentRecService.investmentBcdsFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
-            this.investmentRecService.investmentSocietyFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
-        }
-    }
-    onChangeDoctorInDoc() {
-        for (var i = 0; i < this.doctors.length; i++) {
-            if (this.doctors[i].id == parseInt(this.investmentRecService.investmentDoctorFormData.doctorName)) {
-                //this.investmentRecService.investmentDoctorFormData.doctorName=this.doctors[i].doctorName;
-                this.investmentRecService.investmentDoctorFormData.doctorId = this.doctors[i].id;
-                this.investmentRecService.investmentDoctorFormData.degree = this.doctors[i].degree;
-                this.investmentRecService.investmentDoctorFormData.designation = this.doctors[i].designation;
-                break;
-            }
-        }
-    }
-    onChangeInstitutionInDoc() {
-        debugger;
-        for (var i = 0; i < this.institutions.length; i++) {
-            if (this.institutions[i].id == this.investmentRecService.investmentDoctorFormData.institutionId) {
-                this.investmentRecService.investmentDoctorFormData.address = this.institutions[i].address;
-                break;
-            }
-        }
-    }
-    onChangeInstitutionInInst() {
-        //debugger;
-        for (var i = 0; i < this.institutions.length; i++) {
-            if (this.institutions[i].id == this.investmentRecService.investmentInstitutionFormData.institutionId) {
-                this.investmentRecService.investmentInstitutionFormData.address = this.institutions[i].address;
-                this.investmentRecService.investmentInstitutionFormData.institutionType = this.institutions[i].institutionType;
-                break;
-            }
-        }
-    }
-    onChangeCampaignInCamp() {
-        debugger;
-        this.investmentRecService.getCampaignDtls(this.investmentRecService.investmentCampaignFormData.campaignMstId).subscribe(response => {
-            debugger;
-            this.campaignDtls = response;
-        }, error => {
-            console.log(error);
-        });
-    }
-    onChangeBcdsInBcds() {
-        debugger;
-        for (var i = 0; i < this.bcds.length; i++) {
-            if (this.bcds[i].id == this.investmentRecService.investmentBcdsFormData.bcdsId) {
-                this.investmentRecService.investmentBcdsFormData.bcdsAddress = this.bcds[i].bcdsAddress;
-                this.investmentRecService.investmentBcdsFormData.noOfMember = this.bcds[i].noOfMember;
-                break;
-            }
-        }
-    }
-    onChangeSubCampaignInCamp() {
-        debugger;
-        for (var i = 0; i < this.campaignDtls.length; i++) {
-            if (this.campaignDtls[i].id == this.investmentRecService.investmentCampaignFormData.campaignDtlId) {
-                this.investmentRecService.investmentCampaignFormData.subCampStartDate = new _angular_common__WEBPACK_IMPORTED_MODULE_1__["DatePipe"]('en-US').transform(this.campaignDtls[i].subCampStartDate, 'dd/MM/yyyy');
-                this.investmentRecService.investmentCampaignFormData.subCampEndDate = new _angular_common__WEBPACK_IMPORTED_MODULE_1__["DatePipe"]('en-US').transform(this.campaignDtls[i].subCampEndDate, 'dd/MM/yyyy');
-                break;
-            }
-        }
-        this.investmentRecService.getCampaignDtlProducts(this.investmentRecService.investmentCampaignFormData.campaignDtlId).subscribe(response => {
-            debugger;
-            this.campaignDtlProducts = response;
-        }, error => {
-            console.log(error);
-        });
-    }
-    onChangeSocietyInSociety() {
-        debugger;
-        for (var i = 0; i < this.society.length; i++) {
-            if (this.society[i].id == this.investmentRecService.investmentSocietyFormData.societyId) {
-                this.investmentRecService.investmentSocietyFormData.societyAddress = this.society[i].societyAddress;
-                this.investmentRecService.investmentSocietyFormData.noOfMember = this.society[i].noOfMember;
-                break;
-            }
-        }
-    }
-    onChangeMarketGroupInTargetedGroup() {
-        debugger;
-        if (this.investmentTargetedGroups == null || this.investmentTargetedGroups.length == 0) {
-            for (let i = 0; i < this.marketGroupMsts.length; i++) {
-                if (this.marketGroupMsts[i].id == this.investmentRecService.investmentTargetedGroupFormData.marketGroupMstId) {
-                    var data = [];
-                    for (let j = 0; j < this.marketGroupMsts[i].marketGroupDtls.length; j++) {
-                        var marketGroupMstId = this.marketGroupMsts[i].marketGroupDtls[j].mstId;
-                        var marketCode = this.marketGroupMsts[i].marketGroupDtls[j].marketCode;
-                        var marketName = this.marketGroupMsts[i].marketGroupDtls[j].marketName;
-                        data.push({ id: 0, investmentInitId: this.investmentRecService.investmentRecFormData.id, marketGroupMst: this.marketGroupMsts[i], marketGroupMstId: marketGroupMstId, marketCode: marketCode, marketName: marketName });
-                        //this.investmentTargetedGroups.push({id:0,investmentInitId:this.investmentRecService.investmentRecFormData.id,marketGroup:null,marketGroupMstId:this.marketGroupMsts[i].marketGroupDtls[j].mstId,marketCode:this.marketGroupMsts[i].marketGroupDtls[j].marketCode,marketName:this.marketGroupMsts[i].marketGroupDtls[j].marketName});
-                    }
-                    this.investmentTargetedGroups = data;
-                    break;
-                }
-            }
-        }
-        else {
-            this.toastr.warning('Already Market Group Exist', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-        }
-    }
     changeDateInDetail() {
-        debugger;
+        //debugger;
         //this.printingDate=this.getDigitBanglaFromEnglish(this.datePipe.transform(value, "dd/MM/yyyy"));
         if (this.investmentRecService.investmentDetailFormData.fromDate == null || this.investmentRecService.investmentDetailFormData.fromDate == undefined) {
             return false;
@@ -2021,85 +2117,31 @@ class InvestmentRecComponent {
         //let dateTo = new Date();
         this.investmentRecService.investmentDetailFormData.totalMonth = String(dateTo.getMonth() - dateFrom.getMonth() + (12 * (dateTo.getFullYear() - dateFrom.getFullYear())));
     }
-    getDonation() {
-        this.investmentRecService.getDonations().subscribe(response => {
-            this.donations = response;
-        }, error => {
-            console.log(error);
-        });
-    }
-    getSubCampaign() {
-        this.investmentRecService.getSubCampaigns().subscribe(response => {
-            //debugger;
-            this.subCampaigns = response;
-        }, error => {
-            console.log(error);
-        });
-    }
-    getDoctor() {
-        this.investmentRecService.getDoctors().subscribe(response => {
-            //debugger;
-            this.doctors = response;
-        }, error => {
-            console.log(error);
-        });
-    }
-    getCampaignMst() {
-        this.investmentRecService.getCampaignMsts().subscribe(response => {
-            //debugger;
-            this.campaignMsts = response;
-        }, error => {
-            console.log(error);
-        });
-    }
-    getSociety() {
-        this.investmentRecService.getSociety().subscribe(response => {
-            //debugger;
-            this.society = response;
-        }, error => {
-            console.log(error);
-        });
-    }
-    getBcds() {
-        this.investmentRecService.getBcds().subscribe(response => {
-            //debugger;
-            this.bcds = response;
-        }, error => {
-            console.log(error);
-        });
-    }
-    getInstitution() {
-        this.investmentRecService.getInstitutions().subscribe(response => {
-            this.institutions = response;
-        }, error => {
-            console.log(error);
-        });
-    }
-    getMarket() {
-        this.investmentRecService.getMarkets().subscribe(response => {
-            this.markets = response;
-        }, error => {
-            console.log(error);
-        });
-    }
     getProduct() {
-        this.investmentRecService.getProduct().subscribe(response => {
+        this.investmentRecService.getProduct(this.sbu).subscribe(response => {
             //debugger;
             this.products = response;
         }, error => {
             console.log(error);
         });
     }
-    getMarketGroupMsts() {
-        this.investmentRecService.getMarketGroupMsts().subscribe(response => {
-            debugger;
-            this.marketGroupMsts = response;
-        }, error => {
+    getEmployeeId() {
+        //debugger;
+        this.empId = this.accountService.getEmployeeId();
+        this.investmentRecService.investmentRecCommentFormData.employeeId = parseInt(this.empId);
+        this.getEmployeeSbu();
+    }
+    getEmployeeSbu() {
+        //debugger;
+        this.accountService.getEmployeeSbu(this.investmentRecService.investmentRecCommentFormData.employeeId).subscribe((response) => {
+            //debugger;
+            this.sbu = response.sbu;
+        }, (error) => {
             console.log(error);
         });
     }
     onSubmit(form) {
-        if (this.investmentRecService.investmentRecFormData.id == 0)
+        if (this.investmentRecService.investmentRecCommentFormData.id == null || this.investmentRecService.investmentRecCommentFormData.id == undefined || this.investmentRecService.investmentRecCommentFormData.id == 0)
             this.insertInvestmentRec();
         else
             this.updateInvestmentRec();
@@ -2107,19 +2149,24 @@ class InvestmentRecComponent {
     insertInvestmentRec() {
         this.investmentRecService.insertInvestmentRec().subscribe(res => {
             //debugger;
-            this.investmentRecService.investmentRecFormData = res;
-            this.investmentRecService.investmentDoctorFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
-            this.investmentRecService.investmentInstitutionFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
+            this.investmentRecService.investmentRecCommentFormData = res;
+            //this.investmentRecService.investmentDoctorFormData.investmentInitId=this.investmentRecService.investmentRecFormData.id;
+            //this.investmentRecService.investmentInstitutionFormData.investmentInitId=this.investmentRecService.investmentRecFormData.id;
             this.isValid = true;
-            this.toastr.success('Submitted successfully', 'Investment ');
+            this.insertInvestmentDetails();
+            this.insertInvestmentTargetedProd();
+            this.toastr.success('Save successfully', 'Investment ');
         }, err => { console.log(err); });
     }
     updateInvestmentRec() {
         this.investmentRecService.updateInvestmentRec().subscribe(res => {
-            debugger;
+            //debugger;
             this.isValid = true;
-            this.investmentRecService.investmentDoctorFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
-            this.investmentRecService.investmentInstitutionFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
+            this.investmentRecService.investmentRecCommentFormData = res;
+            this.insertInvestmentDetails();
+            this.insertInvestmentTargetedProd();
+            //this.investmentRecService.investmentDoctorFormData.investmentInitId=this.investmentRecService.investmentRecFormData.id;
+            // this.investmentRecService.investmentInstitutionFormData.investmentInitId=this.investmentRecService.investmentRecFormData.id;
             this.toastr.info('Updated successfully', 'Investment ');
         }, err => { console.log(err); });
     }
@@ -2173,207 +2220,95 @@ class InvestmentRecComponent {
             return false;
         }
         this.investmentRecService.investmentDetailFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
-        if (this.investmentRecService.investmentDetailFormData.id == null || this.investmentRecService.investmentDetailFormData.id == undefined || this.investmentRecService.investmentDetailFormData.id == 0) {
-            this.investmentRecService.insertInvestmentDetail().subscribe(res => {
-                var data = res;
-                this.investmentRecService.investmentDetailFormData = data;
-                //this.investmentRecService.investmentDoctorFormData.doctorName=String(data.doctorId);
-                this.investmentRecService.investmentDetailFormData.fromDate = new Date(data.fromDate);
-                this.investmentRecService.investmentDetailFormData.toDate = new Date(data.toDate);
-                this.isDonationValid = true;
-                this.toastr.success('Save successfully', 'Investment ');
-            }, err => { console.log(err); });
-        }
-        else {
-            this.investmentRecService.updateInvestmentDetail().subscribe(res => {
-                var data = res;
-                this.investmentRecService.investmentDetailFormData = data;
-                //this.investmentRecService.investmentDoctorFormData.doctorName=String(data.doctorId);
-                this.investmentRecService.investmentDetailFormData.fromDate = new Date(data.fromDate);
-                this.investmentRecService.investmentDetailFormData.toDate = new Date(data.toDate);
-                this.isDonationValid = true;
-                this.toastr.success('Save successfully', 'Investment ');
-            }, err => { console.log(err); });
-        }
-    }
-    insertInvestmentDoctor() {
-        if (this.investmentRecService.investmentRecFormData.id == null || this.investmentRecService.investmentRecFormData.id == undefined || this.investmentRecService.investmentRecFormData.id == 0) {
-            this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        // if(this.investmentRecService.investmentRecFormData.donationTo!=="Doctor")
-        // {
-        //   this.updateInvestmentRec();
-        // }
-        if (this.investmentRecService.investmentDoctorFormData.doctorId == null || this.investmentRecService.investmentDoctorFormData.doctorId == undefined || this.investmentRecService.investmentDoctorFormData.doctorId == 0) {
-            this.toastr.warning('Select Doctor First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        if (this.investmentRecService.investmentDoctorFormData.institutionId == null || this.investmentRecService.investmentDoctorFormData.institutionId == undefined || this.investmentRecService.investmentDoctorFormData.institutionId == 0) {
-            this.toastr.warning('Select Institute First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        this.investmentRecService.investmentDoctorFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
-        this.investmentRecService.insertInvestmentDoctor().subscribe(res => {
+        //if(this.investmentRecService.investmentDetailFormData.id==null || this.investmentRecService.investmentDetailFormData.id==undefined || this.investmentRecService.investmentDetailFormData.id==0)
+        //{
+        this.investmentRecService.insertInvestmentDetail().subscribe(res => {
             var data = res;
-            this.investmentRecService.investmentDoctorFormData = data;
-            this.investmentRecService.investmentDoctorFormData.doctorName = String(data.doctorId);
-            this.onChangeDoctorInDoc();
-            this.onChangeInstitutionInDoc();
-            this.updateInvestmentRec();
+            this.investmentRecService.investmentDetailFormData = data;
+            //this.investmentRecService.investmentDoctorFormData.doctorName=String(data.doctorId);
+            this.investmentRecService.investmentDetailFormData.fromDate = new Date(data.fromDate);
+            this.investmentRecService.investmentDetailFormData.toDate = new Date(data.toDate);
             this.isDonationValid = true;
             this.toastr.success('Save successfully', 'Investment ');
         }, err => { console.log(err); });
-    }
-    insertInvestmentInstitution() {
-        debugger;
-        if (this.investmentRecService.investmentRecFormData.id == null || this.investmentRecService.investmentRecFormData.id == undefined || this.investmentRecService.investmentRecFormData.id == 0) {
-            this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        // if(this.investmentRecService.investmentRecFormData.donationTo!=="Institution")
-        // {
         // }
-        if (this.investmentRecService.investmentInstitutionFormData.resposnsibleDoctorId == null || this.investmentRecService.investmentInstitutionFormData.resposnsibleDoctorId == undefined || this.investmentRecService.investmentInstitutionFormData.resposnsibleDoctorId == 0) {
-            this.toastr.warning('Select Institution First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        if (this.investmentRecService.investmentInstitutionFormData.institutionId == null || this.investmentRecService.investmentInstitutionFormData.institutionId == undefined || this.investmentRecService.investmentInstitutionFormData.institutionId == 0) {
-            this.toastr.warning('Select Institute First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        this.investmentRecService.investmentInstitutionFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
-        this.investmentRecService.insertInvestmentInstitution().subscribe(res => {
-            debugger;
-            this.investmentRecService.investmentInstitutionFormData = res;
-            this.onChangeInstitutionInInst();
-            this.updateInvestmentRec();
-            this.isDonationValid = true;
-            this.toastr.success('Save successfully', 'Investment ');
-        }, err => { console.log(err); });
-    }
-    insertInvestmentCampaign() {
-        debugger;
-        if (this.investmentRecService.investmentRecFormData.id == null || this.investmentRecService.investmentRecFormData.id == undefined || this.investmentRecService.investmentRecFormData.id == 0) {
-            this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        // if(this.investmentRecService.investmentRecFormData.donationTo!=="Institution")
-        // {
+        // else{
+        //   this.investmentRecService.updateInvestmentDetail().subscribe(
+        //     res => {
+        //      var data=res as IInvestmentRec;
+        //      this.investmentRecService.investmentDetailFormData=data;
+        //      //this.investmentRecService.investmentDoctorFormData.doctorName=String(data.doctorId);
+        //      this.investmentRecService.investmentDetailFormData.fromDate=new Date(data.fromDate);
+        //     this.investmentRecService.investmentDetailFormData.toDate=new Date(data.toDate);
+        //      this.isDonationValid=true;
+        //      this.toastr.success('Save successfully', 'Investment ');
+        //     },
+        //     err => { console.log(err); }
+        //   );
         // }
-        if (this.investmentRecService.investmentCampaignFormData.campaignMstId == null || this.investmentRecService.investmentCampaignFormData.campaignMstId == undefined || this.investmentRecService.investmentCampaignFormData.campaignMstId == 0) {
-            this.toastr.warning('Select Campaign First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        if (this.investmentRecService.investmentCampaignFormData.campaignDtlId == null || this.investmentRecService.investmentCampaignFormData.campaignDtlId == undefined || this.investmentRecService.investmentCampaignFormData.campaignDtlId == 0) {
-            this.toastr.warning('Select Sub-Campaign First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        if (this.investmentRecService.investmentCampaignFormData.doctorId == null || this.investmentRecService.investmentCampaignFormData.doctorId == undefined || this.investmentRecService.investmentCampaignFormData.doctorId == 0) {
-            this.toastr.warning('Select Doctor First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        if (this.investmentRecService.investmentCampaignFormData.institutionId == null || this.investmentRecService.investmentCampaignFormData.institutionId == undefined || this.investmentRecService.investmentCampaignFormData.institutionId == 0) {
-            this.toastr.warning('Select Institute First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        this.investmentRecService.investmentCampaignFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
-        var tempMstId = this.investmentRecService.investmentCampaignFormData.campaignMstId;
-        this.investmentRecService.insertInvestmentCampaign().subscribe(res => {
-            debugger;
-            this.investmentRecService.investmentCampaignFormData = res;
-            this.investmentRecService.investmentCampaignFormData.campaignMstId = tempMstId;
-            this.onChangeCampaignInCamp();
-            this.onChangeSubCampaignInCamp();
-            this.updateInvestmentRec();
-            this.isDonationValid = true;
-            this.toastr.success('Save successfully', 'Investment ');
-        }, err => { console.log(err); });
-    }
-    insertInvestmentSociety() {
-        debugger;
-        if (this.investmentRecService.investmentRecFormData.id == null || this.investmentRecService.investmentRecFormData.id == undefined || this.investmentRecService.investmentRecFormData.id == 0) {
-            this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        // if(this.investmentRecService.investmentRecFormData.donationTo!=="Institution")
-        // {
-        // }
-        if (this.investmentRecService.investmentSocietyFormData.societyId == null || this.investmentRecService.investmentSocietyFormData.societyId == undefined || this.investmentRecService.investmentSocietyFormData.societyId == 0) {
-            this.toastr.warning('Select Society First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        this.investmentRecService.investmentSocietyFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
-        this.investmentRecService.insertInvestmentSociety().subscribe(res => {
-            debugger;
-            this.investmentRecService.investmentSocietyFormData = res;
-            this.onChangeSocietyInSociety();
-            this.updateInvestmentRec();
-            this.isDonationValid = true;
-            this.toastr.success('Save successfully', 'Investment ');
-        }, err => { console.log(err); });
-    }
-    insertInvestmentBcds() {
-        debugger;
-        if (this.investmentRecService.investmentRecFormData.id == null || this.investmentRecService.investmentRecFormData.id == undefined || this.investmentRecService.investmentRecFormData.id == 0) {
-            this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        // if(this.investmentRecService.investmentRecFormData.donationTo!=="Institution")
-        // {
-        // }
-        if (this.investmentRecService.investmentBcdsFormData.bcdsId == null || this.investmentRecService.investmentBcdsFormData.bcdsId == undefined || this.investmentRecService.investmentBcdsFormData.bcdsId == 0) {
-            this.toastr.warning('Select Bcds First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        this.investmentRecService.investmentBcdsFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
-        this.investmentRecService.insertInvestmentBcds().subscribe(res => {
-            debugger;
-            this.investmentRecService.investmentBcdsFormData = res;
-            this.onChangeBcdsInBcds();
-            this.updateInvestmentRec();
-            this.isDonationValid = true;
-            this.toastr.success('Save successfully', 'Investment ');
-        }, err => { console.log(err); });
     }
     insertInvestmentTargetedProd() {
-        debugger;
+        //debugger;
         if (this.investmentRecService.investmentRecFormData.id == null || this.investmentRecService.investmentRecFormData.id == undefined || this.investmentRecService.investmentRecFormData.id == 0) {
             this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
                 positionClass: 'toast-top-right'
             });
             return false;
         }
+        // if(this.investmentRecService.investmentDetailFormData.id==null || this.investmentRecService.investmentDetailFormData.id==undefined || this.investmentRecService.investmentDetailFormData.id==0)
+        // {
+        //   this.toastr.warning('Insert Investment Detail First', 'Investment ', {
+        //     positionClass: 'toast-top-right' 
+        //  });
+        //  return false;
+        // }
+        // if(this.investmentRecService.investmentTargetedProdFormData.productId==null || this.investmentRecService.investmentTargetedProdFormData.productId==undefined || this.investmentRecService.investmentTargetedProdFormData.productId==0)
+        // {
+        //   this.toastr.warning('Select Product First', 'Investment ', {
+        //     positionClass: 'toast-top-right' 
+        //  });
+        //  return false;
+        // }
+        if (this.investmentTargetedProds !== undefined) {
+            for (let i = 0; i < this.investmentTargetedProds.length; i++) {
+                if (this.investmentTargetedProds[i].productInfo.id == this.investmentRecService.investmentTargetedProdFormData.productId) {
+                    alert("product already exist !");
+                    return false;
+                }
+            }
+        }
+        else {
+            this.toastr.warning('Select Product First', 'Investment ', {
+                positionClass: 'toast-top-right'
+            });
+            return false;
+        }
+        this.investmentRecService.investmentTargetedProdFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
+        //if(this.investmentRecService.investmentTargetedProdFormData.id==null || this.investmentRecService.investmentTargetedProdFormData.id==undefined || this.investmentRecService.investmentTargetedProdFormData.id==0)
+        //{
+        this.investmentRecService.insertInvestmentTargetedProd(this.investmentTargetedProds).subscribe(res => {
+            //debugger;
+            //this.investmentRecService.investmentTargetedProdFormData=new InvestmentTargetedProd();
+            this.getInvestmentTargetedProd();
+            this.isDonationValid = true;
+            this.toastr.success('Save successfully', 'Investment ');
+        }, err => { console.log(err); });
+        // }
+        // else{
+        //   this.investmentRecService.updateInvestmentTargetedProd().subscribe(
+        //     res => {
+        //       debugger;
+        //      this.investmentRecService.investmentTargetedProdFormData=new InvestmentTargetedProd();
+        //      this.getInvestmentTargetedProd();
+        //      this.isDonationValid=true;
+        //       this.toastr.success('Update successfully', 'Investment ');
+        //     },
+        //     err => { console.log(err); }
+        //   );
+        // }
+    }
+    addInvestmentTargetedProd() {
+        //debugger;
         if (this.investmentRecService.investmentTargetedProdFormData.productId == null || this.investmentRecService.investmentTargetedProdFormData.productId == undefined || this.investmentRecService.investmentTargetedProdFormData.productId == 0) {
             this.toastr.warning('Select Product First', 'Investment ', {
                 positionClass: 'toast-top-right'
@@ -2382,60 +2317,27 @@ class InvestmentRecComponent {
         }
         if (this.investmentTargetedProds !== undefined) {
             for (let i = 0; i < this.investmentTargetedProds.length; i++) {
-                if (this.investmentTargetedProds[i].productInfo.id === this.investmentRecService.investmentTargetedProdFormData.productId) {
+                if (this.investmentTargetedProds[i].productInfo.id == this.investmentRecService.investmentTargetedProdFormData.productId) {
                     alert("product already exist !");
                     return false;
                 }
             }
-        }
-        this.investmentRecService.investmentTargetedProdFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
-        if (this.investmentRecService.investmentTargetedProdFormData.id == null || this.investmentRecService.investmentTargetedProdFormData.id == undefined || this.investmentRecService.investmentTargetedProdFormData.id == 0) {
-            this.investmentRecService.insertInvestmentTargetedProd().subscribe(res => {
-                debugger;
-                this.investmentRecService.investmentTargetedProdFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__["InvestmentTargetedProd"]();
-                this.getInvestmentTargetedProd();
-                this.isDonationValid = true;
-                this.toastr.success('Save successfully', 'Investment ');
-            }, err => { console.log(err); });
-        }
-        else {
-            this.investmentRecService.updateInvestmentTargetedProd().subscribe(res => {
-                debugger;
-                this.investmentRecService.investmentTargetedProdFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__["InvestmentTargetedProd"]();
-                this.getInvestmentTargetedProd();
-                this.isDonationValid = true;
-                this.toastr.success('Update successfully', 'Investment ');
-            }, err => { console.log(err); });
-        }
-    }
-    insertInvestmentTargetedGroup() {
-        debugger;
-        if (this.investmentRecService.investmentRecFormData.id == null || this.investmentRecService.investmentRecFormData.id == undefined || this.investmentRecService.investmentRecFormData.id == 0) {
-            this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        if (this.investmentRecService.investmentTargetedGroupFormData.marketGroupMstId == null || this.investmentRecService.investmentTargetedGroupFormData.marketGroupMstId == undefined || this.investmentRecService.investmentTargetedGroupFormData.marketGroupMstId == 0) {
-            this.toastr.warning('Select Market Group First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        if (this.investmentTargetedGroups != null && this.investmentTargetedGroups.length > 0) {
-            this.investmentRecService.investmentTargetedGroupFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
-            this.investmentRecService.insertInvestmentTargetedGroup(this.investmentTargetedGroups).subscribe(res => {
-                debugger;
-                this.investmentRecService.investmentTargetedProdFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__["InvestmentTargetedProd"]();
-                this.getInvestmentTargetedGroup();
-                this.isDonationValid = true;
-                this.toastr.success(res);
-            }, err => { console.log(err); });
-        }
-        else {
-            this.toastr.warning('Select Market Group First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
+            for (let i = 0; i < this.products.length; i++) {
+                if (this.products[i].id == this.investmentRecService.investmentTargetedProdFormData.productId) {
+                    let data = new _shared_models_investmentRec__WEBPACK_IMPORTED_MODULE_0__["InvestmentTargetedProd"]();
+                    data.id = 0;
+                    data.investmentInitId = this.investmentRecService.investmentRecFormData.id;
+                    data.productId = this.investmentRecService.investmentTargetedProdFormData.productId;
+                    data.productInfo = this.products[i];
+                    //data.productInfo.push({ id: this.products[i].id, productName: this.products[i].productName,productCode: this.products[i].productCode});
+                    //data.productInfo.productName=this.products[i].productName;
+                    //data.productInfo.productCode=this.products[i].productCode;
+                    this.investmentTargetedProds.push(data);
+                    return false;
+                }
+            }
+            // this.investmentTargetedProds.push(      
+            //   { id: 0, investmentInitId: this.investmentRecService.investmentRecFormData.id,productId:0 });
         }
     }
     editInvestmentTargetedProd(selectedRecord) {
@@ -2451,113 +2353,47 @@ class InvestmentRecComponent {
     }
     resetPage(form) {
         form.reset();
-        this.investmentRecService.investmentRecFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__["InvestmentRec"]();
+        this.investmentRecService.investmentRecFormData = new _shared_models_investmentRec__WEBPACK_IMPORTED_MODULE_0__["InvestmentInit"]();
         this.isValid = false;
     }
-    removeInvestmentDoctor() {
-        var c = confirm("Are you sure you want to delete that?");
-        if (c == true) {
-            this.investmentRecService.removeInvestmentDoctor().subscribe(res => {
-                this.toastr.success(res);
-                this.isDonationValid = false;
-                this.investmentRecService.investmentDoctorFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__["InvestmentDoctor"]();
-            }, err => { debugger; console.log(err); });
-        }
-    }
-    removeInvestmentInstitution() {
-        var c = confirm("Are you sure you want to delete that?");
-        if (c == true) {
-            this.investmentRecService.removeInvestmentInstitution().subscribe(res => {
-                debugger;
-                this.toastr.success(res);
-                this.isDonationValid = false;
-                this.investmentRecService.investmentInstitutionFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__["InvestmentInstitution"]();
-            }, err => { console.log(err); });
-        }
-    }
-    removeInvestmentCampaign() {
-        var c = confirm("Are you sure you want to delete that?");
-        if (c == true) {
-            this.investmentRecService.removeInvestmentCampaign().subscribe(res => {
-                debugger;
-                this.toastr.success(res);
-                this.isDonationValid = false;
-                this.investmentRecService.investmentCampaignFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__["InvestmentCampaign"]();
-            }, err => { console.log(err); });
-        }
-    }
-    removeInvestmentSociety() {
-        var c = confirm("Are you sure you want to delete that?");
-        if (c == true) {
-            this.investmentRecService.removeInvestmentSociety().subscribe(res => {
-                debugger;
-                this.toastr.success(res);
-                this.isDonationValid = false;
-                this.investmentRecService.investmentSocietyFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__["InvestmentSociety"]();
-            }, err => { console.log(err); });
-        }
-    }
-    removeInvestmentBcds() {
-        var c = confirm("Are you sure you want to delete that?");
-        if (c == true) {
-            this.investmentRecService.removeInvestmentBcds().subscribe(res => {
-                debugger;
-                this.toastr.success(res);
-                this.isDonationValid = false;
-                this.investmentRecService.investmentBcdsFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__["InvestmentBcds"]();
-            }, err => { console.log(err); });
-        }
-    }
     removeInvestmentTargetedProd(selectedRecord) {
+        if (this.investmentTargetedProds.find(x => x.productId == selectedRecord.productId)) {
+            this.investmentTargetedProds.splice(this.investmentTargetedProds.findIndex(x => x.productId == selectedRecord.productId), 1);
+        }
+        if (this.investmentRecService.investmentRecCommentFormData.id == null || this.investmentRecService.investmentRecCommentFormData.id == undefined || this.investmentRecService.investmentRecCommentFormData.id == 0) {
+            return false;
+        }
         this.investmentRecService.investmentTargetedProdFormData = Object.assign({}, selectedRecord);
         var c = confirm("Are you sure you want to delete that?");
         if (c == true) {
             this.investmentRecService.removeInvestmentTargetedProd().subscribe(res => {
-                debugger;
+                //debugger;
                 this.toastr.success(res);
                 //this.isDonationValid=false;
-                this.investmentRecService.investmentTargetedProdFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__["InvestmentTargetedProd"]();
+                this.investmentRecService.investmentTargetedProdFormData = new _shared_models_investmentRec__WEBPACK_IMPORTED_MODULE_0__["InvestmentTargetedProd"]();
                 this.getInvestmentTargetedProd();
             }, err => { console.log(err); });
         }
     }
-    removeInvestmentTargetedGroup() {
-        //this.investmentRecService.investmentTargetedProdFormData = Object.assign({}, selectedRecord);
-        if (this.investmentTargetedGroups != null && this.investmentTargetedGroups.length > 0) {
-            var c = confirm("Are you sure you want to delete that?");
-            if (c == true) {
-                this.investmentRecService.removeInvestmentTargetedGroup(this.investmentTargetedGroups).subscribe(res => {
-                    debugger;
-                    this.toastr.success(res);
-                    //this.isDonationValid=false;
-                    this.investmentRecService.investmentTargetedGroupFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__["InvestmentTargetedGroup"]();
-                    this.getInvestmentTargetedGroup();
-                }, err => { console.log(err); });
-            }
-        }
-        else {
-            this.toastr.warning('No Market Group Found', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-        }
-    }
 }
-InvestmentRecComponent.ɵfac = function InvestmentRecComponent_Factory(t) { return new (t || InvestmentRecComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_services_investmentRec_service__WEBPACK_IMPORTED_MODULE_3__["InvestmentRecService"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](ngx_toastr__WEBPACK_IMPORTED_MODULE_5__["ToastrService"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](ngx_bootstrap_modal__WEBPACK_IMPORTED_MODULE_6__["BsModalService"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_angular_common__WEBPACK_IMPORTED_MODULE_1__["DatePipe"])); };
+InvestmentRecComponent.ɵfac = function InvestmentRecComponent_Factory(t) { return new (t || InvestmentRecComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_account_account_service__WEBPACK_IMPORTED_MODULE_3__["AccountService"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_services_investmentRec_service__WEBPACK_IMPORTED_MODULE_4__["InvestmentRecService"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](ngx_toastr__WEBPACK_IMPORTED_MODULE_6__["ToastrService"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](ngx_bootstrap_modal__WEBPACK_IMPORTED_MODULE_7__["BsModalService"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_angular_common__WEBPACK_IMPORTED_MODULE_1__["DatePipe"])); };
 InvestmentRecComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdefineComponent"]({ type: InvestmentRecComponent, selectors: [["app-investmentRec"]], viewQuery: function InvestmentRecComponent_Query(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵviewQuery"](_c0, 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵviewQuery"](_c1, 1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵviewQuery"](_c2, 1);
     } if (rf & 2) {
         let _t;
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵloadQuery"]()) && (ctx.searchTerm = _t.first);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵloadQuery"]()) && (ctx.investmentInitSearchModal = _t.first);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵloadQuery"]()) && (ctx.investmentRecSearchModal = _t.first);
-    } }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵProvidersFeature"]([_angular_common__WEBPACK_IMPORTED_MODULE_1__["DatePipe"]])], decls: 236, vars: 44, consts: [[1, "content"], [1, "container-fluid"], [1, "row"], [1, "col-sm-12"], ["novalidate", "", "autocomplete", "off", 3, "submit"], ["investmentRecForm", "ngForm"], [1, "card", "card-primary"], [1, "card-header"], [1, "col-sm-6"], [1, "card-title"], [1, "col-sm-2"], ["type", "submit", 1, "btn", "btn-success", "btn-lg", "btn-block", 3, "disabled"], [1, "fa", "fa-save"], ["type", "button", 1, "btn", "btn-info", "btn-lg", "btn-block", 3, "click"], [1, "fa", "fa-search"], ["type", "button", 1, "btn", "btn-danger", "btn-lg", "btn-block", 3, "click"], [1, "card-body"], [1, "form-group"], [1, "col-md-2"], [1, "col-md-3"], ["id", "id", "name", "id", "readonly", "", 1, "form-control", 2, "display", "none", 3, "ngModel", "ngModelChange"], ["id", "ngModel"], ["placeholder", "Please Double Click Here", "id", "referenceNo", "name", "referenceNo", "readonly", "", 1, "form-control", 3, "ngModel", "dblclick", "ngModelChange"], ["referenceNo", "ngModel"], ["id", "proposeFor", "name", "proposeFor", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["proposeFor", "ngModel"], ["id", "donationType", "name", "donationType", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["donationType", "ngModel"], ["id", "donationTo", "name", "donationTo", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["donationTo", "ngModel"], [4, "ngIf"], ["class", "col-sm-2", 4, "ngIf"], [1, "col-md-6"], [1, "table", "table-bordered"], [4, "ngFor", "ngForOf"], [1, "col-md-10"], ["name", "proposedAmount", "id", "proposedAmount", 1, "form-control", 3, "ngModel", "ngModelChange"], ["proposedAmount", "ngModel"], ["name", "purpose", "id", "purpose", 1, "form-control", 3, "ngModel", "ngModelChange"], ["purpose", "ngModel"], ["placeholder", "Calender", "name", "fromDate", "bsDatepicker", "", 1, "form-control", 3, "ngModel", "bsValue", "bsConfig", "onHidden", "ngModelChange"], ["fromDate", "ngModel"], ["placeholder", "Calender", "name", "toDate", "bsDatepicker", "", 1, "form-control", 3, "ngModel", "bsValue", "bsConfig", "onHidden", "ngModelChange"], ["toDate", "ngModel"], ["name", "totalMonth", "id", "totalMonth", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["totalMonth", "ngModel"], ["name", "commitmentAllSBU", "id", "commitmentAllSBU", 1, "form-control", 3, "ngModel", "ngModelChange"], ["commitmentAllSBU", "ngModel"], [1, "col-md-1"], ["name", "commitmentOwnSBU", "id", "commitmentOwnSBU", 1, "form-control", 3, "ngModel", "ngModelChange"], ["commitmentOwnSBU", "ngModel"], ["name", "paymentMethod", "id", "paymentMethod", 1, "form-control", 3, "ngModel", "ngModelChange"], ["paymentMethod", "ngModel"], [3, "ngValue"], ["value", "Cash"], ["value", "Cheque"], ["value", "DD"], ["value", "TT"], ["value", "PO"], ["name", "chequeTitle", "id", "chequeTitle", 1, "form-control", 3, "ngModel", "ngModelChange"], ["chequeTitle", "ngModel"], ["type", "button", 1, "btn", "btn-success", "btn-lg", "btn-block"], ["id", "productId", "name", "productId", 1, "form-control", 3, "ngModel", "ngModelChange"], ["productId", "ngModel"], [3, "value", 4, "ngFor", "ngForOf"], ["class", "col-md-2", 4, "ngIf"], ["name", "marketGroupMstId", "name", "marketGroupMstId", 1, "form-control", 3, "ngModel", "change", "ngModelChange"], ["marketGroupMstId", "ngModel"], ["investmentRecSearchModal", ""], ["name", "doctorName", "readonly", "", "id", "doctorName", 1, "form-control", 3, "ngModel", "ngModelChange"], ["doctorId", "ngModel"], ["name", "doctorId", "readonly", "", "id", "doctorId", 1, "form-control", 3, "ngModel", "ngModelChange"], ["name", "degree", "readonly", "", "id", "degree", "name", "degree", 1, "form-control", 3, "ngModel", "ngModelChange"], ["degree", "ngModel"], ["name", "designation", "readonly", "", "id", "designation", "name", "designation", 1, "form-control", 3, "ngModel", "ngModelChange"], ["designation", "ngModel"], ["name", "designation", "readonly", "", "id", "institutionId", "name", "institutionId", 1, "form-control", 3, "ngModel", "ngModelChange"], ["institutionId", "ngModel"], ["name", "doctorCategory", "id", "doctorCategory", 1, "form-control", 3, "ngModel", "ngModelChange"], ["name", "address", "readonly", "", "id", "address", "name", "address", 1, "form-control", 3, "ngModel", "ngModelChange"], ["address", "ngModel"], ["readonly", "", "name", "doctorType", "id", "doctorType", 1, "form-control", 3, "ngModel", "ngModelChange"], ["doctorType", "ngModel"], ["readonly", "", "id", "practiceDayPerMonth", "name", "practiceDayPerMonth", 1, "form-control", 3, "ngModel", "ngModelChange"], ["practiceDayPerMonth", "ngModel"], ["readonly", "", "id", "patientsPerDay", "name", "patientsPerDay", 1, "form-control", 3, "ngModel", "ngModelChange"], ["patientsPerDay", "ngModel"], ["id", "institutionName", "name", "institutionName", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["institutionName", "ngModel"], ["id", "resposnsibleDoctorName", "name", "resposnsibleDoctorName", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["resposnsibleDoctorName", "ngModel"], ["name", "address", "id", "address", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["name", "institutionType", "id", "institutionType", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["institutionType", "ngModel"], ["name", "noOfBed", "id", "noOfBed", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["noOfBed", "ngModel"], ["name", "departmentUnit", "id", "departmentUnit", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["departmentUnit", "ngModel"], ["name", "campaignName", "id", "campaignName", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["campaignName", "ngModel"], ["name", "subCampaignName", "id", "subCampaignName", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["subCampaignName", "ngModel"], ["name", "subCampStartDate", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["subCampStartDate", "ngModel"], ["name", "subCampEndDate", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["subCampEndDate", "ngModel"], ["name", "doctorName", "id", "doctorName", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["doctorName", "ngModel"], ["name", "institutionName", "id", "institutionName", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["ame", "bcdsName", "id", "bcdsName", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["bcdsName", "ngModel"], ["name", "bcdsAddress", "id", "bcdsAddress", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["bcdsAddress", "ngModel"], ["name", "noOfMember", "id", "noOfMember", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["noOfMember", "ngModel"], ["id", "societyName", "name", "societyName", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["societyName", "ngModel"], ["name", "societyAddress", "id", "societyAddress", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["societyAddress", "ngModel"], ["name", "noOfMembers", "id", "noOfMember", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["type", "button", 1, "btn", "btn-success", "btn-lg", "btn-block", 3, "click"], [3, "value"], ["type", "button", 1, "btn", "btn-primary", "btn-lg", "btn-block", 3, "click"], [1, "fa", "fa-plus"], ["type", "button", "value", "Edit", 3, "click"], ["type", "button", "value", "Remove", 3, "click"], [1, "modal-header", 2, "background", "-webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc))", "color", "black"], [1, "modal-title", "pull-left"], ["type", "button", "aria-label", "Close", 1, "close", "pull-right", 3, "click"], ["aria-hidden", "true"], [1, "modal-body", 2, "padding", "20px 30px 20px 30px"], [1, "col-md-12"], [1, "table-responsive", 2, "border", "1px solid #bed2c9", "width", "100%"], [1, "table", "table-bordered", "table-responsive", "table-hover", "table-striped"], [2, "background", "-webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc))"], ["scope", "col", 2, "width", "7%"], ["scope", "col", 2, "width", "0", "display", "none"], ["scope", "col", 2, "width", "9%"], ["scope", "col", 2, "width", "8%"], [1, "btn", "btn-sm", "btn-embossed", "btn-success", 3, "click"], [2, "display", "none"]], template: function InvestmentRecComponent_Template(rf, ctx) { if (rf & 1) {
-        const _r114 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
+    } }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵProvidersFeature"]([_angular_common__WEBPACK_IMPORTED_MODULE_1__["DatePipe"]])], decls: 249, vars: 43, consts: [[1, "content"], [1, "container-fluid"], [1, "row"], [1, "col-sm-12"], ["novalidate", "", "autocomplete", "off", 3, "submit"], ["investmentRecForm", "ngForm"], [1, "card", "card-primary"], [1, "card-header"], [1, "col-sm-6"], [1, "card-title"], [1, "col-sm-2"], ["type", "submit", 1, "btn", "btn-success", "btn-lg", "btn-block", 3, "disabled"], [1, "fa", "fa-save"], ["type", "button", 1, "btn", "btn-info", "btn-lg", "btn-block", 3, "click"], [1, "fa", "fa-search"], ["type", "button", 1, "btn", "btn-danger", "btn-lg", "btn-block", 3, "click"], [1, "card-body"], [1, "form-group"], [1, "col-md-2"], [1, "col-md-3"], ["id", "id", "name", "id", "readonly", "", "required", "", 1, "form-control", 2, "display", "none", 3, "ngModel", "ngModelChange"], ["id", "ngModel"], ["placeholder", "Please Double Click Here", "id", "referenceNo", "name", "referenceNo", "readonly", "", 1, "form-control", 3, "ngModel", "dblclick", "ngModelChange"], ["referenceNo", "ngModel"], ["id", "proposeFor", "name", "proposeFor", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["proposeFor", "ngModel"], ["id", "donationType", "name", "donationType", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["donationType", "ngModel"], ["id", "donationTo", "name", "donationTo", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["donationTo", "ngModel"], [4, "ngIf"], [1, "col-md-6"], [1, "table", "table-bordered"], [4, "ngFor", "ngForOf"], [1, "col-md-10"], ["name", "proposedAmount", "id", "proposedAmount", 1, "form-control", 3, "ngModel", "ngModelChange"], ["proposedAmount", "ngModel"], ["name", "purpose", "id", "purpose", 1, "form-control", 3, "ngModel", "ngModelChange"], ["purpose", "ngModel"], ["placeholder", "Calender", "name", "fromDate", "bsDatepicker", "", 1, "form-control", 3, "ngModel", "bsValue", "bsConfig", "onHidden", "ngModelChange"], ["fromDate", "ngModel"], ["placeholder", "Calender", "name", "toDate", "bsDatepicker", "", 1, "form-control", 3, "ngModel", "bsValue", "bsConfig", "onHidden", "ngModelChange"], ["toDate", "ngModel"], ["name", "totalMonth", "id", "totalMonth", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["totalMonth", "ngModel"], ["name", "commitmentAllSBU", "id", "commitmentAllSBU", 1, "form-control", 3, "ngModel", "ngModelChange"], ["commitmentAllSBU", "ngModel"], [1, "col-md-1"], ["name", "commitmentOwnSBU", "id", "commitmentOwnSBU", 1, "form-control", 3, "ngModel", "ngModelChange"], ["commitmentOwnSBU", "ngModel"], ["name", "paymentMethod", "id", "paymentMethod", 1, "form-control", 3, "ngModel", "ngModelChange"], ["paymentMethod", "ngModel"], [3, "ngValue"], ["value", "Cash"], ["value", "Cheque"], ["value", "DD"], ["value", "TT"], ["value", "PO"], ["name", "chequeTitle", "id", "chequeTitle", 1, "form-control", 3, "ngModel", "ngModelChange"], ["chequeTitle", "ngModel"], ["id", "productId", "name", "productId", 1, "form-control", 3, "ngModel", "ngModelChange"], ["productId", "ngModel"], [3, "value", 4, "ngFor", "ngForOf"], ["class", "col-md-2", 4, "ngIf"], ["id", "recStatus", "name", "recStatus", "required", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["recStatus", "ngModel"], ["value", "Recommended"], ["value", "Not Recommended"], ["name", "comments", "id", "comments", 1, "form-control", 3, "ngModel", "ngModelChange"], ["comments", "ngModel"], ["investmentInitSearchModal", ""], ["investmentRecSearchModal", ""], ["id", "id", "name", "id", "readonly", "", 1, "form-control", 2, "display", "none", 3, "ngModel", "ngModelChange"], ["name", "doctorName", "readonly", "", "id", "doctorName", 1, "form-control", 3, "ngModel", "ngModelChange"], ["doctorId", "ngModel"], ["name", "doctorId", "readonly", "", "id", "doctorId", 1, "form-control", 3, "ngModel", "ngModelChange"], ["name", "degree", "readonly", "", "id", "degree", "name", "degree", 1, "form-control", 3, "ngModel", "ngModelChange"], ["degree", "ngModel"], ["name", "designation", "readonly", "", "id", "designation", "name", "designation", 1, "form-control", 3, "ngModel", "ngModelChange"], ["designation", "ngModel"], ["name", "designation", "readonly", "", "id", "institutionId", "name", "institutionId", 1, "form-control", 3, "ngModel", "ngModelChange"], ["institutionId", "ngModel"], ["name", "doctorCategory", "id", "doctorCategory", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["name", "address", "readonly", "", "id", "address", "name", "address", 1, "form-control", 3, "ngModel", "ngModelChange"], ["address", "ngModel"], ["readonly", "", "name", "doctorType", "id", "doctorType", 1, "form-control", 3, "ngModel", "ngModelChange"], ["doctorType", "ngModel"], ["readonly", "", "id", "practiceDayPerMonth", "name", "practiceDayPerMonth", 1, "form-control", 3, "ngModel", "ngModelChange"], ["practiceDayPerMonth", "ngModel"], ["readonly", "", "id", "patientsPerDay", "name", "patientsPerDay", 1, "form-control", 3, "ngModel", "ngModelChange"], ["patientsPerDay", "ngModel"], ["id", "institutionName", "name", "institutionName", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["institutionName", "ngModel"], ["id", "resposnsibleDoctorName", "name", "resposnsibleDoctorName", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["resposnsibleDoctorName", "ngModel"], ["name", "address", "id", "address", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["name", "institutionType", "id", "institutionType", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["institutionType", "ngModel"], ["name", "noOfBed", "id", "noOfBed", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["noOfBed", "ngModel"], ["name", "departmentUnit", "id", "departmentUnit", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["departmentUnit", "ngModel"], ["name", "campaignName", "id", "campaignName", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["campaignName", "ngModel"], ["name", "subCampaignName", "id", "subCampaignName", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["subCampaignName", "ngModel"], ["name", "subCampStartDate", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["subCampStartDate", "ngModel"], ["name", "subCampEndDate", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["subCampEndDate", "ngModel"], ["name", "doctorName", "id", "doctorName", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["doctorName", "ngModel"], ["name", "institutionName", "id", "institutionName", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["ame", "bcdsName", "id", "bcdsName", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["bcdsName", "ngModel"], ["name", "bcdsAddress", "id", "bcdsAddress", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["bcdsAddress", "ngModel"], ["name", "noOfMember", "id", "noOfMember", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["noOfMember", "ngModel"], ["id", "societyName", "name", "societyName", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["societyName", "ngModel"], ["name", "societyAddress", "id", "societyAddress", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["societyAddress", "ngModel"], ["name", "noOfMembers", "id", "noOfMember", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], [3, "value"], ["type", "button", 1, "btn", "btn-primary", "btn-lg", "btn-block", 3, "click"], [1, "fa", "fa-plus"], ["type", "button", "value", "Edit", 3, "click"], ["type", "button", "value", "Remove", 3, "click"], [1, "modal-header", 2, "background", "-webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc))", "color", "black"], [1, "modal-title", "pull-left"], ["type", "button", "aria-label", "Close", 1, "close", "pull-right", 3, "click"], ["aria-hidden", "true"], [1, "modal-body", 2, "padding", "20px 30px 20px 30px"], [1, "col-md-12"], [1, "table-responsive", 2, "border", "1px solid #bed2c9", "width", "100%"], [1, "table", "table-bordered", "table-responsive", "table-hover", "table-striped"], [2, "background", "-webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc))"], ["scope", "col", 2, "width", "7%"], ["scope", "col", 2, "width", "0", "display", "none"], ["scope", "col", 2, "width", "9%"], ["scope", "col", 2, "width", "8%"], [1, "btn", "btn-sm", "btn-embossed", "btn-success", 3, "click"], [2, "display", "none"]], template: function InvestmentRecComponent_Template(rf, ctx) { if (rf & 1) {
+        const _r118 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "section", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "div", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "div", 2);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](3, "div", 3);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](4, "form", 4, 5);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("submit", function InvestmentRecComponent_Template_form_submit_4_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r114); const _r0 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](5); return ctx.onSubmit(_r0); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("submit", function InvestmentRecComponent_Template_form_submit_4_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r118); const _r0 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](5); return ctx.onSubmit(_r0); });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](6, "div", 6);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](7, "div", 7);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](8, "div", 2);
@@ -2574,14 +2410,14 @@ InvestmentRecComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵd
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](16, "div", 10);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](17, "button", 13);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentRecComponent_Template_button_click_17_listener() { return ctx.getInvestmentRec(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentRecComponent_Template_button_click_17_listener() { return ctx.getInvestmentRecommended(); });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](18, "i", 14);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](19, "Search");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](20, "div", 10);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](21, "button", 15);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentRecComponent_Template_button_click_21_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r114); const _r0 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](5); return ctx.resetPage(_r0); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentRecComponent_Template_button_click_21_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r118); const _r0 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](5); return ctx.resetPage(_r0); });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](22, "i", 14);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](23, "Reset");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
@@ -2604,7 +2440,6 @@ InvestmentRecComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵd
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("dblclick", function InvestmentRecComponent_Template_input_dblclick_33_listener() { return ctx.getInvestmentInit(); })("ngModelChange", function InvestmentRecComponent_Template_input_ngModelChange_33_listener($event) { return ctx.investmentRecService.investmentRecFormData.referenceNo = $event; });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](35, "div", 18);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](36, "label");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](37, "Propose For");
@@ -2613,6 +2448,7 @@ InvestmentRecComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵd
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](38, "div", 19);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](39, "input", 24, 25);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_Template_input_ngModelChange_39_listener($event) { return ctx.investmentRecService.investmentRecFormData.proposeFor = $event; });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
@@ -2656,174 +2492,173 @@ InvestmentRecComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵd
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](67, "div", 10);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](68, InvestmentRecComponent_div_68_Template, 4, 0, "div", 31);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](69, "div", 17);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](70, "div", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](71, "div", 32);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](72, "div", 17);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](73, "table", 33);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](74, "tr");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](75, "td");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](76, "Investment");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](68, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](69, "div", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](70, "div", 31);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](71, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](72, "table", 32);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](73, "tr");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](74, "td");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](75, "Investment");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](77, "td");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](78, "Commitment-All");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](76, "td");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](77, "Commitment-All");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](79, "td");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](80, "Commitment-Own");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](78, "td");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](79, "Commitment-Own");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](81, "td");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](82, "Share-All");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](80, "td");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](81, "Share-All");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](83, "td");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](84, "Share-Own");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](82, "td");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](83, "Share-Own");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](85, InvestmentRecComponent_tr_85_Template, 11, 5, "tr", 34);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](84, InvestmentRecComponent_tr_84_Template, 11, 5, "tr", 33);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](86, "div", 32);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](87, "div", 17);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](88, "div", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](89, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](90, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](91, "Prop. Inv.");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](85, "div", 31);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](86, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](87, "div", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](88, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](89, "label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](90, "Prop. Inv.");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](92, "div", 35);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](93, "input", 36, 37);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_Template_input_ngModelChange_93_listener($event) { return ctx.investmentRecService.investmentDetailFormData.proposedAmount = $event; });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](91, "div", 34);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](92, "input", 35, 36);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_Template_input_ngModelChange_92_listener($event) { return ctx.investmentRecService.investmentDetailFormData.proposedAmount = $event; });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](95, "div", 17);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](96, "div", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](97, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](98, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](99, "Purpose");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](94, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](95, "div", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](96, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](97, "label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](98, "Purpose");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](100, "div", 35);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](101, "input", 38, 39);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_Template_input_ngModelChange_101_listener($event) { return ctx.investmentRecService.investmentDetailFormData.purpose = $event; });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](99, "div", 34);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](100, "input", 37, 38);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_Template_input_ngModelChange_100_listener($event) { return ctx.investmentRecService.investmentDetailFormData.purpose = $event; });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](103, "div", 17);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](104, "div", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](105, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](106, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](107, "Duration");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](102, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](103, "div", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](104, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](105, "label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](106, "Duration");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](108, "div", 19);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](109, "input", 40, 41);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("onHidden", function InvestmentRecComponent_Template_input_onHidden_109_listener() { return ctx.changeDateInDetail(); })("ngModelChange", function InvestmentRecComponent_Template_input_ngModelChange_109_listener($event) { return ctx.investmentRecService.investmentDetailFormData.fromDate = $event; });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](107, "div", 19);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](108, "input", 39, 40);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("onHidden", function InvestmentRecComponent_Template_input_onHidden_108_listener() { return ctx.changeDateInDetail(); })("ngModelChange", function InvestmentRecComponent_Template_input_ngModelChange_108_listener($event) { return ctx.investmentRecService.investmentDetailFormData.fromDate = $event; });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](111, "div", 19);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](112, "input", 42, 43);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("onHidden", function InvestmentRecComponent_Template_input_onHidden_112_listener() { return ctx.changeDateInDetail(); })("ngModelChange", function InvestmentRecComponent_Template_input_ngModelChange_112_listener($event) { return ctx.investmentRecService.investmentDetailFormData.toDate = $event; });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](110, "div", 19);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](111, "input", 41, 42);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("onHidden", function InvestmentRecComponent_Template_input_onHidden_111_listener() { return ctx.changeDateInDetail(); })("ngModelChange", function InvestmentRecComponent_Template_input_ngModelChange_111_listener($event) { return ctx.investmentRecService.investmentDetailFormData.toDate = $event; });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](114, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](115, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](116, "Total Month");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](113, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](114, "label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](115, "Total Month");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](117, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](118, "input", 44, 45);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_Template_input_ngModelChange_118_listener($event) { return ctx.investmentRecService.investmentDetailFormData.totalMonth = $event; });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](116, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](117, "input", 43, 44);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_Template_input_ngModelChange_117_listener($event) { return ctx.investmentRecService.investmentDetailFormData.totalMonth = $event; });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](120, "div", 17);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](121, "div", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](122, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](123, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](124, "Commitment:");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](119, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](120, "div", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](121, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](122, "label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](123, "Commitment:");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](125, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](126, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](127, "All SBU ");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](124, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](125, "label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](126, "All SBU ");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](128, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](129, "input", 46, 47);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_Template_input_ngModelChange_129_listener($event) { return ctx.investmentRecService.investmentDetailFormData.commitmentAllSBU = $event; });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](127, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](128, "input", 45, 46);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_Template_input_ngModelChange_128_listener($event) { return ctx.investmentRecService.investmentDetailFormData.commitmentAllSBU = $event; });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](131, "div", 48);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](132, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](133, "%/");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](130, "div", 47);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](131, "label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](132, "%/");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](134, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](135, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](136, "Own SBU");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](133, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](134, "label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](135, "Own SBU");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](137, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](138, "input", 49, 50);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_Template_input_ngModelChange_138_listener($event) { return ctx.investmentRecService.investmentDetailFormData.commitmentOwnSBU = $event; });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](136, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](137, "input", 48, 49);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_Template_input_ngModelChange_137_listener($event) { return ctx.investmentRecService.investmentDetailFormData.commitmentOwnSBU = $event; });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](140, "div", 48);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](141, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](142, "%");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](139, "div", 47);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](140, "label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](141, "%");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](143, "div", 17);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](144, "div", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](145, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](146, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](147, "Payment Method");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](142, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](143, "div", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](144, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](145, "label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](146, "Payment Method");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](148, "div", 35);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](149, "select", 51, 52);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_Template_select_ngModelChange_149_listener($event) { return ctx.investmentRecService.investmentDetailFormData.paymentMethod = $event; });
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](151, "option", 53);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](152, "Select Payment Method");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](147, "div", 34);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](148, "select", 50, 51);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_Template_select_ngModelChange_148_listener($event) { return ctx.investmentRecService.investmentDetailFormData.paymentMethod = $event; });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](150, "option", 52);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](151, "Select Payment Method");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](153, "option", 54);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](154, "Cash");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](152, "option", 53);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](153, "Cash");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](155, "option", 55);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](156, "Cheque");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](154, "option", 54);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](155, "Cheque");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](157, "option", 56);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](158, "DD");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](156, "option", 55);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](157, "DD");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](159, "option", 57);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](160, "TT");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](158, "option", 56);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](159, "TT");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](161, "option", 58);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](162, "PO");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](160, "option", 57);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](161, "PO");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](163, "div", 17);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](164, "div", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](165, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](166, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](167, "Cheque Title");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](162, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](163, "div", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](164, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](165, "label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](166, "Cheque Title");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](168, "div", 35);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](169, "input", 59, 60);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_Template_input_ngModelChange_169_listener($event) { return ctx.investmentRecService.investmentDetailFormData.chequeTitle = $event; });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](167, "div", 34);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](168, "input", 58, 59);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_Template_input_ngModelChange_168_listener($event) { return ctx.investmentRecService.investmentDetailFormData.chequeTitle = $event; });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
@@ -2832,122 +2667,145 @@ InvestmentRecComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵd
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](171, "fieldset");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](172, "div", 17);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](173, "div", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](174, "div", 8);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](175, "h3", 9);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](176, "strong");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](177, "Targeted Products of SBU");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](170, "fieldset");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](171, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](172, "div", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](173, "div", 8);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](174, "h3", 9);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](175, "strong");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](176, "Targeted Products of SBU");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](178, "div", 10);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](179, "div", 10);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](180, "button", 61);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](181, "i", 12);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](182, "\u00A0 Update");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](177, "div", 10);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](178, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](179, "div", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](180, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](181, "label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](182, "Product");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](183, "div", 17);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](184, "div", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](185, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](186, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](187, "Product");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](183, "div", 19);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](184, "select", 60, 61);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_Template_select_ngModelChange_184_listener($event) { return ctx.investmentRecService.investmentTargetedProdFormData.productId = $event; });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](186, "option", 52);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](187, "Select Product");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](188, InvestmentRecComponent_option_188_Template, 2, 2, "option", 62);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](188, "div", 19);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](189, "select", 62, 63);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_Template_select_ngModelChange_189_listener($event) { return ctx.investmentRecService.investmentTargetedProdFormData.productId = $event; });
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](191, "option", 53);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](192, "Select Product");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](193, InvestmentRecComponent_option_193_Template, 2, 2, "option", 64);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](189, "div", 19);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](190, InvestmentRecComponent_div_190_Template, 4, 0, "div", 63);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](194, "div", 19);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](195, InvestmentRecComponent_div_195_Template, 4, 0, "div", 65);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](191, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](192, "table", 32);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](193, "tr");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](194, "td");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](195, "Product Code");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](196, "td");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](197, "Product Name");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](196, "div", 17);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](197, "table", 33);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](198, "tr");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](199, "td");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](200, "Product Code");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](201, "td");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](202, "Product Name");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](198, InvestmentRecComponent_tr_198_Template, 9, 2, "tr", 33);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](203, InvestmentRecComponent_tr_203_Template, 9, 2, "tr", 34);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](199, "fieldset");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](200, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](201, "div", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](202, "div", 8);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](203, "h3", 9);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](204, "strong");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](205, "Targeted Group");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](204, "fieldset");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](205, "div", 17);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](206, "div", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](207, "div", 8);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](208, "h3", 9);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](209, "strong");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](210, "Targeted Group");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](206, "div", 10);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](211, "div", 10);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](207, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](208, "table", 32);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](209, "tr");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](210, "td");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](211, "Market Group Name");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](212, "td");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](213, "Market Code");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](212, "div", 17);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](213, "div", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](214, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](215, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](216, "Group");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](214, "td");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](215, "Market Name");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](217, "div", 19);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](218, "select", 66, 67);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("change", function InvestmentRecComponent_Template_select_change_218_listener() { return ctx.onChangeMarketGroupInTargetedGroup(); })("ngModelChange", function InvestmentRecComponent_Template_select_ngModelChange_218_listener($event) { return ctx.investmentRecService.investmentTargetedGroupFormData.marketGroupMstId = $event; });
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](220, "option", 53);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](221, "Select Market Group");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](216, InvestmentRecComponent_tr_216_Template, 7, 3, "tr", 33);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](222, InvestmentRecComponent_option_222_Template, 2, 2, "option", 64);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](223, "div", 19);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](217, "fieldset");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](218, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](219, "div", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](220, "div", 8);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](221, "h3", 9);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](222, "strong");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](223, "Recommendation Status");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](224, "div", 17);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](225, "table", 33);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](226, "tr");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](227, "td");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](228, "Market Group Name");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](229, "td");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](230, "Market Code");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](224, "div", 10);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](231, "td");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](232, "Market Name");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](225, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](226, "div", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](227, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](228, "label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](229, "Recommendation Status");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](233, InvestmentRecComponent_tr_233_Template, 7, 3, "tr", 34);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](230, "div", 19);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](231, "select", 64, 65);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_Template_select_ngModelChange_231_listener($event) { return ctx.investmentRecService.investmentRecCommentFormData.recStatus = $event; });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](233, "option", 52);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](234, "Select Status");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](235, "option", 66);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](236, "Recommended");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](237, "option", 67);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](238, "Not Recommended");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](239, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](240, "label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](241, "Comments");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](242, "div", 19);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](243, "input", 68, 69);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentRecComponent_Template_input_ngModelChange_243_listener($event) { return ctx.investmentRecService.investmentRecCommentFormData.comments = $event; });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](234, InvestmentRecComponent_ng_template_234_Template, 27, 1, "ng-template", null, 68, _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplateRefExtractor"]);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](245, InvestmentRecComponent_ng_template_245_Template, 27, 1, "ng-template", null, 70, _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplateRefExtractor"]);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](247, InvestmentRecComponent_ng_template_247_Template, 27, 1, "ng-template", null, 71, _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplateRefExtractor"]);
     } if (rf & 2) {
         const _r0 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](5);
-        const _r15 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](110);
-        const _r16 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](113);
-        const _r22 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](190);
-        const _r26 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](219);
+        const _r14 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](109);
+        const _r15 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](112);
+        const _r21 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](185);
+        const _r26 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](232);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](13);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("disabled", _r0.invalid);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](18);
@@ -2970,19 +2828,17 @@ InvestmentRecComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵd
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx.investmentRecService.investmentRecFormData.donationTo == "Bcds");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx.investmentRecService.investmentRecFormData.donationTo == "Society");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](9);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx.isValid);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](25);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx.investmentDetails);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](8);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentRecService.investmentDetailFormData.proposedAmount);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](8);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentRecService.investmentDetailFormData.purpose);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](8);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵclassProp"]("invalid", _r15.invalid && _r15.touched);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵclassProp"]("invalid", _r14.invalid && _r14.touched);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentRecService.investmentDetailFormData.fromDate)("bsValue", ctx.bsValue)("bsConfig", ctx.bsConfig);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](3);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵclassProp"]("invalid", _r16.invalid && _r16.touched);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵclassProp"]("invalid", _r15.invalid && _r15.touched);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentRecService.investmentDetailFormData.toDate)("bsValue", ctx.bsValue)("bsConfig", ctx.bsConfig);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](6);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentRecService.investmentDetailFormData.totalMonth);
@@ -2996,8 +2852,8 @@ InvestmentRecComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵd
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngValue", null);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](18);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentRecService.investmentDetailFormData.chequeTitle);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](20);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵclassProp"]("invalid", _r22.invalid && _r22.touched);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](16);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵclassProp"]("invalid", _r21.invalid && _r21.touched);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentRecService.investmentTargetedProdFormData.productId);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngValue", null);
@@ -3007,16 +2863,16 @@ InvestmentRecComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵd
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx.isValid);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](8);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx.investmentTargetedProds);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx.investmentTargetedGroups);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](15);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵclassProp"]("invalid", _r26.invalid && _r26.touched);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentRecService.investmentTargetedGroupFormData.marketGroupMstId);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentRecService.investmentRecCommentFormData.recStatus);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngValue", null);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx.marketGroupMsts);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](11);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx.investmentTargetedGroups);
-    } }, directives: [_angular_forms__WEBPACK_IMPORTED_MODULE_7__["ɵangular_packages_forms_forms_y"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["NgControlStatusGroup"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["NgForm"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["NgModel"], _angular_common__WEBPACK_IMPORTED_MODULE_1__["NgIf"], _angular_common__WEBPACK_IMPORTED_MODULE_1__["NgForOf"], ngx_bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_8__["BsDatepickerInputDirective"], ngx_bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_8__["BsDatepickerDirective"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["SelectControlValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["NgSelectOption"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["ɵangular_packages_forms_forms_x"]], encapsulation: 2 });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](10);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentRecService.investmentRecCommentFormData.comments);
+    } }, directives: [_angular_forms__WEBPACK_IMPORTED_MODULE_8__["ɵangular_packages_forms_forms_y"], _angular_forms__WEBPACK_IMPORTED_MODULE_8__["NgControlStatusGroup"], _angular_forms__WEBPACK_IMPORTED_MODULE_8__["NgForm"], _angular_forms__WEBPACK_IMPORTED_MODULE_8__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_8__["RequiredValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_8__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_8__["NgModel"], _angular_common__WEBPACK_IMPORTED_MODULE_1__["NgIf"], _angular_common__WEBPACK_IMPORTED_MODULE_1__["NgForOf"], ngx_bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_9__["BsDatepickerInputDirective"], ngx_bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_9__["BsDatepickerDirective"], _angular_forms__WEBPACK_IMPORTED_MODULE_8__["SelectControlValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_8__["NgSelectOption"], _angular_forms__WEBPACK_IMPORTED_MODULE_8__["ɵangular_packages_forms_forms_x"]], encapsulation: 2 });
 
 
 /***/ }),
@@ -3031,16 +2887,16 @@ InvestmentRecComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵd
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InvestmentAprComponent", function() { return InvestmentAprComponent; });
-/* harmony import */ var _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../shared/models/investment */ "eIik");
+/* harmony import */ var _shared_models_investmentApr__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../shared/models/investmentApr */ "SQiD");
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "ofXK");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "fXoL");
-/* harmony import */ var _services_investment_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../_services/investment.service */ "39we");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "tyNb");
-/* harmony import */ var ngx_toastr__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ngx-toastr */ "5eHb");
-/* harmony import */ var ngx_bootstrap_modal__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ngx-bootstrap/modal */ "K3ix");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
-/* harmony import */ var ngx_bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ngx-bootstrap/datepicker */ "hzby");
-
+/* harmony import */ var _account_account_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../account/account.service */ "2rwd");
+/* harmony import */ var _services_investmentApr_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../_services/investmentApr.service */ "P06L");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ "tyNb");
+/* harmony import */ var ngx_toastr__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ngx-toastr */ "5eHb");
+/* harmony import */ var ngx_bootstrap_modal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ngx-bootstrap/modal */ "K3ix");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
+/* harmony import */ var ngx_bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ngx-bootstrap/datepicker */ "hzby");
 
 
 
@@ -3054,58 +2910,9 @@ __webpack_require__.r(__webpack_exports__);
 
 const _c0 = ["search"];
 const _c1 = ["investmentInitSearchModal"];
-function InvestmentAprComponent_option_57_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "option", 75);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} if (rf & 2) {
-    const a_r34 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("value", a_r34.donationTypeName);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r34.donationTypeName);
-} }
-function InvestmentAprComponent_fieldset_76_div_8_Template(rf, ctx) { if (rf & 1) {
-    const _r52 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 10);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "button", 102);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentAprComponent_fieldset_76_div_8_Template_button_click_1_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r52); const ctx_r51 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](2); return ctx_r51.insertInvestmentDoctor(); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](2, "i", 12);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](3, "\u00A0 Save");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} }
-function InvestmentAprComponent_fieldset_76_div_9_Template(rf, ctx) { if (rf & 1) {
-    const _r54 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 10);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "button", 15);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentAprComponent_fieldset_76_div_9_Template_button_click_1_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r54); const ctx_r53 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](2); return ctx_r53.removeInvestmentDoctor(); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](2, "i", 103);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](3, "\u00A0 Remove");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} }
-function InvestmentAprComponent_fieldset_76_option_24_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "option", 75);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} if (rf & 2) {
-    const a_r55 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("value", a_r55.id);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r55.doctorName);
-} }
-function InvestmentAprComponent_fieldset_76_option_55_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "option", 75);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} if (rf & 2) {
-    const a_r56 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("value", a_r56.id);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r56.institutionName);
-} }
-function InvestmentAprComponent_fieldset_76_Template(rf, ctx) { if (rf & 1) {
-    const _r58 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
+const _c2 = ["investmentAprSearchModal"];
+function InvestmentAprComponent_fieldset_55_Template(rf, ctx) { if (rf & 1) {
+    const _r44 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "fieldset");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "div", 17);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "div", 2);
@@ -3116,252 +2923,159 @@ function InvestmentAprComponent_fieldset_76_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](7, "div", 10);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](8, InvestmentAprComponent_fieldset_76_div_8_Template, 4, 0, "div", 40);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](9, InvestmentAprComponent_fieldset_76_div_9_Template, 4, 0, "div", 40);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](10, "div", 17);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](11, "div", 2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](12, "div", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](13, "label");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](14, "Doctor Name");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](7, "div", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](8, "div", 2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](9, "div", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](10, "label");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](11, "Doctor Name");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](15, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](16, "input", 25, 26);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_76_Template_input_ngModelChange_16_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r58); const ctx_r57 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r57.investmentInitService.investmentDoctorFormData.id = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](12, "div", 19);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](13, "input", 72, 21);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_55_Template_input_ngModelChange_13_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r44); const ctx_r43 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r43.investmentAprService.investmentDoctorFormData.id = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](18, "input", 76, 77);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_76_Template_input_ngModelChange_18_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r58); const ctx_r59 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r59.investmentInitService.investmentDoctorFormData.investmentInitId = $event; });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](20, "select", 78, 79);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("change", function InvestmentAprComponent_fieldset_76_Template_select_change_20_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r58); const ctx_r60 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r60.onChangeDoctorInDoc(); })("ngModelChange", function InvestmentAprComponent_fieldset_76_Template_select_ngModelChange_20_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r58); const ctx_r61 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r61.investmentInitService.investmentDoctorFormData.doctorName = $event; });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](22, "option", 22);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](23, "Select Doctor");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](24, InvestmentAprComponent_fieldset_76_option_24_Template, 2, 2, "option", 31);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](15, "input", 73, 74);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_55_Template_input_ngModelChange_15_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r44); const ctx_r45 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r45.investmentAprService.investmentDoctorFormData.doctorName = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](17, "div", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](18, "label");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](19, "Doctor Id");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](20, "div", 19);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](21, "input", 75, 74);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_55_Template_input_ngModelChange_21_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r44); const ctx_r46 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r46.investmentAprService.investmentDoctorFormData.doctorId = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](23, "div", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](24, "div", 2);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](25, "div", 18);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](26, "label");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](27, "Doctor Id");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](27, "Degree");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](28, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](29, "input", 80, 81);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_76_Template_input_ngModelChange_29_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r58); const ctx_r62 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r62.investmentInitService.investmentDoctorFormData.doctorId = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](29, "input", 76, 77);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_55_Template_input_ngModelChange_29_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r44); const ctx_r47 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r47.investmentAprService.investmentDoctorFormData.degree = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](31, "div", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](32, "label");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](33, "Designation");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](34, "div", 19);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](35, "input", 78, 79);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_55_Template_input_ngModelChange_35_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r44); const ctx_r48 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r48.investmentAprService.investmentDoctorFormData.designation = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](31, "div", 17);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](32, "div", 2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](33, "div", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](34, "label");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](35, "Degree");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](36, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](37, "input", 82, 83);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_76_Template_input_ngModelChange_37_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r58); const ctx_r63 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r63.investmentInitService.investmentDoctorFormData.degree = $event; });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](37, "div", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](38, "div", 2);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](39, "div", 18);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](40, "label");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](41, "Designation");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](41, "Institution");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](42, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](43, "input", 84, 85);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_76_Template_input_ngModelChange_43_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r58); const ctx_r64 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r64.investmentInitService.investmentDoctorFormData.designation = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](43, "input", 80, 81);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_55_Template_input_ngModelChange_43_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r44); const ctx_r49 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r49.investmentAprService.investmentDoctorFormData.institutionId = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](45, "div", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](46, "label");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](47, "Doctor Category");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](48, "div", 19);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](49, "input", 82, 27);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_55_Template_input_ngModelChange_49_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r44); const ctx_r50 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r50.investmentAprService.investmentDoctorFormData.doctorCategory = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](45, "div", 17);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](46, "div", 2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](47, "div", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](48, "label");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](49, "Institution");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](51, "div", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](52, "div", 2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](53, "div", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](54, "label");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](55, "Address");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](50, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](51, "select", 86, 87);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("change", function InvestmentAprComponent_fieldset_76_Template_select_change_51_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r58); const ctx_r65 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r65.onChangeInstitutionInDoc(); })("ngModelChange", function InvestmentAprComponent_fieldset_76_Template_select_ngModelChange_51_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r58); const ctx_r66 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r66.investmentInitService.investmentDoctorFormData.institutionId = $event; });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](53, "option", 22);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](54, "Select Institution");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](55, InvestmentAprComponent_fieldset_76_option_55_Template, 2, 2, "option", 31);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](56, "div", 19);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](57, "input", 83, 84);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_55_Template_input_ngModelChange_57_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r44); const ctx_r51 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r51.investmentAprService.investmentDoctorFormData.address = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](56, "div", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](57, "label");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](58, "Doctor Category");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](59, "div", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](60, "label");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](61, "Doctor Type");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](59, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](60, "select", 88, 30);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_76_Template_select_ngModelChange_60_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r58); const ctx_r67 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r67.investmentInitService.investmentDoctorFormData.doctorCategory = $event; });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](62, "option", 22);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](63, "Select Doctor Category");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](64, "option", 89);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](65, "Regular");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](66, "option", 90);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](67, "Mirgratory");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](62, "div", 19);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](63, "input", 85, 86);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_55_Template_input_ngModelChange_63_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r44); const ctx_r52 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r52.investmentAprService.investmentDoctorFormData.doctorType = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](68, "div", 17);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](69, "div", 2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](70, "div", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](71, "label");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](72, "Address");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](73, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](74, "input", 91, 92);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_76_Template_input_ngModelChange_74_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r58); const ctx_r68 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r68.investmentInitService.investmentDoctorFormData.address = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](65, "div", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](66, "div", 2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](67, "div", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](68, "label");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](69, "No. Of Prac. Day/ Month");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](76, "div", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](77, "label");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](78, "Doctor Type");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](70, "div", 19);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](71, "input", 87, 88);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_55_Template_input_ngModelChange_71_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r44); const ctx_r53 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r53.investmentAprService.investmentDoctorFormData.practiceDayPerMonth = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](79, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](80, "select", 93, 94);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_76_Template_select_ngModelChange_80_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r58); const ctx_r69 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r69.investmentInitService.investmentDoctorFormData.doctorType = $event; });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](82, "option", 22);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](83, "Select Doctor Type");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](84, "option", 95);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](85, "A");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](86, "option", 96);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](87, "B");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](88, "option", 97);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](89, "C");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](73, "div", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](74, "label");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](75, "No. Of Patients Day");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](90, "div", 17);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](91, "div", 2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](92, "div", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](93, "label");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](94, "No. Of Prac. Day/ Month");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](95, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](96, "input", 98, 99);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_76_Template_input_ngModelChange_96_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r58); const ctx_r70 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r70.investmentInitService.investmentDoctorFormData.practiceDayPerMonth = $event; });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](98, "div", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](99, "label");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](100, "No. Of Patients Day");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](101, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](102, "input", 100, 101);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_76_Template_input_ngModelChange_102_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r58); const ctx_r71 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r71.investmentInitService.investmentDoctorFormData.patientsPerDay = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](76, "div", 19);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](77, "input", 89, 90);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_55_Template_input_ngModelChange_77_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r44); const ctx_r54 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r54.investmentAprService.investmentDoctorFormData.patientsPerDay = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const ctx_r7 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](8);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx_r7.isValid);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx_r7.isValid);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](7);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r7.investmentInitService.investmentDoctorFormData.id);
+    const ctx_r6 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](13);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r6.investmentAprService.investmentDoctorFormData.id);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r7.investmentInitService.investmentDoctorFormData.investmentInitId);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r7.investmentInitService.investmentDoctorFormData.doctorName);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngValue", null);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx_r7.doctors);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](5);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r7.investmentInitService.investmentDoctorFormData.doctorId);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](8);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r7.investmentInitService.investmentDoctorFormData.degree);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r6.investmentAprService.investmentDoctorFormData.doctorName);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](6);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r7.investmentInitService.investmentDoctorFormData.designation);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r6.investmentAprService.investmentDoctorFormData.doctorId);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](8);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r7.investmentInitService.investmentDoctorFormData.institutionId);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngValue", null);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx_r7.institutions);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](5);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r7.investmentInitService.investmentDoctorFormData.doctorCategory);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngValue", null);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](12);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r7.investmentInitService.investmentDoctorFormData.address);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r6.investmentAprService.investmentDoctorFormData.degree);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](6);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r7.investmentInitService.investmentDoctorFormData.doctorType);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngValue", null);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](14);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r7.investmentInitService.investmentDoctorFormData.practiceDayPerMonth);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r6.investmentAprService.investmentDoctorFormData.designation);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](8);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r6.investmentAprService.investmentDoctorFormData.institutionId);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](6);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r7.investmentInitService.investmentDoctorFormData.patientsPerDay);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r6.investmentAprService.investmentDoctorFormData.doctorCategory);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](8);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r6.investmentAprService.investmentDoctorFormData.address);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](6);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r6.investmentAprService.investmentDoctorFormData.doctorType);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](8);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r6.investmentAprService.investmentDoctorFormData.practiceDayPerMonth);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](6);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r6.investmentAprService.investmentDoctorFormData.patientsPerDay);
 } }
-function InvestmentAprComponent_fieldset_77_div_8_Template(rf, ctx) { if (rf & 1) {
-    const _r85 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 10);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "button", 102);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentAprComponent_fieldset_77_div_8_Template_button_click_1_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r85); const ctx_r84 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](2); return ctx_r84.insertInvestmentInstitution(); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](2, "i", 12);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](3, "\u00A0 Save");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} }
-function InvestmentAprComponent_fieldset_77_div_9_Template(rf, ctx) { if (rf & 1) {
-    const _r87 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 10);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "button", 15);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentAprComponent_fieldset_77_div_9_Template_button_click_1_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r87); const ctx_r86 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](2); return ctx_r86.removeInvestmentInstitution(); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](2, "i", 103);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](3, "\u00A0 Remove");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} }
-function InvestmentAprComponent_fieldset_77_option_24_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "option", 75);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} if (rf & 2) {
-    const a_r88 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("value", a_r88.id);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r88.institutionName);
-} }
-function InvestmentAprComponent_fieldset_77_option_33_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "option", 75);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} if (rf & 2) {
-    const a_r89 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("value", a_r89.id);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r89.doctorName);
-} }
-function InvestmentAprComponent_fieldset_77_Template(rf, ctx) { if (rf & 1) {
-    const _r91 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
+function InvestmentAprComponent_fieldset_56_Template(rf, ctx) { if (rf & 1) {
+    const _r62 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "fieldset");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "div", 17);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "div", 2);
@@ -3372,190 +3086,97 @@ function InvestmentAprComponent_fieldset_77_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](7, "div", 10);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](8, InvestmentAprComponent_fieldset_77_div_8_Template, 4, 0, "div", 40);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](9, InvestmentAprComponent_fieldset_77_div_9_Template, 4, 0, "div", 40);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](10, "div", 17);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](11, "div", 2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](12, "div", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](13, "label");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](14, "Institution Id");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](7, "div", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](8, "div", 2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](9, "div", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](10, "label");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](11, "Institution ");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](15, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](16, "input", 25, 26);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_77_Template_input_ngModelChange_16_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r91); const ctx_r90 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r90.investmentInitService.investmentInstitutionFormData.id = $event; });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](18, "input", 76, 77);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_77_Template_input_ngModelChange_18_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r91); const ctx_r92 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r92.investmentInitService.investmentInstitutionFormData.investmentInitId = $event; });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](20, "select", 86, 87);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("change", function InvestmentAprComponent_fieldset_77_Template_select_change_20_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r91); const ctx_r93 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r93.onChangeInstitutionInInst(); })("ngModelChange", function InvestmentAprComponent_fieldset_77_Template_select_ngModelChange_20_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r91); const ctx_r94 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r94.investmentInitService.investmentInstitutionFormData.institutionId = $event; });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](22, "option", 22);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](23, "Select Institution");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](24, InvestmentAprComponent_fieldset_77_option_24_Template, 2, 2, "option", 31);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](12, "div", 19);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](13, "input", 91, 92);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_56_Template_input_ngModelChange_13_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r62); const ctx_r61 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r61.investmentAprService.investmentInstitutionFormData.institutionName = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](25, "div", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](26, "label");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](27, "Responsible Doctor Id");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](15, "div", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](16, "label");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](17, "Responsible Doctor");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](28, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](29, "select", 104, 105);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_77_Template_select_ngModelChange_29_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r91); const ctx_r95 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r95.investmentInitService.investmentInstitutionFormData.resposnsibleDoctorId = $event; });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](31, "option", 22);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](32, "Select Doctor");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](33, InvestmentAprComponent_fieldset_77_option_33_Template, 2, 2, "option", 31);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](18, "div", 19);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](19, "input", 93, 94);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_56_Template_input_ngModelChange_19_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r62); const ctx_r63 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r63.investmentAprService.investmentInstitutionFormData.resposnsibleDoctorName = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](34, "div", 17);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](35, "div", 2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](36, "div", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](37, "label");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](38, "Address");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](21, "div", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](22, "div", 2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](23, "div", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](24, "label");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](25, "Address");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](39, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](40, "input", 106, 92);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_77_Template_input_ngModelChange_40_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r91); const ctx_r96 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r96.investmentInitService.investmentInstitutionFormData.address = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](26, "div", 19);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](27, "input", 95, 84);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_56_Template_input_ngModelChange_27_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r62); const ctx_r64 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r64.investmentAprService.investmentInstitutionFormData.address = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](42, "div", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](43, "label");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](44, "Institution Type");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](29, "div", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](30, "label");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](31, "Institution Type");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](45, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](46, "input", 107, 108);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_77_Template_input_ngModelChange_46_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r91); const ctx_r97 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r97.investmentInitService.investmentInstitutionFormData.institutionType = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](32, "div", 19);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](33, "input", 96, 97);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_56_Template_input_ngModelChange_33_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r62); const ctx_r65 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r65.investmentAprService.investmentInstitutionFormData.institutionType = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](48, "div", 17);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](49, "div", 2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](50, "div", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](51, "label");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](52, "No. Of Bed");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](35, "div", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](36, "div", 2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](37, "div", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](38, "label");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](39, "No. Of Bed");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](53, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](54, "input", 109, 110);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_77_Template_input_ngModelChange_54_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r91); const ctx_r98 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r98.investmentInitService.investmentInstitutionFormData.noOfBed = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](40, "div", 19);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](41, "input", 98, 99);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_56_Template_input_ngModelChange_41_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r62); const ctx_r66 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r66.investmentAprService.investmentInstitutionFormData.noOfBed = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](56, "div", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](57, "label");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](58, "Department/ Unit");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](43, "div", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](44, "label");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](45, "Department/ Unit");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](59, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](60, "input", 111, 112);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_77_Template_input_ngModelChange_60_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r91); const ctx_r99 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r99.investmentInitService.investmentInstitutionFormData.departmentUnit = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](46, "div", 19);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](47, "input", 100, 101);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_56_Template_input_ngModelChange_47_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r62); const ctx_r67 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r67.investmentAprService.investmentInstitutionFormData.departmentUnit = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const ctx_r8 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](8);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx_r8.isValid);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx_r8.isValid);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](7);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r8.investmentInitService.investmentInstitutionFormData.id);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r8.investmentInitService.investmentInstitutionFormData.investmentInitId);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r8.investmentInitService.investmentInstitutionFormData.institutionId);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngValue", null);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx_r8.institutions);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](5);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r8.investmentInitService.investmentInstitutionFormData.resposnsibleDoctorId);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngValue", null);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx_r8.doctors);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](7);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r8.investmentInitService.investmentInstitutionFormData.address);
+    const ctx_r7 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](13);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r7.investmentAprService.investmentInstitutionFormData.institutionName);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](6);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r8.investmentInitService.investmentInstitutionFormData.institutionType);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r7.investmentAprService.investmentInstitutionFormData.resposnsibleDoctorName);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](8);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r8.investmentInitService.investmentInstitutionFormData.noOfBed);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r7.investmentAprService.investmentInstitutionFormData.address);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](6);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r8.investmentInitService.investmentInstitutionFormData.departmentUnit);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r7.investmentAprService.investmentInstitutionFormData.institutionType);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](8);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r7.investmentAprService.investmentInstitutionFormData.noOfBed);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](6);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r7.investmentAprService.investmentInstitutionFormData.departmentUnit);
 } }
-function InvestmentAprComponent_fieldset_78_div_8_Template(rf, ctx) { if (rf & 1) {
-    const _r116 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 10);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "button", 102);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentAprComponent_fieldset_78_div_8_Template_button_click_1_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r116); const ctx_r115 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](2); return ctx_r115.insertInvestmentCampaign(); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](2, "i", 12);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](3, "\u00A0 Save");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} }
-function InvestmentAprComponent_fieldset_78_div_9_Template(rf, ctx) { if (rf & 1) {
-    const _r118 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 10);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "button", 15);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentAprComponent_fieldset_78_div_9_Template_button_click_1_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r118); const ctx_r117 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](2); return ctx_r117.removeInvestmentCampaign(); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](2, "i", 103);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](3, "\u00A0 Remove");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} }
-function InvestmentAprComponent_fieldset_78_option_20_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "option", 75);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} if (rf & 2) {
-    const a_r119 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("value", a_r119.id);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r119.campaignName);
-} }
-function InvestmentAprComponent_fieldset_78_option_29_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "option", 75);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} if (rf & 2) {
-    const a_r120 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("value", a_r120.id);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r120.subCampaign.subCampaignName);
-} }
-function InvestmentAprComponent_fieldset_78_option_54_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "option", 75);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} if (rf & 2) {
-    const a_r121 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("value", a_r121.id);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r121.doctorName);
-} }
-function InvestmentAprComponent_fieldset_78_option_67_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "option", 75);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} if (rf & 2) {
-    const a_r122 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("value", a_r122.id);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r122.institutionName);
-} }
-function InvestmentAprComponent_fieldset_78_tr_76_Template(rf, ctx) { if (rf & 1) {
+function InvestmentAprComponent_fieldset_57_tr_57_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "tr");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "td");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](2);
@@ -3568,14 +3189,14 @@ function InvestmentAprComponent_fieldset_78_tr_76_Template(rf, ctx) { if (rf & 1
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const a_r123 = ctx.$implicit;
+    const a_r75 = ctx.$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r123.productInfo.productCode, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r75.productInfo.productCode, " ");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r123.productInfo.productName, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r75.productInfo.productName, " ");
 } }
-function InvestmentAprComponent_fieldset_78_Template(rf, ctx) { if (rf & 1) {
-    const _r125 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
+function InvestmentAprComponent_fieldset_57_Template(rf, ctx) { if (rf & 1) {
+    const _r77 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "fieldset");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "div", 17);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "div", 2);
@@ -3586,194 +3207,115 @@ function InvestmentAprComponent_fieldset_78_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](7, "div", 10);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](8, InvestmentAprComponent_fieldset_78_div_8_Template, 4, 0, "div", 40);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](9, InvestmentAprComponent_fieldset_78_div_9_Template, 4, 0, "div", 40);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](10, "div", 17);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](11, "div", 2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](12, "div", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](13, "label");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](14, "Campaign Name");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](7, "div", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](8, "div", 2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](9, "div", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](10, "label");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](11, "Campaign Name");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](15, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](16, "select", 113, 114);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("change", function InvestmentAprComponent_fieldset_78_Template_select_change_16_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r125); const ctx_r124 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r124.onChangeCampaignInCamp(); })("ngModelChange", function InvestmentAprComponent_fieldset_78_Template_select_ngModelChange_16_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r125); const ctx_r126 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r126.investmentInitService.investmentCampaignFormData.campaignMstId = $event; });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](18, "option", 22);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](19, "Select Campaign");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](20, InvestmentAprComponent_fieldset_78_option_20_Template, 2, 2, "option", 31);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](12, "div", 19);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](13, "input", 102, 103);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_57_Template_input_ngModelChange_13_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r77); const ctx_r76 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r76.investmentAprService.investmentCampaignFormData.campaignName = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](21, "div", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](22, "label");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](23, "Sub-Campaign Name");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](15, "div", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](16, "label");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](17, "Sub-Campaign Name");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](24, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](25, "select", 115, 116);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("change", function InvestmentAprComponent_fieldset_78_Template_select_change_25_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r125); const ctx_r127 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r127.onChangeSubCampaignInCamp(); })("ngModelChange", function InvestmentAprComponent_fieldset_78_Template_select_ngModelChange_25_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r125); const ctx_r128 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r128.investmentInitService.investmentCampaignFormData.campaignDtlId = $event; });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](27, "option", 22);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](28, "Select Sub-Campaign");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](29, InvestmentAprComponent_fieldset_78_option_29_Template, 2, 2, "option", 31);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](18, "div", 19);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](19, "input", 104, 105);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_57_Template_input_ngModelChange_19_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r77); const ctx_r78 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r78.investmentAprService.investmentCampaignFormData.subCampaignName = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](30, "div", 17);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](31, "div", 2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](32, "div", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](33, "label");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](34, "Campaign Start date");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](21, "div", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](22, "div", 2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](23, "div", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](24, "label");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](25, "Campaign Start date");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](35, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](36, "input", 117, 118);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_78_Template_input_ngModelChange_36_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r125); const ctx_r129 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r129.investmentInitService.investmentCampaignFormData.subCampStartDate = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](26, "div", 19);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](27, "input", 106, 107);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_57_Template_input_ngModelChange_27_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r77); const ctx_r79 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r79.investmentAprService.investmentCampaignFormData.subCampStartDate = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](38, "div", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](39, "label");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](40, "Campaign End Date");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](29, "div", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](30, "label");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](31, "Campaign End Date");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](41, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](42, "input", 119, 120);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_78_Template_input_ngModelChange_42_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r125); const ctx_r130 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r130.investmentInitService.investmentCampaignFormData.subCampEndDate = $event; });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](44, "div", 17);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](45, "div", 2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](46, "div", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](47, "label");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](48, " Doctor");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](49, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](50, "select", 121, 81);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_78_Template_select_ngModelChange_50_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r125); const ctx_r131 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r131.investmentInitService.investmentCampaignFormData.doctorId = $event; });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](52, "option", 22);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](53, "Select Doctor");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](54, InvestmentAprComponent_fieldset_78_option_54_Template, 2, 2, "option", 31);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](55, "div", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](56, "label");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](57, "Institution Id");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](58, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](59, "input", 25, 26);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_78_Template_input_ngModelChange_59_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r125); const ctx_r132 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r132.investmentInitService.investmentCampaignFormData.id = $event; });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](61, "input", 76, 77);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_78_Template_input_ngModelChange_61_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r125); const ctx_r133 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r133.investmentInitService.investmentCampaignFormData.investmentInitId = $event; });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](63, "select", 122, 87);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("change", function InvestmentAprComponent_fieldset_78_Template_select_change_63_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r125); const ctx_r134 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r134.onChangeInstitutionInInst(); })("ngModelChange", function InvestmentAprComponent_fieldset_78_Template_select_ngModelChange_63_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r125); const ctx_r135 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r135.investmentInitService.investmentCampaignFormData.institutionId = $event; });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](65, "option", 22);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](66, "Select Institution");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](67, InvestmentAprComponent_fieldset_78_option_67_Template, 2, 2, "option", 31);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](32, "div", 19);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](33, "input", 108, 109);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_57_Template_input_ngModelChange_33_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r77); const ctx_r80 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r80.investmentAprService.investmentCampaignFormData.subCampEndDate = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](68, "div", 17);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](69, "div", 17);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](70, "table", 42);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](71, "tr");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](72, "td");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](73, "Product Code");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](74, "td");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](75, "Product Name");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](35, "div", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](36, "div", 2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](37, "div", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](38, "label");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](39, " Doctor");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](76, InvestmentAprComponent_fieldset_78_tr_76_Template, 7, 2, "tr", 43);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](40, "div", 19);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](41, "input", 110, 111);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_57_Template_input_ngModelChange_41_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r77); const ctx_r81 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r81.investmentAprService.investmentCampaignFormData.doctorName = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](43, "div", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](44, "label");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](45, "Institution Id");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](46, "div", 19);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](47, "input", 112, 92);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_57_Template_input_ngModelChange_47_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r77); const ctx_r82 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r82.investmentAprService.investmentCampaignFormData.institutionName = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](49, "div", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](50, "div", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](51, "table", 32);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](52, "tr");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](53, "td");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](54, "Product Code");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](55, "td");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](56, "Product Name");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](57, InvestmentAprComponent_fieldset_57_tr_57_Template, 7, 2, "tr", 33);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const ctx_r9 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](8);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx_r9.isValid);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx_r9.isValid);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](7);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r9.investmentInitService.investmentCampaignFormData.campaignMstId);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngValue", null);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx_r9.campaignMsts);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](5);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r9.investmentInitService.investmentCampaignFormData.campaignDtlId);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngValue", null);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx_r9.campaignDtls);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](7);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r9.investmentInitService.investmentCampaignFormData.subCampStartDate);
+    const ctx_r8 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](13);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r8.investmentAprService.investmentCampaignFormData.campaignName);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](6);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r9.investmentInitService.investmentCampaignFormData.subCampEndDate);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r8.investmentAprService.investmentCampaignFormData.subCampaignName);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](8);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r9.investmentInitService.investmentCampaignFormData.doctorId);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngValue", null);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx_r9.doctors);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](5);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r9.investmentInitService.investmentCampaignFormData.id);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r9.investmentInitService.investmentCampaignFormData.investmentInitId);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r9.investmentInitService.investmentCampaignFormData.institutionId);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngValue", null);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx_r9.institutions);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](9);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx_r9.campaignDtlProducts);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r8.investmentAprService.investmentCampaignFormData.subCampStartDate);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](6);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r8.investmentAprService.investmentCampaignFormData.subCampEndDate);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](8);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r8.investmentAprService.investmentCampaignFormData.doctorName);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](6);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r8.investmentAprService.investmentCampaignFormData.institutionName);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](10);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx_r8.campaignDtlProducts);
 } }
-function InvestmentAprComponent_fieldset_79_div_8_Template(rf, ctx) { if (rf & 1) {
-    const _r145 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 10);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "button", 102);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentAprComponent_fieldset_79_div_8_Template_button_click_1_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r145); const ctx_r144 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](2); return ctx_r144.insertInvestmentBcds(); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](2, "i", 12);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](3, "\u00A0 Save");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} }
-function InvestmentAprComponent_fieldset_79_div_9_Template(rf, ctx) { if (rf & 1) {
-    const _r147 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 10);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "button", 15);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentAprComponent_fieldset_79_div_9_Template_button_click_1_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r147); const ctx_r146 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](2); return ctx_r146.removeInvestmentBcds(); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](2, "i", 103);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](3, "\u00A0 Remove");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} }
-function InvestmentAprComponent_fieldset_79_option_24_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "option", 75);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} if (rf & 2) {
-    const a_r148 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("value", a_r148.id);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r148.bcdsName);
-} }
-function InvestmentAprComponent_fieldset_79_Template(rf, ctx) { if (rf & 1) {
-    const _r150 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
+function InvestmentAprComponent_fieldset_58_Template(rf, ctx) { if (rf & 1) {
+    const _r87 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "fieldset");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "div", 17);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "div", 2);
@@ -3784,113 +3326,58 @@ function InvestmentAprComponent_fieldset_79_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](7, "div", 10);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](8, InvestmentAprComponent_fieldset_79_div_8_Template, 4, 0, "div", 40);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](9, InvestmentAprComponent_fieldset_79_div_9_Template, 4, 0, "div", 40);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](10, "div", 17);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](11, "div", 2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](12, "div", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](13, "label");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](14, "BCDS ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](7, "div", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](8, "div", 2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](9, "div", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](10, "label");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](11, "BCDS ");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](15, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](16, "input", 25, 26);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_79_Template_input_ngModelChange_16_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r150); const ctx_r149 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r149.investmentInitService.investmentBcdsFormData.id = $event; });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](18, "input", 76, 77);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_79_Template_input_ngModelChange_18_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r150); const ctx_r151 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r151.investmentInitService.investmentBcdsFormData.investmentInitId = $event; });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](20, "select", 123, 124);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("change", function InvestmentAprComponent_fieldset_79_Template_select_change_20_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r150); const ctx_r152 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r152.onChangeBcdsInBcds(); })("ngModelChange", function InvestmentAprComponent_fieldset_79_Template_select_ngModelChange_20_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r150); const ctx_r153 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r153.investmentInitService.investmentBcdsFormData.bcdsId = $event; });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](22, "option", 22);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](23, "Select Bcds");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](24, InvestmentAprComponent_fieldset_79_option_24_Template, 2, 2, "option", 31);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](12, "div", 19);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](13, "input", 113, 114);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_58_Template_input_ngModelChange_13_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r87); const ctx_r86 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r86.investmentAprService.investmentBcdsFormData.bcdsName = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](25, "div", 17);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](26, "div", 2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](27, "div", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](28, "label");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](29, "BCDS Address");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](15, "div", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](16, "div", 2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](17, "div", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](18, "label");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](19, "BCDS Address");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](30, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](31, "input", 125, 126);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_79_Template_input_ngModelChange_31_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r150); const ctx_r154 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r154.investmentInitService.investmentBcdsFormData.bcdsAddress = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](20, "div", 19);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](21, "input", 115, 116);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_58_Template_input_ngModelChange_21_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r87); const ctx_r88 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r88.investmentAprService.investmentBcdsFormData.bcdsAddress = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](33, "div", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](34, "label");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](35, "No. Of Members");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](23, "div", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](24, "label");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](25, "No. Of Members");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](36, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](37, "input", 127, 128);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_79_Template_input_ngModelChange_37_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r150); const ctx_r155 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r155.investmentInitService.investmentBcdsFormData.noOfMember = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](26, "div", 19);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](27, "input", 117, 118);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_58_Template_input_ngModelChange_27_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r87); const ctx_r89 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r89.investmentAprService.investmentBcdsFormData.noOfMember = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const ctx_r10 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
+    const ctx_r9 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](13);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r9.investmentAprService.investmentBcdsFormData.bcdsName);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](8);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx_r10.isValid);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx_r10.isValid);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](7);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r10.investmentInitService.investmentBcdsFormData.id);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r10.investmentInitService.investmentBcdsFormData.investmentInitId);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r10.investmentInitService.investmentBcdsFormData.bcdsId);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngValue", null);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx_r10.bcds);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](7);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r10.investmentInitService.investmentBcdsFormData.bcdsAddress);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r9.investmentAprService.investmentBcdsFormData.bcdsAddress);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](6);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r10.investmentInitService.investmentBcdsFormData.noOfMember);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r9.investmentAprService.investmentBcdsFormData.noOfMember);
 } }
-function InvestmentAprComponent_fieldset_80_div_8_Template(rf, ctx) { if (rf & 1) {
-    const _r165 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 10);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "button", 102);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentAprComponent_fieldset_80_div_8_Template_button_click_1_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r165); const ctx_r164 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](2); return ctx_r164.insertInvestmentSociety(); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](2, "i", 12);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](3, "\u00A0 Save");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} }
-function InvestmentAprComponent_fieldset_80_div_9_Template(rf, ctx) { if (rf & 1) {
-    const _r167 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 10);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "button", 15);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentAprComponent_fieldset_80_div_9_Template_button_click_1_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r167); const ctx_r166 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](2); return ctx_r166.removeInvestmentSociety(); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](2, "i", 103);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](3, "\u00A0 Remove");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} }
-function InvestmentAprComponent_fieldset_80_option_24_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "option", 75);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} if (rf & 2) {
-    const a_r168 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("value", a_r168.id);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r168.societyName);
-} }
-function InvestmentAprComponent_fieldset_80_Template(rf, ctx) { if (rf & 1) {
-    const _r170 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
+function InvestmentAprComponent_fieldset_59_Template(rf, ctx) { if (rf & 1) {
+    const _r94 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "fieldset");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "div", 17);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "div", 2);
@@ -3901,92 +3388,57 @@ function InvestmentAprComponent_fieldset_80_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](7, "div", 10);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](8, InvestmentAprComponent_fieldset_80_div_8_Template, 4, 0, "div", 40);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](9, InvestmentAprComponent_fieldset_80_div_9_Template, 4, 0, "div", 40);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](10, "div", 17);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](11, "div", 2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](12, "div", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](13, "label");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](14, "Society Id");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](7, "div", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](8, "div", 2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](9, "div", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](10, "label");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](11, "Society Id");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](15, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](16, "input", 25, 26);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_80_Template_input_ngModelChange_16_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r170); const ctx_r169 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r169.investmentInitService.investmentSocietyFormData.id = $event; });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](18, "input", 76, 77);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_80_Template_input_ngModelChange_18_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r170); const ctx_r171 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r171.investmentInitService.investmentSocietyFormData.investmentInitId = $event; });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](20, "select", 129, 130);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("change", function InvestmentAprComponent_fieldset_80_Template_select_change_20_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r170); const ctx_r172 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r172.onChangeSocietyInSociety(); })("ngModelChange", function InvestmentAprComponent_fieldset_80_Template_select_ngModelChange_20_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r170); const ctx_r173 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r173.investmentInitService.investmentSocietyFormData.societyId = $event; });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](22, "option", 22);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](23, "Select Society");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](24, InvestmentAprComponent_fieldset_80_option_24_Template, 2, 2, "option", 31);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](12, "div", 19);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](13, "input", 119, 120);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_59_Template_input_ngModelChange_13_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r94); const ctx_r93 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r93.investmentAprService.investmentSocietyFormData.societyName = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](25, "div", 17);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](26, "div", 2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](27, "div", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](28, "label");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](29, "Society Address");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](15, "div", 17);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](16, "div", 2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](17, "div", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](18, "label");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](19, "Society Address");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](30, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](31, "input", 131, 132);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_80_Template_input_ngModelChange_31_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r170); const ctx_r174 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r174.investmentInitService.investmentSocietyFormData.societyAddress = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](20, "div", 19);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](21, "input", 121, 122);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_59_Template_input_ngModelChange_21_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r94); const ctx_r95 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r95.investmentAprService.investmentSocietyFormData.societyAddress = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](33, "div", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](34, "label");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](35, "No. Of Members");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](23, "div", 18);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](24, "label");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](25, "No. Of Members");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](36, "div", 19);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](37, "input", 133, 128);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_80_Template_input_ngModelChange_37_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r170); const ctx_r175 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r175.investmentInitService.investmentSocietyFormData.noOfMember = $event; });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](26, "div", 19);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](27, "input", 123, 118);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_fieldset_59_Template_input_ngModelChange_27_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r94); const ctx_r96 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r96.investmentAprService.investmentSocietyFormData.noOfMember = $event; });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const ctx_r11 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
+    const ctx_r10 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](13);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r10.investmentAprService.investmentSocietyFormData.societyName);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](8);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx_r11.isValid);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx_r11.isValid);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](7);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r11.investmentInitService.investmentSocietyFormData.id);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r11.investmentInitService.investmentSocietyFormData.investmentInitId);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r11.investmentInitService.investmentSocietyFormData.societyId);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngValue", null);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx_r11.society);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](7);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r11.investmentInitService.investmentSocietyFormData.societyAddress);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r10.investmentAprService.investmentSocietyFormData.societyAddress);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](6);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r11.investmentInitService.investmentSocietyFormData.noOfMember);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx_r10.investmentAprService.investmentSocietyFormData.noOfMember);
 } }
-function InvestmentAprComponent_div_89_Template(rf, ctx) { if (rf & 1) {
-    const _r177 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 10);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "button", 102);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentAprComponent_div_89_Template_button_click_1_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r177); const ctx_r176 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r176.insertInvestmentDetails(); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](2, "i", 12);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](3, "\u00A0 Save");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} }
-function InvestmentAprComponent_tr_106_Template(rf, ctx) { if (rf & 1) {
+function InvestmentAprComponent_tr_84_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "tr");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "td");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](2);
@@ -4005,40 +3457,40 @@ function InvestmentAprComponent_tr_106_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const a_r178 = ctx.$implicit;
+    const a_r97 = ctx.$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r178.purpose, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r97.purpose, " ");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r178.commitmentAllSBU, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r97.commitmentAllSBU, " ");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r178.commitmentOwnSBU, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r97.commitmentOwnSBU, " ");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r178.shareAllSBU, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r97.shareAllSBU, " ");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r178.shareOwnSBU, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r97.shareOwnSBU, " ");
 } }
-function InvestmentAprComponent_option_210_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "option", 75);
+function InvestmentAprComponent_option_188_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "option", 124);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const product_r179 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("value", product_r179.id);
+    const product_r98 = ctx.$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("value", product_r98.id);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](product_r179.productName);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](product_r98.productName);
 } }
-function InvestmentAprComponent_div_212_Template(rf, ctx) { if (rf & 1) {
-    const _r181 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
+function InvestmentAprComponent_div_190_Template(rf, ctx) { if (rf & 1) {
+    const _r100 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "button", 134);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentAprComponent_div_212_Template_button_click_1_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r181); const ctx_r180 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r180.insertInvestmentTargetedProd(); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](2, "i", 135);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "button", 125);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentAprComponent_div_190_Template_button_click_1_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r100); const ctx_r99 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r99.addInvestmentTargetedProd(); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](2, "i", 126);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](3, "\u00A0 Add");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } }
-function InvestmentAprComponent_tr_220_Template(rf, ctx) { if (rf & 1) {
-    const _r184 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
+function InvestmentAprComponent_tr_198_Template(rf, ctx) { if (rf & 1) {
+    const _r103 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "tr");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "td");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](2);
@@ -4047,54 +3499,24 @@ function InvestmentAprComponent_tr_220_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](4);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](5, "td");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](6, "input", 136);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentAprComponent_tr_220_Template_input_click_6_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r184); const a_r182 = ctx.$implicit; const ctx_r183 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r183.editInvestmentTargetedProd(a_r182); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](6, "input", 127);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentAprComponent_tr_198_Template_input_click_6_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r103); const a_r101 = ctx.$implicit; const ctx_r102 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r102.editInvestmentTargetedProd(a_r101); });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](7, "td");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](8, "input", 137);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentAprComponent_tr_220_Template_input_click_8_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r184); const a_r182 = ctx.$implicit; const ctx_r185 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r185.removeInvestmentTargetedProd(a_r182); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](8, "input", 128);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentAprComponent_tr_198_Template_input_click_8_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r103); const a_r101 = ctx.$implicit; const ctx_r104 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r104.removeInvestmentTargetedProd(a_r101); });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const a_r182 = ctx.$implicit;
+    const a_r101 = ctx.$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r182.productInfo.productCode, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r101.productInfo.productCode, " ");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r182.productInfo.productName, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r101.productInfo.productName, " ");
 } }
-function InvestmentAprComponent_option_239_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "option", 75);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} if (rf & 2) {
-    const a_r186 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("value", a_r186.id);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r186.groupName);
-} }
-function InvestmentAprComponent_div_241_Template(rf, ctx) { if (rf & 1) {
-    const _r188 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "button", 102);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentAprComponent_div_241_Template_button_click_1_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r188); const ctx_r187 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r187.insertInvestmentTargetedGroup(); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](2, "i", 135);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](3, "\u00A0 Save");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} }
-function InvestmentAprComponent_div_242_Template(rf, ctx) { if (rf & 1) {
-    const _r190 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 18);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "button", 15);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentAprComponent_div_242_Template_button_click_1_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r190); const ctx_r189 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r189.removeInvestmentTargetedGroup(); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](2, "i", 103);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](3, "\u00A0 Remove");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-} }
-function InvestmentAprComponent_tr_252_Template(rf, ctx) { if (rf & 1) {
+function InvestmentAprComponent_tr_216_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "tr");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "td");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](2);
@@ -4107,24 +3529,24 @@ function InvestmentAprComponent_tr_252_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const a_r191 = ctx.$implicit;
+    const a_r105 = ctx.$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r191.marketGroupMst.groupName, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r105.marketGroupMst.groupName, " ");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r191.marketCode, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r105.marketCode, " ");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r191.marketName, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate1"](" ", a_r105.marketName, " ");
 } }
-function InvestmentAprComponent_ng_template_253_tr_26_Template(rf, ctx) { if (rf & 1) {
-    const _r195 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
+function InvestmentAprComponent_ng_template_245_tr_26_Template(rf, ctx) { if (rf & 1) {
+    const _r109 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "tr");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "td");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "button", 151);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentAprComponent_ng_template_253_tr_26_Template_button_click_2_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r195); const a_r193 = ctx.$implicit; const ctx_r194 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](2); return ctx_r194.selectInvestmentInit(a_r193); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "button", 142);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentAprComponent_ng_template_245_tr_26_Template_button_click_2_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r109); const a_r107 = ctx.$implicit; const ctx_r108 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](2); return ctx_r108.selectInvestmentInit(a_r107); });
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](3, "Select");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](4, "td", 152);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](4, "td", 143);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](5);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](6, "td");
@@ -4141,60 +3563,60 @@ function InvestmentAprComponent_ng_template_253_tr_26_Template(rf, ctx) { if (rf
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const a_r193 = ctx.$implicit;
+    const a_r107 = ctx.$implicit;
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](5);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r193.id);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r107.id);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r193.referenceNo);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r107.referenceNo);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r193.proposeFor);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r107.proposeFor);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r193.donationType);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r107.donationType);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r193.donationTo);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r107.donationTo);
 } }
-function InvestmentAprComponent_ng_template_253_Template(rf, ctx) { if (rf & 1) {
-    const _r197 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 138);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "h4", 139);
+function InvestmentAprComponent_ng_template_245_Template(rf, ctx) { if (rf & 1) {
+    const _r111 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 129);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "h4", 130);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](2, "Investment Initialization");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](3, "button", 140);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentAprComponent_ng_template_253_Template_button_click_3_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r197); const ctx_r196 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r196.InvestmentInitSearchModalRef.hide(); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](4, "span", 141);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](3, "button", 131);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentAprComponent_ng_template_245_Template_button_click_3_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r111); const ctx_r110 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r110.InvestmentInitSearchModalRef.hide(); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](4, "span", 132);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](5, "\u00D7");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](6, "div", 142);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](6, "div", 133);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](7, "div", 2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](8, "div", 143);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](9, "div", 144);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](10, "table", 145);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](11, "thead", 146);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](8, "div", 134);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](9, "div", 135);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](10, "table", 136);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](11, "thead", 137);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](12, "tr");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](13, "th", 147);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](13, "th", 138);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](14, "Action");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](15, "th", 148);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](15, "th", 139);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](16, "Id");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](17, "th", 149);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](17, "th", 140);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](18, "Reference No");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](19, "th", 150);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](19, "th", 141);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](20, "Propose For");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](21, "th", 150);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](21, "th", 141);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](22, "Donation Type");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](23, "th", 150);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](23, "th", 141);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](24, "Donation To");
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](25, "tbody");
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](26, InvestmentAprComponent_ng_template_253_tr_26_Template, 14, 5, "tr", 43);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](26, InvestmentAprComponent_ng_template_245_tr_26_Template, 14, 5, "tr", 33);
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
@@ -4202,13 +3624,105 @@ function InvestmentAprComponent_ng_template_253_Template(rf, ctx) { if (rf & 1) 
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const ctx_r33 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
+    const ctx_r29 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](26);
-    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx_r33.investmentInits);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx_r29.investmentAprs);
+} }
+function InvestmentAprComponent_ng_template_247_tr_26_Template(rf, ctx) { if (rf & 1) {
+    const _r115 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "tr");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "td");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "button", 142);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentAprComponent_ng_template_247_tr_26_Template_button_click_2_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r115); const a_r113 = ctx.$implicit; const ctx_r114 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](2); return ctx_r114.selectInvestmentApr(a_r113); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](3, "Select");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](4, "td", 143);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](5);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](6, "td");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](7);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](8, "td");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](9);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](10, "td");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](11);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](12, "td");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](13);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+} if (rf & 2) {
+    const a_r113 = ctx.$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](5);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r113.id);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r113.referenceNo);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r113.proposeFor);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r113.donationType);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtextInterpolate"](a_r113.donationTo);
+} }
+function InvestmentAprComponent_ng_template_247_Template(rf, ctx) { if (rf & 1) {
+    const _r117 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 129);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "h4", 130);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](2, "Investment Initialization");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](3, "button", 131);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentAprComponent_ng_template_247_Template_button_click_3_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r117); const ctx_r116 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"](); return ctx_r116.InvestmentAprSearchModalRef.hide(); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](4, "span", 132);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](5, "\u00D7");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](6, "div", 133);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](7, "div", 2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](8, "div", 134);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](9, "div", 135);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](10, "table", 136);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](11, "thead", 137);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](12, "tr");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](13, "th", 138);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](14, "Action");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](15, "th", 139);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](16, "Id");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](17, "th", 140);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](18, "Reference No");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](19, "th", 141);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](20, "Propose For");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](21, "th", 141);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](22, "Donation Type");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](23, "th", 141);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](24, "Donation To");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](25, "tbody");
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](26, InvestmentAprComponent_ng_template_247_tr_26_Template, 14, 5, "tr", 33);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+} if (rf & 2) {
+    const ctx_r31 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](26);
+    _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx_r31.investmentAprs);
 } }
 class InvestmentAprComponent {
-    constructor(investmentInitService, router, toastr, modalService, datePipe) {
-        this.investmentInitService = investmentInitService;
+    constructor(accountService, investmentAprService, router, toastr, modalService, datePipe) {
+        this.accountService = accountService;
+        this.investmentAprService = investmentAprService;
         this.router = router;
         this.toastr = toastr;
         this.modalService = modalService;
@@ -4226,37 +3740,29 @@ class InvestmentAprComponent {
     openInvestmentInitSearchModal(template) {
         this.InvestmentInitSearchModalRef = this.modalService.show(template, this.config);
     }
-    selectInvestmentInit(selectedRecord) {
-        this.investmentInitService.investmentInitFormData = Object.assign({}, selectedRecord);
-        this.investmentInitService.investmentDoctorFormData.investmentInitId = selectedRecord.id;
-        this.investmentInitService.investmentInstitutionFormData.investmentInitId = selectedRecord.id;
-        this.investmentInitService.investmentCampaignFormData.investmentInitId = selectedRecord.id;
-        this.investmentInitService.investmentBcdsFormData.investmentInitId = selectedRecord.id;
-        this.investmentInitService.investmentSocietyFormData.investmentInitId = selectedRecord.id;
-        this.investmentInitService.investmentDetailFormData.investmentInitId = selectedRecord.id;
+    openInvestmentAprSearchModal(template) {
+        this.InvestmentAprSearchModalRef = this.modalService.show(template, this.config);
+    }
+    selectInvestmentInit(selectedAprord) {
+        //debugger;
+        this.investmentAprService.investmentAprFormData = Object.assign({}, selectedAprord);
+        this.investmentAprService.investmentDetailFormData.investmentInitId = selectedAprord.id;
+        this.investmentAprService.investmentAprCommentFormData.investmentInitId = selectedAprord.id;
         this.isDonationValid = true;
-        if (this.investmentInitService.investmentInitFormData.donationTo == "Doctor") {
-            this.getDoctor();
-            this.getInstitution();
+        if (this.investmentAprService.investmentAprFormData.donationTo == "Doctor") {
             this.getInvestmentDoctor();
         }
-        else if (this.investmentInitService.investmentInitFormData.donationTo == "Institution") {
-            this.getDoctor();
-            this.getInstitution();
+        else if (this.investmentAprService.investmentAprFormData.donationTo == "Institution") {
             this.getInvestmentInstitution();
         }
-        else if (this.investmentInitService.investmentInitFormData.donationTo == "Campaign") {
-            this.getCampaignMst();
-            this.getDoctor();
-            this.getInstitution();
+        else if (this.investmentAprService.investmentAprFormData.donationTo == "Campaign") {
+            //this.getCampaignMst();
             this.getInvestmentCampaign();
         }
-        else if (this.investmentInitService.investmentInitFormData.donationTo == "Bcds") {
-            this.getBcds();
+        else if (this.investmentAprService.investmentAprFormData.donationTo == "Bcds") {
             this.getInvestmentBcds();
         }
-        else if (this.investmentInitService.investmentInitFormData.donationTo == "Society") {
-            this.getSociety();
+        else if (this.investmentAprService.investmentAprFormData.donationTo == "Society") {
             this.getInvestmentSociety();
         }
         this.getInvestmentDetails();
@@ -4265,42 +3771,100 @@ class InvestmentAprComponent {
         this.isValid = true;
         this.InvestmentInitSearchModalRef.hide();
     }
-    getInvestmentInit() {
-        this.investmentInitService.getInvestmentInit().subscribe(response => {
+    selectInvestmentApr(selectedAprord) {
+        //debugger;
+        this.investmentAprService.investmentAprFormData = Object.assign({}, selectedAprord);
+        this.investmentAprService.investmentDetailFormData.investmentInitId = selectedAprord.id;
+        this.investmentAprService.investmentAprCommentFormData.investmentInitId = selectedAprord.id;
+        this.isDonationValid = true;
+        if (this.investmentAprService.investmentAprFormData.donationTo == "Doctor") {
+            this.getInvestmentDoctor();
+        }
+        else if (this.investmentAprService.investmentAprFormData.donationTo == "Institution") {
+            this.getInvestmentInstitution();
+        }
+        else if (this.investmentAprService.investmentAprFormData.donationTo == "Campaign") {
+            //this.getCampaignMst();
+            this.getInvestmentCampaign();
+        }
+        else if (this.investmentAprService.investmentAprFormData.donationTo == "Bcds") {
+            this.getInvestmentBcds();
+        }
+        else if (this.investmentAprService.investmentAprFormData.donationTo == "Society") {
+            this.getInvestmentSociety();
+        }
+        this.getInvestmentAprDetails();
+        this.getInvestmentAprProducts();
+        this.getInvestmentAprComment();
+        this.getInvestmentTargetedGroup();
+        this.isValid = true;
+        this.InvestmentAprSearchModalRef.hide();
+    }
+    getCampaignMst() {
+        this.investmentAprService.getCampaignMsts().subscribe(response => {
             //debugger;
-            this.investmentInits = response.data;
+            this.campaignMsts = response;
+        }, error => {
+            console.log(error);
+        });
+    }
+    getInvestmentInit() {
+        this.investmentAprService.getInvestmentInit(this.sbu).subscribe(response => {
+            //debugger;
+            this.investmentAprs = response.data;
             this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
         }, error => {
             console.log(error);
         });
     }
-    getInvestmentDetails() {
-        this.investmentInitService.getInvestmentDetails(this.investmentInitService.investmentDetailFormData.investmentInitId).subscribe(response => {
-            debugger;
-            var data = response[0];
-            if (data !== undefined) {
-                this.investmentInitService.investmentDetailFormData = data;
-                this.investmentInitService.investmentDetailFormData.fromDate = new Date(data.fromDate);
-                this.investmentInitService.investmentDetailFormData.toDate = new Date(data.toDate);
-            }
-            else {
-                this.toastr.warning('No Data Found', 'Investment ');
-            }
+    getInvestmentApproved() {
+        this.investmentAprService.getInvestmentApproved(this.sbu).subscribe(response => {
+            //debugger;
+            this.investmentAprs = response.data;
+            this.openInvestmentAprSearchModal(this.investmentAprSearchModal);
         }, error => {
             console.log(error);
         });
     }
     getInvestmentCampaign() {
-        this.investmentInitService.getInvestmentCampaigns(this.investmentInitService.investmentCampaignFormData.investmentInitId).subscribe(response => {
+        this.investmentAprService.getInvestmentCampaigns(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
             debugger;
             var data = response[0];
             if (data !== undefined) {
-                this.investmentInitService.investmentCampaignFormData = data;
-                this.investmentInitService.investmentCampaignFormData.campaignMstId = data.campaignDtl.mstId;
-                this.investmentInitService.investmentCampaignFormData.subCampStartDate = new _angular_common__WEBPACK_IMPORTED_MODULE_1__["DatePipe"]('en-US').transform(data.campaignDtl.subCampStartDate, 'dd/MM/yyyy');
-                this.investmentInitService.investmentCampaignFormData.subCampEndDate = new _angular_common__WEBPACK_IMPORTED_MODULE_1__["DatePipe"]('en-US').transform(data.campaignDtl.subCampEndDate, 'dd/MM/yyyy');
-                this.onChangeCampaignInCamp();
-                this.onChangeSubCampaignInCamp();
+                this.investmentAprService.investmentCampaignFormData = data;
+                this.investmentAprService.investmentCampaignFormData.campaignMstId = data.campaignDtl.mstId;
+                this.investmentAprService.investmentCampaignFormData.subCampaignName = data.campaignDtl.subCampaignName;
+                this.investmentAprService.investmentCampaignFormData.doctorName = data.doctorInfo.doctorName;
+                this.investmentAprService.investmentCampaignFormData.institutionName = data.institutionInfo.institutionName;
+                this.investmentAprService.investmentCampaignFormData.subCampStartDate = new _angular_common__WEBPACK_IMPORTED_MODULE_1__["DatePipe"]('en-US').transform(data.campaignDtl.subCampStartDate, 'dd/MM/yyyy');
+                this.investmentAprService.investmentCampaignFormData.subCampEndDate = new _angular_common__WEBPACK_IMPORTED_MODULE_1__["DatePipe"]('en-US').transform(data.campaignDtl.subCampEndDate, 'dd/MM/yyyy');
+                this.investmentAprService.getCampaignMsts().subscribe(response => {
+                    this.campaignMsts = response;
+                    for (let i = 0; i < this.campaignMsts.length; i++) {
+                        if (this.campaignMsts[i].id == this.investmentAprService.investmentCampaignFormData.campaignDtl.mstId) {
+                            this.investmentAprService.investmentCampaignFormData.campaignName = this.campaignMsts[i].campaignName;
+                        }
+                    }
+                    this.investmentAprService.getCampaignDtls(data.campaignDtl.mstId).subscribe(response => {
+                        debugger;
+                        this.campaignDtls = response;
+                        for (let i = 0; i < this.campaignDtls.length; i++) {
+                            if (this.campaignDtls[i].id == data.campaignDtl.id) {
+                                this.investmentAprService.investmentCampaignFormData.subCampaignName = this.campaignDtls[i].subCampaign.subCampaignName;
+                            }
+                        }
+                    }, error => {
+                        console.log(error);
+                    });
+                }, error => {
+                    console.log(error);
+                });
+                this.investmentAprService.getCampaignDtlProducts(data.campaignDtl.id).subscribe(response => {
+                    debugger;
+                    this.campaignDtlProducts = response;
+                }, error => {
+                    console.log(error);
+                });
             }
             else {
                 this.toastr.warning('No Data Found', 'Investment ');
@@ -4310,12 +3874,15 @@ class InvestmentAprComponent {
         });
     }
     getInvestmentBcds() {
-        this.investmentInitService.getInvestmentBcds(this.investmentInitService.investmentBcdsFormData.investmentInitId).subscribe(response => {
-            debugger;
+        this.investmentAprService.getInvestmentBcds(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
+            //debugger;
             var data = response[0];
             if (data !== undefined) {
-                this.investmentInitService.investmentBcdsFormData = data;
-                this.onChangeBcdsInBcds();
+                this.investmentAprService.investmentBcdsFormData = data;
+                this.investmentAprService.investmentBcdsFormData.bcdsName = data.bcds.bcdsName;
+                this.investmentAprService.investmentBcdsFormData.bcdsAddress = data.bcds.bcdsAddress;
+                this.investmentAprService.investmentBcdsFormData.noOfMember = data.bcds.noOfMember;
+                //this.onChangeBcdsInBcds();
             }
             else {
                 this.toastr.warning('No Data Found', 'Investment ');
@@ -4325,12 +3892,15 @@ class InvestmentAprComponent {
         });
     }
     getInvestmentSociety() {
-        this.investmentInitService.getInvestmentSociety(this.investmentInitService.investmentSocietyFormData.investmentInitId).subscribe(response => {
-            debugger;
+        this.investmentAprService.getInvestmentSociety(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
+            //debugger;
             var data = response[0];
             if (data !== undefined) {
-                this.investmentInitService.investmentSocietyFormData = data;
-                this.onChangeSocietyInSociety();
+                this.investmentAprService.investmentSocietyFormData = data;
+                this.investmentAprService.investmentSocietyFormData.societyName = data.society.societyName;
+                this.investmentAprService.investmentSocietyFormData.noOfMember = data.society.noOfMember;
+                this.investmentAprService.investmentSocietyFormData.societyAddress = data.society.societyAddress;
+                //this.onChangeSocietyInSociety();
             }
             else {
                 this.toastr.warning('No Data Found', 'Investment ');
@@ -4340,12 +3910,16 @@ class InvestmentAprComponent {
         });
     }
     getInvestmentInstitution() {
-        this.investmentInitService.getInvestmentInstitutions(this.investmentInitService.investmentInstitutionFormData.investmentInitId).subscribe(response => {
-            debugger;
+        this.investmentAprService.getInvestmentInstitutions(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
+            //debugger;
             var data = response[0];
             if (data !== undefined) {
-                this.investmentInitService.investmentInstitutionFormData = data;
-                this.onChangeInstitutionInInst();
+                this.investmentAprService.investmentInstitutionFormData = data;
+                this.investmentAprService.investmentInstitutionFormData.resposnsibleDoctorName = data.doctorInfo.doctorName;
+                this.investmentAprService.investmentInstitutionFormData.institutionName = data.institutionInfo.institutionName;
+                this.investmentAprService.investmentInstitutionFormData.address = data.institutionInfo.address;
+                this.investmentAprService.investmentInstitutionFormData.institutionType = data.institutionInfo.institutionType;
+                //this.onChangeInstitutionInInst();
             }
             else {
                 this.toastr.warning('No Data Found', 'Investment ');
@@ -4355,14 +3929,49 @@ class InvestmentAprComponent {
         });
     }
     getInvestmentDoctor() {
-        this.investmentInitService.getInvestmentDoctors(this.investmentInitService.investmentDoctorFormData.investmentInitId).subscribe(response => {
-            debugger;
+        this.investmentAprService.getInvestmentDoctors(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
+            //debugger;
             var data = response[0];
             if (data !== undefined) {
-                this.investmentInitService.investmentDoctorFormData = data;
-                this.investmentInitService.investmentDoctorFormData.doctorName = String(data.doctorId);
-                this.onChangeDoctorInDoc();
-                this.onChangeInstitutionInDoc();
+                this.investmentAprService.investmentDoctorFormData = data;
+                this.investmentAprService.investmentDoctorFormData.doctorName = data.doctorInfo.doctorName;
+                this.investmentAprService.investmentDoctorFormData.degree = data.doctorInfo.degree;
+                this.investmentAprService.investmentDoctorFormData.designation = data.doctorInfo.designation;
+                this.investmentAprService.investmentDoctorFormData.institutionName = data.institutionInfo.institutionName;
+                this.investmentAprService.investmentDoctorFormData.address = data.institutionInfo.address;
+                //this.onChangeDoctorInDoc();
+                //this.onChangeInstitutionInDoc();
+            }
+            else {
+                this.toastr.warning('No Data Found', 'Investment ');
+            }
+        }, error => {
+            console.log(error);
+        });
+    }
+    getInvestmentAprComment() {
+        this.investmentAprService.getInvestmentAprComment(this.investmentAprService.investmentAprFormData.id, this.empId).subscribe(response => {
+            //debugger;
+            var data = response[0];
+            if (data !== undefined) {
+                this.investmentAprService.investmentAprCommentFormData = data;
+            }
+            else {
+                this.toastr.warning('No Data Found', 'Investment ');
+            }
+        }, error => {
+            console.log(error);
+        });
+    }
+    getInvestmentDetails() {
+        this.investmentAprService.getInvestmentDetails(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
+            //debugger;
+            var data = response[0];
+            if (data !== undefined) {
+                this.investmentAprService.investmentDetailFormData = data;
+                this.investmentAprService.investmentDetailFormData.id = 0;
+                this.investmentAprService.investmentDetailFormData.fromDate = new Date(data.fromDate);
+                this.investmentAprService.investmentDetailFormData.toDate = new Date(data.toDate);
             }
             else {
                 this.toastr.warning('No Data Found', 'Investment ');
@@ -4372,8 +3981,39 @@ class InvestmentAprComponent {
         });
     }
     getInvestmentTargetedProd() {
-        this.investmentInitService.getInvestmentTargetedProds(this.investmentInitService.investmentInitFormData.id).subscribe(response => {
-            debugger;
+        this.investmentAprService.getInvestmentTargetedProds(this.investmentAprService.investmentAprFormData.id, this.sbu).subscribe(response => {
+            //debugger;
+            var data = response;
+            if (data !== undefined) {
+                this.investmentTargetedProds = data;
+            }
+            else {
+                this.toastr.warning('No Data Found', 'Investment ');
+            }
+        }, error => {
+            console.log(error);
+        });
+    }
+    getInvestmentAprDetails() {
+        //debugger;
+        this.investmentAprService.getInvestmentAprDetails(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
+            var data = response[0];
+            if (data !== undefined) {
+                this.investmentAprService.investmentDetailFormData = data;
+                this.investmentAprService.investmentDetailFormData.id = 0;
+                this.investmentAprService.investmentDetailFormData.fromDate = new Date(data.fromDate);
+                this.investmentAprService.investmentDetailFormData.toDate = new Date(data.toDate);
+            }
+            else {
+                this.toastr.warning('No Data Found', 'Investment ');
+            }
+        }, error => {
+            console.log(error);
+        });
+    }
+    getInvestmentAprProducts() {
+        //debugger;
+        this.investmentAprService.getInvestmentAprProducts(this.investmentAprService.investmentAprFormData.id, this.sbu).subscribe(response => {
             var data = response;
             if (data !== undefined) {
                 this.investmentTargetedProds = data;
@@ -4386,8 +4026,8 @@ class InvestmentAprComponent {
         });
     }
     getInvestmentTargetedGroup() {
-        this.investmentInitService.getInvestmentTargetedGroups(this.investmentInitService.investmentInitFormData.id).subscribe(response => {
-            debugger;
+        this.investmentAprService.getInvestmentTargetedGroups(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
+            //debugger;
             var data = response;
             if (data !== undefined) {
                 this.investmentTargetedGroups = data;
@@ -4400,524 +4040,220 @@ class InvestmentAprComponent {
         });
     }
     ngOnInit() {
-        this.getDonation();
+        this.getEmployeeId();
         this.getProduct();
-        this.getMarketGroupMsts();
+        //this.getMarketGroupMsts();
         this.bsConfig = Object.assign({}, { containerClass: 'theme-green' }, { dateInputFormat: 'DD/MM/YYYY' });
         this.bsValue = new Date();
     }
-    onChangeDonationTo() {
-        debugger;
-        if (this.investmentInitService.investmentInitFormData.donationTo == "Doctor") {
-            if (this.investmentInitService.investmentDoctorFormData.id == null || this.investmentInitService.investmentDoctorFormData.id == undefined || this.investmentInitService.investmentDoctorFormData.id == 0) {
-                this.investmentInitService.investmentDoctorFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__["InvestmentDoctor"]();
-                this.getDoctor();
-                this.getInstitution();
-            }
-        }
-        else if (this.investmentInitService.investmentInitFormData.donationTo == "Institution") {
-            if (this.investmentInitService.investmentInstitutionFormData.id == null || this.investmentInitService.investmentInstitutionFormData.id == undefined || this.investmentInitService.investmentInstitutionFormData.id == 0) {
-                this.investmentInitService.investmentDoctorFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__["InvestmentDoctor"]();
-                this.getDoctor();
-                this.getInstitution();
-            }
-        }
-        else if (this.investmentInitService.investmentInitFormData.donationTo == "Campaign") {
-            if (this.investmentInitService.investmentCampaignFormData.id == null || this.investmentInitService.investmentCampaignFormData.id == undefined || this.investmentInitService.investmentCampaignFormData.id == 0) {
-                this.investmentInitService.investmentCampaignFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__["InvestmentCampaign"]();
-                this.getCampaignMst();
-                this.getDoctor();
-                this.getInstitution();
-            }
-        }
-        else if (this.investmentInitService.investmentInitFormData.donationTo == "Bcds") {
-            if (this.investmentInitService.investmentBcdsFormData.id == null || this.investmentInitService.investmentBcdsFormData.id == undefined || this.investmentInitService.investmentBcdsFormData.id == 0) {
-                this.investmentInitService.investmentBcdsFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__["InvestmentBcds"]();
-                this.getBcds();
-            }
-        }
-        else if (this.investmentInitService.investmentInitFormData.donationTo == "Society") {
-            if (this.investmentInitService.investmentSocietyFormData.id == null || this.investmentInitService.investmentSocietyFormData.id == undefined || this.investmentInitService.investmentSocietyFormData.id == 0) {
-                this.investmentInitService.investmentSocietyFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__["InvestmentSociety"]();
-                this.getSociety();
-            }
-        }
-        if (this.investmentInitService.investmentInitFormData.id != null && this.investmentInitService.investmentInitFormData.id != undefined && this.investmentInitService.investmentInitFormData.id != 0) {
-            this.investmentInitService.investmentDoctorFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
-            this.investmentInitService.investmentInstitutionFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
-            this.investmentInitService.investmentCampaignFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
-            this.investmentInitService.investmentBcdsFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
-            this.investmentInitService.investmentSocietyFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
-        }
-    }
-    onChangeDoctorInDoc() {
-        for (var i = 0; i < this.doctors.length; i++) {
-            if (this.doctors[i].id == parseInt(this.investmentInitService.investmentDoctorFormData.doctorName)) {
-                //this.investmentInitService.investmentDoctorFormData.doctorName=this.doctors[i].doctorName;
-                this.investmentInitService.investmentDoctorFormData.doctorId = this.doctors[i].id;
-                this.investmentInitService.investmentDoctorFormData.degree = this.doctors[i].degree;
-                this.investmentInitService.investmentDoctorFormData.designation = this.doctors[i].designation;
-                break;
-            }
-        }
-    }
-    onChangeInstitutionInDoc() {
-        debugger;
-        for (var i = 0; i < this.institutions.length; i++) {
-            if (this.institutions[i].id == this.investmentInitService.investmentDoctorFormData.institutionId) {
-                this.investmentInitService.investmentDoctorFormData.address = this.institutions[i].address;
-                break;
-            }
-        }
-    }
-    onChangeInstitutionInInst() {
-        //debugger;
-        for (var i = 0; i < this.institutions.length; i++) {
-            if (this.institutions[i].id == this.investmentInitService.investmentInstitutionFormData.institutionId) {
-                this.investmentInitService.investmentInstitutionFormData.address = this.institutions[i].address;
-                this.investmentInitService.investmentInstitutionFormData.institutionType = this.institutions[i].institutionType;
-                break;
-            }
-        }
-    }
-    onChangeCampaignInCamp() {
-        debugger;
-        this.investmentInitService.getCampaignDtls(this.investmentInitService.investmentCampaignFormData.campaignMstId).subscribe(response => {
-            debugger;
-            this.campaignDtls = response;
-        }, error => {
-            console.log(error);
-        });
-    }
-    onChangeBcdsInBcds() {
-        debugger;
-        for (var i = 0; i < this.bcds.length; i++) {
-            if (this.bcds[i].id == this.investmentInitService.investmentBcdsFormData.bcdsId) {
-                this.investmentInitService.investmentBcdsFormData.bcdsAddress = this.bcds[i].bcdsAddress;
-                this.investmentInitService.investmentBcdsFormData.noOfMember = this.bcds[i].noOfMember;
-                break;
-            }
-        }
-    }
-    onChangeSubCampaignInCamp() {
-        debugger;
-        for (var i = 0; i < this.campaignDtls.length; i++) {
-            if (this.campaignDtls[i].id == this.investmentInitService.investmentCampaignFormData.campaignDtlId) {
-                this.investmentInitService.investmentCampaignFormData.subCampStartDate = new _angular_common__WEBPACK_IMPORTED_MODULE_1__["DatePipe"]('en-US').transform(this.campaignDtls[i].subCampStartDate, 'dd/MM/yyyy');
-                this.investmentInitService.investmentCampaignFormData.subCampEndDate = new _angular_common__WEBPACK_IMPORTED_MODULE_1__["DatePipe"]('en-US').transform(this.campaignDtls[i].subCampEndDate, 'dd/MM/yyyy');
-                break;
-            }
-        }
-        this.investmentInitService.getCampaignDtlProducts(this.investmentInitService.investmentCampaignFormData.campaignDtlId).subscribe(response => {
-            debugger;
-            this.campaignDtlProducts = response;
-        }, error => {
-            console.log(error);
-        });
-    }
-    onChangeSocietyInSociety() {
-        debugger;
-        for (var i = 0; i < this.society.length; i++) {
-            if (this.society[i].id == this.investmentInitService.investmentSocietyFormData.societyId) {
-                this.investmentInitService.investmentSocietyFormData.societyAddress = this.society[i].societyAddress;
-                this.investmentInitService.investmentSocietyFormData.noOfMember = this.society[i].noOfMember;
-                break;
-            }
-        }
-    }
-    onChangeMarketGroupInTargetedGroup() {
-        debugger;
-        if (this.investmentTargetedGroups == null || this.investmentTargetedGroups.length == 0) {
-            for (let i = 0; i < this.marketGroupMsts.length; i++) {
-                if (this.marketGroupMsts[i].id == this.investmentInitService.investmentTargetedGroupFormData.marketGroupMstId) {
-                    var data = [];
-                    for (let j = 0; j < this.marketGroupMsts[i].marketGroupDtls.length; j++) {
-                        var marketGroupMstId = this.marketGroupMsts[i].marketGroupDtls[j].mstId;
-                        var marketCode = this.marketGroupMsts[i].marketGroupDtls[j].marketCode;
-                        var marketName = this.marketGroupMsts[i].marketGroupDtls[j].marketName;
-                        data.push({ id: 0, investmentInitId: this.investmentInitService.investmentInitFormData.id, marketGroupMst: this.marketGroupMsts[i], marketGroupMstId: marketGroupMstId, marketCode: marketCode, marketName: marketName });
-                        //this.investmentTargetedGroups.push({id:0,investmentInitId:this.investmentInitService.investmentInitFormData.id,marketGroup:null,marketGroupMstId:this.marketGroupMsts[i].marketGroupDtls[j].mstId,marketCode:this.marketGroupMsts[i].marketGroupDtls[j].marketCode,marketName:this.marketGroupMsts[i].marketGroupDtls[j].marketName});
-                    }
-                    this.investmentTargetedGroups = data;
-                    break;
-                }
-            }
-        }
-        else {
-            this.toastr.warning('Already Market Group Exist', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-        }
-    }
     changeDateInDetail() {
-        debugger;
+        //debugger;
         //this.printingDate=this.getDigitBanglaFromEnglish(this.datePipe.transform(value, "dd/MM/yyyy"));
-        if (this.investmentInitService.investmentDetailFormData.fromDate == null || this.investmentInitService.investmentDetailFormData.fromDate == undefined) {
+        if (this.investmentAprService.investmentDetailFormData.fromDate == null || this.investmentAprService.investmentDetailFormData.fromDate == undefined) {
             return false;
         }
-        if (this.investmentInitService.investmentDetailFormData.toDate == null || this.investmentInitService.investmentDetailFormData.toDate == undefined) {
+        if (this.investmentAprService.investmentDetailFormData.toDate == null || this.investmentAprService.investmentDetailFormData.toDate == undefined) {
             return false;
         }
-        let dateFrom = this.investmentInitService.investmentDetailFormData.fromDate;
-        let dateTo = this.investmentInitService.investmentDetailFormData.toDate;
+        let dateFrom = this.investmentAprService.investmentDetailFormData.fromDate;
+        let dateTo = this.investmentAprService.investmentDetailFormData.toDate;
         //let dateFrom = new Date();
         //let dateTo = new Date();
-        this.investmentInitService.investmentDetailFormData.totalMonth = String(dateTo.getMonth() - dateFrom.getMonth() + (12 * (dateTo.getFullYear() - dateFrom.getFullYear())));
-    }
-    getDonation() {
-        this.investmentInitService.getDonations().subscribe(response => {
-            this.donations = response;
-        }, error => {
-            console.log(error);
-        });
-    }
-    getSubCampaign() {
-        this.investmentInitService.getSubCampaigns().subscribe(response => {
-            //debugger;
-            this.subCampaigns = response;
-        }, error => {
-            console.log(error);
-        });
-    }
-    getDoctor() {
-        this.investmentInitService.getDoctors().subscribe(response => {
-            //debugger;
-            this.doctors = response;
-        }, error => {
-            console.log(error);
-        });
-    }
-    getCampaignMst() {
-        this.investmentInitService.getCampaignMsts().subscribe(response => {
-            //debugger;
-            this.campaignMsts = response;
-        }, error => {
-            console.log(error);
-        });
-    }
-    getSociety() {
-        this.investmentInitService.getSociety().subscribe(response => {
-            //debugger;
-            this.society = response;
-        }, error => {
-            console.log(error);
-        });
-    }
-    getBcds() {
-        this.investmentInitService.getBcds().subscribe(response => {
-            //debugger;
-            this.bcds = response;
-        }, error => {
-            console.log(error);
-        });
-    }
-    getInstitution() {
-        this.investmentInitService.getInstitutions().subscribe(response => {
-            this.institutions = response;
-        }, error => {
-            console.log(error);
-        });
-    }
-    getMarket() {
-        this.investmentInitService.getMarkets().subscribe(response => {
-            this.markets = response;
-        }, error => {
-            console.log(error);
-        });
+        this.investmentAprService.investmentDetailFormData.totalMonth = String(dateTo.getMonth() - dateFrom.getMonth() + (12 * (dateTo.getFullYear() - dateFrom.getFullYear())));
     }
     getProduct() {
-        this.investmentInitService.getProduct().subscribe(response => {
+        this.investmentAprService.getProduct(this.sbu).subscribe(response => {
             //debugger;
             this.products = response;
         }, error => {
             console.log(error);
         });
     }
-    getMarketGroupMsts() {
-        this.investmentInitService.getMarketGroupMsts().subscribe(response => {
-            debugger;
-            this.marketGroupMsts = response;
-        }, error => {
+    getEmployeeId() {
+        //debugger;
+        this.empId = this.accountService.getEmployeeId();
+        this.investmentAprService.investmentAprCommentFormData.employeeId = parseInt(this.empId);
+        this.getEmployeeSbu();
+    }
+    getEmployeeSbu() {
+        //debugger;
+        this.accountService.getEmployeeSbu(this.investmentAprService.investmentAprCommentFormData.employeeId).subscribe((response) => {
+            //debugger;
+            this.sbu = response.sbu;
+        }, (error) => {
             console.log(error);
         });
     }
     onSubmit(form) {
-        if (this.investmentInitService.investmentInitFormData.id == 0)
-            this.insertInvestmentInit();
+        if (this.investmentAprService.investmentAprCommentFormData.id == null || this.investmentAprService.investmentAprCommentFormData.id == undefined || this.investmentAprService.investmentAprCommentFormData.id == 0)
+            this.insertInvestmentApr();
         else
-            this.updateInvestmentInit();
+            this.updateInvestmentApr();
     }
-    insertInvestmentInit() {
-        this.investmentInitService.insertInvestmentInit().subscribe(res => {
+    insertInvestmentApr() {
+        this.investmentAprService.insertInvestmentApr().subscribe(res => {
             //debugger;
-            this.investmentInitService.investmentInitFormData = res;
-            this.investmentInitService.investmentDoctorFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
-            this.investmentInitService.investmentInstitutionFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
+            this.investmentAprService.investmentAprCommentFormData = res;
+            //this.investmentAprService.investmentDoctorFormData.investmentInitId=this.investmentAprService.investmentAprFormData.id;
+            //this.investmentAprService.investmentInstitutionFormData.investmentInitId=this.investmentAprService.investmentAprFormData.id;
             this.isValid = true;
-            this.toastr.success('Submitted successfully', 'Investment ');
+            this.insertInvestmentDetails();
+            this.insertInvestmentTargetedProd();
+            this.toastr.success('Save successfully', 'Investment ');
         }, err => { console.log(err); });
     }
-    updateInvestmentInit() {
-        this.investmentInitService.updateInvestmentInit().subscribe(res => {
-            debugger;
+    updateInvestmentApr() {
+        this.investmentAprService.updateInvestmentApr().subscribe(res => {
+            //debugger;
             this.isValid = true;
-            this.investmentInitService.investmentDoctorFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
-            this.investmentInitService.investmentInstitutionFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
+            this.investmentAprService.investmentAprCommentFormData = res;
+            this.insertInvestmentDetails();
+            this.insertInvestmentTargetedProd();
+            //this.investmentAprService.investmentDoctorFormData.investmentInitId=this.investmentAprService.investmentAprFormData.id;
+            // this.investmentAprService.investmentInstitutionFormData.investmentInitId=this.investmentAprService.investmentAprFormData.id;
             this.toastr.info('Updated successfully', 'Investment ');
         }, err => { console.log(err); });
     }
     insertInvestmentDetails() {
-        if (this.investmentInitService.investmentInitFormData.id == null || this.investmentInitService.investmentInitFormData.id == undefined || this.investmentInitService.investmentInitFormData.id == 0) {
+        if (this.investmentAprService.investmentAprFormData.id == null || this.investmentAprService.investmentAprFormData.id == undefined || this.investmentAprService.investmentAprFormData.id == 0) {
             this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
                 positionClass: 'toast-top-right'
             });
             return false;
         }
-        if (this.investmentInitService.investmentDetailFormData.proposedAmount == null || this.investmentInitService.investmentDetailFormData.proposedAmount == undefined || this.investmentInitService.investmentDetailFormData.proposedAmount == "") {
+        if (this.investmentAprService.investmentDetailFormData.proposedAmount == null || this.investmentAprService.investmentDetailFormData.proposedAmount == undefined || this.investmentAprService.investmentDetailFormData.proposedAmount == "") {
             this.toastr.warning('Enter Proposed Amount First', 'Investment ', {
                 positionClass: 'toast-top-right'
             });
             return false;
         }
-        if (this.investmentInitService.investmentDetailFormData.purpose == null || this.investmentInitService.investmentDetailFormData.purpose == undefined || this.investmentInitService.investmentDetailFormData.purpose == "") {
+        if (this.investmentAprService.investmentDetailFormData.purpose == null || this.investmentAprService.investmentDetailFormData.purpose == undefined || this.investmentAprService.investmentDetailFormData.purpose == "") {
             this.toastr.warning('Enter Purpose First', 'Investment ', {
                 positionClass: 'toast-top-right'
             });
             return false;
         }
-        if (this.investmentInitService.investmentDetailFormData.fromDate == null || this.investmentInitService.investmentDetailFormData.fromDate == undefined) {
+        if (this.investmentAprService.investmentDetailFormData.fromDate == null || this.investmentAprService.investmentDetailFormData.fromDate == undefined) {
             this.toastr.warning('Select From Date  First', 'Investment ', {
                 positionClass: 'toast-top-right'
             });
             return false;
         }
-        if (this.investmentInitService.investmentDetailFormData.toDate == null || this.investmentInitService.investmentDetailFormData.toDate == undefined) {
+        if (this.investmentAprService.investmentDetailFormData.toDate == null || this.investmentAprService.investmentDetailFormData.toDate == undefined) {
             this.toastr.warning('Select To Date  First', 'Investment ', {
                 positionClass: 'toast-top-right'
             });
             return false;
         }
-        if (this.investmentInitService.investmentDetailFormData.commitmentAllSBU == null || this.investmentInitService.investmentDetailFormData.commitmentAllSBU == undefined || this.investmentInitService.investmentDetailFormData.commitmentAllSBU == "") {
+        if (this.investmentAprService.investmentDetailFormData.commitmentAllSBU == null || this.investmentAprService.investmentDetailFormData.commitmentAllSBU == undefined || this.investmentAprService.investmentDetailFormData.commitmentAllSBU == "") {
             this.toastr.warning('Enter Commitment All SBU First', 'Investment ', {
                 positionClass: 'toast-top-right'
             });
             return false;
         }
-        if (this.investmentInitService.investmentDetailFormData.commitmentOwnSBU == null || this.investmentInitService.investmentDetailFormData.commitmentOwnSBU == undefined || this.investmentInitService.investmentDetailFormData.commitmentOwnSBU == "") {
+        if (this.investmentAprService.investmentDetailFormData.commitmentOwnSBU == null || this.investmentAprService.investmentDetailFormData.commitmentOwnSBU == undefined || this.investmentAprService.investmentDetailFormData.commitmentOwnSBU == "") {
             this.toastr.warning('Enter Commitment Own SBU First', 'Investment ', {
                 positionClass: 'toast-top-right'
             });
             return false;
         }
-        if (this.investmentInitService.investmentDetailFormData.paymentMethod == null || this.investmentInitService.investmentDetailFormData.paymentMethod == undefined || this.investmentInitService.investmentDetailFormData.paymentMethod == "") {
+        if (this.investmentAprService.investmentDetailFormData.paymentMethod == null || this.investmentAprService.investmentDetailFormData.paymentMethod == undefined || this.investmentAprService.investmentDetailFormData.paymentMethod == "") {
             this.toastr.warning('Select Payment Method First', 'Investment ', {
                 positionClass: 'toast-top-right'
             });
             return false;
         }
-        this.investmentInitService.investmentDetailFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
-        if (this.investmentInitService.investmentDetailFormData.id == null || this.investmentInitService.investmentDetailFormData.id == undefined || this.investmentInitService.investmentDetailFormData.id == 0) {
-            this.investmentInitService.insertInvestmentDetail().subscribe(res => {
-                var data = res;
-                this.investmentInitService.investmentDetailFormData = data;
-                //this.investmentInitService.investmentDoctorFormData.doctorName=String(data.doctorId);
-                this.investmentInitService.investmentDetailFormData.fromDate = new Date(data.fromDate);
-                this.investmentInitService.investmentDetailFormData.toDate = new Date(data.toDate);
-                this.isDonationValid = true;
-                this.toastr.success('Save successfully', 'Investment ');
-            }, err => { console.log(err); });
-        }
-        else {
-            this.investmentInitService.updateInvestmentDetail().subscribe(res => {
-                var data = res;
-                this.investmentInitService.investmentDetailFormData = data;
-                //this.investmentInitService.investmentDoctorFormData.doctorName=String(data.doctorId);
-                this.investmentInitService.investmentDetailFormData.fromDate = new Date(data.fromDate);
-                this.investmentInitService.investmentDetailFormData.toDate = new Date(data.toDate);
-                this.isDonationValid = true;
-                this.toastr.success('Save successfully', 'Investment ');
-            }, err => { console.log(err); });
-        }
-    }
-    insertInvestmentDoctor() {
-        if (this.investmentInitService.investmentInitFormData.id == null || this.investmentInitService.investmentInitFormData.id == undefined || this.investmentInitService.investmentInitFormData.id == 0) {
-            this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        // if(this.investmentInitService.investmentInitFormData.donationTo!=="Doctor")
-        // {
-        //   this.updateInvestmentInit();
-        // }
-        if (this.investmentInitService.investmentDoctorFormData.doctorId == null || this.investmentInitService.investmentDoctorFormData.doctorId == undefined || this.investmentInitService.investmentDoctorFormData.doctorId == 0) {
-            this.toastr.warning('Select Doctor First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        if (this.investmentInitService.investmentDoctorFormData.institutionId == null || this.investmentInitService.investmentDoctorFormData.institutionId == undefined || this.investmentInitService.investmentDoctorFormData.institutionId == 0) {
-            this.toastr.warning('Select Institute First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        this.investmentInitService.investmentDoctorFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
-        this.investmentInitService.insertInvestmentDoctor().subscribe(res => {
+        this.investmentAprService.investmentDetailFormData.investmentInitId = this.investmentAprService.investmentAprFormData.id;
+        //if(this.investmentAprService.investmentDetailFormData.id==null || this.investmentAprService.investmentDetailFormData.id==undefined || this.investmentAprService.investmentDetailFormData.id==0)
+        //{
+        this.investmentAprService.insertInvestmentDetail().subscribe(res => {
             var data = res;
-            this.investmentInitService.investmentDoctorFormData = data;
-            this.investmentInitService.investmentDoctorFormData.doctorName = String(data.doctorId);
-            this.onChangeDoctorInDoc();
-            this.onChangeInstitutionInDoc();
-            this.updateInvestmentInit();
+            this.investmentAprService.investmentDetailFormData = data;
+            //this.investmentAprService.investmentDoctorFormData.doctorName=String(data.doctorId);
+            this.investmentAprService.investmentDetailFormData.fromDate = new Date(data.fromDate);
+            this.investmentAprService.investmentDetailFormData.toDate = new Date(data.toDate);
             this.isDonationValid = true;
             this.toastr.success('Save successfully', 'Investment ');
         }, err => { console.log(err); });
-    }
-    insertInvestmentInstitution() {
-        debugger;
-        if (this.investmentInitService.investmentInitFormData.id == null || this.investmentInitService.investmentInitFormData.id == undefined || this.investmentInitService.investmentInitFormData.id == 0) {
-            this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        // if(this.investmentInitService.investmentInitFormData.donationTo!=="Institution")
-        // {
         // }
-        if (this.investmentInitService.investmentInstitutionFormData.resposnsibleDoctorId == null || this.investmentInitService.investmentInstitutionFormData.resposnsibleDoctorId == undefined || this.investmentInitService.investmentInstitutionFormData.resposnsibleDoctorId == 0) {
-            this.toastr.warning('Select Institution First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        if (this.investmentInitService.investmentInstitutionFormData.institutionId == null || this.investmentInitService.investmentInstitutionFormData.institutionId == undefined || this.investmentInitService.investmentInstitutionFormData.institutionId == 0) {
-            this.toastr.warning('Select Institute First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        this.investmentInitService.investmentInstitutionFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
-        this.investmentInitService.insertInvestmentInstitution().subscribe(res => {
-            debugger;
-            this.investmentInitService.investmentInstitutionFormData = res;
-            this.onChangeInstitutionInInst();
-            this.updateInvestmentInit();
-            this.isDonationValid = true;
-            this.toastr.success('Save successfully', 'Investment ');
-        }, err => { console.log(err); });
-    }
-    insertInvestmentCampaign() {
-        debugger;
-        if (this.investmentInitService.investmentInitFormData.id == null || this.investmentInitService.investmentInitFormData.id == undefined || this.investmentInitService.investmentInitFormData.id == 0) {
-            this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        // if(this.investmentInitService.investmentInitFormData.donationTo!=="Institution")
-        // {
+        // else{
+        //   this.investmentAprService.updateInvestmentDetail().subscribe(
+        //     res => {
+        //      var data=res as IInvestmentApr;
+        //      this.investmentAprService.investmentDetailFormData=data;
+        //      //this.investmentAprService.investmentDoctorFormData.doctorName=String(data.doctorId);
+        //      this.investmentAprService.investmentDetailFormData.fromDate=new Date(data.fromDate);
+        //     this.investmentAprService.investmentDetailFormData.toDate=new Date(data.toDate);
+        //      this.isDonationValid=true;
+        //      this.toastr.success('Save successfully', 'Investment ');
+        //     },
+        //     err => { console.log(err); }
+        //   );
         // }
-        if (this.investmentInitService.investmentCampaignFormData.campaignMstId == null || this.investmentInitService.investmentCampaignFormData.campaignMstId == undefined || this.investmentInitService.investmentCampaignFormData.campaignMstId == 0) {
-            this.toastr.warning('Select Campaign First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        if (this.investmentInitService.investmentCampaignFormData.campaignDtlId == null || this.investmentInitService.investmentCampaignFormData.campaignDtlId == undefined || this.investmentInitService.investmentCampaignFormData.campaignDtlId == 0) {
-            this.toastr.warning('Select Sub-Campaign First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        if (this.investmentInitService.investmentCampaignFormData.doctorId == null || this.investmentInitService.investmentCampaignFormData.doctorId == undefined || this.investmentInitService.investmentCampaignFormData.doctorId == 0) {
-            this.toastr.warning('Select Doctor First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        if (this.investmentInitService.investmentCampaignFormData.institutionId == null || this.investmentInitService.investmentCampaignFormData.institutionId == undefined || this.investmentInitService.investmentCampaignFormData.institutionId == 0) {
-            this.toastr.warning('Select Institute First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        this.investmentInitService.investmentCampaignFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
-        var tempMstId = this.investmentInitService.investmentCampaignFormData.campaignMstId;
-        this.investmentInitService.insertInvestmentCampaign().subscribe(res => {
-            debugger;
-            this.investmentInitService.investmentCampaignFormData = res;
-            this.investmentInitService.investmentCampaignFormData.campaignMstId = tempMstId;
-            this.onChangeCampaignInCamp();
-            this.onChangeSubCampaignInCamp();
-            this.updateInvestmentInit();
-            this.isDonationValid = true;
-            this.toastr.success('Save successfully', 'Investment ');
-        }, err => { console.log(err); });
-    }
-    insertInvestmentSociety() {
-        debugger;
-        if (this.investmentInitService.investmentInitFormData.id == null || this.investmentInitService.investmentInitFormData.id == undefined || this.investmentInitService.investmentInitFormData.id == 0) {
-            this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        // if(this.investmentInitService.investmentInitFormData.donationTo!=="Institution")
-        // {
-        // }
-        if (this.investmentInitService.investmentSocietyFormData.societyId == null || this.investmentInitService.investmentSocietyFormData.societyId == undefined || this.investmentInitService.investmentSocietyFormData.societyId == 0) {
-            this.toastr.warning('Select Society First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        this.investmentInitService.investmentSocietyFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
-        this.investmentInitService.insertInvestmentSociety().subscribe(res => {
-            debugger;
-            this.investmentInitService.investmentSocietyFormData = res;
-            this.onChangeSocietyInSociety();
-            this.updateInvestmentInit();
-            this.isDonationValid = true;
-            this.toastr.success('Save successfully', 'Investment ');
-        }, err => { console.log(err); });
-    }
-    insertInvestmentBcds() {
-        debugger;
-        if (this.investmentInitService.investmentInitFormData.id == null || this.investmentInitService.investmentInitFormData.id == undefined || this.investmentInitService.investmentInitFormData.id == 0) {
-            this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        // if(this.investmentInitService.investmentInitFormData.donationTo!=="Institution")
-        // {
-        // }
-        if (this.investmentInitService.investmentBcdsFormData.bcdsId == null || this.investmentInitService.investmentBcdsFormData.bcdsId == undefined || this.investmentInitService.investmentBcdsFormData.bcdsId == 0) {
-            this.toastr.warning('Select Bcds First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        this.investmentInitService.investmentBcdsFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
-        this.investmentInitService.insertInvestmentBcds().subscribe(res => {
-            debugger;
-            this.investmentInitService.investmentBcdsFormData = res;
-            this.onChangeBcdsInBcds();
-            this.updateInvestmentInit();
-            this.isDonationValid = true;
-            this.toastr.success('Save successfully', 'Investment ');
-        }, err => { console.log(err); });
     }
     insertInvestmentTargetedProd() {
-        debugger;
-        if (this.investmentInitService.investmentInitFormData.id == null || this.investmentInitService.investmentInitFormData.id == undefined || this.investmentInitService.investmentInitFormData.id == 0) {
+        //debugger;
+        if (this.investmentAprService.investmentAprFormData.id == null || this.investmentAprService.investmentAprFormData.id == undefined || this.investmentAprService.investmentAprFormData.id == 0) {
             this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
                 positionClass: 'toast-top-right'
             });
             return false;
         }
-        if (this.investmentInitService.investmentTargetedProdFormData.productId == null || this.investmentInitService.investmentTargetedProdFormData.productId == undefined || this.investmentInitService.investmentTargetedProdFormData.productId == 0) {
+        // if(this.investmentAprService.investmentDetailFormData.id==null || this.investmentAprService.investmentDetailFormData.id==undefined || this.investmentAprService.investmentDetailFormData.id==0)
+        // {
+        //   this.toastr.warning('Insert Investment Detail First', 'Investment ', {
+        //     positionClass: 'toast-top-right' 
+        //  });
+        //  return false;
+        // }
+        // if(this.investmentAprService.investmentTargetedProdFormData.productId==null || this.investmentAprService.investmentTargetedProdFormData.productId==undefined || this.investmentAprService.investmentTargetedProdFormData.productId==0)
+        // {
+        //   this.toastr.warning('Select Product First', 'Investment ', {
+        //     positionClass: 'toast-top-right' 
+        //  });
+        //  return false;
+        // }
+        if (this.investmentTargetedProds !== undefined) {
+            for (let i = 0; i < this.investmentTargetedProds.length; i++) {
+                if (this.investmentTargetedProds[i].productInfo.id == this.investmentAprService.investmentTargetedProdFormData.productId) {
+                    alert("product already exist !");
+                    return false;
+                }
+            }
+        }
+        else {
+            this.toastr.warning('Select Product First', 'Investment ', {
+                positionClass: 'toast-top-right'
+            });
+            return false;
+        }
+        this.investmentAprService.investmentTargetedProdFormData.investmentInitId = this.investmentAprService.investmentAprFormData.id;
+        //if(this.investmentAprService.investmentTargetedProdFormData.id==null || this.investmentAprService.investmentTargetedProdFormData.id==undefined || this.investmentAprService.investmentTargetedProdFormData.id==0)
+        //{
+        this.investmentAprService.insertInvestmentTargetedProd(this.investmentTargetedProds).subscribe(res => {
+            //debugger;
+            //this.investmentAprService.investmentTargetedProdFormData=new InvestmentTargetedProd();
+            this.getInvestmentTargetedProd();
+            this.isDonationValid = true;
+            this.toastr.success('Save successfully', 'Investment ');
+        }, err => { console.log(err); });
+        // }
+        // else{
+        //   this.investmentAprService.updateInvestmentTargetedProd().subscribe(
+        //     res => {
+        //       debugger;
+        //      this.investmentAprService.investmentTargetedProdFormData=new InvestmentTargetedProd();
+        //      this.getInvestmentTargetedProd();
+        //      this.isDonationValid=true;
+        //       this.toastr.success('Update successfully', 'Investment ');
+        //     },
+        //     err => { console.log(err); }
+        //   );
+        // }
+    }
+    addInvestmentTargetedProd() {
+        //debugger;
+        if (this.investmentAprService.investmentTargetedProdFormData.productId == null || this.investmentAprService.investmentTargetedProdFormData.productId == undefined || this.investmentAprService.investmentTargetedProdFormData.productId == 0) {
             this.toastr.warning('Select Product First', 'Investment ', {
                 positionClass: 'toast-top-right'
             });
@@ -4925,64 +4261,31 @@ class InvestmentAprComponent {
         }
         if (this.investmentTargetedProds !== undefined) {
             for (let i = 0; i < this.investmentTargetedProds.length; i++) {
-                if (this.investmentTargetedProds[i].productInfo.id === this.investmentInitService.investmentTargetedProdFormData.productId) {
+                if (this.investmentTargetedProds[i].productInfo.id == this.investmentAprService.investmentTargetedProdFormData.productId) {
                     alert("product already exist !");
                     return false;
                 }
             }
-        }
-        this.investmentInitService.investmentTargetedProdFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
-        if (this.investmentInitService.investmentTargetedProdFormData.id == null || this.investmentInitService.investmentTargetedProdFormData.id == undefined || this.investmentInitService.investmentTargetedProdFormData.id == 0) {
-            this.investmentInitService.insertInvestmentTargetedProd().subscribe(res => {
-                debugger;
-                this.investmentInitService.investmentTargetedProdFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__["InvestmentTargetedProd"]();
-                this.getInvestmentTargetedProd();
-                this.isDonationValid = true;
-                this.toastr.success('Save successfully', 'Investment ');
-            }, err => { console.log(err); });
-        }
-        else {
-            this.investmentInitService.updateInvestmentTargetedProd().subscribe(res => {
-                debugger;
-                this.investmentInitService.investmentTargetedProdFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__["InvestmentTargetedProd"]();
-                this.getInvestmentTargetedProd();
-                this.isDonationValid = true;
-                this.toastr.success('Update successfully', 'Investment ');
-            }, err => { console.log(err); });
+            for (let i = 0; i < this.products.length; i++) {
+                if (this.products[i].id == this.investmentAprService.investmentTargetedProdFormData.productId) {
+                    let data = new _shared_models_investmentApr__WEBPACK_IMPORTED_MODULE_0__["InvestmentTargetedProd"]();
+                    data.id = 0;
+                    data.investmentInitId = this.investmentAprService.investmentAprFormData.id;
+                    data.productId = this.investmentAprService.investmentTargetedProdFormData.productId;
+                    data.productInfo = this.products[i];
+                    //data.productInfo.push({ id: this.products[i].id, productName: this.products[i].productName,productCode: this.products[i].productCode});
+                    //data.productInfo.productName=this.products[i].productName;
+                    //data.productInfo.productCode=this.products[i].productCode;
+                    this.investmentTargetedProds.push(data);
+                    return false;
+                }
+            }
+            // this.investmentTargetedProds.push(      
+            //   { id: 0, investmentInitId: this.investmentAprService.investmentAprFormData.id,productId:0 });
         }
     }
-    insertInvestmentTargetedGroup() {
-        debugger;
-        if (this.investmentInitService.investmentInitFormData.id == null || this.investmentInitService.investmentInitFormData.id == undefined || this.investmentInitService.investmentInitFormData.id == 0) {
-            this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        if (this.investmentInitService.investmentTargetedGroupFormData.marketGroupMstId == null || this.investmentInitService.investmentTargetedGroupFormData.marketGroupMstId == undefined || this.investmentInitService.investmentTargetedGroupFormData.marketGroupMstId == 0) {
-            this.toastr.warning('Select Market Group First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-            return false;
-        }
-        if (this.investmentTargetedGroups != null && this.investmentTargetedGroups.length > 0) {
-            this.investmentInitService.investmentTargetedGroupFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
-            this.investmentInitService.insertInvestmentTargetedGroup(this.investmentTargetedGroups).subscribe(res => {
-                debugger;
-                this.investmentInitService.investmentTargetedProdFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__["InvestmentTargetedProd"]();
-                this.getInvestmentTargetedGroup();
-                this.isDonationValid = true;
-                this.toastr.success(res);
-            }, err => { console.log(err); });
-        }
-        else {
-            this.toastr.warning('Select Market Group First', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-        }
-    }
-    editInvestmentTargetedProd(selectedRecord) {
-        this.investmentInitService.investmentTargetedProdFormData = Object.assign({}, selectedRecord);
+    editInvestmentTargetedProd(selectedAprord) {
+        this.investmentAprService.investmentTargetedProdFormData = Object.assign({}, selectedAprord);
         // var e = (document.getElementById("marketCode")) as HTMLSelectElement;
         // var sel = e.selectedIndex;
         // var opt = e.options[sel];
@@ -4990,123 +4293,57 @@ class InvestmentAprComponent {
         // var selectedMarketName = opt.innerHTML;
     }
     populateForm() {
-        //this.investmentInitService.campaignFormData = Object.assign({}, selectedRecord);
+        //this.investmentAprService.campaignFormData = Object.assign({}, selectedAprord);
     }
     resetPage(form) {
         form.reset();
-        this.investmentInitService.investmentInitFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__["InvestmentInit"]();
+        this.investmentAprService.investmentAprFormData = new _shared_models_investmentApr__WEBPACK_IMPORTED_MODULE_0__["InvestmentInit"]();
         this.isValid = false;
     }
-    removeInvestmentDoctor() {
-        var c = confirm("Are you sure you want to delete that?");
-        if (c == true) {
-            this.investmentInitService.removeInvestmentDoctor().subscribe(res => {
-                this.toastr.success(res);
-                this.isDonationValid = false;
-                this.investmentInitService.investmentDoctorFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__["InvestmentDoctor"]();
-            }, err => { debugger; console.log(err); });
+    removeInvestmentTargetedProd(selectedAprord) {
+        if (this.investmentTargetedProds.find(x => x.productId == selectedAprord.productId)) {
+            this.investmentTargetedProds.splice(this.investmentTargetedProds.findIndex(x => x.productId == selectedAprord.productId), 1);
         }
-    }
-    removeInvestmentInstitution() {
-        var c = confirm("Are you sure you want to delete that?");
-        if (c == true) {
-            this.investmentInitService.removeInvestmentInstitution().subscribe(res => {
-                debugger;
-                this.toastr.success(res);
-                this.isDonationValid = false;
-                this.investmentInitService.investmentInstitutionFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__["InvestmentInstitution"]();
-            }, err => { console.log(err); });
+        if (this.investmentAprService.investmentAprCommentFormData.id == null || this.investmentAprService.investmentAprCommentFormData.id == undefined || this.investmentAprService.investmentAprCommentFormData.id == 0) {
+            return false;
         }
-    }
-    removeInvestmentCampaign() {
+        this.investmentAprService.investmentTargetedProdFormData = Object.assign({}, selectedAprord);
         var c = confirm("Are you sure you want to delete that?");
         if (c == true) {
-            this.investmentInitService.removeInvestmentCampaign().subscribe(res => {
-                debugger;
-                this.toastr.success(res);
-                this.isDonationValid = false;
-                this.investmentInitService.investmentCampaignFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__["InvestmentCampaign"]();
-            }, err => { console.log(err); });
-        }
-    }
-    removeInvestmentSociety() {
-        var c = confirm("Are you sure you want to delete that?");
-        if (c == true) {
-            this.investmentInitService.removeInvestmentSociety().subscribe(res => {
-                debugger;
-                this.toastr.success(res);
-                this.isDonationValid = false;
-                this.investmentInitService.investmentSocietyFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__["InvestmentSociety"]();
-            }, err => { console.log(err); });
-        }
-    }
-    removeInvestmentBcds() {
-        var c = confirm("Are you sure you want to delete that?");
-        if (c == true) {
-            this.investmentInitService.removeInvestmentBcds().subscribe(res => {
-                debugger;
-                this.toastr.success(res);
-                this.isDonationValid = false;
-                this.investmentInitService.investmentBcdsFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__["InvestmentBcds"]();
-            }, err => { console.log(err); });
-        }
-    }
-    removeInvestmentTargetedProd(selectedRecord) {
-        this.investmentInitService.investmentTargetedProdFormData = Object.assign({}, selectedRecord);
-        var c = confirm("Are you sure you want to delete that?");
-        if (c == true) {
-            this.investmentInitService.removeInvestmentTargetedProd().subscribe(res => {
-                debugger;
+            this.investmentAprService.removeInvestmentTargetedProd().subscribe(res => {
+                //debugger;
                 this.toastr.success(res);
                 //this.isDonationValid=false;
-                this.investmentInitService.investmentTargetedProdFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__["InvestmentTargetedProd"]();
+                this.investmentAprService.investmentTargetedProdFormData = new _shared_models_investmentApr__WEBPACK_IMPORTED_MODULE_0__["InvestmentTargetedProd"]();
                 this.getInvestmentTargetedProd();
             }, err => { console.log(err); });
         }
     }
-    removeInvestmentTargetedGroup() {
-        //this.investmentInitService.investmentTargetedProdFormData = Object.assign({}, selectedRecord);
-        if (this.investmentTargetedGroups != null && this.investmentTargetedGroups.length > 0) {
-            var c = confirm("Are you sure you want to delete that?");
-            if (c == true) {
-                this.investmentInitService.removeInvestmentTargetedGroup(this.investmentTargetedGroups).subscribe(res => {
-                    debugger;
-                    this.toastr.success(res);
-                    //this.isDonationValid=false;
-                    this.investmentInitService.investmentTargetedGroupFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__["InvestmentTargetedGroup"]();
-                    this.getInvestmentTargetedGroup();
-                }, err => { console.log(err); });
-            }
-        }
-        else {
-            this.toastr.warning('No Market Group Found', 'Investment ', {
-                positionClass: 'toast-top-right'
-            });
-        }
-    }
 }
-InvestmentAprComponent.ɵfac = function InvestmentAprComponent_Factory(t) { return new (t || InvestmentAprComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_services_investment_service__WEBPACK_IMPORTED_MODULE_3__["InvestmentInitService"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](ngx_toastr__WEBPACK_IMPORTED_MODULE_5__["ToastrService"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](ngx_bootstrap_modal__WEBPACK_IMPORTED_MODULE_6__["BsModalService"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_angular_common__WEBPACK_IMPORTED_MODULE_1__["DatePipe"])); };
+InvestmentAprComponent.ɵfac = function InvestmentAprComponent_Factory(t) { return new (t || InvestmentAprComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_account_account_service__WEBPACK_IMPORTED_MODULE_3__["AccountService"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_services_investmentApr_service__WEBPACK_IMPORTED_MODULE_4__["InvestmentAprService"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](ngx_toastr__WEBPACK_IMPORTED_MODULE_6__["ToastrService"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](ngx_bootstrap_modal__WEBPACK_IMPORTED_MODULE_7__["BsModalService"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_angular_common__WEBPACK_IMPORTED_MODULE_1__["DatePipe"])); };
 InvestmentAprComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdefineComponent"]({ type: InvestmentAprComponent, selectors: [["app-investmentApr"]], viewQuery: function InvestmentAprComponent_Query(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵviewQuery"](_c0, 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵviewQuery"](_c1, 1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵviewQuery"](_c2, 1);
     } if (rf & 2) {
         let _t;
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵloadQuery"]()) && (ctx.searchTerm = _t.first);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵloadQuery"]()) && (ctx.investmentInitSearchModal = _t.first);
-    } }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵProvidersFeature"]([_angular_common__WEBPACK_IMPORTED_MODULE_1__["DatePipe"]])], decls: 255, vars: 57, consts: [[1, "content"], [1, "container-fluid"], [1, "row"], [1, "col-sm-12"], ["novalidate", "", "autocomplete", "off", 3, "submit"], ["investmentInitForm", "ngForm"], [1, "card", "card-primary"], [1, "card-header"], [1, "col-sm-6"], [1, "card-title"], [1, "col-sm-2"], ["type", "submit", 1, "btn", "btn-success", "btn-lg", "btn-block", 3, "disabled"], [1, "fa", "fa-save"], ["type", "button", 1, "btn", "btn-info", "btn-lg", "btn-block", 3, "click"], [1, "fa", "fa-search"], ["type", "button", 1, "btn", "btn-danger", "btn-lg", "btn-block", 3, "click"], [1, "card-body"], [1, "form-group"], [1, "col-md-2"], [1, "col-md-3"], ["id", "proposeFor", "name", "proposeFor", "required", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["proposeFor", "ngModel"], [3, "ngValue"], ["value", "BrandCampaign"], ["value", "Others"], ["id", "id", "name", "id", "readonly", "", 1, "form-control", 2, "display", "none", 3, "ngModel", "ngModelChange"], ["id", "ngModel"], ["placeholder", "Auto Generated", "id", "referenceNo", "name", "referenceNo", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["referenceNo", "ngModel"], ["id", "donationType", "name", "donationType", "required", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["donationType", "ngModel"], [3, "value", 4, "ngFor", "ngForOf"], ["id", "donationTo", "name", "donationTo", "required", "", 1, "form-control", 3, "disabled", "ngModel", "change", "ngModelChange"], ["donationTo", "ngModel"], ["value", "Doctor"], ["value", "Institution"], ["value", "Campaign"], ["value", "Bcds"], ["value", "Society"], [4, "ngIf"], ["class", "col-sm-2", 4, "ngIf"], [1, "col-md-6"], [1, "table", "table-bordered"], [4, "ngFor", "ngForOf"], [1, "col-md-10"], ["name", "proposedAmount", "id", "proposedAmount", 1, "form-control", 3, "ngModel", "ngModelChange"], ["proposedAmount", "ngModel"], ["name", "purpose", "id", "purpose", 1, "form-control", 3, "ngModel", "ngModelChange"], ["purpose", "ngModel"], ["placeholder", "Calender", "name", "fromDate", "bsDatepicker", "", 1, "form-control", 3, "ngModel", "bsValue", "bsConfig", "onHidden", "ngModelChange"], ["fromDate", "ngModel"], ["placeholder", "Calender", "name", "toDate", "bsDatepicker", "", 1, "form-control", 3, "ngModel", "bsValue", "bsConfig", "onHidden", "ngModelChange"], ["toDate", "ngModel"], ["name", "totalMonth", "id", "totalMonth", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["totalMonth", "ngModel"], ["name", "commitmentAllSBU", "id", "commitmentAllSBU", 1, "form-control", 3, "ngModel", "ngModelChange"], ["commitmentAllSBU", "ngModel"], [1, "col-md-1"], ["name", "commitmentOwnSBU", "id", "commitmentOwnSBU", 1, "form-control", 3, "ngModel", "ngModelChange"], ["commitmentOwnSBU", "ngModel"], ["name", "paymentMethod", "id", "paymentMethod", 1, "form-control", 3, "ngModel", "ngModelChange"], ["paymentMethod", "ngModel"], ["value", "Cash"], ["value", "Cheque"], ["value", "DD"], ["value", "TT"], ["value", "PO"], ["name", "chequeTitle", "id", "chequeTitle", 1, "form-control", 3, "ngModel", "ngModelChange"], ["chequeTitle", "ngModel"], ["id", "productId", "name", "productId", 1, "form-control", 3, "ngModel", "ngModelChange"], ["productId", "ngModel"], ["class", "col-md-2", 4, "ngIf"], ["name", "marketGroupMstId", "name", "marketGroupMstId", 1, "form-control", 3, "ngModel", "change", "ngModelChange"], ["marketGroupMstId", "ngModel"], ["investmentInitSearchModal", ""], [3, "value"], ["id", "investmentInitId", "name", "investmentInitId", "readonly", "", 1, "form-control", 2, "display", "none", 3, "ngModel", "ngModelChange"], ["investmentInitId", "ngModel"], ["name", "doctorName", "id", "doctorName", "name", "doctorName", 1, "form-control", 3, "ngModel", "change", "ngModelChange"], ["doctorName", "ngModel"], ["name", "doctorId", "readonly", "", "id", "doctorId", 1, "form-control", 3, "ngModel", "ngModelChange"], ["doctorId", "ngModel"], ["name", "degree", "readonly", "", "id", "degree", "name", "degree", 1, "form-control", 3, "ngModel", "ngModelChange"], ["degree", "ngModel"], ["name", "designation", "readonly", "", "id", "designation", "name", "designation", 1, "form-control", 3, "ngModel", "ngModelChange"], ["designation", "ngModel"], ["name", "institutionId", "id", "institutionId", "name", "institutionId", 1, "form-control", 3, "ngModel", "change", "ngModelChange"], ["institutionId", "ngModel"], ["name", "doctorCategory", "id", "doctorCategory", 1, "form-control", 3, "ngModel", "ngModelChange"], ["value", "Regular"], ["value", "Migratory"], ["name", "address", "readonly", "", "id", "address", "name", "address", 1, "form-control", 3, "ngModel", "ngModelChange"], ["address", "ngModel"], ["name", "doctorType", "id", "doctorType", 1, "form-control", 3, "ngModel", "ngModelChange"], ["doctorType", "ngModel"], ["value", "A"], ["value", "B"], ["value", "C"], ["name", "practiceDayPerMonth", "id", "practiceDayPerMonth", "name", "practiceDayPerMonth", 1, "form-control", 3, "ngModel", "ngModelChange"], ["practiceDayPerMonth", "ngModel"], ["name", "patientsPerDay", "id", "patientsPerDay", "name", "patientsPerDay", 1, "form-control", 3, "ngModel", "ngModelChange"], ["patientsPerDay", "ngModel"], ["type", "button", 1, "btn", "btn-success", "btn-lg", "btn-block", 3, "click"], [1, "fa", "fa-trash"], ["name", "resposnsibleDoctorId", "id", "resposnsibleDoctorId", 1, "form-control", 3, "ngModel", "ngModelChange"], ["resposnsibleDoctorId", "ngModel"], ["name", "address", "id", "address", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["name", "institutionType", "id", "institutionType", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["institutionType", "ngModel"], ["name", "noOfBed", "id", "noOfBed", 1, "form-control", 3, "ngModel", "ngModelChange"], ["noOfBed", "ngModel"], ["name", "departmentUnit", "id", "departmentUnit", 1, "form-control", 3, "ngModel", "ngModelChange"], ["departmentUnit", "ngModel"], ["name", "campaignMstId", "id", "campaignMstId", 1, "form-control", 3, "ngModel", "change", "ngModelChange"], ["campaignMstId", "ngModel"], ["name", "campaignDtlId", "id", "campaignDtlId", 1, "form-control", 3, "ngModel", "change", "ngModelChange"], ["campaignDtlId", "ngModel"], ["name", "subCampStartDate", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["subCampStartDate", "ngModel"], ["name", "subCampEndDate", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["subCampEndDate", "ngModel"], ["name", "doctorId", "id", "doctorId", 1, "form-control", 3, "ngModel", "ngModelChange"], ["name", "institutionId", "id", "institutionId", 1, "form-control", 3, "ngModel", "change", "ngModelChange"], ["name", "bcdsId", "id", "bcdsId", 1, "form-control", 3, "ngModel", "change", "ngModelChange"], ["bcdsId", "ngModel"], ["name", "bcdsAddress", "id", "bcdsAddress", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["bcdsAddress", "ngModel"], ["name", "noOfMember", "id", "noOfMember", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["noOfMember", "ngModel"], ["name", "societyId", "id", "societyId", 1, "form-control", 3, "ngModel", "change", "ngModelChange"], ["societyId", "ngModel"], ["name", "societyAddress", "id", "societyAddress", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["societyAddress", "ngModel"], ["name", "noOfMembers", "id", "noOfMember", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["type", "button", 1, "btn", "btn-primary", "btn-lg", "btn-block", 3, "click"], [1, "fa", "fa-plus"], ["type", "button", "value", "Edit", 3, "click"], ["type", "button", "value", "Remove", 3, "click"], [1, "modal-header", 2, "background", "-webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc))", "color", "black"], [1, "modal-title", "pull-left"], ["type", "button", "aria-label", "Close", 1, "close", "pull-right", 3, "click"], ["aria-hidden", "true"], [1, "modal-body", 2, "padding", "20px 30px 20px 30px"], [1, "col-md-12"], [1, "table-responsive", 2, "border", "1px solid #bed2c9", "width", "100%"], [1, "table", "table-bordered", "table-responsive", "table-hover", "table-striped"], [2, "background", "-webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc))"], ["scope", "col", 2, "width", "7%"], ["scope", "col", 2, "width", "0", "display", "none"], ["scope", "col", 2, "width", "9%"], ["scope", "col", 2, "width", "8%"], [1, "btn", "btn-sm", "btn-embossed", "btn-success", 3, "click"], [2, "display", "none"]], template: function InvestmentAprComponent_Template(rf, ctx) { if (rf & 1) {
-        const _r198 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵloadQuery"]()) && (ctx.investmentAprSearchModal = _t.first);
+    } }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵProvidersFeature"]([_angular_common__WEBPACK_IMPORTED_MODULE_1__["DatePipe"]])], decls: 249, vars: 43, consts: [[1, "content"], [1, "container-fluid"], [1, "row"], [1, "col-sm-12"], ["novalidate", "", "autocomplete", "off", 3, "submit"], ["investmentAprForm", "ngForm"], [1, "card", "card-primary"], [1, "card-header"], [1, "col-sm-6"], [1, "card-title"], [1, "col-sm-2"], ["type", "submit", 1, "btn", "btn-success", "btn-lg", "btn-block", 3, "disabled"], [1, "fa", "fa-save"], ["type", "button", 1, "btn", "btn-info", "btn-lg", "btn-block", 3, "click"], [1, "fa", "fa-search"], ["type", "button", 1, "btn", "btn-danger", "btn-lg", "btn-block", 3, "click"], [1, "card-body"], [1, "form-group"], [1, "col-md-2"], [1, "col-md-3"], ["id", "id", "name", "id", "readonly", "", "required", "", 1, "form-control", 2, "display", "none", 3, "ngModel", "ngModelChange"], ["id", "ngModel"], ["placeholder", "Please Double Click Here", "id", "referenceNo", "name", "referenceNo", "readonly", "", 1, "form-control", 3, "ngModel", "dblclick", "ngModelChange"], ["referenceNo", "ngModel"], ["id", "proposeFor", "name", "proposeFor", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["proposeFor", "ngModel"], ["id", "donationType", "name", "donationType", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["donationType", "ngModel"], ["id", "donationTo", "name", "donationTo", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["donationTo", "ngModel"], [4, "ngIf"], [1, "col-md-6"], [1, "table", "table-bordered"], [4, "ngFor", "ngForOf"], [1, "col-md-10"], ["name", "proposedAmount", "id", "proposedAmount", 1, "form-control", 3, "ngModel", "ngModelChange"], ["proposedAmount", "ngModel"], ["name", "purpose", "id", "purpose", 1, "form-control", 3, "ngModel", "ngModelChange"], ["purpose", "ngModel"], ["placeholder", "Calender", "name", "fromDate", "bsDatepicker", "", 1, "form-control", 3, "ngModel", "bsValue", "bsConfig", "onHidden", "ngModelChange"], ["fromDate", "ngModel"], ["placeholder", "Calender", "name", "toDate", "bsDatepicker", "", 1, "form-control", 3, "ngModel", "bsValue", "bsConfig", "onHidden", "ngModelChange"], ["toDate", "ngModel"], ["name", "totalMonth", "id", "totalMonth", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["totalMonth", "ngModel"], ["name", "commitmentAllSBU", "id", "commitmentAllSBU", 1, "form-control", 3, "ngModel", "ngModelChange"], ["commitmentAllSBU", "ngModel"], [1, "col-md-1"], ["name", "commitmentOwnSBU", "id", "commitmentOwnSBU", 1, "form-control", 3, "ngModel", "ngModelChange"], ["commitmentOwnSBU", "ngModel"], ["name", "paymentMethod", "id", "paymentMethod", 1, "form-control", 3, "ngModel", "ngModelChange"], ["paymentMethod", "ngModel"], [3, "ngValue"], ["value", "Cash"], ["value", "Cheque"], ["value", "DD"], ["value", "TT"], ["value", "PO"], ["name", "chequeTitle", "id", "chequeTitle", 1, "form-control", 3, "ngModel", "ngModelChange"], ["chequeTitle", "ngModel"], ["id", "productId", "name", "productId", 1, "form-control", 3, "ngModel", "ngModelChange"], ["productId", "ngModel"], [3, "value", 4, "ngFor", "ngForOf"], ["class", "col-md-2", 4, "ngIf"], ["id", "recStatus", "name", "recStatus", "required", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["recStatus", "ngModel"], ["value", "Approved"], ["value", "Not Approved"], ["name", "comments", "id", "comments", 1, "form-control", 3, "ngModel", "ngModelChange"], ["comments", "ngModel"], ["investmentInitSearchModal", ""], ["investmentAprSearchModal", ""], ["id", "id", "name", "id", "readonly", "", 1, "form-control", 2, "display", "none", 3, "ngModel", "ngModelChange"], ["name", "doctorName", "readonly", "", "id", "doctorName", 1, "form-control", 3, "ngModel", "ngModelChange"], ["doctorId", "ngModel"], ["name", "doctorId", "readonly", "", "id", "doctorId", 1, "form-control", 3, "ngModel", "ngModelChange"], ["name", "degree", "readonly", "", "id", "degree", "name", "degree", 1, "form-control", 3, "ngModel", "ngModelChange"], ["degree", "ngModel"], ["name", "designation", "readonly", "", "id", "designation", "name", "designation", 1, "form-control", 3, "ngModel", "ngModelChange"], ["designation", "ngModel"], ["name", "designation", "readonly", "", "id", "institutionId", "name", "institutionId", 1, "form-control", 3, "ngModel", "ngModelChange"], ["institutionId", "ngModel"], ["name", "doctorCategory", "id", "doctorCategory", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["name", "address", "readonly", "", "id", "address", "name", "address", 1, "form-control", 3, "ngModel", "ngModelChange"], ["address", "ngModel"], ["readonly", "", "name", "doctorType", "id", "doctorType", 1, "form-control", 3, "ngModel", "ngModelChange"], ["doctorType", "ngModel"], ["readonly", "", "id", "practiceDayPerMonth", "name", "practiceDayPerMonth", 1, "form-control", 3, "ngModel", "ngModelChange"], ["practiceDayPerMonth", "ngModel"], ["readonly", "", "id", "patientsPerDay", "name", "patientsPerDay", 1, "form-control", 3, "ngModel", "ngModelChange"], ["patientsPerDay", "ngModel"], ["id", "institutionName", "name", "institutionName", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["institutionName", "ngModel"], ["id", "resposnsibleDoctorName", "name", "resposnsibleDoctorName", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["resposnsibleDoctorName", "ngModel"], ["name", "address", "id", "address", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["name", "institutionType", "id", "institutionType", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["institutionType", "ngModel"], ["name", "noOfBed", "id", "noOfBed", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["noOfBed", "ngModel"], ["name", "departmentUnit", "id", "departmentUnit", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["departmentUnit", "ngModel"], ["name", "campaignName", "id", "campaignName", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["campaignName", "ngModel"], ["name", "subCampaignName", "id", "subCampaignName", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["subCampaignName", "ngModel"], ["name", "subCampStartDate", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["subCampStartDate", "ngModel"], ["name", "subCampEndDate", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["subCampEndDate", "ngModel"], ["name", "doctorName", "id", "doctorName", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["doctorName", "ngModel"], ["name", "institutionName", "id", "institutionName", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["ame", "bcdsName", "id", "bcdsName", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["bcdsName", "ngModel"], ["name", "bcdsAddress", "id", "bcdsAddress", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["bcdsAddress", "ngModel"], ["name", "noOfMember", "id", "noOfMember", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["noOfMember", "ngModel"], ["id", "societyName", "name", "societyName", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["societyName", "ngModel"], ["name", "societyAddress", "id", "societyAddress", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], ["societyAddress", "ngModel"], ["name", "noOfMembers", "id", "noOfMember", "readonly", "", 1, "form-control", 3, "ngModel", "ngModelChange"], [3, "value"], ["type", "button", 1, "btn", "btn-primary", "btn-lg", "btn-block", 3, "click"], [1, "fa", "fa-plus"], ["type", "button", "value", "Edit", 3, "click"], ["type", "button", "value", "Remove", 3, "click"], [1, "modal-header", 2, "background", "-webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc))", "color", "black"], [1, "modal-title", "pull-left"], ["type", "button", "aria-label", "Close", 1, "close", "pull-right", 3, "click"], ["aria-hidden", "true"], [1, "modal-body", 2, "padding", "20px 30px 20px 30px"], [1, "col-md-12"], [1, "table-responsive", 2, "border", "1px solid #bed2c9", "width", "100%"], [1, "table", "table-bordered", "table-responsive", "table-hover", "table-striped"], [2, "background", "-webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc))"], ["scope", "col", 2, "width", "7%"], ["scope", "col", 2, "width", "0", "display", "none"], ["scope", "col", 2, "width", "9%"], ["scope", "col", 2, "width", "8%"], [1, "btn", "btn-sm", "btn-embossed", "btn-success", 3, "click"], [2, "display", "none"]], template: function InvestmentAprComponent_Template(rf, ctx) { if (rf & 1) {
+        const _r118 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵgetCurrentView"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "section", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "div", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](2, "div", 2);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](3, "div", 3);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](4, "form", 4, 5);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("submit", function InvestmentAprComponent_Template_form_submit_4_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r198); const _r0 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](5); return ctx.onSubmit(_r0); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("submit", function InvestmentAprComponent_Template_form_submit_4_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r118); const _r0 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](5); return ctx.onSubmit(_r0); });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](6, "div", 6);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](7, "div", 7);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](8, "div", 2);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](9, "div", 8);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](10, "h3", 9);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](11, "Investment Initiation");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](11, "Investment Approval");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](12, "div", 10);
@@ -5117,14 +4354,14 @@ InvestmentAprComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵd
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](16, "div", 10);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](17, "button", 13);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentAprComponent_Template_button_click_17_listener() { return ctx.getInvestmentInit(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentAprComponent_Template_button_click_17_listener() { return ctx.getInvestmentApproved(); });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](18, "i", 14);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](19, "Search");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](20, "div", 10);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](21, "button", 15);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentAprComponent_Template_button_click_21_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r198); const _r0 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](5); return ctx.resetPage(_r0); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("click", function InvestmentAprComponent_Template_button_click_21_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵrestoreView"](_r118); const _r0 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](5); return ctx.resetPage(_r0); });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](22, "i", 14);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](23, "Reset");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
@@ -5136,371 +4373,363 @@ InvestmentAprComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵd
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](26, "div", 2);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](27, "div", 18);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](28, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](29, "Propose For");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](29, "Reference");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](30, "div", 19);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](31, "select", 20, 21);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_Template_select_ngModelChange_31_listener($event) { return ctx.investmentInitService.investmentInitFormData.proposeFor = $event; });
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](33, "option", 22);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](34, "Select Propose For");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](31, "input", 20, 21);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_Template_input_ngModelChange_31_listener($event) { return ctx.investmentAprService.investmentAprFormData.id = $event; });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](35, "option", 23);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](36, "Brand Campaign");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](37, "option", 24);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](38, "Others");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](33, "input", 22, 23);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("dblclick", function InvestmentAprComponent_Template_input_dblclick_33_listener() { return ctx.getInvestmentInit(); })("ngModelChange", function InvestmentAprComponent_Template_input_ngModelChange_33_listener($event) { return ctx.investmentAprService.investmentAprFormData.referenceNo = $event; });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](35, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](36, "label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](37, "Propose For");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](39, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](40, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](41, "Reference");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](42, "div", 19);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](43, "input", 25, 26);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_Template_input_ngModelChange_43_listener($event) { return ctx.investmentInitService.investmentInitFormData.id = $event; });
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](45, "input", 27, 28);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_Template_input_ngModelChange_45_listener($event) { return ctx.investmentInitService.investmentInitFormData.referenceNo = $event; });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](38, "div", 19);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](39, "input", 24, 25);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_Template_input_ngModelChange_39_listener($event) { return ctx.investmentAprService.investmentAprFormData.proposeFor = $event; });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](47, "div", 17);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](48, "div", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](41, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](42, "div", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](43, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](44, "label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](45, "Donation Type");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](46, "div", 19);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](47, "input", 26, 27);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_Template_input_ngModelChange_47_listener($event) { return ctx.investmentAprService.investmentAprFormData.donationType = $event; });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](49, "div", 18);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](50, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](51, "Donation Type");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](51, "Donation To");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](52, "div", 19);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](53, "select", 29, 30);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_Template_select_ngModelChange_53_listener($event) { return ctx.investmentInitService.investmentInitFormData.donationType = $event; });
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](55, "option", 22);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](56, "Select Donation Type");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](53, "input", 28, 29);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_Template_input_ngModelChange_53_listener($event) { return ctx.investmentAprService.investmentAprFormData.donationTo = $event; });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](57, InvestmentAprComponent_option_57_Template, 2, 2, "option", 31);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](58, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](59, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](60, "Donation To");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](55, InvestmentAprComponent_fieldset_55_Template, 79, 11, "fieldset", 30);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](56, InvestmentAprComponent_fieldset_56_Template, 49, 6, "fieldset", 30);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](57, InvestmentAprComponent_fieldset_57_Template, 58, 7, "fieldset", 30);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](58, InvestmentAprComponent_fieldset_58_Template, 29, 3, "fieldset", 30);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](59, InvestmentAprComponent_fieldset_59_Template, 29, 3, "fieldset", 30);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](60, "fieldset");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](61, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](62, "div", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](63, "div", 8);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](64, "h3", 9);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](65, "strong");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](66, "Investment Details");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](61, "div", 19);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](62, "select", 32, 33);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("change", function InvestmentAprComponent_Template_select_change_62_listener() { return ctx.onChangeDonationTo(); })("ngModelChange", function InvestmentAprComponent_Template_select_ngModelChange_62_listener($event) { return ctx.investmentInitService.investmentInitFormData.donationTo = $event; });
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](64, "option", 22);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](65, "Select Donation To");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](66, "option", 34);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](67, "Doctor");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](68, "option", 35);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](69, "Institution");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](67, "div", 10);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](70, "option", 36);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](71, "Campaign");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](72, "option", 37);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](73, "Bcds");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](68, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](69, "div", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](70, "div", 31);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](71, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](72, "table", 32);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](73, "tr");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](74, "td");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](75, "Investment");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](74, "option", 38);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](75, "Society");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](76, "td");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](77, "Commitment-All");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](78, "td");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](79, "Commitment-Own");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](80, "td");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](81, "Share-All");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](82, "td");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](83, "Share-Own");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](76, InvestmentAprComponent_fieldset_76_Template, 104, 20, "fieldset", 39);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](77, InvestmentAprComponent_fieldset_77_Template, 62, 14, "fieldset", 39);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](78, InvestmentAprComponent_fieldset_78_Template, 77, 19, "fieldset", 39);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](79, InvestmentAprComponent_fieldset_79_Template, 39, 9, "fieldset", 39);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](80, InvestmentAprComponent_fieldset_80_Template, 39, 9, "fieldset", 39);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](81, "fieldset");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](82, "div", 17);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](83, "div", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](84, "div", 8);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](85, "h3", 9);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](86, "strong");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](87, "Investment Details");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](84, InvestmentAprComponent_tr_84_Template, 11, 5, "tr", 33);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](88, "div", 10);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](89, InvestmentAprComponent_div_89_Template, 4, 0, "div", 40);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](85, "div", 31);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](86, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](87, "div", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](88, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](89, "label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](90, "Prop. Inv.");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](90, "div", 17);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](91, "div", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](92, "div", 41);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](93, "div", 17);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](94, "table", 42);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](95, "tr");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](96, "td");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](97, "Investment");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](91, "div", 34);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](92, "input", 35, 36);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_Template_input_ngModelChange_92_listener($event) { return ctx.investmentAprService.investmentDetailFormData.proposedAmount = $event; });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](98, "td");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](99, "Commitment-All");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](100, "td");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](101, "Commitment-Own");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](102, "td");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](103, "Share-All");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](104, "td");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](105, "Share-Own");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](94, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](95, "div", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](96, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](97, "label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](98, "Purpose");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](106, InvestmentAprComponent_tr_106_Template, 11, 5, "tr", 43);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](99, "div", 34);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](100, "input", 37, 38);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_Template_input_ngModelChange_100_listener($event) { return ctx.investmentAprService.investmentDetailFormData.purpose = $event; });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](107, "div", 41);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](108, "div", 17);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](109, "div", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](110, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](111, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](112, "Prop. Inv.");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](102, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](103, "div", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](104, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](105, "label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](106, "Duration");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](113, "div", 44);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](114, "input", 45, 46);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_Template_input_ngModelChange_114_listener($event) { return ctx.investmentInitService.investmentDetailFormData.proposedAmount = $event; });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](107, "div", 19);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](108, "input", 39, 40);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("onHidden", function InvestmentAprComponent_Template_input_onHidden_108_listener() { return ctx.changeDateInDetail(); })("ngModelChange", function InvestmentAprComponent_Template_input_ngModelChange_108_listener($event) { return ctx.investmentAprService.investmentDetailFormData.fromDate = $event; });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](110, "div", 19);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](111, "input", 41, 42);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("onHidden", function InvestmentAprComponent_Template_input_onHidden_111_listener() { return ctx.changeDateInDetail(); })("ngModelChange", function InvestmentAprComponent_Template_input_ngModelChange_111_listener($event) { return ctx.investmentAprService.investmentDetailFormData.toDate = $event; });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](116, "div", 17);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](117, "div", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](118, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](119, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](120, "Purpose");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](113, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](114, "label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](115, "Total Month");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](121, "div", 44);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](122, "input", 47, 48);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_Template_input_ngModelChange_122_listener($event) { return ctx.investmentInitService.investmentDetailFormData.purpose = $event; });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](116, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](117, "input", 43, 44);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_Template_input_ngModelChange_117_listener($event) { return ctx.investmentAprService.investmentDetailFormData.totalMonth = $event; });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](124, "div", 17);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](125, "div", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](126, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](127, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](128, "Duration");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](119, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](120, "div", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](121, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](122, "label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](123, "Commitment:");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](129, "div", 19);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](130, "input", 49, 50);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("onHidden", function InvestmentAprComponent_Template_input_onHidden_130_listener() { return ctx.changeDateInDetail(); })("ngModelChange", function InvestmentAprComponent_Template_input_ngModelChange_130_listener($event) { return ctx.investmentInitService.investmentDetailFormData.fromDate = $event; });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](124, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](125, "label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](126, "All SBU ");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](132, "div", 19);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](133, "input", 51, 52);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("onHidden", function InvestmentAprComponent_Template_input_onHidden_133_listener() { return ctx.changeDateInDetail(); })("ngModelChange", function InvestmentAprComponent_Template_input_ngModelChange_133_listener($event) { return ctx.investmentInitService.investmentDetailFormData.toDate = $event; });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](127, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](128, "input", 45, 46);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_Template_input_ngModelChange_128_listener($event) { return ctx.investmentAprService.investmentDetailFormData.commitmentAllSBU = $event; });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](135, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](136, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](137, "Total Month");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](130, "div", 47);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](131, "label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](132, "%/");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](138, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](139, "input", 53, 54);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_Template_input_ngModelChange_139_listener($event) { return ctx.investmentInitService.investmentDetailFormData.totalMonth = $event; });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](133, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](134, "label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](135, "Own SBU");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](136, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](137, "input", 48, 49);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_Template_input_ngModelChange_137_listener($event) { return ctx.investmentAprService.investmentDetailFormData.commitmentOwnSBU = $event; });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](141, "div", 17);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](142, "div", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](143, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](144, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](145, "Commitment:");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](139, "div", 47);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](140, "label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](141, "%");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](146, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](147, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](148, "All SBU ");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](149, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](150, "input", 55, 56);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_Template_input_ngModelChange_150_listener($event) { return ctx.investmentInitService.investmentDetailFormData.commitmentAllSBU = $event; });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](142, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](143, "div", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](144, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](145, "label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](146, "Payment Method");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](152, "div", 57);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](153, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](154, "%/");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](147, "div", 34);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](148, "select", 50, 51);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_Template_select_ngModelChange_148_listener($event) { return ctx.investmentAprService.investmentDetailFormData.paymentMethod = $event; });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](150, "option", 52);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](151, "Select Payment Method");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](155, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](156, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](157, "Own SBU");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](152, "option", 53);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](153, "Cash");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](154, "option", 54);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](155, "Cheque");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](158, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](159, "input", 58, 59);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_Template_input_ngModelChange_159_listener($event) { return ctx.investmentInitService.investmentDetailFormData.commitmentOwnSBU = $event; });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](156, "option", 55);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](157, "DD");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](158, "option", 56);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](159, "TT");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](161, "div", 57);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](162, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](163, "%");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](160, "option", 57);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](161, "PO");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](164, "div", 17);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](165, "div", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](166, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](167, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](168, "Payment Method");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](162, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](163, "div", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](164, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](165, "label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](166, "Cheque Title");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](169, "div", 44);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](170, "select", 60, 61);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_Template_select_ngModelChange_170_listener($event) { return ctx.investmentInitService.investmentDetailFormData.paymentMethod = $event; });
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](172, "option", 22);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](173, "Select Payment Method");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](174, "option", 62);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](175, "Cash");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](167, "div", 34);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](168, "input", 58, 59);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_Template_input_ngModelChange_168_listener($event) { return ctx.investmentAprService.investmentDetailFormData.chequeTitle = $event; });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](176, "option", 63);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](177, "Cheque");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](178, "option", 64);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](179, "DD");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](180, "option", 65);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](181, "TT");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](182, "option", 66);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](183, "PO");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](170, "fieldset");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](171, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](172, "div", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](173, "div", 8);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](174, "h3", 9);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](175, "strong");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](176, "Targeted Products of SBU");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](184, "div", 17);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](185, "div", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](186, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](187, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](188, "Cheque Title");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](189, "div", 44);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](190, "input", 67, 68);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_Template_input_ngModelChange_190_listener($event) { return ctx.investmentInitService.investmentDetailFormData.chequeTitle = $event; });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](177, "div", 10);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](178, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](179, "div", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](180, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](181, "label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](182, "Product");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](183, "div", 19);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](184, "select", 60, 61);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_Template_select_ngModelChange_184_listener($event) { return ctx.investmentAprService.investmentTargetedProdFormData.productId = $event; });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](186, "option", 52);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](187, "Select Product");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](188, InvestmentAprComponent_option_188_Template, 2, 2, "option", 62);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](189, "div", 19);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](190, InvestmentAprComponent_div_190_Template, 4, 0, "div", 63);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](192, "fieldset");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](193, "div", 17);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](194, "div", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](195, "div", 8);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](196, "h3", 9);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](197, "strong");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](198, "Targeted Products of SBU");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](191, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](192, "table", 32);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](193, "tr");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](194, "td");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](195, "Product Code");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](196, "td");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](197, "Product Name");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](199, "div", 10);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](198, InvestmentAprComponent_tr_198_Template, 9, 2, "tr", 33);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](199, "fieldset");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](200, "div", 17);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](201, "div", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](202, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](203, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](204, "Product");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](205, "div", 19);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](206, "select", 69, 70);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_Template_select_ngModelChange_206_listener($event) { return ctx.investmentInitService.investmentTargetedProdFormData.productId = $event; });
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](208, "option", 22);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](209, "Select Product");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](210, InvestmentAprComponent_option_210_Template, 2, 2, "option", 31);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](211, "div", 19);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](212, InvestmentAprComponent_div_212_Template, 4, 0, "div", 71);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](213, "div", 17);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](214, "table", 42);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](215, "tr");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](216, "td");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](217, "Product Code");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](218, "td");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](219, "Product Name");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](220, InvestmentAprComponent_tr_220_Template, 9, 2, "tr", 43);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](202, "div", 8);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](203, "h3", 9);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](204, "strong");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](205, "Targeted Group");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](221, "fieldset");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](222, "div", 17);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](223, "div", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](224, "div", 8);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](225, "h3", 9);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](226, "strong");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](227, "Targeted Group");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](206, "div", 10);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](207, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](208, "table", 32);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](209, "tr");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](210, "td");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](211, "Market Group Name");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](212, "td");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](213, "Market Code");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](214, "td");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](215, "Market Name");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](216, InvestmentAprComponent_tr_216_Template, 7, 3, "tr", 33);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](228, "div", 10);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](217, "fieldset");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](218, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](219, "div", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](220, "div", 8);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](221, "h3", 9);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](222, "strong");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](223, "Aprommendation Status");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](229, "div", 17);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](230, "div", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](231, "div", 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](232, "label");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](233, "Group");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](224, "div", 10);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](234, "div", 19);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](235, "select", 72, 73);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("change", function InvestmentAprComponent_Template_select_change_235_listener() { return ctx.onChangeMarketGroupInTargetedGroup(); })("ngModelChange", function InvestmentAprComponent_Template_select_ngModelChange_235_listener($event) { return ctx.investmentInitService.investmentTargetedGroupFormData.marketGroupMstId = $event; });
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](237, "option", 22);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](238, "Select Market Group");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](239, InvestmentAprComponent_option_239_Template, 2, 2, "option", 31);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](225, "div", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](226, "div", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](227, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](228, "label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](229, "Aprommendation Status");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelement"](240, "div", 19);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](241, InvestmentAprComponent_div_241_Template, 4, 0, "div", 71);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](242, InvestmentAprComponent_div_242_Template, 4, 0, "div", 71);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](230, "div", 19);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](231, "select", 64, 65);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_Template_select_ngModelChange_231_listener($event) { return ctx.investmentAprService.investmentAprCommentFormData.recStatus = $event; });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](233, "option", 52);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](234, "Select Status");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](235, "option", 66);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](236, "Approved");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](237, "option", 67);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](238, "Not Approved");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](243, "div", 17);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](244, "table", 42);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](245, "tr");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](246, "td");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](247, "Market Group Name");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](248, "td");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](249, "Market Code");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](250, "td");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](251, "Market Name");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](239, "div", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](240, "label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtext"](241, "Comments");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](252, InvestmentAprComponent_tr_252_Template, 7, 3, "tr", 43);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](242, "div", 19);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](243, "input", 68, 69);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵlistener"]("ngModelChange", function InvestmentAprComponent_Template_input_ngModelChange_243_listener($event) { return ctx.investmentAprService.investmentAprCommentFormData.comments = $event; });
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
@@ -5511,78 +4740,65 @@ InvestmentAprComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵd
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](253, InvestmentAprComponent_ng_template_253_Template, 27, 1, "ng-template", null, 74, _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplateRefExtractor"]);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](245, InvestmentAprComponent_ng_template_245_Template, 27, 1, "ng-template", null, 70, _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplateRefExtractor"]);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplate"](247, InvestmentAprComponent_ng_template_247_Template, 27, 1, "ng-template", null, 71, _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵtemplateRefExtractor"]);
     } if (rf & 2) {
         const _r0 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](5);
-        const _r1 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](32);
-        const _r4 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](54);
-        const _r6 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](63);
-        const _r16 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](131);
-        const _r17 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](134);
-        const _r23 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](207);
-        const _r27 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](236);
+        const _r14 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](109);
+        const _r15 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](112);
+        const _r21 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](185);
+        const _r26 = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵreference"](232);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](13);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("disabled", _r0.invalid);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵclassProp"]("invalid", _r1.invalid && _r1.touched);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentInitService.investmentInitFormData.proposeFor);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentAprService.investmentAprFormData.id);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngValue", null);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](10);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentInitService.investmentInitFormData.id);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentInitService.investmentInitFormData.referenceNo);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentAprService.investmentAprFormData.referenceNo);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](6);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentAprService.investmentAprFormData.proposeFor);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](8);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵclassProp"]("invalid", _r4.invalid && _r4.touched);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentInitService.investmentInitFormData.donationType);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentAprService.investmentAprFormData.donationType);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](6);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentAprService.investmentAprFormData.donationTo);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngValue", null);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx.donations);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](5);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵclassProp"]("invalid", _r6.invalid && _r6.touched);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("disabled", ctx.isDonationValid)("ngModel", ctx.investmentInitService.investmentInitFormData.donationTo);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngValue", null);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](12);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx.investmentInitService.investmentInitFormData.donationTo == "Doctor");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx.investmentAprService.investmentAprFormData.donationTo == "Doctor");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx.investmentInitService.investmentInitFormData.donationTo == "Institution");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx.investmentAprService.investmentAprFormData.donationTo == "Institution");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx.investmentInitService.investmentInitFormData.donationTo == "Campaign");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx.investmentAprService.investmentAprFormData.donationTo == "Campaign");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx.investmentInitService.investmentInitFormData.donationTo == "Bcds");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx.investmentAprService.investmentAprFormData.donationTo == "Bcds");
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx.investmentInitService.investmentInitFormData.donationTo == "Society");
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](9);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx.isValid);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx.investmentAprService.investmentAprFormData.donationTo == "Society");
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](25);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx.investmentDetails);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](8);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentInitService.investmentDetailFormData.proposedAmount);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentAprService.investmentDetailFormData.proposedAmount);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](8);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentInitService.investmentDetailFormData.purpose);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentAprService.investmentDetailFormData.purpose);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](8);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵclassProp"]("invalid", _r16.invalid && _r16.touched);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentInitService.investmentDetailFormData.fromDate)("bsValue", ctx.bsValue)("bsConfig", ctx.bsConfig);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵclassProp"]("invalid", _r14.invalid && _r14.touched);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentAprService.investmentDetailFormData.fromDate)("bsValue", ctx.bsValue)("bsConfig", ctx.bsConfig);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](3);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵclassProp"]("invalid", _r17.invalid && _r17.touched);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentInitService.investmentDetailFormData.toDate)("bsValue", ctx.bsValue)("bsConfig", ctx.bsConfig);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵclassProp"]("invalid", _r15.invalid && _r15.touched);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentAprService.investmentDetailFormData.toDate)("bsValue", ctx.bsValue)("bsConfig", ctx.bsConfig);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](6);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentInitService.investmentDetailFormData.totalMonth);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentAprService.investmentDetailFormData.totalMonth);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](11);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentInitService.investmentDetailFormData.commitmentAllSBU);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentAprService.investmentDetailFormData.commitmentAllSBU);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](9);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentInitService.investmentDetailFormData.commitmentOwnSBU);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentAprService.investmentDetailFormData.commitmentOwnSBU);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](11);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentInitService.investmentDetailFormData.paymentMethod);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentAprService.investmentDetailFormData.paymentMethod);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngValue", null);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentInitService.investmentDetailFormData.chequeTitle);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentAprService.investmentDetailFormData.chequeTitle);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](16);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵclassProp"]("invalid", _r23.invalid && _r23.touched);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentInitService.investmentTargetedProdFormData.productId);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵclassProp"]("invalid", _r21.invalid && _r21.touched);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentAprService.investmentTargetedProdFormData.productId);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngValue", null);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
@@ -5591,20 +4807,16 @@ InvestmentAprComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵd
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx.isValid);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](8);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx.investmentTargetedProds);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx.investmentTargetedGroups);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](15);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵclassProp"]("invalid", _r27.invalid && _r27.touched);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentInitService.investmentTargetedGroupFormData.marketGroupMstId);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵclassProp"]("invalid", _r26.invalid && _r26.touched);
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentAprService.investmentAprCommentFormData.recStatus);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngValue", null);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx.marketGroupMsts);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx.isValid);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx.isValid);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](10);
-        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx.investmentTargetedGroups);
-    } }, directives: [_angular_forms__WEBPACK_IMPORTED_MODULE_7__["ɵangular_packages_forms_forms_y"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["NgControlStatusGroup"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["NgForm"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["SelectControlValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["RequiredValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["NgModel"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["NgSelectOption"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["ɵangular_packages_forms_forms_x"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["DefaultValueAccessor"], _angular_common__WEBPACK_IMPORTED_MODULE_1__["NgForOf"], _angular_common__WEBPACK_IMPORTED_MODULE_1__["NgIf"], ngx_bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_8__["BsDatepickerInputDirective"], ngx_bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_8__["BsDatepickerDirective"]], encapsulation: 2 });
+        _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngModel", ctx.investmentAprService.investmentAprCommentFormData.comments);
+    } }, directives: [_angular_forms__WEBPACK_IMPORTED_MODULE_8__["ɵangular_packages_forms_forms_y"], _angular_forms__WEBPACK_IMPORTED_MODULE_8__["NgControlStatusGroup"], _angular_forms__WEBPACK_IMPORTED_MODULE_8__["NgForm"], _angular_forms__WEBPACK_IMPORTED_MODULE_8__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_8__["RequiredValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_8__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_8__["NgModel"], _angular_common__WEBPACK_IMPORTED_MODULE_1__["NgIf"], _angular_common__WEBPACK_IMPORTED_MODULE_1__["NgForOf"], ngx_bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_9__["BsDatepickerInputDirective"], ngx_bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_9__["BsDatepickerDirective"], _angular_forms__WEBPACK_IMPORTED_MODULE_8__["SelectControlValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_8__["NgSelectOption"], _angular_forms__WEBPACK_IMPORTED_MODULE_8__["ɵangular_packages_forms_forms_x"]], encapsulation: 2 });
 
 
 /***/ }),
@@ -5698,7 +4910,7 @@ StepperComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineC
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngForOf", ctx.steps);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](2);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngTemplateOutlet", ctx.selected.content);
-    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["NgForOf"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgTemplateOutlet"]], styles: ["button.nav-link[_ngcontent-%COMP%] {\n  background: #e9ecef;\n  border-radius: 0;\n  border: none;\n}\nbutton.nav-link[_ngcontent-%COMP%]:focus {\n  outline: none;\n}\nbutton.nav-link.active[_ngcontent-%COMP%]:hover {\n  color: white;\n}\nbutton.nav-link[_ngcontent-%COMP%]   [_ngcontent-%COMP%]:active {\n  outline: none;\n}\nbutton.nav-link.active[_ngcontent-%COMP%]:focus {\n  outline: none;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXC4uXFwuLlxcc3RlcHBlci5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLG1CQUFBO0VBQ0EsZ0JBQUE7RUFDQSxZQUFBO0FBQ0o7QUFDSTtFQUNJLGFBQUE7QUFDUjtBQUNJO0VBQ0ksWUFBQTtBQUNSO0FBQ0k7RUFDSSxhQUFBO0FBQ1I7QUFDSTtFQUNJLGFBQUE7QUFDUiIsImZpbGUiOiJzdGVwcGVyLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiYnV0dG9uLm5hdi1saW5rIHtcclxuICAgIGJhY2tncm91bmQ6ICNlOWVjZWY7XHJcbiAgICBib3JkZXItcmFkaXVzOiAwO1xyXG4gICAgYm9yZGVyOiBub25lO1xyXG5cclxuICAgICY6Zm9jdXMge1xyXG4gICAgICAgIG91dGxpbmU6IG5vbmU7XHJcbiAgICB9XHJcbiAgICAmLmFjdGl2ZTpob3ZlciB7XHJcbiAgICAgICAgY29sb3I6IHdoaXRlO1xyXG4gICAgfVxyXG4gICAgJiA6YWN0aXZlIHtcclxuICAgICAgICBvdXRsaW5lOiBub25lO1xyXG4gICAgfVxyXG4gICAgJi5hY3RpdmU6Zm9jdXMge1xyXG4gICAgICAgIG91dGxpbmU6IG5vbmU7XHJcbiAgICB9XHJcbn0gIl19 */"] });
+    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["NgForOf"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgTemplateOutlet"]], styles: ["button.nav-link[_ngcontent-%COMP%] {\n  background: #e9ecef;\n  border-radius: 0;\n  border: none;\n}\nbutton.nav-link[_ngcontent-%COMP%]:focus {\n  outline: none;\n}\nbutton.nav-link.active[_ngcontent-%COMP%]:hover {\n  color: white;\n}\nbutton.nav-link[_ngcontent-%COMP%]   [_ngcontent-%COMP%]:active {\n  outline: none;\n}\nbutton.nav-link.active[_ngcontent-%COMP%]:focus {\n  outline: none;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXC4uXFxzdGVwcGVyLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0ksbUJBQUE7RUFDQSxnQkFBQTtFQUNBLFlBQUE7QUFDSjtBQUNJO0VBQ0ksYUFBQTtBQUNSO0FBQ0k7RUFDSSxZQUFBO0FBQ1I7QUFDSTtFQUNJLGFBQUE7QUFDUjtBQUNJO0VBQ0ksYUFBQTtBQUNSIiwiZmlsZSI6InN0ZXBwZXIuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJidXR0b24ubmF2LWxpbmsge1xyXG4gICAgYmFja2dyb3VuZDogI2U5ZWNlZjtcclxuICAgIGJvcmRlci1yYWRpdXM6IDA7XHJcbiAgICBib3JkZXI6IG5vbmU7XHJcblxyXG4gICAgJjpmb2N1cyB7XHJcbiAgICAgICAgb3V0bGluZTogbm9uZTtcclxuICAgIH1cclxuICAgICYuYWN0aXZlOmhvdmVyIHtcclxuICAgICAgICBjb2xvcjogd2hpdGU7XHJcbiAgICB9XHJcbiAgICAmIDphY3RpdmUge1xyXG4gICAgICAgIG91dGxpbmU6IG5vbmU7XHJcbiAgICB9XHJcbiAgICAmLmFjdGl2ZTpmb2N1cyB7XHJcbiAgICAgICAgb3V0bGluZTogbm9uZTtcclxuICAgIH1cclxufSAiXX0= */"] });
 const ɵStepperComponent_BaseFactory = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵgetInheritedFactory"](StepperComponent);
 
 
@@ -5717,12 +4929,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _shared_models_investment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../shared/models/investment */ "eIik");
 /* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "ofXK");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "fXoL");
-/* harmony import */ var _services_investment_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../_services/investment.service */ "39we");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "tyNb");
-/* harmony import */ var ngx_toastr__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ngx-toastr */ "5eHb");
-/* harmony import */ var ngx_bootstrap_modal__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ngx-bootstrap/modal */ "K3ix");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
-/* harmony import */ var ngx_bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ngx-bootstrap/datepicker */ "hzby");
+/* harmony import */ var _account_account_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../account/account.service */ "2rwd");
+/* harmony import */ var _services_investment_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../_services/investment.service */ "39we");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ "tyNb");
+/* harmony import */ var ngx_toastr__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ngx-toastr */ "5eHb");
+/* harmony import */ var ngx_bootstrap_modal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ngx-bootstrap/modal */ "K3ix");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
+/* harmony import */ var ngx_bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ngx-bootstrap/datepicker */ "hzby");
+
 
 
 
@@ -6890,7 +6104,8 @@ function InvestmentInitComponent_ng_template_253_Template(rf, ctx) { if (rf & 1)
     _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx_r33.investmentInits);
 } }
 class InvestmentInitComponent {
-    constructor(investmentInitService, router, toastr, modalService, datePipe) {
+    constructor(accountService, investmentInitService, router, toastr, modalService, datePipe) {
+        this.accountService = accountService;
         this.investmentInitService = investmentInitService;
         this.router = router;
         this.toastr = toastr;
@@ -7083,11 +6298,27 @@ class InvestmentInitComponent {
         });
     }
     ngOnInit() {
+        this.getEmployeeId();
         this.getDonation();
         this.getProduct();
         this.getMarketGroupMsts();
         this.bsConfig = Object.assign({}, { containerClass: 'theme-green' }, { dateInputFormat: 'DD/MM/YYYY' });
         this.bsValue = new Date();
+    }
+    getEmployeeId() {
+        //debugger;
+        this.empId = this.accountService.getEmployeeId();
+        this.investmentInitService.investmentInitFormData.employeeId = parseInt(this.empId);
+        this.getEmployeeSbu();
+    }
+    getEmployeeSbu() {
+        //debugger;
+        this.accountService.getEmployeeSbu(this.investmentInitService.investmentInitFormData.employeeId).subscribe((response) => {
+            //debugger;
+            this.sbu = response.sbu;
+        }, (error) => {
+            console.log(error);
+        });
     }
     onChangeDonationTo() {
         debugger;
@@ -7768,7 +6999,7 @@ class InvestmentInitComponent {
         }
     }
 }
-InvestmentInitComponent.ɵfac = function InvestmentInitComponent_Factory(t) { return new (t || InvestmentInitComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_services_investment_service__WEBPACK_IMPORTED_MODULE_3__["InvestmentInitService"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](ngx_toastr__WEBPACK_IMPORTED_MODULE_5__["ToastrService"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](ngx_bootstrap_modal__WEBPACK_IMPORTED_MODULE_6__["BsModalService"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_angular_common__WEBPACK_IMPORTED_MODULE_1__["DatePipe"])); };
+InvestmentInitComponent.ɵfac = function InvestmentInitComponent_Factory(t) { return new (t || InvestmentInitComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_account_account_service__WEBPACK_IMPORTED_MODULE_3__["AccountService"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_services_investment_service__WEBPACK_IMPORTED_MODULE_4__["InvestmentInitService"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](ngx_toastr__WEBPACK_IMPORTED_MODULE_6__["ToastrService"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](ngx_bootstrap_modal__WEBPACK_IMPORTED_MODULE_7__["BsModalService"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_angular_common__WEBPACK_IMPORTED_MODULE_1__["DatePipe"])); };
 InvestmentInitComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdefineComponent"]({ type: InvestmentInitComponent, selectors: [["app-investmentInit"]], viewQuery: function InvestmentInitComponent_Query(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵviewQuery"](_c0, 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵviewQuery"](_c1, 1);
@@ -8287,7 +7518,7 @@ InvestmentInitComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵ
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx.isValid);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](10);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngForOf", ctx.investmentTargetedGroups);
-    } }, directives: [_angular_forms__WEBPACK_IMPORTED_MODULE_7__["ɵangular_packages_forms_forms_y"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["NgControlStatusGroup"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["NgForm"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["SelectControlValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["RequiredValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["NgModel"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["NgSelectOption"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["ɵangular_packages_forms_forms_x"], _angular_forms__WEBPACK_IMPORTED_MODULE_7__["DefaultValueAccessor"], _angular_common__WEBPACK_IMPORTED_MODULE_1__["NgForOf"], _angular_common__WEBPACK_IMPORTED_MODULE_1__["NgIf"], ngx_bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_8__["BsDatepickerInputDirective"], ngx_bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_8__["BsDatepickerDirective"]], encapsulation: 2 });
+    } }, directives: [_angular_forms__WEBPACK_IMPORTED_MODULE_8__["ɵangular_packages_forms_forms_y"], _angular_forms__WEBPACK_IMPORTED_MODULE_8__["NgControlStatusGroup"], _angular_forms__WEBPACK_IMPORTED_MODULE_8__["NgForm"], _angular_forms__WEBPACK_IMPORTED_MODULE_8__["SelectControlValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_8__["RequiredValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_8__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_8__["NgModel"], _angular_forms__WEBPACK_IMPORTED_MODULE_8__["NgSelectOption"], _angular_forms__WEBPACK_IMPORTED_MODULE_8__["ɵangular_packages_forms_forms_x"], _angular_forms__WEBPACK_IMPORTED_MODULE_8__["DefaultValueAccessor"], _angular_common__WEBPACK_IMPORTED_MODULE_1__["NgForOf"], _angular_common__WEBPACK_IMPORTED_MODULE_1__["NgIf"], ngx_bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_9__["BsDatepickerInputDirective"], ngx_bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_9__["BsDatepickerDirective"]], encapsulation: 2 });
 
 
 /***/ }),
@@ -9211,6 +8442,157 @@ class InvestmentInitPagination {
         this.data = [];
     }
 }
+
+
+/***/ }),
+
+/***/ "P06L":
+/*!****************************************************!*\
+  !*** ./src/app/_services/investmentApr.service.ts ***!
+  \****************************************************/
+/*! exports provided: InvestmentAprService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InvestmentAprService", function() { return InvestmentAprService; });
+/* harmony import */ var _shared_models_investmentAprPagination__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../shared/models/investmentAprPagination */ "+8pS");
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../environments/environment */ "AytR");
+/* harmony import */ var _shared_models_investmentApr__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../shared/models/investmentApr */ "SQiD");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ "kU1M");
+/* harmony import */ var _shared_models_genericParams__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../shared/models/genericParams */ "doBC");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/router */ "tyNb");
+
+
+
+
+
+
+
+
+
+
+
+class InvestmentAprService {
+    constructor(http, router) {
+        this.http = http;
+        this.router = router;
+        this.investmentAprs = [];
+        this.investmentAprPagination = new _shared_models_investmentAprPagination__WEBPACK_IMPORTED_MODULE_0__["InvestmentAprPagination"]();
+        this.investmentAprFormData = new _shared_models_investmentApr__WEBPACK_IMPORTED_MODULE_2__["InvestmentInit"]();
+        this.investmentDetailFormData = new _shared_models_investmentApr__WEBPACK_IMPORTED_MODULE_2__["InvestmentApr"]();
+        this.investmentAprCommentFormData = new _shared_models_investmentApr__WEBPACK_IMPORTED_MODULE_2__["InvestmentAprComment"]();
+        this.investmentTargetedProdFormData = new _shared_models_investmentApr__WEBPACK_IMPORTED_MODULE_2__["InvestmentTargetedProd"]();
+        this.investmentTargetedGroupFormData = new _shared_models_investmentApr__WEBPACK_IMPORTED_MODULE_2__["InvestmentTargetedGroup"]();
+        this.investmentDoctorFormData = new _shared_models_investmentApr__WEBPACK_IMPORTED_MODULE_2__["InvestmentDoctor"]();
+        this.investmentInstitutionFormData = new _shared_models_investmentApr__WEBPACK_IMPORTED_MODULE_2__["InvestmentInstitution"]();
+        this.investmentCampaignFormData = new _shared_models_investmentApr__WEBPACK_IMPORTED_MODULE_2__["InvestmentCampaign"]();
+        this.investmentBcdsFormData = new _shared_models_investmentApr__WEBPACK_IMPORTED_MODULE_2__["InvestmentBcds"]();
+        this.investmentSocietyFormData = new _shared_models_investmentApr__WEBPACK_IMPORTED_MODULE_2__["InvestmentSociety"]();
+        this.baseUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].apiUrl;
+        this.genParams = new _shared_models_genericParams__WEBPACK_IMPORTED_MODULE_5__["GenericParams"]();
+    }
+    getProduct(sbu) {
+        return this.http.get(this.baseUrl + 'product/getProductForInvestment/' + sbu);
+    }
+    getCampaignMsts() {
+        return this.http.get(this.baseUrl + 'campaign/campaignMstsForInvestment');
+    }
+    getInvestmentDoctors(investmentInitId) {
+        return this.http.get(this.baseUrl + 'investment/investmentDoctors/' + investmentInitId);
+    }
+    getInvestmentAprComment(investmentInitId, empId) {
+        return this.http.get(this.baseUrl + 'investmentApr/getInvestmentAprComment/' + investmentInitId + '/' + parseInt(empId));
+    }
+    getInvestmentDetails(investmentInitId) {
+        return this.http.get(this.baseUrl + 'investmentRec/investmentRecDetails/' + investmentInitId);
+    }
+    getInvestmentTargetedProds(investmentInitId, sbu) {
+        return this.http.get(this.baseUrl + 'investmentRec/investmentRecProducts/' + investmentInitId + '/' + sbu);
+    }
+    getInvestmentAprDetails(investmentInitId) {
+        return this.http.get(this.baseUrl + 'investmentApr/investmentAprDetails/' + investmentInitId);
+    }
+    getInvestmentAprProducts(investmentInitId, sbu) {
+        return this.http.get(this.baseUrl + 'investmentApr/investmentAprProducts/' + investmentInitId + '/' + sbu);
+    }
+    getInvestmentTargetedGroups(investmentInitId) {
+        return this.http.get(this.baseUrl + 'investment/investmentTargetedGroups/' + investmentInitId);
+    }
+    getInvestmentInstitutions(investmentInitId) {
+        return this.http.get(this.baseUrl + 'investment/investmentInstitutions/' + investmentInitId);
+    }
+    getInvestmentCampaigns(investmentInitId) {
+        return this.http.get(this.baseUrl + 'investment/investmentCampaigns/' + investmentInitId);
+    }
+    getCampaignDtls(mstId) {
+        return this.http.get(this.baseUrl + 'campaign/campaignDtlsForInvestment/' + mstId);
+    }
+    getCampaignDtlProducts(dtlId) {
+        return this.http.get(this.baseUrl + 'campaign/campaignDtlProductsForInvestment/' + dtlId);
+    }
+    getInvestmentBcds(investmentInitId) {
+        return this.http.get(this.baseUrl + 'investment/investmentBcds/' + investmentInitId);
+    }
+    getInvestmentSociety(investmentInitId) {
+        return this.http.get(this.baseUrl + 'investment/investmentSociety/' + investmentInitId);
+    }
+    getInvestmentInit(sbu) {
+        let params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpParams"]();
+        if (this.genParams.search) {
+            params = params.append('search', this.genParams.search);
+        }
+        params = params.append('sort', this.genParams.sort);
+        params = params.append('pageIndex', this.genParams.pageNumber.toString());
+        params = params.append('pageSize', this.genParams.pageSize.toString());
+        return this.http.get(this.baseUrl + 'investmentApr/investmentInits/' + sbu, { observe: 'response', params })
+            //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["map"])(response => {
+            this.investmentAprs = [...this.investmentAprs, ...response.body.data];
+            this.investmentAprPagination = response.body;
+            return this.investmentAprPagination;
+        }));
+    }
+    getInvestmentApproved(sbu) {
+        let params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpParams"]();
+        if (this.genParams.search) {
+            params = params.append('search', this.genParams.search);
+        }
+        params = params.append('sort', this.genParams.sort);
+        params = params.append('pageIndex', this.genParams.pageNumber.toString());
+        params = params.append('pageSize', this.genParams.pageSize.toString());
+        return this.http.get(this.baseUrl + 'investmentApr/investmentApproved/' + sbu, { observe: 'response', params })
+            //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["map"])(response => {
+            this.investmentAprs = [...this.investmentAprs, ...response.body.data];
+            this.investmentAprPagination = response.body;
+            return this.investmentAprPagination;
+        }));
+    }
+    insertInvestmentApr() {
+        debugger;
+        return this.http.post(this.baseUrl + 'investmentApr/insertAprCom', this.investmentAprCommentFormData);
+    }
+    updateInvestmentApr() {
+        return this.http.post(this.baseUrl + 'investmentApr/updateAprCom', this.investmentAprCommentFormData);
+    }
+    insertInvestmentDetail() {
+        debugger;
+        return this.http.post(this.baseUrl + 'investmentApr/insertApr', this.investmentDetailFormData);
+    }
+    insertInvestmentTargetedProd(investmentTargetedProds) {
+        debugger;
+        return this.http.post(this.baseUrl + 'investmentApr/insertAprProd', investmentTargetedProds, { responseType: 'text' });
+    }
+    removeInvestmentTargetedProd() {
+        debugger;
+        return this.http.post(this.baseUrl + 'investment/removeInvestmentTargetedProd', this.investmentTargetedProdFormData, { responseType: 'text' });
+    }
+}
+InvestmentAprService.ɵfac = function InvestmentAprService_Factory(t) { return new (t || InvestmentAprService)(_angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵinject"](_angular_router__WEBPACK_IMPORTED_MODULE_7__["Router"])); };
+InvestmentAprService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵdefineInjectable"]({ token: InvestmentAprService, factory: InvestmentAprService.ɵfac, providedIn: 'root' });
 
 
 /***/ }),
@@ -10448,6 +9830,99 @@ CampaignComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefine
 
 /***/ }),
 
+/***/ "SQiD":
+/*!************************************************!*\
+  !*** ./src/app/shared/models/investmentApr.ts ***!
+  \************************************************/
+/*! exports provided: InvestmentInit, InvestmentApr, InvestmentAprComment, InvestmentTargetedProd, InvestmentTargetedGroup, InvestmentDoctor, InvestmentInstitution, InvestmentCampaign, InvestmentBcds, InvestmentSociety */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InvestmentInit", function() { return InvestmentInit; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InvestmentApr", function() { return InvestmentApr; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InvestmentAprComment", function() { return InvestmentAprComment; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InvestmentTargetedProd", function() { return InvestmentTargetedProd; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InvestmentTargetedGroup", function() { return InvestmentTargetedGroup; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InvestmentDoctor", function() { return InvestmentDoctor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InvestmentInstitution", function() { return InvestmentInstitution; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InvestmentCampaign", function() { return InvestmentCampaign; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InvestmentBcds", function() { return InvestmentBcds; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InvestmentSociety", function() { return InvestmentSociety; });
+class InvestmentInit {
+    constructor() {
+        this.id = 0;
+        this.proposeFor = null;
+        this.donationType = null;
+        this.donationTo = null;
+    }
+}
+class InvestmentApr {
+    constructor() {
+        this.id = 0;
+        this.paymentMethod = null;
+    }
+}
+class InvestmentAprComment {
+    constructor() {
+        this.id = 0;
+        this.recStatus = null;
+    }
+}
+class InvestmentTargetedProd {
+    constructor() {
+        this.id = 0;
+        this.productId = null;
+    }
+}
+class InvestmentTargetedGroup {
+    constructor() {
+        this.id = 0;
+        this.marketGroupMstId = null;
+    }
+}
+class InvestmentDoctor {
+    constructor() {
+        this.id = 0;
+        this.institutionId = null;
+        this.doctorId = null;
+        this.doctorCategory = null;
+        this.doctorName = null;
+        this.doctorType = null;
+    }
+}
+class InvestmentInstitution {
+    constructor() {
+        this.id = 0;
+        this.institutionId = null;
+        this.resposnsibleDoctorId = null;
+    }
+}
+class InvestmentCampaign {
+    constructor() {
+        this.id = 0;
+        this.campaignDtlId = null;
+        this.campaignMstId = null;
+        this.doctorId = null;
+        this.institutionId = null;
+    }
+}
+class InvestmentBcds {
+    constructor() {
+        this.id = 0;
+        this.bcdsId = null;
+    }
+}
+class InvestmentSociety {
+    constructor() {
+        this.id = 0;
+        this.societyId = null;
+    }
+}
+
+
+/***/ }),
+
 /***/ "SjZj":
 /*!*********************************************************!*\
   !*** ./src/app/master/bcds-info/bcds-info.component.ts ***!
@@ -11221,7 +10696,7 @@ RegisterComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdefine
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("disabled", ctx.registerForm.invalid);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](3);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx.loading);
-    } }, directives: [_shared_components_stepper_stepper_component__WEBPACK_IMPORTED_MODULE_6__["StepperComponent"], _angular_cdk_stepper__WEBPACK_IMPORTED_MODULE_7__["CdkStep"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["NgControlStatusGroup"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormGroupDirective"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormGroupName"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControlName"], _angular_common__WEBPACK_IMPORTED_MODULE_8__["NgIf"], _angular_cdk_stepper__WEBPACK_IMPORTED_MODULE_7__["CdkStepperPrevious"], _angular_common__WEBPACK_IMPORTED_MODULE_8__["NgForOf"]], styles: [".row[_ngcontent-%COMP%] {\n  display: flex;\n  flex-wrap: wrap;\n  margin-right: -7.5px;\n  margin-left: -7.5px;\n  margin-bottom: 15px;\n}\n\n.form-label-group[_ngcontent-%COMP%] {\n  position: relative;\n  margin-bottom: 1rem;\n}\n\n.form-label-group[_ngcontent-%COMP%]    > input[_ngcontent-%COMP%], .form-label-group[_ngcontent-%COMP%]    > label[_ngcontent-%COMP%] {\n  height: 3.125rem;\n  padding: 0.75rem;\n}\n\n.form-label-group[_ngcontent-%COMP%]    > label[_ngcontent-%COMP%] {\n  position: absolute;\n  top: 0;\n  left: 0;\n  display: block;\n  width: 100%;\n  margin-bottom: 0;\n  \n  line-height: 1.5;\n  color: #495057;\n  pointer-events: none;\n  cursor: text;\n  \n  border: 1px solid transparent;\n  border-radius: 0.25rem;\n  transition: all 0.1s ease-in-out;\n}\n\n.form-label-group[_ngcontent-%COMP%]   input[_ngcontent-%COMP%]:not(:placeholder-shown) {\n  padding-top: 1.25rem;\n  padding-bottom: 0.25rem;\n}\n\n.form-label-group[_ngcontent-%COMP%]   input[_ngcontent-%COMP%]:not(:placeholder-shown)    ~ label[_ngcontent-%COMP%] {\n  padding-top: 0.25rem;\n  padding-bottom: 0.25rem;\n  font-size: 12px;\n  color: black;\n}\n\n\n\n@supports (-ms-ime-align: auto) {\n  .form-label-group[_ngcontent-%COMP%]    > label[_ngcontent-%COMP%] {\n    display: none;\n  }\n\n  .form-label-group[_ngcontent-%COMP%]   input[_ngcontent-%COMP%]::-ms-input-placeholder {\n    color: black;\n  }\n}\n\n\n\n@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {\n  .form-label-group[_ngcontent-%COMP%]    > label[_ngcontent-%COMP%] {\n    display: none;\n  }\n\n  .form-label-group[_ngcontent-%COMP%]   input[_ngcontent-%COMP%]:-ms-input-placeholder {\n    color: black;\n  }\n}\n\n.loader[_ngcontent-%COMP%] {\n  position: absolute;\n  width: auto;\n  top: 15px;\n  right: 10px;\n  margin-top: 0;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXC4uXFxyZWdpc3Rlci5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUVJLGFBQUE7RUFFQSxlQUFBO0VBQ0Esb0JBQUE7RUFDQSxtQkFBQTtFQUNBLG1CQUFBO0FBQ0o7O0FBQ0E7RUFDSSxrQkFBQTtFQUNBLG1CQUFBO0FBRUo7O0FBQ0U7O0VBRUUsZ0JBQUE7RUFDQSxnQkFBQTtBQUVKOztBQUNFO0VBQ0Usa0JBQUE7RUFDQSxNQUFBO0VBQ0EsT0FBQTtFQUNBLGNBQUE7RUFDQSxXQUFBO0VBQ0EsZ0JBQUE7RUFBa0Isc0NBQUE7RUFDbEIsZ0JBQUE7RUFDQSxjQUFBO0VBQ0Esb0JBQUE7RUFDQSxZQUFBO0VBQWMsb0NBQUE7RUFDZCw2QkFBQTtFQUNBLHNCQUFBO0VBQ0EsZ0NBQUE7QUFJSjs7QUFtQkU7RUFDRSxvQkFBQTtFQUNBLHVCQUFBO0FBaEJKOztBQW1CRTtFQUNFLG9CQUFBO0VBQ0EsdUJBQUE7RUFDQSxlQUFBO0VBQ0EsWUFBQTtBQWhCSjs7QUFtQkU7b0RBQUE7O0FBRUE7RUFDRTtJQUNFLGFBQUE7RUFoQko7O0VBa0JFO0lBQ0UsWUFBQTtFQWZKO0FBQ0Y7O0FBa0JFO29EQUFBOztBQUVBO0VBQ0U7SUFDRSxhQUFBO0VBaEJKOztFQWtCRTtJQUNFLFlBQUE7RUFmSjtBQUNGOztBQW1CRTtFQUNBLGtCQUFBO0VBQ0EsV0FBQTtFQUNBLFNBQUE7RUFDQSxXQUFBO0VBQ0EsYUFBQTtBQWpCRiIsImZpbGUiOiJyZWdpc3Rlci5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5yb3cge1xyXG4gICAgZGlzcGxheTogLW1zLWZsZXhib3g7XHJcbiAgICBkaXNwbGF5OiBmbGV4O1xyXG4gICAgLW1zLWZsZXgtd3JhcDogd3JhcDtcclxuICAgIGZsZXgtd3JhcDogd3JhcDtcclxuICAgIG1hcmdpbi1yaWdodDogLTcuNXB4O1xyXG4gICAgbWFyZ2luLWxlZnQ6IC03LjVweDtcclxuICAgIG1hcmdpbi1ib3R0b206IDE1cHg7XHJcbn1cclxuLmZvcm0tbGFiZWwtZ3JvdXAge1xyXG4gICAgcG9zaXRpb246IHJlbGF0aXZlO1xyXG4gICAgbWFyZ2luLWJvdHRvbTogMXJlbTtcclxuICB9XHJcbiAgXHJcbiAgLmZvcm0tbGFiZWwtZ3JvdXAgPiBpbnB1dCxcclxuICAuZm9ybS1sYWJlbC1ncm91cCA+IGxhYmVsIHtcclxuICAgIGhlaWdodDogMy4xMjVyZW07XHJcbiAgICBwYWRkaW5nOiAuNzVyZW07XHJcbiAgfVxyXG4gIFxyXG4gIC5mb3JtLWxhYmVsLWdyb3VwID4gbGFiZWwge1xyXG4gICAgcG9zaXRpb246IGFic29sdXRlO1xyXG4gICAgdG9wOiAwO1xyXG4gICAgbGVmdDogMDtcclxuICAgIGRpc3BsYXk6IGJsb2NrO1xyXG4gICAgd2lkdGg6IDEwMCU7XHJcbiAgICBtYXJnaW4tYm90dG9tOiAwOyAvKiBPdmVycmlkZSBkZWZhdWx0IGA8bGFiZWw+YCBtYXJnaW4gKi9cclxuICAgIGxpbmUtaGVpZ2h0OiAxLjU7XHJcbiAgICBjb2xvcjogIzQ5NTA1NztcclxuICAgIHBvaW50ZXItZXZlbnRzOiBub25lO1xyXG4gICAgY3Vyc29yOiB0ZXh0OyAvKiBNYXRjaCB0aGUgaW5wdXQgdW5kZXIgdGhlIGxhYmVsICovXHJcbiAgICBib3JkZXI6IDFweCBzb2xpZCB0cmFuc3BhcmVudDtcclxuICAgIGJvcmRlci1yYWRpdXM6IC4yNXJlbTtcclxuICAgIHRyYW5zaXRpb246IGFsbCAuMXMgZWFzZS1pbi1vdXQ7XHJcbiAgfVxyXG4gIFxyXG4vLyAgIC5mb3JtLWxhYmVsLWdyb3VwIGlucHV0Ojotd2Via2l0LWlucHV0LXBsYWNlaG9sZGVyIHtcclxuLy8gICAgIGNvbG9yOiB0cmFuc3BhcmVudDtcclxuLy8gICB9XHJcbiAgXHJcbi8vICAgLmZvcm0tbGFiZWwtZ3JvdXAgaW5wdXQ6LW1zLWlucHV0LXBsYWNlaG9sZGVyIHtcclxuLy8gICAgIGNvbG9yOiB0cmFuc3BhcmVudDtcclxuLy8gICB9XHJcbiAgXHJcbi8vICAgLmZvcm0tbGFiZWwtZ3JvdXAgaW5wdXQ6Oi1tcy1pbnB1dC1wbGFjZWhvbGRlciB7XHJcbi8vICAgICBjb2xvcjogdHJhbnNwYXJlbnQ7XHJcbi8vICAgfVxyXG4gIFxyXG4vLyAgIC5mb3JtLWxhYmVsLWdyb3VwIGlucHV0OjotbW96LXBsYWNlaG9sZGVyIHtcclxuLy8gICAgIGNvbG9yOiB0cmFuc3BhcmVudDtcclxuLy8gICB9XHJcbiAgXHJcbi8vICAgLmZvcm0tbGFiZWwtZ3JvdXAgaW5wdXQ6OnBsYWNlaG9sZGVyIHtcclxuLy8gICAgIGNvbG9yOiB0cmFuc3BhcmVudDtcclxuLy8gICB9XHJcbiAgXHJcbiAgLmZvcm0tbGFiZWwtZ3JvdXAgaW5wdXQ6bm90KDpwbGFjZWhvbGRlci1zaG93bikge1xyXG4gICAgcGFkZGluZy10b3A6IDEuMjVyZW07XHJcbiAgICBwYWRkaW5nLWJvdHRvbTogLjI1cmVtO1xyXG4gIH1cclxuICBcclxuICAuZm9ybS1sYWJlbC1ncm91cCBpbnB1dDpub3QoOnBsYWNlaG9sZGVyLXNob3duKSB+IGxhYmVsIHtcclxuICAgIHBhZGRpbmctdG9wOiAuMjVyZW07XHJcbiAgICBwYWRkaW5nLWJvdHRvbTogLjI1cmVtO1xyXG4gICAgZm9udC1zaXplOiAxMnB4O1xyXG4gICAgY29sb3I6IHJnYigwLCAwLCAwKTtcclxuICB9XHJcbiAgXHJcbiAgLyogRmFsbGJhY2sgZm9yIEVkZ2VcclxuICAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSAqL1xyXG4gIEBzdXBwb3J0cyAoLW1zLWltZS1hbGlnbjogYXV0bykge1xyXG4gICAgLmZvcm0tbGFiZWwtZ3JvdXAgPiBsYWJlbCB7XHJcbiAgICAgIGRpc3BsYXk6IG5vbmU7XHJcbiAgICB9XHJcbiAgICAuZm9ybS1sYWJlbC1ncm91cCBpbnB1dDo6LW1zLWlucHV0LXBsYWNlaG9sZGVyIHtcclxuICAgICAgY29sb3I6IHJnYigwLCAwLCAwKTtcclxuICAgIH1cclxuICB9XHJcbiAgXHJcbiAgLyogRmFsbGJhY2sgZm9yIElFXHJcbiAgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gKi9cclxuICBAbWVkaWEgYWxsIGFuZCAoLW1zLWhpZ2gtY29udHJhc3Q6IG5vbmUpLCAoLW1zLWhpZ2gtY29udHJhc3Q6IGFjdGl2ZSkge1xyXG4gICAgLmZvcm0tbGFiZWwtZ3JvdXAgPiBsYWJlbCB7XHJcbiAgICAgIGRpc3BsYXk6IG5vbmU7XHJcbiAgICB9XHJcbiAgICAuZm9ybS1sYWJlbC1ncm91cCBpbnB1dDotbXMtaW5wdXQtcGxhY2Vob2xkZXIge1xyXG4gICAgICBjb2xvcjogcmdiKDAsIDAsIDApO1xyXG4gICAgfVxyXG4gIH1cclxuICBcclxuICBcclxuICAubG9hZGVyIHtcclxuICBwb3NpdGlvbjogYWJzb2x1dGU7XHJcbiAgd2lkdGg6IGF1dG87XHJcbiAgdG9wOiAxNXB4O1xyXG4gIHJpZ2h0OiAxMHB4O1xyXG4gIG1hcmdpbi10b3A6IDA7XHJcbiAgfSAiXX0= */"] });
+    } }, directives: [_shared_components_stepper_stepper_component__WEBPACK_IMPORTED_MODULE_6__["StepperComponent"], _angular_cdk_stepper__WEBPACK_IMPORTED_MODULE_7__["CdkStep"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["NgControlStatusGroup"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormGroupDirective"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormGroupName"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControlName"], _angular_common__WEBPACK_IMPORTED_MODULE_8__["NgIf"], _angular_cdk_stepper__WEBPACK_IMPORTED_MODULE_7__["CdkStepperPrevious"], _angular_common__WEBPACK_IMPORTED_MODULE_8__["NgForOf"]], styles: [".row[_ngcontent-%COMP%] {\n  display: flex;\n  flex-wrap: wrap;\n  margin-right: -7.5px;\n  margin-left: -7.5px;\n  margin-bottom: 15px;\n}\n\n.form-label-group[_ngcontent-%COMP%] {\n  position: relative;\n  margin-bottom: 1rem;\n}\n\n.form-label-group[_ngcontent-%COMP%]    > input[_ngcontent-%COMP%], .form-label-group[_ngcontent-%COMP%]    > label[_ngcontent-%COMP%] {\n  height: 3.125rem;\n  padding: 0.75rem;\n}\n\n.form-label-group[_ngcontent-%COMP%]    > label[_ngcontent-%COMP%] {\n  position: absolute;\n  top: 0;\n  left: 0;\n  display: block;\n  width: 100%;\n  margin-bottom: 0;\n  \n  line-height: 1.5;\n  color: #495057;\n  pointer-events: none;\n  cursor: text;\n  \n  border: 1px solid transparent;\n  border-radius: 0.25rem;\n  transition: all 0.1s ease-in-out;\n}\n\n.form-label-group[_ngcontent-%COMP%]   input[_ngcontent-%COMP%]:not(:placeholder-shown) {\n  padding-top: 1.25rem;\n  padding-bottom: 0.25rem;\n}\n\n.form-label-group[_ngcontent-%COMP%]   input[_ngcontent-%COMP%]:not(:placeholder-shown)    ~ label[_ngcontent-%COMP%] {\n  padding-top: 0.25rem;\n  padding-bottom: 0.25rem;\n  font-size: 12px;\n  color: black;\n}\n\n\n\n@supports (-ms-ime-align: auto) {\n  .form-label-group[_ngcontent-%COMP%]    > label[_ngcontent-%COMP%] {\n    display: none;\n  }\n\n  .form-label-group[_ngcontent-%COMP%]   input[_ngcontent-%COMP%]::-ms-input-placeholder {\n    color: black;\n  }\n}\n\n\n\n@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {\n  .form-label-group[_ngcontent-%COMP%]    > label[_ngcontent-%COMP%] {\n    display: none;\n  }\n\n  .form-label-group[_ngcontent-%COMP%]   input[_ngcontent-%COMP%]:-ms-input-placeholder {\n    color: black;\n  }\n}\n\n.loader[_ngcontent-%COMP%] {\n  position: absolute;\n  width: auto;\n  top: 15px;\n  right: 10px;\n  margin-top: 0;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXHJlZ2lzdGVyLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBRUksYUFBQTtFQUVBLGVBQUE7RUFDQSxvQkFBQTtFQUNBLG1CQUFBO0VBQ0EsbUJBQUE7QUFDSjs7QUFDQTtFQUNJLGtCQUFBO0VBQ0EsbUJBQUE7QUFFSjs7QUFDRTs7RUFFRSxnQkFBQTtFQUNBLGdCQUFBO0FBRUo7O0FBQ0U7RUFDRSxrQkFBQTtFQUNBLE1BQUE7RUFDQSxPQUFBO0VBQ0EsY0FBQTtFQUNBLFdBQUE7RUFDQSxnQkFBQTtFQUFrQixzQ0FBQTtFQUNsQixnQkFBQTtFQUNBLGNBQUE7RUFDQSxvQkFBQTtFQUNBLFlBQUE7RUFBYyxvQ0FBQTtFQUNkLDZCQUFBO0VBQ0Esc0JBQUE7RUFDQSxnQ0FBQTtBQUlKOztBQW1CRTtFQUNFLG9CQUFBO0VBQ0EsdUJBQUE7QUFoQko7O0FBbUJFO0VBQ0Usb0JBQUE7RUFDQSx1QkFBQTtFQUNBLGVBQUE7RUFDQSxZQUFBO0FBaEJKOztBQW1CRTtvREFBQTs7QUFFQTtFQUNFO0lBQ0UsYUFBQTtFQWhCSjs7RUFrQkU7SUFDRSxZQUFBO0VBZko7QUFDRjs7QUFrQkU7b0RBQUE7O0FBRUE7RUFDRTtJQUNFLGFBQUE7RUFoQko7O0VBa0JFO0lBQ0UsWUFBQTtFQWZKO0FBQ0Y7O0FBbUJFO0VBQ0Esa0JBQUE7RUFDQSxXQUFBO0VBQ0EsU0FBQTtFQUNBLFdBQUE7RUFDQSxhQUFBO0FBakJGIiwiZmlsZSI6InJlZ2lzdGVyLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLnJvdyB7XHJcbiAgICBkaXNwbGF5OiAtbXMtZmxleGJveDtcclxuICAgIGRpc3BsYXk6IGZsZXg7XHJcbiAgICAtbXMtZmxleC13cmFwOiB3cmFwO1xyXG4gICAgZmxleC13cmFwOiB3cmFwO1xyXG4gICAgbWFyZ2luLXJpZ2h0OiAtNy41cHg7XHJcbiAgICBtYXJnaW4tbGVmdDogLTcuNXB4O1xyXG4gICAgbWFyZ2luLWJvdHRvbTogMTVweDtcclxufVxyXG4uZm9ybS1sYWJlbC1ncm91cCB7XHJcbiAgICBwb3NpdGlvbjogcmVsYXRpdmU7XHJcbiAgICBtYXJnaW4tYm90dG9tOiAxcmVtO1xyXG4gIH1cclxuICBcclxuICAuZm9ybS1sYWJlbC1ncm91cCA+IGlucHV0LFxyXG4gIC5mb3JtLWxhYmVsLWdyb3VwID4gbGFiZWwge1xyXG4gICAgaGVpZ2h0OiAzLjEyNXJlbTtcclxuICAgIHBhZGRpbmc6IC43NXJlbTtcclxuICB9XHJcbiAgXHJcbiAgLmZvcm0tbGFiZWwtZ3JvdXAgPiBsYWJlbCB7XHJcbiAgICBwb3NpdGlvbjogYWJzb2x1dGU7XHJcbiAgICB0b3A6IDA7XHJcbiAgICBsZWZ0OiAwO1xyXG4gICAgZGlzcGxheTogYmxvY2s7XHJcbiAgICB3aWR0aDogMTAwJTtcclxuICAgIG1hcmdpbi1ib3R0b206IDA7IC8qIE92ZXJyaWRlIGRlZmF1bHQgYDxsYWJlbD5gIG1hcmdpbiAqL1xyXG4gICAgbGluZS1oZWlnaHQ6IDEuNTtcclxuICAgIGNvbG9yOiAjNDk1MDU3O1xyXG4gICAgcG9pbnRlci1ldmVudHM6IG5vbmU7XHJcbiAgICBjdXJzb3I6IHRleHQ7IC8qIE1hdGNoIHRoZSBpbnB1dCB1bmRlciB0aGUgbGFiZWwgKi9cclxuICAgIGJvcmRlcjogMXB4IHNvbGlkIHRyYW5zcGFyZW50O1xyXG4gICAgYm9yZGVyLXJhZGl1czogLjI1cmVtO1xyXG4gICAgdHJhbnNpdGlvbjogYWxsIC4xcyBlYXNlLWluLW91dDtcclxuICB9XHJcbiAgXHJcbi8vICAgLmZvcm0tbGFiZWwtZ3JvdXAgaW5wdXQ6Oi13ZWJraXQtaW5wdXQtcGxhY2Vob2xkZXIge1xyXG4vLyAgICAgY29sb3I6IHRyYW5zcGFyZW50O1xyXG4vLyAgIH1cclxuICBcclxuLy8gICAuZm9ybS1sYWJlbC1ncm91cCBpbnB1dDotbXMtaW5wdXQtcGxhY2Vob2xkZXIge1xyXG4vLyAgICAgY29sb3I6IHRyYW5zcGFyZW50O1xyXG4vLyAgIH1cclxuICBcclxuLy8gICAuZm9ybS1sYWJlbC1ncm91cCBpbnB1dDo6LW1zLWlucHV0LXBsYWNlaG9sZGVyIHtcclxuLy8gICAgIGNvbG9yOiB0cmFuc3BhcmVudDtcclxuLy8gICB9XHJcbiAgXHJcbi8vICAgLmZvcm0tbGFiZWwtZ3JvdXAgaW5wdXQ6Oi1tb3otcGxhY2Vob2xkZXIge1xyXG4vLyAgICAgY29sb3I6IHRyYW5zcGFyZW50O1xyXG4vLyAgIH1cclxuICBcclxuLy8gICAuZm9ybS1sYWJlbC1ncm91cCBpbnB1dDo6cGxhY2Vob2xkZXIge1xyXG4vLyAgICAgY29sb3I6IHRyYW5zcGFyZW50O1xyXG4vLyAgIH1cclxuICBcclxuICAuZm9ybS1sYWJlbC1ncm91cCBpbnB1dDpub3QoOnBsYWNlaG9sZGVyLXNob3duKSB7XHJcbiAgICBwYWRkaW5nLXRvcDogMS4yNXJlbTtcclxuICAgIHBhZGRpbmctYm90dG9tOiAuMjVyZW07XHJcbiAgfVxyXG4gIFxyXG4gIC5mb3JtLWxhYmVsLWdyb3VwIGlucHV0Om5vdCg6cGxhY2Vob2xkZXItc2hvd24pIH4gbGFiZWwge1xyXG4gICAgcGFkZGluZy10b3A6IC4yNXJlbTtcclxuICAgIHBhZGRpbmctYm90dG9tOiAuMjVyZW07XHJcbiAgICBmb250LXNpemU6IDEycHg7XHJcbiAgICBjb2xvcjogcmdiKDAsIDAsIDApO1xyXG4gIH1cclxuICBcclxuICAvKiBGYWxsYmFjayBmb3IgRWRnZVxyXG4gIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tICovXHJcbiAgQHN1cHBvcnRzICgtbXMtaW1lLWFsaWduOiBhdXRvKSB7XHJcbiAgICAuZm9ybS1sYWJlbC1ncm91cCA+IGxhYmVsIHtcclxuICAgICAgZGlzcGxheTogbm9uZTtcclxuICAgIH1cclxuICAgIC5mb3JtLWxhYmVsLWdyb3VwIGlucHV0OjotbXMtaW5wdXQtcGxhY2Vob2xkZXIge1xyXG4gICAgICBjb2xvcjogcmdiKDAsIDAsIDApO1xyXG4gICAgfVxyXG4gIH1cclxuICBcclxuICAvKiBGYWxsYmFjayBmb3IgSUVcclxuICAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSAqL1xyXG4gIEBtZWRpYSBhbGwgYW5kICgtbXMtaGlnaC1jb250cmFzdDogbm9uZSksICgtbXMtaGlnaC1jb250cmFzdDogYWN0aXZlKSB7XHJcbiAgICAuZm9ybS1sYWJlbC1ncm91cCA+IGxhYmVsIHtcclxuICAgICAgZGlzcGxheTogbm9uZTtcclxuICAgIH1cclxuICAgIC5mb3JtLWxhYmVsLWdyb3VwIGlucHV0Oi1tcy1pbnB1dC1wbGFjZWhvbGRlciB7XHJcbiAgICAgIGNvbG9yOiByZ2IoMCwgMCwgMCk7XHJcbiAgICB9XHJcbiAgfVxyXG4gIFxyXG4gIFxyXG4gIC5sb2FkZXIge1xyXG4gIHBvc2l0aW9uOiBhYnNvbHV0ZTtcclxuICB3aWR0aDogYXV0bztcclxuICB0b3A6IDE1cHg7XHJcbiAgcmlnaHQ6IDEwcHg7XHJcbiAgbWFyZ2luLXRvcDogMDtcclxuICB9ICJdfQ== */"] });
 
 
 /***/ }),
@@ -12348,13 +11823,12 @@ LoginComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineCom
 /*!*********************************************!*\
   !*** ./src/app/shared/models/investment.ts ***!
   \*********************************************/
-/*! exports provided: InvestmentInit, InvestmentRec, InvestmentDetail, InvestmentTargetedProd, InvestmentTargetedGroup, InvestmentDoctor, InvestmentInstitution, InvestmentCampaign, InvestmentBcds, InvestmentSociety */
+/*! exports provided: InvestmentInit, InvestmentDetail, InvestmentTargetedProd, InvestmentTargetedGroup, InvestmentDoctor, InvestmentInstitution, InvestmentCampaign, InvestmentBcds, InvestmentSociety */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InvestmentInit", function() { return InvestmentInit; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InvestmentRec", function() { return InvestmentRec; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InvestmentDetail", function() { return InvestmentDetail; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InvestmentTargetedProd", function() { return InvestmentTargetedProd; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InvestmentTargetedGroup", function() { return InvestmentTargetedGroup; });
@@ -12369,16 +11843,6 @@ class InvestmentInit {
         this.proposeFor = null;
         this.donationType = null;
         this.donationTo = null;
-        this.EmployeeId = 2;
-    }
-}
-class InvestmentRec {
-    constructor() {
-        this.id = 0;
-        this.proposeFor = null;
-        this.donationType = null;
-        this.donationTo = null;
-        this.EmployeeId = 2;
     }
 }
 class InvestmentDetail {
@@ -12563,7 +12027,7 @@ TextInputComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefin
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx.controlDir && ctx.controlDir.control && !ctx.controlDir.control.valid && ctx.controlDir.control.touched);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", ctx.controlDir && ctx.controlDir.control && !ctx.controlDir.control.valid && ctx.controlDir.control.dirty);
-    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["NgClass"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgIf"]], styles: [".form-label-group[_ngcontent-%COMP%] {\n  position: relative;\n  margin-bottom: 1rem;\n}\n\n.form-label-group[_ngcontent-%COMP%]    > input[_ngcontent-%COMP%], .form-label-group[_ngcontent-%COMP%]    > label[_ngcontent-%COMP%] {\n  height: 3.125rem;\n  padding: 0.75rem;\n}\n\n.form-label-group[_ngcontent-%COMP%]    > label[_ngcontent-%COMP%] {\n  position: absolute;\n  top: 0;\n  left: 0;\n  display: block;\n  width: 100%;\n  margin-bottom: 0;\n  \n  line-height: 1.5;\n  color: #495057;\n  pointer-events: none;\n  cursor: text;\n  \n  border: 1px solid transparent;\n  border-radius: 0.25rem;\n  transition: all 0.1s ease-in-out;\n}\n\n.form-label-group[_ngcontent-%COMP%]   input[_ngcontent-%COMP%]::placeholder {\n  color: transparent;\n}\n\n.form-label-group[_ngcontent-%COMP%]   input[_ngcontent-%COMP%]:not(:placeholder-shown) {\n  padding-top: 1.25rem;\n  padding-bottom: 0.25rem;\n}\n\n.form-label-group[_ngcontent-%COMP%]   input[_ngcontent-%COMP%]:not(:placeholder-shown)    ~ label[_ngcontent-%COMP%] {\n  padding-top: 0.25rem;\n  padding-bottom: 0.25rem;\n  font-size: 12px;\n  color: #777;\n}\n\n\n\n@supports (-ms-ime-align: auto) {\n  .form-label-group[_ngcontent-%COMP%]    > label[_ngcontent-%COMP%] {\n    display: none;\n  }\n\n  .form-label-group[_ngcontent-%COMP%]   input[_ngcontent-%COMP%]::-ms-input-placeholder {\n    color: #777;\n  }\n}\n\n\n\n@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {\n  .form-label-group[_ngcontent-%COMP%]    > label[_ngcontent-%COMP%] {\n    display: none;\n  }\n\n  .form-label-group[_ngcontent-%COMP%]   input[_ngcontent-%COMP%]:-ms-input-placeholder {\n    color: #777;\n  }\n}\n\n.loader[_ngcontent-%COMP%] {\n  position: absolute;\n  width: auto;\n  top: 15px;\n  right: 10px;\n  margin-top: 0;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXC4uXFwuLlxcdGV4dC1pbnB1dC5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLGtCQUFBO0VBQ0EsbUJBQUE7QUFDRjs7QUFFQTs7RUFFRSxnQkFBQTtFQUNBLGdCQUFBO0FBQ0Y7O0FBRUE7RUFDRSxrQkFBQTtFQUNBLE1BQUE7RUFDQSxPQUFBO0VBQ0EsY0FBQTtFQUNBLFdBQUE7RUFDQSxnQkFBQTtFQUFrQixzQ0FBQTtFQUNsQixnQkFBQTtFQUNBLGNBQUE7RUFDQSxvQkFBQTtFQUNBLFlBQUE7RUFBYyxvQ0FBQTtFQUNkLDZCQUFBO0VBQ0Esc0JBQUE7RUFDQSxnQ0FBQTtBQUdGOztBQWdCQTtFQUNFLGtCQUFBO0FBR0Y7O0FBQUE7RUFDRSxvQkFBQTtFQUNBLHVCQUFBO0FBR0Y7O0FBQUE7RUFDRSxvQkFBQTtFQUNBLHVCQUFBO0VBQ0EsZUFBQTtFQUNBLFdBQUE7QUFHRjs7QUFBQTtvREFBQTs7QUFFQTtFQUNFO0lBQ0UsYUFBQTtFQUdGOztFQURBO0lBQ0UsV0FBQTtFQUlGO0FBQ0Y7O0FBREE7b0RBQUE7O0FBRUE7RUFDRTtJQUNFLGFBQUE7RUFHRjs7RUFEQTtJQUNFLFdBQUE7RUFJRjtBQUNGOztBQUFBO0VBQ0Esa0JBQUE7RUFDQSxXQUFBO0VBQ0EsU0FBQTtFQUNBLFdBQUE7RUFDQSxhQUFBO0FBRUEiLCJmaWxlIjoidGV4dC1pbnB1dC5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5mb3JtLWxhYmVsLWdyb3VwIHtcclxuICBwb3NpdGlvbjogcmVsYXRpdmU7XHJcbiAgbWFyZ2luLWJvdHRvbTogMXJlbTtcclxufVxyXG5cclxuLmZvcm0tbGFiZWwtZ3JvdXAgPiBpbnB1dCxcclxuLmZvcm0tbGFiZWwtZ3JvdXAgPiBsYWJlbCB7XHJcbiAgaGVpZ2h0OiAzLjEyNXJlbTtcclxuICBwYWRkaW5nOiAuNzVyZW07XHJcbn1cclxuXHJcbi5mb3JtLWxhYmVsLWdyb3VwID4gbGFiZWwge1xyXG4gIHBvc2l0aW9uOiBhYnNvbHV0ZTtcclxuICB0b3A6IDA7XHJcbiAgbGVmdDogMDtcclxuICBkaXNwbGF5OiBibG9jaztcclxuICB3aWR0aDogMTAwJTtcclxuICBtYXJnaW4tYm90dG9tOiAwOyAvKiBPdmVycmlkZSBkZWZhdWx0IGA8bGFiZWw+YCBtYXJnaW4gKi9cclxuICBsaW5lLWhlaWdodDogMS41O1xyXG4gIGNvbG9yOiAjNDk1MDU3O1xyXG4gIHBvaW50ZXItZXZlbnRzOiBub25lO1xyXG4gIGN1cnNvcjogdGV4dDsgLyogTWF0Y2ggdGhlIGlucHV0IHVuZGVyIHRoZSBsYWJlbCAqL1xyXG4gIGJvcmRlcjogMXB4IHNvbGlkIHRyYW5zcGFyZW50O1xyXG4gIGJvcmRlci1yYWRpdXM6IC4yNXJlbTtcclxuICB0cmFuc2l0aW9uOiBhbGwgLjFzIGVhc2UtaW4tb3V0O1xyXG59XHJcblxyXG4uZm9ybS1sYWJlbC1ncm91cCBpbnB1dDo6LXdlYmtpdC1pbnB1dC1wbGFjZWhvbGRlciB7XHJcbiAgY29sb3I6IHRyYW5zcGFyZW50O1xyXG59XHJcblxyXG4uZm9ybS1sYWJlbC1ncm91cCBpbnB1dDotbXMtaW5wdXQtcGxhY2Vob2xkZXIge1xyXG4gIGNvbG9yOiB0cmFuc3BhcmVudDtcclxufVxyXG5cclxuLmZvcm0tbGFiZWwtZ3JvdXAgaW5wdXQ6Oi1tcy1pbnB1dC1wbGFjZWhvbGRlciB7XHJcbiAgY29sb3I6IHRyYW5zcGFyZW50O1xyXG59XHJcblxyXG4uZm9ybS1sYWJlbC1ncm91cCBpbnB1dDo6LW1vei1wbGFjZWhvbGRlciB7XHJcbiAgY29sb3I6IHRyYW5zcGFyZW50O1xyXG59XHJcblxyXG4uZm9ybS1sYWJlbC1ncm91cCBpbnB1dDo6cGxhY2Vob2xkZXIge1xyXG4gIGNvbG9yOiB0cmFuc3BhcmVudDtcclxufVxyXG5cclxuLmZvcm0tbGFiZWwtZ3JvdXAgaW5wdXQ6bm90KDpwbGFjZWhvbGRlci1zaG93bikge1xyXG4gIHBhZGRpbmctdG9wOiAxLjI1cmVtO1xyXG4gIHBhZGRpbmctYm90dG9tOiAuMjVyZW07XHJcbn1cclxuXHJcbi5mb3JtLWxhYmVsLWdyb3VwIGlucHV0Om5vdCg6cGxhY2Vob2xkZXItc2hvd24pIH4gbGFiZWwge1xyXG4gIHBhZGRpbmctdG9wOiAuMjVyZW07XHJcbiAgcGFkZGluZy1ib3R0b206IC4yNXJlbTtcclxuICBmb250LXNpemU6IDEycHg7XHJcbiAgY29sb3I6ICM3Nzc7XHJcbn1cclxuXHJcbi8qIEZhbGxiYWNrIGZvciBFZGdlXHJcbi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tICovXHJcbkBzdXBwb3J0cyAoLW1zLWltZS1hbGlnbjogYXV0bykge1xyXG4gIC5mb3JtLWxhYmVsLWdyb3VwID4gbGFiZWwge1xyXG4gICAgZGlzcGxheTogbm9uZTtcclxuICB9XHJcbiAgLmZvcm0tbGFiZWwtZ3JvdXAgaW5wdXQ6Oi1tcy1pbnB1dC1wbGFjZWhvbGRlciB7XHJcbiAgICBjb2xvcjogIzc3NztcclxuICB9XHJcbn1cclxuXHJcbi8qIEZhbGxiYWNrIGZvciBJRVxyXG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSAqL1xyXG5AbWVkaWEgYWxsIGFuZCAoLW1zLWhpZ2gtY29udHJhc3Q6IG5vbmUpLCAoLW1zLWhpZ2gtY29udHJhc3Q6IGFjdGl2ZSkge1xyXG4gIC5mb3JtLWxhYmVsLWdyb3VwID4gbGFiZWwge1xyXG4gICAgZGlzcGxheTogbm9uZTtcclxuICB9XHJcbiAgLmZvcm0tbGFiZWwtZ3JvdXAgaW5wdXQ6LW1zLWlucHV0LXBsYWNlaG9sZGVyIHtcclxuICAgIGNvbG9yOiAjNzc3O1xyXG4gIH1cclxufVxyXG5cclxuXHJcbi5sb2FkZXIge1xyXG5wb3NpdGlvbjogYWJzb2x1dGU7XHJcbndpZHRoOiBhdXRvO1xyXG50b3A6IDE1cHg7XHJcbnJpZ2h0OiAxMHB4O1xyXG5tYXJnaW4tdG9wOiAwO1xyXG59ICJdfQ== */"] });
+    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_2__["NgClass"], _angular_common__WEBPACK_IMPORTED_MODULE_2__["NgIf"]], styles: [".form-label-group[_ngcontent-%COMP%] {\n  position: relative;\n  margin-bottom: 1rem;\n}\n\n.form-label-group[_ngcontent-%COMP%]    > input[_ngcontent-%COMP%], .form-label-group[_ngcontent-%COMP%]    > label[_ngcontent-%COMP%] {\n  height: 3.125rem;\n  padding: 0.75rem;\n}\n\n.form-label-group[_ngcontent-%COMP%]    > label[_ngcontent-%COMP%] {\n  position: absolute;\n  top: 0;\n  left: 0;\n  display: block;\n  width: 100%;\n  margin-bottom: 0;\n  \n  line-height: 1.5;\n  color: #495057;\n  pointer-events: none;\n  cursor: text;\n  \n  border: 1px solid transparent;\n  border-radius: 0.25rem;\n  transition: all 0.1s ease-in-out;\n}\n\n.form-label-group[_ngcontent-%COMP%]   input[_ngcontent-%COMP%]::placeholder {\n  color: transparent;\n}\n\n.form-label-group[_ngcontent-%COMP%]   input[_ngcontent-%COMP%]:not(:placeholder-shown) {\n  padding-top: 1.25rem;\n  padding-bottom: 0.25rem;\n}\n\n.form-label-group[_ngcontent-%COMP%]   input[_ngcontent-%COMP%]:not(:placeholder-shown)    ~ label[_ngcontent-%COMP%] {\n  padding-top: 0.25rem;\n  padding-bottom: 0.25rem;\n  font-size: 12px;\n  color: #777;\n}\n\n\n\n@supports (-ms-ime-align: auto) {\n  .form-label-group[_ngcontent-%COMP%]    > label[_ngcontent-%COMP%] {\n    display: none;\n  }\n\n  .form-label-group[_ngcontent-%COMP%]   input[_ngcontent-%COMP%]::-ms-input-placeholder {\n    color: #777;\n  }\n}\n\n\n\n@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {\n  .form-label-group[_ngcontent-%COMP%]    > label[_ngcontent-%COMP%] {\n    display: none;\n  }\n\n  .form-label-group[_ngcontent-%COMP%]   input[_ngcontent-%COMP%]:-ms-input-placeholder {\n    color: #777;\n  }\n}\n\n.loader[_ngcontent-%COMP%] {\n  position: absolute;\n  width: auto;\n  top: 15px;\n  right: 10px;\n  margin-top: 0;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXC4uXFx0ZXh0LWlucHV0LmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0Usa0JBQUE7RUFDQSxtQkFBQTtBQUNGOztBQUVBOztFQUVFLGdCQUFBO0VBQ0EsZ0JBQUE7QUFDRjs7QUFFQTtFQUNFLGtCQUFBO0VBQ0EsTUFBQTtFQUNBLE9BQUE7RUFDQSxjQUFBO0VBQ0EsV0FBQTtFQUNBLGdCQUFBO0VBQWtCLHNDQUFBO0VBQ2xCLGdCQUFBO0VBQ0EsY0FBQTtFQUNBLG9CQUFBO0VBQ0EsWUFBQTtFQUFjLG9DQUFBO0VBQ2QsNkJBQUE7RUFDQSxzQkFBQTtFQUNBLGdDQUFBO0FBR0Y7O0FBZ0JBO0VBQ0Usa0JBQUE7QUFHRjs7QUFBQTtFQUNFLG9CQUFBO0VBQ0EsdUJBQUE7QUFHRjs7QUFBQTtFQUNFLG9CQUFBO0VBQ0EsdUJBQUE7RUFDQSxlQUFBO0VBQ0EsV0FBQTtBQUdGOztBQUFBO29EQUFBOztBQUVBO0VBQ0U7SUFDRSxhQUFBO0VBR0Y7O0VBREE7SUFDRSxXQUFBO0VBSUY7QUFDRjs7QUFEQTtvREFBQTs7QUFFQTtFQUNFO0lBQ0UsYUFBQTtFQUdGOztFQURBO0lBQ0UsV0FBQTtFQUlGO0FBQ0Y7O0FBQUE7RUFDQSxrQkFBQTtFQUNBLFdBQUE7RUFDQSxTQUFBO0VBQ0EsV0FBQTtFQUNBLGFBQUE7QUFFQSIsImZpbGUiOiJ0ZXh0LWlucHV0LmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmZvcm0tbGFiZWwtZ3JvdXAge1xyXG4gIHBvc2l0aW9uOiByZWxhdGl2ZTtcclxuICBtYXJnaW4tYm90dG9tOiAxcmVtO1xyXG59XHJcblxyXG4uZm9ybS1sYWJlbC1ncm91cCA+IGlucHV0LFxyXG4uZm9ybS1sYWJlbC1ncm91cCA+IGxhYmVsIHtcclxuICBoZWlnaHQ6IDMuMTI1cmVtO1xyXG4gIHBhZGRpbmc6IC43NXJlbTtcclxufVxyXG5cclxuLmZvcm0tbGFiZWwtZ3JvdXAgPiBsYWJlbCB7XHJcbiAgcG9zaXRpb246IGFic29sdXRlO1xyXG4gIHRvcDogMDtcclxuICBsZWZ0OiAwO1xyXG4gIGRpc3BsYXk6IGJsb2NrO1xyXG4gIHdpZHRoOiAxMDAlO1xyXG4gIG1hcmdpbi1ib3R0b206IDA7IC8qIE92ZXJyaWRlIGRlZmF1bHQgYDxsYWJlbD5gIG1hcmdpbiAqL1xyXG4gIGxpbmUtaGVpZ2h0OiAxLjU7XHJcbiAgY29sb3I6ICM0OTUwNTc7XHJcbiAgcG9pbnRlci1ldmVudHM6IG5vbmU7XHJcbiAgY3Vyc29yOiB0ZXh0OyAvKiBNYXRjaCB0aGUgaW5wdXQgdW5kZXIgdGhlIGxhYmVsICovXHJcbiAgYm9yZGVyOiAxcHggc29saWQgdHJhbnNwYXJlbnQ7XHJcbiAgYm9yZGVyLXJhZGl1czogLjI1cmVtO1xyXG4gIHRyYW5zaXRpb246IGFsbCAuMXMgZWFzZS1pbi1vdXQ7XHJcbn1cclxuXHJcbi5mb3JtLWxhYmVsLWdyb3VwIGlucHV0Ojotd2Via2l0LWlucHV0LXBsYWNlaG9sZGVyIHtcclxuICBjb2xvcjogdHJhbnNwYXJlbnQ7XHJcbn1cclxuXHJcbi5mb3JtLWxhYmVsLWdyb3VwIGlucHV0Oi1tcy1pbnB1dC1wbGFjZWhvbGRlciB7XHJcbiAgY29sb3I6IHRyYW5zcGFyZW50O1xyXG59XHJcblxyXG4uZm9ybS1sYWJlbC1ncm91cCBpbnB1dDo6LW1zLWlucHV0LXBsYWNlaG9sZGVyIHtcclxuICBjb2xvcjogdHJhbnNwYXJlbnQ7XHJcbn1cclxuXHJcbi5mb3JtLWxhYmVsLWdyb3VwIGlucHV0OjotbW96LXBsYWNlaG9sZGVyIHtcclxuICBjb2xvcjogdHJhbnNwYXJlbnQ7XHJcbn1cclxuXHJcbi5mb3JtLWxhYmVsLWdyb3VwIGlucHV0OjpwbGFjZWhvbGRlciB7XHJcbiAgY29sb3I6IHRyYW5zcGFyZW50O1xyXG59XHJcblxyXG4uZm9ybS1sYWJlbC1ncm91cCBpbnB1dDpub3QoOnBsYWNlaG9sZGVyLXNob3duKSB7XHJcbiAgcGFkZGluZy10b3A6IDEuMjVyZW07XHJcbiAgcGFkZGluZy1ib3R0b206IC4yNXJlbTtcclxufVxyXG5cclxuLmZvcm0tbGFiZWwtZ3JvdXAgaW5wdXQ6bm90KDpwbGFjZWhvbGRlci1zaG93bikgfiBsYWJlbCB7XHJcbiAgcGFkZGluZy10b3A6IC4yNXJlbTtcclxuICBwYWRkaW5nLWJvdHRvbTogLjI1cmVtO1xyXG4gIGZvbnQtc2l6ZTogMTJweDtcclxuICBjb2xvcjogIzc3NztcclxufVxyXG5cclxuLyogRmFsbGJhY2sgZm9yIEVkZ2VcclxuLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gKi9cclxuQHN1cHBvcnRzICgtbXMtaW1lLWFsaWduOiBhdXRvKSB7XHJcbiAgLmZvcm0tbGFiZWwtZ3JvdXAgPiBsYWJlbCB7XHJcbiAgICBkaXNwbGF5OiBub25lO1xyXG4gIH1cclxuICAuZm9ybS1sYWJlbC1ncm91cCBpbnB1dDo6LW1zLWlucHV0LXBsYWNlaG9sZGVyIHtcclxuICAgIGNvbG9yOiAjNzc3O1xyXG4gIH1cclxufVxyXG5cclxuLyogRmFsbGJhY2sgZm9yIElFXHJcbi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tICovXHJcbkBtZWRpYSBhbGwgYW5kICgtbXMtaGlnaC1jb250cmFzdDogbm9uZSksICgtbXMtaGlnaC1jb250cmFzdDogYWN0aXZlKSB7XHJcbiAgLmZvcm0tbGFiZWwtZ3JvdXAgPiBsYWJlbCB7XHJcbiAgICBkaXNwbGF5OiBub25lO1xyXG4gIH1cclxuICAuZm9ybS1sYWJlbC1ncm91cCBpbnB1dDotbXMtaW5wdXQtcGxhY2Vob2xkZXIge1xyXG4gICAgY29sb3I6ICM3Nzc7XHJcbiAgfVxyXG59XHJcblxyXG5cclxuLmxvYWRlciB7XHJcbnBvc2l0aW9uOiBhYnNvbHV0ZTtcclxud2lkdGg6IGF1dG87XHJcbnRvcDogMTVweDtcclxucmlnaHQ6IDEwcHg7XHJcbm1hcmdpbi10b3A6IDA7XHJcbn0gIl19 */"] });
 
 
 /***/ }),
@@ -12811,7 +12275,7 @@ class AsidenavComponent {
     }
 }
 AsidenavComponent.ɵfac = function AsidenavComponent_Factory(t) { return new (t || AsidenavComponent)(); };
-AsidenavComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: AsidenavComponent, selectors: [["app-asidenav"]], decls: 97, vars: 0, consts: [[1, "main-sidebar", "elevation-4", "sidebar-dark-success"], ["href", "/", 1, "brand-link"], ["src", "/assets/adminlte/dist/img/AdminLTELogo.png", "alt", "User Self-Desk", 1, "brand-image", "img-circle", "elevation-3", 2, "opacity", ".8"], [1, "brand-text", "font-weight-light"], [1, "sidebar"], [1, "mt-2"], ["data-widget", "treeview", "role", "menu", "data-accordion", "false", 1, "nav", "nav-pills", "nav-sidebar", "flex-column", "text-sm", "nav-legacy", "nav-flat"], [1, "nav-item"], ["href", "/portal/home", 1, "nav-link"], [1, "nav-icon", "fas", "fa-home"], [1, "nav-item", "has-treeview", "menu-open"], ["href", "#", 1, "nav-link", "active"], [1, "nav-icon", "fas", "fa-user"], [1, "fas", "fa-angle-left", "right"], [1, "nav", "nav-treeview"], ["href", "/portal/master/donation", 1, "nav-link", "active"], [1, "far", "fa-circle", "nav-icon"], ["href", "/portal/master/subCampaign", 1, "nav-link"], ["href", "/portal/master/campaign", 1, "nav-link"], ["href", "/portal/master/bcds-info", 1, "nav-link"], ["href", "/portal/master/employee-info", 1, "nav-link"], ["href", "/portal/master/society-info", 1, "nav-link"], ["href", "/portal/master/approvalAuthority", 1, "nav-link"], [1, "nav-item", "has-treeview"], ["href", "#", 1, "nav-link"], ["href", "/portal/regApproval", 1, "nav-link", "active"], ["href", "/portal/marketGroup", 1, "nav-link", "active"], ["href", "/portal/apprAuthConfig", 1, "nav-link", "active"], ["href", "/portal/docHonAppr", 1, "nav-link"], ["href", "/portal/investmentInit", 1, "nav-link"], ["href", "/portal/investmentRec", 1, "nav-link"]], template: function AsidenavComponent_Template(rf, ctx) { if (rf & 1) {
+AsidenavComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: AsidenavComponent, selectors: [["app-asidenav"]], decls: 97, vars: 0, consts: [[1, "main-sidebar", "elevation-4", "sidebar-dark-success"], ["href", "/", 1, "brand-link"], ["src", "/assets/adminlte/dist/img/AdminLTELogo.png", "alt", "User Self-Desk", 1, "brand-image", "img-circle", "elevation-3", 2, "opacity", ".8"], [1, "brand-text", "font-weight-light"], [1, "sidebar"], [1, "mt-2"], ["data-widget", "treeview", "role", "menu", "data-accordion", "false", 1, "nav", "nav-pills", "nav-sidebar", "flex-column", "text-sm", "nav-legacy", "nav-flat"], [1, "nav-item"], ["href", "/portal/home", 1, "nav-link"], [1, "nav-icon", "fas", "fa-home"], [1, "nav-item", "has-treeview", "menu-open"], ["href", "#", 1, "nav-link", "active"], [1, "nav-icon", "fas", "fa-user"], [1, "fas", "fa-angle-left", "right"], [1, "nav", "nav-treeview"], ["href", "/portal/master/donation", 1, "nav-link", "active"], [1, "far", "fa-circle", "nav-icon"], ["href", "/portal/master/subCampaign", 1, "nav-link"], ["href", "/portal/master/campaign", 1, "nav-link"], ["href", "/portal/master/bcds-info", 1, "nav-link"], ["href", "/portal/master/employee-info", 1, "nav-link"], ["href", "/portal/master/society-info", 1, "nav-link"], ["href", "/portal/master/approvalAuthority", 1, "nav-link"], [1, "nav-item", "has-treeview"], ["href", "#", 1, "nav-link"], ["href", "/portal/regApproval", 1, "nav-link", "active"], ["href", "/portal/marketGroup", 1, "nav-link", "active"], ["href", "/portal/apprAuthConfig", 1, "nav-link", "active"], ["href", "/portal/docHonAppr", 1, "nav-link"], ["href", "/portal/investmentInit", 1, "nav-link"], ["href", "/portal/investmentRec", 1, "nav-link"], ["href", "/portal/investmentApr", 1, "nav-link"]], template: function AsidenavComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "aside", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "a", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](2, "img", 2);
@@ -12955,7 +12419,7 @@ AsidenavComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefine
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](92, "li", 7);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](93, "a", 29);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](93, "a", 31);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](94, "i", 16);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](95, "p");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](96, "Investment Approval");
@@ -13323,6 +12787,99 @@ class CampaignDtlPagination {
 class CampaignDtlProductPagination {
     constructor() {
         this.data = [];
+    }
+}
+
+
+/***/ }),
+
+/***/ "oUQ1":
+/*!************************************************!*\
+  !*** ./src/app/shared/models/investmentRec.ts ***!
+  \************************************************/
+/*! exports provided: InvestmentInit, InvestmentRec, InvestmentRecComment, InvestmentTargetedProd, InvestmentTargetedGroup, InvestmentDoctor, InvestmentInstitution, InvestmentCampaign, InvestmentBcds, InvestmentSociety */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InvestmentInit", function() { return InvestmentInit; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InvestmentRec", function() { return InvestmentRec; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InvestmentRecComment", function() { return InvestmentRecComment; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InvestmentTargetedProd", function() { return InvestmentTargetedProd; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InvestmentTargetedGroup", function() { return InvestmentTargetedGroup; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InvestmentDoctor", function() { return InvestmentDoctor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InvestmentInstitution", function() { return InvestmentInstitution; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InvestmentCampaign", function() { return InvestmentCampaign; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InvestmentBcds", function() { return InvestmentBcds; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InvestmentSociety", function() { return InvestmentSociety; });
+class InvestmentInit {
+    constructor() {
+        this.id = 0;
+        this.proposeFor = null;
+        this.donationType = null;
+        this.donationTo = null;
+    }
+}
+class InvestmentRec {
+    constructor() {
+        this.id = 0;
+        this.paymentMethod = null;
+    }
+}
+class InvestmentRecComment {
+    constructor() {
+        this.id = 0;
+        this.recStatus = null;
+    }
+}
+class InvestmentTargetedProd {
+    constructor() {
+        this.id = 0;
+        this.productId = null;
+    }
+}
+class InvestmentTargetedGroup {
+    constructor() {
+        this.id = 0;
+        this.marketGroupMstId = null;
+    }
+}
+class InvestmentDoctor {
+    constructor() {
+        this.id = 0;
+        this.institutionId = null;
+        this.doctorId = null;
+        this.doctorCategory = null;
+        this.doctorName = null;
+        this.doctorType = null;
+    }
+}
+class InvestmentInstitution {
+    constructor() {
+        this.id = 0;
+        this.institutionId = null;
+        this.resposnsibleDoctorId = null;
+    }
+}
+class InvestmentCampaign {
+    constructor() {
+        this.id = 0;
+        this.campaignDtlId = null;
+        this.campaignMstId = null;
+        this.doctorId = null;
+        this.institutionId = null;
+    }
+}
+class InvestmentBcds {
+    constructor() {
+        this.id = 0;
+        this.bcdsId = null;
+    }
+}
+class InvestmentSociety {
+    constructor() {
+        this.id = 0;
+        this.societyId = null;
     }
 }
 
@@ -14394,7 +13951,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InvestmentRecService", function() { return InvestmentRecService; });
 /* harmony import */ var _shared_models_investmentRecPagination__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../shared/models/investmentRecPagination */ "uzP/");
 /* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../environments/environment */ "AytR");
-/* harmony import */ var _shared_models_investment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../shared/models/investment */ "eIik");
+/* harmony import */ var _shared_models_investmentRec__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../shared/models/investmentRec */ "oUQ1");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ "kU1M");
 /* harmony import */ var _shared_models_genericParams__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../shared/models/genericParams */ "doBC");
@@ -14417,50 +13974,51 @@ class InvestmentRecService {
         this.router = router;
         this.investmentRecs = [];
         this.investmentRecPagination = new _shared_models_investmentRecPagination__WEBPACK_IMPORTED_MODULE_0__["InvestmentRecPagination"]();
-        this.investmentRecFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_2__["InvestmentRec"]();
-        this.investmentDetailFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_2__["InvestmentDetail"]();
-        this.investmentTargetedProdFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_2__["InvestmentTargetedProd"]();
-        this.investmentTargetedGroupFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_2__["InvestmentTargetedGroup"]();
-        this.investmentDoctorFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_2__["InvestmentDoctor"]();
-        this.investmentInstitutionFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_2__["InvestmentInstitution"]();
-        this.investmentCampaignFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_2__["InvestmentCampaign"]();
-        this.investmentBcdsFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_2__["InvestmentBcds"]();
-        this.investmentSocietyFormData = new _shared_models_investment__WEBPACK_IMPORTED_MODULE_2__["InvestmentSociety"]();
+        this.investmentRecFormData = new _shared_models_investmentRec__WEBPACK_IMPORTED_MODULE_2__["InvestmentInit"]();
+        this.investmentDetailFormData = new _shared_models_investmentRec__WEBPACK_IMPORTED_MODULE_2__["InvestmentRec"]();
+        this.investmentRecCommentFormData = new _shared_models_investmentRec__WEBPACK_IMPORTED_MODULE_2__["InvestmentRecComment"]();
+        this.investmentTargetedProdFormData = new _shared_models_investmentRec__WEBPACK_IMPORTED_MODULE_2__["InvestmentTargetedProd"]();
+        this.investmentTargetedGroupFormData = new _shared_models_investmentRec__WEBPACK_IMPORTED_MODULE_2__["InvestmentTargetedGroup"]();
+        this.investmentDoctorFormData = new _shared_models_investmentRec__WEBPACK_IMPORTED_MODULE_2__["InvestmentDoctor"]();
+        this.investmentInstitutionFormData = new _shared_models_investmentRec__WEBPACK_IMPORTED_MODULE_2__["InvestmentInstitution"]();
+        this.investmentCampaignFormData = new _shared_models_investmentRec__WEBPACK_IMPORTED_MODULE_2__["InvestmentCampaign"]();
+        this.investmentBcdsFormData = new _shared_models_investmentRec__WEBPACK_IMPORTED_MODULE_2__["InvestmentBcds"]();
+        this.investmentSocietyFormData = new _shared_models_investmentRec__WEBPACK_IMPORTED_MODULE_2__["InvestmentSociety"]();
         this.baseUrl = _environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].apiUrl;
         this.genParams = new _shared_models_genericParams__WEBPACK_IMPORTED_MODULE_5__["GenericParams"]();
     }
-    getDonations() {
-        return this.http.get(this.baseUrl + 'donation/donationsForInvestment');
-    }
-    getMarkets() {
-        return this.http.get(this.baseUrl + 'employee/marketForInvestment');
-    }
-    getProduct() {
-        return this.http.get(this.baseUrl + 'product/getProductForInvestment');
-    }
-    getMarketGroupMsts() {
-        return this.http.get(this.baseUrl + 'marketGroup/getMarketGroupMstsForInvestment');
-    }
-    getApprovalAuthority() {
-        return this.http.get(this.baseUrl + 'approvalAuthority/approvalAuthoritiesForConfig');
-    }
-    getEmployees() {
-        return this.http.get(this.baseUrl + 'employee/employeesForInvestment');
-    }
-    getInstitutions() {
-        return this.http.get(this.baseUrl + 'institution/institutionsForInvestment');
-    }
-    getDoctors() {
-        return this.http.get(this.baseUrl + 'doctor/doctorsForInvestment');
-    }
-    getBcds() {
-        return this.http.get(this.baseUrl + 'bcds/bcdsForInvestment');
-    }
-    getSociety() {
-        return this.http.get(this.baseUrl + 'society/societyForInvestment');
+    getProduct(sbu) {
+        return this.http.get(this.baseUrl + 'product/getProductForInvestment/' + sbu);
     }
     getCampaignMsts() {
         return this.http.get(this.baseUrl + 'campaign/campaignMstsForInvestment');
+    }
+    getInvestmentDoctors(investmentInitId) {
+        return this.http.get(this.baseUrl + 'investment/investmentDoctors/' + investmentInitId);
+    }
+    getInvestmentRecComment(investmentInitId, empId) {
+        return this.http.get(this.baseUrl + 'investmentRec/getInvestmentRecComment/' + investmentInitId + '/' + parseInt(empId));
+    }
+    getInvestmentDetails(investmentInitId) {
+        return this.http.get(this.baseUrl + 'investment/investmentDetails/' + investmentInitId);
+    }
+    getInvestmentTargetedProds(investmentInitId, sbu) {
+        return this.http.get(this.baseUrl + 'investment/investmentTargetedProdsForRec/' + investmentInitId + '/' + sbu);
+    }
+    getInvestmentRecDetails(investmentInitId) {
+        return this.http.get(this.baseUrl + 'investmentRec/investmentRecDetails/' + investmentInitId);
+    }
+    getInvestmentRecProducts(investmentInitId, sbu) {
+        return this.http.get(this.baseUrl + 'investmentRec/investmentRecProducts/' + investmentInitId + '/' + sbu);
+    }
+    getInvestmentTargetedGroups(investmentInitId) {
+        return this.http.get(this.baseUrl + 'investment/investmentTargetedGroups/' + investmentInitId);
+    }
+    getInvestmentInstitutions(investmentInitId) {
+        return this.http.get(this.baseUrl + 'investment/investmentInstitutions/' + investmentInitId);
+    }
+    getInvestmentCampaigns(investmentInitId) {
+        return this.http.get(this.baseUrl + 'investment/investmentCampaigns/' + investmentInitId);
     }
     getCampaignDtls(mstId) {
         return this.http.get(this.baseUrl + 'campaign/campaignDtlsForInvestment/' + mstId);
@@ -14468,34 +14026,13 @@ class InvestmentRecService {
     getCampaignDtlProducts(dtlId) {
         return this.http.get(this.baseUrl + 'campaign/campaignDtlProductsForInvestment/' + dtlId);
     }
-    getSubCampaigns() {
-        return this.http.get(this.baseUrl + 'campaign/subCampaignsForInvestment');
+    getInvestmentBcds(investmentInitId) {
+        return this.http.get(this.baseUrl + 'investment/investmentBcds/' + investmentInitId);
     }
-    getInvestmentDoctors(investmentRecId) {
-        return this.http.get(this.baseUrl + 'investment/investmentDoctors/' + investmentRecId);
+    getInvestmentSociety(investmentInitId) {
+        return this.http.get(this.baseUrl + 'investment/investmentSociety/' + investmentInitId);
     }
-    getInvestmentTargetedProds(investmentRecId) {
-        return this.http.get(this.baseUrl + 'investment/investmentTargetedProds/' + investmentRecId);
-    }
-    getInvestmentTargetedGroups(investmentRecId) {
-        return this.http.get(this.baseUrl + 'investment/investmentTargetedGroups/' + investmentRecId);
-    }
-    getInvestmentInstitutions(investmentRecId) {
-        return this.http.get(this.baseUrl + 'investment/investmentInstitutions/' + investmentRecId);
-    }
-    getInvestmentCampaigns(investmentRecId) {
-        return this.http.get(this.baseUrl + 'investment/investmentCampaigns/' + investmentRecId);
-    }
-    getInvestmentBcds(investmentRecId) {
-        return this.http.get(this.baseUrl + 'investment/investmentBcds/' + investmentRecId);
-    }
-    getInvestmentSociety(investmentRecId) {
-        return this.http.get(this.baseUrl + 'investment/investmentSociety/' + investmentRecId);
-    }
-    getInvestmentDetails(investmentRecId) {
-        return this.http.get(this.baseUrl + 'investment/investmentDetails/' + investmentRecId);
-    }
-    getInvestmentInit() {
+    getInvestmentInit(sbu) {
         let params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpParams"]();
         if (this.genParams.search) {
             params = params.append('search', this.genParams.search);
@@ -14503,7 +14040,7 @@ class InvestmentRecService {
         params = params.append('sort', this.genParams.sort);
         params = params.append('pageIndex', this.genParams.pageNumber.toString());
         params = params.append('pageSize', this.genParams.pageSize.toString());
-        return this.http.get(this.baseUrl + 'investment/investmentInit', { observe: 'response', params })
+        return this.http.get(this.baseUrl + 'investmentRec/investmentInits/' + sbu, { observe: 'response', params })
             //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["map"])(response => {
             this.investmentRecs = [...this.investmentRecs, ...response.body.data];
@@ -14511,7 +14048,7 @@ class InvestmentRecService {
             return this.investmentRecPagination;
         }));
     }
-    getInvestmentRec() {
+    getInvestmentRecommended(sbu) {
         let params = new _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpParams"]();
         if (this.genParams.search) {
             params = params.append('search', this.genParams.search);
@@ -14519,7 +14056,7 @@ class InvestmentRecService {
         params = params.append('sort', this.genParams.sort);
         params = params.append('pageIndex', this.genParams.pageNumber.toString());
         params = params.append('pageSize', this.genParams.pageSize.toString());
-        return this.http.get(this.baseUrl + 'investment/investmentRecs', { observe: 'response', params })
+        return this.http.get(this.baseUrl + 'investmentRec/investmentRecommended/' + sbu, { observe: 'response', params })
             //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["map"])(response => {
             this.investmentRecs = [...this.investmentRecs, ...response.body.data];
@@ -14529,77 +14066,22 @@ class InvestmentRecService {
     }
     insertInvestmentRec() {
         debugger;
-        return this.http.post(this.baseUrl + 'investment/insertInit', this.investmentRecFormData);
+        return this.http.post(this.baseUrl + 'investmentRec/insertRecCom', this.investmentRecCommentFormData);
     }
     updateInvestmentRec() {
-        return this.http.post(this.baseUrl + 'investment/updateInit', this.investmentRecFormData);
+        return this.http.post(this.baseUrl + 'investmentRec/updateRecCom', this.investmentRecCommentFormData);
     }
     insertInvestmentDetail() {
         debugger;
-        return this.http.post(this.baseUrl + 'investment/insertDetail', this.investmentDetailFormData);
+        return this.http.post(this.baseUrl + 'investmentRec/insertRec', this.investmentDetailFormData);
     }
-    updateInvestmentDetail() {
-        return this.http.post(this.baseUrl + 'investment/updateDetail', this.investmentDetailFormData);
-    }
-    insertInvestmentDoctor() {
+    insertInvestmentTargetedProd(investmentTargetedProds) {
         debugger;
-        return this.http.post(this.baseUrl + 'investment/insertInvestmentDoctor', this.investmentDoctorFormData);
-    }
-    insertInvestmentInstitution() {
-        debugger;
-        return this.http.post(this.baseUrl + 'investment/insertInvestmentInstitution', this.investmentInstitutionFormData);
-    }
-    insertInvestmentCampaign() {
-        debugger;
-        return this.http.post(this.baseUrl + 'investment/insertInvestmentCampaign', this.investmentCampaignFormData);
-    }
-    insertInvestmentBcds() {
-        debugger;
-        return this.http.post(this.baseUrl + 'investment/insertInvestmentBcds', this.investmentBcdsFormData);
-    }
-    insertInvestmentSociety() {
-        debugger;
-        return this.http.post(this.baseUrl + 'investment/insertInvestmentSociety', this.investmentSocietyFormData);
-    }
-    insertInvestmentTargetedProd() {
-        debugger;
-        return this.http.post(this.baseUrl + 'investment/insertInvestmentTargetedProd', this.investmentTargetedProdFormData);
-    }
-    updateInvestmentTargetedProd() {
-        debugger;
-        return this.http.post(this.baseUrl + 'investment/updateInvestmentTargetedProd', this.investmentTargetedProdFormData);
-    }
-    insertInvestmentTargetedGroup(investmentTargetedGroups) {
-        debugger;
-        return this.http.post(this.baseUrl + 'investment/insertInvestmentTargetedGroup', investmentTargetedGroups, { responseType: 'text' });
-    }
-    removeInvestmentDoctor() {
-        debugger;
-        return this.http.post(this.baseUrl + 'investment/removeInvestmentDoctor', this.investmentDoctorFormData, { responseType: 'text' });
-    }
-    removeInvestmentInstitution() {
-        debugger;
-        return this.http.post(this.baseUrl + 'investment/removeInvestmentInstitution', this.investmentInstitutionFormData, { responseType: 'text' });
-    }
-    removeInvestmentCampaign() {
-        debugger;
-        return this.http.post(this.baseUrl + 'investment/removeInvestmentCampaign', this.investmentCampaignFormData, { responseType: 'text' });
-    }
-    removeInvestmentBcds() {
-        debugger;
-        return this.http.post(this.baseUrl + 'investment/removeInvestmentBcds', this.investmentBcdsFormData, { responseType: 'text' });
-    }
-    removeInvestmentSociety() {
-        debugger;
-        return this.http.post(this.baseUrl + 'investment/removeInvestmentSociety', this.investmentSocietyFormData, { responseType: 'text' });
+        return this.http.post(this.baseUrl + 'investmentRec/insertRecProd', investmentTargetedProds, { responseType: 'text' });
     }
     removeInvestmentTargetedProd() {
         debugger;
         return this.http.post(this.baseUrl + 'investment/removeInvestmentTargetedProd', this.investmentTargetedProdFormData, { responseType: 'text' });
-    }
-    removeInvestmentTargetedGroup(investmentTargetedGroups) {
-        debugger;
-        return this.http.post(this.baseUrl + 'investment/removeInvestmentTargetedGroup', investmentTargetedGroups, { responseType: 'text' });
     }
 }
 InvestmentRecService.ɵfac = function InvestmentRecService_Factory(t) { return new (t || InvestmentRecService)(_angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵinject"](_angular_router__WEBPACK_IMPORTED_MODULE_7__["Router"])); };

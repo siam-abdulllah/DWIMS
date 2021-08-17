@@ -8825,23 +8825,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Siam\\.nuget\\packages\\": {},
+    "C:\\Users\\zahid\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "G:\\DIDS\\DIDS_GIT\\DWIMS\\Infrastructure\\Infrastructure.csproj",
+      "projectUniqueName": "F:\\Git\\DWIMS\\Infrastructure\\Infrastructure.csproj",
       "projectName": "Infrastructure",
-      "projectPath": "G:\\DIDS\\DIDS_GIT\\DWIMS\\Infrastructure\\Infrastructure.csproj",
-      "packagesPath": "C:\\Users\\Siam\\.nuget\\packages\\",
-      "outputPath": "G:\\DIDS\\DIDS_GIT\\DWIMS\\Infrastructure\\obj\\",
+      "projectPath": "F:\\Git\\DWIMS\\Infrastructure\\Infrastructure.csproj",
+      "packagesPath": "C:\\Users\\zahid\\.nuget\\packages\\",
+      "outputPath": "F:\\Git\\DWIMS\\Infrastructure\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Siam\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\zahid\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -8855,8 +8855,8 @@
         "netstandard2.1": {
           "targetAlias": "netstandard2.1",
           "projectReferences": {
-            "G:\\DIDS\\DIDS_GIT\\DWIMS\\Core\\Core.csproj": {
-              "projectPath": "G:\\DIDS\\DIDS_GIT\\DWIMS\\Core\\Core.csproj"
+            "F:\\Git\\DWIMS\\Core\\Core.csproj": {
+              "projectPath": "F:\\Git\\DWIMS\\Core\\Core.csproj"
             }
           }
         }

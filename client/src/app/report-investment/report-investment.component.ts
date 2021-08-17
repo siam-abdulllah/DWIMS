@@ -34,7 +34,16 @@ export class ReportInvestmentComponent implements OnInit {
 
   }
   
+  createProformaApprovalSearchForm() {
+    this.investmentSearchForm = new FormGroup({
+      fromDate: new FormControl('', [Validators.required]),
+      toDate: new FormControl('', [Validators.required]),
+      //status: new FormControl('')
+    });
+  }
+
   ngOnInit() {
+    this.createProformaApprovalSearchForm();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-blue' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
   }
@@ -47,7 +56,7 @@ export class ReportInvestmentComponent implements OnInit {
       //importerId: impId,
       fromDate: this.investmentSearchForm.value.fromDate,
       toDate: this.investmentSearchForm.value.toDate,
-      SBU: "",
+      sbu: "",
       userId: 0,
       location: "",
       donationType: "",
@@ -202,7 +211,7 @@ interface IInvestmentReportSearchDto {
   userId: number;
   fromDate: Date | undefined | null;
   toDate: Date | undefined | null;
-  SBU: string;
+  sbu: string;
   location: string;
   donationType: string;
   name: string;
