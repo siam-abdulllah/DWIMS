@@ -26,6 +26,7 @@ namespace Infrastructure.Data
         public DbSet<BrandInfo> BrandInfo { get; set; }
         public DbSet<Bcds> Bcds { get; set; }
         public DbSet<Society> Society { get; set; }
+        public DbSet<ApprovalTimeLimit> ApprovalTimeLimit { get; set; }
         public DbSet<ApprovalAuthority> ApprovalAuthority { get; set; }
         public DbSet<ApprAuthConfig> ApprAuthConfig { get; set; }
         public DbSet<ApprovalCeiling> ApprovalCeiling { get; set; }

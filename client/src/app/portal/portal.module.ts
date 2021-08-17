@@ -16,11 +16,14 @@ import { InvestmentInitComponent } from '../investmentInit/investmentInit.compon
 import { InvestmentRecComponent } from '../investmentRec/investmentRec.component';
 import { InvestmentAprComponent } from '../investmentApr/investmentApr.component';
 import { ApprAuthConfigComponent } from '../apprAuthConfig/apprAuthConfig.component';
+import { ApprovalCeilingComponent } from '../approval-ceiling/approval-ceiling.component';
+import { ApprovalTimeLimitComponent } from '../approval-time-limit/approval-time-limit.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MasterModule } from '../master/master.module';
 import { MasterRoutingModule } from '../master/master-routing.module';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { SbuWiseBudgetComponent } from '../sbu-wise-budget/sbu-wise-budget.component';
 
 @NgModule({
   imports: [
@@ -45,10 +48,13 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     FooterComponent,
     MarketGroupComponent,
     ApprAuthConfigComponent,
+    ApprovalCeilingComponent,
+    ApprovalTimeLimitComponent,
     InvestmentInitComponent,
     InvestmentRecComponent,
     InvestmentAprComponent,
-    RegApprovalComponent
+    RegApprovalComponent,
+    SbuWiseBudgetComponent
   ],
   providers: [DatePipe]
 })

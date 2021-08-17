@@ -10,6 +10,7 @@ import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 import {FormGroup,FormBuilder,Validators,AsyncValidatorFn} from '@angular/forms';
 import {RegApprovalService} from '../_services/regApproval.service';
+import { AccountService } from '../account/account.service';
 @Component({
   selector: 'app-regApproval',
   templateUrl: './regApproval.component.html',
@@ -20,9 +21,8 @@ export class RegApprovalComponent implements OnInit {
   @ViewChild('search', {static: false}) searchTerm: ElementRef;
   @ViewChild('regApprovalSearchModal', { static: false }) regApprovalSearchModal: TemplateRef<any>;
   RegApprovalSearchModalRef: BsModalRef;
-  // genParams: GenericParams;
-  // campaigns: ICampaign[]; 
-  // subCampaigns: ISubCampaign[]; 
+  roleList = [];
+  errors: string[];
   regApprovals: IRegApproval[];
   totalCount = 0;
   bsConfig: Partial<BsDatepickerConfig>;
@@ -33,6 +33,7 @@ export class RegApprovalComponent implements OnInit {
     ignoreBackdropClick: true
   };
     constructor( 
+      private accountService: AccountService,
       private router: Router,
       private toastr: ToastrService,
       private fb: FormBuilder,
@@ -41,7 +42,7 @@ export class RegApprovalComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    //this.getCampaign();
+    this.getRoles();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-green' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
   }
@@ -71,11 +72,10 @@ export class RegApprovalComponent implements OnInit {
   }
   selectRegApproval(selectedRecord: IRegApproval) {
     this.regApprovalService.regApprovalFormData = Object.assign({}, selectedRecord);
+    this.getUserById();
     this.RegApprovalSearchModalRef.hide()
   }
   onSubmit(form: NgForm) {
-    
-    
       this.updateRegApproval(form);
   }
 
@@ -99,18 +99,32 @@ export class RegApprovalComponent implements OnInit {
     form.form.reset();
     //this.regApprovalService.campaignFormData = new Campaign();
   }
-  SBUs = [
-    {id: 1, name: 'Chittagong/Chattogram' },
-    {id: 2, name: 'Sonamasjid'},
-    {id: 3, name: 'Benapole'},
-    {id: 4, name: 'Mongla'},
-    {id: 5, name: 'Hili'},
-    {id: 6, name: 'Darshana'},
-    {id: 7, name: 'Shahjalal International Airport'},
-    {id: 8, name: 'Banglabandha'},
-    {id: 9, name: 'Birol'},
-    {id: 10, name: 'Rohanpur'},
-    {id: 11, name: 'Vomra'},
-    {id: 12, name: 'Burimari'}
-  ];
+  getRoles() {
+    this.roleList = [];
+    this.accountService.getRoles().subscribe(
+      (response) => {
+        if (response) {
+          this.roleList = response;
+        }
+      },
+      (error) => {
+        this.errors = error.errors;
+      }
+    );
+  }
+  getUserById(){
+    this.accountService.getUserById(this.regApprovalService.regApprovalFormData.userId).subscribe(
+      (response) => {
+        if (response) 
+        {
+          response.roles.forEach(element => {
+            this.regApprovalService.regApprovalFormData.role = element;
+                }); 
+        }
+      },
+      (error) => {
+        this.errors = error.errors;
+      }
+    );
+  }
 }

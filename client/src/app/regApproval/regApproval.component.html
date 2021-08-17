@@ -11,7 +11,7 @@
                                     <h3 class="card-title">Registration Approval</h3>
                                 </div>
                                 <div class="col-sm-3">
-                                    <button class="btn btn-success btn-lg btn-block" type="submit"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                    <button class="btn btn-success btn-lg btn-block" [disabled]="regApprovalForm.invalid" type="submit"><i class="fa fa-save"></i>&nbsp; Save</button>
                                 </div>
                                 <div class="col-sm-3">
                                     <button class="btn btn-info btn-lg btn-block" type="button" (click)="getRegApproved()"><i class="fa fa-search"></i>Search</button>
@@ -128,6 +128,15 @@
                                             <option [ngValue]="null">Select Approval Status</option>
                                             <option value="Approved">Approved</option>
                                             <option value="Not Approved">Not Approved</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Role</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select class="form-control " id="role" name="role" #role="ngModel" [(ngModel)]="regApprovalService.regApprovalFormData.role" [class.invalid]="role.invalid && role.touched">
+                                            <option  [ngValue]="null">Select Role</option>
+                                                <option *ngFor="let a of roleList" [value]="a.name">{{a.name}}</option>
                                         </select>
                                     </div>
                                 </div>

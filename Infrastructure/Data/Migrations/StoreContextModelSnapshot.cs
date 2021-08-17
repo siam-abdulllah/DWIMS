@@ -135,6 +135,39 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("ApprovalCeiling");
                 });
 
+            modelBuilder.Entity("Core.Entities.ApprovalTimeLimit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ApprovalAuthorityId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Remarks")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TimeLimit")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApprovalTimeLimit");
+                });
+
             modelBuilder.Entity("Core.Entities.Bcds", b =>
                 {
                     b.Property<int>("Id")

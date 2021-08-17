@@ -77,16 +77,8 @@ export class AccountService {
     return r.role;
   }
   getEmployeeId() {
-          //localStorage.setItem('token', user.token);
-          //localStorage.setItem('empID', String(user.employeeId));
-          //this.currentUserSource.next(user);
-          //const empID = localStorage.getItem('empID');
-          //const token = localStorage.getItem('token');
-          //const r =  this.jwtHelper.decodeToken(token);
-          //alert(r);
-          const employeeId = localStorage.getItem('empID');
-          //const r =  this.jwtHelper.decodeToken(token);
-          return employeeId;
+    const employeeId = localStorage.getItem('empID');
+    return employeeId;
       
   }
   getEmployeeSbu(employeeId:number) {

@@ -26,16 +26,16 @@ namespace API.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly IGenericIdentityRepository<AppUser> _userRepo;
-       // private readonly RoleManager<IdentityRole> _roleManager;
+        // private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
         // private readonly IConfiguration _config;
-        public AccountController(UserManager<AppUser> userManager, 
+        public AccountController(UserManager<AppUser> userManager,
         // IConfiguration config, 
-        RoleManager<IdentityRole> roleManager, 
-        SignInManager<AppUser> signInManager, 
-        ITokenService tokenService, 
+        RoleManager<IdentityRole> roleManager,
+        SignInManager<AppUser> signInManager,
+        ITokenService tokenService,
         IMapper mapper,
         IGenericIdentityRepository<AppUser> userRepo)
         {
@@ -43,7 +43,7 @@ namespace API.Controllers
             _tokenService = tokenService;
             _signInManager = signInManager;
             _userManager = userManager;
-           // _roleManager = roleManager;
+            // _roleManager = roleManager;
             // _config = config;
             _userRepo = userRepo;
         }
@@ -56,9 +56,10 @@ namespace API.Controllers
 
             IList<string> roles = await _userManager.GetRolesAsync(user);
 
-            if(roles.Count==0){
-                return BadRequest(new ApiResponse(400, "No Roles assigned to user - "+ user.UserName));
-            } 
+            if (roles.Count == 0)
+            {
+                return BadRequest(new ApiResponse(400, "No Roles assigned to user - " + user.UserName));
+            }
             return new UserDto
             {
                 Email = user.Email,
@@ -82,18 +83,18 @@ namespace API.Controllers
             return _mapper.Map<Address, AddressDto>(user.Address);
         }
 
-     
-        [HttpGet("getUserById")]        
+
+        [HttpGet("getUserById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<UsersToReturnDto>> GetUserById(string id)
-        {   
+        {
             var user = await _userManager.FindByIdAsync(id);
 
-            if(user == null) return BadRequest(new ApiResponse(400,"User Not Found."));
+            if (user == null) return BadRequest(new ApiResponse(400, "User Not Found."));
 
             UsersToReturnDto data = _mapper.Map<AppUser, UsersToReturnDto>(user);
-            if(data == null) return BadRequest(new ApiResponse(400, "Invalid User Requet."));            
+            if (data == null) return BadRequest(new ApiResponse(400, "Invalid User Requet."));
 
             IList<string> roles = await _userManager.GetRolesAsync(user);
             data.Roles = roles;
@@ -116,8 +117,8 @@ namespace API.Controllers
             return BadRequest("Problem updating the user");
         }
 
-        [HttpPost("login")]  
-        
+        [HttpPost("login")]
+
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
@@ -125,19 +126,20 @@ namespace API.Controllers
             if (user == null) return Unauthorized(new ApiResponse(401));
 
             if (!await _userManager.IsEmailConfirmedAsync(user)) return Unauthorized(new ApiResponse(401, "Check your email to confirm your email address."));
-            
-            if(await _userManager.IsLockedOutAsync(user)) return Unauthorized(new ApiResponse(401,"Your user account has locked out for a while"));  
-           
+
+            if (await _userManager.IsLockedOutAsync(user)) return Unauthorized(new ApiResponse(401, "Your user account has locked out for a while"));
+
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, lockoutOnFailure: true);
 
             if (!result.Succeeded) return Unauthorized(new ApiResponse(401));
 
             IList<string> roles = await _userManager.GetRolesAsync(user);
 
-            if(roles.Count==0){
-                return BadRequest(new ApiResponse(400, "No Roles assigned to user - "+ user.UserName));
-            } 
-    
+            if (roles.Count == 0)
+            {
+                return BadRequest(new ApiResponse(400, "No Roles assigned to user - " + user.UserName));
+            }
+
             return new UserDto
             {
                 EmployeeId = user.EmployeeId,
@@ -153,7 +155,7 @@ namespace API.Controllers
 
             if (CheckEmailExistsAsync(setRegDto.UserForm.Email).Result.Value)
             {
-                return new BadRequestObjectResult(new ApiValidationErrorResponse{Errors = new []{"Email address is in use"}});
+                return new BadRequestObjectResult(new ApiValidationErrorResponse { Errors = new[] { "Email address is in use" } });
             }
 
             var user = new AppUser
@@ -168,7 +170,7 @@ namespace API.Controllers
             };
             var userObj = await _userManager.CreateAsync(user, setRegDto.UserForm.Password);
             if (!userObj.Succeeded) return BadRequest(new ApiResponse(400));
-           // var userEntity = await _userManager.FindByEmailAsync(user.Email);
+            // var userEntity = await _userManager.FindByEmailAsync(user.Email);
             //try{
             //      string[] roles = setRegDto.RoleForm.UserRoles
             //                .Select(ob=>ob.Name).ToArray();
@@ -179,37 +181,37 @@ namespace API.Controllers
             //{
             //    await _userManager.DeleteAsync(user);               
             //}
-            
+
             return new UserDto
             {
                 DisplayName = user.DisplayName,
                 Token = "",//_tokenService.CreateToken(user),
                 Email = user.Email
-            };            
+            };
         }
 
         [HttpPost("updateRegisterUser")]
-        public async Task<ActionResult< UserDto>> UpdateRegisterUser(SetRegisterDto setRegDto)
+        public async Task<ActionResult<UserDto>> UpdateRegisterUser(SetRegisterDto setRegDto)
         {
             var user = await _userManager.FindByIdAsync(setRegDto.UserForm.Id);
             if (user == null) return Unauthorized(new ApiResponse(401));
 
             user = new AppUser
             {
-                DisplayName = setRegDto.UserForm.DisplayName,               
+                DisplayName = setRegDto.UserForm.DisplayName,
                 PhoneNumber = setRegDto.UserForm.PhoneNumber
             };
 
-            var userObj = await _userManager.UpdateAsync(user);    
+            var userObj = await _userManager.UpdateAsync(user);
 
-            if (!userObj.Succeeded) return BadRequest(new ApiResponse(400));   
+            if (!userObj.Succeeded) return BadRequest(new ApiResponse(400));
 
             return new UserDto
             {
-                DisplayName = setRegDto.UserForm.DisplayName,               
+                DisplayName = setRegDto.UserForm.DisplayName,
                 PhoneNumber = setRegDto.UserForm.PhoneNumber,
                 Email = user.Email
-            };            
+            };
         }
 
         // [HttpGet("generateEmailConfirmationTokenAsync")]
@@ -223,12 +225,12 @@ namespace API.Controllers
         //     return link;
         // }
 
-      
- 
+
+
         [HttpGet("users")]
         // [Authorize(Roles = "Owner,Administrator")]
         // [Authorize(Policy = "DetailUserPolicy")]
-        public async Task<ActionResult<IReadOnlyList<UsersToReturnDto>>> GetAllUsers([FromQuery]UserSpecParams postParrams)
+        public async Task<ActionResult<IReadOnlyList<UsersToReturnDto>>> GetAllUsers([FromQuery] UserSpecParams postParrams)
         {
             var spec = new UserSpecification(postParrams);
 
@@ -290,11 +292,26 @@ namespace API.Controllers
             var userObj = await _userManager.UpdateAsync(user);
 
             if (!userObj.Succeeded) return BadRequest(new ApiResponse(400));
+            //var userEntity = await _userManager.FindByEmailAsync(user.Email);
+            try
+            {
+                IList<string> roles = await _userManager.GetRolesAsync(user);
 
+                if (roles.Count > 0)
+                {
+                   var removeRoleObj = await _userManager.RemoveFromRolesAsync(user, roles);
+                }
+                var roleObj = await _userManager.AddToRoleAsync(user, regApprovalDto.Role);
+                if (!roleObj.Succeeded) return BadRequest(new ApiResponse(400, "User Role Set Faild."));
+            }
+            catch (Exception)
+            {
+                await _userManager.DeleteAsync(user);
+            }
             return new UserDto
             {
                 Email = user.Email
             };
         }
     }
-} 
+}

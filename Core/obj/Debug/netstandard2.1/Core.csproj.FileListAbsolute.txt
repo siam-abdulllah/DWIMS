@@ -87,3 +87,4 @@ E:\DWIMS\TestApplication\Core\obj\Debug\netstandard2.1\Core.csproj.CoreCompileIn
 E:\DWIMS\TestApplication\Core\obj\Debug\netstandard2.1\Core.dll
 E:\DWIMS\TestApplication\Core\obj\Debug\netstandard2.1\Core.pdb
 E:\DWIMS\TestApplication\Core\obj\Debug\netstandard2.1\Core.csproj.AssemblyReference.cache
+E:\DWIMS\TestApplication\Core\obj\Debug\netstandard2.1\Core.GeneratedMSBuildEditorConfig.editorconfig
