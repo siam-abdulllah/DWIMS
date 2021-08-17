@@ -10,5 +10,10 @@ namespace Core.Specifications
         )
         {
         }
+        public SBUWiseBudgetWithFiltersForCountSpecificication(int id)
+            : base(x => x.Id == id)
+        {
+            
+        }
     }
 }

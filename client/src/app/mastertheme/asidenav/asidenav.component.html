@@ -1,7 +1,7 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar elevation-4 sidebar-dark-success">
     <!-- Brand Logo -->
-    <a href="/" class="brand-link">
+    <a routerLink="/" class="brand-link">
         <img src="/assets/adminlte/dist/img/AdminLTELogo.png" alt="User Self-Desk" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">DIDS</span>
     </a>
@@ -14,7 +14,7 @@
         <img src="/assets/adminlte/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
-        <a href="#" class="d-block">Rijwan Ansari</a>
+        <a routerLink="#" class="d-block">Rijwan Ansari</a>
       </div>
     </div> -->
 
@@ -31,8 +31,8 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item has-treeview menu-open">
-                    <a href="#" class="nav-link active">
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-user"></i>
                         <p>
                             Master
@@ -41,53 +41,51 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="/portal/master/donation" class="nav-link active">
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/master/donation" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Donation</p>
 
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="/portal/master/subCampaign" class="nav-link">
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/master/subCampaign" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Sub Campaign</p>
 
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="/portal/master/campaign" class="nav-link">
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/master/campaign" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Campaign</p>
 
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="/portal/master/bcds-info" class="nav-link">
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/master/bcds-info" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Bcds Info</p>
 
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="/portal/master/employee-info" class="nav-link">
+                        <!-- <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/master/employee-info" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Employee Info</p>
 
                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/portal/master/society-info" class="nav-link">
+                        </li> -->
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/master/society-info" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Society Info</p>
-
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="/portal/master/approvalAuthority" class="nav-link">
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/master/approvalAuthority" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Approval Authority</p>
-
                             </a>
                         </li>
                     </ul>
@@ -101,53 +99,65 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="/portal/regApproval" class="nav-link active">
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/regApproval" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Registration Approval</p>
-
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="/portal/marketGroup" class="nav-link active">
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/marketGroup" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Market Group</p>
-
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="/portal/apprAuthConfig" class="nav-link active">
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/sbu-wise-budget" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>SBU Wise Budget</p>
+                            </a>
+                        </li>
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/apprAuthConfig" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Approval Authority Config</p>
-
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="/portal/docHonAppr" class="nav-link">
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/approval-ceiling" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Doctor Honorarium Approval</p>
+                                <p>Approval Ceiling</p>
+                            </a>
+                        </li>
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/approval-time-limit" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Approval Time Limit</p>
 
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="/portal/investmentInit" class="nav-link">
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/investmentInit" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Investment Initialization</p>
-
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="/portal/investmentRec" class="nav-link">
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/investmentRec" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Investment Recomendation</p>
-
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="/portal/investmentApr" class="nav-link">
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/investmentApr" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Investment Approval</p>
-
+                            </a>
+                        </li>
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/docHonAppr" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Doctor Honorarium Approval</p>
                             </a>
                         </li>
                     </ul>
@@ -157,7 +167,7 @@
 
                 <!-- <li class="nav-header">MULTI LEVEL EXAMPLE</li>
                 <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
+                    <a routerLink="#" class="nav-link">
                         <i class="nav-icon fas fa-circle"></i>
                         <p>
                             Level 1
@@ -166,13 +176,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a routerLink="#" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Level 2</p>
                             </a>
                         </li>
                         <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link">
+                            <a routerLink="#" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>
                                     Level 2
@@ -181,19 +191,19 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a routerLink="#" class="nav-link">
                                         <i class="far fa-dot-circle nav-icon"></i>
                                         <p>Level 3</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a routerLink="#" class="nav-link">
                                         <i class="far fa-dot-circle nav-icon"></i>
                                         <p>Level 3</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a routerLink="#" class="nav-link">
                                         <i class="far fa-dot-circle nav-icon"></i>
                                         <p>Level 3</p>
                                     </a>
@@ -201,7 +211,7 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a routerLink="#" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Level 2</p>
                             </a>

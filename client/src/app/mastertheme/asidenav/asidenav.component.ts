@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AccountService } from '../../account/account.service';
 
 @Component({
   selector: 'app-asidenav',
@@ -8,9 +9,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AsidenavComponent implements OnInit {
 
-  constructor() { }
+  constructor(private accountService: AccountService,) { }
 
   ngOnInit(): void {
   }
-
+  getUserRole() {
+    return this.accountService.getUserRole();
+  }
 }

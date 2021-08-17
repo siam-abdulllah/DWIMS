@@ -19,13 +19,15 @@ export class SBUWiseBudgetService {
   baseUrl = environment.apiUrl;
   genParams = new GenericParams();
 
-  sbuWiseBudget: ISBUWiseBudget[]= [];
+  sbuWiseBudgets: ISBUWiseBudget[]= [];
   sbuwiseBudgetPagination = new SBUWiseBudgetPagination();
   sbuwiseBudgeFormData: SBUWiseBudget = new SBUWiseBudget();
 
   constructor(private http: HttpClient, private router: Router) { }
 
-
+  getSBU(){    
+    return this.http.get(this.baseUrl + 'employee/getSBU');
+  }
   getSBUWiseBudget(){    
     let params = new HttpParams();
     debugger;
@@ -36,21 +38,25 @@ export class SBUWiseBudgetService {
     params = params.append('pageIndex', this.genParams.pageNumber.toString());
     params = params.append('pageSize', this.genParams.pageSize.toString());
 
-    return this.http.get<ISBUWiseBudgetPagination>(this.baseUrl + 'SBUWiseBudget/GetAllSBUBudget', { observe: 'response', params })
+    return this.http.get<ISBUWiseBudgetPagination>(this.baseUrl + 'sBUWiseBudget/GetAllSBUBudget', { observe: 'response', params })
     .pipe(
       map(response => {
-        this.sbuWiseBudget = [...this.sbuWiseBudget, ...response.body.data]; 
+        this.sbuWiseBudgets = [...this.sbuWiseBudgets, ...response.body.data]; 
         this.sbuwiseBudgetPagination = response.body;
         return this.sbuwiseBudgetPagination;
       })
     ); 
   }
 
+  removeSBUWiseBudget(sbuwiseBudgeFormData: ISBUWiseBudget) {
+    return this.http.post(this.baseUrl+ 'sBUWiseBudget/removeSBUWiseBudget', sbuwiseBudgeFormData,
+    {responseType: 'text'});
+  }
   insertSBUWiseBudget() {
-    return this.http.post(this.baseUrl+ 'SBUWiseBudget/CreateSBUWiseBudget', this.sbuwiseBudgeFormData);
+    return this.http.post(this.baseUrl+ 'sBUWiseBudget/CreateSBUWiseBudget', this.sbuwiseBudgeFormData);
   }
   updateSBUWiseBudget() {
-    return this.http.post(this.baseUrl+ 'SBUWiseBudget/ModifySBUWiseBudget',  this.sbuwiseBudgeFormData);
+    return this.http.post(this.baseUrl+ 'sBUWiseBudget/ModifySBUWiseBudget',  this.sbuwiseBudgeFormData);
 }
 
 }

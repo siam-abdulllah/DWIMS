@@ -3,6 +3,7 @@ using AutoMapper;
 using Core.Entities;
 using Core.Entities.Identity;
 using Core.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -15,13 +16,15 @@ namespace API.Controllers
     {
         private readonly IGenericRepository<Employee> _employeeRepo;
         private readonly IGenericIdentityRepository<AppUser> _userRepo;
+        private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
-        public EmployeeController(IGenericRepository<Employee> employeeRepo, IGenericIdentityRepository<AppUser> userRepo,
+        public EmployeeController(IGenericRepository<Employee> employeeRepo, IGenericIdentityRepository<AppUser> userRepo, UserManager<AppUser> userManager,
         IMapper mapper)
         {
             _mapper = mapper;
             _employeeRepo = employeeRepo;
             _userRepo = userRepo;
+            _userManager = userManager;
         }
         [HttpGet("employeesForConfig")]
         public async Task<IReadOnlyList<Employee>> GetEmployeesForConfig()

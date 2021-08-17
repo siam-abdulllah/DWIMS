@@ -47,7 +47,7 @@ namespace API.Controllers
         {
             var appr = new SBUWiseBudget
             {
-                SBUId = sbuBdgt.SBUId,
+                SBU = sbuBdgt.SBU,
                 FromDate = sbuBdgt.FromDate,
                 ToDate = sbuBdgt.ToDate,
                 Amount = sbuBdgt.Amount,
@@ -60,7 +60,7 @@ namespace API.Controllers
             return new SBUWiseBudget
             {
                 Id = sbuBdgt.Id,
-                SBUId = sbuBdgt.SBUId,
+                SBU = sbuBdgt.SBU,
                 FromDate = sbuBdgt.FromDate,
                 ToDate = sbuBdgt.ToDate,
                 Amount = sbuBdgt.Amount,
@@ -75,7 +75,7 @@ namespace API.Controllers
             var appr = new SBUWiseBudget
             {
                 Id = sbuBdgt.Id,
-                SBUId = sbuBdgt.SBUId,
+                SBU = sbuBdgt.SBU,
                 FromDate = sbuBdgt.FromDate,
                 ToDate = sbuBdgt.ToDate,
                 Amount = sbuBdgt.Amount,
@@ -88,12 +88,36 @@ namespace API.Controllers
             return new SBUWiseBudget
             {
                 Id = sbuBdgt.Id,
-                SBUId = sbuBdgt.SBUId,
+                SBU = sbuBdgt.SBU,
                 FromDate = sbuBdgt.FromDate,
                 ToDate = sbuBdgt.ToDate,
                 Amount = sbuBdgt.Amount,
                 Remarks = sbuBdgt.Remarks,
             };
+        }
+        [HttpPost("removeSBUWiseBudget")]
+        public async  Task<IActionResult> RemoveSBUWiseBudget(SBUWiseBudget sbuBdgt)
+        {
+            try
+            {
+                var alreadyExistSpec = new SBUWiseBudgetWithFiltersForCountSpecificication(sbuBdgt.Id);
+                var alreadyExistSubList = await _sbuRepo.ListAsync(alreadyExistSpec);
+                if (alreadyExistSubList.Count > 0)
+                {
+                    foreach (var v in alreadyExistSubList)
+                    {
+                        _sbuRepo.Delete(v);
+                        _sbuRepo.Savechange();
+                    }
+
+                    return Ok("Succsessfuly Deleted!!!");
+                }
+                return NotFound();
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

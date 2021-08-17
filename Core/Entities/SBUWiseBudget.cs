@@ -6,10 +6,9 @@ namespace Core.Entities
 {
     public class SBUWiseBudget : BaseEntity
     {
-        public int SBUId { get; set; }
-        public SBU SBU { get; set; }
-        public DateTime? FromDate { get; set; }
-        public DateTime? ToDate { get; set; }
+        public string SBU { get; set; }
+        public DateTimeOffset? FromDate { get; set; }
+        public DateTimeOffset? ToDate { get; set; }
         public long Amount { get; set; }
         public string Remarks { get; set; }
     }

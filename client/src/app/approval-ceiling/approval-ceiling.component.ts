@@ -8,8 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-approval-ceiling',
-  templateUrl: './approval-ceiling.component.html',
-  styleUrls: ['./approval-ceiling.component.scss']
+  templateUrl: './approval-ceiling.component.html'
 })
 export class ApprovalCeilingComponent implements OnInit {
 

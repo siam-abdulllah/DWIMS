@@ -8,8 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-approval-time-limit',
-  templateUrl: './approval-time-limit.component.html',
-  styleUrls: ['./approval-time-limit.component.scss']
+  templateUrl: './approval-time-limit.component.html'
 })
 export class ApprovalTimeLimitComponent implements OnInit {
 

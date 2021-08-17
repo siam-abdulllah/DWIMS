@@ -8,7 +8,7 @@ namespace API.Dtos
     public class SBUWiseBudgetDto
     {
         public int Id { get; set; }
-        public SBUDto SBU { get; set; }
+        public string SBU { get; set; }
         public DateTime? FromDate { get; set; }
         public DateTime? ToDate { get; set; }
         public long Amount { get; set; }

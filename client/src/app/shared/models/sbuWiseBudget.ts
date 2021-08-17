@@ -1,21 +1,21 @@
+import { ISBU } from "./sbu";
+
 export interface ISBUWiseBudget {
     id: number;
-    SBUId: number;
+    sbu: string;
     amount: number;
     fromDate: Date;
     toDate: Date;
-    remarks: string;
-    status: number;
+    status: string;
 }
 
 export class SBUWiseBudget implements ISBUWiseBudget {
     id: number = 0;
-    SBUId: number;
+    sbu: string=null;
     amount: number;
     fromDate: Date;
     toDate: Date;
-    remarks: string;
-    status: number;
+    status: string;
 }
 
 

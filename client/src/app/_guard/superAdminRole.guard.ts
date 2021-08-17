@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { AccountService } from '../account/account.service';
-import { AlertifyService } from '../_services/alertify.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -9,19 +9,19 @@ import { AlertifyService } from '../_services/alertify.service';
 export class SuperAdminRoleGuard implements CanActivate {
   constructor(
     private accountService: AccountService,
-    private router: Router,
-    private alertfy: AlertifyService) {}
+    private router: Router, private toastr: ToastrService) {}
   canActivate(): boolean {
+    debugger;
     if (!this.accountService.loggedIn()) {
-        this.alertfy.error('UnAuthorized Access!!!');
+        this.toastr.error('UnAuthorized Access!!!');
         this.router.navigate(['/login']);
         return false;
     }
-    if (this.accountService.getUserRole() === 'SA') {
+    if (this.accountService.getUserRole() === 'Administrator') {
         // console.log(this.accountService.getUserRole());
         return true;
     }
-    this.alertfy.error('UnAuthorized Access!!!');
+    this.toastr.error('UnAuthorized Access!!!');
     this.router.navigate(['login']);
     return false;
   }
