@@ -6,14 +6,14 @@
                     <div class="card card-primary">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-sm-8">
                                     <h3 class="card-title">Approval Authority Config</h3>
                                 </div>
-                                <div class="col-sm-3">
-                                    <button class="btn btn-info btn-lg btn-block" type="submit" [disabled]="form.invalid">Save</button>
+                                <div class="col-sm-2">
+                                    <button class="btn btn-info btn-block" type="submit" [disabled]="form.invalid">Save</button>
                                 </div>
-                                <div class="col-sm-3">
-                                    <button type="button" class="btn btn-danger btn-lg btn-block" style="float: right;" (click)="resetPage(form)">Reset</button>
+                                <div class="col-sm-2">
+                                    <button type="button" class="btn btn-danger btn-block" style="float: right;" (click)="resetPage(form)">Reset</button>
                                 </div>
                             </div>
                         </div>
@@ -24,7 +24,7 @@
                                         <label>Approval Authority level</label>
                                     </div>
                                     <div class="col-md-3">
-                                        <select class="form-control form-control-lg" id="approvalAuthorityId" name="approvalAuthorityId" #approvalAuthorityId="ngModel" [(ngModel)]="apprAuthConfigService.approvalAuthConfigFormData.approvalAuthorityId" required [class.invalid]="approvalAuthorityId.invalid && approvalAuthorityId.touched"
+                                        <select class="form-control " id="approvalAuthorityId" name="approvalAuthorityId" #approvalAuthorityId="ngModel" [(ngModel)]="apprAuthConfigService.approvalAuthConfigFormData.approvalAuthorityId" required [class.invalid]="approvalAuthorityId.invalid && approvalAuthorityId.touched"
                                             (change)="getApprovalAuthConfigs()">
                                             <option  [ngValue]="null">Select Authority</option>
                                             <option *ngFor="let approvalAuthority of approvalAuthorities" [value]="approvalAuthority.id">{{approvalAuthority.approvalAuthorityName}}</option>
@@ -39,7 +39,7 @@
                                             <label>Employee</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <select id="" class="form-control form-control-lg" name="employeeId" #employeeId="ngModel" [(ngModel)]="apprAuthConfigService.approvalAuthConfigFormData.employeeId" required [class.invalid]="employeeId.invalid && employeeId.touched">
+                                            <select id="" class="form-control " name="employeeId" #employeeId="ngModel" [(ngModel)]="apprAuthConfigService.approvalAuthConfigFormData.employeeId" required [class.invalid]="employeeId.invalid && employeeId.touched">
                                                 <option  [ngValue]="null">Select Employee</option>
                                                 <option *ngFor="let employe of employees" [value]="employe.id">{{employe.employeeName}}</option>
                                             </select>

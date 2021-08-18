@@ -28,7 +28,10 @@ export class ApprovalCeilingComponent implements OnInit {
   constructor(public approvalCeilingService: ApprovalCeilingService,private router: Router, private toastr: ToastrService) { }
   ngOnInit() {
     this.getApprovalAuthority();
+    this.getApprovalCeiling();
     this. getDonation();
+    this.bsConfig = Object.assign({}, { containerClass: 'theme-green' }, { dateInputFormat: 'DD/MM/YYYY' });
+    this.bsValue = new Date();
   }
   getApprovalAuthority(){
     this.approvalCeilingService.getApprovalAuthority().subscribe(response => {
@@ -89,6 +92,9 @@ export class ApprovalCeilingComponent implements OnInit {
 
   populateForm(selectedRecord: IApprovalCeiling) {
     this.approvalCeilingService.approvalCeilingFormData = Object.assign({}, selectedRecord);
+    this.approvalCeilingService.approvalCeilingFormData.investmentFrom=new Date(selectedRecord.investmentFrom);
+      this.approvalCeilingService.approvalCeilingFormData.investmentTo=new Date(selectedRecord.investmentTo);
+     
   }
 
   resetForm(form: NgForm) {

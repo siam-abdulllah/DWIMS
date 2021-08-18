@@ -3,7 +3,7 @@ import { IApprovalAuthority } from "./approvalAuthority";
 export interface IApprovalTimeLimit {
     id: number;
     approvalAuthorityId: number;
-    timeLimit: string;
+    timeLimit: number;
     remarks: string;
     status: string;
     setOn: Date;
@@ -13,8 +13,8 @@ export interface IApprovalTimeLimit {
 
 export class ApprovalTimeLimit implements IApprovalTimeLimit {
     id: number = 0;
-    approvalAuthorityId: number;
-    timeLimit: string=null;
+    approvalAuthorityId: number=null;
+    timeLimit: number=null;
     remarks: string;
     status: string=null;
     setOn: Date;

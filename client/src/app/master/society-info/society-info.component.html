@@ -1,105 +1,106 @@
 <section class="content-header">
-  <div class="container-fluid">
-      <div class="row mb-2">
-          <div class="col-sm-6">
-              <h1></h1>
-          </div>
-          <div class="col-sm-6">
-          </div>
-      </div>
-  </div>
-  <!-- /.container-fluid -->
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1></h1>
+            </div>
+            <div class="col-sm-6">
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
 </section>
 <section class="content">
-  <div class="container-fluid">
-      <div class="row">
-          <div class="col-sm-12">
-              <!-- form start -->
-              <form novalidate autocomplete="off" #form="ngForm" (submit)="onSubmit(form)">
-                  <!-- general form elements -->
-                  <div class="card card-primary">
-                      <div class="card-header">
-                          <div class="row">
-                              <div class="col-sm-6">
-                                  <h3 class="card-title">Society Info</h3>
-                              </div>
-                              <div class="col-sm-6">
-                                <button class="btn btn-info btn-lg btn-block" type="submit" [disabled]="form.invalid">SUBMIT</button>          
-                              </div>
-                          </div>
-                      </div>
-                      <!-- /.card-header -->
-                      <div class="card-body">
-                        <input type="hidden" name="id" [value]="masterService.societyFormData.id" />
-                          <div class="form-group">
-                              <div class="row">
-                                  <div class="col-md-2">
-                                    <label>Society Name</label>
-                                  </div>
-                                  <div class="col-md-3">
-                                    <input class="form-control form-control-lg" placeholder="Society Name" name="societyName" #societyName="ngModel" [(ngModel)]="masterService.societyFormData.societyName" required [class.invalid]="societyName.invalid && societyName.touched">
-                                  </div>
-                                  <div class="col-md-2">
-                                      <label>Status</label></div>
-                                  <div class="col-md-3">
-                                      <select name="" id="" class="form-control form-control-lg" name="status" #status="ngModel" [(ngModel)]="masterService.societyFormData.status" required [class.invalid]="status.invalid && status.touched">
-                                        <option value="Active">Active</option>
-                                        <option value="Inactive">Inactive</option>
-                                      </select>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="form-group">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <!-- form start -->
+                <form novalidate autocomplete="off" #form="ngForm" (submit)="onSubmit(form)">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                        <div class="card-header">
                             <div class="row">
-                                <div class="col-md-2">
-                                    <label>No of Member</label></div>
-                                <div class="col-md-8">
-                                  <input class="form-control form-control-lg" placeholder="Number of Member" name="noOfMember" #noOfMember="ngModel" [(ngModel)]="masterService.societyFormData.noOfMember" required [class.invalid]="noOfMember.invalid && noOfMember.touched"> 
+                                <div class="col-sm-8">
+                                    <h3 class="card-title">Society Info</h3>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button class="btn btn-info btn-block" type="submit" [disabled]="form.invalid">Save</button>
                                 </div>
                             </div>
-                          </div>
-                          <div class="form-group">
-                              <div class="row">
-                                  <div class="col-md-2">
-                                      <label>Society Address</label></div>
-                                  <div class="col-md-8">
-                                    <textarea class="form-control form-control-lg" placeholder="Address" name="societyAddress" #societyAddress="ngModel" [(ngModel)]="masterService.societyFormData.societyAddress" required [class.invalid]="societyAddress.invalid && societyAddress.touched"></textarea>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="form-group">
-                            <table class="table">
-                              <tr>
-                                <td>Society Name</td>
-                                <td>Address</td>
-                                <td>No of Member</td>
-                              </tr>
-                              <tr *ngFor="let sc of societyinfo">
-                                <td>
-                                  {{sc.societyName}}
-                                </td>
-                                <td>
-                                  {{sc.societyAddress}}
-                                </td>
-                                <td>
-                                  {{sc.noOfMember}}
-                                </td>
-                                <td (click)="populateForm(sc)">
-                                  Update
-                                </td>
-                              </tr>
-                            </table>
-                          </div>
-                          <!-- <div class="card-footer">
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <input type="hidden" name="id" [value]="masterService.societyFormData.id" />
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Society Name</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input class="form-control " placeholder="Society Name" name="societyName" #societyName="ngModel" [(ngModel)]="masterService.societyFormData.societyName" required [class.invalid]="societyName.invalid && societyName.touched">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Status</label></div>
+                                    <div class="col-md-3">
+                                        <select name="" id="" class="form-control " name="status" #status="ngModel" [(ngModel)]="masterService.societyFormData.status" required [class.invalid]="status.invalid && status.touched">
+                                          <option [ngValue]="null">Select Status</option>
+                                          <option value="Active">Active</option>
+                                        <option value="Inactive">Inactive</option>
+                                      </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>No of Member</label></div>
+                                    <div class="col-md-8">
+                                        <input class="form-control " placeholder="Number of Member" name="noOfMember" #noOfMember="ngModel" [(ngModel)]="masterService.societyFormData.noOfMember" required [class.invalid]="noOfMember.invalid && noOfMember.touched">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Society Address</label></div>
+                                    <div class="col-md-8">
+                                        <textarea class="form-control " placeholder="Address" name="societyAddress" #societyAddress="ngModel" [(ngModel)]="masterService.societyFormData.societyAddress" required [class.invalid]="societyAddress.invalid && societyAddress.touched"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <table class="table">
+                                    <tr>
+                                        <td>Society Name</td>
+                                        <td>Address</td>
+                                        <td>No of Member</td>
+                                    </tr>
+                                    <tr *ngFor="let sc of societyinfo">
+                                        <td>
+                                            {{sc.societyName}}
+                                        </td>
+                                        <td>
+                                            {{sc.societyAddress}}
+                                        </td>
+                                        <td>
+                                            {{sc.noOfMember}}
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-info  btn-block" type="button" (click)="populateForm(sc)"><i class="fa fa-pen"></i>&nbsp; Edit</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <!-- <div class="card-footer">
                               Sample Demo by rijsat.com
                           </div> -->
-                      </div>
-                      <!-- /.card -->
-                  </div>
-              </form>
-          </div>
-          <!-- /.row -->
-      </div>
-  </div>
-  <!-- /.container-fluid -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                </form>
+            </div>
+            <!-- /.row -->
+        </div>
+    </div>
+    <!-- /.container-fluid -->
 </section>

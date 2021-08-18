@@ -12,6 +12,6 @@ export class SocietyInfo implements ISocietyInfo {
     societyName: string;
     societyAddress: string;
     noOfMember: string;
-    status: string;
+    status: string=null;
     setOn: Date;
 }

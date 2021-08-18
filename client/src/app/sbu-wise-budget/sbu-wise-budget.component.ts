@@ -28,6 +28,7 @@ export class SbuWiseBudgetComponent implements OnInit {
   ngOnInit() {
     this.getSBU();
     this.getSBUWiseBudget();
+    this.bsConfig = Object.assign({}, { containerClass: 'theme-green' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
   }
   getSBU(){

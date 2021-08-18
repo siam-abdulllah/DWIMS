@@ -114,6 +114,8 @@
                                         <tr>
                                             <td>Approval Authority</td>
                                             <td>Investment Type</td>
+                                            <td>From Date</td>
+                                            <td>To Date</td>
                                             <td>Amount Per Transaction</td>
                                             <td>Amount Per Month</td>
                                             <td>Additional</td>
@@ -126,6 +128,12 @@
                                             </td>
                                             <td>
                                                 {{a.donationType}}
+                                            </td>
+                                            <td>
+                                                {{a.investmentFrom| date:'dd/MM/yyyy'}}
+                                            </td>
+                                            <td>
+                                                {{a.investmentTo| date:'dd/MM/yyyy'}}
                                             </td>
                                             <td>
                                                 {{a.amountPerTransacion}}

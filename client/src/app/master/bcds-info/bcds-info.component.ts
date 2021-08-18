@@ -69,9 +69,11 @@ export class BcdsInfoComponent implements OnInit {
   populateForm(selectedRecord: IBcdsInfo) {
     this.masterService.bcdsFormData = Object.assign({}, selectedRecord);
   }
+  // resetForm(form: NgForm) {
+  //   form.form.reset();
+  //   this.masterService.bcdsFormData = new BcdsInfo();
+  // }
   resetForm(form: NgForm) {
-    form.form.reset();
-    this.masterService.bcdsFormData = new BcdsInfo();
+    form.reset();
   }
-
 }

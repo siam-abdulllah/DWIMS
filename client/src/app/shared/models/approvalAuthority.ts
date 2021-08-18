@@ -12,7 +12,7 @@ export class ApprovalAuthority implements IApprovalAuthority {
     id: number=0;
     approvalAuthorityName: string;
     remarks: string; 
-    priority: number=1;
+    priority: number=null;
     status: string=null; 
     setOn: Date;
 }

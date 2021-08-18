@@ -55,6 +55,7 @@
                                         <label>Priority</label></div>
                                     <div class="col-md-3">
                                         <select id="" class="form-control " name="priority" #priority="ngModel" [(ngModel)]="masterService.approvalAuthorityFormData.priority" required [class.invalid]="priority.invalid && priority.touched">
+                                            <option [ngValue]="null">Select Priority</option>
                                             <option *ngFor="let priority of priorities" [value]="priority">{{priority}}</option>
                                         </select>
                                     </div>

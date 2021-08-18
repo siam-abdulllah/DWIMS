@@ -12,6 +12,6 @@ export class BcdsInfo implements IBcdsInfo {
     bcdsName: string;
     bcdsAddress: string;
     noOfMember: string;
-    status: string;
+    status: string=null;
     setOn: Date;
 }

@@ -22,6 +22,7 @@ namespace API.Helpers
             .ForMember(d => d.Comments, o => o.MapFrom(s => s.PostComments))
             .ReverseMap();
             CreateMap<Donation, DonationToReturnDto>().ReverseMap();
+            CreateMap<Bcds, BcdsDto>().ReverseMap();
             CreateMap<SubCampaign, SubCampaignToReturnDto>().ReverseMap();
             CreateMap<ApprovalAuthority, ApprovalAuthorityToReturnDto>().ReverseMap();
             CreateMap<ApprAuthConfig, ApprAuthConfigDto>().ReverseMap();
