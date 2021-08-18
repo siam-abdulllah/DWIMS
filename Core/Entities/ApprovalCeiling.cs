@@ -1,10 +1,12 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Entities
 {
     public class ApprovalCeiling : BaseEntity
     {
         public int ApprovalAuthorityId { get; set; }
+        [ForeignKey("ApprovalAuthorityId")]
         public ApprovalAuthority ApprovalAuthority { get; set; }
         public string DonationType { get; set; }
         public DateTimeOffset? InvestmentFrom { get; set; }
