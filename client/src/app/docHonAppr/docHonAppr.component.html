@@ -46,24 +46,31 @@
                                                 {{a.doctorId}}
                                             </td>
                                             <td>
-                                                {{a.doctorName}}
+                                                {{a.doctorInfo.doctorName}}
                                             </td>
                                             <td>
-                                                {{a.designation}}
+                                                {{a.doctorInfo.designation}}
                                             </td>
                                             <td>
-                                                {{a.amount}}
+                                                {{a.honAmount}}
                                             </td>
                                             <td>
                                                 {{a.status}}
                                             </td>
                                             <td>
+                                                <input id="status" type="radio" value="Approved" name="status" (change)="clickStatusDoctorHon(a)" [(ngModel)]="a.status">Approved
+
+                                            </td>
+                                            <td>
+                                                <input id="status" type="radio" value="Not Approved" name="status" (change)="clickStatusDoctorHon(a)" [(ngModel)]="a.status">Not Approved
+                                            </td>
+                                            <!-- <td>
                                                 <button class="btn btn-success  btn-block" (click)="approveDoctorHon(a)" type="button"><i class="fa fa-check"></i>&nbsp; Approved</button>
                                             </td>
                                             <td>
                                                 <button class="btn btn-danger  btn-block" (click)="notApproveDoctorHon(a)" type="button"><i class="fa fa-ban "></i>&nbsp; Not Approved</button>
 
-                                            </td>
+                                            </td> -->
                                             <td>
                                                 <button class="btn btn-primary  btn-block" (click)="viewIndividualDoctorHon(a)" type="button"><i class="fa fa-info-circle "></i>&nbsp; View</button>
 

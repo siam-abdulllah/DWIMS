@@ -494,7 +494,7 @@ export class InvestmentInitComponent implements OnInit {
     //let dateFrom = new Date();
     //let dateTo = new Date();
 
-    this.investmentInitService.investmentDetailFormData.totalMonth = String(dateTo.getMonth() - dateFrom.getMonth() + (12 * (dateTo.getFullYear() - dateFrom.getFullYear())));
+    this.investmentInitService.investmentDetailFormData.totalMonth = dateTo.getMonth() - dateFrom.getMonth() + (12 * (dateTo.getFullYear() - dateFrom.getFullYear()));
 
   }
   getDonation(){

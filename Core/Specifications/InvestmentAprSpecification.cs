@@ -20,8 +20,13 @@ namespace Core.Specifications
             : base(x => x.InvestmentInitId == id)
         {
 
-        }      
-        
+        }
+        public InvestmentAprSpecification(string donationType)
+           : base(x => x.InvestmentInit.DonationType == donationType)
+        {
+            AddInclude(x => x.InvestmentInit);
+
+        }
         //public InvestmentAprSpecification(int employeeId,string status)
         //    : base(x => x.EmployeeId == employeeId && x.Status == status)
         //{

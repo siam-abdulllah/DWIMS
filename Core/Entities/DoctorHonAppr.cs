@@ -7,7 +7,7 @@ namespace Core.Entities
 {
     public class DoctorHonAppr : BaseEntity
     {
-        public int InvestmentInitId { get; set; }
+        public int? InvestmentInitId { get; set; }
         [ForeignKey("InvestmentInitId")]
         public InvestmentInit InvestmentInit { get; set; }
         public int DoctorId { get; set; }

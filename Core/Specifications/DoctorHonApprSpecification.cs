@@ -18,6 +18,10 @@ namespace Core.Specifications
             : base(x => x.Id == id)
         {
             AddInclude(x => x.DoctorInfo);
+        }public DoctorHonApprSpecification(string honMonth)
+            : base(x => x.HonMonth == honMonth)
+        {
+            AddInclude(x => x.DoctorInfo);
         }
     }
 }

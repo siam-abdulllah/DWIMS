@@ -4,7 +4,8 @@ namespace API.Dtos
 {
     public class DoctorHonApprDto
     {
-        public int InvestmentInitId { get; set; }
+        public int Id { get; set; }
+        public int? InvestmentInitId { get; set; }
         public InvestmentInitDto InvestmentInit { get; set; }
         public int DoctorId { get; set; }
         public DoctorInfoDto DoctorInfo { get; set; }

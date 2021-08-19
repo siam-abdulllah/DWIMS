@@ -44,7 +44,7 @@ export class DocHonApprComponent implements OnInit {
   changeDateInDetail(){
     var fromDate = new Date(this.month);
      this.fDate = this.datePipe.transform(fromDate, "MMyyyy");
-     this.docHonApprService.getDoctorHonAppr().subscribe(response => {
+     this.docHonApprService.getDoctorHonAppr(this.fDate).subscribe(response => {
       debugger;
       this.doctorHonAppr = response.data;
       this.totalCount = response.count;
@@ -94,6 +94,33 @@ export class DocHonApprComponent implements OnInit {
 
   populateForm() {
     //this.masterService.campaignFormData = Object.assign({}, selectedRecord);
+  }
+  
+  clickStatusDoctorHon(selectedRecord:IDoctorHonAppr) {
+    debugger;
+if(selectedRecord.id==0)
+{
+    this.docHonApprService.insertDocHonAppr(selectedRecord).subscribe(
+      res => {
+        
+        this.changeDateInDetail();
+       
+        this.toastr.success('Save successfully', 'Investment ')
+      },
+      err => { console.log(err); }
+    );
+  }
+  else{
+    this.docHonApprService.updateDocHonAppr(selectedRecord).subscribe(
+      res => {
+        
+        this.changeDateInDetail();
+       
+        this.toastr.success('Save successfully', 'Investment ')
+      },
+      err => { console.log(err); }
+    );
+  }
   }
   resetForm(form: NgForm) {
     form.form.reset();

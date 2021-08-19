@@ -34,7 +34,7 @@ export interface IInvestmentApr {
     commitmentOwnSBU: string;
     shareAllSBU: string;
     shareOwnSBU: string;
-    totalMonth: string;
+    totalMonth: number;
     proposedAmount: string;
     purpose: string;
     fromDate: Date;
@@ -50,7 +50,7 @@ export class InvestmentApr implements IInvestmentApr {
     commitmentOwnSBU: string;
     shareAllSBU: string;
     shareOwnSBU: string;
-    totalMonth: string;
+    totalMonth: number;
     proposedAmount: string;
     purpose: string;
     fromDate: Date;

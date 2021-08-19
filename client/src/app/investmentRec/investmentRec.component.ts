@@ -453,7 +453,7 @@ export class InvestmentRecComponent implements OnInit {
     //let dateFrom = new Date();
     //let dateTo = new Date();
 
-    this.investmentRecService.investmentDetailFormData.totalMonth = String(dateTo.getMonth() - dateFrom.getMonth() + (12 * (dateTo.getFullYear() - dateFrom.getFullYear())));
+    this.investmentRecService.investmentDetailFormData.totalMonth = dateTo.getMonth() - dateFrom.getMonth() + (12 * (dateTo.getFullYear() - dateFrom.getFullYear()));
 
   }
   

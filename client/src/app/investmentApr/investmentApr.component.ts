@@ -453,7 +453,7 @@ export class InvestmentAprComponent implements OnInit {
     //let dateFrom = new Date();
     //let dateTo = new Date();
 
-    this.investmentAprService.investmentDetailFormData.totalMonth = String(dateTo.getMonth() - dateFrom.getMonth() + (12 * (dateTo.getFullYear() - dateFrom.getFullYear())));
+    this.investmentAprService.investmentDetailFormData.totalMonth = dateTo.getMonth() - dateFrom.getMonth() + (12 * (dateTo.getFullYear() - dateFrom.getFullYear()));
 
   }
   

@@ -35,6 +35,7 @@ namespace Infrastructure.Data
         public DbSet<SBUWiseBudget> SBUWiseBudget { get; set; }
         public DbSet<DoctorInfo> DoctorInfo { get; set; }
         public DbSet<DoctorMarket> DoctorMarket { get; set; }
+        public DbSet<DoctorHonAppr> DoctorHonAppr { get; set; }
         public DbSet<InstitutionInfo> InstitutionInfo { get; set; }
         public DbSet<InvestmentBcds> InvestmentBcds { get; set; }
         public DbSet<InvestmentCampaign> InvestmentCampaign { get; set; }

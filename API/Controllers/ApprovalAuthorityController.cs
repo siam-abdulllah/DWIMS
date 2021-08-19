@@ -55,6 +55,7 @@ namespace API.Controllers
                 Remarks = ApprovalAuthorityToReturnDto.Remarks
             };
         }
+      
         [HttpPost("update")]
         public ActionResult<ApprovalAuthorityToReturnDto> UpdateApprovalAuthority(ApprovalAuthorityToReturnDto ApprovalAuthorityToReturnDto)
         {

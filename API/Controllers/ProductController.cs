@@ -73,7 +73,9 @@ namespace API.Controllers
             {
                 throw ex;
             }
-        } [HttpGet("getProductForInvestment/{sbu}")]
+        } 
+        [HttpGet]
+        [Route("getProductForInvestment/{sbu}")]
         public async Task<IReadOnlyList<ProductDto>> GetProductForInvestment(string sbu)
         {
             try

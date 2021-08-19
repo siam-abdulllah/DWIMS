@@ -30,7 +30,8 @@ export class DoctorHonApprService {
   getDonations(){    
     return this.http.get(this.baseUrl + 'donation/donationsForInvestment');
   }
-  getDoctorHonAppr(){    
+  getDoctorHonAppr(fDate:string){   
+    debugger; 
     let params = new HttpParams();
     debugger;
     if (this.genParams.search) {
@@ -40,7 +41,7 @@ export class DoctorHonApprService {
     params = params.append('pageIndex', this.genParams.pageNumber.toString());
     params = params.append('pageSize', this.genParams.pageSize.toString());
 
-    return this.http.get<IDoctorHonApprPagination>(this.baseUrl + ' /GetAllData', { observe: 'response', params })
+    return this.http.get<IDoctorHonApprPagination>(this.baseUrl + 'doctorHonAppr/GetAllData/'+fDate, { observe: 'response', params })
     .pipe(
       map(response => {
         this.doctorHonAppr = [...this.doctorHonAppr, ...response.body.data]; 
@@ -50,11 +51,12 @@ export class DoctorHonApprService {
     ); 
   }
 
-  insertDoctorHonAppr() {
-    return this.http.post(this.baseUrl+ 'doctorHonAppr/CreateDoctorHonAppr', this.doctorHonApprFormData);
+  insertDocHonAppr(doctorHonApprFormData:IDoctorHonAppr) {
+    return this.http.post(this.baseUrl+ 'doctorHonAppr/insertDocHonAppr', doctorHonApprFormData);
   }
-  updateDoctorHonAppr() {
-    return this.http.post(this.baseUrl+ 'doctorHonAppr/ModifyDoctorHonAppr',  this.doctorHonApprFormData);
-}
+  updateDocHonAppr(doctorHonApprFormData:IDoctorHonAppr) {
+    return this.http.post(this.baseUrl+ 'doctorHonAppr/updateDocHonAppr', doctorHonApprFormData);
+  }
+  
 
 }

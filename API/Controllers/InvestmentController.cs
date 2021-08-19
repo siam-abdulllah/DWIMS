@@ -668,8 +668,8 @@ namespace API.Controllers
             {
                 throw ex;
             }
-        }[HttpGet]
-        
+        }
+        [HttpGet]
         [Route("investmentCampaigns/{investmentInitId}")]
         public async Task<IReadOnlyList<InvestmentCampaign>> GetInvestmentCampaigns(int investmentInitId)
         {
@@ -684,6 +684,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
+        [HttpGet]
         [Route("investmentBcds/{investmentInitId}")]
         public async Task<IReadOnlyList<InvestmentBcds>> GetInvestmentBcds(int investmentInitId)
         {
@@ -697,7 +698,9 @@ namespace API.Controllers
             {
                 throw ex;
             }
-        }[Route("investmentSociety/{investmentInitId}")]
+        }
+        [HttpGet]
+        [Route("investmentSociety/{investmentInitId}")]
         public async Task<IReadOnlyList<InvestmentSociety>> GetInvestmentSociety(int investmentInitId)
         {
             try
@@ -786,7 +789,8 @@ namespace API.Controllers
             {
                 throw ex;
             }
-        } [HttpPost("removeInvestmentSociety")]
+        } 
+        [HttpPost("removeInvestmentSociety")]
         public async Task<IActionResult> RemoveInvestmentSociety(InvestmentSociety investmentSociety)
         {
             try
@@ -860,6 +864,7 @@ namespace API.Controllers
                 throw ex;
             }
         } 
+      
         [HttpPost("removeInvestmentTargetedGroup")]
         public async Task<IActionResult> RemoveInvestmentTargetedGroup(List<InvestmentTargetedGroupDto> investmentTargetedGroupDto)
         {

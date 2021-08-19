@@ -178,7 +178,7 @@ namespace API.Controllers
 
 
         [HttpPost("insertRecCom")]
-        public async Task<InvestmentRecCommentDto> InsertInvestmentRecomendationComment(InvestmentRecCommentDto investmentRecDto)
+        public ActionResult<InvestmentRecCommentDto> InsertInvestmentRecomendationComment(InvestmentRecCommentDto investmentRecDto)
         {
             var invRec = new InvestmentRecComment
             {

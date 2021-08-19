@@ -178,7 +178,8 @@ namespace API.Controllers
                 throw;
             }
         }
-        [HttpGet("marketGroupDtls/{mstId}")]
+        [HttpGet]
+        [Route("marketGroupDtls/{mstId}")]
         public async Task<ActionResult<Pagination<MarketGroupDtlDto>>> GetMarketGroupDtls(
         [FromQuery] MarketGroupDtlSpecParams marketGroupDtlParrams, int mstId)
         {

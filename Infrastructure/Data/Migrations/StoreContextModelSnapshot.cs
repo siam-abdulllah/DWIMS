@@ -335,6 +335,46 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("CampaignMst");
                 });
 
+            modelBuilder.Entity("Core.Entities.DoctorHonAppr", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DoctorId")
+                        .HasColumnType("int");
+
+                    b.Property<long>("HonAmount")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("HonMonth")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("InvestmentInitId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("InvestmentInitId");
+
+                    b.ToTable("DoctorHonAppr");
+                });
+
             modelBuilder.Entity("Core.Entities.DoctorInfo", b =>
                 {
                     b.Property<int>("Id")
@@ -611,8 +651,8 @@ namespace Infrastructure.Data.Migrations
                     b.Property<DateTimeOffset>("ToDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("TotalMonth")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("TotalMonth")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -807,8 +847,8 @@ namespace Infrastructure.Data.Migrations
                     b.Property<DateTimeOffset>("ToDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("TotalMonth")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("TotalMonth")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -988,8 +1028,8 @@ namespace Infrastructure.Data.Migrations
                     b.Property<DateTimeOffset>("ToDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("TotalMonth")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("TotalMonth")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -1806,6 +1846,21 @@ namespace Infrastructure.Data.Migrations
                     b.HasOne("Core.Entities.ProductInfo", "ProductInfo")
                         .WithMany()
                         .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Core.Entities.DoctorHonAppr", b =>
+                {
+                    b.HasOne("Core.Entities.DoctorInfo", "DoctorInfo")
+                        .WithMany()
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.InvestmentInit", "InvestmentInit")
+                        .WithMany()
+                        .HasForeignKey("InvestmentInitId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
