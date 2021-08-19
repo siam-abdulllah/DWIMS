@@ -40,7 +40,7 @@ export class DoctorHonApprService {
     params = params.append('pageIndex', this.genParams.pageNumber.toString());
     params = params.append('pageSize', this.genParams.pageSize.toString());
 
-    return this.http.get<IDoctorHonApprPagination>(this.baseUrl + 'doctorHonAppr/GetAllData', { observe: 'response', params })
+    return this.http.get<IDoctorHonApprPagination>(this.baseUrl + ' /GetAllData', { observe: 'response', params })
     .pipe(
       map(response => {
         this.doctorHonAppr = [...this.doctorHonAppr, ...response.body.data]; 

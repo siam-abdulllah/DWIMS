@@ -42,6 +42,7 @@ namespace API.Helpers
             CreateMap<ProductInfo, ProductDto>().ReverseMap();
             CreateMap<InvestmentInit, InvestmentInitDto>().ReverseMap();
             CreateMap<Society, SocietyDto>().ReverseMap();
+            CreateMap<DoctorHonAppr, DoctorHonApprDto>().ReverseMap();
         }
     }
 }

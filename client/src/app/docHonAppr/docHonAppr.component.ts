@@ -44,6 +44,13 @@ export class DocHonApprComponent implements OnInit {
   changeDateInDetail(){
     var fromDate = new Date(this.month);
      this.fDate = this.datePipe.transform(fromDate, "MMyyyy");
+     this.docHonApprService.getDoctorHonAppr().subscribe(response => {
+      debugger;
+      this.doctorHonAppr = response.data;
+      this.totalCount = response.count;
+    }, error => {
+        console.log(error);
+    });
   }
   getCampaign(){
     // this.masterService.getCampaign().subscribe(response => {

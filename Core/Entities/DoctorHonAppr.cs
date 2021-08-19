@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Core.Entities
 {
-    class DocotorHon : BaseEntity
+    public class DoctorHonAppr : BaseEntity
     {
         public int InvestmentInitId { get; set; }
         [ForeignKey("InvestmentInitId")]
@@ -14,7 +14,7 @@ namespace Core.Entities
         [ForeignKey("DoctorId")]
         public DoctorInfo DoctorInfo { get; set; }
         public long HonAmount { get; set; }
-        public long HonMonth { get; set; }
+        public string HonMonth { get; set; }
         public string Status { get; set; }
     }
 }
