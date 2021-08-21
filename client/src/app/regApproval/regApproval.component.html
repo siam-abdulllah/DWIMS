@@ -10,11 +10,14 @@
                                 <div class="col-sm-6">
                                     <h3 class="card-title">Registration Approval</h3>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                     <button class="btn btn-success btn-lg btn-block" [disabled]="regApprovalForm.invalid" type="submit"><i class="fa fa-save"></i>&nbsp; Save</button>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                     <button class="btn btn-info btn-lg btn-block" type="button" (click)="getRegApproved()"><i class="fa fa-search"></i>Search</button>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button class="btn btn-danger  btn-block" type="button" (click)="resetForm(regApprovalForm)"><i class="fa fa-undo"></i>&nbsp; Reset</button>
                                 </div>
                             </div>
                         </div>
@@ -23,6 +26,7 @@
                                 <div class="row">
                                     <div class="col-md-2">
                                         <label>Employee Id</label>
+                                        <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
                                         <input class="form-control " (dblclick)="getEmployeeFormApproval()" placeholder="Please Double Click Here" id="employeeId" name="employeeId" #employeeId="ngModel" [(ngModel)]="regApprovalService.regApprovalFormData.employeeId" required [class.invalid]="employeeId.invalid && employeeId.touched">
@@ -122,6 +126,7 @@
                                 <div class="row">
                                     <div class="col-md-2">
                                         <label>Approval Status</label>
+                                        <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
                                         <select class="form-control " id="approvalStatus" name="approvalStatus" #approvalStatus="ngModel" [(ngModel)]="regApprovalService.regApprovalFormData.approvalStatus" required [class.invalid]="approvalStatus.invalid && approvalStatus.touched">
@@ -132,9 +137,10 @@
                                     </div>
                                     <div class="col-md-2">
                                         <label>Role</label>
+                                        <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <select class="form-control " id="role" name="role" #role="ngModel" [(ngModel)]="regApprovalService.regApprovalFormData.role" [class.invalid]="role.invalid && role.touched">
+                                        <select class="form-control " id="role" name="role" #role="ngModel" [(ngModel)]="regApprovalService.regApprovalFormData.role" required [class.invalid]="role.invalid && role.touched">
                                             <option  [ngValue]="null">Select Role</option>
                                                 <option *ngFor="let a of roleList" [value]="a.name">{{a.name}}</option>
                                         </select>

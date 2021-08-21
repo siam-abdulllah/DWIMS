@@ -31,11 +31,12 @@ namespace Core.Specifications
             // }
         }
 
-        public MarketGroupMstSpecification(int id)
-            : base(x => x.Id == id )
+        public MarketGroupMstSpecification(int empId)
+            : base(x => x.EmployeeId == empId)
         {
             AddInclude(x => x.MarketGroupDtls);
-        } public MarketGroupMstSpecification()
+        } 
+        public MarketGroupMstSpecification()
             : base(x => x.Status == "Active" )
         {
             AddInclude(x => x.MarketGroupDtls);

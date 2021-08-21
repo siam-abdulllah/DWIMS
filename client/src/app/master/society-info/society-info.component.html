@@ -24,7 +24,10 @@
                                     <h3 class="card-title">Society Info</h3>
                                 </div>
                                 <div class="col-sm-2">
-                                    <button class="btn btn-info btn-block" type="submit" [disabled]="form.invalid">Save</button>
+                                    <button class="btn btn-success   btn-block" type="submit" [disabled]="form.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button class="btn btn-danger  btn-block" type="button" (click)="resetForm(form)"><i class="fa fa-undo"></i>&nbsp; Reset</button>
                                 </div>
                             </div>
                         </div>
@@ -35,12 +38,15 @@
                                 <div class="row">
                                     <div class="col-md-2">
                                         <label>Society Name</label>
+                                        <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
                                         <input class="form-control " placeholder="Society Name" name="societyName" #societyName="ngModel" [(ngModel)]="masterService.societyFormData.societyName" required [class.invalid]="societyName.invalid && societyName.touched">
                                     </div>
                                     <div class="col-md-2">
-                                        <label>Status</label></div>
+                                        <label>Status</label>
+                                        <span style="color:red;">*</span>
+                                    </div>
                                     <div class="col-md-3">
                                         <select name="" id="" class="form-control " name="status" #status="ngModel" [(ngModel)]="masterService.societyFormData.status" required [class.invalid]="status.invalid && status.touched">
                                           <option [ngValue]="null">Select Status</option>
@@ -53,7 +59,8 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-2">
-                                        <label>No of Member</label></div>
+                                        <label>No of Member</label>
+                                        <span style="color:red;">*</span></div>
                                     <div class="col-md-8">
                                         <input class="form-control " placeholder="Number of Member" name="noOfMember" #noOfMember="ngModel" [(ngModel)]="masterService.societyFormData.noOfMember" required [class.invalid]="noOfMember.invalid && noOfMember.touched">
                                     </div>
@@ -62,7 +69,9 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-2">
-                                        <label>Society Address</label></div>
+                                        <label>Society Address</label>
+                                        <span style="color:red;">*</span>
+                                    </div>
                                     <div class="col-md-8">
                                         <textarea class="form-control " placeholder="Address" name="societyAddress" #societyAddress="ngModel" [(ngModel)]="masterService.societyFormData.societyAddress" required [class.invalid]="societyAddress.invalid && societyAddress.touched"></textarea>
                                     </div>

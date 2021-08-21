@@ -3385,8 +3385,11 @@ fieldset:disabled a.btn {
 }
 
 .btn-block {
-    display: block;
-    width: 100%
+  display: block;
+  width: 100%;
+  background-image: -webkit-linear-gradient(top, rgba(255,255,255,.3), rgba(255,255,255,0)) !important;
+}
+
 }
 
 .btn-block+.btn-block {
@@ -16346,16 +16349,17 @@ textarea.form-control.is-warning {
     margin: 0
 }
 
-.card-primary:not(.card-outline)>.card-header {
-    /* background-color: #007bff */
-    /* siam */
-    background-color: #6f6f6f
+.card-primary:not(.card-outline) > .card-header {
+  /* background-color: #007bff */
+  /* siam */
+  background-color: #fffefe;
+  border-top: 3px solid #28b9da;
 }
 
-.card-primary:not(.card-outline)>.card-header,
-.card-primary:not(.card-outline)>.card-header a {
-    color: #fff
-}
+  .card-primary:not(.card-outline) > .card-header,
+  .card-primary:not(.card-outline) > .card-header a {
+    color: #000;
+  }
 
 .card-primary:not(.card-outline)>.card-header a.active {
     color: #1f2d3d

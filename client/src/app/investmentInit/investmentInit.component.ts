@@ -1,6 +1,6 @@
 
 import { InvestmentInit, IInvestmentInit,InvestmentDetail,IInvestmentDetail,
-  InvestmentTargetedProd,IInvestmentTargetedProd,InvestmentTargetedGroup,IInvestmentTargetedGroup } from '../shared/models/investment';
+  InvestmentTargetedProd,IInvestmentTargetedProd,InvestmentTargetedGroup,IInvestmentTargetedGroup, IInvestmentDetailOld } from '../shared/models/investment';
 import { InvestmentDoctor, IInvestmentDoctor,InvestmentInstitution,IInvestmentInstitution,InvestmentCampaign,IInvestmentCampaign } from '../shared/models/investment';
 import { InvestmentBcds, IInvestmentBcds,InvestmentSociety,IInvestmentSociety } from '../shared/models/investment';
 import { SubCampaign, ISubCampaign } from '../shared/models/subCampaign';
@@ -42,10 +42,11 @@ export class InvestmentInitComponent implements OnInit {
   investmentInits: IInvestmentInit[];
   investmentTargetedProds: IInvestmentTargetedProd[];
   investmentTargetedGroups: IInvestmentTargetedGroup[];
-  investmentDetails: IInvestmentDetail[];
+  investmentDetailsOld: IInvestmentDetailOld[];
   investmentDoctors: IInvestmentDoctor[];
   isValid: boolean=false; 
   isDonationValid: boolean=false; 
+  numberPattern="^[0-9]+(.[0-9]{1,10})?$";
   bcds: IBcdsInfo[]; 
   society: ISocietyInfo[]; 
   markets: IMarket[]; 
@@ -281,8 +282,8 @@ export class InvestmentInitComponent implements OnInit {
   ngOnInit() {
     this.getEmployeeId();
     this.getDonation();
-    this.getProduct();
-    this.getMarketGroupMsts();
+    //this.getProduct();
+    //this.getMarketGroupMsts();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-green' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
 
@@ -291,6 +292,7 @@ export class InvestmentInitComponent implements OnInit {
     //debugger;
     this.empId=this.accountService.getEmployeeId();
     this.investmentInitService.investmentInitFormData.employeeId=parseInt(this.empId);
+    this.getMarketGroupMsts();
     this.getEmployeeSbu();
   }
    getEmployeeSbu()
@@ -300,15 +302,27 @@ export class InvestmentInitComponent implements OnInit {
         (response) => {
           //debugger;
           this.sbu= response.sbu;
+          this.getProduct();
         },
         (error) => {
           console.log(error);
         }
       );
     }
+    onChangeProposeFor(){
+      
+      if(this.investmentInitService.investmentInitFormData.proposeFor=="BrandCampaign")
+      {
+        this.investmentInitService.investmentInitFormData.donationTo="Campaign";
+        this. onChangeDonationTo();
+        this.isDonationValid=true;
+      }
+      else{
+        this.isDonationValid=false;
+      }
+    }
   onChangeDonationTo(){
     debugger;
-    
     if(this.investmentInitService.investmentInitFormData.donationTo=="Doctor" )
     {
       if(this.investmentInitService.investmentDoctorFormData.id==null || this.investmentInitService.investmentDoctorFormData.id==undefined || this.investmentInitService.investmentDoctorFormData.id==0)
@@ -559,7 +573,8 @@ export class InvestmentInitComponent implements OnInit {
    });
  }
  getProduct(){
-  this.investmentInitService.getProduct().subscribe(response => {
+  debugger;
+  this.investmentInitService.getProduct(this.sbu).subscribe(response => {
     //debugger;
     this.products = response as IProduct[];
   }, error => {
@@ -567,7 +582,7 @@ export class InvestmentInitComponent implements OnInit {
   });
 }
 getMarketGroupMsts(){
-  this.investmentInitService.getMarketGroupMsts().subscribe(response => {
+  this.investmentInitService.getMarketGroupMsts(this.empId).subscribe(response => {
     debugger;
    this.marketGroupMsts = response as IMarketGroupMst[];
   }, error => {
@@ -1028,6 +1043,7 @@ getMarketGroupMsts(){
     form.reset();
     this.investmentInitService.investmentInitFormData=new InvestmentInit();
     this.isValid=false;
+    this.isDonationValid=false;
   }
   removeInvestmentDoctor() {
     var c = confirm("Are you sure you want to delete that?"); 

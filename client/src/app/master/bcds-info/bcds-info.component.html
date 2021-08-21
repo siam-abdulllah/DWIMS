@@ -24,7 +24,7 @@
                                     <h3 class="card-title">BCDS Info</h3>
                                 </div>
                                 <div class="col-sm-2">
-                                    <button class="btn btn-info btn-lg btn-block" type="submit" [disabled]="form.invalid">Save</button>
+                                    <button class="btn btn-success   btn-block" type="submit" [disabled]="form.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
                                 </div>
                                 <div class="col-sm-2">
                                     <button class="btn btn-danger  btn-block" type="button" (click)="resetForm(form)"><i class="fa fa-undo"></i>&nbsp; Reset</button>
@@ -41,12 +41,15 @@
                                 <div class="row">
                                     <div class="col-md-2">
                                         <label>BCDS Name</label>
+                                        <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
                                         <input class="form-control " placeholder="BCDS Name" name="bcdsName" #bcdsName="ngModel" [(ngModel)]="masterService.bcdsFormData.bcdsName" required [class.invalid]="bcdsName.invalid && bcdsName.touched">
                                     </div>
                                     <div class="col-md-2">
-                                        <label>Status</label></div>
+                                        <label>Status</label>
+                                        <span style="color:red;">*</span>
+                                    </div>
                                     <div class="col-md-3">
                                         <select id="status" class="form-control " name="status" #status="ngModel" [(ngModel)]="masterService.bcdsFormData.status" required [class.invalid]="status.invalid && status.touched">
                                           <option [ngValue]="null">Select Status</option>
@@ -59,7 +62,9 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-2">
-                                        <label>No of Member</label></div>
+                                        <label>No of Member</label>
+                                        <span style="color:red;">*</span>
+                                    </div>
                                     <div class="col-md-8">
                                         <input class="form-control " placeholder="Number of Member" name="noOfMember" #noOfMember="ngModel" [(ngModel)]="masterService.bcdsFormData.noOfMember" required [class.invalid]="noOfMember.invalid && noOfMember.touched">
                                     </div>
@@ -68,7 +73,9 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-2">
-                                        <label>BCDS Address</label></div>
+                                        <label>BCDS Address</label>
+                                        <span style="color:red;">*</span>
+                                    </div>
                                     <div class="col-md-8">
                                         <textarea class="form-control " placeholder="Address" name="bcdsAddress" #bcdsAddress="ngModel" [(ngModel)]="masterService.bcdsFormData.bcdsAddress" required [class.invalid]="bcdsAddress.invalid && bcdsAddress.touched"></textarea>
                                     </div>

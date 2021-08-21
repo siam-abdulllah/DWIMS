@@ -1,15 +1,3 @@
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1></h1>
-            </div>
-            <div class="col-sm-6">
-            </div>
-        </div>
-    </div>
-    <!-- /.container-fluid -->
-</section>
 <section class="content">
     <div class="container-fluid">
         <div class="row">
@@ -20,14 +8,17 @@
                     <div class="card card-primary">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-sm-8">
                                     <h3 class="card-title">Approval Ceiling</h3>
                                 </div>
-                                <div class="col-sm-3">
-                                    <button class="btn btn-info btn-lg btn-block" type="submit" [disabled]="form.invalid">Save</button>
+                                <div class="col-sm-2">
+                                    <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="form.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
                                 </div>
-                                <div class="col-sm-3">
-                                    <button type="button" class="btn btn-danger btn-lg btn-block" style="float: right;" (click)="resetForm(form)">Reset</button>
+                                <!-- <div class="col-sm-2">
+                                    <button class="btn btn-info btn-lg btn-block"><i class="fa fa-search"></i>Search</button>
+                                </div> -->
+                                <div class="col-sm-2">
+                                    <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetForm(form)"><i class="fa fa-undo"></i>Reset</button>
                                 </div>
                             </div>
                         </div>
@@ -40,6 +31,7 @@
                                 <div class="row">
                                     <div class="col-md-2">
                                         <label>Approval Authority level</label>
+                                        <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
                                         <select class="form-control" id="approvalAuthorityId" name="approvalAuthorityId" #approvalAuthorityId="ngModel" [(ngModel)]="approvalCeilingService.approvalCeilingFormData.approvalAuthorityId" required [class.invalid]="approvalAuthorityId.invalid && approvalAuthorityId.touched">
@@ -49,6 +41,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <label>Donation Type</label>
+                                        <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
                                         <select class="form-control " id="donationType" name="donationType" #donationType="ngModel" [(ngModel)]="approvalCeilingService.approvalCeilingFormData.donationType" required [class.invalid]="donationType.invalid && donationType.touched">
@@ -61,7 +54,8 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-2">
-                                        <label> From Date</label>
+                                        <label>From Date</label>
+                                        <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
                                         <input class="form-control" placeholder="Calender" name="investmentFrom" #investmentFrom="ngModel" [(ngModel)]="approvalCeilingService.approvalCeilingFormData.investmentFrom" [class.invalid]="investmentFrom.invalid && investmentFrom.touched" [bsValue]="bsValue"
@@ -69,6 +63,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <label>To Date</label>
+                                        <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
                                         <input class="form-control" placeholder="Calender" name="investmentTo" #investmentTo="ngModel" [(ngModel)]="approvalCeilingService.approvalCeilingFormData.investmentTo" [class.invalid]="investmentTo.invalid && investmentTo.touched" [bsValue]="bsValue"
@@ -80,15 +75,21 @@
                                 <div class="row">
                                     <div class="col-md-2">
                                         <label>Amount Per Transaction</label>
+                                        <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <input class="form-control" name="amountPerTransacion" id="amountPerTransacion" #amountPerTransacion="ngModel" [(ngModel)]="approvalCeilingService.approvalCeilingFormData.amountPerTransacion">
+                                        <input class="form-control" required name="amountPerTransacion" id="amountPerTransacion" #amountPerTransacion="ngModel" [(ngModel)]="approvalCeilingService.approvalCeilingFormData.amountPerTransacion" [pattern]="numberPattern">
+                                        <div class="invalid-feedback" *ngIf="amountPerTransacion.errors?.pattern">Only numeric value</div>
+
                                     </div>
                                     <div class="col-md-2">
                                         <label>Amount Per Month</label>
+                                        <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <input class="form-control" name="amountPerMonth" id="amountPerMonth" #amountPerMonth="ngModel" [(ngModel)]="approvalCeilingService.approvalCeilingFormData.amountPerMonth">
+                                        <input class="form-control" required name="amountPerMonth" id="amountPerMonth" #amountPerMonth="ngModel" [(ngModel)]="approvalCeilingService.approvalCeilingFormData.amountPerMonth" [pattern]="numberPattern">
+                                        <div class="invalid-feedback" *ngIf="amountPerMonth.errors?.pattern">Only numeric value</div>
+
                                     </div>
                                 </div>
                             </div>
@@ -98,7 +99,9 @@
                                         <label>Additional</label>
                                     </div>
                                     <div class="col-md-3">
-                                        <input class="form-control" placeholder="additional" name="additional" #additional="ngModel" [(ngModel)]="approvalCeilingService.approvalCeilingFormData.additional">
+                                        <input class="form-control" placeholder="Additional" name="additional" #additional="ngModel" [(ngModel)]="approvalCeilingService.approvalCeilingFormData.additional" [pattern]="numberPattern">
+                                        <div class="invalid-feedback" *ngIf="additional.errors?.pattern">Only numeric value</div>
+
                                     </div>
                                     <div class="col-md-2">
                                         <label>Remarks</label>

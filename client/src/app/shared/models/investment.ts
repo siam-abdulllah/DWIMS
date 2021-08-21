@@ -51,6 +51,37 @@ export class InvestmentDetail implements IInvestmentDetail {
     fromDate: Date;
     toDate: Date;
 }
+export interface IInvestmentDetailOld {
+    id: number;
+    investmentInitId: number;
+    chequeTitle: string;
+    paymentMethod: string;
+    commitmentAllSBU: string;
+    commitmentOwnSBU: string;
+    shareAllSBU: string;
+    shareOwnSBU: string;
+    totalMonth: number;
+    proposedAmount: string;
+    purpose: string;
+    fromDate: Date;
+    toDate: Date;
+}
+ 
+export class InvestmentDetailOld implements IInvestmentDetailOld {
+    id: number=0;
+    investmentInitId: number;
+    chequeTitle: string;
+    paymentMethod: string=null;
+    commitmentAllSBU: string;
+    commitmentOwnSBU: string;
+    shareAllSBU: string;
+    shareOwnSBU: string;
+    totalMonth: number;
+    proposedAmount: string;
+    purpose: string;
+    fromDate: Date;
+    toDate: Date;
+}
 export interface IInvestmentTargetedProd {
     id: number;
     investmentInitId: number;

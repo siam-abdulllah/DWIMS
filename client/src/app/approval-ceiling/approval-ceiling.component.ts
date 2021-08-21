@@ -23,6 +23,7 @@ export class ApprovalCeilingComponent implements OnInit {
   approvalAuthorities: IApprovalAuthority[];
   donations: IDonation[];
   bsConfig: Partial<BsDatepickerConfig>;
+  numberPattern="^[0-9]+(.[0-9]{1,10})?$";
   bsValue: Date = new Date();
   //constructor(public approvalCeilingService: MasterService, private router: Router, private toastr: ToastrService) { }
   constructor(public approvalCeilingService: ApprovalCeilingService,private router: Router, private toastr: ToastrService) { }

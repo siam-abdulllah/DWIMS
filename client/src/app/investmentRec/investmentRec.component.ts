@@ -427,7 +427,7 @@ export class InvestmentRecComponent implements OnInit {
 
   ngOnInit() {
     this.getEmployeeId();
-    this.getProduct();
+    //this.getProduct();
     //this.getMarketGroupMsts();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-green' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
@@ -478,6 +478,7 @@ getEmployeeId(){
       (response) => {
         //debugger;
         this.sbu= response.sbu;
+        this.getProduct();
       },
       (error) => {
         console.log(error);

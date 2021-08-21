@@ -69,13 +69,17 @@ namespace API.Controllers
             try
             {
                 var data = await _employeeRepo.ListAllAsync();
-                var sbu = (from r in data
+                List<Employee> emp = data.GroupBy(p => p.SBU)
+                                 .Select(g => g.First())
+                                 .ToList();
+                var sbu = (from r in emp
                            orderby r.SBU
                            select new SBUDto
                            {
                                SBUName = r.SBU.Trim()
                            }
-                              ).Distinct().ToList();
+                              ).ToList();
+
                 return sbu;
             }
             catch (System.Exception ex)
@@ -96,7 +100,8 @@ namespace API.Controllers
             {
                 throw ex;
             }
-        }[HttpGet("getEmployeeSbuById/{employeeId}")]
+        }
+        [HttpGet("getEmployeeSbuById/{employeeId}")]
         public async Task<ActionResult<Employee>> GetEmployeeSbuById(int employeeId)
         {
             try
@@ -136,7 +141,7 @@ namespace API.Controllers
                                 TerritoryName = e.TerritoryName,
                                 DivisionName = e.DivisionName,
                                 SBU = e.SBU,
-                                ApprovalStatus = u.EmailConfirmed==true ? "Approved":"Not Approved"
+                                ApprovalStatus = u.EmailConfirmed == true ? "Approved" : "Not Approved"
                             }
                               ).Distinct().ToList();
 
@@ -174,7 +179,7 @@ namespace API.Controllers
                                 TerritoryName = e.TerritoryName,
                                 DivisionName = e.DivisionName,
                                 SBU = e.SBU,
-                                ApprovalStatus = u.EmailConfirmed==true ? "Approved":"Not Approved"
+                                ApprovalStatus = u.EmailConfirmed == true ? "Approved" : "Not Approved"
                             }
                               ).Distinct().ToList();
 
