@@ -32,9 +32,11 @@ namespace Core.Entities
         public string FromDate { get; set; }
         public string ToDate { get; set; }
         public string PrescribedSharePrcnt { get; set; }
+        public string PrescribedSharePrcntAll { get; set; }
         public string PrescShareFromDate { get; set; }
         public string PrescShareToDate { get; set; }
         public string ComtSharePrcnt { get; set; }
+        public string ComtSharePrcntAll { get; set; }
         public string DonationDuration { get; set; }
         public string DonationFromDate { get; set; }
         public string DonationToDate { get; set; }

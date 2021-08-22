@@ -48,7 +48,9 @@ export class RegisterComponent implements OnInit {
     //   this.getUserById();
     // }
   }
-
+  backToLogin() {
+    this.router.navigate(['/login']);
+  }
   getUserById(){
     this.accountService.getUserById(this.id).subscribe(
       (response) => {

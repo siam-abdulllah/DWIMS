@@ -117,10 +117,10 @@ E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\assets
 E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\assets\plugins\jquery\jquery.slim.min.map
 E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\favicon.ico
 E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\index.html
-E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\main.1371e19124ff6eaf82ff.js
+E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\main.a138e4c05328d4fe1187.js
 E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\polyfills.94daefd414b8355106ab.js
 E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\runtime.7b63b9fd40098a2e8207.js
-E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\styles.d89db56764380c18f4ee.css
+E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\styles.f66cce66c5ebf0a89783.css
 E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\PubTmp\Out\appsettings.Development.json
 E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\PubTmp\Out\appsettings.json
 E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\PubTmp\Out\API.dll

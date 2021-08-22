@@ -1434,6 +1434,9 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("ComtSharePrcnt")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ComtSharePrcntAll")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
 
@@ -1498,6 +1501,9 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PrescribedSharePrcnt")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PrescribedSharePrcntAll")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RegionCode")
@@ -1548,6 +1554,9 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("ComtSharePrcnt")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ComtSharePrcntAll")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
 
@@ -1612,6 +1621,9 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PrescribedSharePrcnt")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PrescribedSharePrcntAll")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProductCode")

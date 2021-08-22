@@ -7,7 +7,7 @@ namespace Core.Specifications
 
         public InvestmentTargetedGroupSpecification(InvestmentTargetedGroupSpecParams parrams)
            : base(x =>
-               (string.IsNullOrEmpty(parrams.Search) || x.MarketGroupMst.GroupName.ToLower().Contains(parrams.Search))
+               (string.IsNullOrEmpty(parrams.Search) || x.MarketCode.ToLower().Contains(parrams.Search))
            )
         {
             AddInclude(x => x.MarketGroupMst);

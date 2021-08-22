@@ -122,7 +122,16 @@ export class InvestmentInitComponent implements OnInit {
       this.InvestmentInitSearchModalRef.hide()
      }
      getInvestmentInit(){
-      this.investmentInitService.getInvestmentInit().subscribe(response => {
+      this.investmentInitService.getInvestmentInit(this.sbu).subscribe(response => {
+        //debugger;
+       this.investmentInits = response.data;
+       this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
+      }, error => {
+          console.log(error);
+     });
+   }
+     getInvestmentInitOthers(){
+      this.investmentInitService.getInvestmentInit(this.sbu).subscribe(response => {
         //debugger;
        this.investmentInits = response.data;
        this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
@@ -292,9 +301,24 @@ export class InvestmentInitComponent implements OnInit {
     //debugger;
     this.empId=this.accountService.getEmployeeId();
     this.investmentInitService.investmentInitFormData.employeeId=parseInt(this.empId);
+    debugger;
     this.getMarketGroupMsts();
+    this.getLastFiveInvestment();
     this.getEmployeeSbu();
   }
+  getLastFiveInvestment()
+    {
+      debugger;
+      this.investmentInitService.getLastFiveInvestment(this.investmentInitService.investmentInitFormData.employeeId).subscribe(
+        (response) => {
+          debugger;
+          this.investmentDetailsOld= response as IInvestmentDetailOld[];
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
    getEmployeeSbu()
     {
       //debugger;
@@ -957,6 +981,13 @@ getMarketGroupMsts(){
       }
     }
     this.investmentInitService.investmentTargetedProdFormData.investmentInitId =this.investmentInitService.investmentInitFormData.id;
+    //for(var i=0;i<this.products.length; i++)
+    //{
+     // if(this.products[i].id==this.investmentInitService.investmentTargetedProdFormData.productId)
+     // {
+        this.investmentInitService.investmentTargetedProdFormData.sbu=this.sbu;
+     // }
+    //}
     if(this.investmentInitService.investmentTargetedProdFormData.id==null || this.investmentInitService.investmentTargetedProdFormData.id==undefined || this.investmentInitService.investmentTargetedProdFormData.id==0)
     {
     this.investmentInitService.insertInvestmentTargetedProd().subscribe(

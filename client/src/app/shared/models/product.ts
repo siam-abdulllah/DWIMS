@@ -4,6 +4,7 @@ export interface IProduct {
     productName: string;
     productCode: string;
     status: string; 
+    sbu: string; 
     setOn: Date;
 }
  
@@ -12,5 +13,6 @@ export class Product implements IProduct {
     productName: string;
     productCode: string;
     status: string="Active"; 
+    sbu: string; 
     setOn: Date;
 }

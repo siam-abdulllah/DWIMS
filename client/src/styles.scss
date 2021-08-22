@@ -1,5 +1,9 @@
 @import "../node_modules/ngx-bootstrap/datepicker/bs-datepicker.css";
 @import "~@ng-select/ng-select/themes/default.theme.css";
+// .disable {
+//     pointer-events: none;
+//     cursor: default;
+// }
 .invalid {
     border: 1px solid red !important;
 }

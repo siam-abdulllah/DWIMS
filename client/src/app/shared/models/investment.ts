@@ -56,12 +56,12 @@ export interface IInvestmentDetailOld {
     investmentInitId: number;
     chequeTitle: string;
     paymentMethod: string;
-    commitmentAllSBU: string;
-    commitmentOwnSBU: string;
-    shareAllSBU: string;
-    shareOwnSBU: string;
+    comtSharePrcntAll: string;
+    comtSharePrcnt: string;
+    prescribedSharePrcntAll: string;
+    prescribedSharePrcnt: string;
     totalMonth: number;
-    proposedAmount: string;
+    investmentAmount: string;
     purpose: string;
     fromDate: Date;
     toDate: Date;
@@ -72,12 +72,12 @@ export class InvestmentDetailOld implements IInvestmentDetailOld {
     investmentInitId: number;
     chequeTitle: string;
     paymentMethod: string=null;
-    commitmentAllSBU: string;
-    commitmentOwnSBU: string;
-    shareAllSBU: string;
-    shareOwnSBU: string;
+    comtSharePrcntAll: string;
+    comtSharePrcnt: string;
+    prescribedSharePrcntAll: string;
+    prescribedSharePrcnt: string;
     totalMonth: number;
-    proposedAmount: string;
+    investmentAmount: string;
     purpose: string;
     fromDate: Date;
     toDate: Date;
@@ -87,6 +87,7 @@ export interface IInvestmentTargetedProd {
     investmentInitId: number;
     productId: number;
     productInfo:IProduct;
+    sbu:string;
 }
  
 export class InvestmentTargetedProd implements IInvestmentTargetedProd {
@@ -94,6 +95,7 @@ export class InvestmentTargetedProd implements IInvestmentTargetedProd {
     investmentInitId: number;
     productId: number=null;
     productInfo:IProduct;
+    sbu:string;
 }
 export interface IInvestmentTargetedGroup {
     id: number;

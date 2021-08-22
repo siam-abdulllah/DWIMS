@@ -7,6 +7,7 @@ using Core.Specifications;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -25,10 +26,17 @@ namespace API.Controllers
         private readonly IGenericRepository<InvestmentCampaign> _investmentCampaignRepo;
         private readonly IGenericRepository<InvestmentBcds> _investmentBcdsRepo;
         private readonly IGenericRepository<InvestmentSociety> _investmentSocietyRepo;
+        private readonly IGenericRepository<Employee> _employeeRepo;
+        private readonly IGenericRepository<ReportInvestmentInfo> _reportInvestmentInfoRepo;
+        private readonly IGenericRepository<InvestmentRecComment> _investmentRecCommentRepo;
         private readonly IMapper _mapper;
 
-        public InvestmentController(IGenericRepository<InvestmentTargetedGroup> investmentTargetedGroupRepo, IGenericRepository<InvestmentTargetedProd> investmentTargetedProdRepo, IGenericRepository<InvestmentInit> investmentInitRepo,IGenericRepository<InvestmentDetail> investmentDetailRepo, IGenericRepository<InvestmentDoctor> investmentDoctorRepo,
-            IGenericRepository<InvestmentSociety> investmentSocietyRepo, IGenericRepository<InvestmentBcds> investmentBcdsRepo, IGenericRepository<InvestmentCampaign> investmentCampaignRepo, IGenericRepository<InvestmentInstitution> investmentInstitutionRepo, IMapper mapper)
+        public InvestmentController(IGenericRepository<InvestmentTargetedGroup> investmentTargetedGroupRepo, IGenericRepository<InvestmentTargetedProd> investmentTargetedProdRepo,
+            IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<InvestmentDetail> investmentDetailRepo, IGenericRepository<InvestmentDoctor> investmentDoctorRepo,
+            IGenericRepository<InvestmentSociety> investmentSocietyRepo, IGenericRepository<InvestmentBcds> investmentBcdsRepo,
+            IGenericRepository<InvestmentCampaign> investmentCampaignRepo, IGenericRepository<InvestmentInstitution> investmentInstitutionRepo,
+            IGenericRepository<Employee> employeeRepo, IGenericRepository<ReportInvestmentInfo> reportInvestmentInfoRepo, IGenericRepository<InvestmentRecComment> investmentRecCommentRepo,
+            IMapper mapper)
         {
             _mapper = mapper;
             _investmentInitRepo = investmentInitRepo;
@@ -40,13 +48,18 @@ namespace API.Controllers
             _investmentCampaignRepo = investmentCampaignRepo;
             _investmentBcdsRepo = investmentBcdsRepo;
             _investmentSocietyRepo = investmentSocietyRepo;
+            _employeeRepo = employeeRepo;
+            _reportInvestmentInfoRepo = reportInvestmentInfoRepo;
+            _investmentRecCommentRepo = investmentRecCommentRepo;
         }
         [HttpGet("investmentInits")]
-        public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetInvestmentInits(
-          [FromQuery] InvestmentInitSpecParams investmentInitParrams)
+        public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetInvestmentInits(string sbu,
+          [FromQuery] InvestmentInitSpecParams investmentInitParrams,
+          [FromQuery] InvestmentRecCommentSpecParams investmentRecCommentParrams)
         {
             try
             {
+                investmentInitParrams.Search = sbu;
                 var spec = new InvestmentInitSpecification(investmentInitParrams);
 
                 var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
@@ -55,8 +68,27 @@ namespace API.Controllers
 
                 var investmentInits = await _investmentInitRepo.ListAsync(spec);
 
-                var data = _mapper
-                    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(investmentInits);
+                investmentRecCommentParrams.Search = sbu;
+                var investmentRecCommentSpec = new InvestmentRecCommentSpecification(investmentRecCommentParrams);
+                var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
+
+                var data = (from i in investmentInits
+                            where !(from rc in investmentRecComments
+                                    select rc.InvestmentInitId).Contains(i.Id)
+                            orderby i.SetOn descending
+                            select new InvestmentInitDto
+                            {
+                                Id = i.Id,
+                                ReferenceNo = i.ReferenceNo,
+                                ProposeFor = i.ProposeFor,
+                                DonationType = i.DonationType,
+                                DonationTo = i.DonationTo,
+                                EmployeeId = i.EmployeeId,
+
+                            }
+                              ).Distinct().ToList();
+                //var data = _mapper
+                //    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(investmentInits);
 
                 return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, totalItems, data));
             }
@@ -66,6 +98,61 @@ namespace API.Controllers
                 throw;
             }
         }
+        [HttpGet("investmentInitsOthers")]
+        public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetInvestmentInitsOthers(int empId,
+        [FromQuery] InvestmentInitSpecParams investmentInitParrams, [FromQuery] InvestmentTargetedGroupSpecParams investmentTargetedGroupParrams,
+        [FromQuery] InvestmentRecCommentSpecParams investmentRecCommentParrams)
+        {
+            try
+            {
+                //investmentInitParrams.Search = sbu;
+                var investmentInitSpec = new InvestmentInitSpecification(investmentInitParrams);
+                var investmentInits = await _investmentInitRepo.ListAsync(investmentInitSpec);
+
+                var empData = await _employeeRepo.GetByIdAsync(empId);
+
+                investmentTargetedGroupParrams.Search = empData.MarketCode;
+                var spec = new InvestmentTargetedGroupSpecification(investmentTargetedGroupParrams);
+                var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(spec);
+
+                investmentRecCommentParrams.Search = empData.SBU;
+                var investmentRecCommentSpec = new InvestmentRecCommentSpecification(investmentRecCommentParrams);
+                var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
+
+                var data = (from i in investmentInits
+                            join t in investmentTargetedGroup on i.Id equals t.InvestmentInitId
+                            where t.MarketCode == empData.MarketCode && !(from rc in investmentRecComments
+                                                                          select rc.InvestmentInitId).Contains(i.Id)
+                            orderby t.MarketName
+                            select new InvestmentInitDto
+                            {
+                                Id = i.Id,
+                                ReferenceNo = i.ReferenceNo,
+                                ProposeFor = i.ProposeFor,
+                                DonationType = i.DonationType,
+                                DonationTo = i.DonationTo,
+                                EmployeeId = i.EmployeeId
+                            }
+                              ).Distinct().ToList();
+
+
+                var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
+                var totalItems = await _investmentInitRepo.CountAsync(countSpec);
+
+
+
+                //var data = _mapper
+                //    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(investmentInits);
+
+                return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, totalItems, data));
+            }
+            catch (System.Exception e)
+            {
+
+                throw;
+            }
+        }
+
         [HttpPost("insertInit")]
         public async Task<InvestmentInitDto> InsertInvestmentInit(InvestmentInitDto investmentInitDto)
         {
@@ -155,11 +242,11 @@ namespace API.Controllers
             }
         }
         [HttpPost("insertDetail")]
-        public  ActionResult<InvestmentDetailDto> InsertInvestmentDetail(InvestmentDetailDto investmentDetailDto)
+        public ActionResult<InvestmentDetailDto> InsertInvestmentDetail(InvestmentDetailDto investmentDetailDto)
         {
             try
             {
-                
+
                 var investmentDetail = new InvestmentDetail
                 {
 
@@ -246,68 +333,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("investmentDetails/{investmentInitId}")]
-        public async Task<IReadOnlyList<InvestmentDetail>> GetInvestmentDetails(int investmentInitId)
-        {
-            try
-            {
-                var spec = new InvestmentDetailSpecification(investmentInitId);
-                var investmentDetail = await _investmentDetailRepo.ListAsync(spec);
-                return investmentDetail;
-            }
-            catch (System.Exception ex)
-            {
-                throw ex;
-            }
-        }
-        
-        [HttpGet]
-        [Route("investmentTargetedProds/{investmentInitId}")]
-        public async Task<IReadOnlyList<InvestmentTargetedProd>> GetInvestmentTargetedProds(int investmentInitId)
-        {
-            try
-            {
-                var spec = new InvestmentTargetedProdSpecification(investmentInitId);
-                var investmentTargetedProd = await _investmentTargetedProdRepo.ListAsync(spec);
-                return investmentTargetedProd;
-            }
-            catch (System.Exception ex)
-            {
-                throw ex;
-            }
-        }
-        [HttpGet]
-        [Route("investmentTargetedProdsForRec/{investmentInitId}/{sbu}")]
-        public async Task<IReadOnlyList<InvestmentTargetedProd>> GetInvestmentTargetedProds(int investmentInitId,string ssbu)
-        {
-            try
-            {
-                var spec = new InvestmentTargetedProdSpecification(investmentInitId);
-                var investmentTargetedProd = await _investmentTargetedProdRepo.ListAsync(spec);
-                return investmentTargetedProd;
-            }
-            catch (System.Exception ex)
-            {
-                throw ex;
-            }
-        }
-        [HttpGet]
-        [Route("investmentTargetedGroups/{investmentInitId}")]
-        public async Task<IReadOnlyList<InvestmentTargetedGroup>> GetInvestmentTargetedGroups(int investmentInitId)
-        {
-            try
-            {
-                var spec = new InvestmentTargetedGroupSpecification(investmentInitId);
-                var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(spec);
-                return investmentTargetedGroup;
-            }
-            catch (System.Exception ex)
-            {
-                throw ex;
-            }
-        }
-        
+
 
         [HttpPost("insertInvestmentDoctor")]
         public async Task<InvestmentDoctorDto> InsertInvestmentDoctor(InvestmentDoctorDto investmentDoctorDto)
@@ -324,7 +350,7 @@ namespace API.Controllers
                         _investmentDoctorRepo.Savechange();
                     }
                 }
-                
+
                 var investmentDoctor = new InvestmentDoctor
                 {
                     //ReferenceNo = investmentDoctorDto.ReferenceNo,
@@ -359,7 +385,7 @@ namespace API.Controllers
             }
         }
         [HttpPost("insertInvestmentTargetedProd")]
-        public  ActionResult<InvestmentTargetedProdDto> InsertInvestmentTargetedProd(InvestmentTargetedProdDto investmentTargetedProdDto)
+        public ActionResult<InvestmentTargetedProdDto> InsertInvestmentTargetedProd(InvestmentTargetedProdDto investmentTargetedProdDto)
         {
             try
             {
@@ -373,12 +399,13 @@ namespace API.Controllers
                 //        _investmentTargetedProdRepo.Savechange();
                 //    }
                 //}
-                
+
                 var investmentTargetedProd = new InvestmentTargetedProd
                 {
                     //ReferenceNo = investmentTargetedProdDto.ReferenceNo,
                     InvestmentInitId = investmentTargetedProdDto.InvestmentInitId,
                     ProductId = investmentTargetedProdDto.ProductId,
+                    SBU = investmentTargetedProdDto.SBU,
                     SetOn = DateTimeOffset.Now,
                     ModifiedOn = DateTimeOffset.Now
                 };
@@ -390,6 +417,7 @@ namespace API.Controllers
                     Id = investmentTargetedProd.Id,
                     InvestmentInitId = investmentTargetedProdDto.InvestmentInitId,
                     ProductId = investmentTargetedProdDto.ProductId,
+                    SBU = investmentTargetedProdDto.SBU,
                 };
             }
             catch (Exception ex)
@@ -397,20 +425,21 @@ namespace API.Controllers
 
                 throw;
             }
-        } 
-      
-        
+        }
+
+
         [HttpPost("updateInvestmentTargetedProd")]
-        public  ActionResult<InvestmentTargetedProdDto> UpdateInvestmentTargetedProd(InvestmentTargetedProdDto investmentTargetedProdDto)
+        public ActionResult<InvestmentTargetedProdDto> UpdateInvestmentTargetedProd(InvestmentTargetedProdDto investmentTargetedProdDto)
         {
             try
             {
-               
+
                 var investmentTargetedProd = new InvestmentTargetedProd
                 {
                     Id = investmentTargetedProdDto.Id,
                     InvestmentInitId = investmentTargetedProdDto.InvestmentInitId,
                     ProductId = investmentTargetedProdDto.ProductId,
+                    SBU = investmentTargetedProdDto.SBU,
                     SetOn = DateTimeOffset.Now,
                     ModifiedOn = DateTimeOffset.Now
                 };
@@ -422,6 +451,7 @@ namespace API.Controllers
                     Id = investmentTargetedProd.Id,
                     InvestmentInitId = investmentTargetedProdDto.InvestmentInitId,
                     ProductId = investmentTargetedProdDto.ProductId,
+                    SBU = investmentTargetedProdDto.SBU,
                 };
             }
             catch (Exception ex)
@@ -450,17 +480,17 @@ namespace API.Controllers
                 {
                     var investmentTargetedGroup = new InvestmentTargetedGroup
                     {
-                        //ReferenceNo = investmentTargetedGroupDto.ReferenceNo,
                         InvestmentInitId = v.InvestmentInitId,
                         MarketCode = v.MarketCode,
                         MarketName = v.MarketName,
                         MarketGroupMstId = v.MarketGroupMstId,
                         SetOn = DateTimeOffset.Now,
-                        ModifiedOn = DateTimeOffset.Now
+                        ModifiedOn = DateTimeOffset.Now,
+                        DataStatus = 0
                     };
                     _investmentTargetedGroupRepo.Add(investmentTargetedGroup);
                 }
-                    
+
                 _investmentTargetedGroupRepo.Savechange();
 
                 return Ok("Succsessfuly Saved!!!");
@@ -473,12 +503,10 @@ namespace API.Controllers
         }
 
         [HttpPost("insertInvestmentInstitution")]
-        public async Task<InvestmentInstitutionDto> InsertInvestmentInstitution(InvestmentInstitutionDto investmentInstitutionDto)
+        public ActionResult<InvestmentInstitutionDto> InsertInvestmentInstitution(InvestmentInstitutionDto investmentInstitutionDto)
         {
             try
             {
-                
-                
                 var investmentInstitution = new InvestmentInstitution
                 {
                     //ReferenceNo = investmentInstitutionDto.ReferenceNo,
@@ -509,7 +537,7 @@ namespace API.Controllers
                 throw;
             }
         }
-        
+
         [HttpPost("insertInvestmentCampaign")]
         public async Task<InvestmentCampaignDto> InsertInvestmentCampaign(InvestmentCampaignDto investmentCampaignDto)
         {
@@ -525,7 +553,7 @@ namespace API.Controllers
                         _investmentCampaignRepo.Savechange();
                     }
                 }
-                
+
                 var investmentCampaign = new InvestmentCampaign
                 {
                     //ReferenceNo = investmentCampaignDto.ReferenceNo,
@@ -554,7 +582,7 @@ namespace API.Controllers
                 throw;
             }
         }
-        
+
         [HttpPost("insertInvestmentBcds")]
         public async Task<InvestmentBcdsDto> InsertInvestmentBcds(InvestmentBcdsDto investmentBcdsDto)
         {
@@ -570,13 +598,13 @@ namespace API.Controllers
                         _investmentBcdsRepo.Savechange();
                     }
                 }
-                
+
                 var investmentBcds = new InvestmentBcds
                 {
                     //ReferenceNo = investmentBcdsDto.ReferenceNo,
                     InvestmentInitId = investmentBcdsDto.InvestmentInitId,
                     BcdsId = investmentBcdsDto.BcdsId,
-                    
+
                     SetOn = DateTimeOffset.Now,
                     ModifiedOn = DateTimeOffset.Now
                 };
@@ -596,7 +624,7 @@ namespace API.Controllers
                 throw;
             }
         }
-         [HttpPost("insertInvestmentSociety")]
+        [HttpPost("insertInvestmentSociety")]
         public async Task<InvestmentSocietyDto> InsertInvestmentSociety(InvestmentSocietyDto investmentSocietyDto)
         {
             try
@@ -611,13 +639,13 @@ namespace API.Controllers
                         _investmentSocietyRepo.Savechange();
                     }
                 }
-                
+
                 var investmentSociety = new InvestmentSociety
                 {
                     //ReferenceNo = investmentSocietyDto.ReferenceNo,
                     InvestmentInitId = investmentSocietyDto.InvestmentInitId,
                     SocietyId = investmentSocietyDto.SocietyId,
-                    
+
                     SetOn = DateTimeOffset.Now,
                     ModifiedOn = DateTimeOffset.Now
                 };
@@ -635,6 +663,68 @@ namespace API.Controllers
             {
 
                 throw;
+            }
+        }
+
+        [HttpGet]
+        [Route("investmentDetails/{investmentInitId}")]
+        public async Task<IReadOnlyList<InvestmentDetail>> GetInvestmentDetails(int investmentInitId)
+        {
+            try
+            {
+                var spec = new InvestmentDetailSpecification(investmentInitId);
+                var investmentDetail = await _investmentDetailRepo.ListAsync(spec);
+                return investmentDetail;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpGet]
+        [Route("investmentTargetedProds/{investmentInitId}")]
+        public async Task<IReadOnlyList<InvestmentTargetedProd>> GetInvestmentTargetedProds(int investmentInitId)
+        {
+            try
+            {
+                var spec = new InvestmentTargetedProdSpecification(investmentInitId);
+                var investmentTargetedProd = await _investmentTargetedProdRepo.ListAsync(spec);
+                return investmentTargetedProd;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpGet]
+        [Route("investmentTargetedProdsForRec/{investmentInitId}/{sbu}")]
+        public async Task<IReadOnlyList<InvestmentTargetedProd>> GetInvestmentTargetedProds(int investmentInitId, string ssbu)
+        {
+            try
+            {
+                var spec = new InvestmentTargetedProdSpecification(investmentInitId);
+                var investmentTargetedProd = await _investmentTargetedProdRepo.ListAsync(spec);
+                return investmentTargetedProd;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpGet]
+        [Route("investmentTargetedGroups/{investmentInitId}")]
+        public async Task<IReadOnlyList<InvestmentTargetedGroup>> GetInvestmentTargetedGroups(int investmentInitId)
+        {
+            try
+            {
+                var spec = new InvestmentTargetedGroupSpecification(investmentInitId);
+                var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(spec);
+                return investmentTargetedGroup;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
             }
         }
 
@@ -714,7 +804,40 @@ namespace API.Controllers
                 throw ex;
             }
         }
-        
+
+
+
+        [HttpGet]
+        [Route("getLastFiveInvestment/{empId}")]
+        public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestment(int empId)
+        {
+            try
+            {
+                var empData = await _employeeRepo.GetByIdAsync(empId);
+                var reportInvestmentSpec = new ReportInvestmentSpecification(empData.MarketCode);
+                var reportInvestmentData = await _reportInvestmentInfoRepo.ListAsync(reportInvestmentSpec);
+                // var spec = new ReportInvestmentSpecification(empData.MarketCode);
+                var data = (from e in reportInvestmentData
+
+                            orderby DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) descending
+                            select new ReportInvestmentInfo
+                            {
+                                InvestmentAmount = e.InvestmentAmount,
+                                ComtSharePrcnt = e.ComtSharePrcnt,
+                                ComtSharePrcntAll = e.ComtSharePrcntAll,
+                                PrescribedSharePrcnt = e.PrescribedSharePrcnt,
+                                PrescribedSharePrcntAll = e.PrescribedSharePrcntAll
+                            }
+                             ).Distinct().Take(5).ToList();
+
+                return data;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
 
         [HttpPost("removeInvestmentInstitution")]
         public async Task<IActionResult> RemoveInvestmentInstitution(InvestmentInstitutionDto investmentInstitutionDto)
@@ -739,8 +862,8 @@ namespace API.Controllers
             {
                 throw ex;
             }
-        } 
-      
+        }
+
         [HttpPost("removeInvestmentCampaign")]
         public async Task<IActionResult> RemoveInvestmentCampaign(InvestmentCampaignDto investmentCampaignDto)
         {
@@ -764,8 +887,8 @@ namespace API.Controllers
             {
                 throw ex;
             }
-        } 
-        
+        }
+
         [HttpPost("removeInvestmentBcds")]
         public async Task<IActionResult> RemoveInvestmentBcds(InvestmentBcdsDto investmentBcdsDto)
         {
@@ -789,7 +912,7 @@ namespace API.Controllers
             {
                 throw ex;
             }
-        } 
+        }
         [HttpPost("removeInvestmentSociety")]
         public async Task<IActionResult> RemoveInvestmentSociety(InvestmentSociety investmentSociety)
         {
@@ -813,8 +936,8 @@ namespace API.Controllers
             {
                 throw ex;
             }
-        } 
-       
+        }
+
         [HttpPost("removeInvestmentDoctor")]
         public async Task<IActionResult> RemoveInvestmentDoctor(InvestmentDoctorDto investmentDoctorDto)
         {
@@ -838,7 +961,7 @@ namespace API.Controllers
             {
                 throw ex;
             }
-        }  
+        }
         [HttpPost("removeInvestmentTargetedProd")]
         public async Task<IActionResult> RemoveInvestmentTargetedProd(InvestmentTargetedProd investmentTargetedProd)
         {
@@ -863,15 +986,15 @@ namespace API.Controllers
             {
                 throw ex;
             }
-        } 
-      
+        }
+
         [HttpPost("removeInvestmentTargetedGroup")]
         public async Task<IActionResult> RemoveInvestmentTargetedGroup(List<InvestmentTargetedGroupDto> investmentTargetedGroupDto)
         {
             try
             {
                 //var response = new HttpResponseMessage();
-                var alreadyExistSpec = new InvestmentTargetedGroupSpecification(investmentTargetedGroupDto[0].InvestmentInitId,investmentTargetedGroupDto[0].MarketGroupMstId);
+                var alreadyExistSpec = new InvestmentTargetedGroupSpecification(investmentTargetedGroupDto[0].InvestmentInitId, investmentTargetedGroupDto[0].MarketGroupMstId);
                 var alreadyExistInvestmentTargetedGroupList = await _investmentTargetedGroupRepo.ListAsync(alreadyExistSpec);
                 if (alreadyExistInvestmentTargetedGroupList.Count > 0)
                 {
@@ -889,6 +1012,6 @@ namespace API.Controllers
             {
                 throw ex;
             }
-        } 
+        }
     }
 }
