@@ -5,9 +5,9 @@ namespace API.Dtos
     {
         public int Id { get; set; }
         public int ApprovalAuthorityId { get; set; }
-        public string ApprovalAuthorityName { get; set; }
-        public string TimeLimit { get; set; }
+        public ApprovalAuthorityToReturnDto ApprovalAuthority { get; set; }
+        public int TimeLimit { get; set; }
         public string Remarks { get; set; }
-        public int Status { get; set; }    
+        public string Status { get; set; }    
     }
 }

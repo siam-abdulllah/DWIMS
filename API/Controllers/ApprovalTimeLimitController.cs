@@ -16,12 +16,14 @@ namespace API.Controllers
     {
 
         private readonly IGenericRepository<ApprovalTimeLimit> _aptimeRepo;
+        private readonly IGenericRepository<ApprovalAuthority> _approvalAuthorityRepo;
         private readonly IMapper _mapper;
-        public ApprovalTimeLimitController(IGenericRepository<ApprovalTimeLimit> aptimeRepo,       
+        public ApprovalTimeLimitController(IGenericRepository<ApprovalTimeLimit> aptimeRepo, IGenericRepository<ApprovalAuthority> approvalAuthorityRepo,
         IMapper mapper)
         {
             _mapper = mapper;
             _aptimeRepo = aptimeRepo;
+            _approvalAuthorityRepo = approvalAuthorityRepo;
         }
 
 
@@ -38,8 +40,24 @@ namespace API.Controllers
             var totalItems = await _aptimeRepo.CountAsync(countSpec);
 
             var posts = await _aptimeRepo.ListAsync(spec);
+            var approvalAuthority = await _approvalAuthorityRepo.ListAllAsync();
+            //var approvalAuthority = await _approvalAuthorityRepo.ListAllAsync();
+            var approvalAuthorityData = _mapper.Map<IReadOnlyList<ApprovalAuthority>, IReadOnlyList<ApprovalAuthorityToReturnDto>>(approvalAuthority);
+            var data=(from p in posts
+                      join a in approvalAuthorityData on p.ApprovalAuthorityId equals a.Id
+                      orderby a.ApprovalAuthorityName
+                              select new ApprovalTimeLimitDto
+                              {
+                                  Id = p.Id,
+                                  ApprovalAuthorityId = p.ApprovalAuthorityId,
+                                  TimeLimit = p.TimeLimit,
+                                  Remarks=p.Remarks,
+                                  Status=p.Status,
+                                  ApprovalAuthority=a
+                              }
+                              ).Distinct().ToList();
 
-            var data = _mapper.Map<IReadOnlyList<ApprovalTimeLimit>, IReadOnlyList<ApprovalTimeLimitDto>>(posts);
+            //var data = _mapper.Map<IReadOnlyList<ApprovalTimeLimit>, IReadOnlyList<ApprovalTimeLimitDto>>(posts);
 
             return Ok(new Pagination<ApprovalTimeLimitDto>(approvalParrams.PageIndex, approvalParrams.PageSize, totalItems, data));
 

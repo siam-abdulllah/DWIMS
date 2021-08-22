@@ -171,14 +171,35 @@ namespace API.Controllers
                 //var data = _mapper
                 //    .Map<IReadOnlyList<MarketGroupMst>, IReadOnlyList<MarketGroupMstDto>>(marketGroup);
                 return marketGroup;
-                  }
+            }
             catch (System.Exception e)
             {
 
                 throw;
             }
         }
-        [HttpGet("marketGroupDtls/{mstId}")]
+        [HttpGet("getMarketGroupMstsForInvestment/{empId}")]
+        public async Task<IReadOnlyList<MarketGroupMst>> GetMarketGroupMstsForInvestment(int empId)
+        {
+            try
+            {
+                var spec = new MarketGroupMstSpecification(empId);
+
+
+                var marketGroup = await _marketGroupMstRepo.ListAsync(spec);
+
+                //var data = _mapper
+                //    .Map<IReadOnlyList<MarketGroupMst>, IReadOnlyList<MarketGroupMstDto>>(marketGroup);
+                return marketGroup;
+            }
+            catch (System.Exception e)
+            {
+
+                throw;
+            }
+        }
+        [HttpGet]
+        [Route("marketGroupDtls/{mstId}")]
         public async Task<ActionResult<Pagination<MarketGroupDtlDto>>> GetMarketGroupDtls(
         [FromQuery] MarketGroupDtlSpecParams marketGroupDtlParrams, int mstId)
         {

@@ -44,6 +44,7 @@ namespace API.Controllers
             return Ok(new Pagination<BcdsDto>(bscdParrams.PageIndex, bscdParrams.PageSize, totalItems, data));
      
         }
+       
         [HttpGet("bcdsForInvestment")]
         // [Authorize(Roles = "Owner,Administrator")]
         // [Authorize(Policy = "DetailUserPolicy")]

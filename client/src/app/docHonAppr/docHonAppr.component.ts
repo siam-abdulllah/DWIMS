@@ -9,6 +9,9 @@ import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
+import { IDoctorHonAppr } from '../shared/models/doctorHonAppr';
+import { DoctorHonApprService } from '../_services/doctorHonAppr.service';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-docHonAppr',
   templateUrl: './docHonAppr.component.html',
@@ -22,18 +25,32 @@ export class DocHonApprComponent implements OnInit {
   // genParams: GenericParams;
   // campaigns: ICampaign[]; 
   // subCampaigns: ISubCampaign[]; 
+  month = '';
+  fDate = '';
+  doctorHonAppr: IDoctorHonAppr[]= [];
   doctors: IDoctor[];
   totalCount = 0;
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date = new Date();
   //constructor(public masterService: MasterService, private router: Router,
-    constructor( private router: Router,
-    private toastr: ToastrService) { }
+    constructor( private docHonApprService: DoctorHonApprService,private router: Router,
+    private toastr: ToastrService,private datePipe: DatePipe) { }
 
   ngOnInit() {
     //this.getCampaign();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-green' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
+  }
+  changeDateInDetail(){
+    var fromDate = new Date(this.month);
+     this.fDate = this.datePipe.transform(fromDate, "MMyyyy");
+     this.docHonApprService.getDoctorHonAppr(this.fDate).subscribe(response => {
+      debugger;
+      this.doctorHonAppr = response.data;
+      this.totalCount = response.count;
+    }, error => {
+        console.log(error);
+    });
   }
   getCampaign(){
     // this.masterService.getCampaign().subscribe(response => {
@@ -77,6 +94,33 @@ export class DocHonApprComponent implements OnInit {
 
   populateForm() {
     //this.masterService.campaignFormData = Object.assign({}, selectedRecord);
+  }
+  
+  clickStatusDoctorHon(selectedRecord:IDoctorHonAppr) {
+    debugger;
+if(selectedRecord.id==0)
+{
+    this.docHonApprService.insertDocHonAppr(selectedRecord).subscribe(
+      res => {
+        
+        this.changeDateInDetail();
+       
+        this.toastr.success('Save successfully', 'Investment ')
+      },
+      err => { console.log(err); }
+    );
+  }
+  else{
+    this.docHonApprService.updateDocHonAppr(selectedRecord).subscribe(
+      res => {
+        
+        this.changeDateInDetail();
+       
+        this.toastr.success('Save successfully', 'Investment ')
+      },
+      err => { console.log(err); }
+    );
+  }
   }
   resetForm(form: NgForm) {
     form.form.reset();

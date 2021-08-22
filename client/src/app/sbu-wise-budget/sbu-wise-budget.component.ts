@@ -23,11 +23,13 @@ export class SbuWiseBudgetComponent implements OnInit {
   bsValue: Date = new Date();
   totalCount = 0;
   SBUs: ISBU[];
+  numberPattern="^[0-9]+(.[0-9]{1,10})?$";
   constructor(public sbuWiseBudgetService: SBUWiseBudgetService, private router: Router, private toastr: ToastrService) { }
   //constructor(private router: Router, private toastr: ToastrService) { }
   ngOnInit() {
     this.getSBU();
     this.getSBUWiseBudget();
+    this.bsConfig = Object.assign({}, { containerClass: 'theme-green' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
   }
   getSBU(){

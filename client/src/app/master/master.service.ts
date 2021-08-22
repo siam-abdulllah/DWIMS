@@ -70,11 +70,11 @@ export class MasterService {
   getSBU(){    
     return this.http.get(this.baseUrl + 'employee/getSBU');
   }
-  getBrand(){    
-    return this.http.get(this.baseUrl + 'product/getBrand');
+  getBrand(sbu:string){    
+    return this.http.get(this.baseUrl + 'product/getBrand/'+sbu);
   }
-  getProduct(){    
-    return this.http.get(this.baseUrl + 'product/getProduct');
+  getProduct(brandCode:string){    
+    return this.http.get(this.baseUrl + 'product/getProduct/'+brandCode);
   }
   getSubCampaignForCamp(){    
     return this.http.get(this.baseUrl + 'subCampaign/subCampaignsForCamp');

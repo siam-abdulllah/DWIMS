@@ -39,7 +39,7 @@ export class ApprovalTimeLimitService {
     params = params.append('pageIndex', this.genParams.pageNumber.toString());
     params = params.append('pageSize', this.genParams.pageSize.toString());
 
-    return this.http.get<IApprovalTimeLimitPagination>(this.baseUrl + 'ApprovalTimeLimit/GetAllApprovalTime', { observe: 'response', params })
+    return this.http.get<IApprovalTimeLimitPagination>(this.baseUrl + 'approvalTimeLimit/GetAllApprovalTime', { observe: 'response', params })
     .pipe(
       map(response => {
         this.approvalTimeLimit = [...this.approvalTimeLimit, ...response.body.data]; 
@@ -50,10 +50,12 @@ export class ApprovalTimeLimitService {
   }
 
   insertApprovalTimeLimit() {
-    return this.http.post(this.baseUrl+ 'ApprovalTimeLimit/CreateApprovalTimeLimit', this.approvalTimeLimitFormData);
+    debugger;
+    //this.approvalTimeLimitFormData.approvalAuthorityId=this.approvalTimeLimitFormData.approvalAuthorityId;
+    return this.http.post(this.baseUrl+ 'approvalTimeLimit/CreateApprovalTimeLimit', this.approvalTimeLimitFormData);
   }
   updateApprovalTimeLimit() {
-    return this.http.post(this.baseUrl+ 'ApprovalTimeLimit/ModifyApprovalTimeLimit',  this.approvalTimeLimitFormData);
+    return this.http.post(this.baseUrl+ 'approvalTimeLimit/ModifyApprovalTimeLimit',  this.approvalTimeLimitFormData);
 }
 
 }

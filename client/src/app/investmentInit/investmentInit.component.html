@@ -16,7 +16,7 @@
                                     <button class="btn btn-info btn-lg btn-block" type="button" (click)="getInvestmentInit()"><i class="fa fa-search" ></i>Search</button>
                                 </div>
                                 <div class="col-sm-2">
-                                    <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetPage(investmentInitForm)"><i class="fa fa-search"></i>Reset</button>
+                                    <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetPage(investmentInitForm)"><i class="fa fa-undo"></i>Reset</button>
                                 </div>
                             </div>
                         </div>
@@ -27,7 +27,7 @@
                                         <label>Propose For</label>
                                     </div>
                                     <div class="col-md-3">
-                                        <select class="form-control" id="proposeFor" name="proposeFor" #proposeFor="ngModel" [(ngModel)]="investmentInitService.investmentInitFormData.proposeFor" required [class.invalid]="proposeFor.invalid && proposeFor.touched">
+                                        <select class="form-control" id="proposeFor" [disabled]="isDonationValid" name="proposeFor" (change)="onChangeProposeFor()" #proposeFor="ngModel" [(ngModel)]="investmentInitService.investmentInitFormData.proposeFor" required [class.invalid]="proposeFor.invalid && proposeFor.touched">
                                             <option  [ngValue]="null">Select Propose For</option>
                                             <option value="BrandCampaign">Brand Campaign</option>
                                             <option value="Others">Others</option>
@@ -495,7 +495,7 @@
                                                         <td>Share-All</td>
                                                         <td>Share-Own</td>
                                                     </tr>
-                                                    <tr *ngFor="let a of investmentDetails">
+                                                    <tr *ngFor="let a of investmentDetailsOld">
                                                         <td>
                                                             {{a.purpose}}
                                                         </td>
@@ -522,7 +522,9 @@
                                                         <label>Prop. Inv.</label>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" name="proposedAmount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.proposedAmount">
+                                                        <input class="form-control" name="proposedAmount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.proposedAmount" [pattern]="numberPattern">
+                                                        <div class="invalid-feedback" *ngIf="proposedAmount.errors?.pattern">Only numeric value</div>
+
                                                     </div>
                                                 </div>
                                             </div>

@@ -47,7 +47,7 @@ export class DonationComponent implements OnInit {
         debugger;
         this.resetForm(form);
         this.getDonation();
-        this.toastr.success('Submitted successfully', 'Payment Detail Register')
+        this.toastr.success('Submitted successfully', 'Donation')
       },
       err => { console.log(err); }
     );
@@ -59,7 +59,7 @@ export class DonationComponent implements OnInit {
         debugger;
         this.resetForm(form);
         this.getDonation();
-       this.toastr.info('Updated successfully', 'Payment Detail Register')
+       this.toastr.info('Updated successfully', 'Donation')
       },
       err => { console.log(err); }
     );

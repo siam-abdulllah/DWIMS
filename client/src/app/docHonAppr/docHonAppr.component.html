@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
-                <form novalidate autocomplete="off">
+                <form novalidate autocomplete="off" #form="ngForm" (submit)="onSubmit(form)">
                     <div class="card card-primary">
                         <div class="card-header">
                             <div class="row">
@@ -10,10 +10,10 @@
                                     <h3 class="card-title">Doctor Honorarium Approval</h3>
                                 </div>
                                 <div class="col-sm-3">
-                                    <button class="btn btn-success btn-lg btn-block" type="submit"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                    <button class="btn btn-success  btn-block" type="submit"><i class="fa fa-save"></i>&nbsp; Save</button>
                                 </div>
                                 <div class="col-sm-3">
-                                    <button class="btn btn-info btn-lg btn-block"><i class="fa fa-search"></i>Search</button>
+                                    <button class="btn btn-info  btn-block"><i class="fa fa-search"></i>Search</button>
                                 </div>
                             </div>
                         </div>
@@ -24,14 +24,9 @@
                                         <label>Month</label>
                                     </div>
                                     <div class="col-md-3">
-                                        <!-- <input class="form-control" placeholder="Month" name="month" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig"> -->
-                                        <input class="form-control" placeholder="Month" name="month">
+                                        <input class="form-control" placeholder="Calender" name="month" [(ngModel)]="month" [bsValue]="bsValue" (onHidden)="changeDateInDetail()" bsDatepicker [bsConfig]="{ minMode:'month', adaptivePosition: true, dateInputFormat: 'MMMM YYYY' }">
                                     </div>
-                                    <div class="col-md-2">
-                                        <label>Year</label></div>
-                                    <div class="col-md-3">
-                                        <input class="form-control" placeholder="Calender" name="year">
-                                    </div>
+
                                 </div>
                             </div>
                             <fieldset>
@@ -39,40 +34,52 @@
                                 <div class="form-group">
                                     <table class="table  table-bordered">
                                         <tr>
-                                            <td>SL</td>
+
                                             <td>Doctor Id</td>
                                             <td>Doctor Name</td>
                                             <td>Designation</td>
                                             <td>Amount</td>
                                             <td>Status</td>
                                         </tr>
-                                        <tr *ngFor="let doctor of doctors">
+                                        <tr *ngFor="let a of doctorHonAppr">
                                             <td>
-                                                {{doctor.slNo}}
+                                                {{a.doctorId}}
                                             </td>
                                             <td>
-                                                {{doctor.doctorId}}
+                                                {{a.doctorInfo.doctorName}}
                                             </td>
                                             <td>
-                                                {{doctor.doctorName}}
+                                                {{a.doctorInfo.designation}}
                                             </td>
                                             <td>
-                                                {{doctor.designation}}
+                                                {{a.honAmount}}
                                             </td>
                                             <td>
-                                                {{doctor.amount}}
+                                                {{a.status}}
                                             </td>
                                             <td>
-                                                {{doctor.status}}
+                                                <input id="status" type="radio" value="Approved" name="status" (change)="clickStatusDoctorHon(a)" [(ngModel)]="a.status">Approved
+
                                             </td>
                                             <td>
-                                                Details
+                                                <input id="status" type="radio" value="Not Approved" name="status" (change)="clickStatusDoctorHon(a)" [(ngModel)]="a.status">Not Approved
+                                            </td>
+                                            <!-- <td>
+                                                <button class="btn btn-success  btn-block" (click)="approveDoctorHon(a)" type="button"><i class="fa fa-check"></i>&nbsp; Approved</button>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-danger  btn-block" (click)="notApproveDoctorHon(a)" type="button"><i class="fa fa-ban "></i>&nbsp; Not Approved</button>
+
+                                            </td> -->
+                                            <td>
+                                                <button class="btn btn-primary  btn-block" (click)="viewIndividualDoctorHon(a)" type="button"><i class="fa fa-info-circle "></i>&nbsp; View</button>
+
                                             </td>
                                         </tr>
                                     </table>
                                 </div>
                             </fieldset>
-                            <fieldset>
+                            <!-- <fieldset>
                                 <legend>Individual Doctor Honorarium</legend>
                                 <div class="form-group">
                                     <div class="row">
@@ -131,7 +138,7 @@
                                         </tr>
                                     </table>
                                 </div>
-                            </fieldset>
+                            </fieldset> -->
                         </div>
                     </div>
                 </form>

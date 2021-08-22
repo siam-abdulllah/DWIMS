@@ -13,7 +13,7 @@ namespace Core.Entities
         public string CommitmentOwnSBU { get; set; }
         public DateTimeOffset FromDate { get; set; }
         public DateTimeOffset ToDate { get; set; }
-        public string TotalMonth { get; set; }
+        public int TotalMonth { get; set; }
         public long ProposedAmount { get; set; }
         public string Purpose { get; set; }
         public int InvestmentInitId { get; set; }

@@ -10,7 +10,7 @@ namespace Core.Specifications
   )
         {
             
-            AddOrderBy(x => x.SetOn);
+            AddOrderBy(x => x.ProductName);
             ApplyPaging(productparams.PageSize * (productparams.PageIndex - 1), productparams.PageSize);
         }
 

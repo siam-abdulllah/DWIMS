@@ -59,7 +59,9 @@ export class ApprovalTimeLimitComponent implements OnInit {
         this.getApprovalTimeLimit();
         this.toastr.success('Data Saved successfully', 'Approval Time Limit')
       },
-      err => { console.log(err); }
+      err => { 
+        debugger;
+        console.log(err); }
     );
   }
 

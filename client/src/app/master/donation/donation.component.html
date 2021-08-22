@@ -24,7 +24,7 @@
                                     <h3 class="card-title">Donation Type</h3>
                                 </div>
                                 <div class="col-sm-2">
-                                    <button class="btn btn-info  btn-block" type="submit" [disabled]="form.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                    <button class="btn btn-success  btn-block" type="submit" [disabled]="form.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
                                 </div>
                                 <div class="col-sm-2">
                                     <button class="btn btn-danger  btn-block" type="button" (click)="resetForm(form)"><i class="fa fa-undo"></i>&nbsp; Reset</button>
@@ -38,14 +38,18 @@
                                 <div class="row">
                                     <div class="col-md-2">
                                         <label>Donation Type</label>
+                                        <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
                                         <input class="form-control " placeholder="Donation" name="donationTypeName" #donationTypeName="ngModel" [(ngModel)]="masterService.donationFormData.donationTypeName" required [class.invalid]="donationTypeName.invalid && donationTypeName.touched">
                                     </div>
                                     <div class="col-md-2">
-                                        <label>Status</label></div>
+                                        <label>Status</label>
+                                        <span style="color:red;">*</span>
+                                    </div>
+
                                     <div class="col-md-3">
-                                        <select name="" id="" class="form-control " name="status" #status="ngModel" [(ngModel)]="masterService.donationFormData.status" required [class.invalid]="status.invalid && status.touched">
+                                        <select id="status" class="form-control " name="status" #status="ngModel" [(ngModel)]="masterService.donationFormData.status" required [class.invalid]="status.invalid && status.touched">
                                           <option [ngValue]="null">Select Status</option>
                                             <option value="Active">Active</option>
                                           <option value="Inactive">Inactive</option>

@@ -20,14 +20,17 @@
                     <div class="card card-primary">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-sm-8">
                                     <h3 class="card-title">SBU Wise Budget</h3>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                     <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="form.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
                                 </div>
-                                <div class="col-sm-3">
+                                <!-- <div class="col-sm-2">
                                     <button class="btn btn-info btn-lg btn-block"><i class="fa fa-search"></i>Search</button>
+                                </div> -->
+                                <div class="col-sm-2">
+                                    <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetForm(form)"><i class="fa fa-undo"></i>Reset</button>
                                 </div>
                             </div>
                         </div>
@@ -38,6 +41,7 @@
                                 <div class="row">
                                     <div class="col-md-2">
                                         <label>SBU</label>
+                                        <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
                                         <select class="form-control " id="sbu" name="sbu" #sbu="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgeFormData.sbu" required [class.invalid]="sbu.invalid && sbu.touched">
@@ -45,11 +49,15 @@
                                         <option *ngFor="let a of SBUs" [value]="a.sbuName">{{a.sbuName}}</option>
                                     </select>
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                         <label>Budget Amount</label>
+                                        <span style="color:red;">*</span>
+                                        <small style="color:#888889;"> numeric value</small>
                                     </div>
                                     <div class="col-md-3">
-                                        <input class="form-control " placeholder="Budget Amount" name="amount" #amount="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgeFormData.amount" required [class.invalid]="amount.invalid && amount.touched">
+                                        <input class="form-control " placeholder="Budget Amount" name="amount" #amount="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgeFormData.amount" required [class.invalid]="amount.invalid && amount.touched" [pattern]="numberPattern">
+                                        <div class="invalid-feedback" *ngIf="amount.errors?.pattern">Only numeric value</div>
+
                                     </div>
                                 </div>
                             </div>
@@ -57,17 +65,19 @@
                                 <div class="row">
                                     <div class="col-md-2">
                                         <label>Duration: From Date</label>
+                                        <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
                                         <!-- <input class="form-control" placeholder="Calender" name="fromDate" #fromDate="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgeFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig"> -->
-                                        <input class="form-control" placeholder="Calender" name="fromDate" #fromDate="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgeFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
+                                        <input class="form-control" placeholder="Calender" required name="fromDate" #fromDate="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgeFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
                                     </div>
 
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                         <label>To Date</label>
+                                        <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <input class="form-control" placeholder="Calender" name="toDate" #toDate="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgeFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
+                                        <input class="form-control" placeholder="Calender" required name="toDate" #toDate="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgeFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
                                     </div>
                                 </div>
                             </div>

@@ -31,11 +31,11 @@ namespace Core.Specifications
             // }
         }
 
-        //public InvestmentInitSpecification(int id)
-        //    : base(x => x.InvestmentInitId == id)
-        //{
-            
-        //}
+        public InvestmentInitSpecification(string donationType)
+            : base(x => x.DonationType == donationType)
+        {
+
+        }
         //public InvestmentInitSpecification(int employeeId,string status)
         //    : base(x => x.EmployeeId == employeeId && x.Status == status)
         //{

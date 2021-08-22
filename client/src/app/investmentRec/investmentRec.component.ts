@@ -427,7 +427,7 @@ export class InvestmentRecComponent implements OnInit {
 
   ngOnInit() {
     this.getEmployeeId();
-    this.getProduct();
+    //this.getProduct();
     //this.getMarketGroupMsts();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-green' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
@@ -453,7 +453,7 @@ export class InvestmentRecComponent implements OnInit {
     //let dateFrom = new Date();
     //let dateTo = new Date();
 
-    this.investmentRecService.investmentDetailFormData.totalMonth = String(dateTo.getMonth() - dateFrom.getMonth() + (12 * (dateTo.getFullYear() - dateFrom.getFullYear())));
+    this.investmentRecService.investmentDetailFormData.totalMonth = dateTo.getMonth() - dateFrom.getMonth() + (12 * (dateTo.getFullYear() - dateFrom.getFullYear()));
 
   }
   
@@ -478,6 +478,7 @@ getEmployeeId(){
       (response) => {
         //debugger;
         this.sbu= response.sbu;
+        this.getProduct();
       },
       (error) => {
         console.log(error);

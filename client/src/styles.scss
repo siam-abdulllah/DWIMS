@@ -1,2 +1,30 @@
 @import "../node_modules/ngx-bootstrap/datepicker/bs-datepicker.css";
 @import "~@ng-select/ng-select/themes/default.theme.css";
+.invalid {
+    border: 1px solid red !important;
+}
+
+.invalid-feedback {
+    color: red !important;
+    font-size: smaller !important;
+    display: inline!important;
+}
+
+.form-control {
+    background-image: none;
+    border: 1px solid #28b9da;
+    border-radius: 0;
+}
+
+.navbar-light {
+    background-color: #28b9da;
+}
+
+[class*=sidebar-dark] .brand-link {
+    border-bottom: 1px solid #28b9da;
+    color: rgba(255, 255, 255, .8);
+}
+
+.brand-link {
+    background-color: #28b9da;
+}

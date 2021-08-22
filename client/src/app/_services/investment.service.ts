@@ -39,11 +39,11 @@ export class InvestmentInitService {
   getMarkets(){    
     return this.http.get(this.baseUrl + 'employee/marketForInvestment');
   }
-  getProduct(){    
-    return this.http.get(this.baseUrl + 'product/getProductForInvestment');
+  getProduct(sbu:string){    
+    return this.http.get(this.baseUrl + 'product/getProductForInvestment/'+sbu);
   }
-  getMarketGroupMsts(){    
-    return this.http.get(this.baseUrl + 'marketGroup/getMarketGroupMstsForInvestment');
+  getMarketGroupMsts(empId:string){    
+    return this.http.get(this.baseUrl + 'marketGroup/getMarketGroupMstsForInvestment/'+empId);
   }
   getApprovalAuthority(){    
     return this.http.get(this.baseUrl + 'approvalAuthority/approvalAuthoritiesForConfig');

@@ -29,7 +29,7 @@ export class CampaignComponent implements OnInit {
   campaignDtlProducts: ICampaignDtlProduct[]; 
   SBUs: ISBU[];
   brands: IBrand[];
-   
+  numberPattern="^[0-9]+(.[0-9]{1,10})?$";
   subCampaigns: ISubCampaign[]; 
   products: IProduct[];
   totalCount = 0;
@@ -45,9 +45,9 @@ export class CampaignComponent implements OnInit {
 
   ngOnInit() {
     this.getSBU();
-    this.getBrand();
+    //this.getBrand();
     this.getSubCampaign();
-    this.getProduct();
+    //this.getProduct();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-green' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
   }
@@ -59,14 +59,14 @@ export class CampaignComponent implements OnInit {
     });
   }
   getBrand(){
-    this.masterService.getBrand().subscribe(response => {
+    this.masterService.getBrand(this.masterService.campaignMstFormData.sbu).subscribe(response => {
       this.brands = response as IBrand[];
     }, error => {
         console.log(error);
     });
   }
   getProduct(){
-    this.masterService.getProduct().subscribe(response => {
+    this.masterService.getProduct(this.masterService.campaignMstFormData.brandCode).subscribe(response => {
       debugger;
       this.products = response as IProduct[];
     }, error => {
@@ -169,20 +169,30 @@ export class CampaignComponent implements OnInit {
     this.masterService.campaignDtlFormData = Object.assign({}, selectedRecord);
     this.masterService.campaignDtlFormData.subCampStartDate=new Date(selectedRecord.subCampStartDate);
     this.masterService.campaignDtlFormData.subCampEndDate=new Date(selectedRecord.subCampEndDate);
+    
+   
   }
   addSubCampaign() {
     debugger;
     if(this.masterService.campaignMstFormData.id==0){
+      this.toastr.warning('Please Insert Campaign Data First', 'Campaign');
       return false;
     }
     if(this.masterService.campaignDtlFormData.subCampaignId==null ||this.masterService.campaignDtlFormData.subCampaignId==undefined){
+      this.toastr.warning('Please Select Sub-Campaign First', 'Campaign');
       return false;
     }
-    if(this.masterService.campaignDtlFormData.budget=="" ||this.masterService.campaignDtlFormData.budget==null ||this.masterService.campaignDtlFormData.budget==undefined){ return false;
+    if(this.masterService.campaignDtlFormData.budget=="" ||this.masterService.campaignDtlFormData.budget==null ||this.masterService.campaignDtlFormData.budget==undefined){ 
+      this.toastr.warning('Select Budget First', 'Campaign');
+      return false;
     }
-    if(this.masterService.campaignDtlFormData.subCampStartDate==null ||this.masterService.campaignDtlFormData.subCampStartDate==undefined){ return false;
+    if(this.masterService.campaignDtlFormData.subCampStartDate==null ||this.masterService.campaignDtlFormData.subCampStartDate==undefined){ 
+      this.toastr.warning('Select Sub-Campaign Start Date ', 'Campaign');
+      return false;
     }
-    if(this.masterService.campaignDtlFormData.subCampEndDate==null ||this.masterService.campaignDtlFormData.subCampEndDate==undefined){ return false;
+    if(this.masterService.campaignDtlFormData.subCampEndDate==null ||this.masterService.campaignDtlFormData.subCampEndDate==undefined){ 
+      this.toastr.warning('Select Sub-Campaign End Date', 'Campaign');
+      return false;
     }
     //this.masterService.campaignDtlFormData.subCampStartDate = new Date(this.masterService.campaignDtlFormData.subCampStartDate);
     //this.masterService.campaignDtlFormData.subCampEndDate = new Date(this.masterService.campaignDtlFormData.subCampEndDate);
@@ -214,18 +224,32 @@ export class CampaignComponent implements OnInit {
       );
     }
   }
-  addProduct() {
+  addProduct(selectedRecord: ICampaignDtl) {
+    
     debugger;
     if(this.masterService.campaignMstFormData.id==0){
+      this.toastr.warning('Please Insert Campaign Data First', 'Campaign');
       return false;
     }
     if(this.masterService.campaignDtlFormData.id==0){
+      this.toastr.warning('Please Insert Sub-Campaign Data First', 'Campaign');
       return false;
     }
     if(this.masterService.campaignDtlProductFormData.productId==0 ||this.masterService.campaignDtlProductFormData.productId==null ||this.masterService.campaignDtlProductFormData.productId==undefined){
+      this.toastr.warning('Please Select Product', 'Campaign');
       return false;
     }
     this.masterService.campaignDtlProductFormData.dtlId=this.masterService.campaignDtlFormData.id;
+    if(this.campaignDtlProducts.length>0){
+    for(var i=0;i<=this.campaignDtlProducts.length;i++)
+    {
+      if(this.campaignDtlProducts[i].productId==this.masterService.campaignDtlProductFormData.productId)
+      {
+        this.toastr.warning('Product already exist', 'Campaign');
+      return false;
+      }
+    }
+  }
     if(this.masterService.campaignDtlProductFormData.id==0){
     this.masterService.insertCampaignDtlProduct().subscribe(
       res => {
@@ -249,7 +273,7 @@ export class CampaignComponent implements OnInit {
     }
   }
   removeProduct(selectedRecord: ICampaignDtlProduct) {
-    var result = confirm("Want to delete?");
+    var result = confirm("Do you want to delete?");
 if (result) {
     this.masterService.removeDtlProduct(selectedRecord).subscribe(
       res => {
@@ -267,13 +291,16 @@ if (result) {
       this.masterService.campaignDtlFormData = Object.assign({}, selectedRecord);
       this.masterService.campaignDtlFormData.subCampStartDate=new Date(selectedRecord.subCampStartDate);
       this.masterService.campaignDtlFormData.subCampEndDate=new Date(selectedRecord.subCampEndDate);
-       this.openProductSearchModal(this.productSearchModal);
+      this.getCampaignDtlProduct();
+      this.openProductSearchModal(this.productSearchModal);
   }
   openProductSearchModal(template: TemplateRef<any>) {
     this.productSearchModalRef = this.modalService.show(template, this.config);
   }
   selectCampaignMst(selectedRecord: ICampaignMst) {
     this.masterService.campaignMstFormData = Object.assign({}, selectedRecord);
+    this.getBrand();
+    this.getProduct();
     this.getCampaignDtl();
     this.campaignMstSearchodalRef.hide()
    }

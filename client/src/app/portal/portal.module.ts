@@ -25,6 +25,7 @@ import { ApprAuthConfigComponent } from '../apprAuthConfig/apprAuthConfig.compon
 import { ApprovalCeilingComponent } from '../approval-ceiling/approval-ceiling.component';
 import { ApprovalTimeLimitComponent } from '../approval-time-limit/approval-time-limit.component';
 import { SbuWiseBudgetComponent } from '../sbu-wise-budget/sbu-wise-budget.component';
+import { DocHonApprComponent } from '../docHonAppr/docHonAppr.component';
 @NgModule({
   imports: [
     
@@ -55,7 +56,8 @@ import { SbuWiseBudgetComponent } from '../sbu-wise-budget/sbu-wise-budget.compo
     InvestmentAprComponent,
     RegApprovalComponent,
     ReportInvestmentComponent,
-    SbuWiseBudgetComponent
+    SbuWiseBudgetComponent,
+    DocHonApprComponent
   ],
   providers: [DatePipe]
 })

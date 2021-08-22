@@ -1,4 +1,6 @@
 ﻿using Core.Entities;
+using System;
+using System.Globalization;
 
 namespace Core.Specifications
 {
@@ -10,7 +12,7 @@ namespace Core.Specifications
                (string.IsNullOrEmpty(parrams.Search) || x.Purpose.ToLower().Contains(parrams.Search))
            )
         {
-            
+
             AddOrderBy(x => x.SetOn);
             ApplyPaging(parrams.PageSize * (parrams.PageIndex - 1), parrams.PageSize);
 
@@ -34,18 +36,8 @@ namespace Core.Specifications
         public InvestmentDetailSpecification(int id)
             : base(x => x.InvestmentInitId == id)
         {
-            
+
         }
-        //public InvestmentDetailSpecification(int employeeId,string status)
-        //    : base(x => x.EmployeeId == employeeId && x.Status == status)
-        //{
-
-        //}
-        //public InvestmentDetailSpecification(int employeeId,int authId,string status)
-        //    : base(x => x.EmployeeId == employeeId && x.ApprovalAuthorityId == authId && x.Status == status)
-        //{
-
-        //}
-
+       
     }
 }

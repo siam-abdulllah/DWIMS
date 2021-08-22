@@ -45,7 +45,7 @@ export class SubCampaignComponent implements OnInit {
         debugger;
         this.resetForm(form);
         this.getSubCampaign();
-        this.toastr.success('Submitted successfully', 'Payment Detail Register')
+        this.toastr.success('Submitted successfully', 'Sub Campaign')
       },
       err => { console.log(err); }
     );
@@ -57,7 +57,7 @@ export class SubCampaignComponent implements OnInit {
         debugger;
         this.resetForm(form);
         this.getSubCampaign();
-        this.toastr.info('Updated successfully', 'Payment Detail Register')
+        this.toastr.info('Updated successfully', 'Sub Campaign')
       },
       err => { console.log(err); }
     );
