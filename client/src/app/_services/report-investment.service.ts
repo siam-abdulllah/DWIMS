@@ -20,7 +20,8 @@ export class ReportInvestmentService {
   constructor(private http: HttpClient, private router: Router) { }
 
   getInsSocietyBCDSWiseInvestment(model: any) {
-     return this.http.post(this.baseUrl + 'reportInvestment/GetInsSocietyBCDSWiseInvestment', model);
+    //getInsSocietyBCDSWiseInvestment() {
+     return this.http.post(this.baseUrl + 'reportInvestment/GetInsSocietyBCDSWiseInvestment',model);
   }
 
 

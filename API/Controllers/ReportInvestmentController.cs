@@ -22,13 +22,11 @@ namespace API.Controllers
             _investRepo = investRepo;
         }
 
-        [HttpGet("GetInsSocietyBCDSWiseInvestment")]
+        [HttpPost("GetInsSocietyBCDSWiseInvestment")]
         //[Authorize(Roles = "Owner,Administrator")]
         //[Authorize(Policy = "DetailUserPolicy")]
-        public async Task<ActionResult<IReadOnlyList<ReportInvestmentDto>>> GetInstituteInvestment([FromQuery] ReportInvestmentInfoSpecParams rptParrams)
-        {
-    
-
+        public async Task<ActionResult<IReadOnlyList<InstSocDocInvestmentDto>>> GetInstituteInvestment([FromQuery] ReportInvestmentInfoSpecParams rptParrams,ReportSearchDto search)
+        {   
             var spec = new ReportInvestmentInfoSpecification(rptParrams);
 
             var countSpec = new ReportInvestmentInfoSpecParamsWithFiltersForCountSpecificication(rptParrams);
@@ -40,14 +38,14 @@ namespace API.Controllers
             //var t = from x in posts
 
 
-            var data = _mapper.Map<IReadOnlyList<ReportInvestmentInfo>, IReadOnlyList<ReportInvestmentDto>>(posts);
+            var data = _mapper.Map<IReadOnlyList<ReportInvestmentInfo>, IReadOnlyList<InstSocDocInvestmentDto>>(posts);
 
-            return Ok(new Pagination<ReportInvestmentDto>(rptParrams.PageIndex, rptParrams.PageSize, totalItems, data));
+            return Ok(new Pagination<InstSocDocInvestmentDto>(rptParrams.PageIndex, rptParrams.PageSize, totalItems, data));
         }
 
 
 
-        [HttpGet("GetDoctorWiseLeadership")]
+        [HttpPost("GetDoctorWiseLeadership")]
         //[Authorize(Roles = "Owner,Administrator")]
         //[Authorize(Policy = "DetailUserPolicy")]
         public async Task<ActionResult<IReadOnlyList<ReportInvestmentDto>>> GetDoctorWiseLeadership([FromQuery] ReportInvestmentInfoSpecParams rptParrams, ReportSearchDto search)

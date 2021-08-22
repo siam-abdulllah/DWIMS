@@ -32,7 +32,7 @@ const portalRoutes: Routes = [
         {path: 'marketGroup', component: MarketGroupComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'regApproval', component: RegApprovalComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'sbu-wise-budget', component: SbuWiseBudgetComponent, canActivate: [SuperAdminRoleGuard]},
-        {path: 'rptInvestment', component: ReportInvestmentComponent, canActivate: [SuperAdminRoleGuard]},
+        {path: 'rptInvestment', component: ReportInvestmentComponent},
         {path: '', component: PortalComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'master', loadChildren: () => import('../master/master.module')
        .then(mod => mod.MasterModule) , data: {breadcrumb: {skip: true}}}, 

@@ -37,4 +37,20 @@ namespace API.Dtos
         public string DonationFromDate { get; set; }
         public string DonationToDate { get; set; }
     }
+
+
+    public class InstSocDocInvestmentDto
+    {
+        public int Id { get; set; }
+        public string SBU { get; set; }
+        public string Location { get; set; }
+        public string DonationType { get; set; }
+        public string Name { get; set; }
+        public DateTime FromDate { get; set; }
+        public DateTime ToDate { get; set; }
+        public float InvestedAmount { get; set; }
+        public float Commitment { get; set; }
+        public float ActualShare { get; set; }
+        public float CompetitorShare { get; set; }
+    }
 }

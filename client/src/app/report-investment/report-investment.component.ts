@@ -2,10 +2,9 @@ import { GenericParams } from './../shared/models/genericParams';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReportInvestmentService } from '../_services/report-investment.service';
-import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 
 import 'jspdf-autotable';
@@ -34,7 +33,7 @@ export class ReportInvestmentComponent implements OnInit {
 
   }
   
-  createProformaApprovalSearchForm() {
+  createInvestmentSearchForm() {
     this.investmentSearchForm = new FormGroup({
       fromDate: new FormControl('', [Validators.required]),
       toDate: new FormControl('', [Validators.required]),
@@ -43,7 +42,7 @@ export class ReportInvestmentComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.createProformaApprovalSearchForm();
+    this.createInvestmentSearchForm();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-blue' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
   }
@@ -64,11 +63,12 @@ export class ReportInvestmentComponent implements OnInit {
     };
     
     this.reportInvestmentService.getInsSocietyBCDSWiseInvestment(investmentReportSearchDto).subscribe(resp => {
-      this.instSocDocInvestmentDto = resp as IInstSocDocInvestmentDto[];
+     // this.reportInvestmentService.getInsSocietyBCDSWiseInvestment().subscribe(resp => {  
+    this.instSocDocInvestmentDto = resp as IInstSocDocInvestmentDto[];
       if (this.instSocDocInvestmentDto.length <= 0) {
-        //this.alertify.warning('No Data Found');
+        this.toastr.warning('No Data Found', 'Report');
       }
-      if (this.instSocDocInvestmentDto.length) {
+      if (this.instSocDocInvestmentDto.length > 0) {
         for (let p of this.instSocDocInvestmentDto) {   
             var fD = this.datePipe.transform(p.fromDate, "dd/MM/yyyy")             
             var tD = this.datePipe.transform(p.toDate, "dd/MM/yyyy")
@@ -100,7 +100,7 @@ export class ReportInvestmentComponent implements OnInit {
       'Actual \nShare', 'Competitor \nShare']; // initialization for headers
     // let col = ['SL NO.','Name OF Importer','Products','PI No.','PI Date','Manufacturer',
     // 'Exporter', 'Country Of Origin','Pack Size','Approval Amount MT','Approval Amount Unit', 'Status'];
-    let title = "Proforma Invoice Summary Report"; // title of report
+    let title = "Institute Wise Investment Report"; // title of report
     let slNO = 0;
     for (const a of r) {
       console.log(r);
@@ -196,9 +196,6 @@ export class ReportInvestmentComponent implements OnInit {
     window.open(URL.createObjectURL(blob));
     //this.loading = false;
   }
-
-
-
 }
 
 
