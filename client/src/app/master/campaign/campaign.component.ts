@@ -194,6 +194,14 @@ export class CampaignComponent implements OnInit {
       this.toastr.warning('Select Sub-Campaign End Date', 'Campaign');
       return false;
     }
+    for(var i=0;i<this.campaignDtls.length;i++)
+    {
+      if(this.campaignDtls[i].subCampaignId==this.masterService.campaignDtlFormData.subCampaignId)
+      {
+        this.toastr.warning(' Sub-Campaign Already Exist', 'Campaign');
+        return false;
+      }
+    }
     //this.masterService.campaignDtlFormData.subCampStartDate = new Date(this.masterService.campaignDtlFormData.subCampStartDate);
     //this.masterService.campaignDtlFormData.subCampEndDate = new Date(this.masterService.campaignDtlFormData.subCampEndDate);
     var StartDate = this.masterService.campaignDtlFormData.subCampStartDate;
@@ -241,7 +249,7 @@ export class CampaignComponent implements OnInit {
     }
     this.masterService.campaignDtlProductFormData.dtlId=this.masterService.campaignDtlFormData.id;
     if(this.campaignDtlProducts.length>0){
-    for(var i=0;i<=this.campaignDtlProducts.length;i++)
+    for(var i=0;i<this.campaignDtlProducts.length;i++)
     {
       if(this.campaignDtlProducts[i].productId==this.masterService.campaignDtlProductFormData.productId)
       {
