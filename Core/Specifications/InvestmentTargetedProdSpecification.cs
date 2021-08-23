@@ -7,7 +7,7 @@ namespace Core.Specifications
 
         public InvestmentTargetedProdSpecification(InvestmentTargetedProdSpecParams parrams)
            : base(x =>
-               (string.IsNullOrEmpty(parrams.Search) || x.ProductInfo.ProductName.ToLower().Contains(parrams.Search))
+               (string.IsNullOrEmpty(parrams.Search) || x.SBU.ToLower().Contains(parrams.Search))
            )
         {
             AddInclude(x => x.ProductInfo);

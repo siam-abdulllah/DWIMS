@@ -21,7 +21,8 @@ const portalRoutes: Routes = [
     path: 'portal',
     component: PortalComponent,
     children: [
-        {path: 'home', component: HomeComponent},
+      
+        {path: 'home', component: HomeComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'apprAuthConfig', component: ApprAuthConfigComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'approval-ceiling', component: ApprovalCeilingComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'approval-time-limit', component: ApprovalTimeLimitComponent, canActivate: [SuperAdminRoleGuard]},

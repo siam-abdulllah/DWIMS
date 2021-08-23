@@ -10,8 +10,9 @@ namespace Core.Specifications
                (string.IsNullOrEmpty(parrams.Search) || x.Employee.SBU.ToLower().Contains(parrams.Search))
            )
         {
+            
             AddInclude(x => x.Employee);
-            AddOrderBy(x => x.SetOn);
+            AddOrderByDescending(x => x.SetOn);
             ApplyPaging(parrams.PageSize * (parrams.PageIndex - 1), parrams.PageSize);
 
             // if (!string.IsNullOrEmpty(postParrams.Sort))
