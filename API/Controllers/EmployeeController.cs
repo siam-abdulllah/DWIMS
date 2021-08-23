@@ -191,7 +191,126 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet("GetMarket")]
+        public async Task<IReadOnlyList<MarketLocDto>> GetMarketList()
+        {
+            try
+            {
+                var data = await _employeeRepo.ListAllAsync();
+                //var market = data.GroupBy(p => p.MarketCode).Select(g => g.First()).ToList();
+                var market = (from r in data
+                              orderby r.MarketName
+                              select new MarketLocDto
+                              {
+                                  MarketCode = r.MarketCode.Trim(),
+                                  MarketName = r.MarketName.Trim(),
+                              }
+                              ).Distinct().ToList();
+                //var mappedMarket = _mapper.Map<IReadOnlyList<Employee>, IReadOnlyList<MarketDto>>(market);
+                return market;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
 
 
+        [HttpGet("GetTerritory")]
+        public async Task<IReadOnlyList<TerrirotyDto>> GetTerritoryList()
+        {
+            try
+            {
+                var data = await _employeeRepo.ListAllAsync();
+                //var market = data.GroupBy(p => p.MarketCode).Select(g => g.First()).ToList();
+                var territory = (from r in data
+                              orderby r.MarketName
+                              select new TerrirotyDto
+                              {
+                                  TerritoryCode = r.TerritoryCode.Trim(),
+                                  TerritoryName = r.TerritoryName.Trim(),
+                              }
+                              ).Distinct().ToList();
+                //var mappedMarket = _mapper.Map<IReadOnlyList<Employee>, IReadOnlyList<MarketDto>>(market);
+                return territory;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+        [HttpGet("GetZone")]
+        public async Task<IReadOnlyList<ZoneDto>> GetZoneList()
+        {
+            try
+            {
+                var data = await _employeeRepo.ListAllAsync();
+                //var market = data.GroupBy(p => p.MarketCode).Select(g => g.First()).ToList();
+                var zone = (from r in data
+                              orderby r.MarketName
+                              select new ZoneDto
+                              {
+                                  ZoneCode = r.ZoneCode.Trim(),
+                                  ZoneName = r.ZoneName.Trim(),
+                              }
+                              ).Distinct().ToList();
+                //var mappedMarket = _mapper.Map<IReadOnlyList<Employee>, IReadOnlyList<MarketDto>>(market);
+                return zone;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpGet("GetDivision")]
+        public async Task<IReadOnlyList<DivisionDto>> GetDivisionList()
+        {
+            try
+            {
+                var data = await _employeeRepo.ListAllAsync();
+                //var market = data.GroupBy(p => p.MarketCode).Select(g => g.First()).ToList();
+                var division = (from r in data
+                              orderby r.MarketName
+                              select new DivisionDto
+                              {
+                                  DivisionCode = r.DivisionCode.Trim(),
+                                  DivisionName = r.DivisionName.Trim(),
+                              }
+                              ).Distinct().ToList();
+                //var mappedMarket = _mapper.Map<IReadOnlyList<Employee>, IReadOnlyList<MarketDto>>(market);
+                return division;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpGet("GetRegion")]
+        public async Task<IReadOnlyList<RegionDto>> GetRegionList()
+        {
+            try
+            {
+                var data = await _employeeRepo.ListAllAsync();
+                //var market = data.GroupBy(p => p.MarketCode).Select(g => g.First()).ToList();
+                var region = (from r in data
+                              orderby r.RegionName
+                              select new RegionDto
+                              {
+                                  RegionCode = r.RegionCode.Trim(),
+                                  RegionName = r.RegionName.Trim(),
+                              }
+                              ).Distinct().ToList();
+                //var mappedMarket = _mapper.Map<IReadOnlyList<Employee>, IReadOnlyList<MarketDto>>(market);
+                return region;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

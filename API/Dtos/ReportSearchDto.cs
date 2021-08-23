@@ -11,8 +11,16 @@ namespace API.Dtos
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }
         public string SBU { get; set; }
-        public string Location { get; set; }
         public string DonationType { get; set; }
-        public string Name { get; set; }
+        public string InvestType { get; set; }
+        public int? InstitutionId { get; set; }
+        public int? SocietyId { get; set; }
+        public int? BcdsId { get; set; }
+        public string LocationType { get; set; }
+        public string TerritoryCode { get; set; }
+        public string MarketCode { get; set; }
+        public string RegionCode { get; set; }
+        public string ZoneCode { get; set; }
+        public string DivisionCode { get; set; }
     }
 }

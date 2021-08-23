@@ -11,6 +11,12 @@ import 'jspdf-autotable';
 import * as jsPDF from 'jspdf';
 import { DatePipe } from '@angular/common';
 
+import { Donation, IDonation } from '../shared/models/donation';
+import { IBcdsInfo } from '../shared/models/bcdsInfo';
+import { ISocietyInfo } from '../shared/models/societyInfo';
+import { Institution, IInstitution } from '../shared/models/institution';
+import { SBU, ISBU } from '../shared/models/sbu';
+import { IMarket, IRegion, ITerritory, IDivision, IZone } from '../shared/models/location';
 
 @Component({
   selector: 'app-report-investment',
@@ -24,20 +30,55 @@ export class ReportInvestmentComponent implements OnInit {
   investmentSearchDto: IInvestmentReportSearchDto;
   instSocDocInvestmentDto: IInstSocDocInvestmentDto[] = [];
 
-  @ViewChild('search', {static: false}) searchTerm: ElementRef;
+  visSoc: boolean = true;
+  visBcd: boolean = true;
+  visIns: boolean = true;
+
+  visMarket: boolean = true;
+  visZone: boolean = true;
+  visTerritory: boolean = true;
+  visRegion: boolean = true;
+  visDivision: boolean = true;
+
+
+  donations: IDonation[];
+  bcds: IBcdsInfo[];
+  society: ISocietyInfo[];
+  institutions: IInstitution[];
+  SBUs: ISBU[];
+
+  market: IMarket[];
+  region: IRegion[];
+  territory: ITerritory[];
+  division: IDivision[];
+  zone: IZone[];
+
+  @ViewChild('search', { static: false }) searchTerm: ElementRef;
   genParams: GenericParams;
   // approvalCeiling: IApprovalCeiling[];
   totalCount = 0;
   //constructor(public masterService: MasterService, private router: Router, private toastr: ToastrService) { }
-  constructor(public reportInvestmentService: ReportInvestmentService, private router: Router, private toastr: ToastrService, private datePipe: DatePipe) { 
+  constructor(public reportInvestmentService: ReportInvestmentService, private router: Router, private toastr: ToastrService, private datePipe: DatePipe) {
 
   }
-  
+
   createInvestmentSearchForm() {
     this.investmentSearchForm = new FormGroup({
       fromDate: new FormControl('', [Validators.required]),
       toDate: new FormControl('', [Validators.required]),
-      //status: new FormControl('')
+      donationTo: new FormControl('', [Validators.required]),
+      societyId: new FormControl(''),
+      bcdsId: new FormControl(''),
+      institutionId: new FormControl(''),
+      donationType: new FormControl(''),
+      sbu: new FormControl(''),
+
+      locationType: new FormControl(''),
+      marketCode: new FormControl(''),
+      territoryCode: new FormControl(''),
+      divisionCode: new FormControl(''),
+      regionCode: new FormControl(''),
+      zoneCode: new FormControl(''),
     });
   }
 
@@ -45,6 +86,139 @@ export class ReportInvestmentComponent implements OnInit {
     this.createInvestmentSearchForm();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-blue' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
+  }
+
+
+  onChangeLocationType() {
+
+    this.visMarket = true;
+    this.visZone = true;
+    this.visTerritory = true;
+    this.visRegion = true;
+    this.visDivision = true;
+
+    if (this.investmentSearchForm.value.locationType == "Market") {
+      this.visMarket = false;
+      this.getMarket();
+    }
+    else if (this.investmentSearchForm.value.locationType == "Territory") {
+      this.visTerritory = false;
+      this.getTerritory();
+    }
+    else if (this.investmentSearchForm.value.locationType == "Region") {
+      this.visRegion = false;
+      this.getRegion();
+    }
+    else if (this.investmentSearchForm.value.locationType == "Zone") {
+      this.visZone = false;
+      this.getZone();
+    }
+    else if (this.investmentSearchForm.value.locationType == "Division") {
+      this.visDivision = false;
+      this.getDivision();
+    }
+  }
+
+  onChangeDonationTo() {
+
+    this.visSoc = true;
+    this.visBcd = true;
+    this.visIns = true;
+
+    if (this.investmentSearchForm.value.donationTo == "Institution") {
+      this.visIns = false;
+      this.getInstitution();
+    }
+    else if (this.investmentSearchForm.value.donationTo == "Bcds") {
+      this.visBcd = false;
+      this.getBcds();
+    }
+    else if (this.investmentSearchForm.value.donationTo == "Society") {
+      this.visSoc = false;
+      this.getSociety();
+    }
+  }
+
+  getMarket() {
+    this.reportInvestmentService.getMarket().subscribe(response => {
+      this.market = response as IMarket[];
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  getTerritory() {
+    this.reportInvestmentService.getTerritory().subscribe(response => {
+      this.territory = response as ITerritory[];
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  getDivision() {
+    this.reportInvestmentService.getDivision().subscribe(response => {
+      this.division = response as IDivision[];
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  getRegion() {
+    this.reportInvestmentService.getRegion().subscribe(response => {
+      this.region = response as IRegion[];
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  getZone() {
+    this.reportInvestmentService.getZone().subscribe(response => {
+      this.zone = response as IZone[];
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  getDonation() {
+    this.reportInvestmentService.getDonations().subscribe(response => {
+      this.donations = response as IDonation[];
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  getSociety() {
+    this.reportInvestmentService.getSociety().subscribe(response => {
+      //debugger;
+      this.society = response as ISocietyInfo[];
+    }, error => {
+      console.log(error);
+    });
+  }
+  
+  getBcds() {
+    this.reportInvestmentService.getBcds().subscribe(response => {
+      //debugger;
+      this.bcds = response as IBcdsInfo[];
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  getInstitution() {
+    this.reportInvestmentService.getInstitutions().subscribe(response => {
+      this.institutions = response as IInstitution[];
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  getSBU() {
+    this.reportInvestmentService.getSBU().subscribe(response => {
+      this.SBUs = response as ISBU[];
+    }, error => {
+      console.log(error);
+    });
   }
 
   getDocSocInvestReport() {
@@ -55,48 +229,53 @@ export class ReportInvestmentComponent implements OnInit {
       //importerId: impId,
       fromDate: this.investmentSearchForm.value.fromDate,
       toDate: this.investmentSearchForm.value.toDate,
-      sbu: "",
+      sbu: this.investmentSearchForm.value.sbu,
       userId: 0,
-      location: "",
-      donationType: "",
-      name: "",
+      donationType: this.investmentSearchForm.value.donationType,
+      investType: this.investmentSearchForm.value.donationTo,
+      institutionId: this.investmentSearchForm.value.institutionId,
+      societyId: this.investmentSearchForm.value.societyId,
+      bcdsId: this.investmentSearchForm.value.bcdsId,
+
+      locationType: this.investmentSearchForm.value.locationType,
+      territoryCode: this.investmentSearchForm.value.territoryCode,
+      marketCode: this.investmentSearchForm.value.marketCode,
+      regionCode: this.investmentSearchForm.value.regionCode,
+      zoneCode: this.investmentSearchForm.value.zoneCode,
+      divisionCode: this.investmentSearchForm.value.divisionCode,
     };
-    
+
     this.reportInvestmentService.getInsSocietyBCDSWiseInvestment(investmentReportSearchDto).subscribe(resp => {
-     // this.reportInvestmentService.getInsSocietyBCDSWiseInvestment().subscribe(resp => {  
-    this.instSocDocInvestmentDto = resp as IInstSocDocInvestmentDto[];
+      // this.reportInvestmentService.getInsSocietyBCDSWiseInvestment().subscribe(resp => {  
+      this.instSocDocInvestmentDto = resp as IInstSocDocInvestmentDto[];
       if (this.instSocDocInvestmentDto.length <= 0) {
         this.toastr.warning('No Data Found', 'Report');
       }
       if (this.instSocDocInvestmentDto.length > 0) {
-        for (let p of this.instSocDocInvestmentDto) {   
-            var fD = this.datePipe.transform(p.fromDate, "dd/MM/yyyy")             
-            var tD = this.datePipe.transform(p.toDate, "dd/MM/yyyy")
+        for (let p of this.instSocDocInvestmentDto) {
+          var fD = this.datePipe.transform(p.fromDate, "dd/MM/yyyy")
+          var tD = this.datePipe.transform(p.toDate, "dd/MM/yyyy")
         }
       }
-
     }, error => {
       console.log(error);
     });
   }
 
-
-
   viewProformaSummaryReport() {
     if (this.instSocDocInvestmentDto.length <= 0) {
-      //this.alertify.warning('No Data to Show Report');
+      this.toastr.warning("No Data to Show Report","Report");
       return false;
     }
     // const doc = new jsPDF();
     // doc.text("Hello there", 15, 15);
     // doc.save('first.pdf');
-    let orgName;
-    let orgAddress
+
     const r = this.instSocDocInvestmentDto as IInstSocDocInvestmentDto[];
-  
+
     let row: any[] = [];
     let rowD: any[] = [];
-    let col = ['Name', 'Location', 'Donation \nType',  'Invested \nAmount.', 'Duration', 'Commitment',
+    let col = ['Name', 'Location', 'Donation \nType', 'Invested \nAmount.', 'Duration', 'Commitment',
       'Actual \nShare', 'Competitor \nShare']; // initialization for headers
     // let col = ['SL NO.','Name OF Importer','Products','PI No.','PI Date','Manufacturer',
     // 'Exporter', 'Country Of Origin','Pack Size','Approval Amount MT','Approval Amount Unit', 'Status'];
@@ -105,8 +284,8 @@ export class ReportInvestmentComponent implements OnInit {
     for (const a of r) {
       console.log(r);
       //row.push(++slNO);
-      row.push(a.name);
-      row.push(a.location);
+      row.push(a.donationToName);
+      row.push(a.locationName);
       row.push(a.donationType);
       //row.push(a.proformaDate);
 
@@ -117,7 +296,7 @@ export class ReportInvestmentComponent implements OnInit {
       const convertedtDate = new Date(a.toDate);
       let td = '';
       td += convertedtDate.getDate() + '/' + (convertedtDate.getMonth() + 1) + '/' + convertedtDate.getFullYear();
-      row.push(fd+ ' - '+ td);
+      row.push(fd + ' - ' + td);
 
       row.push(a.commitment);
       row.push(a.actualShare);
@@ -177,9 +356,7 @@ export class ReportInvestmentComponent implements OnInit {
         didDrawPage: pageContent,
         margin: { top: 110 },
         bodyStyles: { valign: 'middle', lineColor: [153, 153, 153] },
-
         styles: { overflow: 'linebreak', cellWidth: 'wrap', fontSize: 9, textColor: 0 },
-
       });
 
     //for adding total number of pages // i.e 10 etc
@@ -198,9 +375,6 @@ export class ReportInvestmentComponent implements OnInit {
   }
 }
 
-
-
-
 interface IUserIdDto {
   userId: number;
 }
@@ -209,21 +383,29 @@ interface IInvestmentReportSearchDto {
   fromDate: Date | undefined | null;
   toDate: Date | undefined | null;
   sbu: string;
-  location: string;
   donationType: string;
-  name: string;
+  investType: string;
+  institutionId: number | null;
+  societyId: number | null;
+  bcdsId: number | null;
+  locationType: string;
+  territoryCode: string;
+  marketCode: string;
+  regionCode: string;
+  zoneCode: string;
+  divisionCode: string;
 }
 
 
 interface IInstSocDocInvestmentDto {
   id: number;
-  location: string;
   donationType: string;
-  name: string;
   investedAmount: number;
   commitment: number;
   actualShare: number;
   competitorShare: number;
   fromDate: Date | undefined | null;
   toDate: Date | undefined | null;
+  donationToName: string;
+  locationName: string;
 }

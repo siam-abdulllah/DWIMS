@@ -19,6 +19,44 @@ export class ReportInvestmentService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
+  getMarket(){    
+    return this.http.get(this.baseUrl + 'employee/getMarket');
+  }
+
+  getTerritory(){    
+    return this.http.get(this.baseUrl + 'employee/getTerritory');
+  }
+
+  getZone(){    
+    return this.http.get(this.baseUrl + 'employee/getZone');
+  }
+
+  getDivision(){    
+    return this.http.get(this.baseUrl + 'employee/getDivision');
+  }
+
+  getRegion(){    
+    return this.http.get(this.baseUrl + 'employee/getRegion');
+  }
+  
+  getSBU(){    
+    return this.http.get(this.baseUrl + 'employee/getSBU');
+  }
+  getInstitutions(){    
+    return this.http.get(this.baseUrl + 'institution/institutionsForInvestment');
+  }
+  getBcds(){    
+    return this.http.get(this.baseUrl + 'bcds/bcdsForInvestment');
+  }
+  getSociety(){    
+    return this.http.get(this.baseUrl + 'society/societyForInvestment');
+  }
+  getDonations(){    
+    return this.http.get(this.baseUrl + 'donation/donationsForInvestment');
+  }
+
+
+  
   getInsSocietyBCDSWiseInvestment(model: any) {
     //getInsSocietyBCDSWiseInvestment() {
      return this.http.post(this.baseUrl + 'reportInvestment/GetInsSocietyBCDSWiseInvestment',model);
