@@ -35,7 +35,8 @@ namespace API.Controllers
             IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<InvestmentDetail> investmentDetailRepo, IGenericRepository<InvestmentDoctor> investmentDoctorRepo,
             IGenericRepository<InvestmentSociety> investmentSocietyRepo, IGenericRepository<InvestmentBcds> investmentBcdsRepo,
             IGenericRepository<InvestmentCampaign> investmentCampaignRepo, IGenericRepository<InvestmentInstitution> investmentInstitutionRepo,
-            IGenericRepository<Employee> employeeRepo, IGenericRepository<ReportInvestmentInfo> reportInvestmentInfoRepo, IGenericRepository<InvestmentRecComment> investmentRecCommentRepo,
+            IGenericRepository<Employee> employeeRepo, IGenericRepository<ReportInvestmentInfo> reportInvestmentInfoRepo,
+            IGenericRepository<InvestmentRecComment> investmentRecCommentRepo,
             IMapper mapper)
         {
             _mapper = mapper;
@@ -52,7 +53,7 @@ namespace API.Controllers
             _reportInvestmentInfoRepo = reportInvestmentInfoRepo;
             _investmentRecCommentRepo = investmentRecCommentRepo;
         }
-        [HttpGet("investmentInits")]
+        [HttpGet("investmentInits/{sbu}")]
         public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetInvestmentInits(string sbu,
           [FromQuery] InvestmentInitSpecParams investmentInitParrams,
           [FromQuery] InvestmentRecCommentSpecParams investmentRecCommentParrams)
@@ -74,6 +75,7 @@ namespace API.Controllers
 
                 var data = (from i in investmentInits
                             where !(from rc in investmentRecComments
+                                    where rc.RecStatus== "Recommended"
                                     select rc.InvestmentInitId).Contains(i.Id)
                             orderby i.SetOn descending
                             select new InvestmentInitDto
@@ -83,8 +85,7 @@ namespace API.Controllers
                                 ProposeFor = i.ProposeFor,
                                 DonationType = i.DonationType,
                                 DonationTo = i.DonationTo,
-                                EmployeeId = i.EmployeeId,
-
+                                EmployeeId = i.EmployeeId
                             }
                               ).Distinct().ToList();
                 //var data = _mapper
@@ -808,17 +809,18 @@ namespace API.Controllers
 
 
         [HttpGet]
-        [Route("getLastFiveInvestment/{empId}")]
-        public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestment(int empId)
+        [Route("getLastFiveInvestment/{empId}/{date}")]
+        public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestment(int empId, string date)
         {
             try
             {
+                var v = DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture);
                 var empData = await _employeeRepo.GetByIdAsync(empId);
                 var reportInvestmentSpec = new ReportInvestmentSpecification(empData.MarketCode);
                 var reportInvestmentData = await _reportInvestmentInfoRepo.ListAsync(reportInvestmentSpec);
                 // var spec = new ReportInvestmentSpecification(empData.MarketCode);
                 var data = (from e in reportInvestmentData
-
+                            where DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) <= DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture)
                             orderby DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) descending
                             select new ReportInvestmentInfo
                             {

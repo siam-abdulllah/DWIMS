@@ -36,7 +36,7 @@ export class RegApprovalService {
   // getregApprovals(id:number){    
   //   //return this.http.get(this.baseUrl + 'regApproval/regApprovalDtls/'+id);
   //   let params = new HttpParams();
-  //   debugger;
+  //   
   //   if (this.genParams.search) {
   //     params = params.append('search', this.genParams.search);
   //   }

@@ -40,7 +40,7 @@ getEmployees(){
 }
 
 insertApprAuthConfig() {
-  debugger;
+  
   return this.http.post(this.baseUrl+ 'apprAuthConfig/insert', this.approvalAuthConfigFormData);
 
 }

@@ -31,7 +31,7 @@ export class MarketGroupService {
 
   getGroups(){    
     let params = new HttpParams();
-    debugger;
+    
     if (this.genParams.search) {
       params = params.append('search', this.genParams.search);
     }
@@ -54,7 +54,7 @@ export class MarketGroupService {
   getMarketGroups(id:number){    
     //return this.http.get(this.baseUrl + 'marketGroup/marketGroupDtls/'+id);
     let params = new HttpParams();
-    debugger;
+    
     if (this.genParams.search) {
       params = params.append('search', this.genParams.search);
     }
@@ -78,12 +78,12 @@ export class MarketGroupService {
 }
 
 insertMarketGroup() {
-  debugger;
+  
   return this.http.post(this.baseUrl+ 'marketGroup/insertMst', this.marketGroupFormData);
 
 }
 insertMarketGroupDtl(id:number,marketCode:string,marketName:string,sbu:string) {
-  debugger;
+  
   var Indata = {'mstId': id, 'marketCode': marketCode, 'marketName':marketName, 'sbu':sbu};
   return this.http.post(this.baseUrl+ 'marketGroup/insertDtl', Indata);
 
@@ -92,7 +92,7 @@ insertMarketGroupDtl(id:number,marketCode:string,marketName:string,sbu:string) {
    return this.http.post(this.baseUrl+ 'marketGroup/updateMst',  this.marketGroupFormData);
  }
  removeMarketGroups(selectedRecord: IMarketGroupDtl) {
-   debugger;
+   
    return this.http.post(this.baseUrl+ 'marketGroup/updateDtl', selectedRecord);
  }
 

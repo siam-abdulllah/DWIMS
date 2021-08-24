@@ -31,9 +31,9 @@ export class DoctorHonApprService {
     return this.http.get(this.baseUrl + 'donation/donationsForInvestment');
   }
   getDoctorHonAppr(fDate:string){   
-    debugger; 
+     
     let params = new HttpParams();
-    debugger;
+    
     if (this.genParams.search) {
       params = params.append('search', this.genParams.search);
     }

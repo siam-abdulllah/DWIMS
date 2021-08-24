@@ -18,6 +18,10 @@ namespace Core.Specifications
             : base(x => x.Id == id)
         {
             AddInclude(x => x.Additional);
+        }public ApprovalCeilingSpecification(int approvalAuthorityId,int status)
+            : base(x => x.ApprovalAuthorityId == approvalAuthorityId && x.Status==status)
+        {
+            AddInclude(x => x.Additional);
         }
     }
 }

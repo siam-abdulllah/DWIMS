@@ -1,132 +1,129 @@
 <section class="content-header">
-  <div class="container-fluid">
-    <div class="row mb-2">
-      <div class="col-sm-6">
-        <h1></h1>
-      </div>
-      <div class="col-sm-6">
-      </div>
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1></h1>
+            </div>
+            <div class="col-sm-6">
+            </div>
+        </div>
     </div>
-  </div>
-  <!-- /.container-fluid -->
+    <!-- /.container-fluid -->
 </section>
 <section class="content">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-sm-12">
-        <!-- form start -->
-        <!-- <form novalidate autocomplete="off"> -->
-        <form [formGroup]="investmentSearchForm">
-          <!-- general form elements -->
-          <div class="card card-primary">
-            <div class="card-header">
-              <div class="row">
-                <div class="col-sm-6">
-                  <h3 class="card-title">Investment Reports</h3>
-                </div>
-                <!-- <div class="col-sm-3">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <!-- form start -->
+                <!-- <form novalidate autocomplete="off"> -->
+                <form [formGroup]="investmentSearchForm">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h3 class="card-title">Investment Reports</h3>
+                                </div>
+                                <!-- <div class="col-sm-3">
                   <button class="btn btn-success btn-lg btn-block" type="button" click="(getDocSocInvestReport())"><i
                       class="fa fa-save"></i>&nbsp; View Report</button>
                 </div>
                 <div class="col-sm-3">
                   <button class="btn btn-info btn-lg btn-block"><i class="fa fa-search"></i>Reset</button>
                 </div> -->
-              </div>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-              <input type="hidden" name="id" [value]="" />
-              <div class="form-group">
-              </div>
-              <fieldset>
-                <div class="form-group">
-                  <div class="row">
-                    <div class="col-md-6">
-                      <table class="table table-bordered">
-                        <tr>
-                          <td>Report Name</td>
-                          <td>Select</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            Institution/Society/BCDS wise Investment
-                          </td>
-                          <td>
-                            <button class="btn btn-success btn-block" type="button" (click)="getDocSocInvestReport()"><i
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <input type="hidden" name="id" [value]="" />
+                            <div class="form-group">
+                            </div>
+                            <fieldset>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <table class="table table-bordered">
+                                                <tr>
+                                                    <td>Report Name</td>
+                                                    <td>Select</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        Institution/Society/BCDS wise Investment
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-success btn-block" type="button" (click)="getDocSocInvestReport()"><i
                                 class="fa fa-arrow"></i>&nbsp; View Report</button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            Doctor wise Leadership analysis
-                          </td>
-                          <td>
-                            <button class="btn btn-success btn-block" type="button"><i class="fa fa-arrow"></i>&nbsp;
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        Doctor wise Leadership analysis
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-success btn-block" type="button"><i class="fa fa-arrow"></i>&nbsp;
                               View Report</button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            Invested Doctor potentiality Analysis as per Transaction
-                          </td>
-                          <td>
-                            <button class="btn btn-success btn-block" type="button"><i class="fa fa-arrow"></i>&nbsp;
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        Invested Doctor potentiality Analysis as per Transaction
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-success btn-block" type="button"><i class="fa fa-arrow"></i>&nbsp;
                               View Report</button>
-                          </td>
-                        </tr>
-                      </table>
-                    </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
 
-                    <div class="col-md-6">
-                      <div class="col-md-2">
-                        <label>From Date</label>
-                      </div>
-                      <div class="col-md-6">
-                        <input class="form-control" id="from-date" placeholder="From Date" formControlName="fromDate"
-                          [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
-                      </div>
-                      <div class="col-md-2">
-                        <label>To Date</label>
-                      </div>
-                      <div class="col-md-6">
-                        <input class="form-control" id="to-date" placeholder="To Date" formControlName="toDate"
-                          [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
-                      </div>
-                      <div class="col-md-4">
-                        <label>Select Option</label>
-                      </div>
-                      <div class="col-md-6">
-                        <select class="form-control " (change)="onChangeDonationTo()" id="donationTo"
-                          formControlName="donationTo">
+                                        <div class="col-md-6">
+
+                                            <div class="col-md-2">
+                                                <label>From Date</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input class="form-control" id="from-date" placeholder="From Date" formControlName="fromDate" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label>To Date</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input class="form-control" id="to-date" placeholder="To Date" formControlName="toDate" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label>Select Option</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <select class="form-control " (change)="onChangeDonationTo()" id="donationTo" formControlName="donationTo">
                           <option [ngValue]="null">Select Donation To</option>
                           <option value="Institution">Institution</option>
                           <option value="Bcds">Bcds</option>
                           <option value="Society">Society</option>
                         </select>
-                      </div>
-                      <div class="col-md-6">
-                        <select class="form-control "  id="institutionId" formControlName="institutionId" [hidden]="visIns">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <select class="form-control " id="institutionId" formControlName="institutionId" [hidden]="visIns">
                           <option [ngValue]="null">Select Institution</option>
                           <option *ngFor="let a of institutions" [value]="a.id">{{a.institutionName}}</option>
                         </select>
 
-                        <select class="form-control "  id="societyId" formControlName="societyId" [hidden]="visSoc">
+                                                <select class="form-control " id="societyId" formControlName="societyId" [hidden]="visSoc">
                           <option [ngValue]="null">Select Society</option>
                           <option *ngFor="let a of society" [value]="a.id">{{a.societyName}}</option>
                         </select>
 
-                        <select class="form-control "  id="bcdsId" formControlName="bcdsId" [hidden]="visBcd">
+                                                <select class="form-control " id="bcdsId" formControlName="bcdsId" [hidden]="visBcd">
                           <option [ngValue]="null">Select BCDS</option>
                           <option *ngFor="let a of bcds" [value]="a.id">{{a.bcdsName}}</option>
                         </select>
-                      </div>
+                                            </div>
 
-                      <div class="col-md-4">
-                        <label>Select Location</label>
-                      </div>
-                      <div class="col-md-6">
-                        <select class="form-control " (change)="onChangeLocationType()" id="locationType"
-                          formControlName="locationType">
+                                            <div class="col-md-4">
+                                                <label>Select Location</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <select class="form-control " (change)="onChangeLocationType()" id="locationType" formControlName="locationType">
                           <option [ngValue]="null">Select Location Type</option>
                           <option value="Market">Market</option>
                           <option value="Territory">Territory</option>
@@ -134,64 +131,64 @@
                           <option value="Division">Division</option>
                           <option value="Zone">Zone</option>
                         </select>
-                      </div>
-                      <div class="col-md-6">
-                        <select class="form-control "  id="marketCode" formControlName="marketCode" [hidden]="visMarket">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <select class="form-control " id="marketCode" formControlName="marketCode" [hidden]="visMarket">
                           <option [ngValue]="null">Select Market</option>
                           <option *ngFor="let a of market" [value]="a.marketCode">{{a.marketName}}</option>
                         </select>
 
-                        <select class="form-control "  id="territoryCode" formControlName="territoryCode" [hidden]="visTerritory">
+                                                <select class="form-control " id="territoryCode" formControlName="territoryCode" [hidden]="visTerritory">
                           <option [ngValue]="null">Select Territory</option>
                           <option *ngFor="let a of territory" [value]="a.territoryCode">{{a.territoryName}}</option>
                         </select>
 
-                        <select class="form-control "  id="regionCode" formControlName="regionCode" [hidden]="visRegion">
+                                                <select class="form-control " id="regionCode" formControlName="regionCode" [hidden]="visRegion">
                           <option [ngValue]="null">Select Region</option>
                           <option *ngFor="let a of region" [value]="a.regionCode">{{a.regionName}}</option>
                         </select>
 
-                        <select class="form-control "  id="divisionCode" formControlName="divisionCode" [hidden]="visDivision">
+                                                <select class="form-control " id="divisionCode" formControlName="divisionCode" [hidden]="visDivision">
                           <option [ngValue]="null">Select Division</option>
                           <option *ngFor="let a of division" [value]="a.divisionCode">{{a.divisionName}}</option>
                         </select>
-                      
-                        <select class="form-control "  id="zoneCode" formControlName="zoneCode" [hidden]="visZone">
+
+                                                <select class="form-control " id="zoneCode" formControlName="zoneCode" [hidden]="visZone">
                           <option [ngValue]="null">Select Zone</option>
                           <option *ngFor="let a of zone" [value]="a.zoneCode">{{a.zoneName}}</option>
                         </select>
-                      </div>
+                                            </div>
 
-                      <div class="col-md-4">
-                        <label>Donation Type</label>
-                    </div>
-                    <div class="col-md-6">
-                        <select class="form-control " id="donationType" formControlName="donationType">
+                                            <div class="col-md-4">
+                                                <label>Donation Type</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <select class="form-control " id="donationType" formControlName="donationType">
                             <option  [ngValue]="null">Select Donation Type</option>
                             <option *ngFor="let a of donations" [value]="a.donationTypeName">{{a.donationTypeName}}</option>
                         </select>
-                    </div>
-                    <div class="col-md-2">
-                      <label>SBU</label>
-                  </div>
-                  <div class="col-md-6">
-                      <select class="form-control " id="sbu" formControlName="sbu">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label>SBU</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <select class="form-control " id="sbu" formControlName="sbu">
                           <option  [ngValue]="null">Select SBU</option>
                           <option *ngFor="let a of SBUs" [value]="a.sbuName">{{a.sbuName}}</option>
                       </select>
-                  </div>
+                                            </div>
 
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <!-- /.card -->
                     </div>
-                  </div>
-                </div>
-              </fieldset>
+                </form>
             </div>
-            <!-- /.card -->
-          </div>
-        </form>
-      </div>
-      <!-- /.row -->
+            <!-- /.row -->
+        </div>
     </div>
-  </div>
-  <!-- /.container-fluid -->
+    <!-- /.container-fluid -->
 </section>

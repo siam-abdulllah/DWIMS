@@ -1,4 +1,4 @@
-﻿ using API.Dtos;
+﻿using API.Dtos;
 using API.Helpers;
 using AutoMapper;
 using Core.Entities;
@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace API.Controllers
 {
-    public class InvestmentAprController :  BaseApiController
+    public class InvestmentAprController : BaseApiController
     {
 
         private readonly IGenericRepository<InvestmentInit> _investmentInitRepo;
@@ -20,10 +20,14 @@ namespace API.Controllers
         private readonly IGenericRepository<InvestmentApr> _investmentAprRepo;
         private readonly IGenericRepository<InvestmentAprComment> _investmentAprCommentRepo;
         private readonly IGenericRepository<InvestmentAprProducts> _investmentAprProductRepo;
+        private readonly IGenericRepository<Employee> _employeeRepo;
+        private readonly IGenericRepository<ReportInvestmentInfo> _reportInvestmentInfoRepo;
         private readonly IMapper _mapper;
 
-        public InvestmentAprController(IGenericRepository<InvestmentInit> investmentInitRepo,  IGenericRepository<InvestmentRecComment> investmentRecCommentRepo, IGenericRepository<InvestmentApr> investmentAprRepo, IGenericRepository<InvestmentAprComment> investmentAprCommentRepo, IGenericRepository<InvestmentAprProducts> investmentAprProductRepo,
-        IMapper mapper)
+        public InvestmentAprController(IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<InvestmentRecComment> investmentRecCommentRepo,
+            IGenericRepository<InvestmentApr> investmentAprRepo, IGenericRepository<InvestmentAprComment> investmentAprCommentRepo,
+            IGenericRepository<InvestmentAprProducts> investmentAprProductRepo, IGenericRepository<Employee> employeeRepo,
+            IGenericRepository<ReportInvestmentInfo> _reportInvestmentInfoRepo, IMapper mapper)
         {
             _mapper = mapper;
             _investmentAprRepo = investmentAprRepo;
@@ -31,6 +35,7 @@ namespace API.Controllers
             _investmentRecCommentRepo = investmentRecCommentRepo;
             _investmentAprCommentRepo = investmentAprCommentRepo;
             _investmentAprProductRepo = investmentAprProductRepo;
+            _employeeRepo = employeeRepo;
         }
         [HttpGet("investmentInits/{sbu}")]
         public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetInvestmentInits(string sbu,
@@ -43,6 +48,7 @@ namespace API.Controllers
                 investmentInitParrams.Search = sbu;
                 investmentRecCommentParrams.Search = sbu;
                 investmentAprCommentParrams.Search = sbu;
+
                 var investmentInitSpec = new InvestmentInitSpecification(investmentInitParrams);
                 var investmentRecCommentSpec = new InvestmentRecCommentSpecification(investmentRecCommentParrams);
                 var investmentAprCommentSpec = new InvestmentAprCommentSpecification(investmentAprCommentParrams);
@@ -55,18 +61,18 @@ namespace API.Controllers
 
                 var investmentInitFormAppr = (from i in investmentInits
                                               join rc in investmentRecComments on i.Id equals rc.InvestmentInitId
-                                              where !(from  ac in  investmentAprComments 
-                                                     select ac.InvestmentInitId).Contains(i.Id)
-                                             orderby i.ReferenceNo
-                                             select new InvestmentInitDto
-                                             {
-                                                 Id = i.Id,
-                                                 ReferenceNo = i.ReferenceNo.Trim(),
-                                                 ProposeFor = i.ProposeFor.Trim(),
-                                                 DonationType = i.DonationType.Trim(),
-                                                 DonationTo = i.DonationTo.Trim(),
-                                                 EmployeeId = i.EmployeeId,
-                                             }
+                                              where rc.RecStatus== "Recommended" && !(from ac in investmentAprComments
+                                                      select ac.InvestmentInitId).Contains(i.Id)
+                                              orderby i.ReferenceNo
+                                              select new InvestmentInitDto
+                                              {
+                                                  Id = i.Id,
+                                                  ReferenceNo = i.ReferenceNo.Trim(),
+                                                  ProposeFor = i.ProposeFor.Trim(),
+                                                  DonationType = i.DonationType.Trim(),
+                                                  DonationTo = i.DonationTo.Trim(),
+                                                  EmployeeId = i.EmployeeId,
+                                              }
                               ).Distinct().ToList();
 
                 var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
@@ -106,8 +112,8 @@ namespace API.Controllers
 
                 var investmentInitForAppr = (from i in investmentInits
                                              where (from rc in investmentRecComments
-                                                     join ac in investmentAprComments on rc.InvestmentInitId equals ac.InvestmentInitId
-                                                     select ac.InvestmentInitId).Contains(i.Id)
+                                                    join ac in investmentAprComments on rc.InvestmentInitId equals ac.InvestmentInitId
+                                                    select ac.InvestmentInitId).Contains(i.Id)
                                              orderby i.ReferenceNo
                                              select new InvestmentInitDto
                                              {
@@ -182,7 +188,7 @@ namespace API.Controllers
             };
         }
 
-       
+
 
         [HttpPost("InsertAprCom")]
         public ActionResult<InvestmentAprCommentDto> InsertInvestmentAprComment(InvestmentAprCommentDto investmentAprDto)
@@ -278,7 +284,7 @@ namespace API.Controllers
             }
         }
 
-       
+
         [HttpGet]
         [Route("investmentAprProducts/{investmentInitId}/{sbu}")]
         public async Task<IReadOnlyList<InvestmentAprProducts>> GetInvestmentAprProducts(int investmentInitId, string sbu)

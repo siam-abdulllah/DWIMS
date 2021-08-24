@@ -11,7 +11,7 @@ export class SuperAdminRoleGuard implements CanActivate {
     private accountService: AccountService,
     private router: Router, private toastr: ToastrService) {}
   canActivate(): boolean {
-    debugger;
+    //debugger;
     if (!this.accountService.loggedIn()) {
         this.toastr.error('UnAuthorized Access!!!');
         this.router.navigate(['/login']);
