@@ -10,6 +10,7 @@ namespace Core.Entities
         public int InvestmentInitId { get; set; }
         [ForeignKey("InvestmentInitId")]
         public InvestmentInit InvestmentInit { get; set; }
+        
         public int InstitutionId { get; set; }
         [ForeignKey("InstitutionId")]
         public InstitutionInfo InstitutionInfo { get; set; }

@@ -7,7 +7,7 @@ namespace Core.Entities
         public int? InvestmentInitId { get; set; }
         [ForeignKey("InvestmentInitId")]
         public InvestmentInit InvestmentInit { get; set; }
-
+       
         public string SBU { get; set; }
         public int ProductId { get; set; }
         [ForeignKey("ProductId")]

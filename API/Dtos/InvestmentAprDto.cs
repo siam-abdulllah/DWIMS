@@ -8,6 +8,8 @@ namespace API.Dtos
         public int Id { get; set; }
         public int InvestmentInitId { get; set; }
         public InvestmentInit InvestmentInit { get; set; }
+        public int EmployeeId { get; set; }
+        public Employee Employee { get; set; }
         public string ChequeTitle { get; set; }
         public string PaymentMethod { get; set; }
         public string CommitmentAllSBU { get; set; }

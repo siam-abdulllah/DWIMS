@@ -24,14 +24,16 @@ namespace API.Controllers
         private readonly IGenericRepository<Employee> _employeeRepo;
         private readonly IGenericRepository<ReportInvestmentInfo> _reportInvestmentInfoRepo;
         private readonly IGenericRepository<ApprAuthConfig> _apprAuthConfigRepo;
-        private readonly IGenericRepository<ApprovalCeiling> _aptimeRepo;
+        private readonly IGenericRepository<ApprovalCeiling> _approvalCeilingRepo;
+        private readonly IGenericRepository<SBUWiseBudget> _sbuRepo;
         private readonly IMapper _mapper;
 
         public InvestmentRecController(IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<InvestmentRec> investmentRecRepo, IGenericRepository<InvestmentRecComment> investmentRecCommentRepo, IGenericRepository<InvestmentRecProducts> investmentRecProductRepo,
         IGenericRepository<InvestmentAprComment> investmentAprCommentRepo, IGenericRepository<Employee> employeeRepo,
         IGenericRepository<ReportInvestmentInfo> reportInvestmentInfoRepo,
         IGenericRepository<ApprAuthConfig> apprAuthConfigRepo,
-        IGenericRepository<ApprovalCeiling> aptimeRepo, IMapper mapper)
+        IGenericRepository<ApprovalCeiling> approvalCeilingRepo,
+        IGenericRepository<SBUWiseBudget> sbuRepo,IMapper mapper)
         {
             _mapper = mapper;
             _investmentInitRepo = investmentInitRepo;
@@ -41,7 +43,8 @@ namespace API.Controllers
             _investmentAprCommentRepo = investmentAprCommentRepo;
             _employeeRepo = employeeRepo;
             _apprAuthConfigRepo = apprAuthConfigRepo;
-            _aptimeRepo = aptimeRepo;
+            _approvalCeilingRepo = approvalCeilingRepo;
+            _sbuRepo = sbuRepo;
         }
         [HttpGet("investmentInits/{sbu}")]
         public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetInvestmentInits(string sbu,
@@ -141,15 +144,20 @@ namespace API.Controllers
         }
 
 
-        [HttpPost("insertRec/{empID}/{recStatus}")]
-        public async Task<InvestmentRecDto> InsertInvestmentRecomendation(int empId,string recStatus,InvestmentRecDto investmentRecDto)
+        [HttpPost("insertRec/{empID}/{recStatus}/{sbu}")]
+        public async Task<InvestmentRecDto> InsertInvestmentRecomendation(int empId,string recStatus,string sbu,InvestmentRecDto investmentRecDto)
         {
             if (recStatus == "Approved")
             {
+                var sbuWiseBudgetSpec = new SBUWiseBudgetSpecificiation(sbu, DateTime.Now.ToString("dd/MM/yyyy"));
+                var sbuWiseBudgetData = await _sbuRepo.ListAsync(sbuWiseBudgetSpec);
+                var sbuWiseInvestmentRecSpec = new InvestmentRecSpecification(empId, recStatus);
+
                 var apprAuthConfigSpec = new ApprAuthConfigSpecification(empId, "A");
                 var apprAuthConfigList = await _apprAuthConfigRepo.ListAsync(apprAuthConfigSpec);
-                var spec = new ApprovalCeilingSpecification(apprAuthConfigList[0].ApprovalAuthorityId,0);
-                var approvalAuthorityCeilingData = await _aptimeRepo.GetByIdAsync(apprAuthConfigList[0].ApprovalAuthorityId);
+                var approvalCeilingSpec = new ApprovalCeilingSpecification(apprAuthConfigList[0].ApprovalAuthorityId,"A", DateTime.Now.ToString("dd/MM/yyyy"));
+                var approvalAuthorityCeilingData = await _approvalCeilingRepo.ListAsync(approvalCeilingSpec);
+               
                 //int v2 = investmentRecDto.InvestmentInitId ?? default(int);
                 // var recCommentRepo= _investmentRecCommentRepo.GetByIdAsync(investmentRecDto.InvestmentInitId ?? default);
 
@@ -178,6 +186,7 @@ namespace API.Controllers
                 TotalMonth = investmentRecDto.TotalMonth,
                 PaymentMethod = investmentRecDto.PaymentMethod,
                 ChequeTitle = investmentRecDto.ChequeTitle,
+                EmployeeId = investmentRecDto.EmployeeId,
                 SetOn = DateTimeOffset.Now
             };
             _investmentRecRepo.Add(invRec);
@@ -196,6 +205,7 @@ namespace API.Controllers
                 TotalMonth = investmentRecDto.TotalMonth,
                 PaymentMethod = invRec.PaymentMethod,
                 ChequeTitle = invRec.ChequeTitle,
+                EmployeeId = invRec.EmployeeId,
             };
         }
 

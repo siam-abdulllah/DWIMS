@@ -35,6 +35,10 @@ namespace Core.Specifications
             : base(x => x.InvestmentInitId == id)
         {
 
+        } public InvestmentRecSpecification(int empId,string recStatus)
+            : base(x => x.InvestmentInit. == id)
+        {
+
         }
         //public InvestmentRecSpecification(int employeeId,string status)
         //    : base(x => x.EmployeeId == employeeId && x.Status == status)

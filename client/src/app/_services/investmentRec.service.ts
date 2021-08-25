@@ -130,9 +130,9 @@ export class InvestmentRecService {
   updateInvestmentRec() {
     return this.http.post(this.baseUrl+ 'investmentRec/updateRecCom',  this.investmentRecCommentFormData);
   }
-  insertInvestmentDetail(empId:number) {
+  insertInvestmentDetail(empId:number,sbu:string) {
     
-    return this.http.post(this.baseUrl+ 'investmentRec/insertRec/'+empId+'/'+this.investmentRecCommentFormData.recStatus, this.investmentDetailFormData);
+    return this.http.post(this.baseUrl+ 'investmentRec/insertRec/'+empId+'/'+this.investmentRecCommentFormData.recStatus+'/'+sbu, this.investmentDetailFormData);
   
   }
   
