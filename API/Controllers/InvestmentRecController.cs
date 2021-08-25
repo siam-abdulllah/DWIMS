@@ -114,7 +114,7 @@ namespace API.Controllers
 
                 var investmentInitFormRec = (from i in investmentInits
                                              join rc in investmentRecComments on i.Id equals rc.InvestmentInitId
-                                             where !(from ac in investmentAprComments where ac.RecStatus=="Approved"
+                                             where !(from ac in investmentAprComments where ac.AprStatus=="Approved"
                                                      select ac.InvestmentInitId).Contains(i.Id)
                                              orderby i.ReferenceNo
                                              select new InvestmentInitDto

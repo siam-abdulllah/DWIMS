@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Data.Migrations
 {
-    public partial class InitialCreate_2482021 : Migration
+    public partial class InithialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -327,7 +327,7 @@ namespace Infrastructure.Data.Migrations
                     AmountPerMonth = table.Column<int>(nullable: false),
                     Additional = table.Column<string>(nullable: true),
                     Remarks = table.Column<string>(nullable: true),
-                    Status = table.Column<int>(nullable: false)
+                    Status = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -434,7 +434,19 @@ namespace Infrastructure.Data.Migrations
                     ProposeFor = table.Column<string>(nullable: true),
                     DonationType = table.Column<string>(nullable: true),
                     DonationTo = table.Column<string>(nullable: true),
-                    EmployeeId = table.Column<int>(nullable: false)
+                    EmployeeId = table.Column<int>(nullable: false),
+                    PostingType = table.Column<string>(nullable: true),
+                    MarketCode = table.Column<string>(nullable: true),
+                    MarketName = table.Column<string>(nullable: true),
+                    RegionCode = table.Column<string>(nullable: true),
+                    RegionName = table.Column<string>(nullable: true),
+                    ZoneCode = table.Column<string>(nullable: true),
+                    ZoneName = table.Column<string>(nullable: true),
+                    TerritoryCode = table.Column<string>(nullable: true),
+                    TerritoryName = table.Column<string>(nullable: true),
+                    DivisionCode = table.Column<string>(nullable: true),
+                    DivisionName = table.Column<string>(nullable: true),
+                    SBU = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -603,8 +615,20 @@ namespace Infrastructure.Data.Migrations
                     ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
                     InvestmentInitId = table.Column<int>(nullable: true),
                     EmployeeId = table.Column<int>(nullable: false),
+                    PostingType = table.Column<string>(nullable: true),
+                    MarketCode = table.Column<string>(nullable: true),
+                    MarketName = table.Column<string>(nullable: true),
+                    RegionCode = table.Column<string>(nullable: true),
+                    RegionName = table.Column<string>(nullable: true),
+                    ZoneCode = table.Column<string>(nullable: true),
+                    ZoneName = table.Column<string>(nullable: true),
+                    TerritoryCode = table.Column<string>(nullable: true),
+                    TerritoryName = table.Column<string>(nullable: true),
+                    DivisionCode = table.Column<string>(nullable: true),
+                    DivisionName = table.Column<string>(nullable: true),
+                    SBU = table.Column<string>(nullable: true),
                     Comments = table.Column<string>(nullable: true),
-                    RecStatus = table.Column<string>(nullable: true)
+                    AprStatus = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -801,6 +825,7 @@ namespace Infrastructure.Data.Migrations
                     SetOn = table.Column<DateTimeOffset>(nullable: false),
                     ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
                     InvestmentInitId = table.Column<int>(nullable: true),
+                    EmployeeId = table.Column<int>(nullable: false),
                     ChequeTitle = table.Column<string>(nullable: true),
                     PaymentMethod = table.Column<string>(nullable: true),
                     CommitmentAllSBU = table.Column<string>(nullable: true),
@@ -814,6 +839,12 @@ namespace Infrastructure.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_InvestmentRec", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InvestmentRec_Employee_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employee",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_InvestmentRec_InvestmentInit_InvestmentInitId",
                         column: x => x.InvestmentInitId,
@@ -833,6 +864,18 @@ namespace Infrastructure.Data.Migrations
                     ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
                     InvestmentInitId = table.Column<int>(nullable: true),
                     EmployeeId = table.Column<int>(nullable: false),
+                    PostingType = table.Column<string>(nullable: true),
+                    MarketCode = table.Column<string>(nullable: true),
+                    MarketName = table.Column<string>(nullable: true),
+                    RegionCode = table.Column<string>(nullable: true),
+                    RegionName = table.Column<string>(nullable: true),
+                    ZoneCode = table.Column<string>(nullable: true),
+                    ZoneName = table.Column<string>(nullable: true),
+                    TerritoryCode = table.Column<string>(nullable: true),
+                    TerritoryName = table.Column<string>(nullable: true),
+                    DivisionCode = table.Column<string>(nullable: true),
+                    DivisionName = table.Column<string>(nullable: true),
+                    SBU = table.Column<string>(nullable: true),
                     Comments = table.Column<string>(nullable: true),
                     RecStatus = table.Column<string>(nullable: true)
                 },
@@ -1351,6 +1394,11 @@ namespace Infrastructure.Data.Migrations
                 name: "IX_InvestmentInstitution_ResposnsibleDoctorId",
                 table: "InvestmentInstitution",
                 column: "ResposnsibleDoctorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvestmentRec_EmployeeId",
+                table: "InvestmentRec",
+                column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_InvestmentRec_InvestmentInitId",

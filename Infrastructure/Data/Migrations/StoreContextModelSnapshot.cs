@@ -126,8 +126,8 @@ namespace Infrastructure.Data.Migrations
                     b.Property<DateTimeOffset>("SetOn")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -668,11 +668,20 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("AprStatus")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Comments")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
+
+                    b.Property<string>("DivisionCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DivisionName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
@@ -680,14 +689,41 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int?>("InvestmentInitId")
                         .HasColumnType("int");
 
+                    b.Property<string>("MarketCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MarketName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTimeOffset>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("RecStatus")
+                    b.Property<string>("PostingType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RegionCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RegionName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SBU")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("SetOn")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("TerritoryCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TerritoryName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ZoneCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ZoneName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -915,6 +951,12 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
 
+                    b.Property<string>("DivisionCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DivisionName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("DonationTo")
                         .HasColumnType("nvarchar(max)");
 
@@ -924,8 +966,17 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
+                    b.Property<string>("MarketCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MarketName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTimeOffset>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("PostingType")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProposeFor")
                         .HasColumnType("nvarchar(max)");
@@ -933,8 +984,29 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("ReferenceNo")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("RegionCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RegionName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SBU")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTimeOffset>("SetOn")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("TerritoryCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TerritoryName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ZoneCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ZoneName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -1004,6 +1076,9 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
 
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
                     b.Property<DateTimeOffset>("FromDate")
                         .HasColumnType("datetimeoffset");
 
@@ -1033,6 +1108,8 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EmployeeId");
+
                     b.HasIndex("InvestmentInitId");
 
                     b.ToTable("InvestmentRec");
@@ -1051,20 +1128,56 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
 
+                    b.Property<string>("DivisionCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DivisionName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
                     b.Property<int?>("InvestmentInitId")
                         .HasColumnType("int");
 
+                    b.Property<string>("MarketCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MarketName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTimeOffset>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("PostingType")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RecStatus")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("RegionCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RegionName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SBU")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTimeOffset>("SetOn")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("TerritoryCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TerritoryName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ZoneCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ZoneName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -2021,6 +2134,12 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Core.Entities.InvestmentRec", b =>
                 {
+                    b.HasOne("Core.Entities.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Core.Entities.InvestmentInit", "InvestmentInit")
                         .WithMany()
                         .HasForeignKey("InvestmentInitId");

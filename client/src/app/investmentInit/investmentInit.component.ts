@@ -132,7 +132,7 @@ export class InvestmentInitComponent implements OnInit {
     this.InvestmentInitSearchModalRef.hide()
   }
   getInvestmentInit(){
-    this.investmentInitService.getInvestmentInit(this.sbu).subscribe(response => 
+    this.investmentInitService.getInvestmentInit(parseInt(this.empId),this.sbu).subscribe(response => 
     {
       this.investmentInits = response.data;
       this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
@@ -142,7 +142,7 @@ export class InvestmentInitComponent implements OnInit {
     });
   }
   getInvestmentInitOthers(){
-  this.investmentInitService.getInvestmentInit(this.sbu).subscribe(response => 
+  this.investmentInitService.getInvestmentInit(parseInt(this.empId),this.sbu).subscribe(response => 
     {
     this.investmentInits = response.data;
     this.openInvestmentInitSearchModal(this.investmentInitSearchModal);

@@ -36,7 +36,7 @@ namespace Core.Specifications
         {
 
         } public InvestmentRecSpecification(int empId,string recStatus)
-            : base(x => x.InvestmentInit. == id)
+            : base(x => x.InvestmentInit.EmployeeId == empId)
         {
 
         }

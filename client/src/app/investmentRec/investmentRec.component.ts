@@ -607,7 +607,7 @@ getEmployeeId(){
      
     //if(this.investmentRecService.investmentDetailFormData.id==null || this.investmentRecService.investmentDetailFormData.id==undefined || this.investmentRecService.investmentDetailFormData.id==0)
     //{
-      this.investmentRecService.insertInvestmentDetail(parseInt(this.empId)).subscribe(
+      this.investmentRecService.insertInvestmentDetail(parseInt(this.empId),this.sbu).subscribe(
         res => {
          var data=res as IInvestmentRec;
          this.investmentRecService.investmentDetailFormData=data;

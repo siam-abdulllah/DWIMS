@@ -199,7 +199,7 @@ namespace API.Controllers
                 InvestmentInitId = investmentAprDto.InvestmentInitId,
                 EmployeeId = investmentAprDto.EmployeeId,
                 Comments = investmentAprDto.Comments,
-                RecStatus = investmentAprDto.RecStatus,
+                AprStatus = investmentAprDto.AprStatus,
                 SetOn = DateTimeOffset.Now
             };
             _investmentAprCommentRepo.Add(invApr);
@@ -211,7 +211,7 @@ namespace API.Controllers
                 InvestmentInitId = investmentAprDto.InvestmentInitId,
                 EmployeeId = investmentAprDto.EmployeeId,
                 Comments = investmentAprDto.Comments,
-                RecStatus = investmentAprDto.RecStatus,
+                AprStatus = investmentAprDto.AprStatus,
             };
         }
 
@@ -226,7 +226,7 @@ namespace API.Controllers
                 InvestmentInitId = investmentAprDto.InvestmentInitId,
                 EmployeeId = investmentAprDto.EmployeeId,
                 Comments = investmentAprDto.Comments,
-                RecStatus = investmentAprDto.RecStatus,
+                AprStatus = investmentAprDto.AprStatus,
                 ModifiedOn = DateTimeOffset.Now,
             };
             _investmentAprCommentRepo.Update(invApr);
@@ -237,7 +237,7 @@ namespace API.Controllers
                 Id = investmentAprDto.Id,
                 EmployeeId = investmentAprDto.EmployeeId,
                 Comments = investmentAprDto.Comments,
-                RecStatus = investmentAprDto.RecStatus,
+                AprStatus = investmentAprDto.AprStatus,
             };
         }
 
