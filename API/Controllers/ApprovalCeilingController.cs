@@ -58,6 +58,7 @@ namespace API.Controllers
                 ApprovalAuthorityId = apprclngDto.ApprovalAuthorityId,
                 Additional = apprclngDto.Additional,
                 Remarks = apprclngDto.Remarks,
+                Status = "A",
                 SetOn = DateTimeOffset.Now
             };
 
@@ -75,6 +76,7 @@ namespace API.Controllers
                 ApprovalAuthorityId = appr.ApprovalAuthorityId,
                 Additional = appr.Additional,
                 Remarks = appr.Remarks,
+                Status = appr.Remarks,
             };
         }
 
@@ -93,6 +95,7 @@ namespace API.Controllers
                 ApprovalAuthorityId = apprclngDto.ApprovalAuthorityId,
                 Additional = apprclngDto.Additional,
                 Remarks = apprclngDto.Remarks,
+                Status = "A",
                 ModifiedOn = DateTimeOffset.Now
             };
 
@@ -110,6 +113,7 @@ namespace API.Controllers
                 ApprovalAuthorityId = appr.ApprovalAuthorityId,
                 Additional = appr.Additional,
                 Remarks = appr.Remarks,
+                Status = "A",
             };
         }
 

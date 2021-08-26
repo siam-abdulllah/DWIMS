@@ -24,6 +24,7 @@ import { ISocietyInfo } from '../shared/models/societyInfo';
 import { MarketGroupMst, IMarketGroupMst } from '../shared/models/marketGroupMst';
 import { MarketGroupDtl, IMarketGroupDtl } from '../shared/models/marketGroupDtl';
 import { AccountService } from '../account/account.service';
+import { IInvestmentDetailOld } from '../shared/models/investment';
 @Component({
   selector: 'app-investmentRec',
   templateUrl: './investmentRec.component.html',
@@ -65,6 +66,7 @@ export class InvestmentRecComponent implements OnInit {
   bsValue: Date = new Date();
   empId:string;
   sbu:string;
+  investmentDetailsOld: IInvestmentDetailOld[];
   config = {
     keyboard: false,
     class: 'modal-lg',
@@ -80,7 +82,7 @@ export class InvestmentRecComponent implements OnInit {
       this.InvestmentRecSearchModalRef = this.modalService.show(template, this.config);
     }
     selectInvestmentInit(selectedRecord: IInvestmentInit) {
-      //debugger;
+      //
       this.investmentRecService.investmentRecFormData = Object.assign({}, selectedRecord);
       this.investmentRecService.investmentDetailFormData.investmentInitId =selectedRecord.id;
       this.investmentRecService.investmentRecCommentFormData.investmentInitId =selectedRecord.id;
@@ -115,7 +117,7 @@ export class InvestmentRecComponent implements OnInit {
       this.InvestmentInitSearchModalRef.hide()
       }
     selectInvestmentRec(selectedRecord: IInvestmentInit) {
-      //debugger;
+      //
       this.investmentRecService.investmentRecFormData = Object.assign({}, selectedRecord);
       this.investmentRecService.investmentDetailFormData.investmentInitId =selectedRecord.id;
       this.investmentRecService.investmentRecCommentFormData.investmentInitId =selectedRecord.id;
@@ -150,9 +152,22 @@ export class InvestmentRecComponent implements OnInit {
       this.isValid=true;
       this.InvestmentRecSearchModalRef.hide()
       }
+      getLastFiveInvestment(empId:number,toDayDate:string)
+      {
+      this.investmentRecService.getLastFiveInvestment(empId,toDayDate).subscribe(
+      (response) => {
+        
+        this.investmentDetailsOld= response as IInvestmentDetailOld[];
+      },
+      (error) => {
+        console.log(error);
+      }
+      );
+      }
+      
       getCampaignMst(){
         this.investmentRecService.getCampaignMsts().subscribe(response => {
-          //debugger;
+          //
           this.campaignMsts = response as ICampaignMst[];
         }, error => {
             console.log(error);
@@ -160,7 +175,7 @@ export class InvestmentRecComponent implements OnInit {
       }
       getInvestmentInit(){
       this.investmentRecService.getInvestmentInit(this.sbu).subscribe(response => {
-        //debugger;
+        //
        this.investmentRecs = response.data;
        this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
       }, error => {
@@ -169,7 +184,7 @@ export class InvestmentRecComponent implements OnInit {
     }
    getInvestmentRecommended(){
       this.investmentRecService.getInvestmentRecommended(this.sbu).subscribe(response => {
-        //debugger;
+        //
        this.investmentRecs = response.data;
        this.openInvestmentRecSearchModal(this.investmentRecSearchModal);
       }, error => {
@@ -179,7 +194,7 @@ export class InvestmentRecComponent implements OnInit {
    
    getInvestmentCampaign(){
     this.investmentRecService.getInvestmentCampaigns(this.investmentRecService.investmentRecFormData.id).subscribe(response => {
-      debugger;
+      
       
       var data=response[0] as IInvestmentCampaign;
       if(data!==undefined)
@@ -200,7 +215,7 @@ export class InvestmentRecComponent implements OnInit {
           }
         }
         this.investmentRecService.getCampaignDtls(data.campaignDtl.mstId).subscribe(response => {
-          debugger;
+          
           this.campaignDtls = response as ICampaignDtl[];
           for (let i = 0; i < this.campaignDtls.length; i++) {
             if(this.campaignDtls[i].id==data.campaignDtl.id)
@@ -217,7 +232,7 @@ export class InvestmentRecComponent implements OnInit {
      
      
       this.investmentRecService.getCampaignDtlProducts(data.campaignDtl.id).subscribe(response => {
-        debugger;
+        
         this.campaignDtlProducts = response as ICampaignDtlProduct[];
       }, error => {
           console.log(error);
@@ -234,7 +249,7 @@ export class InvestmentRecComponent implements OnInit {
   }
    getInvestmentBcds(){
     this.investmentRecService.getInvestmentBcds(this.investmentRecService.investmentRecFormData.id).subscribe(response => {
-      //debugger;
+      //
       
       var data=response[0] as IInvestmentBcds;
       if(data!==undefined)
@@ -255,7 +270,7 @@ export class InvestmentRecComponent implements OnInit {
   }
    getInvestmentSociety(){
     this.investmentRecService.getInvestmentSociety(this.investmentRecService.investmentRecFormData.id).subscribe(response => {
-      //debugger;
+      //
       
       var data=response[0] as IInvestmentSociety;
       if(data!==undefined)
@@ -277,7 +292,7 @@ export class InvestmentRecComponent implements OnInit {
   }
    getInvestmentInstitution(){
     this.investmentRecService.getInvestmentInstitutions(this.investmentRecService.investmentRecFormData.id).subscribe(response => {
-      //debugger;
+      //
       
       var data=response[0] as IInvestmentInstitution;
       if(data!==undefined)
@@ -299,7 +314,7 @@ export class InvestmentRecComponent implements OnInit {
   }
    getInvestmentDoctor(){
     this.investmentRecService.getInvestmentDoctors(this.investmentRecService.investmentRecFormData.id).subscribe(response => {
-      //debugger;
+      //
       var data=response[0] as IInvestmentDoctor;
       if( data!==undefined)
       {
@@ -322,7 +337,7 @@ export class InvestmentRecComponent implements OnInit {
   }
   getInvestmentRecComment(){
     this.investmentRecService.getInvestmentRecComment(this.investmentRecService.investmentRecFormData.id,this.empId).subscribe(response => {
-      //debugger;
+      //
       var data=response[0] as IInvestmentRecComment;
       if( data!==undefined)
       {
@@ -339,14 +354,18 @@ export class InvestmentRecComponent implements OnInit {
   }
   getInvestmentDetails(){
     this.investmentRecService.getInvestmentDetails(this.investmentRecService.investmentRecFormData.id ).subscribe(response => {
-      //debugger;
+      //
       var data=response[0] as IInvestmentRec;
       if(data!==undefined)
       {
       this.investmentRecService.investmentDetailFormData=data;
       this.investmentRecService.investmentDetailFormData.id=0;
-     this.investmentRecService.investmentDetailFormData.fromDate=new Date(data.fromDate);
+      this.investmentRecService.investmentDetailFormData.fromDate=new Date(data.fromDate);
       this.investmentRecService.investmentDetailFormData.toDate=new Date(data.toDate);
+      let convertedDate =this.datePipe.transform(data.fromDate, 'ddMMyyyy');
+      this.getLastFiveInvestment(this.investmentRecService.investmentRecFormData.employeeId,convertedDate);
+      
+
     } else{
       this.toastr.warning('No Data Found', 'Investment ');
     }
@@ -356,7 +375,7 @@ export class InvestmentRecComponent implements OnInit {
  }
    getInvestmentTargetedProd(){
     this.investmentRecService.getInvestmentTargetedProds(this.investmentRecService.investmentRecFormData.id,this.sbu).subscribe(response => {
-      //debugger;
+      //
       var data=response as IInvestmentTargetedProd[];
       if( data!==undefined)
       {
@@ -372,7 +391,7 @@ export class InvestmentRecComponent implements OnInit {
     });
   }
   getInvestmentRecDetails(){
-    //debugger;
+    //
     this.investmentRecService.getInvestmentRecDetails(this.investmentRecService.investmentRecFormData.id).subscribe(response => {
       
       var data=response[0] as IInvestmentRec;
@@ -380,8 +399,11 @@ export class InvestmentRecComponent implements OnInit {
       {
       this.investmentRecService.investmentDetailFormData=data;
       this.investmentRecService.investmentDetailFormData.id=0;
-     this.investmentRecService.investmentDetailFormData.fromDate=new Date(data.fromDate);
+      this.investmentRecService.investmentDetailFormData.fromDate=new Date(data.fromDate);
       this.investmentRecService.investmentDetailFormData.toDate=new Date(data.toDate);
+      let convertedDate =this.datePipe.transform(data.fromDate, 'ddMMyyyy');
+      this.getLastFiveInvestment(this.investmentRecService.investmentRecFormData.employeeId,convertedDate);
+       
     } else{
       this.toastr.warning('No Data Found', 'Investment ');
     }
@@ -390,7 +412,7 @@ export class InvestmentRecComponent implements OnInit {
    });
  }
    getInvestmentRecProducts(){
-    //debugger;
+    //
     this.investmentRecService.getInvestmentRecProducts(this.investmentRecService.investmentRecFormData.id,this.sbu).subscribe(response => {
       
       var data=response as IInvestmentTargetedProd[];
@@ -409,7 +431,7 @@ export class InvestmentRecComponent implements OnInit {
   }
    getInvestmentTargetedGroup(){
     this.investmentRecService.getInvestmentTargetedGroups(this.investmentRecService.investmentRecFormData.id).subscribe(response => {
-      //debugger;
+      //
       var data=response as IInvestmentTargetedGroup[];
       if( data!==undefined)
       {
@@ -435,7 +457,7 @@ export class InvestmentRecComponent implements OnInit {
   }
  
   changeDateInDetail(){
-    //debugger;
+    //
     
     //this.printingDate=this.getDigitBanglaFromEnglish(this.datePipe.transform(value, "dd/MM/yyyy"));
     if(this.investmentRecService.investmentDetailFormData.fromDate==null || this.investmentRecService.investmentDetailFormData.fromDate==undefined )
@@ -459,24 +481,24 @@ export class InvestmentRecComponent implements OnInit {
   
  getProduct(){
   this.investmentRecService.getProduct(this.sbu).subscribe(response => {
-    //debugger;
+    //
     this.products = response as IProduct[];
   }, error => {
       console.log(error);
   });
 }
 getEmployeeId(){
-  //debugger;
+  //
   this.empId=this.accountService.getEmployeeId();
   this.investmentRecService.investmentRecCommentFormData.employeeId=parseInt(this.empId);
   this.getEmployeeSbu();
 }
  getEmployeeSbu()
   {
-    //debugger;
+    //
     this.accountService.getEmployeeSbu(this.investmentRecService.investmentRecCommentFormData.employeeId).subscribe(
       (response) => {
-        //debugger;
+        //
         this.sbu= response.sbu;
         this.getProduct();
       },
@@ -495,7 +517,7 @@ getEmployeeId(){
   insertInvestmentRec() {
     this.investmentRecService.insertInvestmentRec().subscribe(
       res => {
-        //debugger;
+        //
         this.investmentRecService.investmentRecCommentFormData=res as IInvestmentRecComment;
        //this.investmentRecService.investmentDoctorFormData.investmentInitId=this.investmentRecService.investmentRecFormData.id;
        //this.investmentRecService.investmentInstitutionFormData.investmentInitId=this.investmentRecService.investmentRecFormData.id;
@@ -510,7 +532,7 @@ getEmployeeId(){
   updateInvestmentRec() {
     this.investmentRecService.updateInvestmentRec().subscribe(
       res => {
-        //debugger;
+        //
         this.isValid=true;
         this.investmentRecService.investmentRecCommentFormData=res as IInvestmentRecComment;
         this.insertInvestmentDetails();
@@ -585,7 +607,7 @@ getEmployeeId(){
      
     //if(this.investmentRecService.investmentDetailFormData.id==null || this.investmentRecService.investmentDetailFormData.id==undefined || this.investmentRecService.investmentDetailFormData.id==0)
     //{
-      this.investmentRecService.insertInvestmentDetail().subscribe(
+      this.investmentRecService.insertInvestmentDetail(parseInt(this.empId),this.sbu).subscribe(
         res => {
          var data=res as IInvestmentRec;
          this.investmentRecService.investmentDetailFormData=data;
@@ -618,7 +640,7 @@ getEmployeeId(){
  
   
   insertInvestmentTargetedProd() {
-    //debugger;
+    //
     if(this.investmentRecService.investmentRecFormData.id==null || this.investmentRecService.investmentRecFormData.id==undefined || this.investmentRecService.investmentRecFormData.id==0)
     {
       this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
@@ -661,7 +683,7 @@ getEmployeeId(){
     //{
     this.investmentRecService.insertInvestmentTargetedProd(this.investmentTargetedProds).subscribe(
       res => {
-        //debugger;
+        //
        //this.investmentRecService.investmentTargetedProdFormData=new InvestmentTargetedProd();
        
        this.getInvestmentTargetedProd();
@@ -675,7 +697,7 @@ getEmployeeId(){
     // else{
     //   this.investmentRecService.updateInvestmentTargetedProd().subscribe(
     //     res => {
-    //       debugger;
+    //       
     //      this.investmentRecService.investmentTargetedProdFormData=new InvestmentTargetedProd();
          
     //      this.getInvestmentTargetedProd();
@@ -688,7 +710,7 @@ getEmployeeId(){
     // }
   }
   addInvestmentTargetedProd() {
-    //debugger;
+    //
     if(this.investmentRecService.investmentTargetedProdFormData.productId==null || this.investmentRecService.investmentTargetedProdFormData.productId==undefined || this.investmentRecService.investmentTargetedProdFormData.productId==0)
     {
       this.toastr.warning('Select Product First', 'Investment ', {
@@ -761,7 +783,7 @@ getEmployeeId(){
     if (c == true) {  
     this.investmentRecService.removeInvestmentTargetedProd().subscribe(
       res => {
-        //debugger;
+        //
         this.toastr.success(res);
         //this.isDonationValid=false;
         this.investmentRecService.investmentTargetedProdFormData=new InvestmentTargetedProd();

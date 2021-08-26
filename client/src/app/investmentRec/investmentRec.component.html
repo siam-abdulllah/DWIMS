@@ -492,21 +492,21 @@
                                                         <td>Share-All</td>
                                                         <td>Share-Own</td>
                                                     </tr>
-                                                    <tr *ngFor="let a of investmentDetails">
+                                                    <tr *ngFor="let a of investmentDetailsOld">
                                                         <td>
-                                                            {{a.purpose}}
+                                                            {{a.investmentAmount}}
                                                         </td>
                                                         <td>
-                                                            {{a.commitmentAllSBU}}
+                                                            {{a.comtSharePrcntAll}}
                                                         </td>
                                                         <td>
-                                                            {{a.commitmentOwnSBU}}
+                                                            {{a.comtSharePrcnt}}
                                                         </td>
                                                         <td>
-                                                            {{a.shareAllSBU}}
+                                                            {{a.prescribedSharePrcntAll}}
                                                         </td>
                                                         <td>
-                                                            {{a.shareOwnSBU}}
+                                                            {{a.prescribedSharePrcnt}}
                                                         </td>
                                                     </tr>
                                                 </table>

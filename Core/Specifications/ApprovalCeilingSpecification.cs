@@ -1,4 +1,6 @@
 ﻿using Core.Entities;
+using System;
+using System.Globalization;
 
 namespace Core.Specifications
 {
@@ -17,7 +19,14 @@ namespace Core.Specifications
         public ApprovalCeilingSpecification(int id)
             : base(x => x.Id == id)
         {
-            AddInclude(x => x.Additional);
+            
+        }
+        public ApprovalCeilingSpecification(int approvalAuthorityId,string status,string date)
+            : base(x => x.ApprovalAuthorityId == approvalAuthorityId && x.Status== status 
+            && x.InvestmentFrom <= DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture)
+            && x.InvestmentTo >= DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture))
+        {
+           
         }
     }
 }

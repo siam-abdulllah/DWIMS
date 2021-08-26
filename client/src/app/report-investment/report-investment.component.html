@@ -24,6 +24,13 @@
                                 <div class="col-sm-6">
                                     <h3 class="card-title">Investment Reports</h3>
                                 </div>
+                                <!-- <div class="col-sm-3">
+                  <button class="btn btn-success btn-lg btn-block" type="button" click="(getDocSocInvestReport())"><i
+                      class="fa fa-save"></i>&nbsp; View Report</button>
+                </div>
+                <div class="col-sm-3">
+                  <button class="btn btn-info btn-lg btn-block"><i class="fa fa-search"></i>Reset</button>
+                </div> -->
                             </div>
                         </div>
                         <!-- /.card-header -->
@@ -35,24 +42,43 @@
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-6">
-
                                             <table class="table table-bordered">
                                                 <tr>
                                                     <td>Report Name</td>
                                                     <td>Select</td>
                                                 </tr>
-                                                <tr *ngFor="let rpt of reports">
+                                                <tr>
                                                     <td>
-                                                        {{rpt.reportName}}
+                                                        Institution/Society/BCDS wise Investment
                                                     </td>
                                                     <td>
-                                                        <button class="btn btn-info  btn-block" type="button" (click)="viewReport(rpt.reportName)"><i class="fa fa-save"></i>&nbsp; Edit</button>
+                                                        <button class="btn btn-success btn-block" type="button" (click)="getDocSocInvestReport()"><i
+                                class="fa fa-arrow"></i>&nbsp; View Report</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        Doctor wise Leadership analysis
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-success btn-block" type="button"><i class="fa fa-arrow"></i>&nbsp;
+                              View Report</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        Invested Doctor potentiality Analysis as per Transaction
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-success btn-block" type="button"><i class="fa fa-arrow"></i>&nbsp;
+                              View Report</button>
                                                     </td>
                                                 </tr>
                                             </table>
                                         </div>
 
                                         <div class="col-md-6">
+
                                             <div class="col-md-2">
                                                 <label>From Date</label>
                                             </div>
@@ -138,9 +164,8 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <select class="form-control " id="donationType" formControlName="donationType">
-                          <option [ngValue]="null">Select Donation Type</option>
-                          <option *ngFor="let a of donations" [value]="a.donationTypeName">{{a.donationTypeName}}
-                          </option>
+                            <option  [ngValue]="null">Select Donation Type</option>
+                            <option *ngFor="let a of donations" [value]="a.donationTypeName">{{a.donationTypeName}}</option>
                         </select>
                                             </div>
                                             <div class="col-md-2">
@@ -148,9 +173,9 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <select class="form-control " id="sbu" formControlName="sbu">
-                          <option [ngValue]="null">Select SBU</option>
+                          <option  [ngValue]="null">Select SBU</option>
                           <option *ngFor="let a of SBUs" [value]="a.sbuName">{{a.sbuName}}</option>
-                        </select>
+                      </select>
                                             </div>
 
                                         </div>

@@ -1,4 +1,6 @@
 ﻿using Core.Entities;
+using System;
+using System.Globalization;
 
 namespace Core.Specifications
 {
@@ -15,6 +17,11 @@ namespace Core.Specifications
 
         public SBUWiseBudgetSpecificiation(int id)
             : base(x => x.Id == id)
+        {
+        }public SBUWiseBudgetSpecificiation(string sbu,string date)
+            : base(x => x.SBU == sbu 
+            && x.FromDate<=DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture) 
+            && x.ToDate>=DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture))
         {
         }
     }

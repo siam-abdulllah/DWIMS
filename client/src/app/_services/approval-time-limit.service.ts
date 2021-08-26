@@ -31,7 +31,7 @@ export class ApprovalTimeLimitService {
   }
   getApprovalTimeLimit(){    
     let params = new HttpParams();
-    debugger;
+    
     if (this.genParams.search) {
       params = params.append('search', this.genParams.search);
     }
@@ -50,7 +50,7 @@ export class ApprovalTimeLimitService {
   }
 
   insertApprovalTimeLimit() {
-    debugger;
+    
     //this.approvalTimeLimitFormData.approvalAuthorityId=this.approvalTimeLimitFormData.approvalAuthorityId;
     return this.http.post(this.baseUrl+ 'approvalTimeLimit/CreateApprovalTimeLimit', this.approvalTimeLimitFormData);
   }

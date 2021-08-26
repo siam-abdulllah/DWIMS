@@ -30,7 +30,7 @@ export class SBUWiseBudgetService {
   }
   getSBUWiseBudget(){    
     let params = new HttpParams();
-    debugger;
+    
     if (this.genParams.search) {
       params = params.append('search', this.genParams.search);
     }

@@ -24,6 +24,7 @@ import { ISocietyInfo } from '../shared/models/societyInfo';
 import { MarketGroupMst, IMarketGroupMst } from '../shared/models/marketGroupMst';
 import { MarketGroupDtl, IMarketGroupDtl } from '../shared/models/marketGroupDtl';
 import { AccountService } from '../account/account.service';
+import { IInvestmentDetailOld } from '../shared/models/investment';
 @Component({
   selector: 'app-investmentApr',
   templateUrl: './investmentApr.component.html',
@@ -37,6 +38,7 @@ export class InvestmentAprComponent implements OnInit {
   @ViewChild('investmentAprSearchModal', { static: false }) investmentAprSearchModal: TemplateRef<any>;
   InvestmentInitSearchModalRef: BsModalRef;
   InvestmentAprSearchModalRef: BsModalRef;
+  investmentDetailsOld: IInvestmentDetailOld[];
   // genParams: GenericParams;
   // campaigns: ICampaign[]; 
   investmentAprs: IInvestmentApr[];
@@ -80,7 +82,7 @@ export class InvestmentAprComponent implements OnInit {
       this.InvestmentAprSearchModalRef = this.modalService.show(template, this.config);
     }
     selectInvestmentInit(selectedAprord: IInvestmentInit) {
-      //debugger;
+      //
       this.investmentAprService.investmentAprFormData = Object.assign({}, selectedAprord);
       this.investmentAprService.investmentDetailFormData.investmentInitId =selectedAprord.id;
       this.investmentAprService.investmentAprCommentFormData.investmentInitId =selectedAprord.id;
@@ -115,7 +117,7 @@ export class InvestmentAprComponent implements OnInit {
       this.InvestmentInitSearchModalRef.hide()
       }
     selectInvestmentApr(selectedAprord: IInvestmentInit) {
-      //debugger;
+      //
       this.investmentAprService.investmentAprFormData = Object.assign({}, selectedAprord);
       this.investmentAprService.investmentDetailFormData.investmentInitId =selectedAprord.id;
       this.investmentAprService.investmentAprCommentFormData.investmentInitId =selectedAprord.id;
@@ -150,9 +152,21 @@ export class InvestmentAprComponent implements OnInit {
       this.isValid=true;
       this.InvestmentAprSearchModalRef.hide()
       }
+      getLastFiveInvestment(empId:number,toDayDate:string)
+      {
+      this.investmentAprService.getLastFiveInvestment(empId,toDayDate).subscribe(
+      (response) => {
+        
+        this.investmentDetailsOld= response as IInvestmentDetailOld[];
+      },
+      (error) => {
+        console.log(error);
+      }
+      );
+      }
       getCampaignMst(){
         this.investmentAprService.getCampaignMsts().subscribe(response => {
-          //debugger;
+          //
           this.campaignMsts = response as ICampaignMst[];
         }, error => {
             console.log(error);
@@ -160,7 +174,7 @@ export class InvestmentAprComponent implements OnInit {
       }
       getInvestmentInit(){
       this.investmentAprService.getInvestmentInit(this.sbu).subscribe(response => {
-        //debugger;
+        //
        this.investmentAprs = response.data;
        this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
       }, error => {
@@ -169,7 +183,7 @@ export class InvestmentAprComponent implements OnInit {
     }
     getInvestmentApproved(){
       this.investmentAprService.getInvestmentApproved(this.sbu).subscribe(response => {
-        //debugger;
+        //
        this.investmentAprs = response.data;
        this.openInvestmentAprSearchModal(this.investmentAprSearchModal);
       }, error => {
@@ -179,7 +193,7 @@ export class InvestmentAprComponent implements OnInit {
    
    getInvestmentCampaign(){
     this.investmentAprService.getInvestmentCampaigns(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
-      debugger;
+      
       
       var data=response[0] as IInvestmentCampaign;
       if(data!==undefined)
@@ -200,7 +214,7 @@ export class InvestmentAprComponent implements OnInit {
           }
         }
         this.investmentAprService.getCampaignDtls(data.campaignDtl.mstId).subscribe(response => {
-          debugger;
+          
           this.campaignDtls = response as ICampaignDtl[];
           for (let i = 0; i < this.campaignDtls.length; i++) {
             if(this.campaignDtls[i].id==data.campaignDtl.id)
@@ -217,7 +231,7 @@ export class InvestmentAprComponent implements OnInit {
      
      
       this.investmentAprService.getCampaignDtlProducts(data.campaignDtl.id).subscribe(response => {
-        debugger;
+        
         this.campaignDtlProducts = response as ICampaignDtlProduct[];
       }, error => {
           console.log(error);
@@ -234,7 +248,7 @@ export class InvestmentAprComponent implements OnInit {
   }
    getInvestmentBcds(){
     this.investmentAprService.getInvestmentBcds(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
-      //debugger;
+      //
       
       var data=response[0] as IInvestmentBcds;
       if(data!==undefined)
@@ -255,7 +269,7 @@ export class InvestmentAprComponent implements OnInit {
   }
    getInvestmentSociety(){
     this.investmentAprService.getInvestmentSociety(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
-      //debugger;
+      //
       
       var data=response[0] as IInvestmentSociety;
       if(data!==undefined)
@@ -277,7 +291,7 @@ export class InvestmentAprComponent implements OnInit {
   }
    getInvestmentInstitution(){
     this.investmentAprService.getInvestmentInstitutions(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
-      //debugger;
+      //
       
       var data=response[0] as IInvestmentInstitution;
       if(data!==undefined)
@@ -299,7 +313,7 @@ export class InvestmentAprComponent implements OnInit {
   }
    getInvestmentDoctor(){
     this.investmentAprService.getInvestmentDoctors(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
-      //debugger;
+      //
       var data=response[0] as IInvestmentDoctor;
       if( data!==undefined)
       {
@@ -322,7 +336,7 @@ export class InvestmentAprComponent implements OnInit {
   }
   getInvestmentAprComment(){
     this.investmentAprService.getInvestmentAprComment(this.investmentAprService.investmentAprFormData.id,this.empId).subscribe(response => {
-      //debugger;
+      //
       var data=response[0] as IInvestmentAprComment;
       if( data!==undefined)
       {
@@ -339,7 +353,7 @@ export class InvestmentAprComponent implements OnInit {
   }
   getInvestmentDetails(){
     this.investmentAprService.getInvestmentDetails(this.investmentAprService.investmentAprFormData.id ).subscribe(response => {
-      //debugger;
+      //
       var data=response[0] as IInvestmentApr;
       if(data!==undefined)
       {
@@ -347,6 +361,8 @@ export class InvestmentAprComponent implements OnInit {
       this.investmentAprService.investmentDetailFormData.id=0;
      this.investmentAprService.investmentDetailFormData.fromDate=new Date(data.fromDate);
       this.investmentAprService.investmentDetailFormData.toDate=new Date(data.toDate);
+      let convertedDate =this.datePipe.transform(data.fromDate, 'ddMMyyyy');
+      this.getLastFiveInvestment(this.investmentAprService.investmentAprFormData.employeeId,convertedDate);
     } else{
       this.toastr.warning('No Data Found', 'Investment ');
     }
@@ -356,7 +372,7 @@ export class InvestmentAprComponent implements OnInit {
  }
    getInvestmentTargetedProd(){
     this.investmentAprService.getInvestmentTargetedProds(this.investmentAprService.investmentAprFormData.id,this.sbu).subscribe(response => {
-      //debugger;
+      //
       var data=response as IInvestmentTargetedProd[];
       if( data!==undefined)
       {
@@ -372,7 +388,7 @@ export class InvestmentAprComponent implements OnInit {
     });
   }
   getInvestmentAprDetails(){
-    //debugger;
+    //
     this.investmentAprService.getInvestmentAprDetails(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
       
       var data=response[0] as IInvestmentApr;
@@ -382,6 +398,8 @@ export class InvestmentAprComponent implements OnInit {
       this.investmentAprService.investmentDetailFormData.id=0;
      this.investmentAprService.investmentDetailFormData.fromDate=new Date(data.fromDate);
       this.investmentAprService.investmentDetailFormData.toDate=new Date(data.toDate);
+      let convertedDate =this.datePipe.transform(data.fromDate, 'ddMMyyyy');
+      this.getLastFiveInvestment(this.investmentAprService.investmentAprFormData.employeeId,convertedDate);
     } else{
       this.toastr.warning('No Data Found', 'Investment ');
     }
@@ -390,7 +408,7 @@ export class InvestmentAprComponent implements OnInit {
    });
  }
    getInvestmentAprProducts(){
-    //debugger;
+    //
     this.investmentAprService.getInvestmentAprProducts(this.investmentAprService.investmentAprFormData.id,this.sbu).subscribe(response => {
       
       var data=response as IInvestmentTargetedProd[];
@@ -409,7 +427,7 @@ export class InvestmentAprComponent implements OnInit {
   }
    getInvestmentTargetedGroup(){
     this.investmentAprService.getInvestmentTargetedGroups(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
-      //debugger;
+      //
       var data=response as IInvestmentTargetedGroup[];
       if( data!==undefined)
       {
@@ -435,7 +453,7 @@ export class InvestmentAprComponent implements OnInit {
   }
  
   changeDateInDetail(){
-    //debugger;
+    //
     
     //this.printingDate=this.getDigitBanglaFromEnglish(this.datePipe.transform(value, "dd/MM/yyyy"));
     if(this.investmentAprService.investmentDetailFormData.fromDate==null || this.investmentAprService.investmentDetailFormData.fromDate==undefined )
@@ -459,24 +477,24 @@ export class InvestmentAprComponent implements OnInit {
   
  getProduct(){
   this.investmentAprService.getProduct(this.sbu).subscribe(response => {
-    //debugger;
+    //
     this.products = response as IProduct[];
   }, error => {
       console.log(error);
   });
 }
 getEmployeeId(){
-  //debugger;
+  //
   this.empId=this.accountService.getEmployeeId();
   this.investmentAprService.investmentAprCommentFormData.employeeId=parseInt(this.empId);
   this.getEmployeeSbu();
 }
  getEmployeeSbu()
   {
-    //debugger;
+    //
     this.accountService.getEmployeeSbu(this.investmentAprService.investmentAprCommentFormData.employeeId).subscribe(
       (response) => {
-        //debugger;
+        //
         this.sbu= response.sbu;
       },
       (error) => {
@@ -494,7 +512,7 @@ getEmployeeId(){
   insertInvestmentApr() {
     this.investmentAprService.insertInvestmentApr().subscribe(
       res => {
-        //debugger;
+        //
         this.investmentAprService.investmentAprCommentFormData=res as IInvestmentAprComment;
        //this.investmentAprService.investmentDoctorFormData.investmentInitId=this.investmentAprService.investmentAprFormData.id;
        //this.investmentAprService.investmentInstitutionFormData.investmentInitId=this.investmentAprService.investmentAprFormData.id;
@@ -509,7 +527,7 @@ getEmployeeId(){
   updateInvestmentApr() {
     this.investmentAprService.updateInvestmentApr().subscribe(
       res => {
-        //debugger;
+        //
         this.isValid=true;
         this.investmentAprService.investmentAprCommentFormData=res as IInvestmentAprComment;
         this.insertInvestmentDetails();
@@ -617,7 +635,7 @@ getEmployeeId(){
  
   
   insertInvestmentTargetedProd() {
-    //debugger;
+    //
     if(this.investmentAprService.investmentAprFormData.id==null || this.investmentAprService.investmentAprFormData.id==undefined || this.investmentAprService.investmentAprFormData.id==0)
     {
       this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
@@ -660,7 +678,7 @@ getEmployeeId(){
     //{
     this.investmentAprService.insertInvestmentTargetedProd(this.investmentTargetedProds).subscribe(
       res => {
-        //debugger;
+        //
        //this.investmentAprService.investmentTargetedProdFormData=new InvestmentTargetedProd();
        
        this.getInvestmentTargetedProd();
@@ -674,7 +692,7 @@ getEmployeeId(){
     // else{
     //   this.investmentAprService.updateInvestmentTargetedProd().subscribe(
     //     res => {
-    //       debugger;
+    //       
     //      this.investmentAprService.investmentTargetedProdFormData=new InvestmentTargetedProd();
          
     //      this.getInvestmentTargetedProd();
@@ -687,7 +705,7 @@ getEmployeeId(){
     // }
   }
   addInvestmentTargetedProd() {
-    //debugger;
+    //
     if(this.investmentAprService.investmentTargetedProdFormData.productId==null || this.investmentAprService.investmentTargetedProdFormData.productId==undefined || this.investmentAprService.investmentTargetedProdFormData.productId==0)
     {
       this.toastr.warning('Select Product First', 'Investment ', {
@@ -760,7 +778,7 @@ getEmployeeId(){
     if (c == true) {  
     this.investmentAprService.removeInvestmentTargetedProd().subscribe(
       res => {
-        //debugger;
+        //
         this.toastr.success(res);
         //this.isDonationValid=false;
         this.investmentAprService.investmentTargetedProdFormData=new InvestmentTargetedProd();

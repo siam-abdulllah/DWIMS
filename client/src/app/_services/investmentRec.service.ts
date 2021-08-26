@@ -34,7 +34,9 @@ export class InvestmentRecService {
   
   constructor(private http: HttpClient, private router: Router) { }
 
-  
+  getLastFiveInvestment(empId:number,toDayDate:string){    
+    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestment/'+empId+'/'+toDayDate);
+  }
   getProduct(sbu:string){    
     return this.http.get(this.baseUrl + 'product/getProductForInvestment/'+sbu);
   }
@@ -120,7 +122,7 @@ export class InvestmentRecService {
     
   }
   insertInvestmentRec() {
-    debugger;
+    
     return this.http.post(this.baseUrl+ 'investmentRec/insertRecCom', this.investmentRecCommentFormData);
 
   }
@@ -128,23 +130,23 @@ export class InvestmentRecService {
   updateInvestmentRec() {
     return this.http.post(this.baseUrl+ 'investmentRec/updateRecCom',  this.investmentRecCommentFormData);
   }
-  insertInvestmentDetail() {
-    debugger;
-    return this.http.post(this.baseUrl+ 'investmentRec/insertRec', this.investmentDetailFormData);
+  insertInvestmentDetail(empId:number,sbu:string) {
+    
+    return this.http.post(this.baseUrl+ 'investmentRec/insertRec/'+empId+'/'+this.investmentRecCommentFormData.recStatus+'/'+sbu, this.investmentDetailFormData);
   
   }
   
  
   
   insertInvestmentTargetedProd(investmentTargetedProds:IInvestmentTargetedProd[]) {
-    debugger;
+    
     return this.http.post(this.baseUrl+ 'investmentRec/insertRecProd', investmentTargetedProds,
     {responseType: 'text'});
 
   }
   
   removeInvestmentTargetedProd() {
-    debugger;
+    
     return this.http.post(this.baseUrl+ 'investment/removeInvestmentTargetedProd', this.investmentTargetedProdFormData,
     {responseType: 'text'});
 

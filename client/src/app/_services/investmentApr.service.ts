@@ -38,6 +38,9 @@ export class InvestmentAprService {
   getProduct(sbu:string){    
     return this.http.get(this.baseUrl + 'product/getProductForInvestment/'+sbu);
   }
+  getLastFiveInvestment(empId:number,toDayDate:string){    
+    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestment/'+empId+'/'+toDayDate);
+  }
   getCampaignMsts(){    
     return this.http.get(this.baseUrl + 'campaign/campaignMstsForInvestment');
   }
@@ -120,7 +123,7 @@ export class InvestmentAprService {
     
   }
   insertInvestmentApr() {
-    debugger;
+    
     return this.http.post(this.baseUrl+ 'investmentApr/insertAprCom', this.investmentAprCommentFormData);
 
   }
@@ -129,7 +132,7 @@ export class InvestmentAprService {
     return this.http.post(this.baseUrl+ 'investmentApr/updateAprCom',  this.investmentAprCommentFormData);
   }
   insertInvestmentDetail() {
-    debugger;
+    
     return this.http.post(this.baseUrl+ 'investmentApr/insertApr', this.investmentDetailFormData);
   
   }
@@ -137,14 +140,14 @@ export class InvestmentAprService {
  
   
   insertInvestmentTargetedProd(investmentTargetedProds:IInvestmentTargetedProd[]) {
-    debugger;
+    
     return this.http.post(this.baseUrl+ 'investmentApr/insertAprProd', investmentTargetedProds,
     {responseType: 'text'});
 
   }
   
   removeInvestmentTargetedProd() {
-    debugger;
+    
     return this.http.post(this.baseUrl+ 'investment/removeInvestmentTargetedProd', this.investmentTargetedProdFormData,
     {responseType: 'text'});
 

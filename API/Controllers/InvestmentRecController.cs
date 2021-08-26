@@ -7,6 +7,7 @@ using Core.Specifications;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,16 +20,31 @@ namespace API.Controllers
         private readonly IGenericRepository<InvestmentRec> _investmentRecRepo;
         private readonly IGenericRepository<InvestmentRecComment> _investmentRecCommentRepo;
         private readonly IGenericRepository<InvestmentRecProducts> _investmentRecProductRepo;
+        private readonly IGenericRepository<InvestmentAprComment> _investmentAprCommentRepo;
+        private readonly IGenericRepository<Employee> _employeeRepo;
+        private readonly IGenericRepository<ReportInvestmentInfo> _reportInvestmentInfoRepo;
+        private readonly IGenericRepository<ApprAuthConfig> _apprAuthConfigRepo;
+        private readonly IGenericRepository<ApprovalCeiling> _approvalCeilingRepo;
+        private readonly IGenericRepository<SBUWiseBudget> _sbuRepo;
         private readonly IMapper _mapper;
 
         public InvestmentRecController(IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<InvestmentRec> investmentRecRepo, IGenericRepository<InvestmentRecComment> investmentRecCommentRepo, IGenericRepository<InvestmentRecProducts> investmentRecProductRepo,
-        IMapper mapper)
+        IGenericRepository<InvestmentAprComment> investmentAprCommentRepo, IGenericRepository<Employee> employeeRepo,
+        IGenericRepository<ReportInvestmentInfo> reportInvestmentInfoRepo,
+        IGenericRepository<ApprAuthConfig> apprAuthConfigRepo,
+        IGenericRepository<ApprovalCeiling> approvalCeilingRepo,
+        IGenericRepository<SBUWiseBudget> sbuRepo,IMapper mapper)
         {
             _mapper = mapper;
             _investmentInitRepo = investmentInitRepo;
             _investmentRecRepo = investmentRecRepo;
             _investmentRecCommentRepo = investmentRecCommentRepo;
             _investmentRecProductRepo = investmentRecProductRepo;
+            _investmentAprCommentRepo = investmentAprCommentRepo;
+            _employeeRepo = employeeRepo;
+            _apprAuthConfigRepo = apprAuthConfigRepo;
+            _approvalCeilingRepo = approvalCeilingRepo;
+            _sbuRepo = sbuRepo;
         }
         [HttpGet("investmentInits/{sbu}")]
         public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetInvestmentInits(string sbu,
@@ -79,23 +95,27 @@ namespace API.Controllers
         [HttpGet("investmentRecommended/{sbu}")]
         public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetinvestmentRecommended(string sbu,
           [FromQuery] InvestmentInitSpecParams investmentInitParrams,
-          [FromQuery] InvestmentRecCommentSpecParams investmentRecCommentParrams)
+          [FromQuery] InvestmentRecCommentSpecParams investmentRecCommentParrams,
+          [FromQuery] InvestmentAprCommentSpecParams investmentAprCommentParrams)
         {
             try
             {
                 investmentInitParrams.Search = sbu;
                 investmentRecCommentParrams.Search = sbu;
+                investmentAprCommentParrams.Search = sbu;
+
                 var investmentInitSpec = new InvestmentInitSpecification(investmentInitParrams);
                 var investmentRecCommentSpec = new InvestmentRecCommentSpecification(investmentRecCommentParrams);
-
-
+                var investmentAprCommentSpec = new InvestmentAprCommentSpecification(investmentAprCommentParrams);
 
                 var investmentInits = await _investmentInitRepo.ListAsync(investmentInitSpec);
                 var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
+                var investmentAprComments = await _investmentAprCommentRepo.ListAsync(investmentAprCommentSpec);
 
                 var investmentInitFormRec = (from i in investmentInits
-                                             where (from rc in investmentRecComments
-                                                    select rc.InvestmentInitId).Contains(i.Id)
+                                             join rc in investmentRecComments on i.Id equals rc.InvestmentInitId
+                                             where !(from ac in investmentAprComments where ac.AprStatus=="Approved"
+                                                     select ac.InvestmentInitId).Contains(i.Id)
                                              orderby i.ReferenceNo
                                              select new InvestmentInitDto
                                              {
@@ -124,13 +144,25 @@ namespace API.Controllers
         }
 
 
-
-
-
-
-        [HttpPost("insertRec")]
-        public async Task<InvestmentRecDto> InsertInvestmentRecomendation(InvestmentRecDto investmentRecDto)
+        [HttpPost("insertRec/{empID}/{recStatus}/{sbu}")]
+        public async Task<InvestmentRecDto> InsertInvestmentRecomendation(int empId,string recStatus,string sbu,InvestmentRecDto investmentRecDto)
         {
+            if (recStatus == "Approved")
+            {
+                var sbuWiseBudgetSpec = new SBUWiseBudgetSpecificiation(sbu, DateTime.Now.ToString("dd/MM/yyyy"));
+                var sbuWiseBudgetData = await _sbuRepo.ListAsync(sbuWiseBudgetSpec);
+                var sbuWiseInvestmentRecSpec = new InvestmentRecSpecification(empId, recStatus);
+
+                var apprAuthConfigSpec = new ApprAuthConfigSpecification(empId, "A");
+                var apprAuthConfigList = await _apprAuthConfigRepo.ListAsync(apprAuthConfigSpec);
+                var approvalCeilingSpec = new ApprovalCeilingSpecification(apprAuthConfigList[0].ApprovalAuthorityId,"A", DateTime.Now.ToString("dd/MM/yyyy"));
+                var approvalAuthorityCeilingData = await _approvalCeilingRepo.ListAsync(approvalCeilingSpec);
+               
+                //int v2 = investmentRecDto.InvestmentInitId ?? default(int);
+                // var recCommentRepo= _investmentRecCommentRepo.GetByIdAsync(investmentRecDto.InvestmentInitId ?? default);
+
+            }
+
             var alreadyExistSpec = new InvestmentRecSpecification(investmentRecDto.InvestmentInitId);
             var alreadyExistInvestmentRecList = await _investmentRecRepo.ListAsync(alreadyExistSpec);
             if (alreadyExistInvestmentRecList.Count > 0)
@@ -154,6 +186,7 @@ namespace API.Controllers
                 TotalMonth = investmentRecDto.TotalMonth,
                 PaymentMethod = investmentRecDto.PaymentMethod,
                 ChequeTitle = investmentRecDto.ChequeTitle,
+                EmployeeId = investmentRecDto.EmployeeId,
                 SetOn = DateTimeOffset.Now
             };
             _investmentRecRepo.Add(invRec);
@@ -172,6 +205,7 @@ namespace API.Controllers
                 TotalMonth = investmentRecDto.TotalMonth,
                 PaymentMethod = invRec.PaymentMethod,
                 ChequeTitle = invRec.ChequeTitle,
+                EmployeeId = invRec.EmployeeId,
             };
         }
 
@@ -351,6 +385,37 @@ namespace API.Controllers
                 var spec = new InvestmentRecCommentSpecification(investmentInitId);
                 var investmentDetail = await _investmentRecCommentRepo.ListAsync(spec);
                 return investmentDetail;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+        
+        [HttpGet]
+        [Route("getLastFiveInvestment/{empId}/{date}")]
+        public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestment(int empId,string date)
+        {
+            try
+            {
+                var empData = await _employeeRepo.GetByIdAsync(empId);
+                var reportInvestmentSpec = new ReportInvestmentSpecification(empData.MarketCode);
+                var reportInvestmentData = await _reportInvestmentInfoRepo.ListAsync(reportInvestmentSpec);
+                // var spec = new ReportInvestmentSpecification(empData.MarketCode);
+                var data = (from e in reportInvestmentData
+                            where DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture)>= DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture)
+                            orderby DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) descending
+                            select new ReportInvestmentInfo
+                            {
+                                InvestmentAmount = e.InvestmentAmount,
+                                ComtSharePrcnt = e.ComtSharePrcnt,
+                                ComtSharePrcntAll = e.ComtSharePrcntAll,
+                                PrescribedSharePrcnt = e.PrescribedSharePrcnt,
+                                PrescribedSharePrcntAll = e.PrescribedSharePrcntAll
+                            }
+                             ).Distinct().Take(5).ToList();
+
+                return data;
             }
             catch (System.Exception ex)
             {

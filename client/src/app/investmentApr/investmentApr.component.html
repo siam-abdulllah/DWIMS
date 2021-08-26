@@ -342,7 +342,6 @@
                                         </div>
                                         <div class="col-md-3">
                                             <input class="form-control" name="institutionName" id="institutionName" #institutionName="ngModel" [(ngModel)]="investmentAprService.investmentCampaignFormData.institutionName" readonly>
-
                                             <!-- <select class="form-control " (change)="onChangeInstitutionInInst()" name="institutionId" id="institutionId" #institutionId="ngModel" [(ngModel)]="investmentAprService.investmentCampaignFormData.institutionId">
                                                 <option  [ngValue]="null">Select Institution</option>
                                                 <option *ngFor="let a of institutions" [value]="a.id">{{a.institutionName}}</option>
@@ -385,7 +384,6 @@
                                         <div class="col-sm-2" *ngIf="isValid">
                                             <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentBcds()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
                                         </div> -->
-
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -433,7 +431,6 @@
                                         <div class="col-sm-2" *ngIf="isValid">
                                             <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentSociety()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
                                         </div> -->
-
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -444,7 +441,6 @@
                                         <div class="col-md-3">
                                             <input class="form-control" id="societyName" name="societyName" #societyName="ngModel" [(ngModel)]="investmentAprService.investmentSocietyFormData.societyName" readonly>
                                         </div>
-
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -492,21 +488,21 @@
                                                         <td>Share-All</td>
                                                         <td>Share-Own</td>
                                                     </tr>
-                                                    <tr *ngFor="let a of investmentDetails">
+                                                    <tr *ngFor="let a of investmentDetailsOld">
                                                         <td>
-                                                            {{a.purpose}}
+                                                            {{a.investmentAmount}}
                                                         </td>
                                                         <td>
-                                                            {{a.commitmentAllSBU}}
+                                                            {{a.comtSharePrcntAll}}
                                                         </td>
                                                         <td>
-                                                            {{a.commitmentOwnSBU}}
+                                                            {{a.comtSharePrcnt}}
                                                         </td>
                                                         <td>
-                                                            {{a.shareAllSBU}}
+                                                            {{a.prescribedSharePrcntAll}}
                                                         </td>
                                                         <td>
-                                                            {{a.shareOwnSBU}}
+                                                            {{a.prescribedSharePrcnt}}
                                                         </td>
                                                     </tr>
                                                 </table>
