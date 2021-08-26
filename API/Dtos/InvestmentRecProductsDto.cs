@@ -8,6 +8,7 @@ namespace API.Dtos
         public int InvestmentInitId { get; set; }
         public InvestmentInit InvestmentInit { get; set; }
 
+        public string SBU { get; set; }
         public int ProductId { get; set; }
         public ProductInfo ProductInfo { get; set; }
     }

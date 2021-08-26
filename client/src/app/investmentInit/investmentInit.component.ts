@@ -160,7 +160,7 @@ export class InvestmentInitComponent implements OnInit {
   this.investmentInitService.investmentDetailFormData.fromDate=new Date(data.fromDate);
   this.investmentInitService.investmentDetailFormData.toDate=new Date(data.toDate);
   let convertedDate =this.datePipe.transform(data.fromDate, 'ddMMyyyy');
-  this.getLastFiveInvestment(this.investmentInitService.investmentInitFormData.employeeId,convertedDate);
+  this.getLastFiveInvestment(this.investmentInitService.investmentInitFormData.marketCode,convertedDate);
    
   } else{
   this.toastr.warning('No Data Found', 'Investment ');
@@ -309,13 +309,13 @@ export class InvestmentInitComponent implements OnInit {
   this.investmentInitService.investmentInitFormData.employeeId=parseInt(this.empId);
   
   this.getMarketGroupMsts();
-  this.getLastFiveInvestment(this.investmentInitService.investmentInitFormData.employeeId,this.todayDate);
+  this.getLastFiveInvestment(this.investmentInitService.investmentInitFormData.marketCode,this.todayDate);
   this.getEmployeeSbu();
   }
-  getLastFiveInvestment(empId:number,toDayDate:string)
+  getLastFiveInvestment(marketCode:string,toDayDate:string)
   {
   
-  this.investmentInitService.getLastFiveInvestment(empId,toDayDate).subscribe(
+  this.investmentInitService.getLastFiveInvestment(marketCode,toDayDate).subscribe(
   (response) => {
     
     this.investmentDetailsOld= response as IInvestmentDetailOld[];

@@ -103,7 +103,8 @@ namespace API.Controllers
                 List<SqlParameter> parms = new List<SqlParameter>
                     {
                         new SqlParameter("@SBU", sbu),
-                        new SqlParameter("@EID", empId)
+                        new SqlParameter("@EID", empId),
+                        new SqlParameter("@RSTATUS", "Recommended")
                     };
                 var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentInitSearch @SBU,@EID", parms.ToArray()).ToList();
                
@@ -1060,14 +1061,14 @@ namespace API.Controllers
 
 
         [HttpGet]
-        [Route("getLastFiveInvestment/{empId}/{date}")]
-        public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestment(int empId, string date)
+        [Route("getLastFiveInvestment/{marketCode}/{date}")]
+        public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestment(int marketCode, string date)
         {
             try
             {
                 var v = DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture);
-                var empData = await _employeeRepo.GetByIdAsync(empId);
-                var reportInvestmentSpec = new ReportInvestmentSpecification(empData.MarketCode);
+               // var empData = await _employeeRepo.GetByIdAsync(empId);
+                var reportInvestmentSpec = new ReportInvestmentSpecification(marketCode);
                 var reportInvestmentData = await _reportInvestmentInfoRepo.ListAsync(reportInvestmentSpec);
                 // var spec = new ReportInvestmentSpecification(empData.MarketCode);
                 var data = (from e in reportInvestmentData
