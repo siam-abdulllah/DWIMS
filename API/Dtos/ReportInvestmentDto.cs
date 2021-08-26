@@ -18,6 +18,8 @@ namespace API.Dtos
         public string DivisionCode { get; set; }
         public string DivisionName { get; set; }
         public string NationalCode { get; set; }
+        public string BcdsId { get; set; }
+        public BcdsDto Bcds { get; set; }
         public string SocietyId { get; set; }
         public InvestmentSocietyDto InvestmentSociety { get; set; }
         public string DoctorId { get; set; }

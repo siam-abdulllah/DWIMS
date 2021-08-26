@@ -1,4 +1,4 @@
-import { DoctorHonApprPagination , IDoctorHonApprPagination} from '../shared/models/doctorHonApprPagination';
+import { DoctorHonApprPagination, IDoctorHonApprPagination } from '../shared/models/doctorHonApprPagination';
 import { IDoctorHonAppr, DoctorHonAppr } from '../shared/models/doctorHonAppr';
 import { IRole, IRoleResponse } from '../shared/models/role';
 import { Injectable } from '@angular/core';
@@ -19,19 +19,19 @@ export class DoctorHonApprService {
   baseUrl = environment.apiUrl;
   genParams = new GenericParams();
 
-  doctorHonAppr: IDoctorHonAppr[]= [];
+  doctorHonAppr: IDoctorHonAppr[] = [];
   doctorHonApprPagination = new DoctorHonApprPagination();
   doctorHonApprFormData: DoctorHonAppr = new DoctorHonAppr();
 
   constructor(private http: HttpClient, private router: Router) { }
-  getApprovalAuthority(){    
+  getApprovalAuthority() {
     return this.http.get(this.baseUrl + 'approvalAuthority/approvalAuthoritiesForConfig');
   }
-  getDonations(){    
+  getDonations() {
     return this.http.get(this.baseUrl + 'donation/donationsForInvestment');
   }
-  getDoctorHonAppr(fDate:string){   
-    debugger; 
+  getDoctorHonAppr(fDate: string) {
+    debugger;
     let params = new HttpParams();
     debugger;
     if (this.genParams.search) {
@@ -41,22 +41,22 @@ export class DoctorHonApprService {
     params = params.append('pageIndex', this.genParams.pageNumber.toString());
     params = params.append('pageSize', this.genParams.pageSize.toString());
 
-    return this.http.get<IDoctorHonApprPagination>(this.baseUrl + 'doctorHonAppr/GetAllData/'+fDate, { observe: 'response', params })
-    .pipe(
-      map(response => {
-        this.doctorHonAppr = [...this.doctorHonAppr, ...response.body.data]; 
-        this.doctorHonApprPagination = response.body;
-        return this.doctorHonApprPagination;
-      })
-    ); 
+    return this.http.get<IDoctorHonApprPagination>(this.baseUrl + 'doctorHonAppr/GetAllData/' + fDate, { observe: 'response', params })
+      .pipe(
+        map(response => {
+          this.doctorHonAppr = [...this.doctorHonAppr, ...response.body.data];
+          this.doctorHonApprPagination = response.body;
+          return this.doctorHonApprPagination;
+        })
+      );
   }
 
-  insertDocHonAppr(doctorHonApprFormData:IDoctorHonAppr) {
-    return this.http.post(this.baseUrl+ 'doctorHonAppr/insertDocHonAppr', doctorHonApprFormData);
+  insertDocHonAppr(doctorHonApprFormData: IDoctorHonAppr) {
+    return this.http.post(this.baseUrl + 'doctorHonAppr/insertDocHonAppr', doctorHonApprFormData);
   }
-  updateDocHonAppr(doctorHonApprFormData:IDoctorHonAppr) {
-    return this.http.post(this.baseUrl+ 'doctorHonAppr/updateDocHonAppr', doctorHonApprFormData);
+  updateDocHonAppr(doctorHonApprFormData: IDoctorHonAppr) {
+    return this.http.post(this.baseUrl + 'doctorHonAppr/updateDocHonAppr', doctorHonApprFormData);
   }
-  
+
 
 }

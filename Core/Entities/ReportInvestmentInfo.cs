@@ -14,6 +14,8 @@ namespace Core.Entities
         public string DivisionCode { get; set; }
         public string DivisionName { get; set; }
         public string NationalCode { get; set; }
+        public string BcdsId { get; set; }
+        public Bcds Bcds { get; set; }
         public string SocietyId { get; set; }
         public InvestmentSociety InvestmentSociety { get; set; }
         public string DoctorId { get; set; }

@@ -54,6 +54,7 @@ namespace Infrastructure.Data
         public DbSet<InvestmentRecProducts> InvestmentRecProducts { get; set; }
         public DbSet<ReportProductInfo> ReportProductInfo { get; set; }
         public DbSet<ReportInvestmentInfo> ReportInvestmentInfo { get; set; }
+        public DbSet<ReportConfig> ReportConfig { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -11,11 +11,11 @@ import 'jspdf-autotable';
 import * as jsPDF from 'jspdf';
 import { DatePipe } from '@angular/common';
 
-import { Donation, IDonation } from '../shared/models/donation';
+import { IDonation } from '../shared/models/donation';
 import { IBcdsInfo } from '../shared/models/bcdsInfo';
 import { ISocietyInfo } from '../shared/models/societyInfo';
-import { Institution, IInstitution } from '../shared/models/institution';
-import { SBU, ISBU } from '../shared/models/sbu';
+import { IInstitution } from '../shared/models/institution';
+import { ISBU } from '../shared/models/sbu';
 import { IMarket, IRegion, ITerritory, IDivision, IZone } from '../shared/models/location';
 
 @Component({
@@ -40,7 +40,7 @@ export class ReportInvestmentComponent implements OnInit {
   visRegion: boolean = true;
   visDivision: boolean = true;
 
-
+  reports: IReportConfig[] = [];
   donations: IDonation[];
   bcds: IBcdsInfo[];
   society: ISocietyInfo[];
@@ -83,11 +83,29 @@ export class ReportInvestmentComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getReportList();
+    this.getDonation();
+    this.getSBU();
     this.createInvestmentSearchForm();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-blue' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
   }
 
+  getReportList() {
+    this.reportInvestmentService.getReportList().subscribe(response => {
+  
+      this.reports = response.data as IReportConfig[];
+    }, error => {
+      console.log(error);
+    });
+  }
+
+
+  viewReport(rpt) {
+    if (rpt != null) {
+        this.toastr.info(rpt, "Report Form")
+    }
+  }
 
   onChangeLocationType() {
 
@@ -195,7 +213,7 @@ export class ReportInvestmentComponent implements OnInit {
       console.log(error);
     });
   }
-  
+
   getBcds() {
     this.reportInvestmentService.getBcds().subscribe(response => {
       //debugger;
@@ -245,6 +263,8 @@ export class ReportInvestmentComponent implements OnInit {
       divisionCode: this.investmentSearchForm.value.divisionCode,
     };
 
+
+
     this.reportInvestmentService.getInsSocietyBCDSWiseInvestment(investmentReportSearchDto).subscribe(resp => {
       // this.reportInvestmentService.getInsSocietyBCDSWiseInvestment().subscribe(resp => {  
       this.instSocDocInvestmentDto = resp as IInstSocDocInvestmentDto[];
@@ -264,7 +284,7 @@ export class ReportInvestmentComponent implements OnInit {
 
   viewProformaSummaryReport() {
     if (this.instSocDocInvestmentDto.length <= 0) {
-      this.toastr.warning("No Data to Show Report","Report");
+      this.toastr.warning("No Data to Show Report", "Report");
       return false;
     }
     // const doc = new jsPDF();
@@ -408,4 +428,26 @@ interface IInstSocDocInvestmentDto {
   toDate: Date | undefined | null;
   donationToName: string;
   locationName: string;
+}
+
+export interface IReportConfig {
+  id: number;
+  reportName: string;
+  reportFunc: string;
+  reportCode: string;
+}
+
+
+export interface IReportConfigPagination {
+  pageIndex: number;
+  pageSize: number;
+  count: number;
+  data: IReportConfig[];
+}
+
+export class ReportConfigPagination implements IReportConfigPagination {
+  pageIndex: number;
+  pageSize: number;
+  count: number;
+  data: IReportConfig[] = [];
 }
