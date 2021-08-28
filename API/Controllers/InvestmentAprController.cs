@@ -215,8 +215,9 @@ namespace API.Controllers
 
 
         [HttpPost("InsertAprCom")]
-        public ActionResult<InvestmentAprCommentDto> InsertInvestmentAprComment(InvestmentAprCommentDto investmentAprDto)
+        public async Task<ActionResult<InvestmentAprCommentDto>> InsertInvestmentAprComment(InvestmentAprCommentDto investmentAprDto)
         {
+            var empData = await _employeeRepo.GetByIdAsync(investmentAprDto.EmployeeId);
             var invApr = new InvestmentAprComment
             {
                 //ReferenceNo = investmentInitDto.ReferenceNo,
@@ -224,6 +225,18 @@ namespace API.Controllers
                 EmployeeId = investmentAprDto.EmployeeId,
                 Comments = investmentAprDto.Comments,
                 AprStatus = investmentAprDto.AprStatus,
+                PostingType = empData.PostingType,
+                MarketCode = empData.MarketCode,
+                MarketName = empData.MarketName,
+                RegionCode = empData.RegionCode,
+                RegionName = empData.RegionName,
+                ZoneCode = empData.ZoneCode,
+                ZoneName = empData.ZoneName,
+                TerritoryCode = empData.TerritoryCode,
+                TerritoryName = empData.TerritoryName,
+                DivisionCode = empData.DivisionCode,
+                DivisionName = empData.DivisionName,
+                SBU = empData.SBU,
                 SetOn = DateTimeOffset.Now
             };
             _investmentAprCommentRepo.Add(invApr);
@@ -240,10 +253,11 @@ namespace API.Controllers
         }
 
         [HttpPost("UpdateAprCom")]
-        public ActionResult<InvestmentAprCommentDto> UpdateInvestmentApromendationComment(InvestmentAprCommentDto investmentAprDto)
+        public async Task<ActionResult<InvestmentAprCommentDto>> UpdateInvestmentApromendationComment(InvestmentAprCommentDto investmentAprDto)
         {
             // var user =  _approvalAuthorityRepo.GetByIdAsync(ApprovalAuthorityToReturnDto.Id);
             // if (user == null) return Unauthorized(new ApiResponse(401));
+            var empData = await _employeeRepo.GetByIdAsync(investmentAprDto.EmployeeId);
             var invApr = new InvestmentAprComment
             {
                 Id = investmentAprDto.Id,
@@ -251,6 +265,18 @@ namespace API.Controllers
                 EmployeeId = investmentAprDto.EmployeeId,
                 Comments = investmentAprDto.Comments,
                 AprStatus = investmentAprDto.AprStatus,
+                PostingType = empData.PostingType,
+                MarketCode = empData.MarketCode,
+                MarketName = empData.MarketName,
+                RegionCode = empData.RegionCode,
+                RegionName = empData.RegionName,
+                ZoneCode = empData.ZoneCode,
+                ZoneName = empData.ZoneName,
+                TerritoryCode = empData.TerritoryCode,
+                TerritoryName = empData.TerritoryName,
+                DivisionCode = empData.DivisionCode,
+                DivisionName = empData.DivisionName,
+                SBU = empData.SBU,
                 ModifiedOn = DateTimeOffset.Now,
             };
             _investmentAprCommentRepo.Update(invApr);
@@ -291,6 +317,7 @@ namespace API.Controllers
                         //ReferenceNo = investmentAprDto.ReferenceNo,
                         InvestmentInitId = v.InvestmentInitId,
                         ProductId = v.ProductId,
+                        SBU = v.SBU,
                         SetOn = DateTimeOffset.Now,
                         ModifiedOn = DateTimeOffset.Now
                     };
