@@ -7,7 +7,7 @@ import { SubCampaign, ISubCampaign } from '../shared/models/subCampaign';
 import { Donation, IDonation } from '../shared/models/donation';
 import { Doctor, IDoctor } from '../shared/models/docotor';
 import { Institution, IInstitution } from '../shared/models/institution';
-import { GenericParams } from '../shared/models/genericParams';
+//import { GenericParams } from '../shared/models/genericParams';
 import { Component, ElementRef, OnInit, ViewChild , TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { InvestmentInitService } from '../_services/investment.service';

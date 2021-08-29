@@ -155,7 +155,7 @@ namespace API.Controllers
             catch (System.Exception e)
             {
 
-                throw;
+                throw e;
             }
         }
         [HttpGet("getMarketGroupMstsForInvestment")]
@@ -175,7 +175,7 @@ namespace API.Controllers
             catch (System.Exception e)
             {
 
-                throw;
+                throw e;
             }
         }
         [HttpGet("getMarketGroupMstsForInvestment/{empId}")]
@@ -195,7 +195,7 @@ namespace API.Controllers
             catch (System.Exception e)
             {
 
-                throw;
+                throw e;
             }
         }
         [HttpGet]
