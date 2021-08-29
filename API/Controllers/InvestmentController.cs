@@ -63,7 +63,7 @@ namespace API.Controllers
 
       
         [HttpGet("investmentInits/{empId}/{sbu}")]
-        public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetInvestmentInits(int empId, string sbu,
+        public ActionResult<Pagination<InvestmentInitDto>> GetInvestmentInits(int empId, string sbu,
           [FromQuery] InvestmentInitSpecParams investmentInitParrams,
           [FromQuery] InvestmentRecCommentSpecParams investmentRecCommentParrams)
         {
@@ -103,7 +103,8 @@ namespace API.Controllers
                 List<SqlParameter> parms = new List<SqlParameter>
                     {
                         new SqlParameter("@SBU", sbu),
-                        new SqlParameter("@EID", empId)
+                        new SqlParameter("@EID", empId),
+                        new SqlParameter("@RSTATUS", "Recommended")
                     };
                 var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentInitSearch @SBU,@EID", parms.ToArray()).ToList();
                
@@ -120,53 +121,62 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("investmentInitsOthers")]
-        public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetInvestmentInitsOthers(int empId,
+        [HttpGet("investmentInitsOthers/{empId}/{sbu}")]
+        public ActionResult<Pagination<InvestmentInitDto>> GetInvestmentInitsOthers(int empId, string sbu,
         [FromQuery] InvestmentInitSpecParams investmentInitParrams, [FromQuery] InvestmentTargetedGroupSpecParams investmentTargetedGroupParrams,
         [FromQuery] InvestmentRecCommentSpecParams investmentRecCommentParrams)
         {
             try
             {
                 //investmentInitParrams.Search = sbu;
-                var investmentInitSpec = new InvestmentInitSpecification(investmentInitParrams);
-                var investmentInits = await _investmentInitRepo.ListAsync(investmentInitSpec);
+                //var investmentInitSpec = new InvestmentInitSpecification(investmentInitParrams);
+                //var investmentInits = await _investmentInitRepo.ListAsync(investmentInitSpec);
 
-                var empData = await _employeeRepo.GetByIdAsync(empId);
+                //var empData = await _employeeRepo.GetByIdAsync(empId);
 
-                investmentTargetedGroupParrams.Search = empData.MarketCode;
-                var spec = new InvestmentTargetedGroupSpecification(investmentTargetedGroupParrams);
-                var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(spec);
+                //investmentTargetedGroupParrams.Search = empData.MarketCode;
+                //var spec = new InvestmentTargetedGroupSpecification(investmentTargetedGroupParrams);
+                //var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(spec);
 
-                investmentRecCommentParrams.Search = empData.SBU;
-                var investmentRecCommentSpec = new InvestmentRecCommentSpecification(investmentRecCommentParrams);
-                var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
+                //investmentRecCommentParrams.Search = empData.SBU;
+                //var investmentRecCommentSpec = new InvestmentRecCommentSpecification(investmentRecCommentParrams);
+                //var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
 
-                var data = (from i in investmentInits
-                            join t in investmentTargetedGroup on i.Id equals t.InvestmentInitId
-                            where t.MarketCode == empData.MarketCode && !(from rc in investmentRecComments
-                                                                          select rc.InvestmentInitId).Contains(i.Id)
-                            orderby t.MarketName
-                            select new InvestmentInitDto
-                            {
-                                Id = i.Id,
-                                ReferenceNo = i.ReferenceNo,
-                                ProposeFor = i.ProposeFor,
-                                DonationType = i.DonationType,
-                                DonationTo = i.DonationTo,
-                                EmployeeId = i.EmployeeId
-                            }
-                              ).Distinct().ToList();
-
-
-                var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
-                var totalItems = await _investmentInitRepo.CountAsync(countSpec);
+                //var data = (from i in investmentInits
+                //            join t in investmentTargetedGroup on i.Id equals t.InvestmentInitId
+                //            where t.MarketCode == empData.MarketCode && !(from rc in investmentRecComments
+                //                                                          select rc.InvestmentInitId).Contains(i.Id)
+                //            orderby t.MarketName
+                //            select new InvestmentInitDto
+                //            {
+                //                Id = i.Id,
+                //                ReferenceNo = i.ReferenceNo,
+                //                ProposeFor = i.ProposeFor,
+                //                DonationType = i.DonationType,
+                //                DonationTo = i.DonationTo,
+                //                EmployeeId = i.EmployeeId
+                //            }
+                //              ).Distinct().ToList();
 
 
+                //var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
+                //var totalItems = await _investmentInitRepo.CountAsync(countSpec);
 
-                //var data = _mapper
-                //    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(investmentInits);
 
-                return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, totalItems, data));
+
+                List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                        new SqlParameter("@SBU", sbu),
+                        new SqlParameter("@EID", empId),
+                        new SqlParameter("@RSTATUS", "Recommended")
+                    };
+                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentInitSearch @SBU,@EID", parms.ToArray()).ToList();
+
+
+                var data = _mapper
+                    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
+
+                return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, 50, data));
             }
             catch (System.Exception e)
             {
@@ -1060,14 +1070,14 @@ namespace API.Controllers
 
 
         [HttpGet]
-        [Route("getLastFiveInvestment/{empId}/{date}")]
-        public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestment(int empId, string date)
+        [Route("getLastFiveInvestment/{marketCode}/{date}")]
+        public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestment(int marketCode, string date)
         {
             try
             {
                 var v = DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture);
-                var empData = await _employeeRepo.GetByIdAsync(empId);
-                var reportInvestmentSpec = new ReportInvestmentSpecification(empData.MarketCode);
+               // var empData = await _employeeRepo.GetByIdAsync(empId);
+                var reportInvestmentSpec = new ReportInvestmentSpecification(marketCode);
                 var reportInvestmentData = await _reportInvestmentInfoRepo.ListAsync(reportInvestmentSpec);
                 // var spec = new ReportInvestmentSpecification(empData.MarketCode);
                 var data = (from e in reportInvestmentData

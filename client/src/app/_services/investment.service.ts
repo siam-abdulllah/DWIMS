@@ -81,8 +81,8 @@ export class InvestmentInitService {
   getInvestmentTargetedProds(investmentInitId:number){    
     return this.http.get(this.baseUrl + 'investment/investmentTargetedProds/'+investmentInitId);
   }
-  getLastFiveInvestment(empId:number,toDayDate:string){    
-    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestment/'+empId+'/'+toDayDate);
+  getLastFiveInvestment(marketCode:string,toDayDate:string){    
+    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestment/'+marketCode+'/'+toDayDate);
   }
   getInvestmentTargetedGroups(investmentInitId:number){    
     return this.http.get(this.baseUrl + 'investment/investmentTargetedGroups/'+investmentInitId);

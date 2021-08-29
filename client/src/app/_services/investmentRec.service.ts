@@ -34,8 +34,8 @@ export class InvestmentRecService {
   
   constructor(private http: HttpClient, private router: Router) { }
 
-  getLastFiveInvestment(empId:number,toDayDate:string){    
-    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestment/'+empId+'/'+toDayDate);
+  getLastFiveInvestment(marketCode:string,toDayDate:string){    
+    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestment/'+marketCode+'/'+toDayDate);
   }
   getProduct(sbu:string){    
     return this.http.get(this.baseUrl + 'product/getProductForInvestment/'+sbu);

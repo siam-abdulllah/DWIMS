@@ -1537,12 +1537,48 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("ProductInfo");
                 });
 
+            modelBuilder.Entity("Core.Entities.ReportConfig", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("ReportCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReportFunc")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReportName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ReportConfig");
+                });
+
             modelBuilder.Entity("Core.Entities.ReportInvestmentInfo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("BcdsId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("BcdsId1")
+                        .HasColumnType("int");
 
                     b.Property<string>("ComtSharePrcnt")
                         .HasColumnType("nvarchar(max)");
@@ -1647,6 +1683,8 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BcdsId1");
 
                     b.HasIndex("DoctorInfoId");
 
@@ -2241,6 +2279,10 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Core.Entities.ReportInvestmentInfo", b =>
                 {
+                    b.HasOne("Core.Entities.Bcds", "Bcds")
+                        .WithMany()
+                        .HasForeignKey("BcdsId1");
+
                     b.HasOne("Core.Entities.DoctorInfo", "DoctorInfo")
                         .WithMany()
                         .HasForeignKey("DoctorInfoId");

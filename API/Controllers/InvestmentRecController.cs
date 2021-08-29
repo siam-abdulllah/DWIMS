@@ -4,7 +4,10 @@ using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
+using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -27,13 +30,14 @@ namespace API.Controllers
         private readonly IGenericRepository<ApprovalCeiling> _approvalCeilingRepo;
         private readonly IGenericRepository<SBUWiseBudget> _sbuRepo;
         private readonly IMapper _mapper;
+        private readonly StoreContext _dbContext;
 
         public InvestmentRecController(IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<InvestmentRec> investmentRecRepo, IGenericRepository<InvestmentRecComment> investmentRecCommentRepo, IGenericRepository<InvestmentRecProducts> investmentRecProductRepo,
         IGenericRepository<InvestmentAprComment> investmentAprCommentRepo, IGenericRepository<Employee> employeeRepo,
         IGenericRepository<ReportInvestmentInfo> reportInvestmentInfoRepo,
         IGenericRepository<ApprAuthConfig> apprAuthConfigRepo,
         IGenericRepository<ApprovalCeiling> approvalCeilingRepo,
-        IGenericRepository<SBUWiseBudget> sbuRepo,IMapper mapper)
+        IGenericRepository<SBUWiseBudget> sbuRepo, StoreContext dbContext, IMapper mapper)
         {
             _mapper = mapper;
             _investmentInitRepo = investmentInitRepo;
@@ -45,46 +49,57 @@ namespace API.Controllers
             _apprAuthConfigRepo = apprAuthConfigRepo;
             _approvalCeilingRepo = approvalCeilingRepo;
             _sbuRepo = sbuRepo;
+            _dbContext = dbContext;
         }
-        [HttpGet("investmentInits/{sbu}")]
-        public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetInvestmentInits(string sbu,
+        [HttpGet("investmentInits/{empId}/{sbu}")]
+        public  ActionResult<Pagination<InvestmentInitDto>> GetInvestmentInits(int empId, string sbu,
           [FromQuery] InvestmentInitSpecParams investmentInitParrams,
           [FromQuery] InvestmentRecCommentSpecParams investmentRecCommentParrams)
         {
             try
             {
-                investmentInitParrams.Search = sbu;
-                investmentRecCommentParrams.Search = sbu;
-                var investmentInitSpec = new InvestmentInitSpecification(investmentInitParrams);
-                var investmentRecCommentSpec = new InvestmentRecCommentSpecification(investmentRecCommentParrams);
+
+                //investmentInitParrams.Search = sbu;
+                //investmentRecCommentParrams.Search = sbu;
+                //var investmentInitSpec = new InvestmentInitSpecification(investmentInitParrams);
+                //var investmentRecCommentSpec = new InvestmentRecCommentSpecification(investmentRecCommentParrams);
 
 
 
-                var investmentInits = await _investmentInitRepo.ListAsync(investmentInitSpec);
-                var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
+                //var investmentInits = await _investmentInitRepo.ListAsync(investmentInitSpec);
+                //var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
 
-                var investmentInitFormRec = (from i in investmentInits
-                                             where !(from rc in investmentRecComments
-                                                     select rc.InvestmentInitId).Contains(i.Id)
-                                             orderby i.ReferenceNo
-                                             select new InvestmentInitDto
-                                             {
-                                                 Id = i.Id,
-                                                 ReferenceNo = i.ReferenceNo.Trim(),
-                                                 ProposeFor = i.ProposeFor.Trim(),
-                                                 DonationType = i.DonationType.Trim(),
-                                                 DonationTo = i.DonationTo.Trim(),
-                                                 EmployeeId = i.EmployeeId,
-                                             }
-                              ).Distinct().ToList();
+                //var investmentInitFormRec = (from i in investmentInits
+                //                             where !(from rc in investmentRecComments
+                //                                     select rc.InvestmentInitId).Contains(i.Id)
+                //                             orderby i.ReferenceNo
+                //                             select new InvestmentInitDto
+                //                             {
+                //                                 Id = i.Id,
+                //                                 ReferenceNo = i.ReferenceNo.Trim(),
+                //                                 ProposeFor = i.ProposeFor.Trim(),
+                //                                 DonationType = i.DonationType.Trim(),
+                //                                 DonationTo = i.DonationTo.Trim(),
+                //                                 EmployeeId = i.EmployeeId,
+                //                             }
+                //              ).Distinct().ToList();
 
-                var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
+                //var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
 
-                var totalItems = await _investmentInitRepo.CountAsync(countSpec);
+                //var totalItems = await _investmentInitRepo.CountAsync(countSpec);
+                List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                        new SqlParameter("@SBU", sbu),
+                        new SqlParameter("@EID", empId),
+                        new SqlParameter("@RSTATUS", DBNull.Value)
+                    };
+                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentInitSearch @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
+                var data = _mapper
+                    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
 
 
 
-                return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, totalItems, investmentInitFormRec));
+                return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, 50, data));
             }
             catch (System.Exception e)
             {
@@ -92,49 +107,58 @@ namespace API.Controllers
                 throw;
             }
         }
-        [HttpGet("investmentRecommended/{sbu}")]
-        public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetinvestmentRecommended(string sbu,
+        [HttpGet("investmentRecommended/{empId}/{sbu}")]
+        public ActionResult<Pagination<InvestmentInitDto>> GetinvestmentRecommended(int empId, string sbu,
           [FromQuery] InvestmentInitSpecParams investmentInitParrams,
           [FromQuery] InvestmentRecCommentSpecParams investmentRecCommentParrams,
           [FromQuery] InvestmentAprCommentSpecParams investmentAprCommentParrams)
         {
             try
             {
-                investmentInitParrams.Search = sbu;
-                investmentRecCommentParrams.Search = sbu;
-                investmentAprCommentParrams.Search = sbu;
+                //investmentInitParrams.Search = sbu;
+                //investmentRecCommentParrams.Search = sbu;
+                //investmentAprCommentParrams.Search = sbu;
 
-                var investmentInitSpec = new InvestmentInitSpecification(investmentInitParrams);
-                var investmentRecCommentSpec = new InvestmentRecCommentSpecification(investmentRecCommentParrams);
-                var investmentAprCommentSpec = new InvestmentAprCommentSpecification(investmentAprCommentParrams);
+                //var investmentInitSpec = new InvestmentInitSpecification(investmentInitParrams);
+                //var investmentRecCommentSpec = new InvestmentRecCommentSpecification(investmentRecCommentParrams);
+                //var investmentAprCommentSpec = new InvestmentAprCommentSpecification(investmentAprCommentParrams);
 
-                var investmentInits = await _investmentInitRepo.ListAsync(investmentInitSpec);
-                var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
-                var investmentAprComments = await _investmentAprCommentRepo.ListAsync(investmentAprCommentSpec);
+                //var investmentInits = await _investmentInitRepo.ListAsync(investmentInitSpec);
+                //var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
+                //var investmentAprComments = await _investmentAprCommentRepo.ListAsync(investmentAprCommentSpec);
 
-                var investmentInitFormRec = (from i in investmentInits
-                                             join rc in investmentRecComments on i.Id equals rc.InvestmentInitId
-                                             where !(from ac in investmentAprComments where ac.AprStatus=="Approved"
-                                                     select ac.InvestmentInitId).Contains(i.Id)
-                                             orderby i.ReferenceNo
-                                             select new InvestmentInitDto
-                                             {
-                                                 Id = i.Id,
-                                                 ReferenceNo = i.ReferenceNo.Trim(),
-                                                 ProposeFor = i.ProposeFor.Trim(),
-                                                 DonationType = i.DonationType.Trim(),
-                                                 DonationTo = i.DonationTo.Trim(),
-                                                 EmployeeId = i.EmployeeId,
-                                             }
-                              ).Distinct().ToList();
+                //var investmentInitFormRec = (from i in investmentInits
+                //                             join rc in investmentRecComments on i.Id equals rc.InvestmentInitId
+                //                             where !(from ac in investmentAprComments where ac.AprStatus=="Approved"
+                //                                     select ac.InvestmentInitId).Contains(i.Id)
+                //                             orderby i.ReferenceNo
+                //                             select new InvestmentInitDto
+                //                             {
+                //                                 Id = i.Id,
+                //                                 ReferenceNo = i.ReferenceNo.Trim(),
+                //                                 ProposeFor = i.ProposeFor.Trim(),
+                //                                 DonationType = i.DonationType.Trim(),
+                //                                 DonationTo = i.DonationTo.Trim(),
+                //                                 EmployeeId = i.EmployeeId,
+                //                             }
+                //              ).Distinct().ToList();
 
-                var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
+                //var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
 
-                var totalItems = await _investmentInitRepo.CountAsync(countSpec);
+                //var totalItems = await _investmentInitRepo.CountAsync(countSpec);
 
+                List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                        new SqlParameter("@SBU", sbu),
+                        new SqlParameter("@EID", empId),
+                        new SqlParameter("@RSTATUS", "Recommended"),
+                        new SqlParameter("@ASTATUS", "Approved")
+                    };
+                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentRecSearch @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
+                var data = _mapper
+                    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
 
-
-                return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, totalItems, investmentInitFormRec));
+                return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, 50, data));
             }
             catch (System.Exception e)
             {
@@ -212,14 +236,27 @@ namespace API.Controllers
 
 
         [HttpPost("insertRecCom")]
-        public ActionResult<InvestmentRecCommentDto> InsertInvestmentRecomendationComment(InvestmentRecCommentDto investmentRecDto)
+        public async Task<ActionResult<InvestmentRecCommentDto>> InsertInvestmentRecomendationComment(InvestmentRecCommentDto investmentRecDto)
         {
+            var empData = await _employeeRepo.GetByIdAsync(investmentRecDto.EmployeeId);
             var invRec = new InvestmentRecComment
             {
                 InvestmentInitId = investmentRecDto.InvestmentInitId,
                 EmployeeId = investmentRecDto.EmployeeId,
                 Comments = investmentRecDto.Comments,
                 RecStatus = investmentRecDto.RecStatus,
+                PostingType = empData.PostingType,
+                MarketCode = empData.MarketCode,
+                MarketName = empData.MarketName,
+                RegionCode = empData.RegionCode,
+                RegionName = empData.RegionName,
+                ZoneCode = empData.ZoneCode,
+                ZoneName = empData.ZoneName,
+                TerritoryCode = empData.TerritoryCode,
+                TerritoryName = empData.TerritoryName,
+                DivisionCode = empData.DivisionCode,
+                DivisionName = empData.DivisionName,
+                SBU = empData.SBU,
                 SetOn = DateTimeOffset.Now
             };
             _investmentRecCommentRepo.Add(invRec);
@@ -236,10 +273,11 @@ namespace API.Controllers
         }
 
         [HttpPost("updateRecCom")]
-        public ActionResult<InvestmentRecCommentDto> UpdateInvestmentRecomendationComment(InvestmentRecCommentDto investmentRecDto)
+        public async Task<ActionResult<InvestmentRecCommentDto>> UpdateInvestmentRecomendationComment(InvestmentRecCommentDto investmentRecDto)
         {
             // var user =  _approvalAuthorityRepo.GetByIdAsync(ApprovalAuthorityToReturnDto.Id);
             // if (user == null) return Unauthorized(new ApiResponse(401));
+            var empData = await _employeeRepo.GetByIdAsync(investmentRecDto.EmployeeId);
             var invRec = new InvestmentRecComment
             {
                 Id = investmentRecDto.Id,
@@ -247,6 +285,18 @@ namespace API.Controllers
                 EmployeeId = investmentRecDto.EmployeeId,
                 Comments = investmentRecDto.Comments,
                 RecStatus = investmentRecDto.RecStatus,
+                PostingType = empData.PostingType,
+                MarketCode = empData.MarketCode,
+                MarketName = empData.MarketName,
+                RegionCode = empData.RegionCode,
+                RegionName = empData.RegionName,
+                ZoneCode = empData.ZoneCode,
+                ZoneName = empData.ZoneName,
+                TerritoryCode = empData.TerritoryCode,
+                TerritoryName = empData.TerritoryName,
+                DivisionCode = empData.DivisionCode,
+                DivisionName = empData.DivisionName,
+                SBU = empData.SBU,
                 ModifiedOn = DateTimeOffset.Now,
             };
             _investmentRecCommentRepo.Update(invRec);
@@ -290,6 +340,7 @@ namespace API.Controllers
                         //ReferenceNo = investmentRecDto.ReferenceNo,
                         InvestmentInitId = v.InvestmentInitId,
                         ProductId = v.ProductId,
+                        SBU = v.SBU,
                         SetOn = DateTimeOffset.Now,
                         ModifiedOn = DateTimeOffset.Now
                     };
@@ -317,6 +368,7 @@ namespace API.Controllers
                 Id = investmentRecDto.Id,
                 InvestmentInitId = investmentRecDto.InvestmentInitId,
                 ProductId = investmentRecDto.ProductId,
+                SBU = investmentRecDto.SBU,
                 ModifiedOn = DateTimeOffset.Now,
             };
             _investmentRecProductRepo.Update(invRec);
@@ -393,13 +445,13 @@ namespace API.Controllers
         }
         
         [HttpGet]
-        [Route("getLastFiveInvestment/{empId}/{date}")]
-        public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestment(int empId,string date)
+        [Route("getLastFiveInvestment/{marketCode}/{date}")]
+        public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestment(string marketCode, string date)
         {
             try
             {
-                var empData = await _employeeRepo.GetByIdAsync(empId);
-                var reportInvestmentSpec = new ReportInvestmentSpecification(empData.MarketCode);
+                //var empData = await _employeeRepo.GetByIdAsync(empId);
+                var reportInvestmentSpec = new ReportInvestmentSpecification(marketCode);
                 var reportInvestmentData = await _reportInvestmentInfoRepo.ListAsync(reportInvestmentSpec);
                 // var spec = new ReportInvestmentSpecification(empData.MarketCode);
                 var data = (from e in reportInvestmentData

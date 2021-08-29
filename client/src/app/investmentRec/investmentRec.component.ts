@@ -152,9 +152,9 @@ export class InvestmentRecComponent implements OnInit {
       this.isValid=true;
       this.InvestmentRecSearchModalRef.hide()
       }
-      getLastFiveInvestment(empId:number,toDayDate:string)
+      getLastFiveInvestment(marketCode:string,toDayDate:string)
       {
-      this.investmentRecService.getLastFiveInvestment(empId,toDayDate).subscribe(
+      this.investmentRecService.getLastFiveInvestment(marketCode,toDayDate).subscribe(
       (response) => {
         
         this.investmentDetailsOld= response as IInvestmentDetailOld[];
@@ -363,7 +363,7 @@ export class InvestmentRecComponent implements OnInit {
       this.investmentRecService.investmentDetailFormData.fromDate=new Date(data.fromDate);
       this.investmentRecService.investmentDetailFormData.toDate=new Date(data.toDate);
       let convertedDate =this.datePipe.transform(data.fromDate, 'ddMMyyyy');
-      this.getLastFiveInvestment(this.investmentRecService.investmentRecFormData.employeeId,convertedDate);
+      this.getLastFiveInvestment(this.investmentRecService.investmentRecFormData.marketCode,convertedDate);
       
 
     } else{
@@ -402,7 +402,7 @@ export class InvestmentRecComponent implements OnInit {
       this.investmentRecService.investmentDetailFormData.fromDate=new Date(data.fromDate);
       this.investmentRecService.investmentDetailFormData.toDate=new Date(data.toDate);
       let convertedDate =this.datePipe.transform(data.fromDate, 'ddMMyyyy');
-      this.getLastFiveInvestment(this.investmentRecService.investmentRecFormData.employeeId,convertedDate);
+      this.getLastFiveInvestment(this.investmentRecService.investmentRecFormData.marketCode,convertedDate);
        
     } else{
       this.toastr.warning('No Data Found', 'Investment ');

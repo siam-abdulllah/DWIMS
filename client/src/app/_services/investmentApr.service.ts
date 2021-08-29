@@ -38,8 +38,8 @@ export class InvestmentAprService {
   getProduct(sbu:string){    
     return this.http.get(this.baseUrl + 'product/getProductForInvestment/'+sbu);
   }
-  getLastFiveInvestment(empId:number,toDayDate:string){    
-    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestment/'+empId+'/'+toDayDate);
+  getLastFiveInvestment(marketCode:string,toDayDate:string){    
+    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestment/'+marketCode+'/'+toDayDate);
   }
   getCampaignMsts(){    
     return this.http.get(this.baseUrl + 'campaign/campaignMstsForInvestment');
