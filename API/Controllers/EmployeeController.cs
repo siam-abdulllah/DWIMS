@@ -199,11 +199,12 @@ namespace API.Controllers
                 var data = await _employeeRepo.ListAllAsync();
                 //var market = data.GroupBy(p => p.MarketCode).Select(g => g.First()).ToList();
                 var market = (from r in data
+                              where r.MarketName != null
                               orderby r.MarketName
                               select new MarketLocDto
                               {
-                                  MarketCode = r.MarketCode.Trim(),
-                                  MarketName = r.MarketName.Trim(),
+                                  MarketCode = r.MarketCode,
+                                  MarketName = r.MarketName,
                               }
                               ).Distinct().ToList();
                 //var mappedMarket = _mapper.Map<IReadOnlyList<Employee>, IReadOnlyList<MarketDto>>(market);
@@ -224,11 +225,12 @@ namespace API.Controllers
                 var data = await _employeeRepo.ListAllAsync();
                 //var market = data.GroupBy(p => p.MarketCode).Select(g => g.First()).ToList();
                 var territory = (from r in data
-                              orderby r.MarketName
-                              select new TerrirotyDto
+                                 where r.TerritoryName != null
+                                 orderby r.TerritoryName
+                                 select new TerrirotyDto
                               {
-                                  TerritoryCode = r.TerritoryCode.Trim(),
-                                  TerritoryName = r.TerritoryName.Trim(),
+                                  TerritoryCode = r.TerritoryCode,
+                                  TerritoryName = r.TerritoryName,
                               }
                               ).Distinct().ToList();
                 //var mappedMarket = _mapper.Map<IReadOnlyList<Employee>, IReadOnlyList<MarketDto>>(market);
@@ -249,11 +251,12 @@ namespace API.Controllers
                 var data = await _employeeRepo.ListAllAsync();
                 //var market = data.GroupBy(p => p.MarketCode).Select(g => g.First()).ToList();
                 var zone = (from r in data
-                              orderby r.MarketName
-                              select new ZoneDto
+                            where r.ZoneName != null
+                            orderby r.ZoneName
+                            select new ZoneDto
                               {
-                                  ZoneCode = r.ZoneCode.Trim(),
-                                  ZoneName = r.ZoneName.Trim(),
+                                  ZoneCode = r.ZoneCode,
+                                  ZoneName = r.ZoneName,
                               }
                               ).Distinct().ToList();
                 //var mappedMarket = _mapper.Map<IReadOnlyList<Employee>, IReadOnlyList<MarketDto>>(market);
@@ -273,11 +276,12 @@ namespace API.Controllers
                 var data = await _employeeRepo.ListAllAsync();
                 //var market = data.GroupBy(p => p.MarketCode).Select(g => g.First()).ToList();
                 var division = (from r in data
-                              orderby r.MarketName
-                              select new DivisionDto
+                                where r.DivisionName != null
+                                orderby r.DivisionName
+                                select new DivisionDto
                               {
-                                  DivisionCode = r.DivisionCode.Trim(),
-                                  DivisionName = r.DivisionName.Trim(),
+                                  DivisionCode = r.DivisionCode,
+                                  DivisionName = r.DivisionName,
                               }
                               ).Distinct().ToList();
                 //var mappedMarket = _mapper.Map<IReadOnlyList<Employee>, IReadOnlyList<MarketDto>>(market);
@@ -297,11 +301,12 @@ namespace API.Controllers
                 var data = await _employeeRepo.ListAllAsync();
                 //var market = data.GroupBy(p => p.MarketCode).Select(g => g.First()).ToList();
                 var region = (from r in data
+                              where r.RegionName != null
                               orderby r.RegionName
                               select new RegionDto
                               {
-                                  RegionCode = r.RegionCode.Trim(),
-                                  RegionName = r.RegionName.Trim(),
+                                  RegionCode = r.RegionCode,
+                                  RegionName = r.RegionName,
                               }
                               ).Distinct().ToList();
                 //var mappedMarket = _mapper.Map<IReadOnlyList<Employee>, IReadOnlyList<MarketDto>>(market);

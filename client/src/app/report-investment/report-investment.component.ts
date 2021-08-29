@@ -17,6 +17,7 @@ import { ISocietyInfo } from '../shared/models/societyInfo';
 import { IInstitution } from '../shared/models/institution';
 import { ISBU } from '../shared/models/sbu';
 import { IMarket, IRegion, ITerritory, IDivision, IZone } from '../shared/models/location';
+import { Doctor, IDoctor } from '../shared/models/docotor';
 
 @Component({
   selector: 'app-report-investment',
@@ -33,6 +34,7 @@ export class ReportInvestmentComponent implements OnInit {
   visSoc: boolean = true;
   visBcd: boolean = true;
   visIns: boolean = true;
+  visDoc: boolean = true;
 
   visMarket: boolean = true;
   visZone: boolean = true;
@@ -44,6 +46,7 @@ export class ReportInvestmentComponent implements OnInit {
   donations: IDonation[];
   bcds: IBcdsInfo[];
   society: ISocietyInfo[];
+  doctor: IDoctor[];
   institutions: IInstitution[];
   SBUs: ISBU[];
 
@@ -70,6 +73,7 @@ export class ReportInvestmentComponent implements OnInit {
       societyId: new FormControl(''),
       bcdsId: new FormControl(''),
       institutionId: new FormControl(''),
+      doctorId: new FormControl(''),
       donationType: new FormControl(''),
       sbu: new FormControl(''),
 
@@ -102,8 +106,17 @@ export class ReportInvestmentComponent implements OnInit {
 
 
   viewReport(rpt) {
-    if (rpt != null) {
-        this.toastr.info(rpt, "Report Form")
+
+    debugger;
+    if(this.investmentSearchForm.value.fromDate == "" || this.investmentSearchForm.value.toDate == "")
+    {
+      this.toastr.error("Select Duration", "Error");
+      return;
+    }
+debugger;
+    if (rpt == "Institution/Society/BCDS wise Investment") {
+      
+       this.getDocSocInvestReport();
     }
   }
 
@@ -114,6 +127,12 @@ export class ReportInvestmentComponent implements OnInit {
     this.visTerritory = true;
     this.visRegion = true;
     this.visDivision = true;
+
+    this.investmentSearchForm.value.marketCode = "";
+    this.investmentSearchForm.value.territoryCode  =  "";
+    this.investmentSearchForm.value.regionCode  =  "";
+    this.investmentSearchForm.value.divisionCode =  "";
+    this.investmentSearchForm.value.zoneCode =  "";
 
     if (this.investmentSearchForm.value.locationType == "Market") {
       this.visMarket = false;
@@ -142,6 +161,12 @@ export class ReportInvestmentComponent implements OnInit {
     this.visSoc = true;
     this.visBcd = true;
     this.visIns = true;
+    this.visDoc = true;
+
+    this.investmentSearchForm.value.institutionId =  null;
+    this.investmentSearchForm.value.societyId  =  null;
+    this.investmentSearchForm.value.bcdsId  =  null;
+    this.investmentSearchForm.value.doctorId =  null;
 
     if (this.investmentSearchForm.value.donationTo == "Institution") {
       this.visIns = false;
@@ -155,7 +180,20 @@ export class ReportInvestmentComponent implements OnInit {
       this.visSoc = false;
       this.getSociety();
     }
+    else if (this.investmentSearchForm.value.donationTo == "Doctor") {
+      this.visDoc = false;
+      this.getDoctor();
+    }
   }
+
+  getDoctor() {
+    this.reportInvestmentService.getDoctors().subscribe(response => {
+      this.doctor = response as IDoctor[];
+    }, error => {
+      console.log(error);
+    });
+  }
+
 
   getMarket() {
     this.reportInvestmentService.getMarket().subscribe(response => {
@@ -240,6 +278,7 @@ export class ReportInvestmentComponent implements OnInit {
   }
 
   getDocSocInvestReport() {
+    debugger;
     //this.loading = true;
     // tslint:disable-next-line: radix
     // const impId = parseInt(this.loginService.getEmpOrImpName());
@@ -254,6 +293,7 @@ export class ReportInvestmentComponent implements OnInit {
       institutionId: this.investmentSearchForm.value.institutionId,
       societyId: this.investmentSearchForm.value.societyId,
       bcdsId: this.investmentSearchForm.value.bcdsId,
+      doctorId: this.investmentSearchForm.value.doctorId,
 
       locationType: this.investmentSearchForm.value.locationType,
       territoryCode: this.investmentSearchForm.value.territoryCode,
@@ -264,7 +304,7 @@ export class ReportInvestmentComponent implements OnInit {
     };
 
 
-
+debugger;
     this.reportInvestmentService.getInsSocietyBCDSWiseInvestment(investmentReportSearchDto).subscribe(resp => {
       // this.reportInvestmentService.getInsSocietyBCDSWiseInvestment().subscribe(resp => {  
       this.instSocDocInvestmentDto = resp as IInstSocDocInvestmentDto[];
@@ -277,12 +317,15 @@ export class ReportInvestmentComponent implements OnInit {
           var tD = this.datePipe.transform(p.toDate, "dd/MM/yyyy")
         }
       }
+
+      this.viewProformaSummaryReport();
     }, error => {
       console.log(error);
     });
   }
 
   viewProformaSummaryReport() {
+    debugger;
     if (this.instSocDocInvestmentDto.length <= 0) {
       this.toastr.warning("No Data to Show Report", "Report");
       return false;
@@ -408,6 +451,7 @@ interface IInvestmentReportSearchDto {
   institutionId: number | null;
   societyId: number | null;
   bcdsId: number | null;
+  doctorId: number | null;
   locationType: string;
   territoryCode: string;
   marketCode: string;

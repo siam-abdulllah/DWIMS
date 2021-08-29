@@ -16,6 +16,7 @@ namespace API.Dtos
         public int? InstitutionId { get; set; }
         public int? SocietyId { get; set; }
         public int? BcdsId { get; set; }
+        public int? DoctorId { get; set; }
         public string LocationType { get; set; }
         public string TerritoryCode { get; set; }
         public string MarketCode { get; set; }

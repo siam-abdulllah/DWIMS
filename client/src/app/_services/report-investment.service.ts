@@ -74,7 +74,9 @@ export class ReportInvestmentService {
   getDonations(){    
     return this.http.get(this.baseUrl + 'donation/donationsForInvestment');
   }
-
+  getDoctors(){    
+    return this.http.get(this.baseUrl + 'doctor/doctorsForInvestment');
+  }
 
   
   getInsSocietyBCDSWiseInvestment(model: any) {
