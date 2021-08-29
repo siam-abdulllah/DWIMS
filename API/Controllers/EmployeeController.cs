@@ -88,12 +88,32 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("employeeValidateById/{employeeId}")]
-        public async Task<ActionResult<Employee>> GetEmployeeValidateById(int employeeId)
+        [HttpGet("employeeValidateById/{employeeSAPCode}")]
+        public async Task<IReadOnlyList<Employee>> GetEmployeeValidateById(string employeeSAPCode)
         {
             try
             {
-                var data = await _employeeRepo.GetByIdAsync(employeeId);
+                var employeeData = await _employeeRepo.ListAllAsync();
+                var data = (from e in employeeData
+                            where e.EmployeeSAPCode == employeeSAPCode
+                            orderby e.EmployeeName
+                            select new Employee
+                            {
+                                Id = e.Id,
+                                EmployeeSAPCode = e.EmployeeSAPCode,
+                                EmployeeName = e.EmployeeName,
+                                DepartmentName = e.DepartmentName,
+                                DesignationName = e.DesignationName,
+                                Phone = e.Phone,
+                                Email = e.Email,
+                                MarketName = e.MarketName,
+                                RegionName = e.RegionName,
+                                ZoneName = e.ZoneName,
+                                TerritoryName = e.TerritoryName,
+                                DivisionName = e.DivisionName,
+                                SBU = e.SBU
+                            }
+                              ).Distinct().ToList();
                 return data;
             }
             catch (System.Exception ex)
@@ -122,7 +142,7 @@ namespace API.Controllers
                 var employeeData = await _employeeRepo.ListAllAsync();
                 var userData = await _userRepo.ListAllAsync();
                 var data = (from e in employeeData
-                            join u in userData on e.Id equals u.EmployeeId
+                            join u in userData on e.EmployeeSAPCode equals u.EmployeeSAPCode
                             where u.EmailConfirmed == false
                             orderby e.EmployeeName
                             select new RegApprovalDto
@@ -160,7 +180,7 @@ namespace API.Controllers
                 var employeeData = await _employeeRepo.ListAllAsync();
                 var userData = await _userRepo.ListAllAsync();
                 var data = (from e in employeeData
-                            join u in userData on e.Id equals u.EmployeeId
+                            join u in userData on e.EmployeeSAPCode equals u.EmployeeSAPCode
                             where u.EmailConfirmed == true
                             orderby e.EmployeeName
                             select new RegApprovalDto

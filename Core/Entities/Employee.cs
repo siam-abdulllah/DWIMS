@@ -8,12 +8,12 @@ namespace Core.Entities
     {
         public string EmployeeSAPCode { get; set; }
         public string EmployeeName { get; set; }
-        public int DepartmentId { get; set; }
+        public int? DepartmentId { get; set; }
         public string DepartmentName { get; set; }
-        public int DesignationId { get; set; }
+        public int? DesignationId { get; set; }
         public string DesignationName { get; set; }
-        public int CompanyId { get; set; }
-        public DateTime JoiningDate { get; set; }
+        public int? CompanyId { get; set; }
+        public DateTime? JoiningDate { get; set; }
         public string JoiningPlace { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }

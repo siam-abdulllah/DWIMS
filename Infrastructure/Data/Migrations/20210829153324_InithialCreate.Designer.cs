@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20210829090619_InithialCreate")]
+    [Migration("20210829153324_InithialCreate")]
     partial class InithialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -495,19 +495,19 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CompanyId")
+                    b.Property<int?>("CompanyId")
                         .HasColumnType("int");
 
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
 
-                    b.Property<int>("DepartmentId")
+                    b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
                     b.Property<string>("DepartmentName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("DesignationId")
+                    b.Property<int?>("DesignationId")
                         .HasColumnType("int");
 
                     b.Property<string>("DesignationName")
@@ -528,7 +528,7 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("EmployeeSAPCode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("JoiningDate")
+                    b.Property<DateTime?>("JoiningDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("JoiningPlace")

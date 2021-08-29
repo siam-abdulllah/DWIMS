@@ -132,6 +132,7 @@ export class InvestmentInitComponent implements OnInit {
     this.InvestmentInitSearchModalRef.hide()
   }
   getInvestmentInit(){
+    debugger;
     this.investmentInitService.getInvestmentInit(parseInt(this.empId),this.sbu).subscribe(response => 
     {
       this.investmentInits = response.data;
@@ -559,7 +560,7 @@ export class InvestmentInitComponent implements OnInit {
   }
   getDoctor(){
   this.investmentInitService.getDoctors().subscribe(response => {
-  
+
   this.doctors = response as IDoctor[];
   }, error => {
   console.log(error);

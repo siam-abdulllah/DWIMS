@@ -106,7 +106,7 @@ namespace API.Controllers
                         new SqlParameter("@EID", empId),
                         new SqlParameter("@RSTATUS", "Recommended")
                     };
-                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentInitSearch @SBU,@EID", parms.ToArray()).ToList();
+                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentInitSearch @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
                
                  
                 var data = _mapper
