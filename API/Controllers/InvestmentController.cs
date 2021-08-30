@@ -107,8 +107,6 @@ namespace API.Controllers
                         new SqlParameter("@RSTATUS", "Recommended")
                     };
                 var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentInitSearch @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
-               
-                 
                 var data = _mapper
                     .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
 

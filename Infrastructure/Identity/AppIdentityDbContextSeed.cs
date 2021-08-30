@@ -15,14 +15,15 @@ namespace Infrastructure.Identity
             {
                 var user = new AppUser
                 {
-                    DisplayName = "Bob",
+                    DisplayName = "Test",
+                    EmployeeId = 1,
                     EmployeeSAPCode = "1",
-                    Email = "bob@test.com",
-                    UserName = "bob@test.com",
+                    Email = "test@gmail.com",
+                    UserName = "test@gmail.com",
                     Address = new Address
                     {
-                        FirstName = "Bob",
-                        LastName = "Bobbity",
+                        FirstName = "Test",
+                        LastName = "User",
                         Street = "10 The Street",
                         City = "New York",
                         State = "NY",
@@ -30,14 +31,15 @@ namespace Infrastructure.Identity
                     }
                 };
 
-                await userManager.CreateAsync(user, "Pa$$w0rd");
-                
+                await userManager.CreateAsync(user, "Aa.123456");
+                var insertedUSer = await userManager.FindByEmailAsync(user.Email);
                 // Can do anything
-                 var role = new IdentityRole();
+                var role = new IdentityRole();
                  role.Id= "1";
                  role.Name = "Administrator";
                  role.NormalizedName = "Administrator";
-                 await roleManager.CreateAsync(role);      
+                 await roleManager.CreateAsync(role);
+                 await userManager.AddToRoleAsync(insertedUSer, role.Name);
 
                 // Only have Permission on Select & Insert & Edit & Delete in Specific Owner
                  role = new IdentityRole();

@@ -496,6 +496,9 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int?>("CompanyId")
                         .HasColumnType("int");
 
+                    b.Property<string>("CompanyName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
 
@@ -616,6 +619,42 @@ namespace Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("InstitutionInfo");
+                });
+
+            modelBuilder.Entity("Core.Entities.InstitutionMarket", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InstitutionCode")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MarketCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MarketName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("SBU")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("InstitutionMarket");
                 });
 
             modelBuilder.Entity("Core.Entities.InvestmentApr", b =>

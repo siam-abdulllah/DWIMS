@@ -158,6 +158,7 @@ namespace Infrastructure.Data.Migrations
                     DesignationId = table.Column<int>(nullable: true),
                     DesignationName = table.Column<string>(nullable: true),
                     CompanyId = table.Column<int>(nullable: true),
+                    CompanyName = table.Column<string>(nullable: true),
                     JoiningDate = table.Column<DateTime>(nullable: true),
                     JoiningPlace = table.Column<string>(nullable: true),
                     Phone = table.Column<string>(nullable: true),
@@ -200,6 +201,26 @@ namespace Infrastructure.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_InstitutionInfo", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "InstitutionMarket",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DataStatus = table.Column<int>(nullable: false),
+                    SetOn = table.Column<DateTimeOffset>(nullable: false),
+                    ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
+                    InstitutionCode = table.Column<int>(nullable: false),
+                    MarketCode = table.Column<string>(nullable: true),
+                    MarketName = table.Column<string>(nullable: true),
+                    Status = table.Column<string>(nullable: true),
+                    SBU = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InstitutionMarket", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -1550,6 +1571,9 @@ namespace Infrastructure.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Donation");
+
+            migrationBuilder.DropTable(
+                name: "InstitutionMarket");
 
             migrationBuilder.DropTable(
                 name: "InvestmentApr");

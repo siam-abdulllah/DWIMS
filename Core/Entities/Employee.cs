@@ -13,6 +13,7 @@ namespace Core.Entities
         public int? DesignationId { get; set; }
         public string DesignationName { get; set; }
         public int? CompanyId { get; set; }
+        public string CompanyName { get; set; }
         public DateTime? JoiningDate { get; set; }
         public string JoiningPlace { get; set; }
         public string Phone { get; set; }
