@@ -10,6 +10,7 @@ using Core.Interfaces;
 using Core.Specifications;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
@@ -38,21 +39,31 @@ namespace API.Controllers
         public async Task<ActionResult<IReadOnlyList<InstSocDocInvestmentDto>>> GetInstituteInvestment([FromQuery] ReportInvestmentInfoSpecParams rptParrams,ReportSearchDto search)
         {
 
-            //var list = _db.ReportInvestmentInfo.FromSqlRaw<ReportInvestmentInfo>(sql, parms.ToArray()).ToList();
+            List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                        new SqlParameter("@UserId", search.UserId),
+                        new SqlParameter("@FromDate", search.FromDate),
+                        new SqlParameter("@ToDate", search.ToDate),
+                        new SqlParameter("@SBU", search.SBU),
+                        new SqlParameter("@DonationType", search.DonationType),
+                        new SqlParameter("@InvestType", search.InvestType),
+                        new SqlParameter("@InstitutionId", search.InstitutionId),
+                        new SqlParameter("@SocietyId", search.SocietyId),
+                        new SqlParameter("@BcdsId", search.BcdsId),
+                        new SqlParameter("@LocationType", search.LocationType),
+                        new SqlParameter("@TerritoryCode", search.TerritoryCode),
+                        new SqlParameter("@MarketCode", search.MarketCode),
+                        new SqlParameter("@regionCode", search.RegionCode),
+                        new SqlParameter("@ZoneCode", search.ZoneCode),
+                        new SqlParameter("@DivisionCode", search.DivisionCode),
+                    };
 
-            //var list = _db.Database.FromSql(sql, parms.ToArray()).ToList();
+            var results = _db.ReportInvestmentInfo.FromSqlRaw<ReportInvestmentInfo>("EXECUTE SP_InvestmentReport @UserId,@FromDate,@ToDate, @SBU, @DonationType, @InvestType, " +
+                " @InstitutionId, @SocietyId, @BcdsId, @LocationType, @TerritoryCode, @MarketCode, @regionCode, @ZoneCode,  @DivisionCode", parms.ToArray()).ToList();
 
-            var spec = new ReportInvestmentInfoSpecification(rptParrams);
+            var data = _mapper.Map<IReadOnlyList<ReportInvestmentInfo>, IReadOnlyList<InstSocDocInvestmentDto>>(results);
 
-            var countSpec = new ReportInvestmentInfoSpecParamsWithFiltersForCountSpecificication(rptParrams);
-
-            var totalItems = await _investRepo.CountAsync(countSpec);
-
-            var posts = await _investRepo.ListAsync(spec);
-
-            var data = _mapper.Map<IReadOnlyList<ReportInvestmentInfo>, IReadOnlyList<InstSocDocInvestmentDto>>(posts);
-
-            return Ok(new Pagination<InstSocDocInvestmentDto>(rptParrams.PageIndex, rptParrams.PageSize, totalItems, data));
+            return Ok(new Pagination<InstSocDocInvestmentDto>(rptParrams.PageIndex, rptParrams.PageSize, 10, data));
         }
 
 

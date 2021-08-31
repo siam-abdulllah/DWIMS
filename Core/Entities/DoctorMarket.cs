@@ -7,10 +7,13 @@ namespace Core.Entities
 {
     public class DoctorMarket : BaseEntity
     {
-        public int DoctorCode { get; set; }
+        public int DoctorId { get; set; }
+        [ForeignKey("DoctorId")]
+        public DoctorInfo DoctorInfo { get; set; }
         public string MarketCode { get; set; }
         public string MarketName { get; set; }
         public string Status { get; set; }
         public string SBU { get; set; }
+
     }
 }

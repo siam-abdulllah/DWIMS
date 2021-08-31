@@ -152,9 +152,9 @@ export class InvestmentAprComponent implements OnInit {
       this.isValid=true;
       this.InvestmentAprSearchModalRef.hide()
       }
-      getLastFiveInvestment(marketCode:string,toDayDate:string)
+      getLastFiveInvestment(empId:number,toDayDate:string)
       {
-      this.investmentAprService.getLastFiveInvestment(marketCode,toDayDate).subscribe(
+      this.investmentAprService.getLastFiveInvestment(empId,toDayDate).subscribe(
       (response) => {
         
         this.investmentDetailsOld= response as IInvestmentDetailOld[];
@@ -351,7 +351,7 @@ export class InvestmentAprComponent implements OnInit {
      this.investmentAprService.investmentDetailFormData.fromDate=new Date(data.fromDate);
       this.investmentAprService.investmentDetailFormData.toDate=new Date(data.toDate);
       let convertedDate =this.datePipe.transform(data.fromDate, 'ddMMyyyy');
-      this.getLastFiveInvestment(this.investmentAprService.investmentAprFormData.marketCode,convertedDate);
+      this.getLastFiveInvestment(this.investmentAprService.investmentAprFormData.employeeId,convertedDate);
     } else{
       this.toastr.warning('No Data Found', 'Investment');
     }
@@ -385,7 +385,7 @@ export class InvestmentAprComponent implements OnInit {
      this.investmentAprService.investmentDetailFormData.fromDate=new Date(data.fromDate);
       this.investmentAprService.investmentDetailFormData.toDate=new Date(data.toDate);
       let convertedDate =this.datePipe.transform(data.fromDate, 'ddMMyyyy');
-      this.getLastFiveInvestment(this.investmentAprService.investmentAprFormData.marketCode,convertedDate);
+      this.getLastFiveInvestment(this.investmentAprService.investmentAprFormData.employeeId,convertedDate);
     } else{
       this.toastr.warning('No Data Found', 'Investment ');
     }

@@ -48,7 +48,7 @@ namespace API.Controllers
             catch (System.Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
 
@@ -99,7 +99,7 @@ namespace API.Controllers
 
 
         [HttpPost("ModifySBUWiseBudget")]
-        public ActionResult<SBUWiseBudget> UpdateSBUBudget(SBUWiseBudget sbuBdgt)
+        public async Task<ActionResult<SBUWiseBudget>> UpdateSBUBudget(SBUWiseBudget sbuBdgt)
         {
             var appr = new SBUWiseBudget
             {

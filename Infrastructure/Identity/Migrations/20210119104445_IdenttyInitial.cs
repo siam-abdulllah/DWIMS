@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Identity.Migrations
 {
-    public partial class InithialCreate : Migration
+    public partial class IdenttyInitial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -40,8 +40,6 @@ namespace Infrastructure.Identity.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    EmployeeId = table.Column<int>(nullable: false),
-                    EmployeeSAPCode = table.Column<string>(nullable: true),
                     DisplayName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>

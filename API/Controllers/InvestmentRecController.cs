@@ -50,7 +50,6 @@ namespace API.Controllers
             _approvalCeilingRepo = approvalCeilingRepo;
             _sbuRepo = sbuRepo;
             _dbContext = dbContext;
-            _reportInvestmentInfoRepo=reportInvestmentInfoRepo;
         }
         [HttpGet("investmentInits/{empId}/{sbu}")]
         public  ActionResult<Pagination<InvestmentInitDto>> GetInvestmentInits(int empId, string sbu,
@@ -105,7 +104,7 @@ namespace API.Controllers
             catch (System.Exception e)
             {
 
-                throw e;
+                throw;
             }
         }
         [HttpGet("investmentRecommended/{empId}/{sbu}")]
@@ -164,7 +163,7 @@ namespace API.Controllers
             catch (System.Exception e)
             {
 
-                throw e;
+                throw;
             }
         }
 
@@ -355,7 +354,7 @@ namespace API.Controllers
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
 

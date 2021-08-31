@@ -385,9 +385,6 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("AvgPrescValue")
-                        .HasColumnType("int");
-
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
 
@@ -397,17 +394,14 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("Designation")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("DoctorCode")
-                        .HasColumnType("int");
+                    b.Property<string>("DoctorCode")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DoctorName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<int>("PatientPerDay")
-                        .HasColumnType("int");
 
                     b.Property<DateTimeOffset>("SetOn")
                         .HasColumnType("datetimeoffset");
@@ -430,7 +424,7 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
 
-                    b.Property<int>("DoctorCode")
+                    b.Property<int>("DoctorId")
                         .HasColumnType("int");
 
                     b.Property<string>("MarketCode")
@@ -452,6 +446,8 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DoctorId");
 
                     b.ToTable("DoctorMarket");
                 });
@@ -493,22 +489,19 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CompanyId")
+                    b.Property<int>("CompanyId")
                         .HasColumnType("int");
-
-                    b.Property<string>("CompanyName")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
 
-                    b.Property<int?>("DepartmentId")
+                    b.Property<int>("DepartmentId")
                         .HasColumnType("int");
 
                     b.Property<string>("DepartmentName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("DesignationId")
+                    b.Property<int>("DesignationId")
                         .HasColumnType("int");
 
                     b.Property<string>("DesignationName")
@@ -529,7 +522,7 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("EmployeeSAPCode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("JoiningDate")
+                    b.Property<DateTime>("JoiningDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("JoiningPlace")
@@ -589,14 +582,11 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("AvgNoAdmtPati")
-                        .HasColumnType("int");
-
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
 
-                    b.Property<int>("InstitutionCode")
-                        .HasColumnType("int");
+                    b.Property<string>("InstitutionCode")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("InstitutionName")
                         .HasColumnType("nvarchar(max)");
@@ -607,9 +597,6 @@ namespace Infrastructure.Data.Migrations
                     b.Property<DateTimeOffset>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int>("NoOfBeds")
-                        .HasColumnType("int");
-
                     b.Property<DateTimeOffset>("SetOn")
                         .HasColumnType("datetimeoffset");
 
@@ -619,42 +606,6 @@ namespace Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("InstitutionInfo");
-                });
-
-            modelBuilder.Entity("Core.Entities.InstitutionMarket", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("DataStatus")
-                        .HasColumnType("int");
-
-                    b.Property<int>("InstitutionCode")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MarketCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MarketName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset>("ModifiedOn")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("SBU")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset>("SetOn")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("InstitutionMarket");
                 });
 
             modelBuilder.Entity("Core.Entities.InvestmentApr", b =>
@@ -2073,6 +2024,15 @@ namespace Infrastructure.Data.Migrations
                     b.HasOne("Core.Entities.InvestmentInit", "InvestmentInit")
                         .WithMany()
                         .HasForeignKey("InvestmentInitId");
+                });
+
+            modelBuilder.Entity("Core.Entities.DoctorMarket", b =>
+                {
+                    b.HasOne("Core.Entities.DoctorInfo", "DoctorInfo")
+                        .WithMany()
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Core.Entities.InvestmentApr", b =>

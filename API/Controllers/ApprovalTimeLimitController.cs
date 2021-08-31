@@ -100,7 +100,7 @@ namespace API.Controllers
 
 
         [HttpPost("ModifyApprovalTimeLimit")]
-        public ActionResult<ApprovalTimeLimitDto> UpdateApprovalTimeLimit(ApprovalTimeLimitDto setApprovalDto)
+        public async Task<ActionResult<ApprovalTimeLimitDto>> UpdateApprovalTimeLimit(ApprovalTimeLimitDto setApprovalDto)
         {
             //var bcds = await _bcdsRepo.GetByIdAsync(setbcdsDto.Id);
             //if (bcds == null) return Unauthorized(new ApiResponse(401));

@@ -24,7 +24,7 @@ namespace API.Controllers
         private readonly IGenericRepository<InvestmentAprComment> _investmentAprCommentRepo;
         private readonly IGenericRepository<InvestmentAprProducts> _investmentAprProductRepo;
         private readonly IGenericRepository<Employee> _employeeRepo;
-        //private readonly IGenericRepository<ReportInvestmentInfo> _reportInvestmentInfoRepo;
+        private readonly IGenericRepository<ReportInvestmentInfo> _reportInvestmentInfoRepo;
         private readonly IMapper _mapper;
         private readonly StoreContext _dbContext;
 
@@ -76,7 +76,7 @@ namespace API.Controllers
                 //                                  ProposeFor = i.ProposeFor.Trim(),
                 //                                  DonationType = i.DonationType.Trim(),
                 //                                  DonationTo = i.DonationTo.Trim(),
-                //                                  EmployeeId = i.EmployeeId,any
+                //                                  EmployeeId = i.EmployeeId,
                 //                              }
                 //              ).Distinct().ToList();
 
@@ -101,7 +101,7 @@ namespace API.Controllers
             catch (System.Exception e)
             {
 
-                throw e;
+                throw;
             }
         }
         [HttpGet("investmentApproved/{empId}/{sbu}")]
@@ -161,7 +161,7 @@ namespace API.Controllers
             catch (System.Exception e)
             {
 
-                throw e;
+                throw;
             }
         }
 
@@ -331,7 +331,7 @@ namespace API.Controllers
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
 

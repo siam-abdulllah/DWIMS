@@ -13,9 +13,8 @@ namespace Infrastructure.Data
         public StoreContext(DbContextOptions<StoreContext> options) : base(options)
         {
         }
-        //public DbSet<Post> Post { get; set; }
-        //public DbSet<PostComments> PostComments { get; set; }
-        public DbSet<Employee> Employee { get; set; }
+        public DbSet<Post> Post { get; set; }
+        public DbSet<PostComments> PostComments { get; set; }
         public DbSet<Donation> Donation { get; set; }
         public DbSet<SubCampaign> SubCampaign { get; set; }
         public DbSet<CampaignMst> CampaignMst { get; set; }
@@ -38,8 +37,6 @@ namespace Infrastructure.Data
         public DbSet<DoctorMarket> DoctorMarket { get; set; }
         public DbSet<DoctorHonAppr> DoctorHonAppr { get; set; }
         public DbSet<InstitutionInfo> InstitutionInfo { get; set; }
-
-        public DbSet<InstitutionMarket> InstitutionMarket { get; set; }
         public DbSet<InvestmentBcds> InvestmentBcds { get; set; }
         public DbSet<InvestmentCampaign> InvestmentCampaign { get; set; }
         public DbSet<InvestmentDetail> InvestmentDetail { get; set; }
