@@ -7,7 +7,7 @@ namespace Core.Entities
 {
     public class DoctorInfo : BaseEntity
     {
-        public int DoctorCode { get; set; }
+        public string DoctorCode { get; set; }
         public string DoctorName { get; set; }
         public int PatientPerDay { get; set; }
         public int AvgPrescValue { get; set; }

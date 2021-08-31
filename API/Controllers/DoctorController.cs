@@ -22,6 +22,7 @@ namespace API.Controllers
 
 
         [HttpGet("doctorsForInvestment")]
+        [RequestFormLimits(ValueCountLimit = int.MaxValue)]
         public async Task<IReadOnlyList<DoctorInfo>> GetDoctorsForInvestment()
         {
             try

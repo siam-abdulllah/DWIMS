@@ -1069,7 +1069,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("getLastFiveInvestment/{marketCode}/{date}")]
-        public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestment(int marketCode, string date)
+        public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestment(string marketCode, string date)
         {
             try
             {

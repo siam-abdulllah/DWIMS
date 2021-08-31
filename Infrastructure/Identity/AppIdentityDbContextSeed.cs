@@ -32,14 +32,14 @@ namespace Infrastructure.Identity
                 };
 
                 await userManager.CreateAsync(user, "Aa.123456");
-                var insertedUSer = await userManager.FindByEmailAsync(user.Email);
+                var insertedUser = await userManager.FindByEmailAsync(user.Email);
                 // Can do anything
                 var role = new IdentityRole();
                  role.Id= "1";
                  role.Name = "Administrator";
                  role.NormalizedName = "Administrator";
                  await roleManager.CreateAsync(role);
-                 await userManager.AddToRoleAsync(insertedUSer, role.Name);
+                 await userManager.AddToRoleAsync(insertedUser, role.Name);
 
                 // Only have Permission on Select & Insert & Edit & Delete in Specific Owner
                  role = new IdentityRole();
