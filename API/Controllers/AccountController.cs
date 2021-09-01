@@ -161,6 +161,7 @@ namespace API.Controllers
             var user = new AppUser
             {
                 EmployeeId = setRegDto.UserForm.EmployeeId,
+                EmployeeSAPCode = setRegDto.UserForm.EmployeeSAPCode,
                 DisplayName = setRegDto.UserForm.DisplayName,
                 Email = setRegDto.UserForm.Email,
                 UserName = setRegDto.UserForm.Email,

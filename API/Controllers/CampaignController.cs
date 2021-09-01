@@ -205,7 +205,7 @@ namespace API.Controllers
             catch (System.Exception e)
             {
 
-                throw;
+                throw e;
             }
         }
         [HttpGet("campaignDtls/{mstId}")]
@@ -255,7 +255,7 @@ namespace API.Controllers
             catch (System.Exception ex)
             {
 
-                throw;
+                throw ex;
             }
         } 
         [HttpPost("removeDtlProduct")]
@@ -269,7 +269,7 @@ namespace API.Controllers
             catch (System.Exception ex)
             {
 
-                throw;
+                throw ex;
             }
         }
 

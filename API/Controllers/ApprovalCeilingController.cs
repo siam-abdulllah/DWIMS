@@ -46,7 +46,7 @@ namespace API.Controllers
         }
 
         [HttpPost("CreateApprovalCeiling")]
-        public async Task<ActionResult<ApprovalCeiling>> SaveApprovalCeiling(ApprovalCeiling apprclngDto)
+        public ActionResult<ApprovalCeiling> SaveApprovalCeiling(ApprovalCeiling apprclngDto)
         {
             var appr = new ApprovalCeiling
             {
@@ -82,7 +82,7 @@ namespace API.Controllers
 
 
         [HttpPost("ModifyApprovalCeiling")]
-        public async Task<ActionResult<ApprovalCeiling>> UpdateApprovalCeiling(ApprovalCeiling apprclngDto)
+        public ActionResult<ApprovalCeiling> UpdateApprovalCeiling(ApprovalCeiling apprclngDto)
         {
             var appr = new ApprovalCeiling
             {

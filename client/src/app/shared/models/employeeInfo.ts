@@ -14,15 +14,15 @@ export interface IEmployeeInfo {
     email : string;
     postingType : string;
     marketName : string;
-    marketId : number;
+    marketCode : string;
     regionName : string;
-    regionId : number;
+    regionCode : string;
     zoneName : string;
-    zoneId : number;
+    zoneCode : string;
     territoryName : string;
-    territoryId : number;
+    territoryCode : string;
     divisionName : string;
-    divisionId : number;
+    divisionCode : string;
     sbu:string;
 }
 
@@ -42,14 +42,14 @@ export class EmployeeInfo implements IEmployeeInfo {
     email : string;
     postingType : string;
     marketName : string;
-    marketId : number;
+    marketCode : string;
     regionName : string;
-    regionId : number;
+    regionCode : string;
     zoneName : string;
-    zoneId : number;
+    zoneCode : string;
     territoryName : string;
-    territoryId : number;
+    territoryCode : string;
     divisionName : string;
-    divisionId : number;
+    divisionCode : string;
     sbu:string;
 }

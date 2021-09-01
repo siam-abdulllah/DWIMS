@@ -31,7 +31,7 @@ namespace API.Controllers
         public InvestmentAprController(IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<InvestmentRecComment> investmentRecCommentRepo,
             IGenericRepository<InvestmentApr> investmentAprRepo, IGenericRepository<InvestmentAprComment> investmentAprCommentRepo,
             IGenericRepository<InvestmentAprProducts> investmentAprProductRepo, IGenericRepository<Employee> employeeRepo,
-            IGenericRepository<ReportInvestmentInfo> _reportInvestmentInfoRepo, StoreContext dbContext, IMapper mapper)
+            IGenericRepository<ReportInvestmentInfo> reportInvestmentInfoRepo, StoreContext dbContext, IMapper mapper)
         {
             _mapper = mapper;
             _investmentAprRepo = investmentAprRepo;
@@ -39,6 +39,7 @@ namespace API.Controllers
             _investmentRecCommentRepo = investmentRecCommentRepo;
             _investmentAprCommentRepo = investmentAprCommentRepo;
             _investmentAprProductRepo = investmentAprProductRepo;
+            _reportInvestmentInfoRepo = reportInvestmentInfoRepo;
             _employeeRepo = employeeRepo;
             _dbContext = dbContext;
         }
@@ -101,7 +102,7 @@ namespace API.Controllers
             catch (System.Exception e)
             {
 
-                throw;
+                throw e;
             }
         }
         [HttpGet("investmentApproved/{empId}/{sbu}")]
@@ -161,7 +162,7 @@ namespace API.Controllers
             catch (System.Exception e)
             {
 
-                throw;
+                throw e;
             }
         }
 
@@ -331,7 +332,7 @@ namespace API.Controllers
             catch (Exception ex)
             {
 
-                throw;
+                throw ex;
             }
         }
 

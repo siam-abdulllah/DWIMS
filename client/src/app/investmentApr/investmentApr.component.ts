@@ -248,8 +248,6 @@ export class InvestmentAprComponent implements OnInit {
   }
    getInvestmentBcds(){
     this.investmentAprService.getInvestmentBcds(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
-      //
-      
       var data=response[0] as IInvestmentBcds;
       if(data!==undefined)
       {
@@ -269,8 +267,6 @@ export class InvestmentAprComponent implements OnInit {
   }
    getInvestmentSociety(){
     this.investmentAprService.getInvestmentSociety(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
-      //
-      
       var data=response[0] as IInvestmentSociety;
       if(data!==undefined)
       {
@@ -278,7 +274,6 @@ export class InvestmentAprComponent implements OnInit {
       this.investmentAprService.investmentSocietyFormData.societyName=data.society.societyName;
       this.investmentAprService.investmentSocietyFormData.noOfMember=data.society.noOfMember;
       this.investmentAprService.investmentSocietyFormData.societyAddress=data.society.societyAddress;
-      
       //this.onChangeSocietyInSociety();
     }
     else{
@@ -291,8 +286,6 @@ export class InvestmentAprComponent implements OnInit {
   }
    getInvestmentInstitution(){
     this.investmentAprService.getInvestmentInstitutions(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
-      //
-      
       var data=response[0] as IInvestmentInstitution;
       if(data!==undefined)
       {
@@ -313,7 +306,6 @@ export class InvestmentAprComponent implements OnInit {
   }
    getInvestmentDoctor(){
     this.investmentAprService.getInvestmentDoctors(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
-      //
       var data=response[0] as IInvestmentDoctor;
       if( data!==undefined)
       {
@@ -329,14 +321,12 @@ export class InvestmentAprComponent implements OnInit {
     else{
       this.toastr.warning('No Data Found', 'Investment ');
     }
-      
     }, error => {
         console.log(error);
     });
   }
   getInvestmentAprComment(){
     this.investmentAprService.getInvestmentAprComment(this.investmentAprService.investmentAprFormData.id,this.empId).subscribe(response => {
-      //
       var data=response[0] as IInvestmentAprComment;
       if( data!==undefined)
       {
@@ -353,7 +343,6 @@ export class InvestmentAprComponent implements OnInit {
   }
   getInvestmentDetails(){
     this.investmentAprService.getInvestmentDetails(this.investmentAprService.investmentAprFormData.id ).subscribe(response => {
-      //
       var data=response[0] as IInvestmentApr;
       if(data!==undefined)
       {
@@ -364,7 +353,7 @@ export class InvestmentAprComponent implements OnInit {
       let convertedDate =this.datePipe.transform(data.fromDate, 'ddMMyyyy');
       this.getLastFiveInvestment(this.investmentAprService.investmentAprFormData.marketCode,convertedDate);
     } else{
-      this.toastr.warning('No Data Found', 'Investment ');
+      this.toastr.warning('No Data Found', 'Investment');
     }
        }, error => {
         console.log(error);
@@ -372,7 +361,6 @@ export class InvestmentAprComponent implements OnInit {
  }
    getInvestmentTargetedProd(){
     this.investmentAprService.getInvestmentTargetedProds(this.investmentAprService.investmentAprFormData.id,this.sbu).subscribe(response => {
-      //
       var data=response as IInvestmentTargetedProd[];
       if( data!==undefined)
       {
@@ -388,9 +376,7 @@ export class InvestmentAprComponent implements OnInit {
     });
   }
   getInvestmentAprDetails(){
-    //
     this.investmentAprService.getInvestmentAprDetails(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
-      
       var data=response[0] as IInvestmentApr;
       if(data!==undefined)
       {

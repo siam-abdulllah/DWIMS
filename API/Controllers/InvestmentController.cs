@@ -106,7 +106,7 @@ namespace API.Controllers
                         new SqlParameter("@EID", empId),
                         new SqlParameter("@RSTATUS", "Recommended")
                     };
-                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentInitSearch @SBU,@EID", parms.ToArray()).ToList();
+                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentInitSearch @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
                
                  
                 var data = _mapper
@@ -385,7 +385,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -1071,7 +1071,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("getLastFiveInvestment/{marketCode}/{date}")]
-        public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestment(int marketCode, string date)
+        public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestment(string marketCode, string date)
         {
             try
             {

@@ -48,6 +48,7 @@ namespace API.Controllers
             _employeeRepo = employeeRepo;
             _apprAuthConfigRepo = apprAuthConfigRepo;
             _approvalCeilingRepo = approvalCeilingRepo;
+            _reportInvestmentInfoRepo = reportInvestmentInfoRepo;
             _sbuRepo = sbuRepo;
             _dbContext = dbContext;
         }
@@ -104,7 +105,7 @@ namespace API.Controllers
             catch (System.Exception e)
             {
 
-                throw;
+                throw e;
             }
         }
         [HttpGet("investmentRecommended/{empId}/{sbu}")]
@@ -163,7 +164,7 @@ namespace API.Controllers
             catch (System.Exception e)
             {
 
-                throw;
+                throw e;
             }
         }
 
@@ -354,7 +355,7 @@ namespace API.Controllers
             catch (Exception ex)
             {
 
-                throw;
+                throw ex;
             }
         }
 
