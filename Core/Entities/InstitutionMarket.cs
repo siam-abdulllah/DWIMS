@@ -5,12 +5,13 @@ using System.Text;
 
 namespace Core.Entities
 {
-    public class DoctorMarket : BaseEntity
+    public class InstitutionMarket : BaseEntity
     {
-        public int DoctorCode { get; set; }
+        public int InstitutionCode { get; set; }
         public string MarketCode { get; set; }
         public string MarketName { get; set; }
         public string Status { get; set; }
         public string SBU { get; set; }
+
     }
 }

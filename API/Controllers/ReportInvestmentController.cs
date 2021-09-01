@@ -36,7 +36,7 @@ namespace API.Controllers
         [HttpPost("GetInsSocietyBCDSWiseInvestment")]
         //[Authorize(Roles = "Owner,Administrator")]
         //[Authorize(Policy = "DetailUserPolicy")]
-        public async Task<ActionResult<IReadOnlyList<InstSocDocInvestmentDto>>> GetInstituteInvestment([FromQuery] ReportInvestmentInfoSpecParams rptParrams,ReportSearchDto search)
+        public ActionResult<IReadOnlyList<InstSocDocInvestmentDto>> GetInstituteInvestment([FromQuery] ReportInvestmentInfoSpecParams rptParrams,ReportSearchDto search)
         {
 
             List<SqlParameter> parms = new List<SqlParameter>

@@ -30,11 +30,11 @@ namespace API.Controllers
         [HttpPost("insertMst")]
         public ActionResult<MarketGroupMstDto> InsertMarketGroupMst(MarketGroupMstDto marketGroupMstDto)
         {
-            var employeeId = 2;
+            
             var marketGroupMsts = new MarketGroupMst
             {
                 GroupName = marketGroupMstDto.GroupName,
-                EmployeeId = employeeId,
+                EmployeeId = marketGroupMstDto.EmployeeId,
                 Status = marketGroupMstDto.Status,
                 SetOn = DateTimeOffset.Now
             };
@@ -85,12 +85,12 @@ namespace API.Controllers
         [HttpPost("updateMst")]
         public ActionResult<MarketGroupMstDto> UpdateMarketGroupMst(MarketGroupMstDto marketGroupMstDto)
         {
-            var employeeId = 1;
+            
             var marketGroupMsts = new MarketGroupMst
             {
                 Id = marketGroupMstDto.Id,
                 GroupName = marketGroupMstDto.GroupName,
-                EmployeeId = employeeId,
+                EmployeeId = marketGroupMstDto.EmployeeId,
                 Status = marketGroupMstDto.Status,
                 ModifiedOn = DateTimeOffset.Now
 
@@ -155,7 +155,7 @@ namespace API.Controllers
             catch (System.Exception e)
             {
 
-                throw;
+                throw e;
             }
         }
         [HttpGet("getMarketGroupMstsForInvestment")]
@@ -175,7 +175,7 @@ namespace API.Controllers
             catch (System.Exception e)
             {
 
-                throw;
+                throw e;
             }
         }
         [HttpGet("getMarketGroupMstsForInvestment/{empId}")]
@@ -195,7 +195,7 @@ namespace API.Controllers
             catch (System.Exception e)
             {
 
-                throw;
+                throw e;
             }
         }
         [HttpGet]

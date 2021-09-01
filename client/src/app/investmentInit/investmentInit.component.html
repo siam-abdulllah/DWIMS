@@ -100,7 +100,7 @@
                                         <div class="col-md-3">
                                             <input class="form-control" id="id" name="id" #id="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.id" readonly style="display: none;">
                                             <input class="form-control" id="investmentInitId" name="investmentInitId" #investmentInitId="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.investmentInitId" readonly style="display: none;">
-                                            <ng-select [virtualScroll]="true" [items]="doctors" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" (change)="onChangeDoctorInDoc()" id="doctorName" name="doctorName" #doctorName="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.doctorName">
+                                            <ng-select [virtualScroll]="true" [items]="doctors" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" (change)="onChangeDoctorInDoc()" id="doctorId" name="doctorId" #doctorId="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.doctorId">
                                             </ng-select>
                                             <!-- <select class="form-control " (change)="onChangeDoctorInDoc()" id="doctorName" name="doctorName" #doctorName="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.doctorName">
                                                 <option  [ngValue]="null">Select Doctor</option>
@@ -111,7 +111,7 @@
                                             <label>Doctor Id</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <input class="form-control" name="doctorId" readonly id="doctorId" #doctorId="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.doctorId">
+                                            <input class="form-control" name="doctorCode" readonly id="doctorCode" #doctorCode="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.doctorCode">
                                         </div>
                                     </div>
                                 </div>
@@ -137,7 +137,7 @@
                                             <label>Institution</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <ng-select [virtualScroll]="true" [items]="doctors" bindLabel="institutionName" bindValue="id" placeholder="Select Institution" (change)="onChangeInstitutionInDoc()" id="institutionId" name="institutionId" #institutionId="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.institutionId">
+                                            <ng-select [virtualScroll]="true" [items]="institutions" bindLabel="institutionName" bindValue="id" placeholder="Select Institution" (change)="onChangeInstitutionInDoc()" id="institutionId" name="institutionId" #institutionId="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.institutionId">
                                             </ng-select>
                                             <!-- <select class="form-control " (change)="onChangeInstitutionInDoc()"  id="institutionId" name="institutionId" #institutionId="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.institutionId">
                                                 <option  [ngValue]="null">Select Institution</option>

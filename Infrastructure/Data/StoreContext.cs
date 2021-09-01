@@ -36,7 +36,9 @@ namespace Infrastructure.Data
         public DbSet<DoctorInfo> DoctorInfo { get; set; }
         public DbSet<DoctorMarket> DoctorMarket { get; set; }
         public DbSet<DoctorHonAppr> DoctorHonAppr { get; set; }
+        public DbSet<Employee> Employee { get; set; }
         public DbSet<InstitutionInfo> InstitutionInfo { get; set; }
+        public DbSet<InstitutionMarket> InstitutionMarket { get; set; }
         public DbSet<InvestmentBcds> InvestmentBcds { get; set; }
         public DbSet<InvestmentCampaign> InvestmentCampaign { get; set; }
         public DbSet<InvestmentDetail> InvestmentDetail { get; set; }

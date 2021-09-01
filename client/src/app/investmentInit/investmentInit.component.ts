@@ -226,8 +226,9 @@ export class InvestmentInitComponent implements OnInit {
 
       var data = response[0] as IInvestmentDoctor;
       if (data !== undefined) {
+        debugger;
         this.investmentInitService.investmentDoctorFormData = data;
-        this.investmentInitService.investmentDoctorFormData.doctorName = String(data.doctorId);
+        //this.investmentInitService.investmentDoctorFormData.doctorName = String(data.doctorId);
         this.onChangeDoctorInDoc();
         this.onChangeInstitutionInDoc();
       }
@@ -360,9 +361,10 @@ export class InvestmentInitComponent implements OnInit {
   }
   onChangeDoctorInDoc() {
     for (var i = 0; i < this.doctors.length; i++) {
-      if (this.doctors[i].id == parseInt(this.investmentInitService.investmentDoctorFormData.doctorName)) {
+      debugger;
+      if (this.doctors[i].id == this.investmentInitService.investmentDoctorFormData.doctorId) {
         //this.investmentInitService.investmentDoctorFormData.doctorName=this.doctors[i].doctorName;
-        this.investmentInitService.investmentDoctorFormData.doctorId = this.doctors[i].id;
+        this.investmentInitService.investmentDoctorFormData.doctorCode = this.doctors[i].doctorCode;
         this.investmentInitService.investmentDoctorFormData.degree = this.doctors[i].degree;
         this.investmentInitService.investmentDoctorFormData.designation = this.doctors[i].designation;
         break;
@@ -553,7 +555,7 @@ export class InvestmentInitComponent implements OnInit {
   }
   getMarketGroupMsts() {
     this.investmentInitService.getMarketGroupMsts(this.empId).subscribe(response => {
-
+debugger;
       this.marketGroupMsts = response as IMarketGroupMst[];
     }, error => {
       console.log(error);

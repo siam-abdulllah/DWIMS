@@ -107,8 +107,8 @@ export class AccountService {
       })
     );
   }
-  employeeValidateById(employeeId: number) {
-    return this.http.get(this.baseUrl + 'employee/employeeValidateById/'+employeeId).pipe(
+  employeeValidateById(employeeSAPCode: string) {
+    return this.http.get(this.baseUrl + 'employee/employeeValidateById/'+employeeSAPCode).pipe(
       map((employeeInfo: IEmployeeInfo) => {
         if (employeeInfo) {
           // localStorage.setItem('token', user.token);

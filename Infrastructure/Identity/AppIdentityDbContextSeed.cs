@@ -20,6 +20,7 @@ namespace Infrastructure.Identity
                     EmployeeSAPCode = "1",
                     Email = "test@gmail.com",
                     UserName = "test@gmail.com",
+                    EmailConfirmed=true,
                     Address = new Address
                     {
                         FirstName = "Test",

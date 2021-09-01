@@ -9,6 +9,7 @@ import { MarketGroupService } from '../_services/marketGroup.service';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
+import { AccountService } from '../account/account.service';
 @Component({
   selector: 'app-marketGroup',
   templateUrl: './marketGroup.component.html',
@@ -23,17 +24,18 @@ export class MarketGroupComponent implements OnInit {
   marketGroupMsts: IMarketGroupMst[];
   marketGroupDtls: IMarketGroupDtl[];
   totalCount = 0;
+  empId: string;
   config = {
     keyboard: false,
     class: 'modal-lg',
     ignoreBackdropClick: true
   };
-  constructor(public marketGroupService: MarketGroupService, private router: Router,
+  constructor(private accountService: AccountService,public marketGroupService: MarketGroupService, private router: Router,
     private toastr: ToastrService,private modalService: BsModalService) { }
 
   ngOnInit() {
     this.getMarket();
-    
+    this.getEmployeeId();
   }
   getMarket(){
      this.marketGroupService.getMarkets().subscribe(response => {
@@ -41,6 +43,13 @@ export class MarketGroupComponent implements OnInit {
      }, error => {
          console.log(error);
     });
+  }
+  getEmployeeId() {
+
+    this.empId = this.accountService.getEmployeeId();
+    this.marketGroupService.marketGroupFormData.employeeId = parseInt(this.empId);
+
+    
   }
   getGroups(){
      this.marketGroupService.getGroups().subscribe(response => {
