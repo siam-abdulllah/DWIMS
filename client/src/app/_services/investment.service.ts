@@ -78,8 +78,8 @@ export class InvestmentInitService {
   getInvestmentDoctors(investmentInitId:number){    
     return this.http.get(this.baseUrl + 'investment/investmentDoctors/'+investmentInitId);
   }
-  getInvestmentTargetedProds(investmentInitId:number){    
-    return this.http.get(this.baseUrl + 'investment/investmentTargetedProds/'+investmentInitId);
+  getInvestmentTargetedProds(investmentInitId:number,sbu:string){    
+    return this.http.get(this.baseUrl + 'investment/investmentTargetedProds/'+investmentInitId+'/'+sbu);
   }
   getLastFiveInvestment(marketCode:string,toDayDate:string){    
     return this.http.get(this.baseUrl + 'investment/getLastFiveInvestment/'+marketCode+'/'+toDayDate);
@@ -130,6 +130,9 @@ export class InvestmentInitService {
   
   updateInvestmentInit() {
     return this.http.post(this.baseUrl+ 'investment/updateInit',  this.investmentInitFormData);
+  }
+  updateInvestmentInitOther(empId:number) {
+    return this.http.post(this.baseUrl+ 'investment/updateInitOther/'+empId,  this.investmentInitFormData);
   }
   insertInvestmentDetail() {
     ;
