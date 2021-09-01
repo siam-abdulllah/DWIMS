@@ -76,7 +76,7 @@ namespace API.Controllers
                            orderby r.SBU
                            select new SBUDto
                            {
-                               SBUName = r.SBU.Trim()
+                               SBUName = r.SBU
                            }
                               ).ToList();
 
