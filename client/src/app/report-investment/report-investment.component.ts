@@ -245,7 +245,6 @@ debugger;
 
   getSociety() {
     this.reportInvestmentService.getSociety().subscribe(response => {
-      //debugger;
       this.society = response as ISocietyInfo[];
     }, error => {
       console.log(error);
@@ -254,7 +253,6 @@ debugger;
 
   getBcds() {
     this.reportInvestmentService.getBcds().subscribe(response => {
-      //debugger;
       this.bcds = response as IBcdsInfo[];
     }, error => {
       console.log(error);
@@ -303,8 +301,6 @@ debugger;
       divisionCode: this.investmentSearchForm.value.divisionCode,
     };
 
-
-debugger;
     this.reportInvestmentService.getInsSocietyBCDSWiseInvestment(investmentReportSearchDto).subscribe(resp => {
       // this.reportInvestmentService.getInsSocietyBCDSWiseInvestment().subscribe(resp => {  
       this.instSocDocInvestmentDto = resp as IInstSocDocInvestmentDto[];
@@ -330,10 +326,7 @@ debugger;
       this.toastr.warning("No Data to Show Report", "Report");
       return false;
     }
-    // const doc = new jsPDF();
-    // doc.text("Hello there", 15, 15);
-    // doc.save('first.pdf');
-
+  
     const r = this.instSocDocInvestmentDto as IInstSocDocInvestmentDto[];
 
     let row: any[] = [];
@@ -460,7 +453,6 @@ interface IInvestmentReportSearchDto {
   divisionCode: string;
 }
 
-
 interface IInstSocDocInvestmentDto {
   id: number;
   donationType: string;
@@ -480,7 +472,6 @@ export interface IReportConfig {
   reportFunc: string;
   reportCode: string;
 }
-
 
 export interface IReportConfigPagination {
   pageIndex: number;
