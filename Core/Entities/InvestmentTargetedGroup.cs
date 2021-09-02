@@ -15,5 +15,6 @@ namespace Core.Entities
         public int? MarketGroupMstId { get; set; }
         [ForeignKey("MarketGroupMstId")]
         public MarketGroupMst MarketGroupMst { get; set; }
+        public bool? CompletionStatus { get; set; }
     }
 }

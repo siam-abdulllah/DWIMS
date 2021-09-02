@@ -1,6 +1,6 @@
 export interface IEmployeeInfo {
     id: number;
-    empSapCode : string;
+    employeeSAPCode : string;
     employeeName : string;
     departmentId : number;
     departmentName : string;
@@ -28,7 +28,7 @@ export interface IEmployeeInfo {
 
 export class EmployeeInfo implements IEmployeeInfo {
     id: number;
-    empSapCode : string;
+    employeeSAPCode : string;
     employeeName : string;
     departmentId : number;
     departmentName : string;

@@ -39,6 +39,10 @@ namespace Core.Specifications
             : base(x => x.InvestmentInitId == id && x.MarketGroupMstId== marketGroupMstId)
         {
             AddInclude(x => x.MarketGroupMst);
+        }public InvestmentTargetedGroupSpecification(int id,string marketCode)
+            : base(x => x.InvestmentInitId == id && x.MarketCode== marketCode)
+        {
+            //AddInclude(x => x.MarketGroupMst);
         }
         //public InvestmentTargetedGroupSpecification(int employeeId,string status)
         //    : base(x => x.EmployeeId == employeeId && x.Status == status)

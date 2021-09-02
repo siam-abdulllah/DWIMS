@@ -1,4 +1,5 @@
 ﻿using API.Dtos;
+using API.Errors;
 using API.Helpers;
 using AutoMapper;
 using Core.Entities;
@@ -61,7 +62,7 @@ namespace API.Controllers
         }
         #region investmentInit
 
-      
+
         [HttpGet("investmentInits/{empId}/{sbu}")]
         public ActionResult<Pagination<InvestmentInitDto>> GetInvestmentInits(int empId, string sbu,
           [FromQuery] InvestmentInitSpecParams investmentInitParrams,
@@ -107,12 +108,12 @@ namespace API.Controllers
                         new SqlParameter("@RSTATUS", "Recommended")
                     };
                 var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentInitSearch @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
-               
-                 
+
+
                 var data = _mapper
                     .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
 
-              //  return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, totalItems, results));
+                //  return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, totalItems, results));
                 return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, 10, data));
             }
             catch (System.Exception e)
@@ -298,6 +299,51 @@ namespace API.Controllers
                 throw ex;
             }
         }
+        [HttpPost("updateInitOther/{empId}")]
+        public async Task<ActionResult<InvestmentInitDto>> UpdateInvestmentInitOther(InvestmentInitDto investmentInitDto, int empId)
+        {
+            try
+            {
+                var empData = await _employeeRepo.GetByIdAsync(empId);
+                var spec = new InvestmentTargetedGroupSpecification(investmentInitDto.Id, empData.MarketCode);
+                var investmentTargetedGroupData = await _investmentTargetedGroupRepo.ListAsync(spec);
+                if (investmentTargetedGroupData.Count > 0)
+                {
+                    foreach (var v in investmentTargetedGroupData)
+                    {
+                        //if (v.CompletionStatus == true) return BadRequest(new ApiResponse(400, "Tagged Market Already Submitted Investment Initialization"));
+                        _investmentTargetedGroupRepo.Delete(v);
+                        _investmentTargetedGroupRepo.Savechange();
+                    }
+                }
+                foreach (var v in investmentTargetedGroupData)
+                {
+                    var investmentTargetedGroup = new InvestmentTargetedGroup
+                    {
+                        //Id = v.Id,
+                        InvestmentInitId = v.InvestmentInitId,
+                        MarketCode = v.MarketCode,
+                        MarketName = v.MarketName,
+                        MarketGroupMstId = v.MarketGroupMstId,
+                        CompletionStatus = true,
+                        //SetOn = DateTimeOffset.Now,
+                        ModifiedOn = DateTimeOffset.Now
+                    };
+                    _investmentTargetedGroupRepo.Add(investmentTargetedGroup);
+                }
+                _investmentTargetedGroupRepo.Savechange();
+                return new InvestmentInitDto
+                {
+
+                };
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
         #endregion
         #region investmentDetail
 
@@ -405,7 +451,7 @@ namespace API.Controllers
             }
         }
         #endregion
-        
+
         #region investmentTargetedProd
         [HttpPost("insertInvestmentTargetedProd")]
         public ActionResult<InvestmentTargetedProdDto> InsertInvestmentTargetedProd(InvestmentTargetedProdDto investmentTargetedProdDto)
@@ -480,14 +526,14 @@ namespace API.Controllers
                 throw ex;
             }
         }
-      
+
         [HttpGet]
         [Route("investmentTargetedProdsForRec/{investmentInitId}/{sbu}")]
-        public async Task<IReadOnlyList<InvestmentTargetedProd>> GetInvestmentTargetedProds(int investmentInitId, string ssbu)
+        public async Task<IReadOnlyList<InvestmentTargetedProd>> GetInvestmentTargetedProds(int investmentInitId, string sbu)
         {
             try
             {
-                var spec = new InvestmentTargetedProdSpecification(investmentInitId);
+                var spec = new InvestmentTargetedProdSpecification(investmentInitId, sbu);
                 var investmentTargetedProd = await _investmentTargetedProdRepo.ListAsync(spec);
                 return investmentTargetedProd;
             }
@@ -496,7 +542,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
-        
+
         [HttpGet]
         [Route("investmentTargetedProds/{investmentInitId}")]
         public async Task<IReadOnlyList<InvestmentTargetedProd>> GetInvestmentTargetedProds(int investmentInitId)
@@ -528,6 +574,7 @@ namespace API.Controllers
                 {
                     foreach (var v in alreadyExistInvestmentTargetedGroupList)
                     {
+                        if (v.CompletionStatus == true) return BadRequest(new ApiResponse(400, "Tagged Market Already Submitted Investment Initialization"));
                         _investmentTargetedGroupRepo.Delete(v);
                         _investmentTargetedGroupRepo.Savechange();
                     }
@@ -541,7 +588,7 @@ namespace API.Controllers
                         MarketName = v.MarketName,
                         MarketGroupMstId = v.MarketGroupMstId,
                         SetOn = DateTimeOffset.Now,
-                        ModifiedOn = DateTimeOffset.Now,
+                        //ModifiedOn = DateTimeOffset.Now,
                         DataStatus = 0
                     };
                     _investmentTargetedGroupRepo.Add(investmentTargetedGroup);
@@ -557,7 +604,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
-      
+
         [HttpGet]
         [Route("investmentTargetedGroups/{investmentInitId}")]
         public async Task<IReadOnlyList<InvestmentTargetedGroup>> GetInvestmentTargetedGroups(int investmentInitId)
@@ -573,7 +620,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
-        
+
         [HttpPost("removeInvestmentTargetedProd")]
         public async Task<IActionResult> RemoveInvestmentTargetedProd(InvestmentTargetedProd investmentTargetedProd)
         {
@@ -599,7 +646,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
-       
+
         [HttpPost("removeInvestmentTargetedGroup")]
         public async Task<IActionResult> RemoveInvestmentTargetedGroup(List<InvestmentTargetedGroupDto> investmentTargetedGroupDto)
         {
@@ -755,7 +802,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
-        
+
         [HttpGet]
         [Route("investmentInstitutions/{investmentInitId}")]
         public async Task<IReadOnlyList<InvestmentInstitution>> GetInvestmentInstitutions(int investmentInitId)
@@ -771,7 +818,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
-        
+
         [HttpPost("removeInvestmentInstitution")]
         public async Task<IActionResult> RemoveInvestmentInstitution(InvestmentInstitutionDto investmentInstitutionDto)
         {
@@ -844,7 +891,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
-       
+
         [HttpGet]
         [Route("investmentCampaigns/{investmentInitId}")]
         public async Task<IReadOnlyList<InvestmentCampaign>> GetInvestmentCampaigns(int investmentInitId)
@@ -860,7 +907,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
-       
+
         [HttpPost("removeInvestmentCampaign")]
         public async Task<IActionResult> RemoveInvestmentCampaign(InvestmentCampaignDto investmentCampaignDto)
         {
@@ -929,7 +976,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
-       
+
         [HttpGet]
         [Route("investmentBcds/{investmentInitId}")]
         public async Task<IReadOnlyList<InvestmentBcds>> GetInvestmentBcds(int investmentInitId)
@@ -945,7 +992,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
-       
+
         [HttpPost("removeInvestmentBcds")]
         public async Task<IActionResult> RemoveInvestmentBcds(InvestmentBcdsDto investmentBcdsDto)
         {
@@ -1030,7 +1077,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
-     
+
         [HttpPost("removeInvestmentSociety")]
         public async Task<IActionResult> RemoveInvestmentSociety(InvestmentSociety investmentSociety)
         {
@@ -1076,7 +1123,7 @@ namespace API.Controllers
             try
             {
                 var v = DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture);
-               // var empData = await _employeeRepo.GetByIdAsync(empId);
+                // var empData = await _employeeRepo.GetByIdAsync(empId);
                 var reportInvestmentSpec = new ReportInvestmentSpecification(marketCode);
                 var reportInvestmentData = await _reportInvestmentInfoRepo.ListAsync(reportInvestmentSpec);
                 // var spec = new ReportInvestmentSpecification(empData.MarketCode);
@@ -1102,15 +1149,15 @@ namespace API.Controllers
         }
 
 
-       
-       
 
-       
-        
 
-        
-        
 
-       
+
+
+
+
+
+
+
     }
 }

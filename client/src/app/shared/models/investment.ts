@@ -103,6 +103,7 @@ export interface IInvestmentTargetedGroup {
     id: number;
     marketGroupMstId: number;
     investmentInitId: number;
+    completionStatus: boolean;
     marketCode: string;
     marketName: string;
     marketGroupMst:IMarketGroupMst;
@@ -112,6 +113,7 @@ export class InvestmentTargetedGroup implements IInvestmentTargetedGroup {
     id: number=0;
     marketGroupMstId: number=null;
     investmentInitId: number;
+    completionStatus: boolean;
     marketCode: string;
     marketName: string;
     marketGroupMst:IMarketGroupMst;
