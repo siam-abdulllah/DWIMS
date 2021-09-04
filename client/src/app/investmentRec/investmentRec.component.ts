@@ -174,7 +174,7 @@ export class InvestmentRecComponent implements OnInit {
         });
       }
       getInvestmentInit(){
-      this.investmentRecService.getInvestmentInit(this.sbu).subscribe(response => {
+      this.investmentRecService.getInvestmentInit(parseInt(this.empId),this.sbu).subscribe(response => {
         //
        this.investmentRecs = response.data;
        this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
@@ -183,7 +183,7 @@ export class InvestmentRecComponent implements OnInit {
       });
     }
    getInvestmentRecommended(){
-      this.investmentRecService.getInvestmentRecommended(this.sbu).subscribe(response => {
+      this.investmentRecService.getInvestmentRecommended(parseInt(this.empId),this.sbu).subscribe(response => {
         //
        this.investmentRecs = response.data;
        this.openInvestmentRecSearchModal(this.investmentRecSearchModal);
@@ -522,7 +522,8 @@ getEmployeeId(){
        //this.investmentRecService.investmentDoctorFormData.investmentInitId=this.investmentRecService.investmentRecFormData.id;
        //this.investmentRecService.investmentInstitutionFormData.investmentInitId=this.investmentRecService.investmentRecFormData.id;
         this.isValid=true;
-        this.insertInvestmentDetails();
+        if(this.sbu==this.investmentRecService.investmentRecFormData.sbu)
+        {this.insertInvestmentDetails();}
         this.insertInvestmentTargetedProd();
         this.toastr.success('Save successfully', 'Investment ')
       },
@@ -535,7 +536,8 @@ getEmployeeId(){
         //
         this.isValid=true;
         this.investmentRecService.investmentRecCommentFormData=res as IInvestmentRecComment;
-        this.insertInvestmentDetails();
+        if(this.sbu==this.investmentRecService.investmentRecFormData.sbu)
+        {this.insertInvestmentDetails();}
         this.insertInvestmentTargetedProd();
         //this.investmentRecService.investmentDoctorFormData.investmentInitId=this.investmentRecService.investmentRecFormData.id;
       // this.investmentRecService.investmentInstitutionFormData.investmentInitId=this.investmentRecService.investmentRecFormData.id;
@@ -664,13 +666,13 @@ getEmployeeId(){
     //  return false;
     // }
     if(this.investmentTargetedProds!==undefined){
-      for (let i = 0; i < this.investmentTargetedProds.length; i++) {
-        if(this.investmentTargetedProds[i].productInfo.id==this.investmentRecService.investmentTargetedProdFormData.productId)
-        {
-        alert("product already exist !");
-        return false;
-        }
-      }
+      // for (let i = 0; i < this.investmentTargetedProds.length; i++) {
+      //   if(this.investmentTargetedProds[i].productInfo.id==this.investmentRecService.investmentTargetedProdFormData.productId)
+      //   {
+      //   alert("product already exist !");
+      //   return false;
+      //   }
+      // }
     }
     else{
          this.toastr.warning('Select Product First', 'Investment ', {

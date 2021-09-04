@@ -84,7 +84,7 @@ export class InvestmentAprService {
     return this.http.get(this.baseUrl + 'investment/investmentSociety/'+investmentInitId);
   }
   
-  getInvestmentInit(sbu:string){    
+  getInvestmentInit(empId:number,sbu:string){    
     let params = new HttpParams();
     if (this.genParams.search) {
       params = params.append('search', this.genParams.search);
@@ -92,7 +92,7 @@ export class InvestmentAprService {
     params = params.append('sort', this.genParams.sort);
     params = params.append('pageIndex', this.genParams.pageNumber.toString());
     params = params.append('pageSize', this.genParams.pageSize.toString());
-    return this.http.get<IInvestmentAprPagination>(this.baseUrl + 'investmentApr/investmentInits/'+sbu, { observe: 'response', params })
+    return this.http.get<IInvestmentAprPagination>(this.baseUrl + 'investmentApr/investmentInits/'+empId+'/'+sbu, { observe: 'response', params })
     //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
     .pipe(
       map(response => {
@@ -103,7 +103,7 @@ export class InvestmentAprService {
     );
     
   }
-  getInvestmentApproved(sbu:string){    
+  getInvestmentApproved(empId:number,sbu:string){    
     let params = new HttpParams();
     if (this.genParams.search) {
       params = params.append('search', this.genParams.search);
@@ -111,7 +111,7 @@ export class InvestmentAprService {
     params = params.append('sort', this.genParams.sort);
     params = params.append('pageIndex', this.genParams.pageNumber.toString());
     params = params.append('pageSize', this.genParams.pageSize.toString());
-    return this.http.get<IInvestmentAprPagination>(this.baseUrl + 'investmentApr/investmentApproved/'+sbu, { observe: 'response', params })
+    return this.http.get<IInvestmentAprPagination>(this.baseUrl + 'investmentApr/investmentApproved/'+empId+'/'+sbu, { observe: 'response', params })
     //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
     .pipe(
       map(response => {
@@ -131,9 +131,9 @@ export class InvestmentAprService {
   updateInvestmentApr() {
     return this.http.post(this.baseUrl+ 'investmentApr/updateAprCom',  this.investmentAprCommentFormData);
   }
-  insertInvestmentDetail() {
+  insertInvestmentDetail(empId:number,sbu:string) {
     
-    return this.http.post(this.baseUrl+ 'investmentApr/insertApr', this.investmentDetailFormData);
+    return this.http.post(this.baseUrl+ 'investmentApr/insertApr/'+empId+'/'+this.investmentAprCommentFormData.aprStatus+'/'+sbu, this.investmentDetailFormData);
   
   }
   

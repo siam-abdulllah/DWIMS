@@ -173,7 +173,7 @@ export class InvestmentAprComponent implements OnInit {
         });
       }
       getInvestmentInit(){
-      this.investmentAprService.getInvestmentInit(this.sbu).subscribe(response => {
+      this.investmentAprService.getInvestmentInit(parseInt(this.empId),this.sbu).subscribe(response => {
         //
        this.investmentAprs = response.data;
        this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
@@ -182,7 +182,7 @@ export class InvestmentAprComponent implements OnInit {
       });
     }
     getInvestmentApproved(){
-      this.investmentAprService.getInvestmentApproved(this.sbu).subscribe(response => {
+      this.investmentAprService.getInvestmentApproved(parseInt(this.empId),this.sbu).subscribe(response => {
         //
        this.investmentAprs = response.data;
        this.openInvestmentAprSearchModal(this.investmentAprSearchModal);
@@ -503,7 +503,8 @@ getEmployeeId(){
        //this.investmentAprService.investmentDoctorFormData.investmentInitId=this.investmentAprService.investmentAprFormData.id;
        //this.investmentAprService.investmentInstitutionFormData.investmentInitId=this.investmentAprService.investmentAprFormData.id;
         this.isValid=true;
-        this.insertInvestmentDetails();
+        if(this.sbu==this.investmentAprService.investmentAprFormData.sbu)
+        {this.insertInvestmentDetails();}
         this.insertInvestmentTargetedProd();
         this.toastr.success('Save successfully', 'Investment ')
       },
@@ -516,7 +517,8 @@ getEmployeeId(){
         //
         this.isValid=true;
         this.investmentAprService.investmentAprCommentFormData=res as IInvestmentAprComment;
-        this.insertInvestmentDetails();
+        if(this.sbu==this.investmentAprService.investmentAprFormData.sbu)
+        {this.insertInvestmentDetails();}
         this.insertInvestmentTargetedProd();
         //this.investmentAprService.investmentDoctorFormData.investmentInitId=this.investmentAprService.investmentAprFormData.id;
       // this.investmentAprService.investmentInstitutionFormData.investmentInitId=this.investmentAprService.investmentAprFormData.id;
@@ -588,7 +590,7 @@ getEmployeeId(){
      
     //if(this.investmentAprService.investmentDetailFormData.id==null || this.investmentAprService.investmentDetailFormData.id==undefined || this.investmentAprService.investmentDetailFormData.id==0)
     //{
-      this.investmentAprService.insertInvestmentDetail().subscribe(
+      this.investmentAprService.insertInvestmentDetail(parseInt(this.empId),this.sbu).subscribe(
         res => {
          var data=res as IInvestmentApr;
          this.investmentAprService.investmentDetailFormData=data;

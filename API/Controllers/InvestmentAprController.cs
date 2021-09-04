@@ -153,7 +153,7 @@ namespace API.Controllers
                         new SqlParameter("@RSTATUS", "Recommended"),
                         new SqlParameter("@ASTATUS", DBNull.Value)
                     };
-                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentInitSearch @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
+                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentAprSearch @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
                 var data = _mapper
                     .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
 
@@ -166,8 +166,8 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost("InsertApr")]
-        public async Task<InvestmentAprDto> InsertInvestmentApr(InvestmentAprDto investmentAprDto)
+        [HttpPost("InsertApr/{empID}/{aprStatus}/{sbu}")]
+        public async Task<InvestmentAprDto> InsertInvestmentApr(int empId,string aprStatus,string sbu,InvestmentAprDto investmentAprDto)
         {
             var alreadyExistSpec = new InvestmentAprSpecification(investmentAprDto.InvestmentInitId);
             var alreadyExistInvestmentAprList = await _investmentAprRepo.ListAsync(alreadyExistSpec);
@@ -192,6 +192,7 @@ namespace API.Controllers
                 TotalMonth = investmentAprDto.TotalMonth,
                 PaymentMethod = investmentAprDto.PaymentMethod,
                 ChequeTitle = investmentAprDto.ChequeTitle,
+                EmployeeId = empId,
                 SetOn = DateTimeOffset.Now
             };
             _investmentAprRepo.Add(invApr);
@@ -210,6 +211,7 @@ namespace API.Controllers
                 TotalMonth = investmentAprDto.TotalMonth,
                 PaymentMethod = investmentAprDto.PaymentMethod,
                 ChequeTitle = investmentAprDto.ChequeTitle,
+                EmployeeId = investmentAprDto.EmployeeId,
             };
         }
 

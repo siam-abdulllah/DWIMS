@@ -133,13 +133,13 @@ namespace API.Controllers
             };
         }
 
-        [HttpGet("marketGroupMsts")]
-        public async Task<ActionResult<Pagination<MarketGroupMstDto>>> GetMarketGroupMsts(
+        [HttpGet("marketGroupMsts/{empId}")]
+        public async Task<ActionResult<Pagination<MarketGroupMstDto>>> GetMarketGroupMsts(int empId,
           [FromQuery] MarketGroupMstSpecParams marketGroupMstParrams)
         {
             try
             {
-                var spec = new MarketGroupMstSpecification(marketGroupMstParrams);
+                var spec = new MarketGroupMstSpecification(empId);
 
                 var countSpec = new MarketGroupMstWithFiltersForCountSpecificication(marketGroupMstParrams);
 

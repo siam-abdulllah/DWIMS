@@ -13,6 +13,7 @@ export interface IInvestmentInit {
     donationType: string;
     donationTo: string;
     marketCode: string;
+    sbu: string;
     employeeId: number;
 }
  
@@ -23,6 +24,7 @@ export class InvestmentInit implements IInvestmentInit {
     donationType: string=null;
     donationTo: string=null;
     marketCode: string;
+    sbu: string;
     employeeId: number;
 }
 
@@ -62,7 +64,7 @@ export interface IInvestmentAprComment {
     id: number;
     investmentInitId: number;
     comments: string;
-    recStatus: string;
+    aprStatus: string;
     employeeId: number;
 }
  
@@ -70,7 +72,7 @@ export class InvestmentAprComment implements InvestmentAprComment {
     id: number=0;
     investmentInitId: number;
     comments: string;
-    recStatus: string=null;
+    aprStatus: string=null;
     employeeId: number;
 }
 export interface IInvestmentTargetedProd {

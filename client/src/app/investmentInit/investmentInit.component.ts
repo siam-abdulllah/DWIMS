@@ -13,7 +13,7 @@ import { Institution, IInstitution } from '../shared/models/institution';
 import { Component, ElementRef, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { InvestmentInitService } from '../_services/investment.service';
-import { NgForm } from '@angular/forms';
+import { FormGroup,NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -47,6 +47,7 @@ export class InvestmentInitComponent implements OnInit {
   isValid: boolean = false;
   isInvOther: boolean = false;
   isDonationValid: boolean = false;
+  investmentInitForm: NgForm;
   numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
   bcds: IBcdsInfo[];
   society: ISocietyInfo[];
@@ -78,6 +79,7 @@ export class InvestmentInitComponent implements OnInit {
   constructor(private accountService: AccountService, public investmentInitService: InvestmentInitService, private router: Router,
     private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe) { }
   ngOnInit() {
+   // this.resetPage(this.investmentInitForm)
     this.getEmployeeId();
     this.getDonation();
     //this.getProduct();
@@ -124,11 +126,12 @@ export class InvestmentInitComponent implements OnInit {
     this.getInvestmentDetails();
     this.getInvestmentTargetedProd();
     this.getInvestmentTargetedGroup();
+    debugger;
     if(parseInt(this.empId)==this.investmentInitService.investmentInitFormData.employeeId)
     {
     this.isInvOther=false;
     this.isValid = true;
-    this.getInvestmentTargetedProd();
+   // this.getInvestmentTargetedProd();
     }
     else{
       this.isInvOther=true;
@@ -265,6 +268,7 @@ export class InvestmentInitComponent implements OnInit {
 
     }, error => {
       console.log(error);
+      
     });
   }
   getInvestmentTargetedGroup() {
@@ -1161,7 +1165,8 @@ export class InvestmentInitComponent implements OnInit {
             this.investmentInitService.investmentTargetedGroupFormData = new InvestmentTargetedGroup();
             this.getInvestmentTargetedGroup();
           },
-          err => { console.log(err); }
+          err => { console.log(err);
+            this.toastr.warning(err, 'Investment'); }
         );
       }
     }

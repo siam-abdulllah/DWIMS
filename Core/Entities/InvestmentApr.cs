@@ -8,6 +8,8 @@ namespace Core.Entities
         public int? InvestmentInitId { get; set; }
         [ForeignKey("InvestmentInitId")]
         public InvestmentInit InvestmentInit { get; set; }
+        public int EmployeeId { get; set; }
+        public Employee Employee { get; set; }
         public string ChequeTitle { get; set; }
         public string PaymentMethod { get; set; }
         public string CommitmentAllSBU { get; set; }

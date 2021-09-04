@@ -13,6 +13,7 @@ export interface IInvestmentInit {
     donationType: string;
     donationTo: string;
     marketCode: string;
+    sbu: string;
     employeeId: number;
 }
  
@@ -23,6 +24,7 @@ export class InvestmentInit implements IInvestmentInit {
     donationType: string=null;
     donationTo: string=null;
     marketCode: string;
+    sbu: string;
     employeeId: number;
 }
 
@@ -41,6 +43,7 @@ export interface IInvestmentRec {
     purpose: string;
     fromDate: Date;
     toDate: Date;
+    employeeId: number;
 }
  
 export class InvestmentRec implements IInvestmentRec {
@@ -57,6 +60,7 @@ export class InvestmentRec implements IInvestmentRec {
     purpose: string;
     fromDate: Date;
     toDate: Date;
+    employeeId: number;
 }
 export interface IInvestmentRecComment {
     id: number;

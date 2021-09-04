@@ -29,7 +29,7 @@ export class MarketGroupService {
   
   constructor(private http: HttpClient, private router: Router) { }
 
-  getGroups(){    
+  getGroups(empId:number){    
     let params = new HttpParams();
     
     if (this.genParams.search) {
@@ -38,7 +38,7 @@ export class MarketGroupService {
     params = params.append('sort', this.genParams.sort);
     params = params.append('pageIndex', this.genParams.pageNumber.toString());
     params = params.append('pageSize', this.genParams.pageSize.toString());
-    return this.http.get<IMarketGroupPaginationMst>(this.baseUrl + 'marketGroup/marketGroupMsts', { observe: 'response', params })
+    return this.http.get<IMarketGroupPaginationMst>(this.baseUrl + 'marketGroup/marketGroupMsts/'+empId, { observe: 'response', params })
     //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
     .pipe(
       map(response => {

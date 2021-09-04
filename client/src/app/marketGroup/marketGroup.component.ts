@@ -52,7 +52,7 @@ export class MarketGroupComponent implements OnInit {
     
   }
   getGroups(){
-     this.marketGroupService.getGroups().subscribe(response => {
+     this.marketGroupService.getGroups(parseInt(this.empId)).subscribe(response => {
        debugger;
       this.marketGroupMsts = response.data;
       this.openMarketGroupSearchModal(this.marketGroupSearchModal);
@@ -84,7 +84,7 @@ export class MarketGroupComponent implements OnInit {
       res => {
         debugger;
         this.marketGroupService.marketGroupFormData=res as IMarketGroupMst;
-        this.toastr.success('Submitted successfully', 'Payment Detail Register')
+        this.toastr.success('Saved successfully', 'Market Group')
       },
       err => { console.log(err); }
     );
@@ -95,7 +95,7 @@ export class MarketGroupComponent implements OnInit {
       res => {
         debugger;
         this.marketGroupService.marketGroupFormData=res as IMarketGroupMst;
-        this.toastr.success('Submitted successfully', 'Payment Detail Register')
+        this.toastr.success('Updated successfully', 'Market Group')
       },
       err => { console.log(err); }
     );

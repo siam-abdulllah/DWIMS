@@ -172,21 +172,21 @@ namespace API.Controllers
         [HttpPost("insertRec/{empID}/{recStatus}/{sbu}")]
         public async Task<InvestmentRecDto> InsertInvestmentRecomendation(int empId,string recStatus,string sbu,InvestmentRecDto investmentRecDto)
         {
-            if (recStatus == "Approved")
-            {
-                var sbuWiseBudgetSpec = new SBUWiseBudgetSpecificiation(sbu, DateTime.Now.ToString("dd/MM/yyyy"));
-                var sbuWiseBudgetData = await _sbuRepo.ListAsync(sbuWiseBudgetSpec);
-                var sbuWiseInvestmentRecSpec = new InvestmentRecSpecification(empId, recStatus);
+            // if (recStatus == "Approved")
+            // {
+            //     var sbuWiseBudgetSpec = new SBUWiseBudgetSpecificiation(sbu, DateTime.Now.ToString("dd/MM/yyyy"));
+            //     var sbuWiseBudgetData = await _sbuRepo.ListAsync(sbuWiseBudgetSpec);
+            //     var sbuWiseInvestmentRecSpec = new InvestmentRecSpecification(empId, recStatus);
 
-                var apprAuthConfigSpec = new ApprAuthConfigSpecification(empId, "A");
-                var apprAuthConfigList = await _apprAuthConfigRepo.ListAsync(apprAuthConfigSpec);
-                var approvalCeilingSpec = new ApprovalCeilingSpecification(apprAuthConfigList[0].ApprovalAuthorityId,"A", DateTime.Now.ToString("dd/MM/yyyy"));
-                var approvalAuthorityCeilingData = await _approvalCeilingRepo.ListAsync(approvalCeilingSpec);
+            //     var apprAuthConfigSpec = new ApprAuthConfigSpecification(empId, "A");
+            //     var apprAuthConfigList = await _apprAuthConfigRepo.ListAsync(apprAuthConfigSpec);
+            //     var approvalCeilingSpec = new ApprovalCeilingSpecification(apprAuthConfigList[0].ApprovalAuthorityId,"A", DateTime.Now.ToString("dd/MM/yyyy"));
+            //     var approvalAuthorityCeilingData = await _approvalCeilingRepo.ListAsync(approvalCeilingSpec);
                
-                //int v2 = investmentRecDto.InvestmentInitId ?? default(int);
-                // var recCommentRepo= _investmentRecCommentRepo.GetByIdAsync(investmentRecDto.InvestmentInitId ?? default);
+            //     //int v2 = investmentRecDto.InvestmentInitId ?? default(int);
+            //     // var recCommentRepo= _investmentRecCommentRepo.GetByIdAsync(investmentRecDto.InvestmentInitId ?? default);
 
-            }
+            // }
 
             var alreadyExistSpec = new InvestmentRecSpecification(investmentRecDto.InvestmentInitId);
             var alreadyExistInvestmentRecList = await _investmentRecRepo.ListAsync(alreadyExistSpec);
@@ -211,7 +211,7 @@ namespace API.Controllers
                 TotalMonth = investmentRecDto.TotalMonth,
                 PaymentMethod = investmentRecDto.PaymentMethod,
                 ChequeTitle = investmentRecDto.ChequeTitle,
-                EmployeeId = investmentRecDto.EmployeeId,
+                EmployeeId = empId,
                 SetOn = DateTimeOffset.Now
             };
             _investmentRecRepo.Add(invRec);
@@ -341,7 +341,7 @@ namespace API.Controllers
                         //ReferenceNo = investmentRecDto.ReferenceNo,
                         InvestmentInitId = v.InvestmentInitId,
                         ProductId = v.ProductId,
-                        SBU = v.SBU,
+                        SBU = v.ProductInfo.SBU,
                         SetOn = DateTimeOffset.Now,
                         ModifiedOn = DateTimeOffset.Now
                     };

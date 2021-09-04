@@ -528,7 +528,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Route("investmentTargetedProdsForRec/{investmentInitId}/{sbu}")]
+        [Route("investmentTargetedProds/{investmentInitId}/{sbu}")]
         public async Task<IReadOnlyList<InvestmentTargetedProd>> GetInvestmentTargetedProds(int investmentInitId, string sbu)
         {
             try
@@ -543,21 +543,21 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("investmentTargetedProds/{investmentInitId}")]
-        public async Task<IReadOnlyList<InvestmentTargetedProd>> GetInvestmentTargetedProds(int investmentInitId)
-        {
-            try
-            {
-                var spec = new InvestmentTargetedProdSpecification(investmentInitId);
-                var investmentTargetedProd = await _investmentTargetedProdRepo.ListAsync(spec);
-                return investmentTargetedProd;
-            }
-            catch (System.Exception ex)
-            {
-                throw ex;
-            }
-        }
+        // [HttpGet]
+        // [Route("investmentTargetedProds/{investmentInitId}")]
+        // public async Task<IReadOnlyList<InvestmentTargetedProd>> GetInvestmentTargetedProds(int investmentInitId)
+        // {
+        //     try
+        //     {
+        //         var spec = new InvestmentTargetedProdSpecification(investmentInitId);
+        //         var investmentTargetedProd = await _investmentTargetedProdRepo.ListAsync(spec);
+        //         return investmentTargetedProd;
+        //     }
+        //     catch (System.Exception ex)
+        //     {
+        //         throw ex;
+        //     }
+        // }
 
 
         #endregion
@@ -587,6 +587,7 @@ namespace API.Controllers
                         MarketCode = v.MarketCode,
                         MarketName = v.MarketName,
                         MarketGroupMstId = v.MarketGroupMstId,
+                        CompletionStatus = false,
                         SetOn = DateTimeOffset.Now,
                         //ModifiedOn = DateTimeOffset.Now,
                         DataStatus = 0
@@ -633,7 +634,7 @@ namespace API.Controllers
                 {
                     foreach (var v in alreadyExistInvestmentTargetedProdList)
                     {
-                        _investmentTargetedProdRepo.Delete(v);
+                       _investmentTargetedProdRepo.Delete(v);
                         _investmentTargetedProdRepo.Savechange();
                     }
 
@@ -659,6 +660,7 @@ namespace API.Controllers
                 {
                     foreach (var v in alreadyExistInvestmentTargetedGroupList)
                     {
+                         if (v.CompletionStatus == true) return BadRequest(new ApiResponse(400, "Tagged Market Already Submitted Investment Initialization"));
                         _investmentTargetedGroupRepo.Delete(v);
                         _investmentTargetedGroupRepo.Savechange();
                     }
