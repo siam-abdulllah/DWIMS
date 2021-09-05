@@ -519,7 +519,7 @@
                                                         <label>Prop. Inv.</label>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" name="proposedAmount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.proposedAmount">
+                                                        <input class="form-control" [disabled]="isInvOther" name="proposedAmount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.proposedAmount">
                                                     </div>
                                                 </div>
                                             </div>
@@ -529,7 +529,7 @@
                                                         <label>Purpose</label>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" name="purpose" id="purpose" #purpose="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.purpose">
+                                                        <input class="form-control" [disabled]="isInvOther" name="purpose" id="purpose" #purpose="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.purpose">
                                                     </div>
                                                 </div>
                                             </div>
@@ -539,19 +539,19 @@
                                                         <label>Duration</label>
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input class="form-control" placeholder="Calender" (onHidden)="changeDateInDetail()" name="fromDate" #fromDate="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched" [bsValue]="bsValue"
-                                                            bsDatepicker [bsConfig]="bsConfig">
+                                                        <input class="form-control" [disabled]="isInvOther" placeholder="Calender" (onHidden)="changeDateInDetail()" name="fromDate" #fromDate="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched"
+                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input class="form-control" placeholder="Calender" (onHidden)="changeDateInDetail()" name="toDate" #toDate="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched" [bsValue]="bsValue"
-                                                            bsDatepicker [bsConfig]="bsConfig">
+                                                        <input class="form-control" [disabled]="isInvOther" placeholder="Calender" (onHidden)="changeDateInDetail()" name="toDate" #toDate="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched"
+                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
 
                                                     </div>
                                                     <div class="col-md-2">
                                                         <label>Total Month</label>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <input class="form-control" name="totalMonth" id="totalMonth" #totalMonth="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.totalMonth" readonly>
+                                                        <input class="form-control" [disabled]="isInvOther" name="totalMonth" id="totalMonth" #totalMonth="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.totalMonth" readonly>
 
                                                     </div>
                                                 </div>
@@ -565,7 +565,7 @@
                                                         <label>All SBU </label>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <input class="form-control" name="commitmentAllSBU" id="commitmentAllSBU" #commitmentAllSBU="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.commitmentAllSBU">
+                                                        <input class="form-control" [disabled]="isInvOther" name="commitmentAllSBU" id="commitmentAllSBU" #commitmentAllSBU="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.commitmentAllSBU">
                                                     </div>
                                                     <div class="col-md-1">
                                                         <label>%/</label>
@@ -574,7 +574,7 @@
                                                         <label>Own SBU</label>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <input class="form-control" name="commitmentOwnSBU" id="commitmentOwnSBU" #commitmentOwnSBU="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.commitmentOwnSBU">
+                                                        <input class="form-control" [disabled]="isInvOther" name="commitmentOwnSBU" id="commitmentOwnSBU" #commitmentOwnSBU="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.commitmentOwnSBU">
                                                     </div>
                                                     <div class="col-md-1">
                                                         <label>%</label>
@@ -587,7 +587,7 @@
                                                         <label>Payment Method</label>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <select class="form-control" name="paymentMethod" id="paymentMethod" #paymentMethod="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.paymentMethod">
+                                                        <select class="form-control" [disabled]="isInvOther" name="paymentMethod" id="paymentMethod" #paymentMethod="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.paymentMethod">
                                                         
                                                             <option  [ngValue]="null">Select Payment Method</option>
                                                             <option value="Cash">Cash</option>
@@ -605,7 +605,7 @@
                                                         <label>Cheque Title</label>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" name="chequeTitle" id="chequeTitle" #chequeTitle="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.chequeTitle">
+                                                        <input class="form-control" [disabled]="isInvOther" name="chequeTitle" id="chequeTitle" #chequeTitle="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.chequeTitle">
                                                     </div>
                                                 </div>
                                             </div>
@@ -635,7 +635,7 @@
                                             </select>
                                         </div>
                                         <div class="col-md-3"></div>
-                                        <div class="col-md-2" *ngIf="isValid">
+                                        <div class="col-md-2">
                                             <button class="btn btn-primary btn-lg btn-block" type="button" (click)="addInvestmentTargetedProd()"><i class="fa fa-plus"></i>&nbsp; Add</button>
 
                                         </div>

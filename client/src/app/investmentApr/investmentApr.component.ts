@@ -47,6 +47,7 @@ export class InvestmentAprComponent implements OnInit {
   investmentDetails: IInvestmentApr[];
   investmentDoctors: IInvestmentDoctor[];
   isValid: boolean=false; 
+  isInvOther: boolean = false;
   isDonationValid: boolean=false; 
   bcds: IBcdsInfo[]; 
   society: ISocietyInfo[]; 
@@ -113,7 +114,16 @@ export class InvestmentAprComponent implements OnInit {
       this.getInvestmentDetails();
       this.getInvestmentTargetedProd();
       this.getInvestmentTargetedGroup();
-      this.isValid=true;
+      if (this.sbu == this.investmentAprService.investmentAprFormData.sbu) {
+        this.isInvOther = false;
+        this.isValid = true;
+        // this.getInvestmentTargetedProd();
+      }
+      else {
+        this.isInvOther = true;
+        this.isValid = false;
+      }
+      //this.isValid=true;
       this.InvestmentInitSearchModalRef.hide()
       }
     selectInvestmentApr(selectedAprord: IInvestmentInit) {
@@ -149,7 +159,15 @@ export class InvestmentAprComponent implements OnInit {
       this.getInvestmentAprProducts();
       this.getInvestmentAprComment();
       this.getInvestmentTargetedGroup();
-      this.isValid=true;
+      if (this.sbu == this.investmentAprService.investmentAprFormData.sbu) {
+        this.isInvOther = false;
+        this.isValid = true;
+        // this.getInvestmentTargetedProd();
+      }
+      else {
+        this.isInvOther = true;
+        this.isValid = false;
+      }
       this.InvestmentAprSearchModalRef.hide()
       }
       getLastFiveInvestment(marketCode:string,toDayDate:string)

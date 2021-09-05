@@ -35,6 +35,7 @@
                                         <label>Status</label>
                                     </div>
                                     <div class="col-md-2">
+
                                         <select name="" id="" class="form-control" name="status" #status="ngModel" [(ngModel)]="marketGroupService.marketGroupFormData.status" required [class.invalid]="status.invalid && status.touched">
                                                 <option [ngValue]="null">Select Status</option>
                                                   <option value="Active">Active</option>
@@ -51,10 +52,12 @@
                                             <label>Market</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <select class="form-control " id="marketCode" name="marketCode" ng-model="marketCode">
+                                            <ng-select [virtualScroll]="true" [items]="markets" bindLabel="marketName" bindValue="marketCode" placeholder="Select Market" id="marketCode" name="marketCode" #marketCode="ngModel" [(ngModel)]="marketGroupService.marketGroupFormData.marketCode">
+                                            </ng-select>
+                                            <!-- <select class="form-control " id="marketCode" name="marketCode" ng-model="marketCode">
                                             <option  [ngValue]="null">Select Market</option>
                                             <option *ngFor="let a of markets" [value]="a.marketCode">{{a.marketName}}</option>
-                                        </select>
+                                        </select> -->
                                         </div>
                                         <div class="col-sm-2">
                                             <button class="btn btn-info btn-block" type="button" (click)="addMarket()"><i class="fa fa-plus"></i>Add</button>

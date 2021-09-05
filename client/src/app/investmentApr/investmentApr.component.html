@@ -515,7 +515,7 @@
                                                         <label>Prop. Inv.</label>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" name="proposedAmount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.proposedAmount">
+                                                        <input class="form-control" [disabled]="isInvOther" name="proposedAmount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.proposedAmount">
                                                     </div>
                                                 </div>
                                             </div>
@@ -525,7 +525,7 @@
                                                         <label>Purpose</label>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" name="purpose" id="purpose" #purpose="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.purpose">
+                                                        <input class="form-control" [disabled]="isInvOther" name="purpose" id="purpose" #purpose="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.purpose">
                                                     </div>
                                                 </div>
                                             </div>
@@ -535,12 +535,12 @@
                                                         <label>Duration</label>
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input class="form-control" placeholder="Calender" (onHidden)="changeDateInDetail()" name="fromDate" #fromDate="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched" [bsValue]="bsValue"
-                                                            bsDatepicker [bsConfig]="bsConfig">
+                                                        <input class="form-control" [disabled]="isInvOther" placeholder="Calender" (onHidden)="changeDateInDetail()" name="fromDate" #fromDate="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched"
+                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input class="form-control" placeholder="Calender" (onHidden)="changeDateInDetail()" name="toDate" #toDate="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched" [bsValue]="bsValue"
-                                                            bsDatepicker [bsConfig]="bsConfig">
+                                                        <input class="form-control" [disabled]="isInvOther" placeholder="Calender" (onHidden)="changeDateInDetail()" name="toDate" #toDate="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched"
+                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
 
                                                     </div>
                                                     <div class="col-md-2">
@@ -561,7 +561,7 @@
                                                         <label>All SBU </label>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <input class="form-control" name="commitmentAllSBU" id="commitmentAllSBU" #commitmentAllSBU="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.commitmentAllSBU">
+                                                        <input class="form-control" [disabled]="isInvOther" name="commitmentAllSBU" id="commitmentAllSBU" #commitmentAllSBU="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.commitmentAllSBU">
                                                     </div>
                                                     <div class="col-md-1">
                                                         <label>%/</label>
@@ -570,7 +570,7 @@
                                                         <label>Own SBU</label>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <input class="form-control" name="commitmentOwnSBU" id="commitmentOwnSBU" #commitmentOwnSBU="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.commitmentOwnSBU">
+                                                        <input class="form-control" [disabled]="isInvOther" name="commitmentOwnSBU" id="commitmentOwnSBU" #commitmentOwnSBU="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.commitmentOwnSBU">
                                                     </div>
                                                     <div class="col-md-1">
                                                         <label>%</label>
@@ -583,7 +583,7 @@
                                                         <label>Payment Method</label>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <select class="form-control" name="paymentMethod" id="paymentMethod" #paymentMethod="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.paymentMethod">
+                                                        <select class="form-control" [disabled]="isInvOther" name="paymentMethod" id="paymentMethod" #paymentMethod="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.paymentMethod">
                                                         
                                                             <option  [ngValue]="null">Select Payment Method</option>
                                                             <option value="Cash">Cash</option>
@@ -601,7 +601,7 @@
                                                         <label>Cheque Title</label>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" name="chequeTitle" id="chequeTitle" #chequeTitle="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.chequeTitle">
+                                                        <input class="form-control" [disabled]="isInvOther" name="chequeTitle" id="chequeTitle" #chequeTitle="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.chequeTitle">
                                                     </div>
                                                 </div>
                                             </div>
@@ -719,8 +719,8 @@
                                             <select class="form-control" id="aprStatus" name="aprStatus" #aprStatus="ngModel" [(ngModel)]="investmentAprService.investmentAprCommentFormData.aprStatus" [class.invalid]="aprStatus.invalid && aprStatus.touched" required>
                                                 
                                                 <option  [ngValue]="null">Select Status</option>
-                                                <option  value="Approved">Approved</option>
-                                                <option  value="Not Approved">Not Approved</option>
+                                                <option *ngIf=" !isInvOther" value="Approved">Approved</option>
+                                                <option *ngIf="!isInvOther" value="Not Approved">Not Approved</option>
                                                 <option  value="Recommended">Recommended</option>
                                                 <option  value="Not Recommended">Not Recommended</option>
                                                

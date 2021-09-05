@@ -137,7 +137,7 @@ export class InvestmentInitComponent implements OnInit {
       this.isInvOther=true;
       this.isValid = false;
     }
-    this.isValid = true;
+    //this.isValid = true;
     this.InvestmentInitSearchModalRef.hide()
   }
   getInvestmentInit() {

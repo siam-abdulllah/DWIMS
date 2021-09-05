@@ -30,6 +30,7 @@ namespace Core.Entities
         public string DivisionCode { get; set; }
         public string DivisionName { get; set; }
         public string SBU { get; set; }
+        public string SBUName { get; set; }
 
     }
 }

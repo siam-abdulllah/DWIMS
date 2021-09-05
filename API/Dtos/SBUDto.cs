@@ -7,9 +7,7 @@ namespace API.Dtos
 {
     public class SBUDto
     {
-        public int Id { get; set; }
+        public string SBUCode { get; set; }
         public string SBUName { get; set; }
-        public string Remarks { get; set; }
-        public DateTimeOffset SetOn { get; set; }
     }
 }

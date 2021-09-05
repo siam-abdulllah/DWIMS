@@ -8,6 +8,6 @@ namespace Core.Entities
         public string BrandCode { get; set; }
         public string BrandName { get; set; }
         public string SBU { get; set; }
-
+        public string SBUName { get; set; }
     }
 }
