@@ -56,9 +56,12 @@ export class AccountService {
       map((user: IUser) => {
         debugger;
         if (user) {
+          debugger;
           localStorage.setItem('token', user.token);
           localStorage.setItem('empID', String(user.employeeId));
+          localStorage.setItem('displayName', String(user.displayName));
           this.currentUserSource.next(user);
+          this.setEmployeeInfo(user.employeeId);
           //const empID = localStorage.getItem('empID');
           //const token = localStorage.getItem('token');
           //const r =  this.jwtHelper.decodeToken(token);
@@ -87,6 +90,19 @@ export class AccountService {
         if (employeeInfo) {
           // localStorage.setItem('token', user.token);
           // this.currentUserSource.next(user);
+          return employeeInfo;
+        }
+      })
+    );
+      
+  }
+  setEmployeeInfo(employeeId:number) {
+    return this.http.get(this.baseUrl + 'employee/getEmployeeSbuById/'+employeeId).pipe(
+      map((employeeInfo: IEmployeeInfo) => {
+        if (employeeInfo) {
+          //localStorage.setItem('employeeName', employeeInfo.employeeName);
+          //localStorage.setItem('designation', employeeInfo.employeeName);
+         
           return employeeInfo;
         }
       })

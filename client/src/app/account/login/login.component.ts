@@ -11,7 +11,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   returnUrl: string;
-
+  body: HTMLBodyElement = document.getElementsByTagName('body')[0];
   constructor(private accountService: AccountService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   // tslint:disable-next-line: typedef
@@ -20,8 +20,13 @@ export class LoginComponent implements OnInit {
     this.returnUrl = this.activatedRoute.snapshot.queryParams.returnUrl || '/portal/home';
     //this.router.navigate(['/portal/home']);
     this.createLoginForm();
+    this.body.classList.add('loginBGImage');
   }
-
+  ngOnDestroy() {
+    // remove the the body classes
+    this.body.classList.remove('loginBGImage');
+   // this.body.classList.remove('sidebar-mini');
+  }
   // tslint:disable-next-line: typedef
   createLoginForm() {
     this.loginForm = new FormGroup({

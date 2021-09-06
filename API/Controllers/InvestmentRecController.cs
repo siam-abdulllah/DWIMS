@@ -31,8 +31,9 @@ namespace API.Controllers
         private readonly IGenericRepository<SBUWiseBudget> _sbuRepo;
         private readonly IMapper _mapper;
         private readonly StoreContext _dbContext;
+        private readonly IGenericRepository<InvestmentTargetedGroup> _investmentTargetedGroupRepo;
 
-        public InvestmentRecController(IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<InvestmentRec> investmentRecRepo, IGenericRepository<InvestmentRecComment> investmentRecCommentRepo, IGenericRepository<InvestmentRecProducts> investmentRecProductRepo,
+        public InvestmentRecController(IGenericRepository<InvestmentTargetedGroup> investmentTargetedGroupRepo, IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<InvestmentRec> investmentRecRepo, IGenericRepository<InvestmentRecComment> investmentRecCommentRepo, IGenericRepository<InvestmentRecProducts> investmentRecProductRepo,
         IGenericRepository<InvestmentAprComment> investmentAprCommentRepo, IGenericRepository<Employee> employeeRepo,
         IGenericRepository<ReportInvestmentInfo> reportInvestmentInfoRepo,
         IGenericRepository<ApprAuthConfig> apprAuthConfigRepo,
@@ -51,6 +52,7 @@ namespace API.Controllers
             _reportInvestmentInfoRepo = reportInvestmentInfoRepo;
             _sbuRepo = sbuRepo;
             _dbContext = dbContext;
+            _investmentTargetedGroupRepo = investmentTargetedGroupRepo;
         }
         [HttpGet("investmentInits/{empId}/{sbu}")]
         public  ActionResult<Pagination<InvestmentInitDto>> GetInvestmentInits(int empId, string sbu,
@@ -239,7 +241,19 @@ namespace API.Controllers
         [HttpPost("insertRecCom")]
         public async Task<ActionResult<InvestmentRecCommentDto>> InsertInvestmentRecomendationComment(InvestmentRecCommentDto investmentRecDto)
         {
-            var empData = await _employeeRepo.GetByIdAsync(investmentRecDto.EmployeeId);
+            var investmentTargetedGroupSpec = new InvestmentTargetedGroupSpecification((int)investmentRecDto.InvestmentInitId);
+            var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(investmentTargetedGroupSpec);
+            var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentRecDto.InvestmentInitId);
+            var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
+            foreach (var i in investmentRecComments)
+            {
+                foreach (var v in investmentTargetedGroup)
+                {
+                    if (v.InvestmentInitId == i.InvestmentInitId) { }
+                }
+            }
+
+                var empData = await _employeeRepo.GetByIdAsync(investmentRecDto.EmployeeId);
             var invRec = new InvestmentRecComment
             {
                 InvestmentInitId = investmentRecDto.InvestmentInitId,

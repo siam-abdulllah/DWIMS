@@ -1,0 +1,27 @@
+form {
+    border: 3px solid #f1f1f1;
+    text-align: center;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 15px;
+    background-image: -webkit-linear-gradient(top, rgb(172 208 203), rgb(255 255 255 / 0%)) !important;
+}
+
+.login-input {
+    font-family: Poppins-Regular;
+    color: #333333;
+    line-height: 1.2;
+    font-size: 18px;
+    display: block;
+    width: 100%;
+    background: transparent;
+    height: 60px;
+    padding: 0 20px;
+    border-radius: 15px!important;
+}
+
+input {
+    background-image: none;
+    border: 1px solid #28b9da;
+    border-radius: 15px!important;
+}

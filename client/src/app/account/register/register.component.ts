@@ -29,6 +29,7 @@ export class RegisterComponent implements OnInit {
   id: string = null;
   user:IUserResponse = null;
 
+  body: HTMLBodyElement = document.getElementsByTagName('body')[0];
   constructor(
     private fb: FormBuilder,
     private accountService: AccountService,
@@ -42,11 +43,17 @@ export class RegisterComponent implements OnInit {
     // this.getRoles();
     // this.loadRoles();
      this.createRegisterForm();
+     this.body.classList.add('regBGImage');
     // this.id = this.route.snapshot.params.id;
     // if(this.id)
     // {
     //   this.getUserById();
     // }
+  }
+  ngOnDestroy() {
+    // remove the the body classes
+    this.body.classList.remove('loginBGImage');
+   // this.body.classList.remove('sidebar-mini');
   }
   backToLogin() {
     this.router.navigate(['/login']);
