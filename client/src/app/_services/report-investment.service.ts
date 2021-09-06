@@ -77,7 +77,15 @@ export class ReportInvestmentService {
   getDoctors(){    
     return this.http.get(this.baseUrl + 'doctor/doctorsForInvestment');
   }
-
+  getBrand(){    
+    return this.http.get(this.baseUrl + 'product/getAllBrand/');
+  }
+  getCampaignMsts(){    
+    return this.http.get(this.baseUrl + 'campaign/getCampaignForReport');
+  }
+  getSubCampaign(){    
+    return this.http.get(this.baseUrl + 'subCampaign/subCampaignsForCamp');
+  }
   
   getInsSocietyBCDSWiseInvestment(model: any) {
     //getInsSocietyBCDSWiseInvestment() {

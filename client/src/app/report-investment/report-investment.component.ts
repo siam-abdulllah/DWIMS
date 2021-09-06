@@ -1,3 +1,4 @@
+
 import { GenericParams } from './../shared/models/genericParams';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
@@ -11,10 +12,17 @@ import 'jspdf-autotable';
 import * as jsPDF from 'jspdf';
 import { DatePipe } from '@angular/common';
 
+import { IDocLocWiseInvestment } from './../shared/models/rptDocLocWiseInvestment';
+import { IDocCampWiseInvestment } from '../shared/models/rptDocCampWiseInvestment';
+import { IInsSocBcdsInvestment } from '../shared/models/rptInsSocBcdsInvestment';
+
+import { ICampaignMst } from '../shared/models/campaign';
+import { ISubCampaign } from '../shared/models/subCampaign';
 import { IDonation } from '../shared/models/donation';
 import { IBcdsInfo } from '../shared/models/bcdsInfo';
 import { ISocietyInfo } from '../shared/models/societyInfo';
 import { IInstitution } from '../shared/models/institution';
+import { IProduct } from './../shared/models/product';
 import { ISBU } from '../shared/models/sbu';
 import { IMarket, IRegion, ITerritory, IDivision, IZone } from '../shared/models/location';
 import { Doctor, IDoctor } from '../shared/models/docotor';
@@ -29,7 +37,7 @@ export class ReportInvestmentComponent implements OnInit {
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date = new Date();
   investmentSearchDto: IInvestmentReportSearchDto;
-  instSocDocInvestmentDto: IInstSocDocInvestmentDto[] = [];
+  insSocBcdsInvestment: IInsSocBcdsInvestment[] = [];
 
   visSoc: boolean = true;
   visBcd: boolean = true;
@@ -49,6 +57,9 @@ export class ReportInvestmentComponent implements OnInit {
   doctor: IDoctor[];
   institutions: IInstitution[];
   SBUs: ISBU[];
+  products: IProduct[];
+  campaignMst: ICampaignMst[];
+  subCampaigns: ISubCampaign[];
 
   market: IMarket[];
   region: IRegion[];
@@ -83,6 +94,10 @@ export class ReportInvestmentComponent implements OnInit {
       divisionCode: new FormControl(''),
       regionCode: new FormControl(''),
       zoneCode: new FormControl(''),
+
+      brandCode: new FormControl(''),
+      campaignName: new FormControl(''),
+      subCampaignName: new FormControl(''),
     });
   }
 
@@ -275,13 +290,9 @@ debugger;
     });
   }
 
-  getDocSocInvestReport() {
-    debugger;
-    //this.loading = true;
-    // tslint:disable-next-line: radix
-    // const impId = parseInt(this.loginService.getEmpOrImpName());
+  getDocSocInvestReport()  {
+
     const investmentReportSearchDto: IInvestmentReportSearchDto = {
-      //importerId: impId,
       fromDate: this.investmentSearchForm.value.fromDate,
       toDate: this.investmentSearchForm.value.toDate,
       sbu: this.investmentSearchForm.value.sbu,
@@ -292,28 +303,29 @@ debugger;
       societyId: this.investmentSearchForm.value.societyId,
       bcdsId: this.investmentSearchForm.value.bcdsId,
       doctorId: this.investmentSearchForm.value.doctorId,
-
       locationType: this.investmentSearchForm.value.locationType,
       territoryCode: this.investmentSearchForm.value.territoryCode,
       marketCode: this.investmentSearchForm.value.marketCode,
       regionCode: this.investmentSearchForm.value.regionCode,
       zoneCode: this.investmentSearchForm.value.zoneCode,
       divisionCode: this.investmentSearchForm.value.divisionCode,
+      brandCode: this.investmentSearchForm.value.brandCode,
+      campaignName: this.investmentSearchForm.value.campaignName,
+      subCampaignName: this.investmentSearchForm.value.subCampaignName,
     };
 
     this.reportInvestmentService.getInsSocietyBCDSWiseInvestment(investmentReportSearchDto).subscribe(resp => {
       // this.reportInvestmentService.getInsSocietyBCDSWiseInvestment().subscribe(resp => {  
-      this.instSocDocInvestmentDto = resp as IInstSocDocInvestmentDto[];
-      if (this.instSocDocInvestmentDto.length <= 0) {
+      this.insSocBcdsInvestment = resp as IInsSocBcdsInvestment[];
+      if (this.insSocBcdsInvestment.length <= 0) {
         this.toastr.warning('No Data Found', 'Report');
       }
-      if (this.instSocDocInvestmentDto.length > 0) {
-        for (let p of this.instSocDocInvestmentDto) {
+      if (this.insSocBcdsInvestment.length > 0) {
+        for (let p of this.insSocBcdsInvestment) {
           var fD = this.datePipe.transform(p.fromDate, "dd/MM/yyyy")
           var tD = this.datePipe.transform(p.toDate, "dd/MM/yyyy")
         }
       }
-
       this.viewProformaSummaryReport();
     }, error => {
       console.log(error);
@@ -322,12 +334,12 @@ debugger;
 
   viewProformaSummaryReport() {
     debugger;
-    if (this.instSocDocInvestmentDto.length <= 0) {
+    if (this.insSocBcdsInvestment.length <= 0) {
       this.toastr.warning("No Data to Show Report", "Report");
       return false;
     }
   
-    const r = this.instSocDocInvestmentDto as IInstSocDocInvestmentDto[];
+    const r = this.insSocBcdsInvestment as IInsSocBcdsInvestment[];
 
     let row: any[] = [];
     let rowD: any[] = [];
@@ -340,10 +352,10 @@ debugger;
     for (const a of r) {
       console.log(r);
       //row.push(++slNO);
-      row.push(a.donationToName);
-      row.push(a.locationName);
+      row.push(a.institutionName + a.societyName + a.bcdsName);
+      row.push(a.marketName + a.territoryName + a.regionName + a.divisionName + a.zoneName);
       row.push(a.donationType);
-      //row.push(a.proformaDate);
+      row.push(a.investedAmt);
 
       const convertedfDate = new Date(a.fromDate);
       let fd = '';
@@ -408,7 +420,6 @@ debugger;
         // alternateRow: {},
         headStyles: { fillColor: [192, 192, 192] },
 
-
         didDrawPage: pageContent,
         margin: { top: 110 },
         bodyStyles: { valign: 'middle', lineColor: [153, 153, 153] },
@@ -451,19 +462,9 @@ interface IInvestmentReportSearchDto {
   regionCode: string;
   zoneCode: string;
   divisionCode: string;
-}
-
-interface IInstSocDocInvestmentDto {
-  id: number;
-  donationType: string;
-  investedAmount: number;
-  commitment: number;
-  actualShare: number;
-  competitorShare: number;
-  fromDate: Date | undefined | null;
-  toDate: Date | undefined | null;
-  donationToName: string;
-  locationName: string;
+  brandCode: string,
+  campaignName: string,
+  subCampaignName: string,
 }
 
 export interface IReportConfig {

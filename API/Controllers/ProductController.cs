@@ -115,5 +115,28 @@ namespace API.Controllers
                 throw ex;
             }
         }
+
+        [HttpGet("getAllBrand")]
+        public async Task<IReadOnlyList<BrandDto>> GetAllBrand()
+        {
+            try
+            {
+                var data = await _productRepo.ListAllAsync();
+                var brand = (from r in data
+                             where r.Status == "Active"
+                             orderby r.BrandName
+                             select new BrandDto
+                             {
+                                 BrandName = r.BrandName,
+                                 BrandCode = r.BrandCode,
+                             }
+                              ).Distinct().ToList();
+                return brand;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

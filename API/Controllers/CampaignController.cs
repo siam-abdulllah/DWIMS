@@ -290,10 +290,6 @@ namespace API.Controllers
                                    Id= m.Id
                               }
                               ).Distinct().ToList();
-
-                
-
-               
                 return data;
             }
             catch (System.Exception ex)
@@ -311,11 +307,7 @@ namespace API.Controllers
 
                 var campaignDtl = await _campaignDtlRepo.ListAsync(spec);
 
-                var data = _mapper
-                    .Map<IReadOnlyList<CampaignDtl>, IReadOnlyList<CampaignDtlDto>>(campaignDtl);
-
-
-
+                var data = _mapper.Map<IReadOnlyList<CampaignDtl>, IReadOnlyList<CampaignDtlDto>>(campaignDtl);
                 return data;
             }
             catch (System.Exception ex)
@@ -332,11 +324,7 @@ namespace API.Controllers
 
                 var campaignDtlProduct = await _campaignDtlProductRepo.ListAsync(spec);
 
-                var data = _mapper
-                    .Map<IReadOnlyList<CampaignDtlProduct>, IReadOnlyList<CampaignDtlProductDto>>(campaignDtlProduct);
-
-
-
+                var data = _mapper.Map<IReadOnlyList<CampaignDtlProduct>, IReadOnlyList<CampaignDtlProductDto>>(campaignDtlProduct);
                 return data;
             }
             catch (System.Exception ex)
@@ -345,5 +333,26 @@ namespace API.Controllers
             }
         }
 
+
+        [HttpGet("getCampaignForReport")]
+        public async Task<IReadOnlyList<CampaignMstDto>> GetCampaignForReport()
+        {
+            try
+            {
+                var mstData = await _campaignMstRepo.ListAllAsync();
+                var data = (from m in mstData
+                            orderby m.CampaignName
+                            select new CampaignMstDto
+                            {
+                                CampaignName = m.CampaignName,
+                                Id = m.Id
+                            }).Distinct().ToList();
+                return data;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

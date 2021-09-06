@@ -23,5 +23,8 @@ namespace API.Dtos
         public string RegionCode { get; set; }
         public string ZoneCode { get; set; }
         public string DivisionCode { get; set; }
+        public string BrandCode { get; set; }
+        public string CampaignName { get; set; }
+        public string SubCampaignName { get; set; }
     }
 }

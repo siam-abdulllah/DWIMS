@@ -158,17 +158,50 @@
                         </select>
                                             </div>
 
+
+                                            <div class="col-md-4">
+                                                <label>Brand</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <select class="form-control " id="brandCode" formControlName="brandCode">
+                          <option [ngValue]="null">Select Brand</option>
+                          <option *ngFor="let a of products" [value]="a.donationTypeName">{{a.donationTypeName}}
+                          </option>
+                        </select>
+                                            </div>
+
+
+
+                                            <div class="col-md-4">
+                                                <label>Campaign</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <select class="form-control " id="campaignName" formControlName="campaignName">
+                          <option [ngValue]="null">Select Campaign</option>
+                          <option *ngFor="let a of donations" [value]="a.donationTypeName">{{a.donationTypeName}}
+                          </option>
+                        </select>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label>Sub Campaign</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <select class="form-control " id="subCampaignName" formControlName="subCampaignName">
+                      <option [ngValue]="null">Select Sub Campaign</option>
+                      <option *ngFor="let a of donations" [value]="a.donationTypeName">{{a.donationTypeName}}
+                      </option>
+                    </select>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
                             </fieldset>
-                        </div>
-                        <!-- /.card -->
-                    </div>
+                            </div>
+                            <!-- /.card -->
+                            </div>
                 </form>
+                </div>
+                <!-- /.row -->
+                </div>
             </div>
-            <!-- /.row -->
-        </div>
-    </div>
-    <!-- /.container-fluid -->
+            <!-- /.container-fluid -->
 </section>

@@ -34,8 +34,6 @@ namespace API.Controllers
         }
 
         [HttpPost("GetInsSocietyBCDSWiseInvestment")]
-        //[Authorize(Roles = "Owner,Administrator")]
-        //[Authorize(Policy = "DetailUserPolicy")]
         public ActionResult<IReadOnlyList<InstSocDocInvestmentDto>> GetInstituteInvestment([FromQuery] ReportInvestmentInfoSpecParams rptParrams,ReportSearchDto search)
         {
 
@@ -58,7 +56,7 @@ namespace API.Controllers
                         new SqlParameter("@DivisionCode", search.DivisionCode),
                     };
 
-            var results = _db.ReportInvestmentInfo.FromSqlRaw<ReportInvestmentInfo>("EXECUTE SP_InvestmentReport @UserId,@FromDate,@ToDate, @SBU, @DonationType, @InvestType, " +
+            var results = _db.ReportInvestmentInfo.FromSqlRaw("EXECUTE SP_InvestmentReport @UserId,@FromDate,@ToDate, @SBU, @DonationType, @InvestType, " +
                 " @InstitutionId, @SocietyId, @BcdsId, @LocationType, @TerritoryCode, @MarketCode, @regionCode, @ZoneCode,  @DivisionCode", parms.ToArray()).ToList();
 
             var data = _mapper.Map<IReadOnlyList<ReportInvestmentInfo>, IReadOnlyList<InstSocDocInvestmentDto>>(results);
@@ -66,26 +64,67 @@ namespace API.Controllers
             return Ok(new Pagination<InstSocDocInvestmentDto>(rptParrams.PageIndex, rptParrams.PageSize, 10, data));
         }
 
-
-
-        [HttpPost("GetDoctorWiseLeadership")]
-        //[Authorize(Roles = "Owner,Administrator")]
-        //[Authorize(Policy = "DetailUserPolicy")]
-        public async Task<ActionResult<IReadOnlyList<ReportInvestmentDto>>> GetDoctorWiseLeadership([FromQuery] ReportInvestmentInfoSpecParams rptParrams, ReportSearchDto search)
+        [HttpPost("GetDoctorCampaingWiseInvestment")]
+        public ActionResult<IReadOnlyList<RptDocCampWiseInvestmentDto>> GetDoctorCampaingWiseInvestment([FromQuery] ReportInvestmentInfoSpecParams rptParrams, ReportSearchDto search)
         {
-            var spec = new ReportInvestmentInfoSpecification(search.FromDate.ToString(), search.ToDate.ToString());
 
-            var countSpec = new ReportInvestmentInfoSpecParamsWithFiltersForCountSpecificication(rptParrams);
+            List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                        new SqlParameter("@UserId", search.UserId),
+                        new SqlParameter("@FromDate", search.FromDate),
+                        new SqlParameter("@ToDate", search.ToDate),
+                        new SqlParameter("@SBU", search.SBU),
+                        new SqlParameter("@DonationType", search.DonationType),
+                        new SqlParameter("@InvestType", search.InvestType),
+                        new SqlParameter("@InstitutionId", search.InstitutionId),
+                        new SqlParameter("@SocietyId", search.SocietyId),
+                        new SqlParameter("@BcdsId", search.BcdsId),
+                        new SqlParameter("@LocationType", search.LocationType),
+                        new SqlParameter("@TerritoryCode", search.TerritoryCode),
+                        new SqlParameter("@MarketCode", search.MarketCode),
+                        new SqlParameter("@regionCode", search.RegionCode),
+                        new SqlParameter("@ZoneCode", search.ZoneCode),
+                        new SqlParameter("@DivisionCode", search.DivisionCode),
+                    };
 
-            var totalItems = await _investRepo.CountAsync(countSpec);
+            var results = _db.RptDocCampWiseInvestment.FromSqlRaw("EXECUTE SP_InvestmentReport @UserId,@FromDate,@ToDate, @SBU, @DonationType, @InvestType, " +
+                " @InstitutionId, @SocietyId, @BcdsId, @LocationType, @TerritoryCode, @MarketCode, @regionCode, @ZoneCode,  @DivisionCode", parms.ToArray()).ToList();
 
-            var posts = await _investRepo.ListAsync(spec);
+            var data = _mapper.Map<IReadOnlyList<RptDocCampWiseInvestment>, IReadOnlyList<RptDocCampWiseInvestmentDto>>(results);
 
-            var data = _mapper.Map<IReadOnlyList<ReportInvestmentInfo>, IReadOnlyList<ReportInvestmentDto>>(posts);
-
-            return Ok(new Pagination<ReportInvestmentDto>(rptParrams.PageIndex, rptParrams.PageSize, totalItems, data));
+            return Ok(new Pagination<RptDocCampWiseInvestmentDto>(rptParrams.PageIndex, rptParrams.PageSize, 10, data));
         }
 
+        [HttpPost("GetDoctorLocationWiseInvestment")]
+        public ActionResult<IReadOnlyList<RptDocLocWiseInvestmentDto>> GetDoctorLocationWiseInvestment([FromQuery] ReportInvestmentInfoSpecParams rptParrams, ReportSearchDto search)
+        {
+
+            List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                        new SqlParameter("@UserId", search.UserId),
+                        new SqlParameter("@FromDate", search.FromDate),
+                        new SqlParameter("@ToDate", search.ToDate),
+                        new SqlParameter("@SBU", search.SBU),
+                        new SqlParameter("@DonationType", search.DonationType),
+                        new SqlParameter("@InvestType", search.InvestType),
+                        new SqlParameter("@InstitutionId", search.InstitutionId),
+                        new SqlParameter("@SocietyId", search.SocietyId),
+                        new SqlParameter("@BcdsId", search.BcdsId),
+                        new SqlParameter("@LocationType", search.LocationType),
+                        new SqlParameter("@TerritoryCode", search.TerritoryCode),
+                        new SqlParameter("@MarketCode", search.MarketCode),
+                        new SqlParameter("@regionCode", search.RegionCode),
+                        new SqlParameter("@ZoneCode", search.ZoneCode),
+                        new SqlParameter("@DivisionCode", search.DivisionCode),
+                    };
+
+            var results = _db.RptDocLocWiseInvestment.FromSqlRaw("EXECUTE SP_InvestmentReport @UserId,@FromDate,@ToDate, @SBU, @DonationType, @InvestType, " +
+                " @InstitutionId, @SocietyId, @BcdsId, @LocationType, @TerritoryCode, @MarketCode, @regionCode, @ZoneCode,  @DivisionCode", parms.ToArray()).ToList();
+
+            var data = _mapper.Map<IReadOnlyList<RptDocLocWiseInvestment>, IReadOnlyList<RptDocLocWiseInvestmentDto>>(results);
+
+            return Ok(new Pagination<RptDocLocWiseInvestmentDto>(rptParrams.PageIndex, rptParrams.PageSize, 10, data));
+        }
 
         [HttpGet("getReportList")]
         public async Task<ActionResult<IReadOnlyList<ReportConfigDto>>> getReportList([FromQuery] ReportConfigSpecParams rptParrams)
