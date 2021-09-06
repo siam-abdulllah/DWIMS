@@ -70,32 +70,32 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <select class="form-control " (change)="onChangeDonationTo()" id="donationTo" formControlName="donationTo">
-                          <option [ngValue]="null">Select Donation To</option>
-                          <option value="Institution">Institution</option>
-                          <option value="Bcds">Bcds</option>
-                          <option value="Society">Society</option>
-                          <option value="Doctor">Doctor</option>
-                        </select>
+                                                    <option [ngValue]="null">Select Donation To</option>
+                                                    <option value="Institution">Institution</option>
+                                                    <option value="Bcds">Bcds</option>
+                                                    <option value="Society">Society</option>
+                                                    <option value="Doctor">Doctor</option>
+                                                </select>
                                             </div>
                                             <div class="col-md-6">
                                                 <select class="form-control " id="institutionId" formControlName="institutionId" [hidden]="visIns">
-                          <option [ngValue]="null">Select Institution</option>
-                          <option *ngFor="let a of institutions" [value]="a.id">{{a.institutionName}}</option>
-                        </select>
+                                                    <option [ngValue]="null">Select Institution</option>
+                                                    <option *ngFor="let a of institutions" [value]="a.id">{{a.institutionName}}</option>
+                                                </select>
 
                                                 <select class="form-control " id="societyId" formControlName="societyId" [hidden]="visSoc">
-                          <option [ngValue]="null">Select Society</option>
-                          <option *ngFor="let a of society" [value]="a.id">{{a.societyName}}</option>
-                        </select>
+                                                    <option [ngValue]="null">Select Society</option>
+                                                    <option *ngFor="let a of society" [value]="a.id">{{a.societyName}}</option>
+                                                </select>
 
                                                 <select class="form-control " id="bcdsId" formControlName="bcdsId" [hidden]="visBcd">
-                          <option [ngValue]="null">Select BCDS</option>
-                          <option *ngFor="let a of bcds" [value]="a.id">{{a.bcdsName}}</option>
-                        </select>
+                                                    <option [ngValue]="null">Select BCDS</option>
+                                                    <option *ngFor="let a of bcds" [value]="a.id">{{a.bcdsName}}</option>
+                                                </select>
                                                 <select class="form-control " id="doctorId" formControlName="doctorId" [hidden]="visDoc">
-                            <option [ngValue]="null">Select Doctor</option>
-                            <option *ngFor="let a of doctor" [value]="a.id">{{a.doctorName}}</option>
-                          </select>
+                                                    <option [ngValue]="null">Select Doctor</option>
+                                                    <option *ngFor="let a of doctor" [value]="a.id">{{a.doctorName}}</option>
+                                                </select>
                                             </div>
 
                                             <div class="col-md-4">
@@ -103,39 +103,39 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <select class="form-control " (change)="onChangeLocationType()" id="locationType" formControlName="locationType">
-                          <option [ngValue]="null">Select Location Type</option>
-                          <option value="Market">Market</option>
-                          <option value="Territory">Territory</option>
-                          <option value="Region">Region</option>
-                          <option value="Division">Division</option>
-                          <option value="Zone">Zone</option>
-                        </select>
+                                                    <option [ngValue]="null">Select Location Type</option>
+                                                    <option value="Market">Market</option>
+                                                    <option value="Territory">Territory</option>
+                                                    <option value="Region">Region</option>
+                                                    <option value="Division">Division</option>
+                                                    <option value="Zone">Zone</option>
+                                                </select>
                                             </div>
                                             <div class="col-md-6">
                                                 <select class="form-control " id="marketCode" formControlName="marketCode" [hidden]="visMarket">
-                          <option [ngValue]="null">Select Market</option>
-                          <option *ngFor="let a of market" [value]="a.marketCode">{{a.marketName}}</option>
-                        </select>
+                                                    <option [ngValue]="null">Select Market</option>
+                                                    <option *ngFor="let a of market" [value]="a.marketCode">{{a.marketName}}</option>
+                                                </select>
 
                                                 <select class="form-control " id="territoryCode" formControlName="territoryCode" [hidden]="visTerritory">
-                          <option [ngValue]="null">Select Territory</option>
-                          <option *ngFor="let a of territory" [value]="a.territoryCode">{{a.territoryName}}</option>
-                        </select>
+                                                    <option [ngValue]="null">Select Territory</option>
+                                                    <option *ngFor="let a of territory" [value]="a.territoryCode">{{a.territoryName}}</option>
+                                                </select>
 
                                                 <select class="form-control " id="regionCode" formControlName="regionCode" [hidden]="visRegion">
-                          <option [ngValue]="null">Select Region</option>
-                          <option *ngFor="let a of region" [value]="a.regionCode">{{a.regionName}}</option>
-                        </select>
+                                                    <option [ngValue]="null">Select Region</option>
+                                                    <option *ngFor="let a of region" [value]="a.regionCode">{{a.regionName}}</option>
+                                                </select>
 
                                                 <select class="form-control " id="divisionCode" formControlName="divisionCode" [hidden]="visDivision">
-                          <option [ngValue]="null">Select Division</option>
-                          <option *ngFor="let a of division" [value]="a.divisionCode">{{a.divisionName}}</option>
-                        </select>
+                                                    <option [ngValue]="null">Select Division</option>
+                                                    <option *ngFor="let a of division" [value]="a.divisionCode">{{a.divisionName}}</option>
+                                                </select>
 
                                                 <select class="form-control " id="zoneCode" formControlName="zoneCode" [hidden]="visZone">
-                          <option [ngValue]="null">Select Zone</option>
-                          <option *ngFor="let a of zone" [value]="a.zoneCode">{{a.zoneName}}</option>
-                        </select>
+                                                    <option [ngValue]="null">Select Zone</option>
+                                                    <option *ngFor="let a of zone" [value]="a.zoneCode">{{a.zoneName}}</option>
+                                                </select>
                                             </div>
 
                                             <div class="col-md-4">
@@ -143,19 +143,20 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <select class="form-control " id="donationType" formControlName="donationType">
-                          <option [ngValue]="null">Select Donation Type</option>
-                          <option *ngFor="let a of donations" [value]="a.donationTypeName">{{a.donationTypeName}}
-                          </option>
-                        </select>
+                                                    <option [ngValue]="null">Select Donation Type</option>
+                                                    <option *ngFor="let a of donations" [value]="a.donationTypeName">
+                                                        {{a.donationTypeName}}
+                                                    </option>
+                                                </select>
                                             </div>
                                             <div class="col-md-2">
                                                 <label>SBU</label>
                                             </div>
                                             <div class="col-md-6">
                                                 <select class="form-control " id="sbu" formControlName="sbu">
-                          <option [ngValue]="null">Select SBU</option>
-                          <option *ngFor="let a of SBUs" [value]="a.sbuName">{{a.sbuName}}</option>
-                        </select>
+                                                    <option [ngValue]="null">Select SBU</option>
+                                                    <option *ngFor="let a of SBUs" [value]="a.sbuName">{{a.sbuName}}</option>
+                                                </select>
                                             </div>
 
 
@@ -164,10 +165,11 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <select class="form-control " id="brandCode" formControlName="brandCode">
-                          <option [ngValue]="null">Select Brand</option>
-                          <option *ngFor="let a of products" [value]="a.donationTypeName">{{a.donationTypeName}}
-                          </option>
-                        </select>
+                                                    <option [ngValue]="null">Select Brand</option>
+                                                    <option *ngFor="let a of products" [value]="a.donationTypeName">
+                                                        {{a.donationTypeName}}
+                                                    </option>
+                                                </select>
                                             </div>
 
 
@@ -177,10 +179,11 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <select class="form-control " id="campaignName" formControlName="campaignName">
-                          <option [ngValue]="null">Select Campaign</option>
-                          <option *ngFor="let a of donations" [value]="a.donationTypeName">{{a.donationTypeName}}
-                          </option>
-                        </select>
+                                                    <option [ngValue]="null">Select Campaign</option>
+                                                    <option *ngFor="let a of donations" [value]="a.donationTypeName">
+                                                        {{a.donationTypeName}}
+                                                    </option>
+                                                </select>
                                             </div>
 
                                             <div class="col-md-4">
@@ -188,20 +191,24 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <select class="form-control " id="subCampaignName" formControlName="subCampaignName">
-                      <option [ngValue]="null">Select Sub Campaign</option>
-                      <option *ngFor="let a of donations" [value]="a.donationTypeName">{{a.donationTypeName}}
-                      </option>
-                    </select>
+                                                    <option [ngValue]="null">Select Sub Campaign</option>
+                                                    <option *ngFor="let a of donations" [value]="a.donationTypeName">
+                                                        {{a.donationTypeName}}
+                                                    </option>
+                                                </select>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+
                             </fieldset>
-                            </div>
-                            <!-- /.card -->
-                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card -->
                 </form>
-                </div>
-                <!-- /.row -->
-                </div>
             </div>
-            <!-- /.container-fluid -->
+            <!-- /.row -->
+        </div>
+    </div>
+    <!-- /.container-fluid -->
 </section>
