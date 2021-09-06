@@ -77,7 +77,8 @@ namespace API.Controllers
                            orderby r.SBU
                            select new SBUDto
                            {
-                               SBUName = r.SBU
+                               SBUCode = r.SBU,
+                               SBUName = r.SBUName
                            }
                               ).ToList();
 
@@ -89,12 +90,46 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("employeeValidateById/{employeeId}")]
-        public async Task<ActionResult<Employee>> GetEmployeeValidateById(int employeeId)
+        // [HttpGet("employeeValidateById/{employeeId}")]
+        // public async Task<ActionResult<Employee>> GetEmployeeValidateById(int employeeId)
+        // {
+        //     try
+        //     {
+        //         var data = await _employeeRepo.GetByIdAsync(employeeId);
+        //         return data;
+        //     }
+        //     catch (System.Exception ex)
+        //     {
+        //         throw ex;
+        //     }
+        // }
+        [HttpGet("employeeValidateById/{employeeSapCode}")]
+        public async Task<IReadOnlyList<Employee>> GetEmployeeValidateById(string employeeSapCode)
         {
             try
             {
-                var data = await _employeeRepo.GetByIdAsync(employeeId);
+                var empData = await _employeeRepo.ListAllAsync();
+                var data = (from e in empData
+                              where e.EmployeeSAPCode == employeeSapCode
+                            orderby e.EmployeeName
+                              select new Employee
+                              {
+                                  Id = e.Id,
+                                  EmployeeSAPCode = e.EmployeeSAPCode,
+                                  EmployeeName = e.EmployeeName,
+                                  DepartmentName = e.DepartmentName,
+                                  DesignationName = e.DesignationName,
+                                  Phone = e.Phone,
+                                  Email = e.Email,
+                                  MarketName = e.MarketName,
+                                  RegionName = e.RegionName,
+                                  ZoneName = e.ZoneName,
+                                  TerritoryName = e.TerritoryName,
+                                  DivisionName = e.DivisionName,
+                                  SBU = e.SBU,
+
+                              }
+                             ).Distinct().ToList();
                 return data;
             }
             catch (System.Exception ex)

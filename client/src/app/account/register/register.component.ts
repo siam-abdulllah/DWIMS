@@ -188,13 +188,13 @@ export class RegisterComponent implements OnInit {
         this.loading = false;
         //this.registerForm.reset(); 
         this.toastr.success('Employee information found.');
-        this.registerForm.controls.userForm.get('employeeId').setValue(response.id);
-        this.registerForm.controls.userForm.get('employeeSAPCode').setValue(response.employeeSAPCode);
-        this.registerForm.controls.userForm.get('employeeName').setValue(response.employeeName);
-        this.registerForm.controls.userForm.get('designationName').setValue(response.designationName);
-        this.registerForm.controls.userForm.get('departmentName').setValue(response.departmentName);
-        this.registerForm.controls.userForm.get('email').setValue(response.email);
-        this.registerForm.controls.userForm.get('phoneNumber').setValue(response.phone);
+        this.registerForm.controls.userForm.get('employeeId').setValue(response[0].id);
+        this.registerForm.controls.userForm.get('employeeSAPCode').setValue(response[0].employeeSAPCode);
+        this.registerForm.controls.userForm.get('employeeName').setValue(response[0].employeeName);
+        this.registerForm.controls.userForm.get('designationName').setValue(response[0].designationName);
+        this.registerForm.controls.userForm.get('departmentName').setValue(response[0].departmentName);
+        this.registerForm.controls.userForm.get('email').setValue(response[0].email);
+        this.registerForm.controls.userForm.get('phoneNumber').setValue(response[0].phone);
         this.registerForm.controls.userForm.get('phoneNumber')['controls'].disable();
       },
       (error) => {

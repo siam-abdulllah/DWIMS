@@ -49,7 +49,7 @@
                                     <div class="col-md-3">
                                         <select class="form-control " id="sbu" name="sbu" (change)="getBrand()" #sbu="ngModel" [(ngModel)]="masterService.campaignMstFormData.sbu" required [class.invalid]="sbu.invalid && sbu.touched">
                                             <option  [ngValue]="null">Select SBU</option>
-                                            <option *ngFor="let a of SBUs" [value]="a.sbuName">{{a.sbuName}}</option>
+                                            <option *ngFor="let a of SBUs" [value]="a.sbuCode">{{a.sbuName}}</option>
                                         </select>
                                     </div>
                                     <div class="col-md-2">

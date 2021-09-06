@@ -289,7 +289,7 @@
                                         <div class="col-sm-2" *ngIf="isValid && !isInvOther">
                                             <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentCampaign()"><i class="fa fa-save"></i>&nbsp; Save</button>
                                         </div>
-                                        <div class="col-sm-2" *ngIf="isValid && isInvOther">
+                                        <div class="col-sm-2" *ngIf="isValid && !isInvOther">
                                             <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentCampaign()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
                                         </div>
 
@@ -647,9 +647,6 @@
                                             <h3 class="card-title"><strong>Targeted Products of SBU</strong></h3>
                                         </div>
                                         <div class="col-sm-2"></div>
-                                        <!-- <div class="col-sm-2">
-                                            <button class="btn btn-success btn-lg btn-block" type="button"><i class="fa fa-save"></i>&nbsp; Save</button>
-                                        </div> -->
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -661,15 +658,10 @@
                                             <ng-select [virtualScroll]="true" [items]="products" bindLabel="productName" bindValue="id" placeholder="Select Product" id="productId" name="productId" #productId="ngModel" [(ngModel)]="investmentInitService.investmentTargetedProdFormData.productId"
                                                 [class.invalid]="productId.invalid && productId.touched">
                                             </ng-select>
-                                            <!-- <select class="form-control " id="productId" name="productId" #productId="ngModel" [(ngModel)]="investmentInitService.investmentTargetedProdFormData.productId" [class.invalid]="productId.invalid && productId.touched">
-                                                <option  [ngValue]="null">Select Product</option>
-                                                <option *ngFor="let product of products" [value]="product.id">{{product.productName}}</option>
-                                            </select> -->
                                         </div>
                                         <div class="col-md-3"></div>
                                         <div class="col-md-2" *ngIf="isValid">
                                             <button class="btn btn-primary btn-lg btn-block" type="button" (click)="insertInvestmentTargetedProd()"><i class="fa fa-plus"></i>&nbsp; Add</button>
-
                                         </div>
                                     </div>
                                 </div>

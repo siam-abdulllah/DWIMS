@@ -60,7 +60,7 @@ namespace API.Controllers
                     MarketName = marketGroupDtlDto.MarketName,
                     SBU = marketGroupDtlDto.SBU,
                     MstId = marketGroupDtlDto.MstId,
-                    Status = "A",
+                    Status = "Active",
                     SetOn = DateTimeOffset.Now
                 };
                 _marketGroupDtlRepo.Add(marketGroupDtls);
@@ -116,7 +116,7 @@ namespace API.Controllers
                 MarketName = marketGroupDtlDto.MarketName,
                 SBU = marketGroupDtlDto.SBU,
                 MstId = marketGroupDtlDto.MstId,
-                Status = "I",
+                Status = "Inactive",
                 ModifiedOn = DateTimeOffset.Now
 
             };
@@ -129,7 +129,7 @@ namespace API.Controllers
                 MarketCode = marketGroupDtlDto.MarketCode,
                 MarketName = marketGroupDtlDto.MarketName,
                 MstId = marketGroupDtlDto.MstId,
-                Status = "A"
+                Status = marketGroupDtlDto.Status
             };
         }
 

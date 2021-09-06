@@ -25,6 +25,7 @@ export class MarketGroupComponent implements OnInit {
   marketGroupDtls: IMarketGroupDtl[];
   totalCount = 0;
   empId: string;
+  marketCode: string;
   config = {
     keyboard: false,
     class: 'modal-lg',
@@ -109,10 +110,10 @@ addMarket() {
   //var f = document.getElementById('marketCode');
   
   var e = (document.getElementById("marketCode")) as HTMLSelectElement;
-    var sel = e.selectedIndex;
-    var opt = e.options[sel];
-    var selectedMarketCode = opt.value;
-    var selectedMarketName = opt.innerHTML;
+    //var sel = e.selectedIndex;
+    //var opt = e.options[sel];
+    var selectedMarketCode = this.marketGroupService.marketGroupFormData.marketCode;
+    
     if(this.marketGroupDtls!==undefined){
     for (let i = 0; i < this.marketGroupDtls.length; i++) {
       if(this.marketGroupDtls[i].marketCode===selectedMarketCode)
@@ -126,6 +127,7 @@ addMarket() {
     if(this.markets[i].marketCode===selectedMarketCode)
     {
       this.sbu=this.markets[i].sbu;
+      var selectedMarketName = this.markets[i].marketName;
       break;
     }
     }
