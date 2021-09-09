@@ -88,25 +88,16 @@ export class ReportInvestmentService {
   }
   
   getInsSocietyBCDSWiseInvestment(model: any) {
-    //getInsSocietyBCDSWiseInvestment() {
      return this.http.post(this.baseUrl + 'reportInvestment/GetInsSocietyBCDSWiseInvestment',model);
   }
 
-
-  getDoctorWiseLeadership(model: any) {
-    return this.http.post(this.baseUrl + 'reportInvestment/GetDoctorWiseLeadership', model);
+  GetDoctorLocationWiseInvestment(model: any) {
+    return this.http.post(this.baseUrl + 'reportInvestment/GetDoctorLocationWiseInvestment', model);
  }
 
-  // getImporterWiseCurrentYearProforma(model: any) {
-  //   return this.http.post(this.baseUrl + 'GetImporterWiseCurrentYearProforma', model);
-  // }
-  // getCurrentYearProformaInfo(model: any) {
-  //   return this.http.post(this.baseUrl + 'GetCurrentYearProformaInfo', model);
-  // }
-  // getDateWiseProformaInfos(model: any) {
-  //   return this.http.post(this.baseUrl + 'GetDateWiseProformaInfos', model);
-  // }
-
+ GetDoctorCampaingWiseInvestment(model: any) {
+  return this.http.post(this.baseUrl + 'reportInvestment/GetDoctorCampaingWiseInvestment', model);
+}
 
 }
 

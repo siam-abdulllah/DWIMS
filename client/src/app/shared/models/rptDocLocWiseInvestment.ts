@@ -4,8 +4,8 @@ export interface IDocLocWiseInvestment {
     sbuCode: string;
     marketCode: string;
     marketName: string;
-    TerritoryCode: string;
-    TerritoryName: string;
+    territoryCode: string;
+    territoryName: string;
     regionCode: string;
     regionName: string;
     divisionCode: string;

@@ -158,8 +158,6 @@
                                                     <option *ngFor="let a of SBUs" [value]="a.sbuName">{{a.sbuName}}</option>
                                                 </select>
                                             </div>
-
-
                                             <div class="col-md-4">
                                                 <label>Brand</label>
                                             </div>
@@ -171,36 +169,31 @@
                                                     </option>
                                                 </select>
                                             </div>
-
-
-
                                             <div class="col-md-4">
                                                 <label>Campaign</label>
                                             </div>
                                             <div class="col-md-6">
                                                 <select class="form-control " id="campaignName" formControlName="campaignName">
                                                     <option [ngValue]="null">Select Campaign</option>
-                                                    <option *ngFor="let a of donations" [value]="a.donationTypeName">
-                                                        {{a.donationTypeName}}
+                                                    <option *ngFor="let a of campaignMst" [value]="a.campaignName">
+                                                        {{a.campaignName}}
                                                     </option>
                                                 </select>
                                             </div>
-
                                             <div class="col-md-4">
                                                 <label>Sub Campaign</label>
                                             </div>
                                             <div class="col-md-6">
                                                 <select class="form-control " id="subCampaignName" formControlName="subCampaignName">
                                                     <option [ngValue]="null">Select Sub Campaign</option>
-                                                    <option *ngFor="let a of donations" [value]="a.donationTypeName">
-                                                        {{a.donationTypeName}}
+                                                    <option *ngFor="let a of subCampaigns" [value]="a.subCampaignName">
+                                                        {{a.subCampaignName}}
                                                     </option>
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
                             </fieldset>
                         </div>
                     </div>
