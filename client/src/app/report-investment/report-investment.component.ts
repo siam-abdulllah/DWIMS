@@ -38,6 +38,8 @@ export class ReportInvestmentComponent implements OnInit {
   bsValue: Date = new Date();
   investmentSearchDto: IInvestmentReportSearchDto;
   insSocBcdsInvestment: IInsSocBcdsInvestment[] = [];
+  docCampWiseInvestment: IDocCampWiseInvestment[] = [];
+  docLocWiseInvestment: IDocLocWiseInvestment[] = [];
 
   visSoc: boolean = true;
   visBcd: boolean = true;
@@ -105,6 +107,8 @@ export class ReportInvestmentComponent implements OnInit {
     this.getReportList();
     this.getDonation();
     this.getSBU();
+    this.getSubCampaign();
+    this.getCampaign();
     this.createInvestmentSearchForm();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-blue' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
@@ -112,7 +116,6 @@ export class ReportInvestmentComponent implements OnInit {
 
   getReportList() {
     this.reportInvestmentService.getReportList().subscribe(response => {
-  
       this.reports = response.data as IReportConfig[];
     }, error => {
       console.log(error);
@@ -199,6 +202,22 @@ debugger;
       this.visDoc = false;
       this.getDoctor();
     }
+  }
+
+  getCampaign() {
+    this.reportInvestmentService.getCampaignMsts().subscribe(response => {
+      this.campaignMst = response as ICampaignMst[];
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  getSubCampaign() {
+    this.reportInvestmentService.getSubCampaign().subscribe(response => {
+      this.subCampaigns = response as ISubCampaign[];
+    }, error => {
+      console.log(error);
+    });
   }
 
   getDoctor() {
