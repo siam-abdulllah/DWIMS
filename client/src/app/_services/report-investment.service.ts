@@ -91,8 +91,13 @@ export class ReportInvestmentService {
      return this.http.post(this.baseUrl + 'reportInvestment/GetInsSocietyBCDSWiseInvestment',model);
   }
 
-  getDoctorWiseLeadership(model: any) {
-    return this.http.post(this.baseUrl + 'reportInvestment/GetDoctorWiseLeadership', model);
+  GetDoctorLocationWiseInvestment(model: any) {
+    return this.http.post(this.baseUrl + 'reportInvestment/GetDoctorLocationWiseInvestment', model);
  }
+
+ GetDoctorCampaingWiseInvestment(model: any) {
+  return this.http.post(this.baseUrl + 'reportInvestment/GetDoctorCampaingWiseInvestment', model);
+}
+
 }
 

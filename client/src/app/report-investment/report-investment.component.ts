@@ -1,4 +1,4 @@
-
+import { Institution } from './../shared/models/institution';
 import { GenericParams } from './../shared/models/genericParams';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
@@ -120,22 +120,6 @@ export class ReportInvestmentComponent implements OnInit {
     }, error => {
       console.log(error);
     });
-  }
-
-
-  viewReport(rpt) {
-
-    debugger;
-    if(this.investmentSearchForm.value.fromDate == "" || this.investmentSearchForm.value.toDate == "")
-    {
-      this.toastr.error("Select Duration", "Error");
-      return;
-    }
-debugger;
-    if (rpt == "Institution/Society/BCDS wise Investment") {
-      
-       this.getDocSocInvestReport();
-    }
   }
 
   onChangeLocationType() {
@@ -309,8 +293,341 @@ debugger;
     });
   }
 
-  getDocSocInvestReport()  {
+  viewReport(rpt) {
 
+    debugger;
+    if(this.investmentSearchForm.value.fromDate == "" || this.investmentSearchForm.value.toDate == "")
+    {
+      this.toastr.error("Select Duration", "Error");
+      return;
+    }
+
+    this.toastr.show( rpt, "Info");
+
+    if (rpt == "Institution/Society/BCDS Wise Investment") {
+      this.getDocSocInvestReport();
+    }
+    if (rpt == "SBU wise Invested Doctor's ROI") {
+      this.getSbuWiseDocROIReport();
+    }
+    if (rpt == "Donation Category wise Investment") {
+      this.getDonationWiseInvestmentReport();
+    }
+    if (rpt == "Location Category wise Investment") {
+      this.getDonationWiseInvestmentReport();
+    }
+    if (rpt == "Doctor wise Commitment vs Return") {
+      this.getDoctorWiseCommitvsReturnReport();
+    }
+    if (rpt == "Highest Deviation Report") {
+      this.getHighestDeviationReport();
+    }
+    if (rpt == "Doctor Wise Leadership Analysis") {
+      this.getDocWiseLeadershipReport();
+    }
+    if (rpt == "Invested Doctor Potentiality Analysis") {
+      this.getDocWisePotentialReport();
+    }
+    if (rpt == "Brand Wise Investment Report") {
+      this.getBrandWiseInvestmentReport();
+    }
+    if (rpt == "Brand Doctor Wise Investment Report") {
+      this.getBrandDocWiseInvestmentReport();
+    }
+    if (rpt == "Campaign / Sub Campaign Wise Investment Report") {
+      this.getCampSubCampWiseInvestmentReport();
+    }
+    if (rpt == "SBU wise Investment And Commitment vs Share") {
+      this.getSBUWiseInvestCommitShareIndivDocReport();
+    }
+  }
+
+/// ********************************************
+/// Generate SBU wise Invested Doctor's ROI
+/// ********************************************
+
+getSbuWiseDocROIReport()  {
+  const investmentReportSearchDto: IInvestmentReportSearchDto = {
+    fromDate: this.investmentSearchForm.value.fromDate,
+    toDate: this.investmentSearchForm.value.toDate,
+    sbu: this.investmentSearchForm.value.sbu,
+    userId: 0,
+    donationType: this.investmentSearchForm.value.donationType,
+    investType: this.investmentSearchForm.value.donationTo,
+    institutionId: this.investmentSearchForm.value.institutionId,
+    societyId: this.investmentSearchForm.value.societyId,
+    bcdsId: this.investmentSearchForm.value.bcdsId,
+    doctorId: this.investmentSearchForm.value.doctorId,
+    locationType: this.investmentSearchForm.value.locationType,
+    territoryCode: this.investmentSearchForm.value.territoryCode,
+    marketCode: this.investmentSearchForm.value.marketCode,
+    regionCode: this.investmentSearchForm.value.regionCode,
+    zoneCode: this.investmentSearchForm.value.zoneCode,
+    divisionCode: this.investmentSearchForm.value.divisionCode,
+    brandCode: this.investmentSearchForm.value.brandCode,
+    campaignName: this.investmentSearchForm.value.campaignName,
+    subCampaignName: this.investmentSearchForm.value.subCampaignName,
+  };
+
+  this.reportInvestmentService.GetDoctorLocationWiseInvestment(investmentReportSearchDto).subscribe(resp => {
+    // this.reportInvestmentService.getInsSocietyBCDSWiseInvestment().subscribe(resp => {  
+    this.docLocWiseInvestment = resp as IDocLocWiseInvestment[];
+    if (this.docLocWiseInvestment.length <= 0) {
+      this.toastr.warning('No Data Found', 'Report');
+    }
+    if (this.docLocWiseInvestment.length > 0) {
+      for (let p of this.docLocWiseInvestment) {
+        var fD = this.datePipe.transform(p.fromDate, "dd/MM/yyyy")
+        var tD = this.datePipe.transform(p.toDate, "dd/MM/yyyy")
+      }
+    }
+    this.viewSbuWiseDocROIReport();
+  }, error => {
+    console.log(error);
+  });
+}
+
+/// ********************************************
+/// View SBU wise Invested Doctor's ROI
+/// ********************************************
+
+viewSbuWiseDocROIReport() {
+  debugger;
+  if (this.docLocWiseInvestment.length <= 0) {
+    this.toastr.warning("No Data to Show Report", "Report");
+    return false;
+  }
+
+  const r =  this.docLocWiseInvestment as IDocLocWiseInvestment[];
+
+  let row: any[] = [];
+  let rowD: any[] = [];
+  let col = ['SBU Name', 'Location', 'Invested \nAmount.', 'Duration', 'Commitment',
+    'Actual \nShare']; // initialization for headers
+  // let col = ['SL NO.','Name OF Importer','Products','PI No.','PI Date','Manufacturer',
+  // 'Exporter', 'Country Of Origin','Pack Size','Approval Amount MT','Approval Amount Unit', 'Status'];
+  let slNO = 0;
+  for (const a of r) {
+    console.log(r);
+    //row.push(++slNO);
+    row.push(a.sbuName);
+    row.push(a.marketName + a.territoryName + a.regionName + a.divisionName + a.zoneName);
+    row.push(a.investedAmt);
+
+    const convertedfDate = new Date(a.fromDate);
+    let fd = '';
+    fd += convertedfDate.getDate() + '/' + (convertedfDate.getMonth() + 1) + '/' + convertedfDate.getFullYear();
+
+    const convertedtDate = new Date(a.toDate);
+    let td = '';
+    td += convertedtDate.getDate() + '/' + (convertedtDate.getMonth() + 1) + '/' + convertedtDate.getFullYear();
+    row.push(fd + ' - ' + td);
+
+    row.push(a.commitment);
+    row.push(a.actualShare);
+
+    rowD.push(row);
+    row = [];
+  }
+  //this.getReport(col, rowD, title, orgName, orgAddress);
+  this.getReport(col, rowD, 'SBU wise Invested Doctors ROI Report', 'Square Pharmaceuticals Ltd.', '48, Square Center, Mohakhali');
+}
+
+/// ********************************************
+/// Generate Donation Category wise Investment
+/// ********************************************
+
+getDonationWiseInvestmentReport()  {
+  const investmentReportSearchDto: IInvestmentReportSearchDto = {
+    fromDate: this.investmentSearchForm.value.fromDate,
+    toDate: this.investmentSearchForm.value.toDate,
+    sbu: this.investmentSearchForm.value.sbu,
+    userId: 0,
+    donationType: this.investmentSearchForm.value.donationType,
+    investType: this.investmentSearchForm.value.donationTo,
+    institutionId: this.investmentSearchForm.value.institutionId,
+    societyId: this.investmentSearchForm.value.societyId,
+    bcdsId: this.investmentSearchForm.value.bcdsId,
+    doctorId: this.investmentSearchForm.value.doctorId,
+    locationType: this.investmentSearchForm.value.locationType,
+    territoryCode: this.investmentSearchForm.value.territoryCode,
+    marketCode: this.investmentSearchForm.value.marketCode,
+    regionCode: this.investmentSearchForm.value.regionCode,
+    zoneCode: this.investmentSearchForm.value.zoneCode,
+    divisionCode: this.investmentSearchForm.value.divisionCode,
+    brandCode: this.investmentSearchForm.value.brandCode,
+    campaignName: this.investmentSearchForm.value.campaignName,
+    subCampaignName: this.investmentSearchForm.value.subCampaignName,
+  };
+
+  this.reportInvestmentService.GetDoctorLocationWiseInvestment(investmentReportSearchDto).subscribe(resp => {
+    // this.reportInvestmentService.getInsSocietyBCDSWiseInvestment().subscribe(resp => {  
+    this.docLocWiseInvestment = resp as IDocLocWiseInvestment[];
+    if (this.docLocWiseInvestment.length <= 0) {
+      this.toastr.warning('No Data Found', 'Report');
+    }
+    if (this.docLocWiseInvestment.length > 0) {
+      for (let p of this.docLocWiseInvestment) {
+        var fD = this.datePipe.transform(p.fromDate, "dd/MM/yyyy")
+        var tD = this.datePipe.transform(p.toDate, "dd/MM/yyyy")
+      }
+    }
+    this.viewDonationWiseInvestmentReport();
+  }, error => {
+    console.log(error);
+  });
+}
+
+/// ********************************************
+/// View Donation Category wise Investment
+/// ********************************************
+
+viewDonationWiseInvestmentReport() {
+  debugger;
+  if (this.docLocWiseInvestment.length <= 0) {
+    this.toastr.warning("No Data to Show Report", "Report");
+    return false;
+  }
+
+  const r =  this.docLocWiseInvestment as IDocLocWiseInvestment[];
+
+  let row: any[] = [];
+  let rowD: any[] = [];
+  let col = ['SBU Name', 'Location', 'Doctor Code', 'Doctor Name' , 'Institution' , 'Invested \nAmount.', 'Duration', 'Commitment',
+    'Actual \nShare']; // initialization for headers
+  // let col = ['SL NO.','Name OF Importer','Products','PI No.','PI Date','Manufacturer',
+  // 'Exporter', 'Country Of Origin','Pack Size','Approval Amount MT','Approval Amount Unit', 'Status'];
+  let slNO = 0;
+  for (const a of r) {
+    console.log(r);
+    //row.push(++slNO);
+    row.push(a.sbuName);
+    row.push(a.marketName + a.territoryName + a.regionName + a.divisionName + a.zoneName);
+    row.push(a.doctorId);
+    row.push(a.doctorName);
+    row.push(a.institutionName);
+    row.push(a.investedAmt);
+
+    const convertedfDate = new Date(a.fromDate);
+    let fd = '';
+    fd += convertedfDate.getDate() + '/' + (convertedfDate.getMonth() + 1) + '/' + convertedfDate.getFullYear();
+
+    const convertedtDate = new Date(a.toDate);
+    let td = '';
+    td += convertedtDate.getDate() + '/' + (convertedtDate.getMonth() + 1) + '/' + convertedtDate.getFullYear();
+    row.push(fd + ' - ' + td);
+
+    row.push(a.commitment);
+    row.push(a.actualShare);
+
+    rowD.push(row);
+    row = [];
+  }
+  //this.getReport(col, rowD, title, orgName, orgAddress);
+  this.getReport(col, rowD, 'Category Wise Investment Report', 'Square Pharmaceuticals Ltd.', '48, Square Center, Mohakhali');
+}
+
+/// ********************************************
+/// Generate Doctor wise Commitment vs. Return (actual share)
+/// ********************************************
+
+getDoctorWiseCommitvsReturnReport()  {
+  const investmentReportSearchDto: IInvestmentReportSearchDto = {
+    fromDate: this.investmentSearchForm.value.fromDate,
+    toDate: this.investmentSearchForm.value.toDate,
+    sbu: this.investmentSearchForm.value.sbu,
+    userId: 0,
+    donationType: this.investmentSearchForm.value.donationType,
+    investType: this.investmentSearchForm.value.donationTo,
+    institutionId: this.investmentSearchForm.value.institutionId,
+    societyId: this.investmentSearchForm.value.societyId,
+    bcdsId: this.investmentSearchForm.value.bcdsId,
+    doctorId: this.investmentSearchForm.value.doctorId,
+    locationType: this.investmentSearchForm.value.locationType,
+    territoryCode: this.investmentSearchForm.value.territoryCode,
+    marketCode: this.investmentSearchForm.value.marketCode,
+    regionCode: this.investmentSearchForm.value.regionCode,
+    zoneCode: this.investmentSearchForm.value.zoneCode,
+    divisionCode: this.investmentSearchForm.value.divisionCode,
+    brandCode: this.investmentSearchForm.value.brandCode,
+    campaignName: this.investmentSearchForm.value.campaignName,
+    subCampaignName: this.investmentSearchForm.value.subCampaignName,
+  };
+
+  this.reportInvestmentService.GetDoctorLocationWiseInvestment(investmentReportSearchDto).subscribe(resp => {
+    // this.reportInvestmentService.getInsSocietyBCDSWiseInvestment().subscribe(resp => {  
+    this.docLocWiseInvestment = resp as IDocLocWiseInvestment[];
+    if (this.docLocWiseInvestment.length <= 0) {
+      this.toastr.warning('No Data Found', 'Report');
+    }
+    if (this.docLocWiseInvestment.length > 0) {
+      for (let p of this.docLocWiseInvestment) {
+        var fD = this.datePipe.transform(p.fromDate, "dd/MM/yyyy")
+        var tD = this.datePipe.transform(p.toDate, "dd/MM/yyyy")
+      }
+    }
+    this.viewDoctorWiseCommitvsReturnReport();
+  }, error => {
+    console.log(error);
+  });
+}
+
+/// ********************************************
+/// View Doctor wise Commitment vs. Return (actual share)
+/// ********************************************
+
+viewDoctorWiseCommitvsReturnReport() {
+  debugger;
+  if (this.docLocWiseInvestment.length <= 0) {
+    this.toastr.warning("No Data to Show Report", "Report");
+    return false;
+  }
+
+  const r =  this.docLocWiseInvestment as IDocLocWiseInvestment[];
+
+  let row: any[] = [];
+  let rowD: any[] = [];
+  let col = ['SBU Name', 'Location', 'Doctor Code', 'Doctor Name' , 'Institution' , 'Donation Type' ,'Invested \nAmount.', 'Duration', 'Commitment',
+    'Actual \nShare', 'Competitator \nShare']; // initialization for headers
+  // let col = ['SL NO.','Name OF Importer','Products','PI No.','PI Date','Manufacturer',
+  // 'Exporter', 'Country Of Origin','Pack Size','Approval Amount MT','Approval Amount Unit', 'Status'];
+  let slNO = 0;
+  for (const a of r) {
+    console.log(r);
+    //row.push(++slNO);
+    row.push(a.sbuName);
+    row.push(a.marketName + a.territoryName + a.regionName + a.divisionName + a.zoneName);
+    row.push(a.doctorId);
+    row.push(a.doctorName);
+    row.push(a.institutionName);
+    row.push(a.donationType);
+    row.push(a.investedAmt);
+
+    const convertedfDate = new Date(a.fromDate);
+    let fd = '';
+    fd += convertedfDate.getDate() + '/' + (convertedfDate.getMonth() + 1) + '/' + convertedfDate.getFullYear();
+
+    const convertedtDate = new Date(a.toDate);
+    let td = '';
+    td += convertedtDate.getDate() + '/' + (convertedtDate.getMonth() + 1) + '/' + convertedtDate.getFullYear();
+    row.push(fd + ' - ' + td);
+
+    row.push(a.commitment);
+    row.push(a.actualShare);
+    row.push(a.competitorShare);
+
+    rowD.push(row);
+    row = [];
+  }
+  //this.getReport(col, rowD, title, orgName, orgAddress);
+  this.getReport(col, rowD, 'Doctor wise Commitment vs. Return', 'Square Pharmaceuticals Ltd.', '48, Square Center, Mohakhali');
+}
+
+/// ********************************************
+/// Generate Institution/Society/BCDS wise Investment
+/// ********************************************
+
+  getDocSocInvestReport()  {
     const investmentReportSearchDto: IInvestmentReportSearchDto = {
       fromDate: this.investmentSearchForm.value.fromDate,
       toDate: this.investmentSearchForm.value.toDate,
@@ -345,13 +662,17 @@ debugger;
           var tD = this.datePipe.transform(p.toDate, "dd/MM/yyyy")
         }
       }
-      this.viewProformaSummaryReport();
+      this.viewDocSocInvestReport();
     }, error => {
       console.log(error);
     });
   }
 
-  viewProformaSummaryReport() {
+/// ********************************************
+/// View Institution/Society/BCDS wise Investment
+/// ********************************************
+
+  viewDocSocInvestReport() {
     debugger;
     if (this.insSocBcdsInvestment.length <= 0) {
       this.toastr.warning("No Data to Show Report", "Report");
@@ -396,6 +717,672 @@ debugger;
     this.getReport(col, rowD, 'Institute Wise Investment Report', 'Square Pharmaceuticals Ltd.', '48, Square Center, Mohakhali');
   }
 
+/// ********************************************
+/// Generate Highest Deviation Report
+/// ********************************************
+
+getHighestDeviationReport()  {
+  const investmentReportSearchDto: IInvestmentReportSearchDto = {
+    fromDate: this.investmentSearchForm.value.fromDate,
+    toDate: this.investmentSearchForm.value.toDate,
+    sbu: this.investmentSearchForm.value.sbu,
+    userId: 0,
+    donationType: this.investmentSearchForm.value.donationType,
+    investType: this.investmentSearchForm.value.donationTo,
+    institutionId: this.investmentSearchForm.value.institutionId,
+    societyId: this.investmentSearchForm.value.societyId,
+    bcdsId: this.investmentSearchForm.value.bcdsId,
+    doctorId: this.investmentSearchForm.value.doctorId,
+    locationType: this.investmentSearchForm.value.locationType,
+    territoryCode: this.investmentSearchForm.value.territoryCode,
+    marketCode: this.investmentSearchForm.value.marketCode,
+    regionCode: this.investmentSearchForm.value.regionCode,
+    zoneCode: this.investmentSearchForm.value.zoneCode,
+    divisionCode: this.investmentSearchForm.value.divisionCode,
+    brandCode: this.investmentSearchForm.value.brandCode,
+    campaignName: this.investmentSearchForm.value.campaignName,
+    subCampaignName: this.investmentSearchForm.value.subCampaignName,
+  };
+
+  this.reportInvestmentService.GetDoctorLocationWiseInvestment(investmentReportSearchDto).subscribe(resp => {
+    // this.reportInvestmentService.getInsSocietyBCDSWiseInvestment().subscribe(resp => {  
+    this.docLocWiseInvestment = resp as IDocLocWiseInvestment[];
+    if (this.docLocWiseInvestment.length <= 0) {
+      this.toastr.warning('No Data Found', 'Report');
+    }
+    if (this.docLocWiseInvestment.length > 0) {
+      for (let p of this.docLocWiseInvestment) {
+        var fD = this.datePipe.transform(p.fromDate, "dd/MM/yyyy")
+        var tD = this.datePipe.transform(p.toDate, "dd/MM/yyyy")
+      }
+    }
+    this.viewHighestDeviationReport();
+  }, error => {
+    console.log(error);
+  });
+}
+
+/// ********************************************
+/// View Highest Deviation Report
+/// ********************************************
+
+viewHighestDeviationReport() {
+  debugger;
+  if (this.docLocWiseInvestment.length <= 0) {
+    this.toastr.warning("No Data to Show Report", "Report");
+    return false;
+  }
+
+  const r =  this.docLocWiseInvestment as IDocLocWiseInvestment[];
+
+  let row: any[] = [];
+  let rowD: any[] = [];
+  let col = ['SBU Name', 'Location', 'Doctor Code', 'Doctor Name' , 'Institution' , 'Donation Type' ,'Invested \nAmount.', 'Duration', 'Commitment',
+    'Actual \nShare', 'Deviation']; // initialization for headers
+  // let col = ['SL NO.','Name OF Importer','Products','PI No.','PI Date','Manufacturer',
+  // 'Exporter', 'Country Of Origin','Pack Size','Approval Amount MT','Approval Amount Unit', 'Status'];
+  let slNO = 0;
+  for (const a of r) {
+    console.log(r);
+    //row.push(++slNO);
+    row.push(a.sbuName);
+    row.push(a.marketName + a.territoryName + a.regionName + a.divisionName + a.zoneName);
+    row.push(a.doctorId);
+    row.push(a.doctorName);
+    row.push(a.institutionName);
+    row.push(a.donationType);
+    row.push(a.investedAmt);
+
+    const convertedfDate = new Date(a.fromDate);
+    let fd = '';
+    fd += convertedfDate.getDate() + '/' + (convertedfDate.getMonth() + 1) + '/' + convertedfDate.getFullYear();
+
+    const convertedtDate = new Date(a.toDate);
+    let td = '';
+    td += convertedtDate.getDate() + '/' + (convertedtDate.getMonth() + 1) + '/' + convertedtDate.getFullYear();
+    row.push(fd + ' - ' + td);
+
+    row.push(a.commitment);
+    row.push(a.actualShare);
+    row.push(a.deviation);
+
+    rowD.push(row);
+    row = [];
+  }
+  //this.getReport(col, rowD, title, orgName, orgAddress);
+  this.getReport(col, rowD, 'Highest Deviation - Commitment vs Return', 'Square Pharmaceuticals Ltd.', '48, Square Center, Mohakhali');
+}
+
+/// ********************************************
+/// Generate Doctor Wise Leadership Analysis
+/// ********************************************
+
+getDocWiseLeadershipReport()  {
+  const investmentReportSearchDto: IInvestmentReportSearchDto = {
+    fromDate: this.investmentSearchForm.value.fromDate,
+    toDate: this.investmentSearchForm.value.toDate,
+    sbu: this.investmentSearchForm.value.sbu,
+    userId: 0,
+    donationType: this.investmentSearchForm.value.donationType,
+    investType: this.investmentSearchForm.value.donationTo,
+    institutionId: this.investmentSearchForm.value.institutionId,
+    societyId: this.investmentSearchForm.value.societyId,
+    bcdsId: this.investmentSearchForm.value.bcdsId,
+    doctorId: this.investmentSearchForm.value.doctorId,
+    locationType: this.investmentSearchForm.value.locationType,
+    territoryCode: this.investmentSearchForm.value.territoryCode,
+    marketCode: this.investmentSearchForm.value.marketCode,
+    regionCode: this.investmentSearchForm.value.regionCode,
+    zoneCode: this.investmentSearchForm.value.zoneCode,
+    divisionCode: this.investmentSearchForm.value.divisionCode,
+    brandCode: this.investmentSearchForm.value.brandCode,
+    campaignName: this.investmentSearchForm.value.campaignName,
+    subCampaignName: this.investmentSearchForm.value.subCampaignName,
+  };
+
+  this.reportInvestmentService.GetDoctorLocationWiseInvestment(investmentReportSearchDto).subscribe(resp => {
+    // this.reportInvestmentService.getInsSocietyBCDSWiseInvestment().subscribe(resp => {  
+    this.docLocWiseInvestment = resp as IDocLocWiseInvestment[];
+    if (this.docLocWiseInvestment.length <= 0) {
+      this.toastr.warning('No Data Found', 'Report');
+    }
+    if (this.docLocWiseInvestment.length > 0) {
+      for (let p of this.docLocWiseInvestment) {
+        var fD = this.datePipe.transform(p.fromDate, "dd/MM/yyyy")
+        var tD = this.datePipe.transform(p.toDate, "dd/MM/yyyy")
+      }
+    }
+    this.viewDocWiseLeadershipReport();
+  }, error => {
+    console.log(error);
+  });
+}
+
+/// ********************************************
+/// View Doctor Wise Leadership Analysis
+/// ********************************************
+
+viewDocWiseLeadershipReport() {
+  debugger;
+  if (this.docLocWiseInvestment.length <= 0) {
+    this.toastr.warning("No Data to Show Report", "Report");
+    return false;
+  }
+
+  const r =  this.docLocWiseInvestment as IDocLocWiseInvestment[];
+
+  let row: any[] = [];
+  let rowD: any[] = [];
+  let col = ['SBU Name', 'Location', 'Doctor Code', 'Doctor Name' , 'Institution' , 'Donation Type' ,'Invested \nAmount.', 'Duration', 'Commitment',
+    'Actual \nShare', 'Competitor \nShare', 'Leader vs \nNon Leader']; // initialization for headers
+  // let col = ['SL NO.','Name OF Importer','Products','PI No.','PI Date','Manufacturer',
+  // 'Exporter', 'Country Of Origin','Pack Size','Approval Amount MT','Approval Amount Unit', 'Status'];
+  let slNO = 0;
+  for (const a of r) {
+    console.log(r);
+    //row.push(++slNO);
+    row.push(a.sbuName);
+    row.push(a.marketName + a.territoryName + a.regionName + a.divisionName + a.zoneName);
+    row.push(a.doctorId);
+    row.push(a.doctorName);
+    row.push(a.institutionName);
+    row.push(a.donationType);
+    row.push(a.investedAmt);
+
+    const convertedfDate = new Date(a.fromDate);
+    let fd = '';
+    fd += convertedfDate.getDate() + '/' + (convertedfDate.getMonth() + 1) + '/' + convertedfDate.getFullYear();
+
+    const convertedtDate = new Date(a.toDate);
+    let td = '';
+    td += convertedtDate.getDate() + '/' + (convertedtDate.getMonth() + 1) + '/' + convertedtDate.getFullYear();
+    row.push(fd + ' - ' + td);
+
+    row.push(a.commitment);
+    row.push(a.actualShare);
+    row.push(a.competitorShare);
+    row.push(a.leaderNonLeader);
+
+    rowD.push(row);
+    row = [];
+  }
+  //this.getReport(col, rowD, title, orgName, orgAddress);
+  this.getReport(col, rowD, 'Doctor Wise Leadership Analysis Report', 'Square Pharmaceuticals Ltd.', '48, Square Center, Mohakhali');
+}
+
+/// ********************************************
+/// Generate Invested Doctor Potentiality Analysis
+/// ********************************************
+
+getDocWisePotentialReport()  {
+  const investmentReportSearchDto: IInvestmentReportSearchDto = {
+    fromDate: this.investmentSearchForm.value.fromDate,
+    toDate: this.investmentSearchForm.value.toDate,
+    sbu: this.investmentSearchForm.value.sbu,
+    userId: 0,
+    donationType: this.investmentSearchForm.value.donationType,
+    investType: this.investmentSearchForm.value.donationTo,
+    institutionId: this.investmentSearchForm.value.institutionId,
+    societyId: this.investmentSearchForm.value.societyId,
+    bcdsId: this.investmentSearchForm.value.bcdsId,
+    doctorId: this.investmentSearchForm.value.doctorId,
+    locationType: this.investmentSearchForm.value.locationType,
+    territoryCode: this.investmentSearchForm.value.territoryCode,
+    marketCode: this.investmentSearchForm.value.marketCode,
+    regionCode: this.investmentSearchForm.value.regionCode,
+    zoneCode: this.investmentSearchForm.value.zoneCode,
+    divisionCode: this.investmentSearchForm.value.divisionCode,
+    brandCode: this.investmentSearchForm.value.brandCode,
+    campaignName: this.investmentSearchForm.value.campaignName,
+    subCampaignName: this.investmentSearchForm.value.subCampaignName,
+  };
+
+  this.reportInvestmentService.GetDoctorLocationWiseInvestment(investmentReportSearchDto).subscribe(resp => {
+    // this.reportInvestmentService.getInsSocietyBCDSWiseInvestment().subscribe(resp => {  
+    this.docLocWiseInvestment = resp as IDocLocWiseInvestment[];
+    if (this.docLocWiseInvestment.length <= 0) {
+      this.toastr.warning('No Data Found', 'Report');
+    }
+    if (this.docLocWiseInvestment.length > 0) {
+      for (let p of this.docLocWiseInvestment) {
+        var fD = this.datePipe.transform(p.fromDate, "dd/MM/yyyy")
+        var tD = this.datePipe.transform(p.toDate, "dd/MM/yyyy")
+      }
+    }
+    this.viewDocWisePotentialReport();
+  }, error => {
+    console.log(error);
+  });
+}
+
+/// ********************************************
+/// View Invested Doctor Potentiality Analysis
+/// ********************************************
+
+viewDocWisePotentialReport() {
+  debugger;
+  if (this.docLocWiseInvestment.length <= 0) {
+    this.toastr.warning("No Data to Show Report", "Report");
+    return false;
+  }
+
+  const r =  this.docLocWiseInvestment as IDocLocWiseInvestment[];
+
+  let row: any[] = [];
+  let rowD: any[] = [];
+  let col = ['SBU Name', 'Location', 'Doctor Code', 'Doctor Name' , 'Institution' , 'Donation Type' ,'Invested \nAmount.', 'Duration', 'Commitment',
+    'Actual \nShare', 'Number of \nTransaction', 'Number of \Patient']; // initialization for headers
+  // let col = ['SL NO.','Name OF Importer','Products','PI No.','PI Date','Manufacturer',
+  // 'Exporter', 'Country Of Origin','Pack Size','Approval Amount MT','Approval Amount Unit', 'Status'];
+  let slNO = 0;
+  for (const a of r) {
+    console.log(r);
+    //row.push(++slNO);
+    row.push(a.sbuName);
+    row.push(a.marketName + a.territoryName + a.regionName + a.divisionName + a.zoneName);
+    row.push(a.doctorId);
+    row.push(a.doctorName);
+    row.push(a.institutionName);
+    row.push(a.donationType);
+    row.push(a.investedAmt);
+
+    const convertedfDate = new Date(a.fromDate);
+    let fd = '';
+    fd += convertedfDate.getDate() + '/' + (convertedfDate.getMonth() + 1) + '/' + convertedfDate.getFullYear();
+
+    const convertedtDate = new Date(a.toDate);
+    let td = '';
+    td += convertedtDate.getDate() + '/' + (convertedtDate.getMonth() + 1) + '/' + convertedtDate.getFullYear();
+    row.push(fd + ' - ' + td);
+
+    row.push(a.commitment);
+    row.push(a.actualShare);
+    row.push(a.noOfPresc);
+    row.push(a.noOfPatient);
+
+    rowD.push(row);
+    row = [];
+  }
+  //this.getReport(col, rowD, title, orgName, orgAddress);
+  this.getReport(col, rowD, 'Doctor Wise Potentiality Analysis Report', 'Square Pharmaceuticals Ltd.', '48, Square Center, Mohakhali');
+}
+
+/// ********************************************
+/// Generate Brand Wise Investment Report
+/// ********************************************
+
+getBrandWiseInvestmentReport()  {
+  const investmentReportSearchDto: IInvestmentReportSearchDto = {
+    fromDate: this.investmentSearchForm.value.fromDate,
+    toDate: this.investmentSearchForm.value.toDate,
+    sbu: this.investmentSearchForm.value.sbu,
+    userId: 0,
+    donationType: this.investmentSearchForm.value.donationType,
+    investType: this.investmentSearchForm.value.donationTo,
+    institutionId: this.investmentSearchForm.value.institutionId,
+    societyId: this.investmentSearchForm.value.societyId,
+    bcdsId: this.investmentSearchForm.value.bcdsId,
+    doctorId: this.investmentSearchForm.value.doctorId,
+    locationType: this.investmentSearchForm.value.locationType,
+    territoryCode: this.investmentSearchForm.value.territoryCode,
+    marketCode: this.investmentSearchForm.value.marketCode,
+    regionCode: this.investmentSearchForm.value.regionCode,
+    zoneCode: this.investmentSearchForm.value.zoneCode,
+    divisionCode: this.investmentSearchForm.value.divisionCode,
+    brandCode: this.investmentSearchForm.value.brandCode,
+    campaignName: this.investmentSearchForm.value.campaignName,
+    subCampaignName: this.investmentSearchForm.value.subCampaignName,
+  };
+
+  this.reportInvestmentService.GetDoctorCampaingWiseInvestment(investmentReportSearchDto).subscribe(resp => {
+    // this.reportInvestmentService.getInsSocietyBCDSWiseInvestment().subscribe(resp => {  
+    this.docCampWiseInvestment = resp as IDocCampWiseInvestment[];
+    if (this.docCampWiseInvestment.length <= 0) {
+      this.toastr.warning('No Data Found', 'Report');
+    }
+    if (this.docCampWiseInvestment.length > 0) {
+      for (let p of this.docCampWiseInvestment) {
+        var fD = this.datePipe.transform(p.fromDate, "dd/MM/yyyy")
+        var tD = this.datePipe.transform(p.toDate, "dd/MM/yyyy")
+      }
+    }
+    this.viewBrandWiseInvestmentReport();
+  }, error => {
+    console.log(error);
+  });
+}
+
+/// ********************************************
+/// View Brand Wise Investment Report
+/// ********************************************
+
+viewBrandWiseInvestmentReport() {
+  debugger;
+  if (this.docCampWiseInvestment.length <= 0) {
+    this.toastr.warning("No Data to Show Report", "Report");
+    return false;
+  }
+
+  const r =  this.docCampWiseInvestment as IDocCampWiseInvestment[];
+
+  let row: any[] = [];
+  let rowD: any[] = [];
+  let col = ['SBU Name', 'Location', 'Brand Name' , 'Campaign' , 'Sub-Campaign' ,'Investment \nPrev. Yr', 'Investment \nCurnt. Yr']; // initialization for headers
+  // let col = ['SL NO.','Name OF Importer','Products','PI No.','PI Date','Manufacturer',
+  // 'Exporter', 'Country Of Origin','Pack Size','Approval Amount MT','Approval Amount Unit', 'Status'];
+  let slNO = 0;
+  for (const a of r) {
+    console.log(r);
+    //row.push(++slNO);
+    row.push(a.sbuName);
+    row.push(a.marketName + a.territoryName + a.regionName + a.divisionName + a.zoneName);
+    row.push(a.brand);
+    row.push(a.campaign);
+    row.push(a.subCampaign);
+    row.push(a.investmentPast);
+    row.push(a.investmentPresent);
+
+    rowD.push(row);
+    row = [];
+  }
+  //this.getReport(col, rowD, title, orgName, orgAddress);
+  this.getReport(col, rowD, 'Brand Wise Investment Report', 'Square Pharmaceuticals Ltd.', '48, Square Center, Mohakhali');
+}
+
+/// ********************************************
+/// Generate Brand Doctor Wise Investment Report
+/// ********************************************
+
+getBrandDocWiseInvestmentReport()  {
+  const investmentReportSearchDto: IInvestmentReportSearchDto = {
+    fromDate: this.investmentSearchForm.value.fromDate,
+    toDate: this.investmentSearchForm.value.toDate,
+    sbu: this.investmentSearchForm.value.sbu,
+    userId: 0,
+    donationType: this.investmentSearchForm.value.donationType,
+    investType: this.investmentSearchForm.value.donationTo,
+    institutionId: this.investmentSearchForm.value.institutionId,
+    societyId: this.investmentSearchForm.value.societyId,
+    bcdsId: this.investmentSearchForm.value.bcdsId,
+    doctorId: this.investmentSearchForm.value.doctorId,
+    locationType: this.investmentSearchForm.value.locationType,
+    territoryCode: this.investmentSearchForm.value.territoryCode,
+    marketCode: this.investmentSearchForm.value.marketCode,
+    regionCode: this.investmentSearchForm.value.regionCode,
+    zoneCode: this.investmentSearchForm.value.zoneCode,
+    divisionCode: this.investmentSearchForm.value.divisionCode,
+    brandCode: this.investmentSearchForm.value.brandCode,
+    campaignName: this.investmentSearchForm.value.campaignName,
+    subCampaignName: this.investmentSearchForm.value.subCampaignName,
+  };
+
+  this.reportInvestmentService.GetDoctorCampaingWiseInvestment(investmentReportSearchDto).subscribe(resp => {
+    // this.reportInvestmentService.getInsSocietyBCDSWiseInvestment().subscribe(resp => {  
+    this.docCampWiseInvestment = resp as IDocCampWiseInvestment[];
+    if (this.docCampWiseInvestment.length <= 0) {
+      this.toastr.warning('No Data Found', 'Report');
+    }
+    if (this.docCampWiseInvestment.length > 0) {
+      for (let p of this.docCampWiseInvestment) {
+        var fD = this.datePipe.transform(p.fromDate, "dd/MM/yyyy")
+        var tD = this.datePipe.transform(p.toDate, "dd/MM/yyyy")
+      }
+    }
+    this.viewBrandDocWiseInvestmentReport();
+  }, error => {
+    console.log(error);
+  });
+}
+
+/// ********************************************
+/// View Brand Doctor Wise Investment Report
+/// ********************************************
+
+viewBrandDocWiseInvestmentReport() {
+  debugger;
+  if (this.docCampWiseInvestment.length <= 0) {
+    this.toastr.warning("No Data to Show Report", "Report");
+    return false;
+  }
+
+  const r =  this.docCampWiseInvestment as IDocCampWiseInvestment[];
+
+  let row: any[] = [];
+  let rowD: any[] = [];
+  let col = ['SBU Name', 'Location', 'Brand Name' , 'Campaign' , 'Sub-Campaign' , 'Doctor Code','Doctor Name','Institution',
+     'Doctor \nCategory' , 'No Of \nPatient' ,'Investment \nPrev. Yr', 'Investment \nCurnt. Yr', 'Duration', 'Commitment', 'Actual \nShare' ]; // initialization for headers
+
+  let slNO = 0;
+  for (const a of r) {
+    console.log(r);
+    //row.push(++slNO);
+    row.push(a.sbuName);
+    row.push(a.marketName + a.territoryName + a.regionName + a.divisionName + a.zoneName);
+    row.push(a.brand);
+    row.push(a.campaign);
+    row.push(a.subCampaign);
+
+    row.push(a.doctorId);
+    row.push(a.doctorName);
+    row.push(a.institutionName);
+    row.push(a.doctorCategory);
+    row.push(a.noOfPatient);
+    row.push(a.investmentPast);
+    row.push(a.investmentPresent);
+
+    const convertedfDate = new Date(a.fromDate);
+    let fd = '';
+    fd += convertedfDate.getDate() + '/' + (convertedfDate.getMonth() + 1) + '/' + convertedfDate.getFullYear();
+
+    const convertedtDate = new Date(a.toDate);
+    let td = '';
+    td += convertedtDate.getDate() + '/' + (convertedtDate.getMonth() + 1) + '/' + convertedtDate.getFullYear();
+    row.push(fd + ' - ' + td);
+
+    row.push(a.commitment);
+    row.push(a.actualShare);
+
+    rowD.push(row);
+    row = [];
+  }
+  //this.getReport(col, rowD, title, orgName, orgAddress);
+  this.getReport(col, rowD, 'Brand Doctor Wise Investment Report', 'Square Pharmaceuticals Ltd.', '48, Square Center, Mohakhali');
+}
+
+
+/// ********************************************
+/// Generate Campaign / Sub Campaign Wise Investment Report
+/// ********************************************
+
+getCampSubCampWiseInvestmentReport()  {
+  const investmentReportSearchDto: IInvestmentReportSearchDto = {
+    fromDate: this.investmentSearchForm.value.fromDate,
+    toDate: this.investmentSearchForm.value.toDate,
+    sbu: this.investmentSearchForm.value.sbu,
+    userId: 0,
+    donationType: this.investmentSearchForm.value.donationType,
+    investType: this.investmentSearchForm.value.donationTo,
+    institutionId: this.investmentSearchForm.value.institutionId,
+    societyId: this.investmentSearchForm.value.societyId,
+    bcdsId: this.investmentSearchForm.value.bcdsId,
+    doctorId: this.investmentSearchForm.value.doctorId,
+    locationType: this.investmentSearchForm.value.locationType,
+    territoryCode: this.investmentSearchForm.value.territoryCode,
+    marketCode: this.investmentSearchForm.value.marketCode,
+    regionCode: this.investmentSearchForm.value.regionCode,
+    zoneCode: this.investmentSearchForm.value.zoneCode,
+    divisionCode: this.investmentSearchForm.value.divisionCode,
+    brandCode: this.investmentSearchForm.value.brandCode,
+    campaignName: this.investmentSearchForm.value.campaignName,
+    subCampaignName: this.investmentSearchForm.value.subCampaignName,
+  };
+
+  this.reportInvestmentService.GetDoctorCampaingWiseInvestment(investmentReportSearchDto).subscribe(resp => {
+    // this.reportInvestmentService.getInsSocietyBCDSWiseInvestment().subscribe(resp => {  
+    this.docCampWiseInvestment = resp as IDocCampWiseInvestment[];
+    if (this.docCampWiseInvestment.length <= 0) {
+      this.toastr.warning('No Data Found', 'Report');
+    }
+    if (this.docCampWiseInvestment.length > 0) {
+      for (let p of this.docCampWiseInvestment) {
+        var fD = this.datePipe.transform(p.fromDate, "dd/MM/yyyy")
+        var tD = this.datePipe.transform(p.toDate, "dd/MM/yyyy")
+      }
+    }
+    this.viewCampSubCampWiseInvestmentReport();
+  }, error => {
+    console.log(error);
+  });
+}
+
+/// ********************************************
+/// View Campaign / Sub Campaign Wise Investment Report
+/// ********************************************
+
+viewCampSubCampWiseInvestmentReport() {
+  debugger;
+  if (this.docCampWiseInvestment.length <= 0) {
+    this.toastr.warning("No Data to Show Report", "Report");
+    return false;
+  }
+
+  const r =  this.docCampWiseInvestment as IDocCampWiseInvestment[];
+
+  let row: any[] = [];
+  let rowD: any[] = [];
+  let col = ['SBU Name', 'Location', 'Campaign' , 'Sub-Campaign' , 'Doctor Code','Doctor Name','Institution',
+     'Doctor \nCategory' , 'No Of \nPatient' ,'Investment \nPrev. Yr', 'Investment \nCurnt. Yr', 'Duration', 'Commitment', 'Actual \nShare' ]; // initialization for headers
+
+  let slNO = 0;
+  for (const a of r) {
+    console.log(r);
+    //row.push(++slNO);
+    row.push(a.sbuName);
+    row.push(a.marketName + a.territoryName + a.regionName + a.divisionName + a.zoneName);
+    row.push(a.campaign);
+    row.push(a.subCampaign);
+
+    row.push(a.doctorId);
+    row.push(a.doctorName);
+    row.push(a.institutionName);
+    row.push(a.doctorCategory);
+    row.push(a.noOfPatient);
+    row.push(a.investmentPast);
+    row.push(a.investmentPresent);
+
+    const convertedfDate = new Date(a.fromDate);
+    let fd = '';
+    fd += convertedfDate.getDate() + '/' + (convertedfDate.getMonth() + 1) + '/' + convertedfDate.getFullYear();
+
+    const convertedtDate = new Date(a.toDate);
+    let td = '';
+    td += convertedtDate.getDate() + '/' + (convertedtDate.getMonth() + 1) + '/' + convertedtDate.getFullYear();
+    row.push(fd + ' - ' + td);
+
+    row.push(a.commitment);
+    row.push(a.actualShare);
+
+    rowD.push(row);
+    row = [];
+  }
+  //this.getReport(col, rowD, title, orgName, orgAddress);
+  this.getReport(col, rowD, 'Campaign / Sub Campaign Wise Investment Report', 'Square Pharmaceuticals Ltd.', '48, Square Center, Mohakhali');
+}
+
+/// ********************************************
+/// Generate SBU wise Investment And Commitment vs Share (Individual Doctor)
+/// ********************************************
+
+getSBUWiseInvestCommitShareIndivDocReport()  {
+  const investmentReportSearchDto: IInvestmentReportSearchDto = {
+    fromDate: this.investmentSearchForm.value.fromDate,
+    toDate: this.investmentSearchForm.value.toDate,
+    sbu: this.investmentSearchForm.value.sbu,
+    userId: 0,
+    donationType: this.investmentSearchForm.value.donationType,
+    investType: this.investmentSearchForm.value.donationTo,
+    institutionId: this.investmentSearchForm.value.institutionId,
+    societyId: this.investmentSearchForm.value.societyId,
+    bcdsId: this.investmentSearchForm.value.bcdsId,
+    doctorId: this.investmentSearchForm.value.doctorId,
+    locationType: this.investmentSearchForm.value.locationType,
+    territoryCode: this.investmentSearchForm.value.territoryCode,
+    marketCode: this.investmentSearchForm.value.marketCode,
+    regionCode: this.investmentSearchForm.value.regionCode,
+    zoneCode: this.investmentSearchForm.value.zoneCode,
+    divisionCode: this.investmentSearchForm.value.divisionCode,
+    brandCode: this.investmentSearchForm.value.brandCode,
+    campaignName: this.investmentSearchForm.value.campaignName,
+    subCampaignName: this.investmentSearchForm.value.subCampaignName,
+  };
+
+  this.reportInvestmentService.GetDoctorCampaingWiseInvestment(investmentReportSearchDto).subscribe(resp => {
+    // this.reportInvestmentService.getInsSocietyBCDSWiseInvestment().subscribe(resp => {  
+    this.docCampWiseInvestment = resp as IDocCampWiseInvestment[];
+    if (this.docCampWiseInvestment.length <= 0) {
+      this.toastr.warning('No Data Found', 'Report');
+    }
+    if (this.docCampWiseInvestment.length > 0) {
+      for (let p of this.docCampWiseInvestment) {
+        var fD = this.datePipe.transform(p.fromDate, "dd/MM/yyyy")
+        var tD = this.datePipe.transform(p.toDate, "dd/MM/yyyy")
+      }
+    }
+    this.viewSBUWiseInvestCommitShareIndivDocReport();
+  }, error => {
+    console.log(error);
+  });
+}
+
+/// ********************************************
+/// View SBU wise Investment And Commitment vs Share (Individual Doctor)
+/// ********************************************
+
+viewSBUWiseInvestCommitShareIndivDocReport() {
+  debugger;
+  if (this.docCampWiseInvestment.length <= 0) {
+    this.toastr.warning("No Data to Show Report", "Report");
+    return false;
+  }
+
+  const r =  this.docCampWiseInvestment as IDocCampWiseInvestment[];
+
+  let row: any[] = [];
+  let rowD: any[] = [];
+  let col = ['SBU Name', 'Brand','Campaign' , 'Sub-Campaign' , 'Doctor Code','Doctor Name','Institution',
+     'Doctor \nCategory' , 'No Of \nPatient' ,'Investment \nPrev. Yr', 'Investment \nCurnt. Yr', 'Commitment \n(No of Rx)', 'Territory', 'Region' , 'Zone' ]; // initialization for headers
+
+  let slNO = 0;
+  for (const a of r) {
+    console.log(r);
+    //row.push(++slNO);
+    row.push(a.sbuName);
+    row.push(a.brand);
+    //row.push(a.marketName + a.territoryName + a.regionName + a.divisionName + a.zoneName);
+    row.push(a.campaign);
+    row.push(a.subCampaign);
+
+    row.push(a.doctorId);
+    row.push(a.doctorName);
+    row.push(a.institutionName);
+    row.push(a.doctorCategory);
+    row.push(a.noOfPatient);
+    row.push(a.investmentPast);
+    row.push(a.investmentPresent);
+
+    row.push(a.noOfPresc);
+    row.push(a.territoryName );
+    row.push(a.regionName);
+    row.push(a.zoneName);
+
+    rowD.push(row);
+    row = [];
+  }
+  //this.getReport(col, rowD, title, orgName, orgAddress);
+  this.getReport(col, rowD, 'SBU wise Investment And Commitment vs Share (Individual Doctor)', 'Square Pharmaceuticals Ltd.', '48, Square Center, Mohakhali');
+}
+
+
   getReport(col: any[], rowD: any[], title: any, orgName: any, orgAddress: any) {
     const totalPagesExp = "{total_pages_count_string}";
     const pdf = new jsPDF('l', 'pt', 'a4');
@@ -413,7 +1400,7 @@ debugger;
     pdf.setFontType('bold');
     pdf.text('Report Name', 40, 100);
     pdf.setFontType('normal');
-    pdf.text(': Proforma Invoice Report', 150, 100);
+    pdf.text(title , 150, 100);
     const pDate = this.datePipe.transform(new Date, "dd/MM/yyyy");
     pdf.text('Printing Date: ' + pDate, 680, 100);
     var pageContent = function (data) {
@@ -461,9 +1448,6 @@ debugger;
   }
 }
 
-interface IUserIdDto {
-  userId: number;
-}
 interface IInvestmentReportSearchDto {
   userId: number;
   fromDate: Date | undefined | null;

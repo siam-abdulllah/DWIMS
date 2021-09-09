@@ -4,14 +4,16 @@ export interface IDocCampWiseInvestment {
     sbuCode: string;
     marketCode: string;
     marketName: string;
-    TerritoryCode: string;
-    TerritoryName: string;
+    territoryCode: string;
+    territoryName: string;
     regionCode: string;
     regionName: string;
     divisionCode: string;
     divisionName: string;
     zoneCode: string;
     zoneName: string;
+    institutionId: string;
+    institutionName: string;
     doctorId: string;
     doctorName: string;
     doctorCategory: string;
