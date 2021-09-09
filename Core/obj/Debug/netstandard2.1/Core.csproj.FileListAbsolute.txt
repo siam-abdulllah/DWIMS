@@ -81,10 +81,10 @@ G:\DIDS\DIDS_GIT\DWIMS\Core\obj\Debug\netstandard2.1\Core.csproj.AssemblyReferen
 E:\DWIMS\TestApplication\Core\bin\Debug\netstandard2.1\Core.deps.json
 E:\DWIMS\TestApplication\Core\bin\Debug\netstandard2.1\Core.dll
 E:\DWIMS\TestApplication\Core\bin\Debug\netstandard2.1\Core.pdb
-E:\DWIMS\TestApplication\Core\obj\Debug\netstandard2.1\Core.csproj.AssemblyReference.cache
 E:\DWIMS\TestApplication\Core\obj\Debug\netstandard2.1\Core.GeneratedMSBuildEditorConfig.editorconfig
 E:\DWIMS\TestApplication\Core\obj\Debug\netstandard2.1\Core.AssemblyInfoInputs.cache
 E:\DWIMS\TestApplication\Core\obj\Debug\netstandard2.1\Core.AssemblyInfo.cs
 E:\DWIMS\TestApplication\Core\obj\Debug\netstandard2.1\Core.csproj.CoreCompileInputs.cache
 E:\DWIMS\TestApplication\Core\obj\Debug\netstandard2.1\Core.dll
 E:\DWIMS\TestApplication\Core\obj\Debug\netstandard2.1\Core.pdb
+E:\DWIMS\TestApplication\Core\obj\Debug\netstandard2.1\Core.csproj.AssemblyReference.cache

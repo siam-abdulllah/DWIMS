@@ -10,6 +10,10 @@ namespace Core.Entities
         [StringLength(maximumLength: 10)]
         public string SBUCode { get; set; }
         [StringLength(maximumLength: 10)]
+        public string MarketGroupCode { get; set; }
+        [StringLength(maximumLength: 70)]
+        public string MarketGroupName { get; set; }
+        [StringLength(maximumLength: 10)]
         public string MarketCode { get; set; }
         [StringLength(maximumLength: 70)]
         public string MarketName { get; set; }
@@ -33,6 +37,10 @@ namespace Core.Entities
         public string DoctorId { get; set; }
         [StringLength(maximumLength: 150)]
         public string DoctorName { get; set; }
+        [StringLength(maximumLength: 10)]
+        public string InstitutionId { get; set; }
+        [StringLength(maximumLength: 150)]
+        public string InstitutionName { get; set; }
         [StringLength(maximumLength: 30)]
         public string DoctorCategory { get; set; }
         public DateTime FromDate { get; set; }

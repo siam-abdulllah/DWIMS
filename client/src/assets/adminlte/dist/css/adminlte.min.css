@@ -12085,9 +12085,9 @@ body.sidebar-collapse:not(.sidebar-mini-md):not(.sidebar-mini) .main-header::bef
 
 .brand-link {
     display: block;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     line-height: 1.5;
-    padding: .8125rem .5rem;
+    padding: .7rem .5rem;
     transition: width .3s ease-in-out;
     white-space: nowrap
 }
@@ -12097,9 +12097,9 @@ body.sidebar-collapse:not(.sidebar-mini-md):not(.sidebar-mini) .main-header::bef
     text-decoration: none
 }
 
-.text-sm .brand-link {
+/*.text-sm .brand-link {
     font-size: inherit
-}
+}*/
 
 [class*=sidebar-dark] .brand-link {
     border-bottom: 1px solid #4b545c;

@@ -10,6 +10,8 @@ namespace Core.Entities
         public int InvestmentInitId { get; set; }
         [ForeignKey("InvestmentInitId")]
         public InvestmentInit InvestmentInit { get; set; }
+        public string SBU { get; set; }
+        public string SBUName { get; set; }
         public string MarketCode { get; set; }
         public string MarketName { get; set; }
         public int? MarketGroupMstId { get; set; }

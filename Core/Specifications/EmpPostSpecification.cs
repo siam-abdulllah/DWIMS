@@ -7,7 +7,7 @@ namespace Core.Specifications
     {
         public EmpPostSpecification(EmpPostSpecParams employeeparams)
  : base(x =>
-     (string.IsNullOrEmpty(employeeparams.Search) || x.EmployeeId.ToLower().Contains(employeeparams.Search))
+     (string.IsNullOrEmpty(employeeparams.Search) )
  )
         {
             AddOrderBy(x => x.SetOn);

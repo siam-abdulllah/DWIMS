@@ -31,7 +31,8 @@ namespace Infrastructure.Data
                         JoiningDate = DateTime.Now,
                         Phone = "0171111111",
                         Email = "test@gmail.com",
-                        PostingType = "MPO",
+                        MarketGroupCode = "All",
+                        MarketGroupName = "Barisal-1(A)",
                         MarketCode = "F24",
                         MarketName = "Barisal-1(A)",
                         RegionCode = "A41",
@@ -40,9 +41,8 @@ namespace Infrastructure.Data
                         ZoneName = "Zone-All",
                         TerritoryCode = "A00007",
                         TerritoryName = "Barishal-A(A)",
-                        DivisionCode = "030",
-                        DivisionName = "Zone-A (A)",
-                        SBU = "A",
+                        SBU = "1",
+                        SBUName = "A",
                         DataStatus = 1
                     };
                     context.Add(empsData);

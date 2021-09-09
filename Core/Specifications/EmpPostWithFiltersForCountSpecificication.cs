@@ -6,7 +6,7 @@ namespace Core.Specifications
     {
         public EmpPostWithFiltersForCountSpecificication(EmpPostSpecParams empParrams)
           : base(x =>
-              (string.IsNullOrEmpty(empParrams.Search) || x.EmployeeId.ToLower().Contains(empParrams.Search))
+              (string.IsNullOrEmpty(empParrams.Search))
           )
         {
         }

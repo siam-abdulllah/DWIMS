@@ -125,7 +125,7 @@ namespace API.Controllers
                                   RegionName = e.RegionName,
                                   ZoneName = e.ZoneName,
                                   TerritoryName = e.TerritoryName,
-                                  DivisionName = e.DivisionName,
+                                  MarketGroupName = e.MarketGroupName,
                                   SBU = e.SBU,
 
                               }
@@ -175,7 +175,7 @@ namespace API.Controllers
                                 RegionName = e.RegionName,
                                 ZoneName = e.ZoneName,
                                 TerritoryName = e.TerritoryName,
-                                DivisionName = e.DivisionName,
+                                MarketGroupName = e.MarketGroupName,
                                 SBU = e.SBU,
                                 ApprovalStatus = u.EmailConfirmed == true ? "Approved" : "Not Approved"
                             }
@@ -213,7 +213,7 @@ namespace API.Controllers
                                 RegionName = e.RegionName,
                                 ZoneName = e.ZoneName,
                                 TerritoryName = e.TerritoryName,
-                                DivisionName = e.DivisionName,
+                                MarketGroupName = e.MarketGroupName,
                                 SBU = e.SBU,
                                 ApprovalStatus = u.EmailConfirmed == true ? "Approved" : "Not Approved"
                             }
@@ -304,30 +304,30 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("GetDivision")]
-        public async Task<IReadOnlyList<DivisionDto>> GetDivisionList()
-        {
-            try
-            {
-                var data = await _employeeRepo.ListAllAsync();
-                //var market = data.GroupBy(p => p.MarketCode).Select(g => g.First()).ToList();
-                var division = (from r in data
-                                where r.DivisionName != null
-                                orderby r.DivisionName
-                                select new DivisionDto
-                              {
-                                  DivisionCode = r.DivisionCode,
-                                  DivisionName = r.DivisionName,
-                              }
-                              ).Distinct().ToList();
-                //var mappedMarket = _mapper.Map<IReadOnlyList<Employee>, IReadOnlyList<MarketDto>>(market);
-                return division;
-            }
-            catch (System.Exception ex)
-            {
-                throw ex;
-            }
-        }
+        //[HttpGet("GetDivision")]
+        //public async Task<IReadOnlyList<DivisionDto>> GetDivisionList()
+        //{
+        //    try
+        //    {
+        //        var data = await _employeeRepo.ListAllAsync();
+        //        //var market = data.GroupBy(p => p.MarketCode).Select(g => g.First()).ToList();
+        //        var division = (from r in data
+        //                        where r.DivisionName != null
+        //                        orderby r.DivisionName
+        //                        select new DivisionDto
+        //                      {
+        //                          DivisionCode = r.DivisionCode,
+        //                          DivisionName = r.DivisionName,
+        //                      }
+        //                      ).Distinct().ToList();
+        //        //var mappedMarket = _mapper.Map<IReadOnlyList<Employee>, IReadOnlyList<MarketDto>>(market);
+        //        return division;
+        //    }
+        //    catch (System.Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
 
         [HttpGet("GetRegion")]
         public async Task<IReadOnlyList<RegionDto>> GetRegionList()

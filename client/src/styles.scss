@@ -62,3 +62,31 @@
     // opacity: .9;
     height: 100%;
 }
+
+.navbar-custom-menu-left {
+    float: left;
+    // padding-top: 1%;
+    // padding-left: 2%;
+    font-weight: bold;
+    color: white;
+    font-size: large;
+    text-shadow: 2px 2px 4px #000000;
+}
+
+.navbar-custom-empInfo-left {
+    float: left;
+    // padding-top: 1%;
+    // padding-left: 2%;
+    //font-weight: bold;
+    color: white;
+    font-size: large;
+    text-shadow: 2px 2px 4px #715d5d;
+}
+
+.navbar-custom-empInfo-left>.nav-item>.input-group {
+    padding-top: 0.1rem;
+}
+
+.navbar-custom-empInfo-left>.nav-item>.input-group>p {
+    margin-bottom: 0rem;
+}

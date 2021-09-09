@@ -17,7 +17,7 @@ namespace API.Dtos
         public string RegionName { get; set; }
         public string ZoneName { get; set; }
         public string TerritoryName { get; set; }
-        public string DivisionName { get; set; }
+        public string MarketGroupName { get; set; }
         public string SBU { get; set; }
         public string ApprovalStatus { get; set; }
     }

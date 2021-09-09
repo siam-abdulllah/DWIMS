@@ -4,8 +4,7 @@ import { AccountService } from 'src/app/account/account.service';
 @Component({
   selector: 'app-topnav',
   templateUrl: './topnav.component.html',
-  styles: [
-  ]
+  styles: ['./topnav.component.scss']
 })
 export class TopnavComponent implements OnInit {
   sbu:string;

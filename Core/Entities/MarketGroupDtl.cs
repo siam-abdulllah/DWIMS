@@ -8,9 +8,11 @@ namespace Core.Entities
     public class MarketGroupDtl:BaseEntity
     {
         public int? MstId { get; set; }
+
         public string MarketCode { get; set; }
         public string  MarketName { get; set; }
-        public string  SBU { get; set; }
+        public string SBU { get; set; }
+        public string SBUName { get; set; }
         public string Status { get; set; }
     }
 }

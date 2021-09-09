@@ -4,14 +4,16 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    partial class StoreContextModelSnapshot : ModelSnapshot
+    [Migration("20210909050338_InitialCreate_992021")]
+    partial class InitialCreate_992021
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1949,14 +1951,6 @@ namespace Infrastructure.Data.Migrations
 
                     b.Property<DateTime>("FromDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("InstitutionId")
-                        .HasColumnType("nvarchar(10)")
-                        .HasMaxLength(10);
-
-                    b.Property<string>("InstitutionName")
-                        .HasColumnType("nvarchar(150)")
-                        .HasMaxLength(150);
 
                     b.Property<double>("InvestmentPast")
                         .HasColumnType("float");
