@@ -1,10 +1,10 @@
 form {
-    border: 3px solid #f1f1f1;
+    border: 1px solid #5baaa1;
     text-align: center;
     background: #ffffff;
     padding: 40px;
     border-radius: 15px;
-    background-image: -webkit-linear-gradient(top, rgb(172 208 203), rgb(255 255 255 / 0%)) !important;
+    //background-image: -webkit-linear-gradient(top, rgb(172 208 203), rgb(255 255 255 / 0%)) !important;
 }
 
 .login-input {
@@ -22,6 +22,7 @@ form {
 
 input {
     background-image: none;
-    border: 1px solid #28b9da;
+    background-color: #f7f7f7;
+    border: 1px solid #f7f7f7;
     border-radius: 15px!important;
 }
