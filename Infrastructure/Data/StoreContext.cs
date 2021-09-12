@@ -59,7 +59,9 @@ namespace Infrastructure.Data
         public DbSet<ReportConfig> ReportConfig { get; set; }
         public DbSet<RptDocCampWiseInvestment> RptDocCampWiseInvestment { get; set; }
         public DbSet<RptInsSocBcdsInvestment> RptInsSocBcdsInvestment { get; set; }
-        public DbSet<RptDocLocWiseInvestment> RptDocLocWiseInvestment { get; set; }
+        public DbSet<RptDocLocWiseInvestment> RptDocLocWiseInvestment { get; set; } 
+        public DbSet<ClusterMst> ClusterMst { get; set; }
+        public DbSet<ClusterDtl> ClusterDtl { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

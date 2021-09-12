@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20210911040408_InithialCreate")]
-    partial class InithialCreate
+    [Migration("20210912082727_InithialCreate_1")]
+    partial class InithialCreate_1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -2350,6 +2350,9 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SBU")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SBUName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("SetOn")

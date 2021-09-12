@@ -39,7 +39,12 @@ export class LoginComponent implements OnInit {
   // tslint:disable-next-line: typedef
   onSubmit() {
     this.accountService.login(this.loginForm.value).subscribe(() => {
-      this.router.navigateByUrl(this.returnUrl);
+      //this.router.navigateByUrl(this.returnUrl);
+      //this.router.navigate(['/portal/home']);
+      this.router.navigate(['/portal/home'])
+  .then(() => {
+    window.location.reload();
+  });
     }, error => {
       console.log(error);
     });

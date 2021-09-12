@@ -1,0 +1,172 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <form novalidate autocomplete="off" #form="ngForm" (submit)="onSubmit(form)">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h3 class="card-title">Cluster</h3>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="form.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button class="btn btn-info btn-lg btn-block" type="button" (click)="getClusterMstList()"><i class="fa fa-search"></i>Search</button>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetPage(form)"><i class="fa fa-undo"></i>Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Cluster Name</label>
+                                        <span style="color:red;">*</span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input class="form-control " placeholder="Cluster" name="clusterName" #clusterName="ngModel" [(ngModel)]="masterService.clusterMstFormData.clusterName" required [class.invalid]="clusterName.invalid && clusterName.touched">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Cluster Code</label>
+                                        <span style="color:red;">*</span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input class="form-control " placeholder="Cluster Code" name="clusterCode" #clusterCode="ngModel" [(ngModel)]="masterService.clusterMstFormData.clusterCode" required [class.invalid]="clusterCode.invalid && clusterCode.touched">
+                                        <input class="form-control " placeholder="Auto Generated" name="id" #id="ngModel" [(ngModel)]="masterService.clusterMstFormData.id" readonly style="display: none;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Status</label>
+                                        <span style="color:red;">*</span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select id="status" class="form-control " name="status" #status="ngModel" [(ngModel)]="masterService.clusterMstFormData.status" required [class.invalid]="status.invalid && status.touched">
+                                      <option [ngValue]="null">Select Status</option>
+                                        <option value="Active">Active</option>
+                                      <option value="Inactive">Inactive</option>
+                                    </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <fieldset>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Region</label>
+                                            <span style="color:red;">*</span>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control " name="id" #id="ngModel" [(ngModel)]="masterService.clusterDtlFormData.id" readonly style="display: none;">
+
+                                            <ng-select [virtualScroll]="true" [items]="regions" bindLabel="regionName" bindValue="regionCode" placeholder="Select Region" name="regionCode" #regionCode="ngModel" [(ngModel)]="masterService.clusterDtlFormData.regionCode">
+                                            </ng-select>
+
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Status</label>
+                                            <span style="color:red;">*</span>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select id="statusDtl" class="form-control " name="statusDtl" #statusDtl="ngModel" [(ngModel)]="masterService.clusterDtlFormData.status">
+                                                <option [ngValue]="null">Select Status</option>
+                                                <option value="Active">Active</option>
+                                                <option value="Inactive">Inactive</option>
+                                        </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <button class="btn btn-info btn-lg btn-block" type="button" (click)="addRegion()"><i class="fa fa-plus"></i>Add</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <table class="table  table-bordered">
+                                            <tr>
+                                                <td>Region Code</td>
+                                                <td>Region Name</td>
+                                                <td>Status</td>
+                                            </tr>
+                                            <tr *ngFor="let a of clusterDtlInfo">
+                                                <td>
+                                                    {{a.regionCode}}
+                                                </td>
+                                                <td>
+                                                    {{a.regionName}}
+                                                </td>
+                                                <td>
+                                                    {{a.status}}
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-embossed btn-primary" type="button" (click)="populateDtlsForm(a)">Edit</button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <legend>Sub Cluster List</legend>
+                            </fieldset>
+                        </div>
+                    </div>
+                </form>
+                <ng-template #clusterMstSearchModal>
+                    <div class="modal-header" style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc));color: black;">
+                        <h4 class="modal-title pull-left">{{clusterModalTitle}}</h4>
+                        <button type="button" class="close pull-right" aria-label="Close" (click)="clusterMstSearchodalRef.hide()">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body" style="padding: 20px 30px 20px 30px;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <fieldset class="scheduler-border">
+                                    <legend class="scheduler-border">Cluster Information</legend>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <table class="table  table-bordered">
+                                                    <tr>
+                                                        <th scope="col" style="width: 7%">Action</th>
+                                                        <th scope="col" style="width: 0;display:none;">Id</th>
+                                                        <td>Cluster Code</td>
+                                                        <td>Cluster Name</td>
+                                                        <td>Status</td>
+
+                                                    </tr>
+                                                    <tr *ngFor="let b of clusterMstInfo">
+                                                        <td>
+                                                            <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="selectClusterMst(b)">Select</button>
+
+                                                        </td>
+                                                        <td style="display:none;">{{b.id}}</td>
+                                                        <td>
+                                                            {{b.clusterCode}}
+                                                        </td>
+                                                        <td>
+                                                            {{b.clusterName}}
+                                                        </td>
+                                                        <td>
+                                                            {{b.status}}
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</section>

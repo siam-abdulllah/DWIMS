@@ -21,7 +21,7 @@ export class TopnavComponent implements OnInit {
 
     this.accountService.getEmployeeSbu(parseInt(this.accountService.getEmployeeId())).subscribe(
       (response) => {
-        this.sbu = response.sbu;
+        this.sbu = response.sbuName;
         this.employeeName = response.employeeName;
         this.desgination = response.designationName;
       },

@@ -8,6 +8,7 @@ import { BcdsPagination, IBcdsPagination } from './../shared/models/bcdsPaginati
 import { ISocietyInfo, SocietyInfo } from '../shared/models/societyInfo';
 import { SocietyPagination, ISocietyPagination } from './../shared/models/societyPagination';
 
+import { IClusterMstInfo, ClusterMstInfo, IClusterDtlInfo, ClusterDtlInfo } from '../shared/models/clusterInfo';
 import { IEmployeeInfo, EmployeeInfo } from '../shared/models/employeeInfo';
 import { EmployeePagination, IEmployeePagination } from './../shared/models/employeePagination';
 import { IRole, IRoleResponse } from './../shared/models/role';
@@ -25,6 +26,7 @@ import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { GenericParams } from '../shared/models/genericParams';
 import { IPagination, Pagination } from '../shared/models/pagination';
+import { ClusterDtlPagination, ClusterMstPagination, IClusterDtlPagination, IClusterMstPagination } from '../shared/models/clusterMstPagination';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +37,10 @@ export class MasterService {
   donationPagination = new DonationPagination();
   approvalAuthoritys: IApprovalAuthority[]=[];
   approvalAuthorityPagination = new ApprovalAuthorityPagination();
+  clusterMsts: IClusterMstInfo[]=[];
+  clusterMstPagination = new ClusterMstPagination();
+  clusterDtls: IClusterDtlInfo[]=[];
+  clusterDtlPagination = new ClusterDtlPagination();
   subCampaigns: ISubCampaign[]=[];
   subCampaignPagination = new SubCampaignPagination();
   campaignMsts: ICampaignMst[]=[];
@@ -65,10 +71,15 @@ export class MasterService {
   employeeInfo: IEmployeeInfo[]= [];
   employeePagination = new EmployeePagination();
   employeeFormData: EmployeeInfo = new EmployeeInfo();
+  clusterMstFormData: ClusterMstInfo = new ClusterMstInfo();
+  clusterDtlFormData: ClusterDtlInfo = new ClusterDtlInfo();
   constructor(private http: HttpClient, private router: Router) { }
 
   getSBU(){    
     return this.http.get(this.baseUrl + 'employee/getSBU');
+  }
+  getRegion(){    
+    return this.http.get(this.baseUrl + 'employee/getRegion');
   }
   getBrand(sbu:string){    
     return this.http.get(this.baseUrl + 'product/getBrand/'+sbu);
@@ -327,6 +338,66 @@ getEmployeeList(){
     })
   );
 }
+getClusterMstList(){    
+  let params = new HttpParams();
+  debugger;
+  if (this.genParams.search) {
+    params = params.append('search', this.genParams.search);
+  }
+  params = params.append('sort', this.genParams.sort);
+  params = params.append('pageIndex', this.genParams.pageNumber.toString());
+  params = params.append('pageSize', this.genParams.pageSize.toString());
 
+  return this.http.get<IClusterMstPagination>(this.baseUrl + 'cluster/clusterMsts', { observe: 'response', params })
+  .pipe(
+    map(response => {
+      this.clusterMsts = [...this.clusterMsts, ...response.body.data]; 
+      this.clusterMstPagination = response.body;
+      return this.clusterMstPagination;
+    })
+  );
+  
+}
+getClusterDtlList(mstId:number){    
+  let params = new HttpParams();
+  debugger;
+  if (this.genParams.search) {
+    params = params.append('search', this.genParams.search);
+  }
+  params = params.append('sort', this.genParams.sort);
+  params = params.append('pageIndex', this.genParams.pageNumber.toString());
+  params = params.append('pageSize', this.genParams.pageSize.toString());
+
+  return this.http.get<IClusterDtlPagination>(this.baseUrl + 'cluster/clusterDtls/'+mstId, { observe: 'response', params })
+  .pipe(
+    map(response => {
+      this.clusterDtls = [...this.clusterDtls, ...response.body.data]; 
+      this.clusterDtlPagination = response.body;
+      return this.clusterDtlPagination;
+    })
+  );
+  
+}
+insertClusterMst() {
+  return this.http.post(this.baseUrl+ 'cluster/insertMst', this.clusterMstFormData);
+  // return this.http.post(this.baseUrl + 'account/register', values).pipe(
+  //   map((user: IUser) => {
+  //     if (user) {
+  //       // localStorage.setItem('token', user.token);
+  //       // this.currentUserSource.next(user);
+  //       return user;
+  //     }
+  //   })
+  // );
+}
+insertClusterDtl() {
+  return this.http.post(this.baseUrl+ 'cluster/insertDtl', this.clusterDtlFormData);
+}
+updateClusterMst() {
+  return this.http.post(this.baseUrl+ 'cluster/updateMst',  this.clusterMstFormData);
+}
+updateClusterDtl() {
+return this.http.post(this.baseUrl+ 'cluster/updateDtl',  this.clusterDtlFormData);
+}
 }
 

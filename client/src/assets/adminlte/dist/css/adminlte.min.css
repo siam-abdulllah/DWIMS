@@ -12353,7 +12353,7 @@ body.sidebar-collapse:not(.sidebar-mini-md):not(.sidebar-mini) .main-header::bef
 }
 
 [class*=sidebar-light-] {
-    background-color: #fff
+  background-color: #f4f4f4
 }
 
 [class*=sidebar-light-] .user-panel a:hover {

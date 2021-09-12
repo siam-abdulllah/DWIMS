@@ -6,17 +6,12 @@ namespace Infrastructure.Data.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "SBUName",
-                table: "SBUWiseBudget",
-                nullable: true);
+
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "SBUName",
-                table: "SBUWiseBudget");
+
         }
     }
 }

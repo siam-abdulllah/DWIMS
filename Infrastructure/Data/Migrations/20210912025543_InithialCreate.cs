@@ -460,6 +460,7 @@ namespace Infrastructure.Data.Migrations
                     SetOn = table.Column<DateTimeOffset>(nullable: false),
                     ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
                     SBU = table.Column<string>(nullable: true),
+                    SBUName = table.Column<string>(nullable: true),
                     FromDate = table.Column<DateTimeOffset>(nullable: true),
                     ToDate = table.Column<DateTimeOffset>(nullable: true),
                     Amount = table.Column<long>(nullable: false),

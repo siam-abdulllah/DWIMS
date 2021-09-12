@@ -335,6 +335,71 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("CampaignMst");
                 });
 
+            modelBuilder.Entity("Core.Entities.ClusterDtl", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("MstId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RegionCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RegionName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MstId");
+
+                    b.ToTable("ClusterDtl");
+                });
+
+            modelBuilder.Entity("Core.Entities.ClusterMst", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ClusterCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClusterName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ClusterMst");
+                });
+
             modelBuilder.Entity("Core.Entities.DoctorHonAppr", b =>
                 {
                     b.Property<int>("Id")
@@ -2486,6 +2551,15 @@ namespace Infrastructure.Data.Migrations
                     b.HasOne("Core.Entities.ProductInfo", "ProductInfo")
                         .WithMany()
                         .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Core.Entities.ClusterDtl", b =>
+                {
+                    b.HasOne("Core.Entities.ClusterMst", null)
+                        .WithMany("ClusterDtls")
+                        .HasForeignKey("MstId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

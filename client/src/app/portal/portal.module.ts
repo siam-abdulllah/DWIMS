@@ -26,6 +26,7 @@ import { ApprovalCeilingComponent } from '../approval-ceiling/approval-ceiling.c
 import { ApprovalTimeLimitComponent } from '../approval-time-limit/approval-time-limit.component';
 import { SbuWiseBudgetComponent } from '../sbu-wise-budget/sbu-wise-budget.component';
 import { DocHonApprComponent } from '../docHonAppr/docHonAppr.component';
+import { ClusterInfoComponent } from '../master/cluster-info/cluster-info.component';
 @NgModule({
   imports: [
     
@@ -57,7 +58,8 @@ import { DocHonApprComponent } from '../docHonAppr/docHonAppr.component';
     RegApprovalComponent,
     ReportInvestmentComponent,
     SbuWiseBudgetComponent,
-    DocHonApprComponent
+    DocHonApprComponent,
+    ClusterInfoComponent
   ],
   providers: [DatePipe]
 })

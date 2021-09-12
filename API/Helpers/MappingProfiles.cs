@@ -45,6 +45,8 @@ namespace API.Helpers
             CreateMap<DoctorHonAppr, DoctorHonApprDto>().ReverseMap();
             CreateMap<ReportInvestmentInfo, ReportInvestmentDto>().ReverseMap();
             CreateMap<ReportConfig, ReportConfigDto>().ReverseMap();
+            CreateMap<ClusterMst, ClusterMstDto>().ReverseMap();
+            CreateMap<ClusterDtl, ClusterDtlDto>().ReverseMap();
         }
     }
 }

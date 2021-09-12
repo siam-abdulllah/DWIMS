@@ -24,6 +24,7 @@ export interface IEmployeeInfo {
     divisionName : string;
     divisionCode : string;
     sbu:string;
+    sbuName:string;
 }
 
 export class EmployeeInfo implements IEmployeeInfo {
@@ -52,4 +53,5 @@ export class EmployeeInfo implements IEmployeeInfo {
     divisionName : string;
     divisionCode : string;
     sbu:string;
+    sbuName:string;
 }
