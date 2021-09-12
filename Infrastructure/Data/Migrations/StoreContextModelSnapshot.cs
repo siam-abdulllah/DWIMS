@@ -2350,6 +2350,9 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("SBU")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("SBUName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTimeOffset>("SetOn")
                         .HasColumnType("datetimeoffset");
 

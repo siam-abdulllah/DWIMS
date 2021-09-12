@@ -59,6 +59,7 @@ namespace API.Controllers
                     MarketCode = marketGroupDtlDto.MarketCode,
                     MarketName = marketGroupDtlDto.MarketName,
                     SBU = marketGroupDtlDto.SBU,
+                    SBUName = marketGroupDtlDto.SBUName,
                     MstId = marketGroupDtlDto.MstId,
                     Status = "Active",
                     SetOn = DateTimeOffset.Now
@@ -72,6 +73,7 @@ namespace API.Controllers
                     MarketCode = marketGroupDtlDto.MarketCode,
                     MarketName = marketGroupDtlDto.MarketName,
                     SBU = marketGroupDtlDto.SBU,
+                    SBUName = marketGroupDtlDto.SBUName,
                     MstId = marketGroupDtlDto.MstId,
                     Status = marketGroupDtlDto.Status
                 };
@@ -115,6 +117,7 @@ namespace API.Controllers
                 MarketCode = marketGroupDtlDto.MarketCode,
                 MarketName = marketGroupDtlDto.MarketName,
                 SBU = marketGroupDtlDto.SBU,
+                SBUName = marketGroupDtlDto.SBUName,
                 MstId = marketGroupDtlDto.MstId,
                 Status = "Inactive",
                 ModifiedOn = DateTimeOffset.Now
@@ -128,6 +131,8 @@ namespace API.Controllers
                 Id = marketGroupDtlDto.Id,
                 MarketCode = marketGroupDtlDto.MarketCode,
                 MarketName = marketGroupDtlDto.MarketName,
+                SBU = marketGroupDtlDto.SBU,
+                SBUName = marketGroupDtlDto.SBUName,
                 MstId = marketGroupDtlDto.MstId,
                 Status = marketGroupDtlDto.Status
             };

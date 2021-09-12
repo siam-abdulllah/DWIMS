@@ -82,9 +82,9 @@ insertMarketGroup() {
   return this.http.post(this.baseUrl+ 'marketGroup/insertMst', this.marketGroupFormData);
 
 }
-insertMarketGroupDtl(id:number,marketCode:string,marketName:string,sbu:string) {
+insertMarketGroupDtl(id:number,marketCode:string,marketName:string,sbu:string,sbuName:string) {
   
-  var Indata = {'mstId': id, 'marketCode': marketCode, 'marketName':marketName, 'sbu':sbu};
+  var Indata = {'mstId': id, 'marketCode': marketCode, 'marketName':marketName, 'sbu':sbu, 'sbuName':sbuName};
   return this.http.post(this.baseUrl+ 'marketGroup/insertDtl', Indata);
 
 }

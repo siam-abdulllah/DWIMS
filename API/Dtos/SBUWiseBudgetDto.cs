@@ -9,6 +9,7 @@ namespace API.Dtos
     {
         public int Id { get; set; }
         public string SBU { get; set; }
+        public string SBUName { get; set; }
         public DateTimeOffset? FromDate { get; set; }
         public DateTimeOffset? ToDate { get; set; }
         public long Amount { get; set; }

@@ -52,7 +52,7 @@ export class RegisterComponent implements OnInit {
   }
   ngOnDestroy() {
     // remove the the body classes
-    this.body.classList.remove('loginBGImage');
+    this.body.classList.remove('regBGImage');
    // this.body.classList.remove('sidebar-mini');
   }
   backToLogin() {

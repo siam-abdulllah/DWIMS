@@ -12,7 +12,7 @@ export interface IRegApproval {
     regionName : string;
     zoneName : string;
     territoryName : string;
-    divisionName : string;
+    sbuName : string;
     approvalStatus : string;
     role : string;
 }
@@ -31,7 +31,7 @@ export class RegApproval implements IRegApproval {
     regionName : string;
     zoneName : string;
     territoryName : string;
-    divisionName : string;
+    sbuName : string;
     approvalStatus : string=null;
     role : string=null;
 }

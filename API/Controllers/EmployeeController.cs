@@ -53,7 +53,8 @@ namespace API.Controllers
                               {
                                   MarketCode = r.MarketCode,
                                   MarketName = r.MarketName,
-                                  SBU = r.SBU
+                                  SBU = r.SBU,
+                                  SBUName = r.SBUName,
                               }
                               ).Distinct().ToList();
                 //var mappedMarket = _mapper.Map<IReadOnlyList<Employee>, IReadOnlyList<MarketDto>>(market);
@@ -74,7 +75,7 @@ namespace API.Controllers
                                  .Select(g => g.First())
                                  .ToList();
                 var sbu = (from r in emp
-                           orderby r.SBU
+                           orderby r.SBUName
                            select new SBUDto
                            {
                                SBUCode = r.SBU,
@@ -177,6 +178,7 @@ namespace API.Controllers
                                 TerritoryName = e.TerritoryName,
                                 MarketGroupName = e.MarketGroupName,
                                 SBU = e.SBU,
+                                SBUName = e.SBUName,
                                 ApprovalStatus = u.EmailConfirmed == true ? "Approved" : "Not Approved"
                             }
                               ).Distinct().ToList();
@@ -215,6 +217,7 @@ namespace API.Controllers
                                 TerritoryName = e.TerritoryName,
                                 MarketGroupName = e.MarketGroupName,
                                 SBU = e.SBU,
+                                SBUName = e.SBUName,
                                 ApprovalStatus = u.EmailConfirmed == true ? "Approved" : "Not Approved"
                             }
                               ).Distinct().ToList();

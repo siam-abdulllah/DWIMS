@@ -10,5 +10,6 @@ namespace API.Dtos
         public string MarketCode { get; set; }
         public string MarketName { get; set; }
         public string SBU { get; set; }
+        public string SBUName { get; set; }
     }
 }

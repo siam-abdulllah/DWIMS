@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20210905062605_InithialCreate592021")]
-    partial class InithialCreate592021
+    [Migration("20210911040408_InithialCreate")]
+    partial class InithialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -516,12 +516,6 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("DesignationName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DivisionCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DivisionName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
@@ -540,6 +534,12 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("MarketCode")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("MarketGroupCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MarketGroupName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("MarketName")
                         .HasColumnType("nvarchar(max)");
 
@@ -547,9 +547,6 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Phone")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PostingType")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RegionCode")
@@ -736,12 +733,6 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
 
-                    b.Property<string>("DivisionCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DivisionName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
@@ -751,14 +742,17 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("MarketCode")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("MarketGroupCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MarketGroupName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("MarketName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("PostingType")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RegionCode")
                         .HasColumnType("nvarchar(max)");
@@ -767,6 +761,9 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SBU")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SBUName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("SetOn")
@@ -1010,12 +1007,6 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
 
-                    b.Property<string>("DivisionCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DivisionName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("DonationTo")
                         .HasColumnType("nvarchar(max)");
 
@@ -1028,14 +1019,17 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("MarketCode")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("MarketGroupCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MarketGroupName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("MarketName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("PostingType")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProposeFor")
                         .HasColumnType("nvarchar(max)");
@@ -1050,6 +1044,9 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SBU")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SBUName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("SetOn")
@@ -1187,12 +1184,6 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
 
-                    b.Property<string>("DivisionCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DivisionName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
@@ -1202,14 +1193,17 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("MarketCode")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("MarketGroupCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MarketGroupName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("MarketName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("PostingType")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RecStatus")
                         .HasColumnType("nvarchar(max)");
@@ -1221,6 +1215,9 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SBU")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SBUName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("SetOn")
@@ -1340,6 +1337,12 @@ namespace Infrastructure.Data.Migrations
                     b.Property<DateTimeOffset>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<string>("SBU")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SBUName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTimeOffset>("SetOn")
                         .HasColumnType("datetimeoffset");
 
@@ -1442,6 +1445,9 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("SBU")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SBUName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("SetOn")
@@ -1586,6 +1592,9 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SBU")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SBUName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("SetOn")
@@ -1884,6 +1893,411 @@ namespace Infrastructure.Data.Migrations
                     b.HasIndex("InvestmentSocietyId");
 
                     b.ToTable("ReportProductInfo");
+                });
+
+            modelBuilder.Entity("Core.Entities.RptDocCampWiseInvestment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ActualShare")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("ActualShareBrand")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("Brand")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Campaign")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Commitment")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("CompetitorShare")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DivisionCode")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("DivisionName")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("DoctorCategory")
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
+                    b.Property<string>("DoctorId")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("DoctorName")
+                        .HasColumnType("nvarchar(150)")
+                        .HasMaxLength(150);
+
+                    b.Property<DateTime>("FromDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("InstitutionId")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("InstitutionName")
+                        .HasColumnType("nvarchar(150)")
+                        .HasMaxLength(150);
+
+                    b.Property<double>("InvestmentPast")
+                        .HasColumnType("float");
+
+                    b.Property<double>("InvestmentPresent")
+                        .HasColumnType("float");
+
+                    b.Property<string>("MarketCode")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("MarketGroupCode")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("MarketGroupName")
+                        .HasColumnType("nvarchar(70)")
+                        .HasMaxLength(70);
+
+                    b.Property<string>("MarketName")
+                        .HasColumnType("nvarchar(70)")
+                        .HasMaxLength(70);
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NoOfPatient")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("NoOfPresc")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("RegionCode")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("RegionName")
+                        .HasColumnType("nvarchar(70)")
+                        .HasMaxLength(70);
+
+                    b.Property<string>("SBUCode")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("SBUName")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("SubCampaign")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("TerritoryCode")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("TerritoryName")
+                        .HasColumnType("nvarchar(70)")
+                        .HasMaxLength(70);
+
+                    b.Property<DateTime>("ToDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ZoneCode")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("ZoneName")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RptDocCampWiseInvestment");
+                });
+
+            modelBuilder.Entity("Core.Entities.RptDocLocWiseInvestment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ActualShare")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("Commitment")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("CompetitorShare")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Deviation")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("DivisionCode")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("DivisionName")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("DoctorId")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("DoctorName")
+                        .HasColumnType("nvarchar(150)")
+                        .HasMaxLength(150);
+
+                    b.Property<string>("DonationType")
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
+
+                    b.Property<DateTime>("FromDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("InstitutionId")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("InstitutionName")
+                        .HasColumnType("nvarchar(150)")
+                        .HasMaxLength(150);
+
+                    b.Property<double>("InvestedAmt")
+                        .HasColumnType("float");
+
+                    b.Property<string>("LeaderNonLeader")
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
+
+                    b.Property<string>("MarketCode")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("MarketGroupCode")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("MarketGroupName")
+                        .HasColumnType("nvarchar(70)")
+                        .HasMaxLength(70);
+
+                    b.Property<string>("MarketName")
+                        .HasColumnType("nvarchar(70)")
+                        .HasMaxLength(70);
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NoOfPatient")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("NoOfPresc")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("RegionCode")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("RegionName")
+                        .HasColumnType("nvarchar(70)")
+                        .HasMaxLength(70);
+
+                    b.Property<string>("SBUCode")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("SBUName")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("TerritoryCode")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("TerritoryName")
+                        .HasColumnType("nvarchar(70)")
+                        .HasMaxLength(70);
+
+                    b.Property<DateTime>("ToDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ZoneCode")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("ZoneName")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RptDocLocWiseInvestment");
+                });
+
+            modelBuilder.Entity("Core.Entities.RptInsSocBcdsInvestment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ActualShare")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("BcdsId")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("BcdsName")
+                        .HasColumnType("nvarchar(150)")
+                        .HasMaxLength(150);
+
+                    b.Property<string>("Commitment")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("CompetitorShare")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DivisionCode")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("DivisionName")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("DonationType")
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
+
+                    b.Property<DateTime>("FromDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("InstitutionId")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("InstitutionName")
+                        .HasColumnType("nvarchar(150)")
+                        .HasMaxLength(150);
+
+                    b.Property<double>("InvestedAmt")
+                        .HasColumnType("float");
+
+                    b.Property<string>("MarketCode")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("MarketGroupCode")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("MarketGroupName")
+                        .HasColumnType("nvarchar(70)")
+                        .HasMaxLength(70);
+
+                    b.Property<string>("MarketName")
+                        .HasColumnType("nvarchar(70)")
+                        .HasMaxLength(70);
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("RegionCode")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("RegionName")
+                        .HasColumnType("nvarchar(70)")
+                        .HasMaxLength(70);
+
+                    b.Property<string>("SBUCode")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("SBUName")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("SocietyId")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("SocietyName")
+                        .HasColumnType("nvarchar(150)")
+                        .HasMaxLength(150);
+
+                    b.Property<string>("TerritoryCode")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("TerritoryName")
+                        .HasColumnType("nvarchar(70)")
+                        .HasMaxLength(70);
+
+                    b.Property<DateTime>("ToDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ZoneCode")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("ZoneName")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RptInsSocBcdsInvestment");
                 });
 
             modelBuilder.Entity("Core.Entities.SBU", b =>

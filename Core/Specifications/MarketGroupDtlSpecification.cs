@@ -32,7 +32,7 @@ namespace Core.Specifications
         }
 
         public MarketGroupDtlSpecification(int id)
-            : base(x => x.MstId == id && x.Status=="A")
+            : base(x => x.MstId == id && x.Status== "Active")
         {
         }
         public MarketGroupDtlSpecification(int mstId,string marketCode,string status)

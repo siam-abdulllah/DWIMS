@@ -59,6 +59,15 @@ export class SbuWiseBudgetComponent implements OnInit {
 
 
   insertSBUWiseBudget(form: NgForm) {
+    for (let i = 0; i < this.SBUs.length; i++) {
+      if(this.SBUs[i].sbuCode===this.sbuWiseBudgetService.sbuwiseBudgeFormData.sbu)
+      {
+        
+        this.sbuWiseBudgetService.sbuwiseBudgeFormData.sbuName=this.SBUs[i].sbuName;
+        
+        break;
+      }
+      }
     this.sbuWiseBudgetService.insertSBUWiseBudget().subscribe(
       res => {
         debugger;
@@ -73,6 +82,15 @@ export class SbuWiseBudgetComponent implements OnInit {
   }
 
   updateSBUWiseBudget(form: NgForm) {
+    for (let i = 0; i < this.SBUs.length; i++) {
+      if(this.SBUs[i].sbuCode===this.sbuWiseBudgetService.sbuwiseBudgeFormData.sbu)
+      {
+        
+        this.sbuWiseBudgetService.sbuwiseBudgeFormData.sbuName=this.SBUs[i].sbuName;
+        
+        break;
+      }
+      }
     this.sbuWiseBudgetService.updateSBUWiseBudget().subscribe(
       res => {
         debugger;

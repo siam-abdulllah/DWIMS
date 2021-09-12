@@ -20,6 +20,7 @@ export class MarketGroupComponent implements OnInit {
   @ViewChild('marketGroupSearchModal', { static: false }) marketGroupSearchModal: TemplateRef<any>;
   marketGroupSearchModalRef: BsModalRef;
   sbu:string;
+  sbuName:string;
   markets: IMarket[];
   marketGroupMsts: IMarketGroupMst[];
   marketGroupDtls: IMarketGroupDtl[];
@@ -108,7 +109,15 @@ addMarket() {
   
   //var e = (document.getElementById("marketCode") as HTMLInputElement).value;
   //var f = document.getElementById('marketCode');
-  
+  if(this.marketGroupService.marketGroupFormData.id===0 || this.marketGroupService.marketGroupFormData.id===undefined)
+  {
+    alert("Please Insert Group first!")
+    return false;
+  }if(this.marketGroupService.marketGroupFormData.marketCode=="" || this.marketGroupService.marketGroupFormData.marketCode===undefined || this.marketGroupService.marketGroupFormData.marketCode===null)
+  {
+    alert("Please  Select Market first!")
+    return false;
+  }
   var e = (document.getElementById("marketCode")) as HTMLSelectElement;
     //var sel = e.selectedIndex;
     //var opt = e.options[sel];
@@ -127,16 +136,13 @@ addMarket() {
     if(this.markets[i].marketCode===selectedMarketCode)
     {
       this.sbu=this.markets[i].sbu;
+      this.sbuName=this.markets[i].sbuName;
       var selectedMarketName = this.markets[i].marketName;
       break;
     }
     }
-  if(this.marketGroupService.marketGroupFormData.id===0 || this.marketGroupService.marketGroupFormData.id===undefined)
-  {
-    alert("Please Insert group first!")
-    return false;
-  }
-  this.marketGroupService.insertMarketGroupDtl(this.marketGroupService.marketGroupFormData.id,selectedMarketCode,selectedMarketName,this.sbu).subscribe(response => {
+  
+  this.marketGroupService.insertMarketGroupDtl(this.marketGroupService.marketGroupFormData.id,selectedMarketCode,selectedMarketName,this.sbu,this.sbuName).subscribe(response => {
    debugger;
    this.getMarketGroups();
    }, error => {
@@ -163,7 +169,7 @@ addMarket() {
   
   resetPage(form: NgForm) {
     form.reset();
-    
+    this.marketGroupDtls=[];
   }
   
 }

@@ -4,6 +4,8 @@ export interface IMarketGroupDtl {
     mstId: number;
     marketCode: string;
     marketName: string;
+    sbu: string;
+    sbuName: string;
     status: string; 
 }
  
@@ -12,5 +14,7 @@ export class MarketGroupDtl implements IMarketGroupDtl {
     mstId: number;
     marketCode: string;
     marketName: string;
+    sbu: string;
+    sbuName: string;
     status: string; 
 }

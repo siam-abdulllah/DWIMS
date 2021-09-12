@@ -70,6 +70,7 @@ namespace API.Controllers
                 var appr = new SBUWiseBudget
                 {
                     SBU = sbuBdgt.SBU,
+                    SBUName = sbuBdgt.SBUName,
                     FromDate = sbuBdgt.FromDate,
                     ToDate = sbuBdgt.ToDate,
                     Amount = sbuBdgt.Amount,
@@ -84,6 +85,7 @@ namespace API.Controllers
                 {
                     Id = sbuBdgt.Id,
                     SBU = sbuBdgt.SBU,
+                    SBUName = sbuBdgt.SBUName,
                     FromDate = sbuBdgt.FromDate,
                     ToDate = sbuBdgt.ToDate,
                     Amount = sbuBdgt.Amount,
@@ -105,6 +107,7 @@ namespace API.Controllers
             {
                 Id = sbuBdgt.Id,
                 SBU = sbuBdgt.SBU,
+                SBUName = sbuBdgt.SBUName,
                 FromDate = sbuBdgt.FromDate,
                 ToDate = sbuBdgt.ToDate,
                 Amount = sbuBdgt.Amount,
@@ -119,6 +122,7 @@ namespace API.Controllers
             {
                 Id = sbuBdgt.Id,
                 SBU = sbuBdgt.SBU,
+                SBUName = sbuBdgt.SBUName,
                 FromDate = sbuBdgt.FromDate,
                 ToDate = sbuBdgt.ToDate,
                 Amount = sbuBdgt.Amount,

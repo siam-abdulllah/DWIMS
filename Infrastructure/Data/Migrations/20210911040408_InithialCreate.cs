@@ -92,6 +92,8 @@ namespace Infrastructure.Data.Migrations
                     ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
                     DoctorCode = table.Column<string>(nullable: true),
                     DoctorName = table.Column<string>(nullable: true),
+                    PatientPerDay = table.Column<int>(nullable: false),
+                    AvgPrescValue = table.Column<int>(nullable: false),
                     Degree = table.Column<string>(nullable: true),
                     Designation = table.Column<string>(nullable: true),
                     Address = table.Column<string>(nullable: true),
@@ -100,6 +102,26 @@ namespace Infrastructure.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DoctorInfo", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DoctorMarket",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DataStatus = table.Column<int>(nullable: false),
+                    SetOn = table.Column<DateTimeOffset>(nullable: false),
+                    ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
+                    DoctorCode = table.Column<int>(nullable: false),
+                    MarketCode = table.Column<string>(nullable: true),
+                    MarketName = table.Column<string>(nullable: true),
+                    Status = table.Column<string>(nullable: true),
+                    SBU = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DoctorMarket", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -136,22 +158,23 @@ namespace Infrastructure.Data.Migrations
                     DesignationId = table.Column<int>(nullable: true),
                     DesignationName = table.Column<string>(nullable: true),
                     CompanyId = table.Column<int>(nullable: true),
-                    JoiningDate = table.Column<DateTime>(nullable: false),
+                    CompanyName = table.Column<string>(nullable: true),
+                    JoiningDate = table.Column<DateTime>(nullable: true),
                     JoiningPlace = table.Column<string>(nullable: true),
                     Phone = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: true),
-                    PostingType = table.Column<string>(nullable: true),
-                    MarketCode = table.Column<string>(nullable: true),
-                    MarketName = table.Column<string>(nullable: true),
-                    RegionCode = table.Column<string>(nullable: true),
-                    RegionName = table.Column<string>(nullable: true),
+                    SBU = table.Column<string>(nullable: true),
+                    SBUName = table.Column<string>(nullable: true),
                     ZoneCode = table.Column<string>(nullable: true),
                     ZoneName = table.Column<string>(nullable: true),
+                    RegionCode = table.Column<string>(nullable: true),
+                    RegionName = table.Column<string>(nullable: true),
                     TerritoryCode = table.Column<string>(nullable: true),
                     TerritoryName = table.Column<string>(nullable: true),
-                    DivisionCode = table.Column<string>(nullable: true),
-                    DivisionName = table.Column<string>(nullable: true),
-                    SBU = table.Column<string>(nullable: true)
+                    MarketCode = table.Column<string>(nullable: true),
+                    MarketName = table.Column<string>(nullable: true),
+                    MarketGroupCode = table.Column<string>(nullable: true),
+                    MarketGroupName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -178,6 +201,26 @@ namespace Infrastructure.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_InstitutionInfo", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "InstitutionMarket",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DataStatus = table.Column<int>(nullable: false),
+                    SetOn = table.Column<DateTimeOffset>(nullable: false),
+                    ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
+                    InstitutionCode = table.Column<int>(nullable: false),
+                    MarketCode = table.Column<string>(nullable: true),
+                    MarketName = table.Column<string>(nullable: true),
+                    Status = table.Column<string>(nullable: true),
+                    SBU = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InstitutionMarket", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -231,7 +274,8 @@ namespace Infrastructure.Data.Migrations
                     Status = table.Column<string>(nullable: true),
                     BrandCode = table.Column<string>(nullable: true),
                     BrandName = table.Column<string>(nullable: true),
-                    SBU = table.Column<string>(nullable: true)
+                    SBU = table.Column<string>(nullable: true),
+                    SBUName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -254,6 +298,139 @@ namespace Infrastructure.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ReportConfig", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RptDocCampWiseInvestment",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DataStatus = table.Column<int>(nullable: false),
+                    SetOn = table.Column<DateTimeOffset>(nullable: false),
+                    ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
+                    SBUName = table.Column<string>(maxLength: 50, nullable: true),
+                    SBUCode = table.Column<string>(maxLength: 10, nullable: true),
+                    MarketGroupCode = table.Column<string>(maxLength: 10, nullable: true),
+                    MarketGroupName = table.Column<string>(maxLength: 70, nullable: true),
+                    MarketCode = table.Column<string>(maxLength: 10, nullable: true),
+                    MarketName = table.Column<string>(maxLength: 70, nullable: true),
+                    TerritoryCode = table.Column<string>(maxLength: 10, nullable: true),
+                    TerritoryName = table.Column<string>(maxLength: 70, nullable: true),
+                    RegionCode = table.Column<string>(maxLength: 10, nullable: true),
+                    RegionName = table.Column<string>(maxLength: 70, nullable: true),
+                    DivisionCode = table.Column<string>(maxLength: 10, nullable: true),
+                    DivisionName = table.Column<string>(maxLength: 50, nullable: true),
+                    ZoneCode = table.Column<string>(maxLength: 10, nullable: true),
+                    ZoneName = table.Column<string>(maxLength: 50, nullable: true),
+                    DoctorId = table.Column<string>(maxLength: 10, nullable: true),
+                    DoctorName = table.Column<string>(maxLength: 150, nullable: true),
+                    InstitutionId = table.Column<string>(maxLength: 10, nullable: true),
+                    InstitutionName = table.Column<string>(maxLength: 150, nullable: true),
+                    DoctorCategory = table.Column<string>(maxLength: 30, nullable: true),
+                    FromDate = table.Column<DateTime>(nullable: false),
+                    ToDate = table.Column<DateTime>(nullable: false),
+                    InvestmentPresent = table.Column<double>(nullable: false),
+                    InvestmentPast = table.Column<double>(nullable: false),
+                    Brand = table.Column<string>(maxLength: 50, nullable: true),
+                    Campaign = table.Column<string>(maxLength: 50, nullable: true),
+                    SubCampaign = table.Column<string>(maxLength: 50, nullable: true),
+                    Commitment = table.Column<string>(maxLength: 50, nullable: true),
+                    ActualShareBrand = table.Column<string>(maxLength: 10, nullable: true),
+                    ActualShare = table.Column<string>(maxLength: 10, nullable: true),
+                    CompetitorShare = table.Column<string>(maxLength: 10, nullable: true),
+                    NoOfPresc = table.Column<string>(maxLength: 10, nullable: true),
+                    NoOfPatient = table.Column<string>(maxLength: 10, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RptDocCampWiseInvestment", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RptDocLocWiseInvestment",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DataStatus = table.Column<int>(nullable: false),
+                    SetOn = table.Column<DateTimeOffset>(nullable: false),
+                    ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
+                    SBUName = table.Column<string>(maxLength: 50, nullable: true),
+                    SBUCode = table.Column<string>(maxLength: 10, nullable: true),
+                    MarketGroupCode = table.Column<string>(maxLength: 10, nullable: true),
+                    MarketGroupName = table.Column<string>(maxLength: 70, nullable: true),
+                    MarketCode = table.Column<string>(maxLength: 10, nullable: true),
+                    MarketName = table.Column<string>(maxLength: 70, nullable: true),
+                    TerritoryCode = table.Column<string>(maxLength: 10, nullable: true),
+                    TerritoryName = table.Column<string>(maxLength: 70, nullable: true),
+                    RegionCode = table.Column<string>(maxLength: 10, nullable: true),
+                    RegionName = table.Column<string>(maxLength: 70, nullable: true),
+                    DivisionCode = table.Column<string>(maxLength: 10, nullable: true),
+                    DivisionName = table.Column<string>(maxLength: 50, nullable: true),
+                    ZoneCode = table.Column<string>(maxLength: 10, nullable: true),
+                    ZoneName = table.Column<string>(maxLength: 50, nullable: true),
+                    DoctorId = table.Column<string>(maxLength: 10, nullable: true),
+                    DoctorName = table.Column<string>(maxLength: 150, nullable: true),
+                    InstitutionId = table.Column<string>(maxLength: 10, nullable: true),
+                    InstitutionName = table.Column<string>(maxLength: 150, nullable: true),
+                    DonationType = table.Column<string>(maxLength: 20, nullable: true),
+                    FromDate = table.Column<DateTime>(nullable: false),
+                    ToDate = table.Column<DateTime>(nullable: false),
+                    InvestedAmt = table.Column<double>(nullable: false),
+                    Commitment = table.Column<string>(maxLength: 50, nullable: true),
+                    ActualShare = table.Column<string>(maxLength: 10, nullable: true),
+                    CompetitorShare = table.Column<string>(maxLength: 10, nullable: true),
+                    NoOfPresc = table.Column<string>(maxLength: 10, nullable: true),
+                    NoOfPatient = table.Column<string>(maxLength: 10, nullable: true),
+                    Deviation = table.Column<string>(maxLength: 10, nullable: true),
+                    LeaderNonLeader = table.Column<string>(maxLength: 20, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RptDocLocWiseInvestment", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RptInsSocBcdsInvestment",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DataStatus = table.Column<int>(nullable: false),
+                    SetOn = table.Column<DateTimeOffset>(nullable: false),
+                    ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
+                    SBUName = table.Column<string>(maxLength: 50, nullable: true),
+                    SBUCode = table.Column<string>(maxLength: 10, nullable: true),
+                    MarketGroupCode = table.Column<string>(maxLength: 10, nullable: true),
+                    MarketGroupName = table.Column<string>(maxLength: 70, nullable: true),
+                    MarketCode = table.Column<string>(maxLength: 10, nullable: true),
+                    MarketName = table.Column<string>(maxLength: 70, nullable: true),
+                    TerritoryCode = table.Column<string>(maxLength: 10, nullable: true),
+                    TerritoryName = table.Column<string>(maxLength: 70, nullable: true),
+                    RegionCode = table.Column<string>(maxLength: 10, nullable: true),
+                    RegionName = table.Column<string>(maxLength: 70, nullable: true),
+                    DivisionCode = table.Column<string>(maxLength: 10, nullable: true),
+                    DivisionName = table.Column<string>(maxLength: 50, nullable: true),
+                    ZoneCode = table.Column<string>(maxLength: 10, nullable: true),
+                    ZoneName = table.Column<string>(maxLength: 50, nullable: true),
+                    InstitutionId = table.Column<string>(maxLength: 10, nullable: true),
+                    InstitutionName = table.Column<string>(maxLength: 150, nullable: true),
+                    SocietyId = table.Column<string>(maxLength: 10, nullable: true),
+                    SocietyName = table.Column<string>(maxLength: 150, nullable: true),
+                    BcdsId = table.Column<string>(maxLength: 10, nullable: true),
+                    BcdsName = table.Column<string>(maxLength: 150, nullable: true),
+                    DonationType = table.Column<string>(maxLength: 20, nullable: true),
+                    FromDate = table.Column<DateTime>(nullable: false),
+                    ToDate = table.Column<DateTime>(nullable: false),
+                    InvestedAmt = table.Column<double>(nullable: false),
+                    Commitment = table.Column<string>(maxLength: 50, nullable: true),
+                    ActualShare = table.Column<string>(maxLength: 10, nullable: true),
+                    CompetitorShare = table.Column<string>(maxLength: 10, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RptInsSocBcdsInvestment", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -386,32 +563,6 @@ namespace Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DoctorMarket",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DataStatus = table.Column<int>(nullable: false),
-                    SetOn = table.Column<DateTimeOffset>(nullable: false),
-                    ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
-                    DoctorId = table.Column<int>(nullable: false),
-                    MarketCode = table.Column<string>(nullable: true),
-                    MarketName = table.Column<string>(nullable: true),
-                    Status = table.Column<string>(nullable: true),
-                    SBU = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DoctorMarket", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_DoctorMarket_DoctorInfo_DoctorId",
-                        column: x => x.DoctorId,
-                        principalTable: "DoctorInfo",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ApprAuthConfig",
                 columns: table => new
                 {
@@ -455,18 +606,18 @@ namespace Infrastructure.Data.Migrations
                     DonationType = table.Column<string>(nullable: true),
                     DonationTo = table.Column<string>(nullable: true),
                     EmployeeId = table.Column<int>(nullable: false),
-                    PostingType = table.Column<string>(nullable: true),
-                    MarketCode = table.Column<string>(nullable: true),
-                    MarketName = table.Column<string>(nullable: true),
-                    RegionCode = table.Column<string>(nullable: true),
-                    RegionName = table.Column<string>(nullable: true),
+                    SBU = table.Column<string>(nullable: true),
+                    SBUName = table.Column<string>(nullable: true),
                     ZoneCode = table.Column<string>(nullable: true),
                     ZoneName = table.Column<string>(nullable: true),
+                    RegionCode = table.Column<string>(nullable: true),
+                    RegionName = table.Column<string>(nullable: true),
                     TerritoryCode = table.Column<string>(nullable: true),
                     TerritoryName = table.Column<string>(nullable: true),
-                    DivisionCode = table.Column<string>(nullable: true),
-                    DivisionName = table.Column<string>(nullable: true),
-                    SBU = table.Column<string>(nullable: true)
+                    MarketCode = table.Column<string>(nullable: true),
+                    MarketName = table.Column<string>(nullable: true),
+                    MarketGroupCode = table.Column<string>(nullable: true),
+                    MarketGroupName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -603,6 +754,7 @@ namespace Infrastructure.Data.Migrations
                     SetOn = table.Column<DateTimeOffset>(nullable: false),
                     ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
                     InvestmentInitId = table.Column<int>(nullable: true),
+                    EmployeeId = table.Column<int>(nullable: false),
                     ChequeTitle = table.Column<string>(nullable: true),
                     PaymentMethod = table.Column<string>(nullable: true),
                     CommitmentAllSBU = table.Column<string>(nullable: true),
@@ -616,6 +768,12 @@ namespace Infrastructure.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_InvestmentApr", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InvestmentApr_Employee_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employee",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_InvestmentApr_InvestmentInit_InvestmentInitId",
                         column: x => x.InvestmentInitId,
@@ -635,18 +793,18 @@ namespace Infrastructure.Data.Migrations
                     ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
                     InvestmentInitId = table.Column<int>(nullable: true),
                     EmployeeId = table.Column<int>(nullable: false),
-                    PostingType = table.Column<string>(nullable: true),
-                    MarketCode = table.Column<string>(nullable: true),
-                    MarketName = table.Column<string>(nullable: true),
-                    RegionCode = table.Column<string>(nullable: true),
-                    RegionName = table.Column<string>(nullable: true),
+                    SBU = table.Column<string>(nullable: true),
+                    SBUName = table.Column<string>(nullable: true),
                     ZoneCode = table.Column<string>(nullable: true),
                     ZoneName = table.Column<string>(nullable: true),
+                    RegionCode = table.Column<string>(nullable: true),
+                    RegionName = table.Column<string>(nullable: true),
                     TerritoryCode = table.Column<string>(nullable: true),
                     TerritoryName = table.Column<string>(nullable: true),
-                    DivisionCode = table.Column<string>(nullable: true),
-                    DivisionName = table.Column<string>(nullable: true),
-                    SBU = table.Column<string>(nullable: true),
+                    MarketCode = table.Column<string>(nullable: true),
+                    MarketName = table.Column<string>(nullable: true),
+                    MarketGroupCode = table.Column<string>(nullable: true),
+                    MarketGroupName = table.Column<string>(nullable: true),
                     Comments = table.Column<string>(nullable: true),
                     AprStatus = table.Column<string>(nullable: true)
                 },
@@ -884,18 +1042,18 @@ namespace Infrastructure.Data.Migrations
                     ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
                     InvestmentInitId = table.Column<int>(nullable: true),
                     EmployeeId = table.Column<int>(nullable: false),
-                    PostingType = table.Column<string>(nullable: true),
-                    MarketCode = table.Column<string>(nullable: true),
-                    MarketName = table.Column<string>(nullable: true),
-                    RegionCode = table.Column<string>(nullable: true),
-                    RegionName = table.Column<string>(nullable: true),
+                    SBU = table.Column<string>(nullable: true),
+                    SBUName = table.Column<string>(nullable: true),
                     ZoneCode = table.Column<string>(nullable: true),
                     ZoneName = table.Column<string>(nullable: true),
+                    RegionCode = table.Column<string>(nullable: true),
+                    RegionName = table.Column<string>(nullable: true),
                     TerritoryCode = table.Column<string>(nullable: true),
                     TerritoryName = table.Column<string>(nullable: true),
-                    DivisionCode = table.Column<string>(nullable: true),
-                    DivisionName = table.Column<string>(nullable: true),
-                    SBU = table.Column<string>(nullable: true),
+                    MarketCode = table.Column<string>(nullable: true),
+                    MarketName = table.Column<string>(nullable: true),
+                    MarketGroupCode = table.Column<string>(nullable: true),
+                    MarketGroupName = table.Column<string>(nullable: true),
                     Comments = table.Column<string>(nullable: true),
                     RecStatus = table.Column<string>(nullable: true)
                 },
@@ -1015,9 +1173,12 @@ namespace Infrastructure.Data.Migrations
                     SetOn = table.Column<DateTimeOffset>(nullable: false),
                     ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
                     InvestmentInitId = table.Column<int>(nullable: false),
+                    SBU = table.Column<string>(nullable: true),
+                    SBUName = table.Column<string>(nullable: true),
                     MarketCode = table.Column<string>(nullable: true),
                     MarketName = table.Column<string>(nullable: true),
-                    MarketGroupMstId = table.Column<int>(nullable: true)
+                    MarketGroupMstId = table.Column<int>(nullable: true),
+                    CompletionStatus = table.Column<bool>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1049,6 +1210,7 @@ namespace Infrastructure.Data.Migrations
                     MarketCode = table.Column<string>(nullable: true),
                     MarketName = table.Column<string>(nullable: true),
                     SBU = table.Column<string>(nullable: true),
+                    SBUName = table.Column<string>(nullable: true),
                     Status = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -1324,9 +1486,9 @@ namespace Infrastructure.Data.Migrations
                 column: "InvestmentInitId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DoctorMarket_DoctorId",
-                table: "DoctorMarket",
-                column: "DoctorId");
+                name: "IX_InvestmentApr_EmployeeId",
+                table: "InvestmentApr",
+                column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_InvestmentApr_InvestmentInitId",
@@ -1561,6 +1723,9 @@ namespace Infrastructure.Data.Migrations
                 name: "Donation");
 
             migrationBuilder.DropTable(
+                name: "InstitutionMarket");
+
+            migrationBuilder.DropTable(
                 name: "InvestmentApr");
 
             migrationBuilder.DropTable(
@@ -1616,6 +1781,15 @@ namespace Infrastructure.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "ReportProductInfo");
+
+            migrationBuilder.DropTable(
+                name: "RptDocCampWiseInvestment");
+
+            migrationBuilder.DropTable(
+                name: "RptDocLocWiseInvestment");
+
+            migrationBuilder.DropTable(
+                name: "RptInsSocBcdsInvestment");
 
             migrationBuilder.DropTable(
                 name: "SBU");

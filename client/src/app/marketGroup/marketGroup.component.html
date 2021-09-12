@@ -60,7 +60,7 @@
                                         </select> -->
                                         </div>
                                         <div class="col-sm-2">
-                                            <button class="btn btn-info btn-block" type="button" (click)="addMarket()"><i class="fa fa-plus"></i>Add</button>
+                                            <button class="btn btn-info btn-block" type="button" [disabled]="form.invalid" (click)="addMarket()"><i class="fa fa-plus"></i>Add</button>
                                         </div>
 
                                     </div>
@@ -81,7 +81,7 @@
                                                 {{b.marketName}}
                                             </td>
                                             <td>
-                                                {{b.sbu}}
+                                                {{b.sbuName}}
                                             </td>
                                             <td>
                                                 <button class="btn btn-danger  btn-block" type="button" (click)="removeMarketGroups(b)">Remove</button>
