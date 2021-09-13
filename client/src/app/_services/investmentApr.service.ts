@@ -133,7 +133,7 @@ export class InvestmentAprService {
   }
   insertInvestmentDetail(empId:number,sbu:string) {
     
-    return this.http.post(this.baseUrl+ 'investmentApr/insertApr/'+empId+'/'+this.investmentAprCommentFormData.aprStatus+'/'+sbu, this.investmentDetailFormData);
+    return this.http.post(this.baseUrl+ 'investmentApr/insertApr/'+empId+'/'+this.investmentAprCommentFormData.aprStatus+'/'+sbu+'/'+this.investmentAprFormData.donationType, this.investmentDetailFormData);
   
   }
   

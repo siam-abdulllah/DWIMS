@@ -175,23 +175,40 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost("InsertApr/{empID}/{aprStatus}/{sbu}")]
-        public async Task<InvestmentAprDto> InsertInvestmentApr(int empId,string aprStatus,string sbu,InvestmentAprDto investmentAprDto)
+        [HttpPost("InsertApr/{empID}/{aprStatus}/{sbu}/{dType}")]
+        public async Task<ActionResult<InvestmentAprDto>> InsertInvestmentApr(int empId,string aprStatus,string sbu,string dType, InvestmentAprDto investmentAprDto)
         {
+            try
+            {
+
+            
             if (aprStatus == "Approved")
             {
-                var sbuWiseBudgetSpec = new SBUWiseBudgetSpecificiation(sbu, DateTime.Now.ToString("dd/MM/yyyy"));
-                var sbuWiseBudgetData = await _sbuRepo.ListAsync(sbuWiseBudgetSpec);
-                var sbuWiseInvestmentRecSpec = new InvestmentAprSpecification(empId, aprStatus);
+                List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                        new SqlParameter("@SBU", sbu),
+                        new SqlParameter("@DTYPE", dType),
+                        new SqlParameter("@EID", empId),
+                        new SqlParameter("@IID", investmentAprDto.InvestmentInitId),
+                        new SqlParameter("@PRAMOUNT", investmentAprDto.ProposedAmount),
+                        new SqlParameter("@ASTATUS", aprStatus)
+                    };
+               // var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentCeilingCheck @SBU,@DTYPE,@EID,@PRAMOUNT,@ASTATUS", parms.ToArray()).ToList();
+                var result = _dbContext.Database.ExecuteSqlRawAsync("EXECUTE SP_InvestmentCeilingCheck @SBU,@DTYPE,@EID,@IID,@PRAMOUNT,@ASTATUS", parms.ToArray());
 
-                var apprAuthConfigSpec = new ApprAuthConfigSpecification(empId, "A");
-                var apprAuthConfigList = await _apprAuthConfigRepo.ListAsync(apprAuthConfigSpec);
-                var approvalCeilingSpec = new ApprovalCeilingSpecification(apprAuthConfigList[0].ApprovalAuthorityId, "A", DateTime.Now.ToString("dd/MM/yyyy"));
-                var approvalAuthorityCeilingData = await _approvalCeilingRepo.ListAsync(approvalCeilingSpec);
+                //var sbuWiseBudgetSpec = new SBUWiseBudgetSpecificiation(sbu, DateTime.Now.ToString("dd/MM/yyyy"));
+                //var sbuWiseBudgetData = await _sbuRepo.ListAsync(sbuWiseBudgetSpec);
+                //var sbuWiseInvestmentRecSpec = new InvestmentAprSpecification(empId, aprStatus);
+
+                //var apprAuthConfigSpec = new ApprAuthConfigSpecification(empId, "A");
+                //var apprAuthConfigList = await _apprAuthConfigRepo.ListAsync(apprAuthConfigSpec);
+                //var approvalCeilingSpec = new ApprovalCeilingSpecification(apprAuthConfigList[0].ApprovalAuthorityId, "A", DateTime.Now.ToString("dd/MM/yyyy"));
+                //var approvalAuthorityCeilingData = await _approvalCeilingRepo.ListAsync(approvalCeilingSpec);
 
                 //int v2 = investmentRecDto.InvestmentInitId ?? default(int);
                 // var recCommentRepo= _investmentRecCommentRepo.GetByIdAsync(investmentRecDto.InvestmentInitId ?? default);
-
+            if (result.Result==0) { return BadRequest(new ApiResponse(400, "Other recommendations are not completed yet")); }
+              
             }
             var alreadyExistSpec = new InvestmentAprSpecification(investmentAprDto.InvestmentInitId);
             var alreadyExistInvestmentAprList = await _investmentAprRepo.ListAsync(alreadyExistSpec);
@@ -237,6 +254,12 @@ namespace API.Controllers
                 ChequeTitle = investmentAprDto.ChequeTitle,
                 EmployeeId = investmentAprDto.EmployeeId,
             };
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
 
@@ -264,7 +287,7 @@ namespace API.Controllers
                             isTrue = true;
                         }
                     }
-                    if (!isTrue) { return BadRequest(new ApiResponse(400, "Other recommendation not completed yet")); }
+                    if (!isTrue) { return BadRequest(new ApiResponse(400, "Other recommendations are not completed yet")); }
                 }
             }
             var invApr = new InvestmentAprComment

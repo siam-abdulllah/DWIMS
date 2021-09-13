@@ -754,6 +754,8 @@ export class InvestmentRecComponent implements OnInit {
   resetPage(form: NgForm) {
     form.reset();
     this.investmentRecService.investmentRecFormData = new InvestmentInit();
+    this.investmentTargetedProds = [];
+    this.investmentTargetedGroups = [];
     this.isValid = false;
     this.isInvOther = false;
   }
