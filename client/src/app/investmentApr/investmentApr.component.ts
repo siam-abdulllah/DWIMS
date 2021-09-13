@@ -270,6 +270,7 @@ export class InvestmentAprComponent implements OnInit {
       if(data!==undefined)
       {
       this.investmentAprService.investmentBcdsFormData=data;
+      this.investmentAprService.investmentBcdsFormData.responsibleDoctorName = data.doctorInfo.doctorName;
       this.investmentAprService.investmentBcdsFormData.bcdsName=data.bcds.bcdsName;
       this.investmentAprService.investmentBcdsFormData.bcdsAddress=data.bcds.bcdsAddress;
       this.investmentAprService.investmentBcdsFormData.noOfMember=data.bcds.noOfMember;
@@ -289,6 +290,7 @@ export class InvestmentAprComponent implements OnInit {
       if(data!==undefined)
       {
       this.investmentAprService.investmentSocietyFormData=data;
+      this.investmentAprService.investmentSocietyFormData.responsibleDoctorName = data.doctorInfo.doctorName;
       this.investmentAprService.investmentSocietyFormData.societyName=data.society.societyName;
       this.investmentAprService.investmentSocietyFormData.noOfMember=data.society.noOfMember;
       this.investmentAprService.investmentSocietyFormData.societyAddress=data.society.societyAddress;
@@ -308,7 +310,7 @@ export class InvestmentAprComponent implements OnInit {
       if(data!==undefined)
       {
       this.investmentAprService.investmentInstitutionFormData=data;
-      this.investmentAprService.investmentInstitutionFormData.resposnsibleDoctorName=data.doctorInfo.doctorName;
+      this.investmentAprService.investmentInstitutionFormData.responsibleDoctorName=data.doctorInfo.doctorName;
       this.investmentAprService.investmentInstitutionFormData.institutionName=data.institutionInfo.institutionName;
       this.investmentAprService.investmentInstitutionFormData.address=data.institutionInfo.address;
       this.investmentAprService.investmentInstitutionFormData.institutionType=data.institutionInfo.institutionType;
@@ -682,6 +684,7 @@ getEmployeeId(){
     this.investmentAprService.investmentTargetedProdFormData.investmentInitId =this.investmentAprService.investmentAprFormData.id;
     //if(this.investmentAprService.investmentTargetedProdFormData.id==null || this.investmentAprService.investmentTargetedProdFormData.id==undefined || this.investmentAprService.investmentTargetedProdFormData.id==0)
     //{
+      
     this.investmentAprService.insertInvestmentTargetedProd(this.investmentTargetedProds).subscribe(
       res => {
         //
@@ -732,7 +735,7 @@ getEmployeeId(){
         if(this.products[i].id==this.investmentAprService.investmentTargetedProdFormData.productId)
         {
           let data=new InvestmentTargetedProd();
-          data.id=0;
+          data.employeeId = parseInt(this.empId);
           data.investmentInitId=this.investmentAprService.investmentAprFormData.id;
           data.productId=this.investmentAprService.investmentTargetedProdFormData.productId;
           data.productInfo=this.products[i];

@@ -474,6 +474,7 @@ namespace API.Controllers
                     //ReferenceNo = investmentTargetedProdDto.ReferenceNo,
                     InvestmentInitId = investmentTargetedProdDto.InvestmentInitId,
                     ProductId = investmentTargetedProdDto.ProductId,
+                    EmployeeId = investmentTargetedProdDto.EmployeeId,
                     SBU = investmentTargetedProdDto.SBU,
                     SetOn = DateTimeOffset.Now,
                     ModifiedOn = DateTimeOffset.Now
@@ -487,6 +488,7 @@ namespace API.Controllers
                     InvestmentInitId = investmentTargetedProdDto.InvestmentInitId,
                     ProductId = investmentTargetedProdDto.ProductId,
                     SBU = investmentTargetedProdDto.SBU,
+                    EmployeeId = investmentTargetedProdDto.EmployeeId,
                 };
             }
             catch (Exception ex)
@@ -507,6 +509,7 @@ namespace API.Controllers
                     InvestmentInitId = investmentTargetedProdDto.InvestmentInitId,
                     ProductId = investmentTargetedProdDto.ProductId,
                     SBU = investmentTargetedProdDto.SBU,
+                    EmployeeId = investmentTargetedProdDto.EmployeeId,
                     SetOn = DateTimeOffset.Now,
                     ModifiedOn = DateTimeOffset.Now
                 };
@@ -519,6 +522,7 @@ namespace API.Controllers
                     InvestmentInitId = investmentTargetedProdDto.InvestmentInitId,
                     ProductId = investmentTargetedProdDto.ProductId,
                     SBU = investmentTargetedProdDto.SBU,
+                    EmployeeId = investmentTargetedProdDto.EmployeeId,
                 };
             }
             catch (Exception ex)
@@ -533,7 +537,7 @@ namespace API.Controllers
         {
             try
             {
-                var spec = new InvestmentTargetedProdSpecification(investmentInitId, sbu);
+                var spec = new InvestmentTargetedProdSpecification(investmentInitId,sbu);
                 var investmentTargetedProd = await _investmentTargetedProdRepo.ListAsync(spec);
                 return investmentTargetedProd;
             }
@@ -779,7 +783,7 @@ namespace API.Controllers
                     //ReferenceNo = investmentInstitutionDto.ReferenceNo,
                     InvestmentInitId = investmentInstitutionDto.InvestmentInitId,
                     InstitutionId = investmentInstitutionDto.InstitutionId,
-                    ResposnsibleDoctorId = investmentInstitutionDto.ResposnsibleDoctorId,
+                    ResponsibleDoctorId = investmentInstitutionDto.ResponsibleDoctorId,
                     NoOfBed = investmentInstitutionDto.NoOfBed,
                     DepartmentUnit = investmentInstitutionDto.DepartmentUnit,
                     SetOn = DateTimeOffset.Now,
@@ -793,7 +797,7 @@ namespace API.Controllers
                     Id = investmentInstitution.Id,
                     InvestmentInitId = investmentInstitutionDto.InvestmentInitId,
                     InstitutionId = investmentInstitutionDto.InstitutionId,
-                    ResposnsibleDoctorId = investmentInstitutionDto.ResposnsibleDoctorId,
+                    ResponsibleDoctorId = investmentInstitutionDto.ResponsibleDoctorId,
                     NoOfBed = investmentInstitutionDto.NoOfBed,
                     DepartmentUnit = investmentInstitutionDto.DepartmentUnit,
                 };
@@ -958,7 +962,7 @@ namespace API.Controllers
                     //ReferenceNo = investmentBcdsDto.ReferenceNo,
                     InvestmentInitId = investmentBcdsDto.InvestmentInitId,
                     BcdsId = investmentBcdsDto.BcdsId,
-
+                    ResponsibleDoctorId = investmentBcdsDto.ResponsibleDoctorId,
                     SetOn = DateTimeOffset.Now,
                     ModifiedOn = DateTimeOffset.Now
                 };
@@ -969,6 +973,7 @@ namespace API.Controllers
                 {
                     Id = investmentBcds.Id,
                     InvestmentInitId = investmentBcdsDto.InvestmentInitId,
+                    ResponsibleDoctorId = investmentBcdsDto.ResponsibleDoctorId,
                     BcdsId = investmentBcdsDto.BcdsId,
                 };
             }
@@ -1043,7 +1048,7 @@ namespace API.Controllers
                     //ReferenceNo = investmentSocietyDto.ReferenceNo,
                     InvestmentInitId = investmentSocietyDto.InvestmentInitId,
                     SocietyId = investmentSocietyDto.SocietyId,
-
+                    ResponsibleDoctorId = investmentSocietyDto.ResponsibleDoctorId,
                     SetOn = DateTimeOffset.Now,
                     ModifiedOn = DateTimeOffset.Now
                 };
@@ -1055,6 +1060,7 @@ namespace API.Controllers
                     Id = investmentSociety.Id,
                     InvestmentInitId = investmentSocietyDto.InvestmentInitId,
                     SocietyId = investmentSocietyDto.SocietyId,
+                    ResponsibleDoctorId = investmentSocietyDto.ResponsibleDoctorId,
                 };
             }
             catch (Exception ex)

@@ -9,6 +9,7 @@ namespace Core.Entities
         [ForeignKey("InvestmentInitId")]
         public InvestmentInit InvestmentInit { get; set; }
         public int EmployeeId { get; set; }
+        [ForeignKey("EmployeeId")]
         public Employee Employee { get; set; }
         public string SBU { get; set; }
         public string SBUName { get; set; }

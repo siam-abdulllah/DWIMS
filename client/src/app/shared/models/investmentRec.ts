@@ -82,6 +82,7 @@ export interface IInvestmentTargetedProd {
     investmentInitId: number;
     productId: number;
     productInfo:IProduct;
+    employeeId: number;
 }
  
 export class InvestmentTargetedProd implements IInvestmentTargetedProd {
@@ -89,6 +90,7 @@ export class InvestmentTargetedProd implements IInvestmentTargetedProd {
     investmentInitId: number;
     productId: number=null;
     productInfo:IProduct;
+    employeeId: number;
 }
 export interface IInvestmentTargetedGroup {
     id: number;
@@ -148,8 +150,8 @@ export interface IInvestmentInstitution {
     investmentInitId: number;
     institutionId: number;
     institutionName:string;
-    resposnsibleDoctorId: number;
-    resposnsibleDoctorName:string;
+    responsibleDoctorId: number;
+    responsibleDoctorName:string;
     institutionType: string;
     address: string;
     noOfBed: string;
@@ -164,8 +166,8 @@ export class InvestmentInstitution implements IInvestmentInstitution {
     investmentInitId: number;
     institutionId: number=null;
     institutionName:string;
-    resposnsibleDoctorId: number=null;
-    resposnsibleDoctorName:string;
+    responsibleDoctorId: number=null;
+    responsibleDoctorName:string;
     institutionType: string;
     address: string;
     noOfBed: string;
@@ -218,6 +220,9 @@ export interface IInvestmentBcds {
     bcdsAddress: string;
     noOfMember: string;
     bcds:IBcdsInfo;
+    responsibleDoctorId: number;
+    responsibleDoctorName:string;
+    doctorInfo:IDoctor;
     
 }
  
@@ -229,6 +234,9 @@ export class InvestmentBcds implements IInvestmentBcds {
     bcdsAddress: string;
     noOfMember: string;
     bcds:IBcdsInfo;
+    responsibleDoctorId: number=null;
+    responsibleDoctorName:string;
+    doctorInfo:IDoctor;
 }
 export interface IInvestmentSociety {
     id: number;
@@ -238,6 +246,9 @@ export interface IInvestmentSociety {
     societyAddress: string;
     noOfMember: string;
     society:ISocietyInfo;
+    responsibleDoctorId: number;
+    responsibleDoctorName:string;
+    doctorInfo:IDoctor;
     
 }
  
@@ -249,4 +260,7 @@ export class InvestmentSociety implements IInvestmentSociety {
     societyAddress: string;
     noOfMember: string;
     society:ISocietyInfo;
+    responsibleDoctorId: number=null;
+    responsibleDoctorName:string;
+    doctorInfo:IDoctor;
 }

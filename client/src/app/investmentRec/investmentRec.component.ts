@@ -260,7 +260,9 @@ export class InvestmentRecComponent implements OnInit {
 
       var data = response[0] as IInvestmentBcds;
       if (data !== undefined) {
-        this.investmentRecService.investmentBcdsFormData = data;
+        debugger;
+        this.investmentRecService.investmentBcdsFormData = data; 
+        this.investmentRecService.investmentBcdsFormData.responsibleDoctorName = data.doctorInfo.doctorName;
         this.investmentRecService.investmentBcdsFormData.bcdsName = data.bcds.bcdsName;
         this.investmentRecService.investmentBcdsFormData.bcdsAddress = data.bcds.bcdsAddress;
         this.investmentRecService.investmentBcdsFormData.noOfMember = data.bcds.noOfMember;
@@ -281,6 +283,7 @@ export class InvestmentRecComponent implements OnInit {
       var data = response[0] as IInvestmentSociety;
       if (data !== undefined) {
         this.investmentRecService.investmentSocietyFormData = data;
+        this.investmentRecService.investmentSocietyFormData.responsibleDoctorName = data.doctorInfo.doctorName;
         this.investmentRecService.investmentSocietyFormData.societyName = data.society.societyName;
         this.investmentRecService.investmentSocietyFormData.noOfMember = data.society.noOfMember;
         this.investmentRecService.investmentSocietyFormData.societyAddress = data.society.societyAddress;
@@ -302,7 +305,7 @@ export class InvestmentRecComponent implements OnInit {
       var data = response[0] as IInvestmentInstitution;
       if (data !== undefined) {
         this.investmentRecService.investmentInstitutionFormData = data;
-        this.investmentRecService.investmentInstitutionFormData.resposnsibleDoctorName = data.doctorInfo.doctorName;
+        this.investmentRecService.investmentInstitutionFormData.responsibleDoctorName = data.doctorInfo.doctorName;
         this.investmentRecService.investmentInstitutionFormData.institutionName = data.institutionInfo.institutionName;
         this.investmentRecService.investmentInstitutionFormData.address = data.institutionInfo.address;
         this.investmentRecService.investmentInstitutionFormData.institutionType = data.institutionInfo.institutionType;
@@ -404,7 +407,8 @@ export class InvestmentRecComponent implements OnInit {
         this.getLastFiveInvestment(this.investmentRecService.investmentRecFormData.marketCode, convertedDate);
 
       } else {
-        this.toastr.warning('No Data Found', 'Investment ');
+        //this.toastr.warning('No Data Found', 'Investment ');
+        this.getInvestmentDetails();
       }
     }, error => {
       console.log(error);
@@ -714,6 +718,7 @@ export class InvestmentRecComponent implements OnInit {
         if (this.products[i].id == this.investmentRecService.investmentTargetedProdFormData.productId) {
           let data = new InvestmentTargetedProd();
           data.id = 0;
+          data.employeeId = parseInt(this.empId);
           data.investmentInitId = this.investmentRecService.investmentRecFormData.id;
           data.productId = this.investmentRecService.investmentTargetedProdFormData.productId;
           data.productInfo = this.products[i];

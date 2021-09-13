@@ -13,5 +13,8 @@ namespace Core.Entities
         public int SocietyId { get; set; }
         [ForeignKey("SocietyId")]
         public Society Society { get; set; }
+        public int ResponsibleDoctorId { get; set; }
+        [ForeignKey("ResponsibleDoctorId")]
+        public DoctorInfo DoctorInfo { get; set; }
     }
 }

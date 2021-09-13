@@ -98,7 +98,13 @@ export class ClusterInfoComponent implements OnInit {
         err => { console.log(err); }
       );
     }
-    else {
+    else { 
+      for (var i = 0; i < this.regions.length; i++) {
+      if (this.regions[i].regionCode == this.masterService.clusterDtlFormData.regionCode) {
+        this.masterService.clusterDtlFormData.regionName=this.regions[i].regionName;
+        break;
+      }
+    }
       this.masterService.updateClusterDtl().subscribe(
         res => {
           this.masterService.clusterDtlFormData = new ClusterDtlInfo();
@@ -141,6 +147,7 @@ export class ClusterInfoComponent implements OnInit {
   
   selectClusterMst(selectedRecord: IClusterMstInfo) {
     this.masterService.clusterMstFormData = Object.assign({}, selectedRecord);
+    this.getClusterDtlList();
     this.clusterMstSearchodalRef.hide()
   }
   populateDtlsForm(selectedRecord: IClusterDtlInfo) {

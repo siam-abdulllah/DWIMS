@@ -37,11 +37,11 @@ namespace Core.Specifications
         {
 
         }
-        //public InvestmentInitSpecification(int employeeId,string status)
-        //    : base(x => x.EmployeeId == employeeId && x.Status == status)
-        //{
+        public InvestmentInitSpecification(int id)
+            : base(x => x.Id == id )
+        {
 
-        //}
+        }
         //public InvestmentInitSpecification(int employeeId,int authId,string status)
         //    : base(x => x.EmployeeId == employeeId && x.ApprovalAuthorityId == authId && x.Status == status)
         //{

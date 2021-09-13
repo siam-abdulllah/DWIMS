@@ -11,7 +11,7 @@ namespace API.Dtos
         public int InstitutionId { get; set; }
         
         public InstitutionInfoDto InstitutionInfoDto { get; set; }
-        public int ResposnsibleDoctorId { get; set; }
+        public int ResponsibleDoctorId { get; set; }
         public DoctorInfoDto DoctorInfoDto { get; set; }
         public string NoOfBed { get; set; }
         public string DepartmentUnit { get; set; }

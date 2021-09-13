@@ -13,8 +13,11 @@ namespace Core.Entities
         public int BcdsId { get; set; }
         [ForeignKey("BcdsId")]
         public Bcds Bcds { get; set; }
+        public int ResponsibleDoctorId { get; set; }
+        [ForeignKey("ResponsibleDoctorId")]
+        public DoctorInfo DoctorInfo { get; set; }
 
-        
+
 
     }
 }

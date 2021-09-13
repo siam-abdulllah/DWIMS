@@ -14,5 +14,7 @@ namespace Core.Entities
         public int ProductId { get; set; }
         [ForeignKey("ProductId")]
         public ProductInfo ProductInfo { get; set; }
+        public int? EmployeeId { get; set; }
+        public Employee Employee { get; set; }
     }
 }

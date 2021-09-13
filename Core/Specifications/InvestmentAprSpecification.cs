@@ -20,6 +20,10 @@ namespace Core.Specifications
             : base(x => x.InvestmentInitId == id)
         {
 
+        } public InvestmentAprSpecification(int empId, string aprStatus)
+            : base(x => x.EmployeeId == empId && aprStatus=="Approved")
+        {
+
         }
         public InvestmentAprSpecification(string donationType)
            : base(x => x.InvestmentInit.DonationType == donationType)

@@ -80,6 +80,7 @@ export interface IInvestmentTargetedProd {
     investmentInitId: number;
     productId: number;
     productInfo:IProduct;
+    employeeId: number;
 }
  
 export class InvestmentTargetedProd implements IInvestmentTargetedProd {
@@ -87,6 +88,7 @@ export class InvestmentTargetedProd implements IInvestmentTargetedProd {
     investmentInitId: number;
     productId: number=null;
     productInfo:IProduct;
+    employeeId: number;
 }
 export interface IInvestmentTargetedGroup {
     id: number;
@@ -146,8 +148,8 @@ export interface IInvestmentInstitution {
     investmentInitId: number;
     institutionId: number;
     institutionName:string;
-    resposnsibleDoctorId: number;
-    resposnsibleDoctorName:string;
+    responsibleDoctorId: number;
+    responsibleDoctorName:string;
     institutionType: string;
     address: string;
     noOfBed: string;
@@ -162,8 +164,8 @@ export class InvestmentInstitution implements IInvestmentInstitution {
     investmentInitId: number;
     institutionId: number=null;
     institutionName:string;
-    resposnsibleDoctorId: number=null;
-    resposnsibleDoctorName:string;
+    responsibleDoctorId: number=null;
+    responsibleDoctorName:string;
     institutionType: string;
     address: string;
     noOfBed: string;
@@ -215,6 +217,8 @@ export interface IInvestmentBcds {
     bcdsName: string;
     bcdsAddress: string;
     noOfMember: string;
+    responsibleDoctorName: string;
+    doctorInfo:IDoctor;
     bcds:IBcdsInfo;
     
 }
@@ -226,6 +230,8 @@ export class InvestmentBcds implements IInvestmentBcds {
     bcdsName: string;
     bcdsAddress: string;
     noOfMember: string;
+    responsibleDoctorName: string;
+    doctorInfo:IDoctor;
     bcds:IBcdsInfo;
 }
 export interface IInvestmentSociety {
@@ -235,6 +241,8 @@ export interface IInvestmentSociety {
     societyName: string;
     societyAddress: string;
     noOfMember: string;
+    responsibleDoctorName: string;
+    doctorInfo:IDoctor;
     society:ISocietyInfo;
     
 }
@@ -246,5 +254,7 @@ export class InvestmentSociety implements IInvestmentSociety {
     societyName: string;
     societyAddress: string;
     noOfMember: string;
+    responsibleDoctorName: string;
+    doctorInfo:IDoctor;
     society:ISocietyInfo;
 }

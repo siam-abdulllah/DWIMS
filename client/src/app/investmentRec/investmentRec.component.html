@@ -223,9 +223,9 @@
                                             <label>Responsible Doctor</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <input class="form-control" id="resposnsibleDoctorName" name="resposnsibleDoctorName" #resposnsibleDoctorName="ngModel" [(ngModel)]="investmentRecService.investmentInstitutionFormData.resposnsibleDoctorName" readonly>
+                                            <input class="form-control" id="responsibleDoctorName" name="responsibleDoctorName" #responsibleDoctorName="ngModel" [(ngModel)]="investmentRecService.investmentInstitutionFormData.responsibleDoctorName" readonly>
 
-                                            <!-- <select class="form-control " name="resposnsibleDoctorId" id="resposnsibleDoctorId" #resposnsibleDoctorId="ngModel" [(ngModel)]="investmentRecService.investmentInstitutionFormData.resposnsibleDoctorId">
+                                            <!-- <select class="form-control " name="responsibleDoctorId" id="responsibleDoctorId" #responsibleDoctorId="ngModel" [(ngModel)]="investmentRecService.investmentInstitutionFormData.responsibleDoctorId">
                                                 <option  [ngValue]="null">Select Doctor</option>
                                                 <option *ngFor="let a of doctors" [value]="a.id">{{a.doctorName}}</option>
                                             </select> -->
@@ -394,11 +394,22 @@
                                             <label>BCDS </label>
                                         </div>
                                         <div class="col-md-3">
-                                            <input class="form-control" ame="bcdsName" id="bcdsName" #bcdsName="ngModel" [(ngModel)]="investmentRecService.investmentBcdsFormData.bcdsName" readonly>
+                                            <input class="form-control" name="bcdsName" id="bcdsName" #bcdsName="ngModel" [(ngModel)]="investmentRecService.investmentBcdsFormData.bcdsName" readonly>
 
                                             <!-- <select class="form-control " (change)="onChangeBcdsInBcds()" name="bcdsId" id="bcdsId" #bcdsId="ngModel" [(ngModel)]="investmentRecService.investmentBcdsFormData.bcdsId">
                                                 <option  [ngValue]="null">Select Bcds</option>
                                                 <option *ngFor="let a of bcds" [value]="a.id">{{a.bcdsName}}</option>
+                                            </select> -->
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Responsible Doctor</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" id="responsibleDoctorNameBcds" name="responsibleDoctorNameBcds" #responsibleDoctorNameBcds="ngModel" [(ngModel)]="investmentRecService.investmentBcdsFormData.responsibleDoctorName" readonly>
+
+                                            <!-- <select class="form-control " name="responsibleDoctorId" id="responsibleDoctorId" #responsibleDoctorId="ngModel" [(ngModel)]="investmentRecService.investmentInstitutionFormData.responsibleDoctorId">
+                                                <option  [ngValue]="null">Select Doctor</option>
+                                                <option *ngFor="let a of doctors" [value]="a.id">{{a.doctorName}}</option>
                                             </select> -->
                                         </div>
                                     </div>
@@ -444,7 +455,17 @@
                                         <div class="col-md-3">
                                             <input class="form-control" id="societyName" name="societyName" #societyName="ngModel" [(ngModel)]="investmentRecService.investmentSocietyFormData.societyName" readonly>
                                         </div>
+                                        <div class="col-md-2">
+                                            <label>Responsible Doctor</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" id="responsibleDoctorNameSoc" name="responsibleDoctorNameSoc" #responsibleDoctorNameSoc="ngModel" [(ngModel)]="investmentRecService.investmentSocietyFormData.responsibleDoctorName" readonly>
 
+                                            <!-- <select class="form-control " name="responsibleDoctorId" id="responsibleDoctorId" #responsibleDoctorId="ngModel" [(ngModel)]="investmentRecService.investmentInstitutionFormData.responsibleDoctorId">
+                                                <option  [ngValue]="null">Select Doctor</option>
+                                                <option *ngFor="let a of doctors" [value]="a.id">{{a.doctorName}}</option>
+                                            </select> -->
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">

@@ -236,9 +236,9 @@
                                         </div>
                                         <div class="col-md-3">
 
-                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="doctors" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="resposnsibleDoctorId" id="resposnsibleDoctorId" #resposnsibleDoctorId="ngModel" [(ngModel)]="investmentInitService.investmentInstitutionFormData.resposnsibleDoctorId">
+                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="doctors" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="responsibleDoctorId" id="responsibleDoctorId" #responsibleDoctorId="ngModel" [(ngModel)]="investmentInitService.investmentInstitutionFormData.responsibleDoctorId">
                                             </ng-select>
-                                            <!-- <select class="form-control " name="resposnsibleDoctorId" id="resposnsibleDoctorId" #resposnsibleDoctorId="ngModel" [(ngModel)]="investmentInitService.investmentInstitutionFormData.resposnsibleDoctorId">
+                                            <!-- <select class="form-control " name="responsibleDoctorId" id="responsibleDoctorId" #responsibleDoctorId="ngModel" [(ngModel)]="investmentInitService.investmentInstitutionFormData.responsibleDoctorId">
                                                 <option  [ngValue]="null">Select Doctor</option>
                                                 <option *ngFor="let a of doctors" [value]="a.id">{{a.doctorName}}</option>
                                             </select> -->
@@ -419,6 +419,18 @@
                                                 <option *ngFor="let a of bcds" [value]="a.id">{{a.bcdsName}}</option>
                                             </select> -->
                                         </div>
+                                        <div class="col-md-2">
+                                            <label>Responsible Doctor Id</label>
+                                        </div>
+                                        <div class="col-md-3">
+
+                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="doctors" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="responsibleDoctorIdBcds" id="responsibleDoctorIdBcds" #responsibleDoctorIdBcds="ngModel" [(ngModel)]="investmentInitService.investmentBcdsFormData.responsibleDoctorId">
+                                            </ng-select>
+                                            <!-- <select class="form-control " name="responsibleDoctorId" id="responsibleDoctorId" #responsibleDoctorId="ngModel" [(ngModel)]="investmentInitService.investmentInstitutionFormData.responsibleDoctorId">
+                                                <option  [ngValue]="null">Select Doctor</option>
+                                                <option *ngFor="let a of doctors" [value]="a.id">{{a.doctorName}}</option>
+                                            </select> -->
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -469,7 +481,18 @@
                                                 <option *ngFor="let a of society" [value]="a.id">{{a.societyName}}</option>
                                             </select> -->
                                         </div>
+                                        <div class="col-md-2">
+                                            <label>Responsible Doctor Id</label>
+                                        </div>
+                                        <div class="col-md-3">
 
+                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="doctors" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="responsibleDoctorIdSoc" id="responsibleDoctorIdSoc" #responsibleDoctorIdSoc="ngModel" [(ngModel)]="investmentInitService.investmentSocietyFormData.responsibleDoctorId">
+                                            </ng-select>
+                                            <!-- <select class="form-control " name="responsibleDoctorId" id="responsibleDoctorId" #responsibleDoctorId="ngModel" [(ngModel)]="investmentInitService.investmentInstitutionFormData.responsibleDoctorId">
+                                                <option  [ngValue]="null">Select Doctor</option>
+                                                <option *ngFor="let a of doctors" [value]="a.id">{{a.doctorName}}</option>
+                                            </select> -->
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">

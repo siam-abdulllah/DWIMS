@@ -1,3 +1,4 @@
+using Core.Entities;
 using System;
 
 namespace API.Dtos
@@ -12,5 +13,7 @@ namespace API.Dtos
         public int ProductId { get; set; }
         public string SBU { get; set; }
         public ProductDto ProductDto { get; set; }
+        public int EmployeeId { get;  set; }
+        public EmployeeDto Employee { get; set; }
     }
 }

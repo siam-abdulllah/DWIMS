@@ -90,6 +90,7 @@ export interface IInvestmentTargetedProd {
     productId: number;
     productInfo:IProduct;
     sbu:string;
+    employeeId: number;
 }
  
 export class InvestmentTargetedProd implements IInvestmentTargetedProd {
@@ -98,6 +99,7 @@ export class InvestmentTargetedProd implements IInvestmentTargetedProd {
     productId: number=null;
     productInfo:IProduct;
     sbu:string;
+    employeeId: number;
 }
 export interface IInvestmentTargetedGroup {
     id: number;
@@ -154,7 +156,7 @@ export interface IInvestmentInstitution {
     id: number;
     investmentInitId: number;
     institutionId: number;
-    resposnsibleDoctorId: number;
+    responsibleDoctorId: number;
     institutionType: string;
     address: string;
     noOfBed: string;
@@ -166,7 +168,7 @@ export class InvestmentInstitution implements IInvestmentInstitution {
     id: number=0;
     investmentInitId: number;
     institutionId: number=null;
-    resposnsibleDoctorId: number=null;
+    responsibleDoctorId: number=null;
     institutionType: string;
     address: string;
     noOfBed: string;
@@ -201,6 +203,7 @@ export interface IInvestmentBcds {
     bcdsId: number;
     bcdsAddress: string;
     noOfMember: string;
+    responsibleDoctorId: number;
     
 }
  
@@ -210,6 +213,7 @@ export class InvestmentBcds implements IInvestmentBcds {
     bcdsId: number=null;
     bcdsAddress: string;
     noOfMember: string;
+    responsibleDoctorId: number=null;
 }
 export interface IInvestmentSociety {
     id: number;
@@ -217,6 +221,7 @@ export interface IInvestmentSociety {
     societyId: number;
     societyAddress: string;
     noOfMember: string;
+    responsibleDoctorId: number;
     
 }
  
@@ -226,4 +231,5 @@ export class InvestmentSociety implements IInvestmentSociety {
     societyId: number=null;
     societyAddress: string;
     noOfMember: string;
+    responsibleDoctorId: number=null;
 }

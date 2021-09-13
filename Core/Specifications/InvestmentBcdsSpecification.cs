@@ -34,6 +34,7 @@ namespace Core.Specifications
         public InvestmentBcdsSpecification(int id)
             : base(x => x.InvestmentInitId == id)
         {
+            AddInclude(x => x.DoctorInfo);
             AddInclude(x=>x.Bcds);
         }
         //public InvestmentDoctorSpecification(int employeeId,string status)

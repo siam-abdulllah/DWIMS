@@ -9,5 +9,7 @@ namespace API.Dtos
 
         public int SocietyId { get; set; }
         public SocietyDto SocietyDto { get; set; }
+        public int ResponsibleDoctorId { get; set; }
+        public DoctorInfoDto DoctorInfoDto { get; set; }
     }
     }

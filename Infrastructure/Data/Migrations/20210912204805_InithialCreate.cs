@@ -82,6 +82,24 @@ namespace Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ClusterMst",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DataStatus = table.Column<int>(nullable: false),
+                    SetOn = table.Column<DateTimeOffset>(nullable: false),
+                    ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
+                    ClusterCode = table.Column<string>(nullable: true),
+                    ClusterName = table.Column<string>(nullable: true),
+                    Status = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClusterMst", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DoctorInfo",
                 columns: table => new
                 {
@@ -564,6 +582,31 @@ namespace Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ClusterDtl",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DataStatus = table.Column<int>(nullable: false),
+                    SetOn = table.Column<DateTimeOffset>(nullable: false),
+                    ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
+                    MstId = table.Column<int>(nullable: false),
+                    RegionCode = table.Column<string>(nullable: true),
+                    RegionName = table.Column<string>(nullable: true),
+                    Status = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClusterDtl", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ClusterDtl_ClusterMst_MstId",
+                        column: x => x.MstId,
+                        principalTable: "ClusterMst",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ApprAuthConfig",
                 columns: table => new
                 {
@@ -837,11 +880,18 @@ namespace Infrastructure.Data.Migrations
                     ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
                     InvestmentInitId = table.Column<int>(nullable: true),
                     SBU = table.Column<string>(nullable: true),
-                    ProductId = table.Column<int>(nullable: false)
+                    ProductId = table.Column<int>(nullable: false),
+                    EmployeeId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_InvestmentAprProducts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InvestmentAprProducts_Employee_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employee",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_InvestmentAprProducts_InvestmentInit_InvestmentInitId",
                         column: x => x.InvestmentInitId,
@@ -866,7 +916,8 @@ namespace Infrastructure.Data.Migrations
                     SetOn = table.Column<DateTimeOffset>(nullable: false),
                     ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
                     InvestmentInitId = table.Column<int>(nullable: false),
-                    BcdsId = table.Column<int>(nullable: false)
+                    BcdsId = table.Column<int>(nullable: false),
+                    ResponsibleDoctorId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -881,6 +932,12 @@ namespace Infrastructure.Data.Migrations
                         name: "FK_InvestmentBcds_InvestmentInit_InvestmentInitId",
                         column: x => x.InvestmentInitId,
                         principalTable: "InvestmentInit",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_InvestmentBcds_DoctorInfo_ResponsibleDoctorId",
+                        column: x => x.ResponsibleDoctorId,
+                        principalTable: "DoctorInfo",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -967,7 +1024,7 @@ namespace Infrastructure.Data.Migrations
                     ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
                     InvestmentInitId = table.Column<int>(nullable: false),
                     InstitutionId = table.Column<int>(nullable: false),
-                    ResposnsibleDoctorId = table.Column<int>(nullable: false),
+                    ResponsibleDoctorId = table.Column<int>(nullable: false),
                     NoOfBed = table.Column<string>(nullable: true),
                     DepartmentUnit = table.Column<string>(nullable: true)
                 },
@@ -987,8 +1044,8 @@ namespace Infrastructure.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_InvestmentInstitution_DoctorInfo_ResposnsibleDoctorId",
-                        column: x => x.ResposnsibleDoctorId,
+                        name: "FK_InvestmentInstitution_DoctorInfo_ResponsibleDoctorId",
+                        column: x => x.ResponsibleDoctorId,
                         principalTable: "DoctorInfo",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -1086,11 +1143,18 @@ namespace Infrastructure.Data.Migrations
                     ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
                     InvestmentInitId = table.Column<int>(nullable: true),
                     SBU = table.Column<string>(nullable: true),
-                    ProductId = table.Column<int>(nullable: false)
+                    ProductId = table.Column<int>(nullable: false),
+                    EmployeeId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_InvestmentRecProducts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InvestmentRecProducts_Employee_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employee",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_InvestmentRecProducts_InvestmentInit_InvestmentInitId",
                         column: x => x.InvestmentInitId,
@@ -1115,7 +1179,8 @@ namespace Infrastructure.Data.Migrations
                     SetOn = table.Column<DateTimeOffset>(nullable: false),
                     ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
                     InvestmentInitId = table.Column<int>(nullable: false),
-                    SocietyId = table.Column<int>(nullable: false)
+                    SocietyId = table.Column<int>(nullable: false),
+                    ResponsibleDoctorId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1124,6 +1189,12 @@ namespace Infrastructure.Data.Migrations
                         name: "FK_InvestmentSociety_InvestmentInit_InvestmentInitId",
                         column: x => x.InvestmentInitId,
                         principalTable: "InvestmentInit",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_InvestmentSociety_DoctorInfo_ResponsibleDoctorId",
+                        column: x => x.ResponsibleDoctorId,
+                        principalTable: "DoctorInfo",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -1145,11 +1216,18 @@ namespace Infrastructure.Data.Migrations
                     ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
                     InvestmentInitId = table.Column<int>(nullable: false),
                     SBU = table.Column<string>(nullable: true),
-                    ProductId = table.Column<int>(nullable: false)
+                    ProductId = table.Column<int>(nullable: false),
+                    EmployeeId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_InvestmentTargetedProd", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InvestmentTargetedProd_Employee_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employee",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_InvestmentTargetedProd_InvestmentInit_InvestmentInitId",
                         column: x => x.InvestmentInitId,
@@ -1477,6 +1555,11 @@ namespace Infrastructure.Data.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ClusterDtl_MstId",
+                table: "ClusterDtl",
+                column: "MstId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_DoctorHonAppr_DoctorId",
                 table: "DoctorHonAppr",
                 column: "DoctorId");
@@ -1507,6 +1590,11 @@ namespace Infrastructure.Data.Migrations
                 column: "InvestmentInitId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_InvestmentAprProducts_EmployeeId",
+                table: "InvestmentAprProducts",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_InvestmentAprProducts_InvestmentInitId",
                 table: "InvestmentAprProducts",
                 column: "InvestmentInitId");
@@ -1525,6 +1613,11 @@ namespace Infrastructure.Data.Migrations
                 name: "IX_InvestmentBcds_InvestmentInitId",
                 table: "InvestmentBcds",
                 column: "InvestmentInitId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvestmentBcds_ResponsibleDoctorId",
+                table: "InvestmentBcds",
+                column: "ResponsibleDoctorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_InvestmentCampaign_CampaignDtlId",
@@ -1582,9 +1675,9 @@ namespace Infrastructure.Data.Migrations
                 column: "InvestmentInitId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_InvestmentInstitution_ResposnsibleDoctorId",
+                name: "IX_InvestmentInstitution_ResponsibleDoctorId",
                 table: "InvestmentInstitution",
-                column: "ResposnsibleDoctorId");
+                column: "ResponsibleDoctorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_InvestmentRec_EmployeeId",
@@ -1607,6 +1700,11 @@ namespace Infrastructure.Data.Migrations
                 column: "InvestmentInitId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_InvestmentRecProducts_EmployeeId",
+                table: "InvestmentRecProducts",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_InvestmentRecProducts_InvestmentInitId",
                 table: "InvestmentRecProducts",
                 column: "InvestmentInitId");
@@ -1622,6 +1720,11 @@ namespace Infrastructure.Data.Migrations
                 column: "InvestmentInitId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_InvestmentSociety_ResponsibleDoctorId",
+                table: "InvestmentSociety",
+                column: "ResponsibleDoctorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_InvestmentSociety_SocietyId",
                 table: "InvestmentSociety",
                 column: "SocietyId");
@@ -1635,6 +1738,11 @@ namespace Infrastructure.Data.Migrations
                 name: "IX_InvestmentTargetedGroup_MarketGroupMstId",
                 table: "InvestmentTargetedGroup",
                 column: "MarketGroupMstId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvestmentTargetedProd_EmployeeId",
+                table: "InvestmentTargetedProd",
+                column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_InvestmentTargetedProd_InvestmentInitId",
@@ -1713,6 +1821,9 @@ namespace Infrastructure.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "CampaignDtlProduct");
+
+            migrationBuilder.DropTable(
+                name: "ClusterDtl");
 
             migrationBuilder.DropTable(
                 name: "DoctorHonAppr");
@@ -1802,6 +1913,9 @@ namespace Infrastructure.Data.Migrations
                 name: "ApprovalAuthority");
 
             migrationBuilder.DropTable(
+                name: "ClusterMst");
+
+            migrationBuilder.DropTable(
                 name: "CampaignDtl");
 
             migrationBuilder.DropTable(
@@ -1817,9 +1931,6 @@ namespace Infrastructure.Data.Migrations
                 name: "Bcds");
 
             migrationBuilder.DropTable(
-                name: "DoctorInfo");
-
-            migrationBuilder.DropTable(
                 name: "InstitutionInfo");
 
             migrationBuilder.DropTable(
@@ -1833,6 +1944,9 @@ namespace Infrastructure.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "InvestmentInit");
+
+            migrationBuilder.DropTable(
+                name: "DoctorInfo");
 
             migrationBuilder.DropTable(
                 name: "Society");

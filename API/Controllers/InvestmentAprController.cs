@@ -1,4 +1,5 @@
 ﻿using API.Dtos;
+using API.Errors;
 using API.Helpers;
 using AutoMapper;
 using Core.Entities;
@@ -27,8 +28,12 @@ namespace API.Controllers
         private readonly IGenericRepository<ReportInvestmentInfo> _reportInvestmentInfoRepo;
         private readonly IMapper _mapper;
         private readonly StoreContext _dbContext;
+        private readonly IGenericRepository<InvestmentTargetedGroup> _investmentTargetedGroupRepo;
+        private readonly IGenericRepository<SBUWiseBudget> _sbuRepo;
+        private readonly IGenericRepository<ApprAuthConfig> _apprAuthConfigRepo;
+        private readonly IGenericRepository<ApprovalCeiling> _approvalCeilingRepo;
 
-        public InvestmentAprController(IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<InvestmentRecComment> investmentRecCommentRepo,
+        public InvestmentAprController(IGenericRepository<ApprovalCeiling> approvalCeilingRepo ,IGenericRepository<ApprAuthConfig> apprAuthConfigRepo,IGenericRepository<SBUWiseBudget> sbuRepo,IGenericRepository<InvestmentTargetedGroup> investmentTargetedGroupRepo, IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<InvestmentRecComment> investmentRecCommentRepo,
             IGenericRepository<InvestmentApr> investmentAprRepo, IGenericRepository<InvestmentAprComment> investmentAprCommentRepo,
             IGenericRepository<InvestmentAprProducts> investmentAprProductRepo, IGenericRepository<Employee> employeeRepo,
             IGenericRepository<ReportInvestmentInfo> reportInvestmentInfoRepo, StoreContext dbContext, IMapper mapper)
@@ -42,6 +47,10 @@ namespace API.Controllers
             _reportInvestmentInfoRepo = reportInvestmentInfoRepo;
             _employeeRepo = employeeRepo;
             _dbContext = dbContext;
+            _investmentTargetedGroupRepo = investmentTargetedGroupRepo;
+            _sbuRepo = sbuRepo;
+            _apprAuthConfigRepo = apprAuthConfigRepo;
+            _approvalCeilingRepo = approvalCeilingRepo;
         }
         [HttpGet("investmentInits/{empId}/{sbu}")]
         public ActionResult<Pagination<InvestmentInitDto>> GetInvestmentInits(int empId, string sbu,
@@ -169,6 +178,21 @@ namespace API.Controllers
         [HttpPost("InsertApr/{empID}/{aprStatus}/{sbu}")]
         public async Task<InvestmentAprDto> InsertInvestmentApr(int empId,string aprStatus,string sbu,InvestmentAprDto investmentAprDto)
         {
+            if (aprStatus == "Approved")
+            {
+                var sbuWiseBudgetSpec = new SBUWiseBudgetSpecificiation(sbu, DateTime.Now.ToString("dd/MM/yyyy"));
+                var sbuWiseBudgetData = await _sbuRepo.ListAsync(sbuWiseBudgetSpec);
+                var sbuWiseInvestmentRecSpec = new InvestmentAprSpecification(empId, aprStatus);
+
+                var apprAuthConfigSpec = new ApprAuthConfigSpecification(empId, "A");
+                var apprAuthConfigList = await _apprAuthConfigRepo.ListAsync(apprAuthConfigSpec);
+                var approvalCeilingSpec = new ApprovalCeilingSpecification(apprAuthConfigList[0].ApprovalAuthorityId, "A", DateTime.Now.ToString("dd/MM/yyyy"));
+                var approvalAuthorityCeilingData = await _approvalCeilingRepo.ListAsync(approvalCeilingSpec);
+
+                //int v2 = investmentRecDto.InvestmentInitId ?? default(int);
+                // var recCommentRepo= _investmentRecCommentRepo.GetByIdAsync(investmentRecDto.InvestmentInitId ?? default);
+
+            }
             var alreadyExistSpec = new InvestmentAprSpecification(investmentAprDto.InvestmentInitId);
             var alreadyExistInvestmentAprList = await _investmentAprRepo.ListAsync(alreadyExistSpec);
             if (alreadyExistInvestmentAprList.Count > 0)
@@ -221,6 +245,28 @@ namespace API.Controllers
         public async Task<ActionResult<InvestmentAprCommentDto>> InsertInvestmentAprComment(InvestmentAprCommentDto investmentAprDto)
         {
             var empData = await _employeeRepo.GetByIdAsync(investmentAprDto.EmployeeId);
+            var investmentInits = await _investmentInitRepo.GetByIdAsync((int)investmentAprDto.InvestmentInitId);
+            
+            if (investmentInits.SBU == empData.SBU)
+            {
+                bool isTrue = false;
+                var investmentTargetedGroupSpec = new InvestmentTargetedGroupSpecification((int)investmentAprDto.InvestmentInitId);
+                var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(investmentTargetedGroupSpec);
+                var investmentAprCommentSpec = new InvestmentAprCommentSpecification((int)investmentAprDto.InvestmentInitId);
+                var investmentAprComments = await _investmentAprCommentRepo.ListAsync(investmentAprCommentSpec);
+                foreach (var v in investmentTargetedGroup)
+                {
+                    isTrue = false;
+                    foreach (var i in investmentAprComments)
+                    {
+                        if (v.InvestmentInitId == i.InvestmentInitId && v.SBU == i.SBU)
+                        {
+                            isTrue = true;
+                        }
+                    }
+                    if (!isTrue) { return BadRequest(new ApiResponse(400, "Other recommendation not completed yet")); }
+                }
+            }
             var invApr = new InvestmentAprComment
             {
                 //ReferenceNo = investmentInitDto.ReferenceNo,
@@ -320,7 +366,8 @@ namespace API.Controllers
                         //ReferenceNo = investmentAprDto.ReferenceNo,
                         InvestmentInitId = v.InvestmentInitId,
                         ProductId = v.ProductId,
-                        SBU = v.SBU,
+                        EmployeeId = v.EmployeeId,
+                        SBU = v.ProductInfo.SBU,
                         SetOn = DateTimeOffset.Now,
                         ModifiedOn = DateTimeOffset.Now
                     };

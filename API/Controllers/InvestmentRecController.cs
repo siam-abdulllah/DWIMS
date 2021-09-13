@@ -1,4 +1,5 @@
 ﻿using API.Dtos;
+using API.Errors;
 using API.Helpers;
 using AutoMapper;
 using Core.Entities;
@@ -55,7 +56,7 @@ namespace API.Controllers
             _investmentTargetedGroupRepo = investmentTargetedGroupRepo;
         }
         [HttpGet("investmentInits/{empId}/{sbu}")]
-        public  ActionResult<Pagination<InvestmentInitDto>> GetInvestmentInits(int empId, string sbu,
+        public ActionResult<Pagination<InvestmentInitDto>> GetInvestmentInits(int empId, string sbu,
           [FromQuery] InvestmentInitSpecParams investmentInitParrams,
           [FromQuery] InvestmentRecCommentSpecParams investmentRecCommentParrams)
         {
@@ -154,7 +155,7 @@ namespace API.Controllers
                     {
                         new SqlParameter("@SBU", sbu),
                         new SqlParameter("@EID", empId),
-                        new SqlParameter("@RSTATUS", "Recommended"),
+                        new SqlParameter("@RSTATUS", DBNull.Value),
                         new SqlParameter("@ASTATUS", "Approved")
                     };
                 var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentRecSearch @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
@@ -172,7 +173,7 @@ namespace API.Controllers
 
 
         [HttpPost("insertRec/{empID}/{recStatus}/{sbu}")]
-        public async Task<InvestmentRecDto> InsertInvestmentRecomendation(int empId,string recStatus,string sbu,InvestmentRecDto investmentRecDto)
+        public async Task<InvestmentRecDto> InsertInvestmentRecomendation(int empId, string recStatus, string sbu, InvestmentRecDto investmentRecDto)
         {
             // if (recStatus == "Approved")
             // {
@@ -184,7 +185,7 @@ namespace API.Controllers
             //     var apprAuthConfigList = await _apprAuthConfigRepo.ListAsync(apprAuthConfigSpec);
             //     var approvalCeilingSpec = new ApprovalCeilingSpecification(apprAuthConfigList[0].ApprovalAuthorityId,"A", DateTime.Now.ToString("dd/MM/yyyy"));
             //     var approvalAuthorityCeilingData = await _approvalCeilingRepo.ListAsync(approvalCeilingSpec);
-               
+
             //     //int v2 = investmentRecDto.InvestmentInitId ?? default(int);
             //     // var recCommentRepo= _investmentRecCommentRepo.GetByIdAsync(investmentRecDto.InvestmentInitId ?? default);
 
@@ -241,19 +242,31 @@ namespace API.Controllers
         [HttpPost("insertRecCom")]
         public async Task<ActionResult<InvestmentRecCommentDto>> InsertInvestmentRecomendationComment(InvestmentRecCommentDto investmentRecDto)
         {
-            var investmentTargetedGroupSpec = new InvestmentTargetedGroupSpecification((int)investmentRecDto.InvestmentInitId);
-            var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(investmentTargetedGroupSpec);
-            var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentRecDto.InvestmentInitId);
-            var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
-            foreach (var i in investmentRecComments)
+
+            //var investmentInitSpec = new InvestmentInitSpecification((int)investmentRecDto.InvestmentInitId);
+            var investmentInits = await _investmentInitRepo.GetByIdAsync((int)investmentRecDto.InvestmentInitId);
+            var empData = await _employeeRepo.GetByIdAsync(investmentRecDto.EmployeeId);
+            if (investmentInits.SBU == empData.SBU)
             {
+                bool isTrue = false;
+                var investmentTargetedGroupSpec = new InvestmentTargetedGroupSpecification((int)investmentRecDto.InvestmentInitId);
+                var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(investmentTargetedGroupSpec);
+                var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentRecDto.InvestmentInitId);
+                var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
                 foreach (var v in investmentTargetedGroup)
                 {
-                    if (v.InvestmentInitId == i.InvestmentInitId) { }
+                    isTrue = false;
+                    foreach (var i in investmentRecComments)
+                    {
+                        if (v.InvestmentInitId == i.InvestmentInitId && v.SBU == i.SBU)
+                        {
+                            isTrue = true;
+                        }
+                    }
+                    if (!isTrue) { return BadRequest(new ApiResponse(400, "Other recommendation not completed yet")); }
                 }
             }
-
-                var empData = await _employeeRepo.GetByIdAsync(investmentRecDto.EmployeeId);
+            //var empData = await _employeeRepo.GetByIdAsync(investmentRecDto.EmployeeId);
             var invRec = new InvestmentRecComment
             {
                 InvestmentInitId = investmentRecDto.InvestmentInitId,
@@ -290,9 +303,29 @@ namespace API.Controllers
         [HttpPost("updateRecCom")]
         public async Task<ActionResult<InvestmentRecCommentDto>> UpdateInvestmentRecomendationComment(InvestmentRecCommentDto investmentRecDto)
         {
-            // var user =  _approvalAuthorityRepo.GetByIdAsync(ApprovalAuthorityToReturnDto.Id);
-            // if (user == null) return Unauthorized(new ApiResponse(401));
+            var investmentInits = await _investmentInitRepo.GetByIdAsync((int)investmentRecDto.InvestmentInitId);
             var empData = await _employeeRepo.GetByIdAsync(investmentRecDto.EmployeeId);
+            if (investmentInits.SBU == empData.SBU)
+            {
+                bool isTrue = false;
+                var investmentTargetedGroupSpec = new InvestmentTargetedGroupSpecification((int)investmentRecDto.InvestmentInitId);
+                var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(investmentTargetedGroupSpec);
+                var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentRecDto.InvestmentInitId);
+                var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
+                foreach (var v in investmentTargetedGroup)
+                {
+                    isTrue = false;
+                    foreach (var i in investmentRecComments)
+                    {
+                        if (v.InvestmentInitId == i.InvestmentInitId && v.SBU == i.SBU)
+                        {
+                            isTrue = true;
+                        }
+                    }
+                    if (!isTrue) { return BadRequest(new ApiResponse(400, "Other recommendation not completed yet")); }
+                }
+            }
+            
             var invRec = new InvestmentRecComment
             {
                 Id = investmentRecDto.Id,
@@ -347,7 +380,7 @@ namespace API.Controllers
                         }
                     }
                 }
-                    
+
                 foreach (var v in investmentRecProductDto)
                 {
                     var investmentRecProduct = new InvestmentRecProducts
@@ -355,6 +388,7 @@ namespace API.Controllers
                         //ReferenceNo = investmentRecDto.ReferenceNo,
                         InvestmentInitId = v.InvestmentInitId,
                         ProductId = v.ProductId,
+                        EmployeeId = v.EmployeeId,
                         SBU = v.ProductInfo.SBU,
                         SetOn = DateTimeOffset.Now,
                         ModifiedOn = DateTimeOffset.Now
@@ -384,6 +418,7 @@ namespace API.Controllers
                 InvestmentInitId = investmentRecDto.InvestmentInitId,
                 ProductId = investmentRecDto.ProductId,
                 SBU = investmentRecDto.SBU,
+                EmployeeId = investmentRecDto.EmployeeId,
                 ModifiedOn = DateTimeOffset.Now,
             };
             _investmentRecProductRepo.Update(invRec);
@@ -403,7 +438,7 @@ namespace API.Controllers
         {
             try
             {
-                var spec = new InvestmentRecProductSpecification(investmentInitId,sbu);
+                var spec = new InvestmentRecProductSpecification(investmentInitId, sbu);
                 var investmentTargetedProd = await _investmentRecProductRepo.ListAsync(spec);
                 return investmentTargetedProd;
             }
@@ -430,11 +465,11 @@ namespace API.Controllers
         }
         [HttpGet]
         [Route("getInvestmentRecComment/{investmentInitId}/{empId}")]
-        public async Task<IReadOnlyList<InvestmentRecComment>> GetInvestmentRecComment(int investmentInitId,int empId)
+        public async Task<IReadOnlyList<InvestmentRecComment>> GetInvestmentRecComment(int investmentInitId, int empId)
         {
             try
             {
-                var spec = new InvestmentRecCommentSpecification(investmentInitId,empId);
+                var spec = new InvestmentRecCommentSpecification(investmentInitId, empId);
                 var investmentDetail = await _investmentRecCommentRepo.ListAsync(spec);
                 return investmentDetail;
             }
@@ -458,7 +493,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
-        
+
         [HttpGet]
         [Route("getLastFiveInvestment/{marketCode}/{date}")]
         public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestment(string marketCode, string date)
@@ -470,7 +505,7 @@ namespace API.Controllers
                 var reportInvestmentData = await _reportInvestmentInfoRepo.ListAsync(reportInvestmentSpec);
                 // var spec = new ReportInvestmentSpecification(empData.MarketCode);
                 var data = (from e in reportInvestmentData
-                            where DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture)>= DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture)
+                            where DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) >= DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture)
                             orderby DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) descending
                             select new ReportInvestmentInfo
                             {
