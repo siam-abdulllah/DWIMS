@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AccountService } from '../account.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { NgxSpinnerService } from "ngx-spinner"; 
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,9 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   returnUrl: string;
   body: HTMLBodyElement = document.getElementsByTagName('body')[0];
-  constructor(private accountService: AccountService, private router: Router, private activatedRoute: ActivatedRoute) { }
+  constructor(private accountService: AccountService, private router: Router, 
+    private activatedRoute: ActivatedRoute,
+    private SpinnerService: NgxSpinnerService) { }
 
   // tslint:disable-next-line: typedef
   ngOnInit() {
@@ -38,6 +41,7 @@ export class LoginComponent implements OnInit {
 
   // tslint:disable-next-line: typedef
   onSubmit() {
+    this.SpinnerService.show();  
     this.accountService.login(this.loginForm.value).subscribe(() => {
       //this.router.navigateByUrl(this.returnUrl);
       //this.router.navigate(['/portal/home']);
@@ -48,6 +52,7 @@ export class LoginComponent implements OnInit {
     }, error => {
       console.log(error);
     });
+    this.SpinnerService.hide();  
   }
   NavigateToRegister() {
     this.router.navigate(['/register']);

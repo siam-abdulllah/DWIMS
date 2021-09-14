@@ -23,6 +23,7 @@ export class DonationComponent implements OnInit {
     ) { }
 
   ngOnInit() {
+    this.resetPage();
     this.getDonation();
   }
   getDonation(){
@@ -71,6 +72,9 @@ export class DonationComponent implements OnInit {
   }
   resetForm(form: NgForm) {
     form.reset();
+  }
+  resetPage() {
+    this.masterService.donationFormData=new Donation();
   }
 
 }

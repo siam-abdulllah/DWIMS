@@ -20,6 +20,7 @@ export class SocietyInfoComponent implements OnInit {
   constructor(public masterService: MasterService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit(): void {
+    this.resetPage()
     this.getSociety();
   }
 
@@ -71,6 +72,9 @@ export class SocietyInfoComponent implements OnInit {
   }
   resetForm(form: NgForm) {
     form.form.reset();
+    this.masterService.societyFormData = new SocietyInfo();
+  }
+  resetPage() {
     this.masterService.societyFormData = new SocietyInfo();
   }
 

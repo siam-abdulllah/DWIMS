@@ -9,6 +9,7 @@ import { SocietyInfoComponent } from './society-info/society-info.component';
 import { ApprovalAuthorityComponent } from './approvalAuthority/approvalAuthority.component';
 import { EmployeeInfoComponent } from './employee-info/employee-info.component';
 import { MasterRoutingModule } from './master-routing.module';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 //import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
@@ -22,6 +23,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     FormsModule,
     //BrowserAnimationsModule,
     BsDatepickerModule.forRoot(), 
+    NgxSpinnerModule,
     NgSelectModule   
   ]
 })

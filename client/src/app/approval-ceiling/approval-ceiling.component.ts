@@ -28,6 +28,7 @@ export class ApprovalCeilingComponent implements OnInit {
   //constructor(public approvalCeilingService: MasterService, private router: Router, private toastr: ToastrService) { }
   constructor(public approvalCeilingService: ApprovalCeilingService,private router: Router, private toastr: ToastrService) { }
   ngOnInit() {
+    this.resetPage();
     this.getApprovalAuthority();
     this.getApprovalCeiling();
     this. getDonation();
@@ -100,6 +101,10 @@ export class ApprovalCeilingComponent implements OnInit {
 
   resetForm(form: NgForm) {
     form.form.reset();
+    this.approvalCeilingService.approvalCeilingFormData = new ApprovalCeiling();
+    //this.approvalCeilings=[];
+  }
+  resetPage() {
     this.approvalCeilingService.approvalCeilingFormData = new ApprovalCeiling();
     this.approvalCeilings=[];
   }

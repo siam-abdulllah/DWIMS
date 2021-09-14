@@ -9,7 +9,7 @@ import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
-import { IDoctorHonAppr } from '../shared/models/doctorHonAppr';
+import { DoctorHonAppr, IDoctorHonAppr } from '../shared/models/doctorHonAppr';
 import { DoctorHonApprService } from '../_services/doctorHonAppr.service';
 import { DatePipe } from '@angular/common';
 @Component({
@@ -37,6 +37,8 @@ export class DocHonApprComponent implements OnInit {
     private toastr: ToastrService,private datePipe: DatePipe) { }
 
   ngOnInit() {
+    
+    this.resetPage();
     //this.getCampaign();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-green' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
@@ -126,18 +128,8 @@ if(selectedRecord.id==0)
     form.form.reset();
     //this.masterService.campaignFormData = new Campaign();
   }
-  SBUs = [
-    {id: 1, name: 'Chittagong/Chattogram' },
-    {id: 2, name: 'Sonamasjid'},
-    {id: 3, name: 'Benapole'},
-    {id: 4, name: 'Mongla'},
-    {id: 5, name: 'Hili'},
-    {id: 6, name: 'Darshana'},
-    {id: 7, name: 'Shahjalal International Airport'},
-    {id: 8, name: 'Banglabandha'},
-    {id: 9, name: 'Birol'},
-    {id: 10, name: 'Rohanpur'},
-    {id: 11, name: 'Vomra'},
-    {id: 12, name: 'Burimari'}
-  ];
+  resetPage() {
+    this.docHonApprService.doctorHonApprFormData = new DoctorHonAppr();
+  }
+  
 }

@@ -32,6 +32,7 @@ export class ClusterInfoComponent implements OnInit {
     private router: Router, private toastr: ToastrService, private modalService: BsModalService) { }
 
   ngOnInit(): void {
+    this.resetForm();
     this.getRegion();
   }
   getRegion() {
@@ -139,6 +140,12 @@ export class ClusterInfoComponent implements OnInit {
   }
   resetPage(form: NgForm) {
     form.form.reset();
+    this.masterService.clusterMstFormData = new ClusterMstInfo();
+    this.masterService.clusterDtlFormData = new ClusterDtlInfo();
+    this.clusterDtlInfo=[];
+    this.clusterMstInfo=[];
+  }
+  resetForm() {
     this.masterService.clusterMstFormData = new ClusterMstInfo();
     this.masterService.clusterDtlFormData = new ClusterDtlInfo();
     this.clusterDtlInfo=[];

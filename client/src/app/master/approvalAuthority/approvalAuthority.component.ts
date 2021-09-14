@@ -27,6 +27,7 @@ export class ApprovalAuthorityComponent implements OnInit {
     }
 
   ngOnInit() {
+    this.resetPage();
     this.getapprovalAuthority();
   }
   counter(i: number) {
@@ -78,6 +79,9 @@ export class ApprovalAuthorityComponent implements OnInit {
   }
   resetForm(form: NgForm) {
     form.reset();
+  }
+  resetPage() {
+   this.masterService.approvalAuthorityFormData=new ApprovalAuthority();
   }
 
    foo = new Array(45);//create a 45 element array

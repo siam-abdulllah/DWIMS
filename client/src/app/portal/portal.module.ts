@@ -27,6 +27,7 @@ import { ApprovalTimeLimitComponent } from '../approval-time-limit/approval-time
 import { SbuWiseBudgetComponent } from '../sbu-wise-budget/sbu-wise-budget.component';
 import { DocHonApprComponent } from '../docHonAppr/docHonAppr.component';
 import { ClusterInfoComponent } from '../master/cluster-info/cluster-info.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
 @NgModule({
   imports: [
     
@@ -42,6 +43,7 @@ import { ClusterInfoComponent } from '../master/cluster-info/cluster-info.compon
     NgSelectModule  ,
     MasterModule,
     MasterRoutingModule,
+    NgxSpinnerModule,
   ],
   declarations: [
     PortalComponent,

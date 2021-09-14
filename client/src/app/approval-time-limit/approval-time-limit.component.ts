@@ -22,6 +22,8 @@ export class ApprovalTimeLimitComponent implements OnInit {
   constructor(public approvalTimeService: ApprovalTimeLimitService, private router: Router, private toastr: ToastrService) { }
   //constructor(private router: Router, private toastr: ToastrService) { }
   ngOnInit() {
+    
+    this.resetPage();
      this.getApprovalTimeLimit();
      this.getApprovalAuthority();
   }
@@ -83,6 +85,9 @@ export class ApprovalTimeLimitComponent implements OnInit {
 
   resetForm(form: NgForm) {
     form.form.reset();
+    this.approvalTimeService.approvalTimeLimitFormData = new ApprovalTimeLimit();
+  }
+  resetPage() {
     this.approvalTimeService.approvalTimeLimitFormData = new ApprovalTimeLimit();
   }
 

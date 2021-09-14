@@ -20,6 +20,7 @@ export class BcdsInfoComponent implements OnInit {
   constructor(public masterService: MasterService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
+    this.resetPage();
     this.getBcds();
   }
 
@@ -75,5 +76,8 @@ export class BcdsInfoComponent implements OnInit {
   // }
   resetForm(form: NgForm) {
     form.reset();
+  }
+  resetPage() {
+    this.masterService.bcdsFormData=new BcdsInfo();
   }
 }

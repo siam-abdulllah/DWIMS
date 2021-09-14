@@ -429,6 +429,7 @@ export class InvestmentAprComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.resetForm();
     this.getEmployeeId();
     this.getProduct();
     //this.getMarketGroupMsts();
@@ -738,6 +739,12 @@ export class InvestmentAprComponent implements OnInit {
   }
   resetPage(form: NgForm) {
     form.reset();
+    this.investmentAprService.investmentAprFormData = new InvestmentInit();
+    this.investmentTargetedProds = [];
+    this.investmentTargetedGroups = [];
+    this.isValid = false;
+  }
+  resetForm() {
     this.investmentAprService.investmentAprFormData = new InvestmentInit();
     this.investmentTargetedProds = [];
     this.investmentTargetedGroups = [];

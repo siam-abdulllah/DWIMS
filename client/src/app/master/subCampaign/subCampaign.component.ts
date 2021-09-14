@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { MasterService } from '../master.service';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-
+import { NgxSpinnerService } from "ngx-spinner"; 
 @Component({
   selector: 'app-subCampaign',
   templateUrl: './subCampaign.component.html',
@@ -18,18 +18,21 @@ export class SubCampaignComponent implements OnInit {
   subCampaigns: ISubCampaign[];
   totalCount = 0;
   constructor(public masterService: MasterService, private router: Router,
-    private toastr: ToastrService) { }
+    private toastr: ToastrService, private SpinnerService: NgxSpinnerService) { }
 
   ngOnInit() {
+    this.resetPage();
     this.getSubCampaign();
   }
   getSubCampaign(){
+    this.SpinnerService.show();  
     this.masterService.getSubCampaign().subscribe(response => {
       this.subCampaigns = response.data;
       this.totalCount = response.count;
     }, error => {
         console.log(error);
     });
+    this.SpinnerService.hide(); 
   }
   onSubmit(form: NgForm) {
     debugger;
@@ -68,6 +71,9 @@ export class SubCampaignComponent implements OnInit {
   }
   resetForm(form: NgForm) {
     form.reset();
+  }
+  resetPage() {
+    this.masterService.subCampaignFormData=new SubCampaign();
   }
 
 }

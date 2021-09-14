@@ -42,6 +42,7 @@ export class RegApprovalComponent implements OnInit {
     ) { }
 
   ngOnInit() {
+    this.resetPage();
     this.getRoles();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-green' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
@@ -98,6 +99,9 @@ export class RegApprovalComponent implements OnInit {
   resetForm(form: NgForm) {
     form.form.reset();
     //this.regApprovalService.campaignFormData = new Campaign();
+  }
+  resetPage() {
+    this.regApprovalService.regApprovalFormData = new RegApproval();
   }
   getRoles() {
     this.roleList = [];

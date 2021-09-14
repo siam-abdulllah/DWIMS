@@ -36,6 +36,7 @@ export class MarketGroupComponent implements OnInit {
     private toastr: ToastrService,private modalService: BsModalService) { }
 
   ngOnInit() {
+    this.resetForm();
     this.getMarket();
     this.getEmployeeId();
   }
@@ -169,6 +170,10 @@ addMarket() {
   
   resetPage(form: NgForm) {
     form.reset();
+    this.marketGroupDtls=[];
+  }
+  resetForm() {
+    this.marketGroupService.marketGroupFormData=new MarketGroupMst();
     this.marketGroupDtls=[];
   }
   

@@ -27,6 +27,7 @@ export class SbuWiseBudgetComponent implements OnInit {
   constructor(public sbuWiseBudgetService: SBUWiseBudgetService, private router: Router, private toastr: ToastrService) { }
   //constructor(private router: Router, private toastr: ToastrService) { }
   ngOnInit() {
+    this.resetPage();
     this.getSBU();
     this.getSBUWiseBudget();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-green' }, { dateInputFormat: 'DD/MM/YYYY' });
@@ -123,6 +124,9 @@ if (result) {
 
   resetForm(form: NgForm) {
     form.form.reset();
+    this.sbuWiseBudgetService.sbuwiseBudgeFormData = new SBUWiseBudget();
+  }
+  resetPage() {
     this.sbuWiseBudgetService.sbuwiseBudgeFormData = new SBUWiseBudget();
   }
 

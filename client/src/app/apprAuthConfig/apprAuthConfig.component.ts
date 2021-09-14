@@ -27,13 +27,17 @@ export class ApprAuthConfigComponent implements OnInit {
     private toastr: ToastrService) { }
 
   ngOnInit() {
-  
+    this.resetForm();
     this.getApprovalAuthority();
     this.getEmployees();
     
   }
   resetPage(form: NgForm) {
     form.reset();
+    this.apprAuthConfigService.approvalAuthConfigFormData = new ApprovalAuthConfig();
+    this.employeesForApprAuth=[];
+  }
+  resetForm() {
     this.apprAuthConfigService.approvalAuthConfigFormData = new ApprovalAuthConfig();
     this.employeesForApprAuth=[];
   }

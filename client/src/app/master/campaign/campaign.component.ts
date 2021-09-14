@@ -11,6 +11,7 @@ import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { NgxSpinnerService } from "ngx-spinner"; 
 @Component({
   selector: 'app-campaign',
   templateUrl: './campaign.component.html',
@@ -41,9 +42,11 @@ export class CampaignComponent implements OnInit {
     ignoreBackdropClick: true
   };
   constructor(public masterService: MasterService, private router: Router,
-    private toastr: ToastrService, private modalService: BsModalService) { }
+    private toastr: ToastrService, private modalService: BsModalService,
+     private SpinnerService: NgxSpinnerService) { }
 
   ngOnInit() {
+    this.resetForm();
     this.getSBU();
     //this.getBrand();
     this.getSubCampaign();
@@ -66,12 +69,14 @@ export class CampaignComponent implements OnInit {
     });
   }
   getProduct() {
+    this.SpinnerService.show();  
     this.masterService.getProduct(this.masterService.campaignMstFormData.brandCode).subscribe(response => {
       debugger;
       this.products = response as IProduct[];
     }, error => {
       console.log(error);
     });
+    this.SpinnerService.hide(); 
   }
   getSubCampaign() {
     this.masterService.getSubCampaignForCamp().subscribe(response => {
@@ -81,6 +86,7 @@ export class CampaignComponent implements OnInit {
     });
   }
   getCampaign() {
+    this.SpinnerService.show();  
     this.masterService.getCampaign().subscribe(response => {
 
       debugger;
@@ -90,6 +96,7 @@ export class CampaignComponent implements OnInit {
     }, error => {
       console.log(error);
     });
+    this.SpinnerService.hide(); 
   }
   openCampaignMstSearchModal(template: TemplateRef<any>) {
     this.campaignMstSearchodalRef = this.modalService.show(template, this.config);
@@ -311,6 +318,14 @@ export class CampaignComponent implements OnInit {
   }
   resetPage(form: NgForm) {
     form.form.reset();
+    this.masterService.campaignMstFormData = new CampaignMst();
+    this.masterService.campaignDtlFormData = new CampaignDtl();
+    this.masterService.campaignDtlProductFormData = new CampaignDtlProduct();
+    this.campaignMsts = [];
+    this.campaignDtls = [];
+    this.campaignDtlProducts = [];
+  }
+  resetForm() {
     this.masterService.campaignMstFormData = new CampaignMst();
     this.masterService.campaignDtlFormData = new CampaignDtl();
     this.masterService.campaignDtlProductFormData = new CampaignDtlProduct();
