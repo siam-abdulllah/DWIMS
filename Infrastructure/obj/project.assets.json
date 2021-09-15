@@ -8828,11 +8828,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\DWIMS\\TestApplication\\Infrastructure\\Infrastructure.csproj",
+      "projectUniqueName": "e:\\DWIMS\\TestApplication\\Infrastructure\\Infrastructure.csproj",
       "projectName": "Infrastructure",
-      "projectPath": "E:\\DWIMS\\TestApplication\\Infrastructure\\Infrastructure.csproj",
+      "projectPath": "e:\\DWIMS\\TestApplication\\Infrastructure\\Infrastructure.csproj",
       "packagesPath": "C:\\Users\\maaz\\.nuget\\packages\\",
-      "outputPath": "E:\\DWIMS\\TestApplication\\Infrastructure\\obj\\",
+      "outputPath": "e:\\DWIMS\\TestApplication\\Infrastructure\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -8852,8 +8852,8 @@
         "netstandard2.1": {
           "targetAlias": "netstandard2.1",
           "projectReferences": {
-            "E:\\DWIMS\\TestApplication\\Core\\Core.csproj": {
-              "projectPath": "E:\\DWIMS\\TestApplication\\Core\\Core.csproj"
+            "e:\\DWIMS\\TestApplication\\Core\\Core.csproj": {
+              "projectPath": "e:\\DWIMS\\TestApplication\\Core\\Core.csproj"
             }
           }
         }

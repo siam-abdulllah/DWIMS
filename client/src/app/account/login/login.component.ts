@@ -43,6 +43,7 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     this.SpinnerService.show();  
     this.accountService.login(this.loginForm.value).subscribe(() => {
+      this.SpinnerService.hide();  
       //this.router.navigateByUrl(this.returnUrl);
       //this.router.navigate(['/portal/home']);
       this.router.navigate(['/portal/home'])
@@ -50,9 +51,10 @@ export class LoginComponent implements OnInit {
     window.location.reload();
   });
     }, error => {
+      this.SpinnerService.hide();  
       console.log(error);
     });
-    this.SpinnerService.hide();  
+    
   }
   NavigateToRegister() {
     this.router.navigate(['/register']);

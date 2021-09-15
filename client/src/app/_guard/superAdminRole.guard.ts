@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { AccountService } from '../account/account.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -10,8 +10,9 @@ export class SuperAdminRoleGuard implements CanActivate {
   constructor(
     private accountService: AccountService,
     private router: Router, private toastr: ToastrService) {}
-  canActivate(): boolean {
-    //debugger;
+  canActivate(route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot): boolean {
+    debugger;
     if (!this.accountService.loggedIn()) {
         this.toastr.error('UnAuthorized Access!!!');
         this.router.navigate(['/login']);

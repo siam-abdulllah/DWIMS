@@ -69,6 +69,24 @@
     text-shadow: 2px 2px 4px #000000;
 }
 
+@media (max-width: 1200px) {
+    .navbar-custom-empInfo-left {
+        display: none;
+    }
+}
+
+@media (max-width: 1200px) {
+    .navbar-custom-menu-left>.alt_companyLogo {
+        display: none;
+    }
+}
+
+@media (min-width: 1200px) {
+    .navbar-custom-menu-left>.alt_systemLogo {
+        display: none;
+    }
+}
+
 .navbar-custom-empInfo-left {
     float: left;
     // padding-top: 1%;

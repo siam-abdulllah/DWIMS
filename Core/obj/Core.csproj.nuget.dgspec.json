@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\DWIMS\\TestApplication\\Core\\Core.csproj": {}
+    "e:\\DWIMS\\TestApplication\\Core\\Core.csproj": {}
   },
   "projects": {
-    "E:\\DWIMS\\TestApplication\\Core\\Core.csproj": {
+    "e:\\DWIMS\\TestApplication\\Core\\Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\DWIMS\\TestApplication\\Core\\Core.csproj",
+        "projectUniqueName": "e:\\DWIMS\\TestApplication\\Core\\Core.csproj",
         "projectName": "Core",
-        "projectPath": "E:\\DWIMS\\TestApplication\\Core\\Core.csproj",
+        "projectPath": "e:\\DWIMS\\TestApplication\\Core\\Core.csproj",
         "packagesPath": "C:\\Users\\maaz\\.nuget\\packages\\",
-        "outputPath": "E:\\DWIMS\\TestApplication\\Core\\obj\\",
+        "outputPath": "e:\\DWIMS\\TestApplication\\Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
