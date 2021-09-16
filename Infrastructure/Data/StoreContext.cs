@@ -62,6 +62,9 @@ namespace Infrastructure.Data
         public DbSet<RptDocLocWiseInvestment> RptDocLocWiseInvestment { get; set; } 
         public DbSet<ClusterMst> ClusterMst { get; set; }
         public DbSet<ClusterDtl> ClusterDtl { get; set; }
+        public DbSet<MenuHead> MenuHead { get; set; }
+        public DbSet<SubMenu> SubMenu { get; set; }
+        public DbSet<MenuConf> MenuConf { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

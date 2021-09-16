@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "e:\\DWIMS\\TestApplication\\Infrastructure\\Infrastructure.csproj": {}
+    "E:\\DWIMS\\TestApplication\\Infrastructure\\Infrastructure.csproj": {}
   },
   "projects": {
-    "e:\\DWIMS\\TestApplication\\Core\\Core.csproj": {
+    "E:\\DWIMS\\TestApplication\\Core\\Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "e:\\DWIMS\\TestApplication\\Core\\Core.csproj",
+        "projectUniqueName": "E:\\DWIMS\\TestApplication\\Core\\Core.csproj",
         "projectName": "Core",
-        "projectPath": "e:\\DWIMS\\TestApplication\\Core\\Core.csproj",
+        "projectPath": "E:\\DWIMS\\TestApplication\\Core\\Core.csproj",
         "packagesPath": "C:\\Users\\maaz\\.nuget\\packages\\",
-        "outputPath": "e:\\DWIMS\\TestApplication\\Core\\obj\\",
+        "outputPath": "E:\\DWIMS\\TestApplication\\Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -83,14 +83,14 @@
         }
       }
     },
-    "e:\\DWIMS\\TestApplication\\Infrastructure\\Infrastructure.csproj": {
+    "E:\\DWIMS\\TestApplication\\Infrastructure\\Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "e:\\DWIMS\\TestApplication\\Infrastructure\\Infrastructure.csproj",
+        "projectUniqueName": "E:\\DWIMS\\TestApplication\\Infrastructure\\Infrastructure.csproj",
         "projectName": "Infrastructure",
-        "projectPath": "e:\\DWIMS\\TestApplication\\Infrastructure\\Infrastructure.csproj",
+        "projectPath": "E:\\DWIMS\\TestApplication\\Infrastructure\\Infrastructure.csproj",
         "packagesPath": "C:\\Users\\maaz\\.nuget\\packages\\",
-        "outputPath": "e:\\DWIMS\\TestApplication\\Infrastructure\\obj\\",
+        "outputPath": "E:\\DWIMS\\TestApplication\\Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -110,8 +110,8 @@
           "netstandard2.1": {
             "targetAlias": "netstandard2.1",
             "projectReferences": {
-              "e:\\DWIMS\\TestApplication\\Core\\Core.csproj": {
-                "projectPath": "e:\\DWIMS\\TestApplication\\Core\\Core.csproj"
+              "E:\\DWIMS\\TestApplication\\Core\\Core.csproj": {
+                "projectPath": "E:\\DWIMS\\TestApplication\\Core\\Core.csproj"
               }
             }
           }

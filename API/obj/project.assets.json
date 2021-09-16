@@ -10668,11 +10668,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "e:\\DWIMS\\TestApplication\\API\\API.csproj",
+      "projectUniqueName": "E:\\DWIMS\\TestApplication\\API\\API.csproj",
       "projectName": "API",
-      "projectPath": "e:\\DWIMS\\TestApplication\\API\\API.csproj",
+      "projectPath": "E:\\DWIMS\\TestApplication\\API\\API.csproj",
       "packagesPath": "C:\\Users\\maaz\\.nuget\\packages\\",
-      "outputPath": "e:\\DWIMS\\TestApplication\\API\\obj\\",
+      "outputPath": "E:\\DWIMS\\TestApplication\\API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -10692,8 +10692,8 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "e:\\DWIMS\\TestApplication\\Infrastructure\\Infrastructure.csproj": {
-              "projectPath": "e:\\DWIMS\\TestApplication\\Infrastructure\\Infrastructure.csproj"
+            "E:\\DWIMS\\TestApplication\\Infrastructure\\Infrastructure.csproj": {
+              "projectPath": "E:\\DWIMS\\TestApplication\\Infrastructure\\Infrastructure.csproj"
             }
           }
         }

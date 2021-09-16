@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "p3JmDuDqxVJURmgatmcCGRjWqnW/kMgtf6Bt6TBXJVzbTXcT5GWuBvqDxnEoNXmWZTabyK9yEnUQxw4TbHz00w==",
+  "dgSpecHash": "FPPAD0fluaza+DREWAPDPSDhQ4lLTKz2IUnDLDE05oUjQh4u0jLIPLOelMIa6QH60xVRNb/EW9mnpHksO5MWgw==",
   "success": true,
-  "projectFilePath": "e:\\DWIMS\\TestApplication\\Core\\Core.csproj",
+  "projectFilePath": "E:\\DWIMS\\TestApplication\\Core\\Core.csproj",
   "expectedPackageFiles": [
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.aspnetcore.authorization\\2.2.0\\microsoft.aspnetcore.authorization.2.2.0.nupkg.sha512",
