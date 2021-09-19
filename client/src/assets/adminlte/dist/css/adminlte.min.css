@@ -18483,7 +18483,8 @@ html.maximized-card {
 }
 
 .text-sm .card-title {
-    font-size: 1rem
+  font-size: 2rem;
+  font-weight: bold;
 }
 
 .text-sm .nav-link {

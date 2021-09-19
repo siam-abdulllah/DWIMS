@@ -95,8 +95,6 @@ namespace API.Controllers
         {
             try
             {
-
-
                 var menuConfig = await _menuConfigRepo.ListAllAsync();
                 var subMenu = await _subMenuRepo.ListAllAsync();
                 var roles = await _context.Roles.ToListAsync();
