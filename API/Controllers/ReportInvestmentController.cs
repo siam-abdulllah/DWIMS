@@ -126,6 +126,37 @@ namespace API.Controllers
             return Ok(new Pagination<RptDocLocWiseInvestmentDto>(rptParrams.PageIndex, rptParrams.PageSize, 10, data));
         }
 
+
+        //[HttpPost("GetComparativeStudy")]
+        //public async ActionResult<IReadOnlyList<RptDocLocWiseInvestmentDto>> GetComparativeStudy([FromQuery] ReportInvestmentInfoSpecParams rptParrams, ReportSearchDto search)
+        //{
+
+        //    List<SqlParameter> parms = new List<SqlParameter>
+        //            {
+        //                new SqlParameter("@UserId", search.UserId),
+        //                new SqlParameter("@FromDate", search.FromDate),
+        //                new SqlParameter("@ToDate", search.ToDate),
+        //                new SqlParameter("@SBU", search.SBU),
+        //                new SqlParameter("@DonationType", search.DonationType),
+        //                new SqlParameter("@InvestType", search.InvestType),
+        //                new SqlParameter("@InstitutionId", search.InstitutionId),
+        //                new SqlParameter("@SocietyId", search.SocietyId),
+        //                new SqlParameter("@BcdsId", search.BcdsId),
+        //                new SqlParameter("@LocationType", search.LocationType),
+        //                new SqlParameter("@TerritoryCode", search.TerritoryCode),
+        //                new SqlParameter("@MarketCode", search.MarketCode),
+        //                new SqlParameter("@regionCode", search.RegionCode),
+        //                new SqlParameter("@ZoneCode", search.ZoneCode),
+        //                new SqlParameter("@DivisionCode", search.DivisionCode),
+        //            };
+
+        //    //var results = _db.Database.ExecuteSqlRaw($"EXECUTE SP_InvestmentReport @UserId,@FromDate,@ToDate, @SBU, @DonationType, @InvestType, @InstitutionId, @SocietyId, @BcdsId, @LocationType, @TerritoryCode, @MarketCode, @regionCode, @ZoneCode,  @DivisionCode");
+
+        //    //var data = _mapper.Map<IReadOnlyList<RptDocLocWiseInvestment>, IReadOnlyList<RptDocLocWiseInvestmentDto>>(results);
+
+        //    return Ok(new Pagination<RptDocLocWiseInvestmentDto>(rptParrams.PageIndex, rptParrams.PageSize, 10, data));
+        //}
+
         [HttpGet("getReportList")]
         public async Task<ActionResult<IReadOnlyList<ReportConfigDto>>> getReportList([FromQuery] ReportConfigSpecParams rptParrams)
         {
