@@ -16,6 +16,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from '../home/home.component';
 import { SuperAdminRoleGuard } from '../_guard/superAdminRole.guard';
 import { ClusterInfoComponent } from '../master/cluster-info/cluster-info.component';
+import { MenuHeadComponent } from '../menuHead/menuHead.component';
+import { SubMenuComponent } from '../subMenu/subMenu.component';
+import { MenuConfigComponent } from '../menuConfig/menuConfig.component';
 
 const portalRoutes: Routes = [
   {
@@ -36,6 +39,9 @@ const portalRoutes: Routes = [
         {path: 'sbu-wise-budget', component: SbuWiseBudgetComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'rptInvestment', component: ReportInvestmentComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'cluster', component: ClusterInfoComponent, canActivate: [SuperAdminRoleGuard]},
+        {path: 'menuHead', component: MenuHeadComponent, canActivate: [SuperAdminRoleGuard]},
+        {path: 'subMenu', component: SubMenuComponent, canActivate: [SuperAdminRoleGuard]},
+        {path: 'menuConfig', component: MenuConfigComponent, canActivate: [SuperAdminRoleGuard]},
         {path: '', component: PortalComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'master', loadChildren: () => import('../master/master.module')
        .then(mod => mod.MasterModule) , data: {breadcrumb: {skip: true}}}, 

@@ -28,6 +28,9 @@ import { SbuWiseBudgetComponent } from '../sbu-wise-budget/sbu-wise-budget.compo
 import { DocHonApprComponent } from '../docHonAppr/docHonAppr.component';
 import { ClusterInfoComponent } from '../master/cluster-info/cluster-info.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { MenuHeadComponent } from '../menuHead/menuHead.component';
+import { SubMenuComponent } from '../subMenu/subMenu.component';
+import { MenuConfigComponent } from '../menuConfig/menuConfig.component';
 @NgModule({
   imports: [
     
@@ -61,7 +64,10 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     ReportInvestmentComponent,
     SbuWiseBudgetComponent,
     DocHonApprComponent,
-    ClusterInfoComponent
+    ClusterInfoComponent,
+    MenuHeadComponent,
+    SubMenuComponent,
+    MenuConfigComponent
   ],
   providers: [DatePipe]
 })
