@@ -23,7 +23,7 @@
                                     <h3 class="card-title">BCDS Info</h3>
                                 </div>
                                 <div class="col-sm-2">
-                                    <button class="btn btn-success   btn-block" type="submit" [disabled]="form.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                    <button class="btn btn-success   btn-block" style="text-shadow: 3em #000;" type="submit" [disabled]="form.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
                                 </div>
                                 <div class="col-sm-2">
                                     <button class="btn btn-danger  btn-block" type="button" (click)="resetForm(form)"><i class="fa fa-undo"></i>&nbsp; Reset</button>
@@ -83,10 +83,11 @@
 
                             <div class="form-group">
                                 <table class="table">
-                                    <tr>
+                                    <tr class="HeaderRow">
                                         <td>BCDS Name</td>
                                         <td>Address</td>
                                         <td>No of Member</td>
+                                        <td></td>
                                     </tr>
                                     <tr *ngFor="let bcds of bcdsInfo">
                                         <td>

@@ -9,7 +9,6 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-bcds-info',
   templateUrl: './bcds-info.component.html',
-  styleUrls: ['./bcds-info.component.scss']
 })
 export class BcdsInfoComponent implements OnInit {
 

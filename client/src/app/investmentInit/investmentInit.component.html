@@ -371,7 +371,7 @@
                                 <div class="form-group">
                                     <div class="form-group">
                                         <table class="table  table-bordered">
-                                            <tr>
+                                            <tr class="HeaderRow">
                                                 <td>Product Code</td>
                                                 <td>Product Name</td>
                                             </tr>
@@ -533,7 +533,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <table class="table  table-bordered">
-                                                    <tr>
+                                                    <tr class="HeaderRow">
                                                         <td>Investment</td>
                                                         <td>Commitment-All</td>
                                                         <td>Commitment-Own</td>
@@ -690,9 +690,11 @@
                                 </div>
                                 <div class="form-group">
                                     <table class="table  table-bordered">
-                                        <tr>
+                                        <tr class="HeaderRow">
                                             <td>Product Code</td>
                                             <td>Product Name</td>
+                                            <td></td>
+                                            <td></td>
                                         </tr>
                                         <tr *ngFor="let a of investmentTargetedProds">
                                             <td>
@@ -752,10 +754,11 @@
                                 </div>
                                 <div class="form-group">
                                     <table class="table  table-bordered">
-                                        <tr>
+                                        <tr class="HeaderRow">
                                             <td>Market Group Name</td>
                                             <td>Market Code</td>
                                             <td>Market Name</td>
+                                            <td></td>
                                         </tr>
                                         <tr *ngFor="let a of investmentTargetedGroups">
 
@@ -800,7 +803,7 @@
                 <div class="table-responsive" style="border: 1px solid #bed2c9; width: 100%;">
                     <table class="table table-bordered table-responsive table-hover table-striped">
                         <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc));">
-                            <tr>
+                            <tr class="HeaderRow">
                                 <th scope="col" style="width: 7%">Action</th>
                                 <th scope="col" style="width: 0;display:none;">Id</th>
                                 <th scope="col" style="width: 9%">Reference No</th>

@@ -122,11 +122,14 @@
                                 </div>
                                 <div class="form-group">
                                     <table class="table  table-bordered">
-                                        <tr>
+                                        <tr class="HeaderRow">
                                             <td>Sub Campaign</td>
                                             <td>Budget</td>
                                             <td>Start Date</td>
                                             <td>End Date</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
                                         </tr>
                                         <tr *ngFor="let a of campaignDtls">
                                             <td>
@@ -159,9 +162,10 @@
                                 <legend>Product</legend>
                                 <div class="form-group">
                                     <table class="table  table-bordered">
-                                        <tr>
+                                        <tr class="HeaderRow">
                                             <td>Product Code</td>
                                             <td>Product Name</td>
+                                            <td></td>
                                         </tr>
                                         <tr *ngFor="let b of campaignDtlProducts">
 
@@ -197,7 +201,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <table class="table  table-bordered">
-                                                    <tr>
+                                                    <tr class="HeaderRow">
                                                         <th scope="col" style="width: 7%">Action</th>
                                                         <th scope="col" style="width: 0;display:none;">Id</th>
                                                         <td>Campaign No</td>
