@@ -1583,7 +1583,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("MarketGroupMst");
                 });
 
-            modelBuilder.Entity("Core.Entities.MenuConf", b =>
+            modelBuilder.Entity("Core.Entities.MenuConfig", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1596,8 +1596,8 @@ namespace Infrastructure.Data.Migrations
                     b.Property<DateTimeOffset>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("SetOn")
                         .HasColumnType("datetimeoffset");
@@ -1607,7 +1607,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MenuConf");
+                    b.ToTable("MenuConfig");
                 });
 
             modelBuilder.Entity("Core.Entities.MenuHead", b =>
@@ -2581,8 +2581,8 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
 
-                    b.Property<string>("MenuHeadId")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("MenuHeadId")
+                        .HasColumnType("int");
 
                     b.Property<DateTimeOffset>("ModifiedOn")
                         .HasColumnType("datetimeoffset");

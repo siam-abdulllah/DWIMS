@@ -33,11 +33,11 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-2">
-                                        <label>Authority Name</label>
+                                        <label>Menu Head</label>
                                         <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <ng-select [virtualScroll]="true" [items]="menuHeads" bindLabel="menuHeadName" bindValue="menuHeadId" placeholder="Select Menu Head" id="menuHeadId" name="menuHeadId" #menuHeadId="ngModel" [(ngModel)]="marketGroupService.marketGroupFormData.menuHeadId">
+                                        <ng-select [virtualScroll]="true" [items]="menuHeads" bindLabel="menuHeadName" bindValue="id" (change)="getSubMenu()" placeholder="Select Menu Head" id="menuHeadId" name="menuHeadId" #menuHeadId="ngModel" [(ngModel)]="subMenuService.subMenuFormData.menuHeadId">
                                         </ng-select>
                                     </div>
                                     <div class="col-md-2">
@@ -45,7 +45,7 @@
                                         <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <input class="form-control " placeholder="subMenuName" name="subMenuName" #subMenuName="ngModel" [(ngModel)]="subMenuService.subMenuFormData.subMenuName" required [class.invalid]="subMenuName.invalid && subMenuName.touched">
+                                        <input class="form-control " placeholder="Sub Menu Name" name="subMenuName" #subMenuName="ngModel" [(ngModel)]="subMenuService.subMenuFormData.subMenuName" required [class.invalid]="subMenuName.invalid && subMenuName.touched">
 
                                     </div>
 
@@ -72,20 +72,22 @@
                             <div class="form-group">
                                 <table class="table">
                                     <tr>
-                                        <td>subMenu Name</td>
-                                        <td>Priority</td>
-                                        <td>Status</td>
-                                        <td>Remarks</td>
+                                        <td>Sub Menu </td>
+                                        <td>Sequence</td>
+                                        <td>URL</td>
                                     </tr>
                                     <tr *ngFor="let a of subMenus">
                                         <td>
-                                            {{a.menuHeadName}}
+                                            {{a.subMenuName}}
                                         </td>
                                         <td>
-                                            {{a.menuHeadSeq}}
+                                            {{a.subMenuSeq}}
                                         </td>
-
-                                        <button class="btn btn-info  btn-block" type="button" (click)="populateForm(menuHead)"><i class="fa fa-pen"></i>&nbsp; Edit</button>
+                                        <td>
+                                            {{a.url}}
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-info  btn-block" type="button" (click)="populateForm(a)"><i class="fa fa-pen"></i>&nbsp; Edit</button>
                                         </td>
                                     </tr>
                                 </table>

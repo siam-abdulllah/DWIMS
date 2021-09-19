@@ -29,6 +29,8 @@ import { DocHonApprComponent } from '../docHonAppr/docHonAppr.component';
 import { ClusterInfoComponent } from '../master/cluster-info/cluster-info.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { MenuHeadComponent } from '../menuHead/menuHead.component';
+import { SubMenuComponent } from '../subMenu/subMenu.component';
+import { MenuConfigComponent } from '../menuConfig/menuConfig.component';
 @NgModule({
   imports: [
     
@@ -63,7 +65,9 @@ import { MenuHeadComponent } from '../menuHead/menuHead.component';
     SbuWiseBudgetComponent,
     DocHonApprComponent,
     ClusterInfoComponent,
-    MenuHeadComponent
+    MenuHeadComponent,
+    SubMenuComponent,
+    MenuConfigComponent
   ],
   providers: [DatePipe]
 })

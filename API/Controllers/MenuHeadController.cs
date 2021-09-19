@@ -104,8 +104,24 @@ namespace API.Controllers
 
                 throw ex;
             }
-        } [HttpGet("menuHeadsForSubMenu")]
+        } 
+        [HttpGet("menuHeadsForSubMenu")]
         public async Task<IReadOnlyList<MenuHead>> GetMenuHeadsForSubMenu()
+        {
+            try
+            {
+              
+                var menuHead = await _menuHeadRepo.ListAllAsync();
+                return menuHead;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+        } 
+        [HttpGet("menuHeadsForMenuConfig")]
+        public async Task<IReadOnlyList<MenuHead>> GetMenuHeadsForMenuConfig()
         {
             try
             {

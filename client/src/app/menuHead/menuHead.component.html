@@ -33,7 +33,7 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-2">
-                                        <label>Authority Name</label>
+                                        <label>Menu Head</label>
                                         <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
@@ -51,10 +51,8 @@
                             <div class="form-group">
                                 <table class="table">
                                     <tr>
-                                        <td>Authority Name</td>
-                                        <td>Priority</td>
-                                        <td>Status</td>
-                                        <td>Remarks</td>
+                                        <td>Menu Head Name</td>
+                                        <td>Sequence</td>
                                     </tr>
                                     <tr *ngFor="let a of menuHeads">
                                         <td>
@@ -63,8 +61,8 @@
                                         <td>
                                             {{a.menuHeadSeq}}
                                         </td>
-
-                                        <button class="btn btn-info  btn-block" type="button" (click)="populateForm(menuHead)"><i class="fa fa-pen"></i>&nbsp; Edit</button>
+                                        <td>
+                                            <button class="btn btn-info  btn-block" type="button" (click)="populateForm(a)"><i class="fa fa-pen"></i>&nbsp; Edit</button>
                                         </td>
                                     </tr>
                                 </table>

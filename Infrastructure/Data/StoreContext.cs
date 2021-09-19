@@ -64,7 +64,7 @@ namespace Infrastructure.Data
         public DbSet<ClusterDtl> ClusterDtl { get; set; }
         public DbSet<MenuHead> MenuHead { get; set; }
         public DbSet<SubMenu> SubMenu { get; set; }
-        public DbSet<MenuConf> MenuConf { get; set; }
+        public DbSet<MenuConfig> MenuConfig { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

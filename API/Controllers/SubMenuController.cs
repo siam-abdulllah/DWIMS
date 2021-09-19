@@ -14,13 +14,13 @@ namespace API.Controllers
 {
     public class SubMenuController : BaseApiController
     {
-        private readonly IGenericRepository<SubMenu> _SubMenuRepo;
+        private readonly IGenericRepository<SubMenu> _subMenuRepo;
         private readonly IMapper _mapper;
         public SubMenuController(IGenericRepository<SubMenu> SubMenuRepo,
         IMapper mapper)
         {
             _mapper = mapper;
-            _SubMenuRepo = SubMenuRepo;
+            _subMenuRepo = SubMenuRepo;
         }
         [HttpPost("insert")]
         public ActionResult<SubMenu> InsertSubMenu(SubMenu SubMenu)
@@ -34,8 +34,8 @@ namespace API.Controllers
                 SetOn = DateTimeOffset.Now
 
             };
-            _SubMenuRepo.Add(mh);
-            _SubMenuRepo.Savechange();
+            _subMenuRepo.Add(mh);
+            _subMenuRepo.Savechange();
 
             //if (!userObj.Succeeded) return BadRequest(new ApiResponse(400));
             //var userEntity = await _userManager.FindByEmailAsync(user.Email);
@@ -62,7 +62,7 @@ namespace API.Controllers
         [HttpPost("update")]
         public ActionResult<SubMenu> UpdateSubMenu(SubMenu SubMenu)
         {
-            // var user =  _SubMenuRepo.GetByIdAsync(SubMenu.Id);
+            // var user =  _subMenuRepo.GetByIdAsync(SubMenu.Id);
             // if (user == null) return Unauthorized(new ApiResponse(401));
             var mh = new SubMenu
             {
@@ -74,8 +74,8 @@ namespace API.Controllers
                 ModifiedOn = DateTimeOffset.Now
 
             };
-            _SubMenuRepo.Update(mh);
-            _SubMenuRepo.Savechange();
+            _subMenuRepo.Update(mh);
+            _subMenuRepo.Savechange();
             return new SubMenu
             {
                 Id = mh.Id,
@@ -84,7 +84,7 @@ namespace API.Controllers
             };
         }
 
-        [HttpGet("SubMenus/menuHeadId")]
+        [HttpGet("subMenus/{menuHeadId}")]
         public async Task<ActionResult<Pagination<SubMenu>>> GetSubMenus(int menuHeadId,
           [FromQuery] SubMenuSpecParams SubMenuParrams)
         {
@@ -94,14 +94,29 @@ namespace API.Controllers
 
                 var countSpec = new SubMenuWithFiltersForCountSpecificication(menuHeadId);
 
-                var totalItems = await _SubMenuRepo.CountAsync(countSpec);
+                var totalItems = await _subMenuRepo.CountAsync(countSpec);
 
-                var SubMenu = await _SubMenuRepo.ListAsync(spec);
+                var subMenu = await _subMenuRepo.ListAsync(spec);
 
                 //var data = _mapper.Map<IReadOnlyList<SubMenu>, IReadOnlyList<SubMenu>>(SubMenu);
 
-                return Ok(new Pagination<SubMenu>(SubMenuParrams.PageIndex, SubMenuParrams.PageSize, totalItems, SubMenu));
+                return Ok(new Pagination<SubMenu>(SubMenuParrams.PageIndex, SubMenuParrams.PageSize, totalItems, subMenu));
                  //var data = await _repository.GetDateWiseProformaInfos(searchDto);
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+        } 
+        [HttpGet("subMenusForMenuConfig/{menuHeadId}")]
+        public async Task<IReadOnlyList<SubMenu>> GetsubMenusForMenuConfig(int menuHeadId)
+        {
+            try
+            {
+                var spec = new SubMenuSpecification(menuHeadId);
+                var subMenu = await _subMenuRepo.ListAsync(spec);
+                return subMenu;
             }
             catch (System.Exception ex)
             {
