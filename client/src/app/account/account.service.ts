@@ -12,6 +12,7 @@ import { GenericParams } from '../shared/models/genericParams';
 import { IPagination, Pagination } from '../shared/models/pagination';
 import { IEmployeeInfo } from '../shared/models/employeeInfo';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { IMenuConfig } from '../shared/models/menuConfig';
 @Injectable({
   providedIn: 'root'
 })
@@ -78,6 +79,27 @@ export class AccountService {
     const token = localStorage.getItem('token');
     const r =  this.jwtHelper.decodeToken(token);
     return r.role;
+  }
+  eventPerm(url:string) {
+    debugger;
+    const token = localStorage.getItem('token');
+    const r =  this.jwtHelper.decodeToken(token);
+    //return r.role;
+    //return this.http.get(this.baseUrl + 'menuConfig/menuConfigs/'+this.menuConfigFormData.menuHeadId+'/'+this.menuConfigFormData.roleId);
+    
+    return this.http.post(this.baseUrl + 'menuConfig/menuConfigsForSecurity/'+r.role,url).pipe(
+      map((menuConfig: IMenuConfig) => {
+        if (menuConfig) {
+          // localStorage.setItem('token', user.token);
+          // this.currentUserSource.next(user);
+          return true;
+        }
+        else{
+          return false;
+        }
+      })
+    );
+      
   }
   getEmployeeId() {
     const employeeId = localStorage.getItem('empID');

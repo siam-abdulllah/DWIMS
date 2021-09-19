@@ -12,12 +12,14 @@ export class SuperAdminRoleGuard implements CanActivate {
     private router: Router, private toastr: ToastrService) {}
   canActivate(route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean {
+      debugger;
     if (!this.accountService.loggedIn()) {
         this.toastr.error('Unauthorized Access!!!');
         this.router.navigate(['/login']);
         return false;
     }
-    if (this.accountService.getUserRole() === 'Administrator') {
+    //if (this.accountService.getUserRole() === 'Administrator') {
+    if (this.accountService.eventPerm(state.url)) {
         // console.log(this.accountService.getUserRole());
         return true;
     }

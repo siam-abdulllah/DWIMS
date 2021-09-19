@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Data.Migrations
 {
-    public partial class InithialCreate : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -258,6 +258,40 @@ namespace Infrastructure.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_InvestmentType", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MenuConfig",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DataStatus = table.Column<int>(nullable: false),
+                    SetOn = table.Column<DateTimeOffset>(nullable: false),
+                    ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
+                    SubMenuId = table.Column<int>(nullable: false),
+                    RoleId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MenuConfig", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MenuHead",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DataStatus = table.Column<int>(nullable: false),
+                    SetOn = table.Column<DateTimeOffset>(nullable: false),
+                    ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
+                    MenuHeadSeq = table.Column<int>(nullable: false),
+                    MenuHeadName = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MenuHead", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -524,6 +558,25 @@ namespace Infrastructure.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SubCampaign", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SubMenu",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DataStatus = table.Column<int>(nullable: false),
+                    SetOn = table.Column<DateTimeOffset>(nullable: false),
+                    ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
+                    SubMenuSeq = table.Column<int>(nullable: false),
+                    SubMenuName = table.Column<string>(nullable: true),
+                    Url = table.Column<string>(nullable: true),
+                    MenuHeadId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SubMenu", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -1883,6 +1936,12 @@ namespace Infrastructure.Data.Migrations
                 name: "MarketGroupDtl");
 
             migrationBuilder.DropTable(
+                name: "MenuConfig");
+
+            migrationBuilder.DropTable(
+                name: "MenuHead");
+
+            migrationBuilder.DropTable(
                 name: "PostComments");
 
             migrationBuilder.DropTable(
@@ -1908,6 +1967,9 @@ namespace Infrastructure.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "SBUWiseBudget");
+
+            migrationBuilder.DropTable(
+                name: "SubMenu");
 
             migrationBuilder.DropTable(
                 name: "ApprovalAuthority");
