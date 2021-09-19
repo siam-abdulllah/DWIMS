@@ -124,8 +124,8 @@ namespace API.Controllers
                 throw ex;
             }
         } 
-        [HttpPost("menuConfigsForSecurity/{role}/{url}")]
-        public async Task<IReadOnlyList<MenuConfigDto>> menuConfigsForSecurity(string role,[FromRoute] string url)
+        [HttpPost("menuConfigsForSecurity")]
+        public async Task<IReadOnlyList<MenuConfigDto>> menuConfigsForSecurity(MenuConfigDto menuConfigDto)
         {
             try
             {
@@ -135,11 +135,11 @@ namespace API.Controllers
                 var menuHeads = await _menuHeadRepo.ListAllAsync();
                 var menuConfigs = (from mc in menuConfig
                              join s in subMenu on mc.SubMenuId equals s.Id
-                             join r in _context.Roles on mc.RoleId equals r.Id
+                             join r in roles on mc.RoleId equals r.Id
                              join m in menuHeads on s.MenuHeadId equals m.Id
-                             where s.Url == url && r.Name == role
-                             //orderby r.BrandName
-                             select new MenuConfigDto
+                             where s.Url == menuConfigDto.Url && r.Name == menuConfigDto.RoleName
+                                   //orderby r.BrandName
+                                   select new MenuConfigDto
                              {
                                  Id=mc.Id,
                                  MenuHeadName=m.MenuHeadName,

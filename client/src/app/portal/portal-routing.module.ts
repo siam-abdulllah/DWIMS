@@ -26,7 +26,8 @@ const portalRoutes: Routes = [
     component: PortalComponent,
     children: [
       
-        {path: 'home', component: HomeComponent, canActivate: [SuperAdminRoleGuard]},
+        //{path: 'home', component: HomeComponent, canActivate: [SuperAdminRoleGuard]},
+        {path: 'home', component: HomeComponent},
         {path: 'apprAuthConfig', component: ApprAuthConfigComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'approval-ceiling', component: ApprovalCeilingComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'approval-time-limit', component: ApprovalTimeLimitComponent, canActivate: [SuperAdminRoleGuard]},
@@ -41,7 +42,7 @@ const portalRoutes: Routes = [
         {path: 'cluster', component: ClusterInfoComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'menuHead', component: MenuHeadComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'subMenu', component: SubMenuComponent, canActivate: [SuperAdminRoleGuard]},
-        {path: 'menuConfig', component: MenuConfigComponent, canActivate: [SuperAdminRoleGuard]},
+        {path: 'menuConfig', component: MenuConfigComponent},
         {path: '', component: PortalComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'master', loadChildren: () => import('../master/master.module')
        .then(mod => mod.MasterModule) , data: {breadcrumb: {skip: true}}}, 
