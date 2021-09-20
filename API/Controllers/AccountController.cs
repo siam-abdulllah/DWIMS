@@ -117,7 +117,7 @@ namespace API.Controllers
             return BadRequest("Problem updating the user");
         }
 
-        [HttpPost("login")]
+       [HttpPost("login")]
 
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
