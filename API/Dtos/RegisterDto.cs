@@ -12,7 +12,7 @@ namespace API.Dtos
         public string EmployeeSAPCode { get; set; } 
         [Required]
         public string DisplayName { get; set; }
-        [Required]
+        //[Required]
         [EmailAddress]
         public string Email { get; set; }
         [Required]
