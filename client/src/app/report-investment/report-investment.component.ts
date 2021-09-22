@@ -302,7 +302,7 @@ export class ReportInvestmentComponent implements OnInit {
       return;
     }
 
-    this.toastr.show( rpt, "Info");
+    //this.toastr.show( rpt, "Info");
 
     if (rpt == "Institution/Society/BCDS Wise Investment") {
       this.getDocSocInvestReport();
@@ -368,7 +368,7 @@ getSbuWiseDocROIReport()  {
     campaignName: this.investmentSearchForm.value.campaignName,
     subCampaignName: this.investmentSearchForm.value.subCampaignName,
   };
-
+debugger;
   this.reportInvestmentService.GetDoctorLocationWiseInvestment(investmentReportSearchDto).subscribe(resp => {
     // this.reportInvestmentService.getInsSocietyBCDSWiseInvestment().subscribe(resp => {  
     this.docLocWiseInvestment = resp as IDocLocWiseInvestment[];
@@ -402,7 +402,7 @@ viewSbuWiseDocROIReport() {
 
   let row: any[] = [];
   let rowD: any[] = [];
-  let col = ['SBU Name', 'Location', 'Invested \nAmount.', 'Duration', 'Commitment',
+  let col = ['SBU Name', 'Location', 'Invested \nAmount', 'Duration', 'Commitment',
     'Actual \nShare']; // initialization for headers
   // let col = ['SL NO.','Name OF Importer','Products','PI No.','PI Date','Manufacturer',
   // 'Exporter', 'Country Of Origin','Pack Size','Approval Amount MT','Approval Amount Unit', 'Status'];
@@ -411,7 +411,7 @@ viewSbuWiseDocROIReport() {
     console.log(r);
     //row.push(++slNO);
     row.push(a.sbuName);
-    row.push(a.marketName + a.territoryName + a.regionName + a.divisionName + a.zoneName);
+    row.push(a.marketName +", " + a.territoryName +", " + a.regionName +", " + a.divisionName +", " + a.zoneName);
     row.push(a.investedAmt);
 
     const convertedfDate = new Date(a.fromDate);
@@ -596,7 +596,7 @@ viewDoctorWiseCommitvsReturnReport() {
     console.log(r);
     //row.push(++slNO);
     row.push(a.sbuName);
-    row.push(a.marketName + a.territoryName + a.regionName + a.divisionName + a.zoneName);
+    row.push(a.marketName +", " + a.territoryName+", " + a.regionName+", " + a.divisionName+", " + a.zoneName);
     row.push(a.doctorId);
     row.push(a.doctorName);
     row.push(a.institutionName);
