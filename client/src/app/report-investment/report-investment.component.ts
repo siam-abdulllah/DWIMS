@@ -411,7 +411,7 @@ viewSbuWiseDocROIReport() {
     console.log(r);
     //row.push(++slNO);
     row.push(a.sbuName);
-    row.push(a.marketName +", " + a.territoryName +", " + a.regionName +", " + a.divisionName +", " + a.zoneName);
+    row.push(a.marketName +", " + a.territoryName +", \n" + a.regionName +", " + a.divisionName +", \n" + a.zoneName);
     row.push(a.investedAmt);
 
     const convertedfDate = new Date(a.fromDate);
@@ -502,7 +502,7 @@ viewDonationWiseInvestmentReport() {
     console.log(r);
     //row.push(++slNO);
     row.push(a.sbuName);
-    row.push(a.marketName + a.territoryName + a.regionName + a.divisionName + a.zoneName);
+    row.push(a.marketName + ", " + a.territoryName + ", \n" + a.regionName + ", " + a.divisionName + ", \n" + a.zoneName);
     row.push(a.doctorId);
     row.push(a.doctorName);
     row.push(a.institutionName);
@@ -596,7 +596,7 @@ viewDoctorWiseCommitvsReturnReport() {
     console.log(r);
     //row.push(++slNO);
     row.push(a.sbuName);
-    row.push(a.marketName +", " + a.territoryName+", " + a.regionName+", " + a.divisionName+", " + a.zoneName);
+    row.push(a.marketName +", " + a.territoryName+", \n" + a.regionName+", " + a.divisionName+", \n" + a.zoneName);
     row.push(a.doctorId);
     row.push(a.doctorName);
     row.push(a.institutionName);
@@ -693,7 +693,7 @@ viewDoctorWiseCommitvsReturnReport() {
       console.log(r);
       //row.push(++slNO);
       row.push(a.institutionName + a.societyName + a.bcdsName);
-      row.push(a.marketName + a.territoryName + a.regionName + a.divisionName + a.zoneName);
+      row.push(a.marketName + ", " + a.territoryName + ", \n" + a.regionName + ", " + a.divisionName + ", \n" + a.zoneName);
       row.push(a.donationType);
       row.push(a.investedAmt);
 
@@ -786,7 +786,7 @@ viewHighestDeviationReport() {
     console.log(r);
     //row.push(++slNO);
     row.push(a.sbuName);
-    row.push(a.marketName + a.territoryName + a.regionName + a.divisionName + a.zoneName);
+    row.push(a.marketName + ", " + a.territoryName + ", \n" + a.regionName + ", " + a.divisionName + ", \n" + a.zoneName);
     row.push(a.doctorId);
     row.push(a.doctorName);
     row.push(a.institutionName);
@@ -882,7 +882,7 @@ viewDocWiseLeadershipReport() {
     console.log(r);
     //row.push(++slNO);
     row.push(a.sbuName);
-    row.push(a.marketName + a.territoryName + a.regionName + a.divisionName + a.zoneName);
+    row.push(a.marketName + ", " + a.territoryName + ", \n" + a.regionName + ", " + a.divisionName + ", \n" + a.zoneName);
     row.push(a.doctorId);
     row.push(a.doctorName);
     row.push(a.institutionName);
@@ -971,7 +971,7 @@ viewDocWisePotentialReport() {
   let row: any[] = [];
   let rowD: any[] = [];
   let col = ['SBU Name', 'Location', 'Doctor Code', 'Doctor Name' , 'Institution' , 'Donation Type' ,'Invested \nAmount.', 'Duration', 'Commitment',
-    'Actual \nShare', 'Number of \nTransaction', 'Number of \Patient']; // initialization for headers
+    'Actual \nShare', 'Number of \nTransaction', 'No of \Patient']; // initialization for headers
   // let col = ['SL NO.','Name OF Importer','Products','PI No.','PI Date','Manufacturer',
   // 'Exporter', 'Country Of Origin','Pack Size','Approval Amount MT','Approval Amount Unit', 'Status'];
   let slNO = 0;
@@ -979,7 +979,7 @@ viewDocWisePotentialReport() {
     console.log(r);
     //row.push(++slNO);
     row.push(a.sbuName);
-    row.push(a.marketName + a.territoryName + a.regionName + a.divisionName + a.zoneName);
+    row.push(a.marketName + ", " + a.territoryName + ", \n" + a.regionName + ", " + a.divisionName + ", \n" + a.zoneName);
     row.push(a.doctorId);
     row.push(a.doctorName);
     row.push(a.institutionName);
@@ -1075,7 +1075,7 @@ viewBrandWiseInvestmentReport() {
     console.log(r);
     //row.push(++slNO);
     row.push(a.sbuName);
-    row.push(a.marketName + a.territoryName + a.regionName + a.divisionName + a.zoneName);
+    row.push(a.marketName + ", " + a.territoryName + ", \n" + a.regionName + ", " + a.divisionName + ", \n" + a.zoneName);
     row.push(a.brand);
     row.push(a.campaign);
     row.push(a.subCampaign);
@@ -1149,15 +1149,15 @@ viewBrandDocWiseInvestmentReport() {
 
   let row: any[] = [];
   let rowD: any[] = [];
-  let col = ['SBU Name', 'Location', 'Brand Name' , 'Campaign' , 'Sub-Campaign' , 'Doctor Code','Doctor Name','Institution',
-     'Doctor \nCategory' , 'No Of \nPatient' ,'Investment \nPrev. Yr', 'Investment \nCurnt. Yr', 'Duration', 'Commitment', 'Actual \nShare' ]; // initialization for headers
+  let col = ['SBU Name', 'Location', 'Brand' , 'Camp.' , 'Sub Camp.' , 'Doctor Code','Doctor Name','Institution',
+     'Doc \nCategory' , 'No Of \nPatient' ,'Invst \nPrev. Yr', 'Invst \nCurnt. Yr', 'Duration', 'Commit.', 'Act \nShare' ]; // initialization for headers
 
   let slNO = 0;
   for (const a of r) {
     console.log(r);
     //row.push(++slNO);
     row.push(a.sbuName);
-    row.push(a.marketName + a.territoryName + a.regionName + a.divisionName + a.zoneName);
+    row.push(a.marketName + ", " + a.territoryName + ", \n" + a.regionName + ", " + a.divisionName + ", \n" + a.zoneName);
     row.push(a.brand);
     row.push(a.campaign);
     row.push(a.subCampaign);
@@ -1258,7 +1258,7 @@ viewCampSubCampWiseInvestmentReport() {
     console.log(r);
     //row.push(++slNO);
     row.push(a.sbuName);
-    row.push(a.marketName + a.territoryName + a.regionName + a.divisionName + a.zoneName);
+    row.push(a.marketName + ", " + a.territoryName + ", \n" + a.regionName + ", " + a.divisionName + ", \n" + a.zoneName);
     row.push(a.campaign);
     row.push(a.subCampaign);
 
@@ -1400,7 +1400,7 @@ viewSBUWiseInvestCommitShareIndivDocReport() {
     pdf.setFontType('bold');
     pdf.text('Report Name', 40, 100);
     pdf.setFontType('normal');
-    pdf.text(title , 150, 100);
+    pdf.text(': ' + title , 150, 100);
     const pDate = this.datePipe.transform(new Date, "dd/MM/yyyy");
     pdf.text('Printing Date: ' + pDate, 680, 100);
     var pageContent = function (data) {
@@ -1415,6 +1415,7 @@ viewSBUWiseInvestCommitShareIndivDocReport() {
       pdf.setFontSize(9);
       var pageHeight = pdf.internal.pageSize.height || pdf.internal.pageSize.getHeight();
       pdf.text(str, data.settings.margin.left, pageHeight - 10); // showing current page number
+     // pdf.text(title, 100, pageHeight - 10); 
     };
     pdf.autoTable(col, rowD,
       {
@@ -1429,7 +1430,7 @@ viewSBUWiseInvestCommitShareIndivDocReport() {
         didDrawPage: pageContent,
         margin: { top: 110 },
         bodyStyles: { valign: 'middle', lineColor: [153, 153, 153] },
-        styles: { overflow: 'linebreak', cellWidth: 'wrap', fontSize: 9, textColor: 0 },
+        styles: { overflow: 'linebreak', cellWidth: 'auto', fontSize: 9, textColor: 0 },
       });
 
     //for adding total number of pages // i.e 10 etc
