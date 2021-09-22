@@ -213,7 +213,6 @@ export class MasterService {
 
 getDonation(){    
   let params = new HttpParams();
-  debugger;
   if (this.genParams.search) {
     params = params.append('search', this.genParams.search);
   }

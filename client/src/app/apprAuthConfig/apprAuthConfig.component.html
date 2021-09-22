@@ -28,11 +28,14 @@
                                         <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <select class="form-control " id="approvalAuthorityId" name="approvalAuthorityId" #approvalAuthorityId="ngModel" [(ngModel)]="apprAuthConfigService.approvalAuthConfigFormData.approvalAuthorityId" required [class.invalid]="approvalAuthorityId.invalid && approvalAuthorityId.touched"
+                                        <!-- <select class="form-control " id="approvalAuthorityId" name="approvalAuthorityId" #approvalAuthorityId="ngModel" [(ngModel)]="apprAuthConfigService.approvalAuthConfigFormData.approvalAuthorityId" required [class.invalid]="approvalAuthorityId.invalid && approvalAuthorityId.touched"
                                             (change)="getApprovalAuthConfigs()">
                                             <option  [ngValue]="null">Select Authority</option>
                                             <option *ngFor="let approvalAuthority of approvalAuthorities" [value]="approvalAuthority.id">{{approvalAuthority.approvalAuthorityName}}</option>
-                                        </select>
+                                        </select> -->
+                                        <ng-select [virtualScroll]="true" [items]="approvalAuthorities" bindLabel="approvalAuthorityName" bindValue="id" placeholder="Select" id="approvalAuthorityId" name="approvalAuthorityId" #approvalAuthorityId="ngModel" [(ngModel)]="apprAuthConfigService.approvalAuthConfigFormData.approvalAuthorityId"
+                                            required [class.invalid]="approvalAuthorityId.invalid && approvalAuthorityId.touched">
+                                        </ng-select>
                                     </div>
                                 </div>
                             </div>
@@ -44,10 +47,12 @@
                                             <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-3">
-                                            <select id="" class="form-control " name="employeeId" #employeeId="ngModel" [(ngModel)]="apprAuthConfigService.approvalAuthConfigFormData.employeeId" required [class.invalid]="employeeId.invalid && employeeId.touched">
+                                            <!-- <select id="" class="form-control " name="employeeId" #employeeId="ngModel" [(ngModel)]="apprAuthConfigService.approvalAuthConfigFormData.employeeId" required [class.invalid]="employeeId.invalid && employeeId.touched">
                                                 <option  [ngValue]="null">Select Employee</option>
                                                 <option *ngFor="let employe of employees" [value]="employe.id">{{employe.employeeName}}</option>
-                                            </select>
+                                            </select> -->
+                                            <ng-select [virtualScroll]="true" [items]="employees" bindLabel="employeeName" bindValue="id" placeholder="Select" name="employeeId" #employeeId="ngModel" [(ngModel)]="apprAuthConfigService.approvalAuthConfigFormData.employeeId" required [class.invalid]="employeeId.invalid && employeeId.touched">
+                                            </ng-select>
                                         </div>
                                         <div class="col-md-3"></div>
                                     </div>

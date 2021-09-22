@@ -73,6 +73,11 @@ namespace API.Controllers
         {
             return await _userManager.FindByEmailAsync(email) != null;
         }
+        [HttpGet("userNameexists")]
+        public async Task<ActionResult<bool>> CheckUserNameExistsAsync([FromQuery] string userName)
+        {
+            return await _userManager.FindByNameAsync(userName) != null;
+        }
 
         [Authorize]
         [HttpGet("address")]
@@ -117,11 +122,11 @@ namespace API.Controllers
             return BadRequest("Problem updating the user");
         }
 
-        [HttpPost("login")]
+       [HttpPost("login")]
 
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            var user = await _userManager.FindByEmailAsync(loginDto.Email);
+            var user = await _userManager.FindByNameAsync(loginDto.UserName);
 
             if (user == null) return Unauthorized(new ApiResponse(401));
 
@@ -153,7 +158,7 @@ namespace API.Controllers
         public async Task<ActionResult<UserDto>> Register(SetRegisterDto setRegDto)
         {
 
-            if (CheckEmailExistsAsync(setRegDto.UserForm.Email).Result.Value)
+            if (CheckUserNameExistsAsync(setRegDto.UserForm.EmployeeSAPCode).Result.Value)
             {
                 return new BadRequestObjectResult(new ApiValidationErrorResponse { Errors = new[] { "Email address is in use" } });
             }
@@ -164,7 +169,7 @@ namespace API.Controllers
                 EmployeeSAPCode = setRegDto.UserForm.EmployeeSAPCode,
                 DisplayName = setRegDto.UserForm.DisplayName,
                 Email = setRegDto.UserForm.Email,
-                UserName = setRegDto.UserForm.Email,
+                UserName = setRegDto.UserForm.EmployeeSAPCode,
                 EmailConfirmed = false,
                 PhoneNumber = setRegDto.UserForm.PhoneNumber
 

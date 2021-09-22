@@ -207,10 +207,8 @@ namespace API.Controllers
 
                 //int v2 = investmentRecDto.InvestmentInitId ?? default(int);
                 // var recCommentRepo= _investmentRecCommentRepo.GetByIdAsync(investmentRecDto.InvestmentInitId ?? default);
-            if (result.Result==0) { return BadRequest(new ApiResponse(400, "Other recommendations are not completed yet")); }
-              
-            }
-            var alreadyExistSpec = new InvestmentAprSpecification(investmentAprDto.InvestmentInitId);
+            if (result.Result==0) { 
+                var alreadyExistSpec = new InvestmentAprSpecification(investmentAprDto.InvestmentInitId);
             var alreadyExistInvestmentAprList = await _investmentAprRepo.ListAsync(alreadyExistSpec);
             if (alreadyExistInvestmentAprList.Count > 0)
             {
@@ -220,6 +218,10 @@ namespace API.Controllers
                     _investmentAprRepo.Savechange();
                 }
             }
+            return BadRequest(new ApiResponse(400, "Apprval Ceiling Exceeded")); }
+              
+            }
+            
             var invApr = new InvestmentApr
             {
                 //ReferenceNo = investmentInitDto.ReferenceNo,

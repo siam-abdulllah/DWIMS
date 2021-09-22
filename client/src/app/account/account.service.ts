@@ -12,6 +12,7 @@ import { GenericParams } from '../shared/models/genericParams';
 import { IPagination, Pagination } from '../shared/models/pagination';
 import { IEmployeeInfo } from '../shared/models/employeeInfo';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { IMenuConfig, MenuConfig } from '../shared/models/menuConfig';
 @Injectable({
   providedIn: 'root'
 })
@@ -54,9 +55,7 @@ export class AccountService {
   login(values: any) {
     return this.http.post(this.baseUrl + 'account/login', values).pipe(
       map((user: IUser) => {
-        debugger;
         if (user) {
-          debugger;
           localStorage.setItem('token', user.token);
           localStorage.setItem('empID', String(user.employeeId));
           localStorage.setItem('displayName', String(user.displayName));
@@ -78,6 +77,27 @@ export class AccountService {
     const token = localStorage.getItem('token');
     const r =  this.jwtHelper.decodeToken(token);
     return r.role;
+  }
+  eventPerm(url:string) {
+    debugger;
+    const token = localStorage.getItem('token');
+    const r =  this.jwtHelper.decodeToken(token);
+    //return r.role;
+    //return this.http.get(this.baseUrl + 'menuConfig/menuConfigs/'+this.menuConfigFormData.menuHeadId+'/'+this.menuConfigFormData.roleId);
+    var menuConf=new MenuConfig();
+    menuConf.roleName=r.role;
+    menuConf.url=url;
+    return this.http.post(this.baseUrl + 'menuConfig/menuConfigsForSecurity',menuConf).pipe(
+      map((menuConfig: IMenuConfig) => {
+        if (menuConfig) {
+          debugger;
+          // localStorage.setItem('token', user.token);
+          // this.currentUserSource.next(user);
+          return menuConfig;
+        }
+      })
+    );
+      
   }
   getEmployeeId() {
     const employeeId = localStorage.getItem('empID');
@@ -112,7 +132,6 @@ export class AccountService {
 
   // tslint:disable-next-line: typedef
   register(values: any) {
-    debugger;
     return this.http.post(this.baseUrl + 'account/register', values).pipe(
       map((user: IUser) => {
         if (user) {
@@ -181,7 +200,6 @@ export class AccountService {
 
   getUsers(){    
     let params = new HttpParams();
-    debugger;
     if (this.genParams.search) {
       params = params.append('search', this.genParams.search);
     }
@@ -211,7 +229,6 @@ export class AccountService {
 
   getUserById(id:any) {
     let params = new HttpParams();
-    debugger;
     params = params.append('id', id);
     return this.http.get<IUserResponse>(this.baseUrl + 'account/getUserById', { observe: 'response', params })
     .pipe(

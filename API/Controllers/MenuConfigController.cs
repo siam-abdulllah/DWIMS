@@ -124,6 +124,40 @@ namespace API.Controllers
                 throw ex;
             }
         } 
+        [HttpPost("menuConfigsForSecurity")]
+        public async Task<IReadOnlyList<MenuConfigDto>> menuConfigsForSecurity(MenuConfigDto menuConfigDto)
+        {
+            try
+            {
+                var menuConfig = await _menuConfigRepo.ListAllAsync();
+                var subMenu = await _subMenuRepo.ListAllAsync();
+                var roles = await _context.Roles.ToListAsync();
+                var menuHeads = await _menuHeadRepo.ListAllAsync();
+                var menuConfigs = (from mc in menuConfig
+                             join s in subMenu on mc.SubMenuId equals s.Id
+                             join r in roles on mc.RoleId equals r.Id
+                             join m in menuHeads on s.MenuHeadId equals m.Id
+                             where s.Url == menuConfigDto.Url && r.Name == menuConfigDto.RoleName
+                                   //orderby r.BrandName
+                                   select new MenuConfigDto
+                             {
+                                 Id=mc.Id,
+                                 MenuHeadName=m.MenuHeadName,
+                                 MenuHeadId=m.Id,
+                                 SubMenuId=s.Id,
+                                 SubMenuName=s.SubMenuName,
+                                 RoleId=r.Id,
+                                 RoleName=r.Name
+                             }
+                              ).Distinct().ToList();
+                return menuConfigs;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+        } 
         //[HttpGet("menuConfigsForSubMenu")]
         //public async Task<IReadOnlyList<MenuConfig>> GetMenuConfigsForSubMenu()
         //{

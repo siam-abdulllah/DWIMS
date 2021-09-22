@@ -7,6 +7,7 @@ export interface IMenuConfig {
     subMenuName: string;
     roleId: string;
     roleName: string;
+    url: string;
 }
  
 export class MenuConfig implements IMenuConfig {
@@ -17,4 +18,5 @@ export class MenuConfig implements IMenuConfig {
     subMenuName: string;
     roleId: string;
     roleName: string;
+    url: string;
 } 
