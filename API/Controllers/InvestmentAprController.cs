@@ -33,7 +33,7 @@ namespace API.Controllers
         private readonly IGenericRepository<ApprAuthConfig> _apprAuthConfigRepo;
         private readonly IGenericRepository<ApprovalCeiling> _approvalCeilingRepo;
 
-        public InvestmentAprController(IGenericRepository<ApprovalCeiling> approvalCeilingRepo ,IGenericRepository<ApprAuthConfig> apprAuthConfigRepo,IGenericRepository<SBUWiseBudget> sbuRepo,IGenericRepository<InvestmentTargetedGroup> investmentTargetedGroupRepo, IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<InvestmentRecComment> investmentRecCommentRepo,
+        public InvestmentAprController(IGenericRepository<ApprovalCeiling> approvalCeilingRepo, IGenericRepository<ApprAuthConfig> apprAuthConfigRepo, IGenericRepository<SBUWiseBudget> sbuRepo, IGenericRepository<InvestmentTargetedGroup> investmentTargetedGroupRepo, IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<InvestmentRecComment> investmentRecCommentRepo,
             IGenericRepository<InvestmentApr> investmentAprRepo, IGenericRepository<InvestmentAprComment> investmentAprCommentRepo,
             IGenericRepository<InvestmentAprProducts> investmentAprProductRepo, IGenericRepository<Employee> employeeRepo,
             IGenericRepository<ReportInvestmentInfo> reportInvestmentInfoRepo, StoreContext dbContext, IMapper mapper)
@@ -176,15 +176,13 @@ namespace API.Controllers
         }
 
         [HttpPost("InsertApr/{empID}/{aprStatus}/{sbu}/{dType}")]
-        public async Task<ActionResult<InvestmentAprDto>> InsertInvestmentApr(int empId,string aprStatus,string sbu,string dType, InvestmentAprDto investmentAprDto)
+        public async Task<ActionResult<InvestmentAprDto>> InsertInvestmentApr(int empId, string aprStatus, string sbu, string dType, InvestmentAprDto investmentAprDto)
         {
             try
             {
-
-            
-            if (aprStatus == "Approved")
-            {
-                List<SqlParameter> parms = new List<SqlParameter>
+                if (aprStatus == "Approved")
+                {
+                    List<SqlParameter> parms = new List<SqlParameter>
                     {
                         new SqlParameter("@SBU", sbu),
                         new SqlParameter("@DTYPE", dType),
@@ -193,69 +191,71 @@ namespace API.Controllers
                         new SqlParameter("@PRAMOUNT", investmentAprDto.ProposedAmount),
                         new SqlParameter("@ASTATUS", aprStatus)
                     };
-               // var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentCeilingCheck @SBU,@DTYPE,@EID,@PRAMOUNT,@ASTATUS", parms.ToArray()).ToList();
-                var result = _dbContext.Database.ExecuteSqlRawAsync("EXECUTE SP_InvestmentCeilingCheck @SBU,@DTYPE,@EID,@IID,@PRAMOUNT,@ASTATUS", parms.ToArray());
+                    // var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentCeilingCheck @SBU,@DTYPE,@EID,@PRAMOUNT,@ASTATUS", parms.ToArray()).ToList();
+                    var result = _dbContext.Database.ExecuteSqlRawAsync("EXECUTE SP_InvestmentCeilingCheck @SBU,@DTYPE,@EID,@IID,@PRAMOUNT,@ASTATUS", parms.ToArray());
 
-                //var sbuWiseBudgetSpec = new SBUWiseBudgetSpecificiation(sbu, DateTime.Now.ToString("dd/MM/yyyy"));
-                //var sbuWiseBudgetData = await _sbuRepo.ListAsync(sbuWiseBudgetSpec);
-                //var sbuWiseInvestmentRecSpec = new InvestmentAprSpecification(empId, aprStatus);
+                    //var sbuWiseBudgetSpec = new SBUWiseBudgetSpecificiation(sbu, DateTime.Now.ToString("dd/MM/yyyy"));
+                    //var sbuWiseBudgetData = await _sbuRepo.ListAsync(sbuWiseBudgetSpec);
+                    //var sbuWiseInvestmentRecSpec = new InvestmentAprSpecification(empId, aprStatus);
 
-                //var apprAuthConfigSpec = new ApprAuthConfigSpecification(empId, "A");
-                //var apprAuthConfigList = await _apprAuthConfigRepo.ListAsync(apprAuthConfigSpec);
-                //var approvalCeilingSpec = new ApprovalCeilingSpecification(apprAuthConfigList[0].ApprovalAuthorityId, "A", DateTime.Now.ToString("dd/MM/yyyy"));
-                //var approvalAuthorityCeilingData = await _approvalCeilingRepo.ListAsync(approvalCeilingSpec);
+                    //var apprAuthConfigSpec = new ApprAuthConfigSpecification(empId, "A");
+                    //var apprAuthConfigList = await _apprAuthConfigRepo.ListAsync(apprAuthConfigSpec);
+                    //var approvalCeilingSpec = new ApprovalCeilingSpecification(apprAuthConfigList[0].ApprovalAuthorityId, "A", DateTime.Now.ToString("dd/MM/yyyy"));
+                    //var approvalAuthorityCeilingData = await _approvalCeilingRepo.ListAsync(approvalCeilingSpec);
 
-                //int v2 = investmentRecDto.InvestmentInitId ?? default(int);
-                // var recCommentRepo= _investmentRecCommentRepo.GetByIdAsync(investmentRecDto.InvestmentInitId ?? default);
-            if (result.Result==0) { 
-                var alreadyExistSpec = new InvestmentAprSpecification(investmentAprDto.InvestmentInitId);
-            var alreadyExistInvestmentAprList = await _investmentAprRepo.ListAsync(alreadyExistSpec);
-            if (alreadyExistInvestmentAprList.Count > 0)
-            {
-                foreach (var v in alreadyExistInvestmentAprList)
-                {
-                    _investmentAprRepo.Delete(v);
-                    _investmentAprRepo.Savechange();
+                    //int v2 = investmentRecDto.InvestmentInitId ?? default(int);
+                    // var recCommentRepo= _investmentRecCommentRepo.GetByIdAsync(investmentRecDto.InvestmentInitId ?? default);
+                    if (result.Result == 0)
+                    {
+                        var alreadyExistSpec = new InvestmentAprSpecification(investmentAprDto.InvestmentInitId);
+                        var alreadyExistInvestmentAprList = await _investmentAprRepo.ListAsync(alreadyExistSpec);
+                        if (alreadyExistInvestmentAprList.Count > 0)
+                        {
+                            foreach (var v in alreadyExistInvestmentAprList)
+                            {
+                                _investmentAprRepo.Delete(v);
+                                _investmentAprRepo.Savechange();
+                            }
+                        }
+                        return BadRequest(new ApiResponse(400, "Apprval Ceiling Exceeded"));
+                    }
+
                 }
-            }
-            return BadRequest(new ApiResponse(400, "Apprval Ceiling Exceeded")); }
-              
-            }
-            
-            var invApr = new InvestmentApr
-            {
-                //ReferenceNo = investmentInitDto.ReferenceNo,
-                InvestmentInitId = investmentAprDto.InvestmentInitId,
-                ProposedAmount = investmentAprDto.ProposedAmount,
-                Purpose = investmentAprDto.Purpose,
-                CommitmentAllSBU = investmentAprDto.CommitmentAllSBU,
-                CommitmentOwnSBU = investmentAprDto.CommitmentOwnSBU,
-                FromDate = investmentAprDto.FromDate,
-                ToDate = investmentAprDto.ToDate,
-                TotalMonth = investmentAprDto.TotalMonth,
-                PaymentMethod = investmentAprDto.PaymentMethod,
-                ChequeTitle = investmentAprDto.ChequeTitle,
-                EmployeeId = empId,
-                SetOn = DateTimeOffset.Now
-            };
-            _investmentAprRepo.Add(invApr);
-            _investmentAprRepo.Savechange();
 
-            return new InvestmentAprDto
-            {
-                Id = invApr.Id,
-                InvestmentInitId = investmentAprDto.InvestmentInitId,
-                ProposedAmount = investmentAprDto.ProposedAmount,
-                Purpose = investmentAprDto.Purpose,
-                CommitmentAllSBU = investmentAprDto.CommitmentAllSBU,
-                CommitmentOwnSBU = investmentAprDto.CommitmentOwnSBU,
-                FromDate = investmentAprDto.FromDate,
-                ToDate = investmentAprDto.ToDate,
-                TotalMonth = investmentAprDto.TotalMonth,
-                PaymentMethod = investmentAprDto.PaymentMethod,
-                ChequeTitle = investmentAprDto.ChequeTitle,
-                EmployeeId = investmentAprDto.EmployeeId,
-            };
+                var invApr = new InvestmentApr
+                {
+                    //ReferenceNo = investmentInitDto.ReferenceNo,
+                    InvestmentInitId = investmentAprDto.InvestmentInitId,
+                    ProposedAmount = investmentAprDto.ProposedAmount,
+                    Purpose = investmentAprDto.Purpose,
+                    CommitmentAllSBU = investmentAprDto.CommitmentAllSBU,
+                    CommitmentOwnSBU = investmentAprDto.CommitmentOwnSBU,
+                    FromDate = investmentAprDto.FromDate,
+                    ToDate = investmentAprDto.ToDate,
+                    TotalMonth = investmentAprDto.TotalMonth,
+                    PaymentMethod = investmentAprDto.PaymentMethod,
+                    ChequeTitle = investmentAprDto.ChequeTitle,
+                    EmployeeId = empId,
+                    SetOn = DateTimeOffset.Now
+                };
+                _investmentAprRepo.Add(invApr);
+                _investmentAprRepo.Savechange();
+
+                return new InvestmentAprDto
+                {
+                    Id = invApr.Id,
+                    InvestmentInitId = investmentAprDto.InvestmentInitId,
+                    ProposedAmount = investmentAprDto.ProposedAmount,
+                    Purpose = investmentAprDto.Purpose,
+                    CommitmentAllSBU = investmentAprDto.CommitmentAllSBU,
+                    CommitmentOwnSBU = investmentAprDto.CommitmentOwnSBU,
+                    FromDate = investmentAprDto.FromDate,
+                    ToDate = investmentAprDto.ToDate,
+                    TotalMonth = investmentAprDto.TotalMonth,
+                    PaymentMethod = investmentAprDto.PaymentMethod,
+                    ChequeTitle = investmentAprDto.ChequeTitle,
+                    EmployeeId = investmentAprDto.EmployeeId,
+                };
             }
             catch (Exception ex)
             {
@@ -271,7 +271,7 @@ namespace API.Controllers
         {
             var empData = await _employeeRepo.GetByIdAsync(investmentAprDto.EmployeeId);
             var investmentInits = await _investmentInitRepo.GetByIdAsync((int)investmentAprDto.InvestmentInitId);
-            
+
             if (investmentInits.SBU == empData.SBU)
             {
                 bool isTrue = false;
@@ -290,6 +290,7 @@ namespace API.Controllers
                         }
                     }
                     if (!isTrue) { return BadRequest(new ApiResponse(400, "Other recommendations are not completed yet")); }
+
                 }
             }
             var invApr = new InvestmentAprComment

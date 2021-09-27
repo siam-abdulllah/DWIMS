@@ -82,10 +82,11 @@
     }
 }
 
-body {
+
+/* body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 11px !important;
-}
+} */
 
 .datepicker {
     background-color: white !important;

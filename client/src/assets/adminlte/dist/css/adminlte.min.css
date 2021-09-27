@@ -5088,7 +5088,7 @@ input[type=submit].btn-block {
     -ms-flex: 1 1 auto;
     flex: 1 1 auto;
     min-height: 1px;
-    padding: 1.25rem
+    padding: 1.25rem;
 }
 
 .card-title {
@@ -12086,7 +12086,7 @@ body.sidebar-collapse:not(.sidebar-mini-md):not(.sidebar-mini) .main-header::bef
     display: block;
     font-size: 1.1rem;
     line-height: 1.5;
-    padding: .7rem .5rem;
+    padding: .62rem .5rem;
     transition: width .3s ease-in-out;
     white-space: nowrap
 }
@@ -16360,6 +16360,17 @@ textarea.form-control.is-warning {
 .card-primary:not(.card-outline)>.card-header a {
     color: #000;
     background-color: #d4f1ff;
+    /* position: fixed;
+    width: 77.8%;
+    z-index: 1; */
+}
+
+.card-header.stick {
+    position: fixed;
+    top: 0;
+    z-index: 10000;
+    width: 77.8%;
+    border-radius: 0 0 0.5em 0.5em;
 }
 
 .card-primary:not(.card-outline)>.card-header a.active {

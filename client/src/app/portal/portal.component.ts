@@ -11,21 +11,31 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 })
 export class PortalComponent implements OnInit, OnDestroy {
 //  bodyClasses = 'skin-blue sidebar-mini';
-  // body: HTMLBodyElement = document.getElementsByTagName('body')[0];
   // constructor(private alertify: AlertifyService, private router: Router, private loginService: LoginService) {
   // }
   constructor(private router: Router) {
   }
 
   ngOnInit() {
+    window.addEventListener('scroll', this.scrollEvent, true);
     // add the the body classes
    // this.body.classList.add('skin-blue');
   // this.body.classList.add('sidebar-mini');
   }
   ngOnDestroy() {
+    window.removeEventListener('scroll', this.scrollEvent, true);
     // remove the the body classes
    // this.body.classList.remove('skin-blue');
    // this.body.classList.remove('sidebar-mini');
+  }
+  scrollEvent = (event: any): void => {
+    var cardHeader = document.getElementsByClassName('card-header')[0];
+    const n = event.srcElement.scrollingElement.scrollTop;
+    if(n > 63){
+      cardHeader.classList.add('stick');
+    }else{
+      cardHeader.classList.remove('stick');
+    }
   }
   logout() {
     localStorage.removeItem('token');

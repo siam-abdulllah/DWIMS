@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, ElementRef, HostListener, Inject, OnInit, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
 import { AccountService } from 'src/app/account/account.service';
 @Component({
@@ -7,18 +8,17 @@ import { AccountService } from 'src/app/account/account.service';
   styles: ['./topnav.component.scss']
 })
 export class TopnavComponent implements OnInit {
-  sbu:string;
-  employeeName:string;
-  desgination:string;
-  displayName:string;
-  constructor(private accountService: AccountService,private router: Router) { }
+  sbu: string;
+  employeeName: string;
+  desgination: string;
+  displayName: string;
+  constructor(private accountService: AccountService, private router: Router) { }
 
   ngOnInit() {
     this.displayName = localStorage.getItem('displayName');
     this.getEmployeeId();
   }
   getEmployeeId() {
-
     this.accountService.getEmployeeSbu(parseInt(this.accountService.getEmployeeId())).subscribe(
       (response) => {
         this.sbu = response.sbuName;
@@ -31,6 +31,7 @@ export class TopnavComponent implements OnInit {
     );
 
   }
+ 
   logout() {
     localStorage.removeItem('token');
     this.router.navigate(['/login']);
