@@ -1358,7 +1358,6 @@ viewSBUWiseInvestCommitShareIndivDocReport() {
     //row.push(++slNO);
     row.push(a.sbuName);
     row.push(a.brand);
-    //row.push(a.marketName + a.territoryName + a.regionName + a.divisionName + a.zoneName);
     row.push(a.campaign);
     row.push(a.subCampaign);
 
@@ -1381,6 +1380,106 @@ viewSBUWiseInvestCommitShareIndivDocReport() {
   //this.getReport(col, rowD, title, orgName, orgAddress);
   this.getReport(col, rowD, 'SBU wise Investment And Commitment vs Share (Individual Doctor)', 'Square Pharmaceuticals Ltd.', '48, Square Center, Mohakhali');
 }
+
+
+
+
+/// ********************************************
+/// Generate Doctor Wise Invest in All Portfolio (Not Fixed, Column Missing)
+/// ********************************************
+
+getDocWiseInvestAllPortfolioReport()  {
+  const investmentReportSearchDto: IInvestmentReportSearchDto = {
+    fromDate: this.investmentSearchForm.value.fromDate,
+    toDate: this.investmentSearchForm.value.toDate,
+    sbu: this.investmentSearchForm.value.sbu,
+    userId: 0,
+    donationType: this.investmentSearchForm.value.donationType,
+    investType: this.investmentSearchForm.value.donationTo,
+    institutionId: this.investmentSearchForm.value.institutionId,
+    societyId: this.investmentSearchForm.value.societyId,
+    bcdsId: this.investmentSearchForm.value.bcdsId,
+    doctorId: this.investmentSearchForm.value.doctorId,
+    locationType: this.investmentSearchForm.value.locationType,
+    territoryCode: this.investmentSearchForm.value.territoryCode,
+    marketCode: this.investmentSearchForm.value.marketCode,
+    regionCode: this.investmentSearchForm.value.regionCode,
+    zoneCode: this.investmentSearchForm.value.zoneCode,
+    divisionCode: this.investmentSearchForm.value.divisionCode,
+    brandCode: this.investmentSearchForm.value.brandCode,
+    campaignName: this.investmentSearchForm.value.campaignName,
+    subCampaignName: this.investmentSearchForm.value.subCampaignName,
+  };
+
+  this.reportInvestmentService.GetDoctorCampaingWiseInvestment(investmentReportSearchDto).subscribe(resp => {
+    // this.reportInvestmentService.getInsSocietyBCDSWiseInvestment().subscribe(resp => {  
+    this.docCampWiseInvestment = resp as IDocCampWiseInvestment[];
+    if (this.docCampWiseInvestment.length <= 0) {
+      this.toastr.warning('No Data Found', 'Report');
+    }
+    if (this.docCampWiseInvestment.length > 0) {
+      for (let p of this.docCampWiseInvestment) {
+        var fD = this.datePipe.transform(p.fromDate, "dd/MM/yyyy")
+        var tD = this.datePipe.transform(p.toDate, "dd/MM/yyyy")
+      }
+    }
+    this.viewDocWiseInvestAllPortfolioReport();
+  }, error => {
+    console.log(error);
+  });
+}
+
+/// ********************************************
+/// View Doctor Wise Invest in All Portfolio (Not Fixed, Column Missing)0
+
+/// ********************************************
+
+viewDocWiseInvestAllPortfolioReport() {
+  debugger;
+  if (this.docCampWiseInvestment.length <= 0) {
+    this.toastr.warning("No Data to Show Report", "Report");
+    return false;
+  }
+
+  const r =  this.docCampWiseInvestment as IDocCampWiseInvestment[];
+
+  let row: any[] = [];
+  let rowD: any[] = [];
+  let col = ['Brand', 'Doctor Code','Doctor Name', 'Campaign' , 'Sub-Campaign' , 'Investment Amount', 
+  'Rx Share \n(All)', 'Rx Share \n(Brand)', 'Investment \nPrev. Yr', 'Investment \nCurnt. Yr', 'Commitment \n(No of Rx)', 'Territory', 'Region' , 'Zone' ]; // initialization for headers
+
+  let slNO = 0;
+  for (const a of r) {
+    console.log(r);
+
+    row.push(a.brand);
+    row.push(a.doctorId);
+    row.push(a.doctorName);
+    row.push(a.campaign);
+    row.push(a.subCampaign);
+    row.push(a.investmentPresent);
+
+    row.push(a);
+    row.push(a.investmentPresent);
+
+    row.push(a.noOfPatient);
+    row.push(a.investmentPast);
+    row.push(a.investmentPresent);
+
+    row.push(a.noOfPresc);
+    row.push(a.territoryName );
+    row.push(a.regionName);
+    row.push(a.zoneName);
+
+    rowD.push(row);
+    row = [];
+  }
+  //this.getReport(col, rowD, title, orgName, orgAddress);
+  this.getReport(col, rowD, 'Doctor Wise Invest in All Portfolio', 'Square Pharmaceuticals Ltd.', '48, Square Center, Mohakhali');
+}
+
+
+
 
 
   getReport(col: any[], rowD: any[], title: any, orgName: any, orgAddress: any) {
