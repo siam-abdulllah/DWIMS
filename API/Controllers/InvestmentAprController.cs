@@ -20,6 +20,7 @@ namespace API.Controllers
     {
 
         private readonly IGenericRepository<InvestmentInit> _investmentInitRepo;
+        private readonly IGenericRepository<InvestmentRec> _investmentRecRepo;
         private readonly IGenericRepository<InvestmentRecComment> _investmentRecCommentRepo;
         private readonly IGenericRepository<InvestmentApr> _investmentAprRepo;
         private readonly IGenericRepository<InvestmentAprComment> _investmentAprCommentRepo;
@@ -33,10 +34,20 @@ namespace API.Controllers
         private readonly IGenericRepository<ApprAuthConfig> _apprAuthConfigRepo;
         private readonly IGenericRepository<ApprovalCeiling> _approvalCeilingRepo;
 
-        public InvestmentAprController(IGenericRepository<ApprovalCeiling> approvalCeilingRepo, IGenericRepository<ApprAuthConfig> apprAuthConfigRepo, IGenericRepository<SBUWiseBudget> sbuRepo, IGenericRepository<InvestmentTargetedGroup> investmentTargetedGroupRepo, IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<InvestmentRecComment> investmentRecCommentRepo,
-            IGenericRepository<InvestmentApr> investmentAprRepo, IGenericRepository<InvestmentAprComment> investmentAprCommentRepo,
-            IGenericRepository<InvestmentAprProducts> investmentAprProductRepo, IGenericRepository<Employee> employeeRepo,
-            IGenericRepository<ReportInvestmentInfo> reportInvestmentInfoRepo, StoreContext dbContext, IMapper mapper)
+        public InvestmentAprController(IGenericRepository<ApprovalCeiling> approvalCeilingRepo, 
+            IGenericRepository<ApprAuthConfig> apprAuthConfigRepo, 
+            IGenericRepository<SBUWiseBudget> sbuRepo, 
+            IGenericRepository<InvestmentTargetedGroup> investmentTargetedGroupRepo, 
+            IGenericRepository<InvestmentInit> investmentInitRepo, 
+            IGenericRepository<InvestmentRecComment> investmentRecCommentRepo,
+            IGenericRepository<InvestmentApr> investmentAprRepo, 
+            IGenericRepository<InvestmentAprComment> investmentAprCommentRepo,
+            IGenericRepository<InvestmentAprProducts> investmentAprProductRepo, 
+            IGenericRepository<Employee> employeeRepo,
+            IGenericRepository<ReportInvestmentInfo> reportInvestmentInfoRepo, 
+            StoreContext dbContext, 
+            IGenericRepository<InvestmentRec> investmentRecRepo, 
+            IMapper mapper)
         {
             _mapper = mapper;
             _investmentAprRepo = investmentAprRepo;
@@ -51,6 +62,7 @@ namespace API.Controllers
             _sbuRepo = sbuRepo;
             _apprAuthConfigRepo = apprAuthConfigRepo;
             _approvalCeilingRepo = approvalCeilingRepo;
+            _investmentRecRepo = investmentRecRepo;
         }
         [HttpGet("investmentInits/{empId}/{sbu}")]
         public ActionResult<Pagination<InvestmentInitDto>> GetInvestmentInits(int empId, string sbu,
@@ -219,10 +231,42 @@ namespace API.Controllers
                         }
                         return BadRequest(new ApiResponse(400, "Apprval Ceiling Exceeded"));
                     }
-
+                    var invApr = new InvestmentApr
+                    {
+                        //ReferenceNo = investmentInitDto.ReferenceNo,
+                        InvestmentInitId = investmentAprDto.InvestmentInitId,
+                        ProposedAmount = investmentAprDto.ProposedAmount,
+                        Purpose = investmentAprDto.Purpose,
+                        CommitmentAllSBU = investmentAprDto.CommitmentAllSBU,
+                        CommitmentOwnSBU = investmentAprDto.CommitmentOwnSBU,
+                        FromDate = investmentAprDto.FromDate,
+                        ToDate = investmentAprDto.ToDate,
+                        TotalMonth = investmentAprDto.TotalMonth,
+                        PaymentMethod = investmentAprDto.PaymentMethod,
+                        ChequeTitle = investmentAprDto.ChequeTitle,
+                        EmployeeId = empId,
+                        SetOn = DateTimeOffset.Now
+                    };
+                    _investmentAprRepo.Add(invApr);
+                    _investmentAprRepo.Savechange();
+                    return new InvestmentAprDto
+                    {
+                        Id = invApr.Id,
+                        InvestmentInitId = investmentAprDto.InvestmentInitId,
+                        ProposedAmount = investmentAprDto.ProposedAmount,
+                        Purpose = investmentAprDto.Purpose,
+                        CommitmentAllSBU = investmentAprDto.CommitmentAllSBU,
+                        CommitmentOwnSBU = investmentAprDto.CommitmentOwnSBU,
+                        FromDate = investmentAprDto.FromDate,
+                        ToDate = investmentAprDto.ToDate,
+                        TotalMonth = investmentAprDto.TotalMonth,
+                        PaymentMethod = investmentAprDto.PaymentMethod,
+                        ChequeTitle = investmentAprDto.ChequeTitle,
+                        EmployeeId = investmentAprDto.EmployeeId,
+                    };
                 }
 
-                var invApr = new InvestmentApr
+                var invAprForRec = new InvestmentRec
                 {
                     //ReferenceNo = investmentInitDto.ReferenceNo,
                     InvestmentInitId = investmentAprDto.InvestmentInitId,
@@ -238,12 +282,12 @@ namespace API.Controllers
                     EmployeeId = empId,
                     SetOn = DateTimeOffset.Now
                 };
-                _investmentAprRepo.Add(invApr);
-                _investmentAprRepo.Savechange();
+                _investmentRecRepo.Add(invAprForRec);
+                _investmentRecRepo.Savechange();
 
                 return new InvestmentAprDto
                 {
-                    Id = invApr.Id,
+                    Id = invAprForRec.Id,
                     InvestmentInitId = investmentAprDto.InvestmentInitId,
                     ProposedAmount = investmentAprDto.ProposedAmount,
                     Purpose = investmentAprDto.Purpose,

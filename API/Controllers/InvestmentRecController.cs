@@ -191,7 +191,7 @@ namespace API.Controllers
 
             // }
 
-            var alreadyExistSpec = new InvestmentRecSpecification(investmentRecDto.InvestmentInitId);
+            var alreadyExistSpec = new InvestmentRecSpecification((int)investmentRecDto.InvestmentInitId,empId);
             var alreadyExistInvestmentRecList = await _investmentRecRepo.ListAsync(alreadyExistSpec);
             if (alreadyExistInvestmentRecList.Count > 0)
             {
