@@ -67,6 +67,17 @@ export class ApprovalCeilingComponent implements OnInit {
       this.updateApprovalCeiling(form);
   }
 
+  dateCompare() {
+
+    if (this.approvalCeilingService.approvalCeilingFormData.investmentFrom != null && this.approvalCeilingService.approvalCeilingFormData.investmentTo != null) {
+      if (this.approvalCeilingService.approvalCeilingFormData.investmentTo > this.approvalCeilingService.approvalCeilingFormData.investmentFrom) {
+
+      }
+      else {
+        this.toastr.error('Select Appropriate Date Range', 'Error')
+      }
+    }
+  }
 
   insertApprovalCeiling(form: NgForm) {
     this.approvalCeilingService.insertApprovalCeiling().subscribe(

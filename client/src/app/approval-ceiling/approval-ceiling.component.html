@@ -59,7 +59,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <input class="form-control" placeholder="Calender" name="investmentFrom" #investmentFrom="ngModel" [(ngModel)]="approvalCeilingService.approvalCeilingFormData.investmentFrom" [class.invalid]="investmentFrom.invalid && investmentFrom.touched" [bsValue]="bsValue"
-                                            bsDatepicker [bsConfig]="bsConfig">
+                                            bsDatepicker [bsConfig]="bsConfig" (ngModelChange)="dateCompare()">
                                     </div>
                                     <div class="col-md-2">
                                         <label>To Date</label>
@@ -67,7 +67,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <input class="form-control" placeholder="Calender" name="investmentTo" #investmentTo="ngModel" [(ngModel)]="approvalCeilingService.approvalCeilingFormData.investmentTo" [class.invalid]="investmentTo.invalid && investmentTo.touched" [bsValue]="bsValue"
-                                            bsDatepicker [bsConfig]="bsConfig">
+                                            bsDatepicker [bsConfig]="bsConfig" (ngModelChange)="dateCompare()">
                                     </div>
                                 </div>
                             </div>
