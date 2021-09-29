@@ -57,8 +57,8 @@
                                     </div>
                                     <div class="col-md-3">
                                         <!-- <input class="form-control" placeholder="Calender" name="fromDate" #fromDate="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgeFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig"> -->
-                                        <input class="form-control clickable" readonly placeholder="Calender" required name="fromDate" #fromDate="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgeFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched" [bsValue]="bsValue"
-                                            bsDatepicker [bsConfig]="bsConfig">
+                                        <input class="form-control clickable" readonly placeholder="Calender" required name="fromDate" #fromDate="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgeFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched" (ngModelChange)="dateCompare()"
+                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
                                     </div>
 
                                     <div class="col-md-3">
@@ -66,8 +66,8 @@
                                         <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <input class="form-control clickable" readonly placeholder="Calender" required name="toDate" #toDate="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgeFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched" [bsValue]="bsValue" bsDatepicker
-                                            [bsConfig]="bsConfig">
+                                        <input class="form-control clickable" readonly placeholder="Calender" required name="toDate" #toDate="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgeFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched" [bsValue]="bsValue" (ngModelChange)="dateCompare()"
+                                            bsDatepicker [bsConfig]="bsConfig">
                                     </div>
                                 </div>
                             </div>
