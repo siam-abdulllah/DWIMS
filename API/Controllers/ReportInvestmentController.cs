@@ -18,11 +18,9 @@ namespace API.Controllers
     public class ReportInvestmentController : BaseApiController
     {
         private readonly StoreContext _db;
-
         private readonly IGenericRepository<ReportConfig> _rptConfitRepo;
         private readonly IGenericRepository<ReportInvestmentInfo> _investRepo;
         private readonly IMapper _mapper;
-
 
 
         public ReportInvestmentController(IGenericRepository<ReportInvestmentInfo> investRepo, IGenericRepository<ReportConfig> rptConfitRepo, IMapper mapper, StoreContext db)
@@ -67,66 +65,106 @@ namespace API.Controllers
         [HttpPost("GetDoctorCampaingWiseInvestment")]
         public ActionResult<IReadOnlyList<RptDocCampWiseInvestment>> GetDoctorCampaingWiseInvestment([FromQuery] ReportInvestmentInfoSpecParams rptParrams, ReportSearchDto search)
         {
+            string qry = "SELECT * FROM RptDocCampWiseInvestment ";
+            qry += "WHERE FromDate >= '"+ search.FromDate + "' AND  '" + search.ToDate + "' <= ToDate ";
 
-            //List<SqlParameter> parms = new List<SqlParameter>
-            //        {
-            //            new SqlParameter("@UserId", search.UserId),
-            //            new SqlParameter("@FromDate", search.FromDate),
-            //            new SqlParameter("@ToDate", search.ToDate),
-            //            new SqlParameter("@SBU", search.SBU),
-            //            new SqlParameter("@DonationType", search.DonationType),
-            //            new SqlParameter("@InvestType", search.InvestType),
-            //            new SqlParameter("@InstitutionId", search.InstitutionId),
-            //            new SqlParameter("@SocietyId", search.SocietyId),
-            //            new SqlParameter("@BcdsId", search.BcdsId),
-            //            new SqlParameter("@LocationType", search.LocationType),
-            //            new SqlParameter("@TerritoryCode", search.TerritoryCode),
-            //            new SqlParameter("@MarketCode", search.MarketCode),
-            //            new SqlParameter("@regionCode", search.RegionCode),
-            //            new SqlParameter("@ZoneCode", search.ZoneCode),
-            //            new SqlParameter("@DivisionCode", search.DivisionCode),
-            //        };
+            if (!string.IsNullOrEmpty(search.MarketCode))
+            {
+                qry += " AND MarketCode= '" + search.MarketCode + "' ";
+            }
+            if (!string.IsNullOrEmpty(search.RegionCode))
+            {
+                qry += " AND RegionCode= '" + search.RegionCode + "' ";
+            }
+            if (!string.IsNullOrEmpty(search.TerritoryCode))
+            {
+                qry += " AND TerritoryCode= '" + search.TerritoryCode + "' ";
+            }
+            if (!string.IsNullOrEmpty(search.DivisionCode))
+            {
+                qry += " AND DivisionCode= '" + search.DivisionCode + "' ";
+            }
+            if (!string.IsNullOrEmpty(search.ZoneCode))
+            {
+                qry += " AND ZoneCode= '" + search.ZoneCode + "' ";
+            }
+            if (!string.IsNullOrEmpty(search.BrandCode))
+            {
+                qry += " AND Brand= '" + search.BrandCode + "' ";
+            }
+            if (!string.IsNullOrEmpty(search.SBU))
+            {
+                qry += " AND SBUCode= '" + search.SBU + "' ";
+            }
+            if (!string.IsNullOrEmpty(search.CampaignName))
+            {
+                qry += " AND Campaign= '" + search.CampaignName + "' ";
+            }
+            if (!string.IsNullOrEmpty(search.SubCampaignName))
+            {
+                qry += " AND SubCampaign= '" + search.SubCampaignName + "' ";
+            }
+            if (!string.IsNullOrEmpty(search.DoctorId.ToString()))
+            {
+                qry += " AND DoctorId= '" + search.DoctorId + "' ";
+            }
+            if (!string.IsNullOrEmpty(search.InstitutionId.ToString()))
+            {
+                qry += " AND InstitutionId= '" + search.InstitutionId + "' ";
+            }
 
-            var results = _db.RptDocCampWiseInvestment.FromSqlRaw("SELECT * FROM RptDocCampWiseInvestment").ToList();
-
-            // var data = _mapper.Map<IReadOnlyList<RptDocCampWiseInvestment>, IReadOnlyList<RptDocCampWiseInvestmentDto>>(results);
-
-            // return Ok(new Pagination<RptDocCampWiseInvestmentDto>(rptParrams.PageIndex, rptParrams.PageSize, 10, data));
+            var results = _db.RptDocCampWiseInvestment.FromSqlRaw(qry).ToList();
             return results;
         }
 
         [HttpPost("GetDoctorLocationWiseInvestment")]
         public ActionResult<IReadOnlyList<RptDocLocWiseInvestment>> GetDoctorLocationWiseInvestment([FromQuery] ReportInvestmentInfoSpecParams rptParrams, ReportSearchDto search)
         {
+            string qry = "SELECT * FROM RptDocLocWiseInvestment ";
+            qry += "WHERE FromDate >= '" + search.FromDate + "' AND  '" + search.ToDate + "' <= ToDate ";
+            
+            if (!string.IsNullOrEmpty(search.MarketCode))
+            {
+                qry += " AND MarketCode= '" + search.MarketCode + "' ";
+            }
+            if (!string.IsNullOrEmpty(search.RegionCode))
+            {
+                qry += " AND RegionCode= '" + search.RegionCode + "' ";
+            }
+            if (!string.IsNullOrEmpty(search.TerritoryCode))
+            {
+                qry += " AND TerritoryCode= '" + search.TerritoryCode + "' ";
+            }
+            if (!string.IsNullOrEmpty(search.DivisionCode))
+            {
+                qry += " AND DivisionCode= '" + search.DivisionCode + "' ";
+            }
+            if (!string.IsNullOrEmpty(search.ZoneCode))
+            {
+                qry += " AND ZoneCode= '" + search.ZoneCode + "' ";
+            }
+            if (!string.IsNullOrEmpty(search.BrandCode))
+            {
+                qry += " AND Brand= '" + search.BrandCode + "' ";
+            }
+            if (!string.IsNullOrEmpty(search.SBU))
+            {
+                qry += " AND SBUCode= '" + search.SBU + "' ";
+            }
+            if (!string.IsNullOrEmpty(search.DonationType))
+            {
+                qry += " AND DonationType= '" + search.DonationType + "' ";
+            }
+            if (!string.IsNullOrEmpty(search.DoctorId.ToString()))
+            {
+                qry += " AND DoctorId= '" + search.DoctorId + "' ";
+            }
+            if (!string.IsNullOrEmpty(search.InstitutionId.ToString()))
+            {
+                qry += " AND InstitutionId= '" + search.InstitutionId + "' ";
+            }
 
-            //List<SqlParameter> parms = new List<SqlParameter>
-            //        {
-            //            new SqlParameter("@UserId", search.UserId),
-            //            new SqlParameter("@FromDate", search.FromDate),
-            //            new SqlParameter("@ToDate", search.ToDate),
-            //            new SqlParameter("@SBU", search.SBU),
-            //            new SqlParameter("@DonationType", search.DonationType),
-            //            new SqlParameter("@InvestType", search.InvestType),
-            //            new SqlParameter("@InstitutionId", search.InstitutionId),
-            //            new SqlParameter("@SocietyId", search.SocietyId),
-            //            new SqlParameter("@BcdsId", search.BcdsId),
-            //            new SqlParameter("@LocationType", search.LocationType),
-            //            new SqlParameter("@TerritoryCode", search.TerritoryCode),
-            //            new SqlParameter("@MarketCode", search.MarketCode),
-            //            new SqlParameter("@regionCode", search.RegionCode),
-            //            new SqlParameter("@ZoneCode", search.ZoneCode),
-            //            new SqlParameter("@DivisionCode", search.DivisionCode),
-            //        };
-
-            //var results = _db.RptDocLocWiseInvestment.FromSqlRaw("EXECUTE SP_InvestmentReport @UserId,@FromDate,@ToDate, @SBU, @DonationType, @InvestType, " +
-            //    " @InstitutionId, @SocietyId, @BcdsId, @LocationType, @TerritoryCode, @MarketCode, @regionCode, @ZoneCode,  @DivisionCode", parms.ToArray()).ToList();
-
-            var results = _db.RptDocLocWiseInvestment.FromSqlRaw("SELECT * FROM RptDocLocWiseInvestment").ToList();
-
-            //var data = _mapper.Map<IReadOnlyList<RptDocLocWiseInvestment>, IReadOnlyList<RptDocLocWiseInvestmentDto>>(results);
-
-            //return Ok(new Pagination<RptDocLocWiseInvestmentDto>(rptParrams.PageIndex, rptParrams.PageSize, 10, data));
-
+            var results = _db.RptDocLocWiseInvestment.FromSqlRaw(qry).ToList();
             return results;
         }
 

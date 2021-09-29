@@ -302,7 +302,6 @@ export class ReportInvestmentComponent implements OnInit {
       return;
     }
 
-    //this.toastr.show( rpt, "Info");
 
     if (rpt == "Institution/Society/BCDS Wise Investment") {
       this.getDocSocInvestReport();
@@ -394,7 +393,6 @@ debugger;
 viewSbuWiseDocROIReport() {
   debugger;
   if (this.docLocWiseInvestment.length <= 0) {
-    this.toastr.warning("No Data to Show Report", "Report");
     return false;
   }
 
@@ -485,7 +483,6 @@ getDonationWiseInvestmentReport()  {
 viewDonationWiseInvestmentReport() {
   debugger;
   if (this.docLocWiseInvestment.length <= 0) {
-    this.toastr.warning("No Data to Show Report", "Report");
     return false;
   }
 
@@ -579,7 +576,6 @@ getDoctorWiseCommitvsReturnReport()  {
 viewDoctorWiseCommitvsReturnReport() {
   debugger;
   if (this.docLocWiseInvestment.length <= 0) {
-    this.toastr.warning("No Data to Show Report", "Report");
     return false;
   }
 
@@ -675,7 +671,6 @@ viewDoctorWiseCommitvsReturnReport() {
   viewDocSocInvestReport() {
     debugger;
     if (this.insSocBcdsInvestment.length <= 0) {
-      this.toastr.warning("No Data to Show Report", "Report");
       return false;
     }
   
@@ -769,7 +764,6 @@ getHighestDeviationReport()  {
 viewHighestDeviationReport() {
   debugger;
   if (this.docLocWiseInvestment.length <= 0) {
-    this.toastr.warning("No Data to Show Report", "Report");
     return false;
   }
 
@@ -865,7 +859,6 @@ getDocWiseLeadershipReport()  {
 viewDocWiseLeadershipReport() {
   debugger;
   if (this.docLocWiseInvestment.length <= 0) {
-    this.toastr.warning("No Data to Show Report", "Report");
     return false;
   }
 
@@ -962,7 +955,6 @@ getDocWisePotentialReport()  {
 viewDocWisePotentialReport() {
   debugger;
   if (this.docLocWiseInvestment.length <= 0) {
-    this.toastr.warning("No Data to Show Report", "Report");
     return false;
   }
 
@@ -1059,7 +1051,6 @@ getBrandWiseInvestmentReport()  {
 viewBrandWiseInvestmentReport() {
   debugger;
   if (this.docCampWiseInvestment.length <= 0) {
-    this.toastr.warning("No Data to Show Report", "Report");
     return false;
   }
 
@@ -1141,7 +1132,6 @@ getBrandDocWiseInvestmentReport()  {
 viewBrandDocWiseInvestmentReport() {
   debugger;
   if (this.docCampWiseInvestment.length <= 0) {
-    this.toastr.warning("No Data to Show Report", "Report");
     return false;
   }
 
@@ -1242,7 +1232,6 @@ getCampSubCampWiseInvestmentReport()  {
 viewCampSubCampWiseInvestmentReport() {
   debugger;
   if (this.docCampWiseInvestment.length <= 0) {
-    this.toastr.warning("No Data to Show Report", "Report");
     return false;
   }
 
@@ -1341,7 +1330,6 @@ getSBUWiseInvestCommitShareIndivDocReport()  {
 viewSBUWiseInvestCommitShareIndivDocReport() {
   debugger;
   if (this.docCampWiseInvestment.length <= 0) {
-    this.toastr.warning("No Data to Show Report", "Report");
     return false;
   }
 
@@ -1437,7 +1425,6 @@ getDocWiseInvestAllPortfolioReport()  {
 viewDocWiseInvestAllPortfolioReport() {
   debugger;
   if (this.docCampWiseInvestment.length <= 0) {
-    this.toastr.warning("No Data to Show Report", "Report");
     return false;
   }
 
