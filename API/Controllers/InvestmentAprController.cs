@@ -33,20 +33,22 @@ namespace API.Controllers
         private readonly IGenericRepository<SBUWiseBudget> _sbuRepo;
         private readonly IGenericRepository<ApprAuthConfig> _apprAuthConfigRepo;
         private readonly IGenericRepository<ApprovalCeiling> _approvalCeilingRepo;
+        private readonly IGenericRepository<InvestmentDetailTracker> _investmentDetailTrackerRepo;
 
-        public InvestmentAprController(IGenericRepository<ApprovalCeiling> approvalCeilingRepo, 
-            IGenericRepository<ApprAuthConfig> apprAuthConfigRepo, 
-            IGenericRepository<SBUWiseBudget> sbuRepo, 
-            IGenericRepository<InvestmentTargetedGroup> investmentTargetedGroupRepo, 
-            IGenericRepository<InvestmentInit> investmentInitRepo, 
+        public InvestmentAprController(IGenericRepository<ApprovalCeiling> approvalCeilingRepo,
+            IGenericRepository<ApprAuthConfig> apprAuthConfigRepo,
+            IGenericRepository<SBUWiseBudget> sbuRepo,
+            IGenericRepository<InvestmentTargetedGroup> investmentTargetedGroupRepo,
+            IGenericRepository<InvestmentInit> investmentInitRepo,
             IGenericRepository<InvestmentRecComment> investmentRecCommentRepo,
-            IGenericRepository<InvestmentApr> investmentAprRepo, 
+            IGenericRepository<InvestmentApr> investmentAprRepo,
             IGenericRepository<InvestmentAprComment> investmentAprCommentRepo,
-            IGenericRepository<InvestmentAprProducts> investmentAprProductRepo, 
+            IGenericRepository<InvestmentAprProducts> investmentAprProductRepo,
             IGenericRepository<Employee> employeeRepo,
-            IGenericRepository<ReportInvestmentInfo> reportInvestmentInfoRepo, 
-            StoreContext dbContext, 
-            IGenericRepository<InvestmentRec> investmentRecRepo, 
+            IGenericRepository<ReportInvestmentInfo> reportInvestmentInfoRepo,
+            StoreContext dbContext,
+            IGenericRepository<InvestmentRec> investmentRecRepo,
+            IGenericRepository<InvestmentDetailTracker> investmentDetailTrackerRepo,
             IMapper mapper)
         {
             _mapper = mapper;
@@ -63,6 +65,7 @@ namespace API.Controllers
             _apprAuthConfigRepo = apprAuthConfigRepo;
             _approvalCeilingRepo = approvalCeilingRepo;
             _investmentRecRepo = investmentRecRepo;
+            _investmentDetailTrackerRepo = investmentDetailTrackerRepo;
         }
         [HttpGet("investmentInits/{empId}/{sbu}")]
         public ActionResult<Pagination<InvestmentInitDto>> GetInvestmentInits(int empId, string sbu,
@@ -205,18 +208,6 @@ namespace API.Controllers
                     };
                     // var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentCeilingCheck @SBU,@DTYPE,@EID,@PRAMOUNT,@ASTATUS", parms.ToArray()).ToList();
                     var result = _dbContext.Database.ExecuteSqlRawAsync("EXECUTE SP_InvestmentCeilingCheck @SBU,@DTYPE,@EID,@IID,@PRAMOUNT,@ASTATUS", parms.ToArray());
-
-                    //var sbuWiseBudgetSpec = new SBUWiseBudgetSpecificiation(sbu, DateTime.Now.ToString("dd/MM/yyyy"));
-                    //var sbuWiseBudgetData = await _sbuRepo.ListAsync(sbuWiseBudgetSpec);
-                    //var sbuWiseInvestmentRecSpec = new InvestmentAprSpecification(empId, aprStatus);
-
-                    //var apprAuthConfigSpec = new ApprAuthConfigSpecification(empId, "A");
-                    //var apprAuthConfigList = await _apprAuthConfigRepo.ListAsync(apprAuthConfigSpec);
-                    //var approvalCeilingSpec = new ApprovalCeilingSpecification(apprAuthConfigList[0].ApprovalAuthorityId, "A", DateTime.Now.ToString("dd/MM/yyyy"));
-                    //var approvalAuthorityCeilingData = await _approvalCeilingRepo.ListAsync(approvalCeilingSpec);
-
-                    //int v2 = investmentRecDto.InvestmentInitId ?? default(int);
-                    // var recCommentRepo= _investmentRecCommentRepo.GetByIdAsync(investmentRecDto.InvestmentInitId ?? default);
                     if (result.Result == 0)
                     {
                         var alreadyExistSpec = new InvestmentAprSpecification(investmentAprDto.InvestmentInitId);
@@ -249,6 +240,47 @@ namespace API.Controllers
                     };
                     _investmentAprRepo.Add(invApr);
                     _investmentAprRepo.Savechange();
+                    if (dType == "Honorarium")
+                    {
+                        DateTimeOffset calcDate = investmentAprDto.FromDate;
+                        for (int i = 0; i < investmentAprDto.TotalMonth; i++)
+                        {
+                            calcDate = calcDate.AddMonths(i);
+                            var invDT = new InvestmentDetailTracker
+                            {
+                                InvestmentInitId = investmentAprDto.InvestmentInitId,
+                                DonationType = dType,
+                                ApprovedAmount = investmentAprDto.ProposedAmount,
+                                Month = calcDate.Month,
+                                Year = calcDate.Year,
+                                FromDate = investmentAprDto.FromDate,
+                                ToDate = investmentAprDto.ToDate,
+                                PaidStatus = "Paid",
+                                EmployeeId = empId,
+                                SetOn = DateTimeOffset.Now
+                            };
+                            _investmentDetailTrackerRepo.Add(invDT);
+
+                        }
+                        _investmentDetailTrackerRepo.Savechange();
+                    }
+                    else {
+                        var invDT = new InvestmentDetailTracker
+                        {
+                            InvestmentInitId = investmentAprDto.InvestmentInitId,
+                            DonationType = dType,
+                            ApprovedAmount = investmentAprDto.ProposedAmount,
+                            Month = 0,
+                            Year = 0,
+                            FromDate = investmentAprDto.FromDate,
+                            ToDate = investmentAprDto.ToDate,
+                            PaidStatus = "Paid",
+                            EmployeeId = empId,
+                            SetOn = DateTimeOffset.Now
+                        };
+                        _investmentDetailTrackerRepo.Add(invDT);
+                        _investmentDetailTrackerRepo.Savechange();
+                    }
                     return new InvestmentAprDto
                     {
                         Id = invApr.Id,

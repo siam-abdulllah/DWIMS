@@ -67,12 +67,8 @@ namespace API.Controllers
                 //investmentRecCommentParrams.Search = sbu;
                 //var investmentInitSpec = new InvestmentInitSpecification(investmentInitParrams);
                 //var investmentRecCommentSpec = new InvestmentRecCommentSpecification(investmentRecCommentParrams);
-
-
-
                 //var investmentInits = await _investmentInitRepo.ListAsync(investmentInitSpec);
                 //var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
-
                 //var investmentInitFormRec = (from i in investmentInits
                 //                             where !(from rc in investmentRecComments
                 //                                     select rc.InvestmentInitId).Contains(i.Id)
@@ -87,9 +83,7 @@ namespace API.Controllers
                 //                                 EmployeeId = i.EmployeeId,
                 //                             }
                 //              ).Distinct().ToList();
-
                 //var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
-
                 //var totalItems = await _investmentInitRepo.CountAsync(countSpec);
                 List<SqlParameter> parms = new List<SqlParameter>
                     {
@@ -122,15 +116,12 @@ namespace API.Controllers
                 //investmentInitParrams.Search = sbu;
                 //investmentRecCommentParrams.Search = sbu;
                 //investmentAprCommentParrams.Search = sbu;
-
                 //var investmentInitSpec = new InvestmentInitSpecification(investmentInitParrams);
                 //var investmentRecCommentSpec = new InvestmentRecCommentSpecification(investmentRecCommentParrams);
                 //var investmentAprCommentSpec = new InvestmentAprCommentSpecification(investmentAprCommentParrams);
-
                 //var investmentInits = await _investmentInitRepo.ListAsync(investmentInitSpec);
                 //var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
                 //var investmentAprComments = await _investmentAprCommentRepo.ListAsync(investmentAprCommentSpec);
-
                 //var investmentInitFormRec = (from i in investmentInits
                 //                             join rc in investmentRecComments on i.Id equals rc.InvestmentInitId
                 //                             where !(from ac in investmentAprComments where ac.AprStatus=="Approved"
@@ -146,9 +137,7 @@ namespace API.Controllers
                 //                                 EmployeeId = i.EmployeeId,
                 //                             }
                 //              ).Distinct().ToList();
-
                 //var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
-
                 //var totalItems = await _investmentInitRepo.CountAsync(countSpec);
 
                 List<SqlParameter> parms = new List<SqlParameter>
