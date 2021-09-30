@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using System;
 
 namespace Core.Specifications
 {
@@ -8,6 +9,11 @@ namespace Core.Specifications
           : base(x =>
               (string.IsNullOrEmpty(approvalParrams.Search) || x.Remarks.ToLower().Contains(approvalParrams.Search))
           )
+        {
+        }
+
+        public ApprovalCeilingWithFiltersForCountSpecificication(int? apprvAuthId, string donationType, DateTimeOffset? dateCheck)
+         : base(x => x.ApprovalAuthorityId == apprvAuthId && x.DonationType == donationType && (x.InvestmentFrom.Value.Date >= dateCheck || dateCheck <= x.InvestmentTo.Value.Date))
         {
         }
     }

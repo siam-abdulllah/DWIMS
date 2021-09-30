@@ -87,7 +87,11 @@ export class ApprovalCeilingComponent implements OnInit {
         this.getApprovalCeiling();
         this.toastr.success('Data Saved successfully', 'Approval Ceiling')
       },
-      err => { console.log(err); }
+      err => {
+        debugger;
+        this.toastr.error(err.errors[0], 'Approval Ceiling')
+        console.log(err);
+      }
     );
   }
 

@@ -24,5 +24,11 @@ namespace Core.Specifications
             && x.ToDate>=DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture))
         {
         }
+
+        public SBUWiseBudgetSpecificiation(DateTime date, string sbu)
+            : base(x => x.SBU == sbu  && x.FromDate >= date
+            && x.ToDate <= date)
+        {
+        }
     }
 }

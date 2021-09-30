@@ -21,5 +21,11 @@ namespace Core.Specifications
         {
             
         }
+        
+        public SBUWiseBudgetWithFiltersForCountSpecificication(DateTimeOffset? dateCheck, string sbu)
+            : base( x => x.SBU == sbu && (x.FromDate.Value.Date >= dateCheck || dateCheck <= x.ToDate.Value.Date))
+        {
+
+        }
     }
 }

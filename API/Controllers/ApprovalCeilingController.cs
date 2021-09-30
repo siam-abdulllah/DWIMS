@@ -46,38 +46,57 @@ namespace API.Controllers
         }
 
         [HttpPost("CreateApprovalCeiling")]
-        public ActionResult<ApprovalCeiling> SaveApprovalCeiling(ApprovalCeiling apprclngDto)
+
+        public async Task<ActionResult<ApprovalCeiling>> SaveApprovalCeiling(ApprovalCeiling apprclngDto)
         {
-            var appr = new ApprovalCeiling
+            try
             {
-                DonationType = apprclngDto.DonationType,
-                InvestmentFrom = apprclngDto.InvestmentFrom,
-                InvestmentTo = apprclngDto.InvestmentTo,
-                AmountPerMonth = apprclngDto.AmountPerMonth,
-                AmountPerTransacion = apprclngDto.AmountPerTransacion,
-                ApprovalAuthorityId = apprclngDto.ApprovalAuthorityId,
-                Additional = apprclngDto.Additional,
-                Remarks = apprclngDto.Remarks,
-                Status = "A",
-                SetOn = DateTimeOffset.Now
-            };
+                var fromDateCheck = new ApprovalCeilingWithFiltersForCountSpecificication(apprclngDto.ApprovalAuthorityId, apprclngDto.DonationType, apprclngDto.InvestmentFrom);
+                var fromDateCheckList = await _aptimeRepo.ListAsync(fromDateCheck);
+                var toDateCheck = new ApprovalCeilingWithFiltersForCountSpecificication(apprclngDto.ApprovalAuthorityId, apprclngDto.DonationType, apprclngDto.InvestmentTo);
+                var toDateCheckList = await _aptimeRepo.ListAsync(toDateCheck);
 
-            _aptimeRepo.Add(apprclngDto);
-            _aptimeRepo.Savechange();
+                if (fromDateCheckList.Count > 0 || toDateCheckList.Count > 0)
+                {
+                    return new BadRequestObjectResult(new ApiValidationErrorResponse { Errors = new[] { "Date Range Existed" } });
+                }
 
-            return new ApprovalCeiling
+
+                var appr = new ApprovalCeiling
+                {
+                    DonationType = apprclngDto.DonationType,
+                    InvestmentFrom = apprclngDto.InvestmentFrom,
+                    InvestmentTo = apprclngDto.InvestmentTo,
+                    AmountPerMonth = apprclngDto.AmountPerMonth,
+                    AmountPerTransacion = apprclngDto.AmountPerTransacion,
+                    ApprovalAuthorityId = apprclngDto.ApprovalAuthorityId,
+                    Additional = apprclngDto.Additional,
+                    Remarks = apprclngDto.Remarks,
+                    Status = "A",
+                    SetOn = DateTimeOffset.Now
+                };
+
+                _aptimeRepo.Add(apprclngDto);
+                _aptimeRepo.Savechange();
+
+                return new ApprovalCeiling
+                {
+                    Id = appr.Id,
+                    DonationType = appr.DonationType,
+                    InvestmentFrom = appr.InvestmentFrom,
+                    InvestmentTo = appr.InvestmentTo,
+                    AmountPerMonth = appr.AmountPerMonth,
+                    AmountPerTransacion = appr.AmountPerTransacion,
+                    ApprovalAuthorityId = appr.ApprovalAuthorityId,
+                    Additional = appr.Additional,
+                    Remarks = appr.Remarks,
+                    Status = appr.Remarks,
+                };
+            }
+            catch (System.Exception)
             {
-                Id = appr.Id,
-                DonationType = appr.DonationType,
-                InvestmentFrom = appr.InvestmentFrom,
-                InvestmentTo = appr.InvestmentTo,
-                AmountPerMonth = appr.AmountPerMonth,
-                AmountPerTransacion = appr.AmountPerTransacion,
-                ApprovalAuthorityId = appr.ApprovalAuthorityId,
-                Additional = appr.Additional,
-                Remarks = appr.Remarks,
-                Status = appr.Remarks,
-            };
+                throw;
+            }
         }
 
 

@@ -57,14 +57,21 @@ namespace API.Controllers
         {
             try
             {
-
-
                 var alreadyExistSpec = new SBUWiseBudgetWithFiltersForCountSpecificication(sbuBdgt);
                 var alreadyExistSBUWiseBudgetList = await _sbuRepo.ListAsync(alreadyExistSpec);
                 if (alreadyExistSBUWiseBudgetList.Count > 0)
                 {
                     return new BadRequestObjectResult(new ApiValidationErrorResponse { Errors = new[] { "Budget already existed" } });
+                }
 
+                var fromDateCheck = new SBUWiseBudgetWithFiltersForCountSpecificication(sbuBdgt.FromDate, sbuBdgt.SBU);
+                var fromDateCheckList = await _sbuRepo.ListAsync(fromDateCheck);
+                var toDateCheck = new SBUWiseBudgetWithFiltersForCountSpecificication(sbuBdgt.ToDate, sbuBdgt.SBU);
+                var toDateCheckList = await _sbuRepo.ListAsync(toDateCheck);
+
+                if(fromDateCheckList.Count > 0 || toDateCheckList.Count > 0)
+                {
+                    return new BadRequestObjectResult(new ApiValidationErrorResponse { Errors = new[] { "Date Range Existed" } });
                 }
 
                 var appr = new SBUWiseBudget
