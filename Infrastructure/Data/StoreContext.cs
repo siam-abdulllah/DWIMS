@@ -42,6 +42,7 @@ namespace Infrastructure.Data
         public DbSet<InvestmentBcds> InvestmentBcds { get; set; }
         public DbSet<InvestmentCampaign> InvestmentCampaign { get; set; }
         public DbSet<InvestmentDetail> InvestmentDetail { get; set; }
+        public DbSet<InvestmentDetailTracker> InvestmentDetailTracker { get; set; }
         public DbSet<InvestmentDoctor> InvestmentDoctor { get; set; }
         public DbSet<InvestmentInit> InvestmentInit { get; set; }
         public DbSet<InvestmentInstitution> InvestmentInstitution { get; set; }

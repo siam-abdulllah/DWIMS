@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Core.Entities
 {
-    class InvestmentDetailTracker : BaseEntity
+    public class InvestmentDetailTracker : BaseEntity
     {
         public int? InvestmentInitId { get; set; }
         [ForeignKey("InvestmentInitId")]
