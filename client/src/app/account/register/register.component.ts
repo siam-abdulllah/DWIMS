@@ -22,7 +22,7 @@ import { NgxSpinnerService } from "ngx-spinner";
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   errors: string[];
-  loading = false;
+  //loading = false;
   dropdownSettings: IDropdownSettings;
   roleDropdownSettings: IDropdownSettings;
   roleList = [];
@@ -76,6 +76,9 @@ export class RegisterComponent implements OnInit {
             });          
           this.selectedRole = this.user.roles;
         }
+        else{
+
+        }
       },
       (error) => {
         this.errors = error.errors;
@@ -99,8 +102,7 @@ export class RegisterComponent implements OnInit {
   }
 
   // tslint:disable-next-line: typedef
-  createRegisterForm() {
-    this.SpinnerService.show();  
+  createRegisterForm() { 
     this.registerForm = this.fb.group({
       userForm: this.fb.group({
         displayName: [null, [Validators.required]],
@@ -117,7 +119,6 @@ export class RegisterComponent implements OnInit {
       //   userRoles: [null, [Validators.required]],
       // }),
     });
-    this.SpinnerService.hide();  
   }
 
   //############ Role ########.
@@ -146,8 +147,7 @@ export class RegisterComponent implements OnInit {
 
   // tslint:disable-next-line: typedef
   async onSubmit() {
-    this.loading = true;
-    debugger;
+   
     if(this.id)
     {
       this.updateRegisterUser();
@@ -164,18 +164,18 @@ export class RegisterComponent implements OnInit {
     this.registerForm.value.userForm.id= this.id;
     this.accountService.updateRegisterUser(this.registerForm.value).subscribe(
       (response) => {
-        this.loading = false;
+        this.SpinnerService.hide();  
         this.registerForm.reset();
         this.toastr.success('Data Saved Successfully.');
       },
       (error) => {
         console.log(error);
-        this.loading = false;
+        this.SpinnerService.hide();  
         this.errors = error.errors;
       }
     );
     
-    this.SpinnerService.hide();  
+    
   }
 
   async registerUser()
@@ -184,18 +184,17 @@ export class RegisterComponent implements OnInit {
     this.SpinnerService.show();  
     this.accountService.register(this.registerForm.value).subscribe(
       (response) => {
-        this.loading = false;
+        this.SpinnerService.hide();  
         this.registerForm.reset();
         this.toastr.success('Data Saved Successfully.');
       },
       (error) => {
         console.log(error);
-        this.loading = false;
+        this.SpinnerService.hide();  
         this.errors = error.errors;
       }
     );
     
-    this.SpinnerService.hide();  
   }
 
   async employeeValidateById()
@@ -204,8 +203,8 @@ export class RegisterComponent implements OnInit {
     this.SpinnerService.show();  
     this.accountService.employeeValidateById(this.registerForm.value.userForm.employeeSAPCode).subscribe(
       (response) => {
-        debugger;
-        this.loading = false;
+       if(response.length>0) {
+        this.SpinnerService.hide();  
         //this.registerForm.reset(); 
         this.toastr.success('Employee information found.');
         this.registerForm.controls.userForm.get('employeeId').setValue(response[0].id);
@@ -216,15 +215,17 @@ export class RegisterComponent implements OnInit {
         this.registerForm.controls.userForm.get('email').setValue(response[0].email);
         this.registerForm.controls.userForm.get('phoneNumber').setValue(response[0].phone);
         //this.registerForm.controls.userForm.get('phoneNumber')['controls'].disable();
+       }
+       else{
+        this.toastr.warning('Employee information not Found');
+       }
       },
       (error) => {
         console.log(error);
-        this.loading = false;
-        this.loading = false;
+        this.SpinnerService.hide();  
         this.errors = error.errors;
       }
     );
     
-    this.SpinnerService.hide();  
   }
 }
