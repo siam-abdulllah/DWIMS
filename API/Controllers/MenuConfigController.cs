@@ -137,7 +137,10 @@ namespace API.Controllers
                              join s in subMenu on mc.SubMenuId equals s.Id
                              join r in roles on mc.RoleId equals r.Id
                              join m in menuHeads on s.MenuHeadId equals m.Id
-                             where s.Url == menuConfigDto.Url && r.Name == menuConfigDto.RoleName
+                             where 
+                             //s.Url == menuConfigDto.Url 
+                             //&& 
+                             r.Name == menuConfigDto.RoleName
                                    //orderby r.BrandName
                                    select new MenuConfigDto
                              {

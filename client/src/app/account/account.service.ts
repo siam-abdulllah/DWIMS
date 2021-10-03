@@ -53,6 +53,7 @@ export class AccountService {
 
   // tslint:disable-next-line: typedef
   login(values: any) {
+    debugger;
     return this.http.post(this.baseUrl + 'account/login', values).pipe(
       map((user: IUser) => {
         if (user) {
@@ -60,7 +61,8 @@ export class AccountService {
           localStorage.setItem('empID', String(user.employeeId));
           localStorage.setItem('displayName', String(user.displayName));
           this.currentUserSource.next(user);
-          this.setEmployeeInfo(user.employeeId);
+          //this.setEmployeeInfo(user.employeeId);
+          this.eventPerm();
           //const empID = localStorage.getItem('empID');
           //const token = localStorage.getItem('token');
           //const r =  this.jwtHelper.decodeToken(token);
@@ -78,7 +80,12 @@ export class AccountService {
     const r =  this.jwtHelper.decodeToken(token);
     return r.role;
   }
-  eventPerm(url:string) {
+  isMenuPermitted() {
+    debugger;
+    const menu =  JSON.parse(localStorage.getItem("menu"));;
+    return true;
+  }
+  eventPerm() {
     debugger;
     const token = localStorage.getItem('token');
     const r =  this.jwtHelper.decodeToken(token);
@@ -86,10 +93,11 @@ export class AccountService {
     //return this.http.get(this.baseUrl + 'menuConfig/menuConfigs/'+this.menuConfigFormData.menuHeadId+'/'+this.menuConfigFormData.roleId);
     var menuConf=new MenuConfig();
     menuConf.roleName=r.role;
-    menuConf.url=url;
+    //menuConf.url=url;
     return this.http.post(this.baseUrl + 'menuConfig/menuConfigsForSecurity',menuConf).pipe(
       map((menuConfig: IMenuConfig) => {
         if (menuConfig) {
+          localStorage.setItem('menu', JSON.stringify(menuConfig));
           debugger;
           // localStorage.setItem('token', user.token);
           // this.currentUserSource.next(user);
