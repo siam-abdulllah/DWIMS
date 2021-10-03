@@ -26,6 +26,8 @@ import { ISocietyInfo } from '../shared/models/societyInfo';
 import { MarketGroupMst, IMarketGroupMst } from '../shared/models/marketGroupMst';
 import { MarketGroupDtl, IMarketGroupDtl } from '../shared/models/marketGroupDtl';
 import { AccountService } from '../account/account.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+
 @Component({
   selector: 'app-investmentInit',
   templateUrl: './investmentInit.component.html',
@@ -77,7 +79,7 @@ export class InvestmentInitComponent implements OnInit {
     ignoreBackdropClick: true
   };
   constructor(private accountService: AccountService, public investmentInitService: InvestmentInitService, private router: Router,
-    private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe) { }
+    private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe, private SpinnerService: NgxSpinnerService) { }
   ngOnInit() {
     this.resetPageLoad()
     this.getEmployeeId();
@@ -140,14 +142,22 @@ export class InvestmentInitComponent implements OnInit {
     this.InvestmentInitSearchModalRef.hide()
   }
   getInvestmentInit() {
-    debugger;
+    this.SpinnerService.show(); 
     this.investmentInitService.getInvestmentInit(parseInt(this.empId), this.sbu).subscribe(response => {
+      this.SpinnerService.hide();
       this.investmentInits = response.data;
-      this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
-    }, error => {
-      console.log(error);
+      if (this.investmentInits.length>0) {
+        this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
+      }
+      else {
+        this.toastr.warning('No Data Found');
+      }
+     }, error => {
+      this.SpinnerService.hide();
+         console.log(error);
     });
   }
+
   getInvestmentDetails() {
     this.investmentInitService.getInvestmentDetails(this.investmentInitService.investmentDetailFormData.investmentInitId).subscribe(response => {
       var data = response[0] as IInvestmentDetail;
@@ -186,6 +196,20 @@ export class InvestmentInitComponent implements OnInit {
       console.log(error);
     });
   }
+
+  dateCompare() {
+
+    if (this.investmentInitService.investmentDetailFormData.fromDate != null && this.investmentInitService.investmentDetailFormData.toDate != null) {
+      if (this.investmentInitService.investmentDetailFormData.toDate > this.investmentInitService.investmentDetailFormData.fromDate) {
+
+      }
+      else {
+        this.toastr.error('Select Appropriate Date Range', 'Error')
+      }
+    }
+  }
+
+
   getInvestmentBcds() {
     this.investmentInitService.getInvestmentBcds(this.investmentInitService.investmentBcdsFormData.investmentInitId).subscribe(response => {
       var data = response[0] as IInvestmentBcds;
@@ -483,7 +507,7 @@ export class InvestmentInitComponent implements OnInit {
     //let dateTo = new Date();
 
     this.investmentInitService.investmentDetailFormData.totalMonth = dateTo.getMonth() - dateFrom.getMonth() + (12 * (dateTo.getFullYear() - dateFrom.getFullYear()));
-
+    this.investmentInitService.investmentDetailFormData.totalMonth = this.investmentInitService.investmentDetailFormData.totalMonth + 1;
   }
   getDonation() {
     this.investmentInitService.getDonations().subscribe(response => {

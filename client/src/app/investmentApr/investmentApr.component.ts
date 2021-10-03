@@ -1,4 +1,3 @@
-
 import {
   InvestmentApr, IInvestmentApr, InvestmentInit, IInvestmentInit,
   InvestmentTargetedProd, IInvestmentTargetedProd, InvestmentTargetedGroup, IInvestmentTargetedGroup, IInvestmentAprComment
@@ -27,6 +26,8 @@ import { MarketGroupMst, IMarketGroupMst } from '../shared/models/marketGroupMst
 import { MarketGroupDtl, IMarketGroupDtl } from '../shared/models/marketGroupDtl';
 import { AccountService } from '../account/account.service';
 import { IInvestmentDetailOld } from '../shared/models/investment';
+import { NgxSpinnerService } from 'ngx-spinner';
+
 @Component({
   selector: 'app-investmentApr',
   templateUrl: './investmentApr.component.html',
@@ -51,6 +52,7 @@ export class InvestmentAprComponent implements OnInit {
   isValid: boolean = false;
   isInvOther: boolean = false;
   isDonationValid: boolean = false;
+  numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
   bcds: IBcdsInfo[];
   society: ISocietyInfo[];
   markets: IMarket[];
@@ -76,7 +78,7 @@ export class InvestmentAprComponent implements OnInit {
     ignoreBackdropClick: true
   };
   constructor(private accountService: AccountService, public investmentAprService: InvestmentAprService, private router: Router,
-    private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe) { }
+    private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe, private SpinnerService: NgxSpinnerService) { }
 
   openInvestmentInitSearchModal(template: TemplateRef<any>) {
     this.InvestmentInitSearchModalRef = this.modalService.show(template, this.config);
@@ -182,21 +184,35 @@ export class InvestmentAprComponent implements OnInit {
     });
   }
   getInvestmentInit() {
+    this.SpinnerService.show(); 
     this.investmentAprService.getInvestmentInit(parseInt(this.empId), this.sbu).subscribe(response => {
-      //
+      this.SpinnerService.hide(); 
       this.investmentAprs = response.data;
-      this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
-    }, error => {
-      console.log(error);
+      if (this.investmentAprs.length>0) {
+        this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
+      }
+      else {
+        this.toastr.warning('No Data Found');
+      }
+     }, error => {
+      this.SpinnerService.hide();
+         console.log(error);
     });
   }
   getInvestmentApproved() {
+    this.SpinnerService.show(); 
     this.investmentAprService.getInvestmentApproved(parseInt(this.empId), this.sbu).subscribe(response => {
-      //
+      this.SpinnerService.hide(); 
       this.investmentAprs = response.data;
-      this.openInvestmentAprSearchModal(this.investmentAprSearchModal);
-    }, error => {
-      console.log(error);
+      if (this.investmentAprs.length>0) {
+        this.openInvestmentAprSearchModal(this.investmentAprSearchModal);
+      }
+      else {
+        this.toastr.warning('No Data Found');
+      }
+     }, error => {
+      this.SpinnerService.hide();
+         console.log(error);
     });
   }
 
@@ -456,8 +472,21 @@ export class InvestmentAprComponent implements OnInit {
     //let dateTo = new Date();
 
     this.investmentAprService.investmentDetailFormData.totalMonth = dateTo.getMonth() - dateFrom.getMonth() + (12 * (dateTo.getFullYear() - dateFrom.getFullYear()));
-
+    this.investmentAprService.investmentDetailFormData.totalMonth = this.investmentAprService.investmentDetailFormData.totalMonth  + 1;
   }
+
+
+  dateCompare() {
+    if (this.investmentAprService.investmentDetailFormData.fromDate != null && this.investmentAprService.investmentDetailFormData.toDate != null) {
+      if (this.investmentAprService.investmentDetailFormData.toDate > this.investmentAprService.investmentDetailFormData.fromDate) {
+
+      }
+      else {
+        this.toastr.error('Select Appropriate Date Range', 'Error')
+      }
+    }
+  }
+
 
   getProduct() {
     this.investmentAprService.getProduct(this.sbu).subscribe(response => {
