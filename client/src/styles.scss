@@ -5,6 +5,12 @@
 //     pointer-events: none;
 //     cursor: default;
 // }
+@media (min-width: 992px) {
+    td>.btn {
+        width: 30%;
+    }
+}
+
 .invalid {
     border: 1px solid red !important;
 }

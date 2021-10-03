@@ -11,6 +11,7 @@ import { BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 import {FormGroup,FormBuilder,Validators,AsyncValidatorFn} from '@angular/forms';
 import {RegApprovalService} from '../_services/regApproval.service';
 import { AccountService } from '../account/account.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-regApproval',
   templateUrl: './regApproval.component.html',
@@ -39,6 +40,7 @@ export class RegApprovalComponent implements OnInit {
       private fb: FormBuilder,
       public regApprovalService: RegApprovalService,
       private modalService: BsModalService,
+      private SpinnerService: NgxSpinnerService
     ) { }
 
   ngOnInit() {
@@ -52,22 +54,36 @@ export class RegApprovalComponent implements OnInit {
   }
     
   getEmployeeFormApproval(){
+    this.SpinnerService.show(); 
     this.regApprovalService.getEmployeeFormApproval().subscribe(response => {
-      debugger;
+      this.SpinnerService.hide();
       this.regApprovals = response as IRegApproval[];
+      if (this.regApprovals.length>0) {
       this.openRegApprovalSearchModal(this.regApprovalSearchModal);
+    }
+    else {
+      this.toastr.warning('No Data Found');
+    }
       //this.totalCount = response.count;
     }, error => {
+      this.SpinnerService.hide();
         console.log(error);
     });
   }
   getRegApproved(){
+    this.SpinnerService.show(); 
     this.regApprovalService.getRegApproved().subscribe(response => {
-      debugger;
+      this.SpinnerService.hide();
       this.regApprovals = response as IRegApproval[];
-      this.openRegApprovalSearchModal(this.regApprovalSearchModal);
+      if (this.regApprovals.length>0) {
+this.openRegApprovalSearchModal(this.regApprovalSearchModal);
+      }
+      else {
+        this.toastr.warning('No Data Found');
+      }
       //this.totalCount = response.count;
     }, error => {
+      this.SpinnerService.hide();
         console.log(error);
     });
   }
@@ -83,13 +99,17 @@ export class RegApprovalComponent implements OnInit {
   
 
   updateRegApproval(form: NgForm) {
+    this.SpinnerService.show(); 
     this.regApprovalService.updateRegApproval().subscribe(
       res => {
-        debugger;
+        this.SpinnerService.hide();
         this.resetForm(form);
         this.toastr.info('Updated successfully', 'User registration Approval')
       },
-      err => { console.log(err); }
+      err => { 
+        console.log(err);
+        this.SpinnerService.hide();
+       }
     );
   }
 

@@ -160,7 +160,7 @@ namespace API.Controllers
 
             if (CheckUserNameExistsAsync(setRegDto.UserForm.EmployeeSAPCode).Result.Value)
             {
-                return new BadRequestObjectResult(new ApiValidationErrorResponse { Errors = new[] { "Email address is in use" } });
+                return new BadRequestObjectResult(new ApiValidationErrorResponse { Errors = new[] { "User Id is in use" } });
             }
 
             var user = new AppUser

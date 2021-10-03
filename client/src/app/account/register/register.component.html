@@ -62,13 +62,13 @@
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="float-none d-flex justify-content-between flex-column flex-lg-row">
-                                            <button class="btn" cdkStepperPrevious></button>
+                                            <!-- <button class="btn" cdkStepperPrevious></button> -->
                                             <!-- <button [disabled]="registerForm.get('userForm').invalid" class="btn btn-primary" cdkStepperNext>
                         Next <i class="fa fa-angle-right"></i>
                       </button> -->
                                             <button [disabled]="registerForm.invalid" class="btn btn-primary" (click)="onSubmit()">
                         <i class="fa fa-save"></i> SAVE 
-                        <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+                        <!-- <i *ngIf="loading" class="fa fa-spinner fa-spin"></i> -->
                       </button>
                                         </div>
                                     </div>

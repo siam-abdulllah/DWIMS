@@ -1,4 +1,5 @@
 export interface IEmployeeInfo {
+    [x: string]: any;
     id: number;
     employeeSAPCode : string;
     employeeName : string;
