@@ -22,6 +22,8 @@ export class CampaignComponent implements OnInit {
   @ViewChild('search', { static: false }) searchTerm: ElementRef;
   @ViewChild('campaignMstSearchModal', { static: false }) campaignMstSearchModal: TemplateRef<any>;
   @ViewChild('productSearchModal', { static: false }) productSearchModal: TemplateRef<any>;
+  @ViewChild('subCampStartDate') SubCampStartDate: ElementRef;
+  @ViewChild('subCampEndDate') SubCampEndDate: ElementRef;
   campaignMstSearchodalRef: BsModalRef;
   productSearchModalRef: BsModalRef;
   genParams: GenericParams;
@@ -51,7 +53,7 @@ export class CampaignComponent implements OnInit {
     //this.getBrand();
     this.getSubCampaign();
     //this.getProduct();
-    this.bsConfig = Object.assign({}, { containerClass: 'theme-green' }, { dateInputFormat: 'DD/MM/YYYY' });
+    this.bsConfig = Object.assign({}, { containerClass: 'theme-blue' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
   }
   getSBU() {
@@ -106,15 +108,16 @@ export class CampaignComponent implements OnInit {
     this.campaignMstSearchodalRef = this.modalService.show(template, this.config);
   }
 
-  dateCompare() {
+  dateCompare(form: NgForm) {
     if (this.masterService.campaignDtlFormData.subCampStartDate != null && this.masterService.campaignDtlFormData.subCampEndDate != null) {
       if (this.masterService.campaignDtlFormData.subCampEndDate > this.masterService.campaignDtlFormData.subCampStartDate) {
-
       }
       else {
-        this.toastr.error('Select Appropriate Date Range', 'Error')
         this.masterService.campaignDtlFormData.subCampStartDate = null;
         this.masterService.campaignDtlFormData.subCampEndDate = null;
+        form.controls.subCampStartDate.setValue(null);
+        form.controls.subCampEndDate.setValue(null);
+        this.toastr.error('Select Appropriate Date Range', 'Error')
       }
     }
   }
@@ -190,7 +193,6 @@ export class CampaignComponent implements OnInit {
     this.masterService.campaignMstFormData = Object.assign({}, selectedRecord);
   }
   populateDtlsForm(selectedRecord: ICampaignDtl) {
-    debugger;
     this.masterService.campaignDtlFormData = Object.assign({}, selectedRecord);
     this.masterService.campaignDtlFormData.subCampStartDate = new Date(selectedRecord.subCampStartDate);
     this.masterService.campaignDtlFormData.subCampEndDate = new Date(selectedRecord.subCampEndDate);
@@ -257,8 +259,6 @@ export class CampaignComponent implements OnInit {
     }
   }
   addProduct(selectedRecord: ICampaignDtl) {
-
-    debugger;
     if (this.masterService.campaignMstFormData.id == 0) {
       this.toastr.warning('Please Insert Campaign Data First', 'Campaign');
       return false;
@@ -317,7 +317,6 @@ export class CampaignComponent implements OnInit {
     }
   }
   showProductModal(selectedRecord: ICampaignDtl) {
-    debugger;
     this.masterService.campaignDtlFormData = Object.assign({}, selectedRecord);
     this.masterService.campaignDtlFormData.subCampStartDate = new Date(selectedRecord.subCampStartDate);
     this.masterService.campaignDtlFormData.subCampEndDate = new Date(selectedRecord.subCampEndDate);

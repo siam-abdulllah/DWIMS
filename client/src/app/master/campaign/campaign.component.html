@@ -100,16 +100,16 @@
                                             <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-3">
-                                            <input class="form-control" placeholder="Calender" name="subCampStartDate" #subCampStartDate="ngModel" [(ngModel)]="masterService.campaignDtlFormData.subCampStartDate" [class.invalid]="subCampStartDate.invalid && subCampStartDate.touched" [bsValue]="bsValue"
-                                                (ngModelChange)="dateCompare()" bsDatepicker [bsConfig]="bsConfig">
+                                            <input type="text" class="form-control" placeholder="Calender" name="subCampStartDate" id="subCampStartDate" #subCampStartDate="ngModel" [(ngModel)]="masterService.campaignDtlFormData.subCampStartDate" [class.invalid]="subCampStartDate.invalid && subCampStartDate.touched"
+                                                [bsValue]="bsValue" (bsValueChange)="dateCompare(form)" bsDatepicker [bsConfig]="bsConfig" readonly>
                                         </div>
                                         <div class="col-md-2">
                                             <label>Sub Camp. End Date</label>
                                             <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-3">
-                                            <input class="form-control" placeholder="Calender" name="subCampEndDate" #subCampEndDate="ngModel" [(ngModel)]="masterService.campaignDtlFormData.subCampEndDate" [class.invalid]="subCampEndDate.invalid && subCampEndDate.touched" [bsValue]="bsValue" bsDatepicker
-                                                (ngModelChange)="dateCompare()" [bsConfig]="bsConfig">
+                                            <input type="text" class="form-control" placeholder="Calender" name="subCampEndDate" id="subCampEndDate" #subCampEndDate="ngModel" [(ngModel)]="masterService.campaignDtlFormData.subCampEndDate" [class.invalid]="subCampEndDate.invalid && subCampEndDate.touched"
+                                                [bsValue]="bsValue" bsDatepicker (bsValueChange)="dateCompare(form)" [bsConfig]="bsConfig" readonly>
                                         </div>
                                     </div>
                                 </div>
