@@ -1,4 +1,3 @@
-
 import { Market, IMarket } from '../shared/models/market';
 import { MarketGroupMst, IMarketGroupMst } from '../shared/models/marketGroupMst';
 import { MarketGroupDtl, IMarketGroupDtl } from '../shared/models/marketGroupDtl';
@@ -10,6 +9,8 @@ import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 import { AccountService } from '../account/account.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+
 @Component({
   selector: 'app-marketGroup',
   templateUrl: './marketGroup.component.html',
@@ -33,7 +34,7 @@ export class MarketGroupComponent implements OnInit {
     ignoreBackdropClick: true
   };
   constructor(private accountService: AccountService,public marketGroupService: MarketGroupService, private router: Router,
-    private toastr: ToastrService,private modalService: BsModalService) { }
+    private toastr: ToastrService,private modalService: BsModalService, private SpinnerService: NgxSpinnerService) { }
 
   ngOnInit() {
     this.resetForm();
@@ -55,11 +56,18 @@ export class MarketGroupComponent implements OnInit {
     
   }
   getGroups(){
+    this.SpinnerService.show(); 
      this.marketGroupService.getGroups(parseInt(this.empId)).subscribe(response => {
-       debugger;
+      this.SpinnerService.hide();
       this.marketGroupMsts = response.data;
-      this.openMarketGroupSearchModal(this.marketGroupSearchModal);
+      if (this.marketGroupMsts.length>0) {
+        this.openMarketGroupSearchModal(this.marketGroupSearchModal);
+      }
+      else {
+        this.toastr.warning('No Data Found');
+      }
      }, error => {
+      this.SpinnerService.hide();
          console.log(error);
     });
   }

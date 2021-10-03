@@ -1,4 +1,3 @@
-
 import {
   InvestmentRec, IInvestmentRec, InvestmentInit, IInvestmentInit,
   InvestmentTargetedProd, IInvestmentTargetedProd, InvestmentTargetedGroup, IInvestmentTargetedGroup, IInvestmentRecComment
@@ -27,6 +26,8 @@ import { MarketGroupMst, IMarketGroupMst } from '../shared/models/marketGroupMst
 import { MarketGroupDtl, IMarketGroupDtl } from '../shared/models/marketGroupDtl';
 import { AccountService } from '../account/account.service';
 import { IInvestmentDetailOld } from '../shared/models/investment';
+import { NgxSpinnerService } from 'ngx-spinner';
+
 @Component({
   selector: 'app-investmentRec',
   templateUrl: './investmentRec.component.html',
@@ -50,6 +51,7 @@ export class InvestmentRecComponent implements OnInit {
   isValid: boolean = false;
   isInvOther: boolean = false;
   isDonationValid: boolean = false;
+  numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
   bcds: IBcdsInfo[];
   society: ISocietyInfo[];
   markets: IMarket[];
@@ -76,7 +78,7 @@ export class InvestmentRecComponent implements OnInit {
     ignoreBackdropClick: true
   };
   constructor(private accountService: AccountService, public investmentRecService: InvestmentRecService, private router: Router,
-    private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe) { }
+    private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe, private SpinnerService: NgxSpinnerService) { }
 
   openInvestmentInitSearchModal(template: TemplateRef<any>) {
     this.InvestmentInitSearchModalRef = this.modalService.show(template, this.config);
@@ -184,23 +186,49 @@ export class InvestmentRecComponent implements OnInit {
     });
   }
   getInvestmentInit() {
+    this.SpinnerService.show(); 
     this.investmentRecService.getInvestmentInit(parseInt(this.empId), this.sbu).subscribe(response => {
-      //
-      this.investmentRecs = response.data;
-      this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
-    }, error => {
-      console.log(error);
+      this.SpinnerService.hide(); 
+      this.investmentRecs = response.data;     
+      if (this.investmentRecs.length>0) {
+        this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
+      }
+      else {
+        this.toastr.warning('No Data Found');
+      }
+     }, error => {
+      this.SpinnerService.hide();
+         console.log(error);
     });
   }
   getInvestmentRecommended() {
+    this.SpinnerService.show(); 
     this.investmentRecService.getInvestmentRecommended(parseInt(this.empId), this.sbu).subscribe(response => {
-      //
+      this.SpinnerService.hide();
       this.investmentRecs = response.data;
-      this.openInvestmentRecSearchModal(this.investmentRecSearchModal);
-    }, error => {
-      console.log(error);
+      if (this.investmentRecs.length>0) {
+        this.openInvestmentRecSearchModal(this.investmentRecSearchModal);
+      }
+      else {
+        this.toastr.warning('No Data Found');
+      }
+     }, error => {
+      this.SpinnerService.hide();
+         console.log(error);
     });
   }
+
+  dateCompare() {
+    if (this.investmentRecService.investmentDetailFormData.fromDate != null && this.investmentRecService.investmentDetailFormData.toDate != null) {
+      if (this.investmentRecService.investmentDetailFormData.toDate > this.investmentRecService.investmentDetailFormData.fromDate) {
+
+      }
+      else {
+        this.toastr.error('Select Appropriate Date Range', 'Error')
+      }
+    }
+  }
+
 
   getInvestmentCampaign() {
     this.investmentRecService.getInvestmentCampaigns(this.investmentRecService.investmentRecFormData.id).subscribe(response => {
@@ -476,7 +504,7 @@ export class InvestmentRecComponent implements OnInit {
     //let dateTo = new Date();
 
     this.investmentRecService.investmentDetailFormData.totalMonth = dateTo.getMonth() - dateFrom.getMonth() + (12 * (dateTo.getFullYear() - dateFrom.getFullYear()));
-
+    this.investmentRecService.investmentDetailFormData.totalMonth = this.investmentRecService.investmentDetailFormData.totalMonth + 1;
   }
 
   getProduct() {
