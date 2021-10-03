@@ -53,6 +53,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     progressBar: true,
     closeButton: true,
     })
+
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
