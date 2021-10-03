@@ -475,18 +475,17 @@ export class InvestmentAprComponent implements OnInit {
     this.investmentAprService.investmentDetailFormData.totalMonth = this.investmentAprService.investmentDetailFormData.totalMonth  + 1;
   }
 
-
-  dateCompare() {
+  dateCompare(form: NgForm) {
     if (this.investmentAprService.investmentDetailFormData.fromDate != null && this.investmentAprService.investmentDetailFormData.toDate != null) {
       if (this.investmentAprService.investmentDetailFormData.toDate > this.investmentAprService.investmentDetailFormData.fromDate) {
-
       }
       else {
+        form.controls.fromDate.setValue(null);
+        form.controls.toDate.setValue(null);
         this.toastr.error('Select Appropriate Date Range', 'Error')
       }
     }
   }
-
 
   getProduct() {
     this.investmentAprService.getProduct(this.sbu).subscribe(response => {

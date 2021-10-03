@@ -218,17 +218,17 @@ export class InvestmentRecComponent implements OnInit {
     });
   }
 
-  dateCompare() {
+  dateCompare(form: NgForm) {
     if (this.investmentRecService.investmentDetailFormData.fromDate != null && this.investmentRecService.investmentDetailFormData.toDate != null) {
       if (this.investmentRecService.investmentDetailFormData.toDate > this.investmentRecService.investmentDetailFormData.fromDate) {
-
       }
       else {
+        form.controls.fromDate.setValue(null);
+        form.controls.toDate.setValue(null);
         this.toastr.error('Select Appropriate Date Range', 'Error')
       }
     }
   }
-
 
   getInvestmentCampaign() {
     this.investmentRecService.getInvestmentCampaigns(this.investmentRecService.investmentRecFormData.id).subscribe(response => {

@@ -50,16 +50,14 @@ export class SbuWiseBudgetComponent implements OnInit {
     });
   }
 
-  dateCompare() {
-
+  dateCompare(form: NgForm) {
     if (this.sbuWiseBudgetService.sbuwiseBudgeFormData.fromDate != null && this.sbuWiseBudgetService.sbuwiseBudgeFormData.toDate != null) {
       if (this.sbuWiseBudgetService.sbuwiseBudgeFormData.toDate > this.sbuWiseBudgetService.sbuwiseBudgeFormData.fromDate) {
-
       }
       else {
+        form.controls.fromDate.setValue(null);
+        form.controls.toDate.setValue(null);
         this.toastr.error('Select Appropriate Date Range', 'Error')
-        this.sbuWiseBudgetService.sbuwiseBudgeFormData.fromDate = null;
-        this.sbuWiseBudgetService.sbuwiseBudgeFormData.toDate = null;
       }
     }
   }
