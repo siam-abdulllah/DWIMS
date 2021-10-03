@@ -48,9 +48,12 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     NgxSpinnerModule,
     ToastrModule.forRoot({
       timeOut: 10000,
-    positionClass: 'toast-top-right',
+    positionClass: 'toast-bottom-right',
     preventDuplicates: true,
+    progressBar: true,
+    closeButton: true,
     })
+
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
