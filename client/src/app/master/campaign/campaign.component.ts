@@ -113,8 +113,6 @@ export class CampaignComponent implements OnInit {
       if (this.masterService.campaignDtlFormData.subCampEndDate > this.masterService.campaignDtlFormData.subCampStartDate) {
       }
       else {
-        this.masterService.campaignDtlFormData.subCampStartDate = null;
-        this.masterService.campaignDtlFormData.subCampEndDate = null;
         form.controls.subCampStartDate.setValue(null);
         form.controls.subCampEndDate.setValue(null);
         this.toastr.error('Select Appropriate Date Range', 'Error')
