@@ -15,6 +15,7 @@ export class SocietyInfoComponent implements OnInit {
 
   @ViewChild('search', {static: false}) searchTerm: ElementRef;
   genParams: GenericParams;
+  numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
   societyinfo: ISocietyInfo[];
   totalCount = 0;
   constructor(public masterService: MasterService, private router: Router, private toastr: ToastrService) { }

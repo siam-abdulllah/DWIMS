@@ -61,7 +61,8 @@
                                         <label>No of Member</label>
                                         <span style="color:red;">*</span></div>
                                     <div class="col-md-8">
-                                        <input class="form-control " placeholder="Number of Member" name="noOfMember" #noOfMember="ngModel" [(ngModel)]="masterService.societyFormData.noOfMember" required [class.invalid]="noOfMember.invalid && noOfMember.touched">
+                                        <input class="form-control " placeholder="Number of Member" name="noOfMember" #noOfMember="ngModel" [(ngModel)]="masterService.societyFormData.noOfMember" required [class.invalid]="noOfMember.invalid && noOfMember.touched" [pattern]="numberPattern">
+                                        <div class="invalid-feedback" *ngIf="noOfMember.errors?.pattern">Only numeric value</div>
                                     </div>
                                 </div>
                             </div>

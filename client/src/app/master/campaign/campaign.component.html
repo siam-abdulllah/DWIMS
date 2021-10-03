@@ -101,7 +101,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <input class="form-control" placeholder="Calender" name="subCampStartDate" #subCampStartDate="ngModel" [(ngModel)]="masterService.campaignDtlFormData.subCampStartDate" [class.invalid]="subCampStartDate.invalid && subCampStartDate.touched" [bsValue]="bsValue"
-                                                bsDatepicker [bsConfig]="bsConfig">
+                                                (ngModelChange)="dateCompare()" bsDatepicker [bsConfig]="bsConfig">
                                         </div>
                                         <div class="col-md-2">
                                             <label>Sub Camp. End Date</label>
@@ -109,7 +109,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <input class="form-control" placeholder="Calender" name="subCampEndDate" #subCampEndDate="ngModel" [(ngModel)]="masterService.campaignDtlFormData.subCampEndDate" [class.invalid]="subCampEndDate.invalid && subCampEndDate.touched" [bsValue]="bsValue" bsDatepicker
-                                                [bsConfig]="bsConfig">
+                                                (ngModelChange)="dateCompare()" [bsConfig]="bsConfig">
                                         </div>
                                     </div>
                                 </div>

@@ -7,6 +7,7 @@ import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { IRegion } from 'src/app/shared/models/location';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-cluster-info',
@@ -29,7 +30,7 @@ export class ClusterInfoComponent implements OnInit {
     ignoreBackdropClick: true
   };
   constructor(public masterService: MasterService, 
-    private router: Router, private toastr: ToastrService, private modalService: BsModalService) { }
+    private router: Router, private toastr: ToastrService, private modalService: BsModalService, private SpinnerService: NgxSpinnerService) { }
 
   ngOnInit(): void {
     this.resetForm();
@@ -117,13 +118,20 @@ export class ClusterInfoComponent implements OnInit {
     }
   }
   getClusterMstList(){
+    this.SpinnerService.show(); 
     this.masterService.getClusterMstList().subscribe(response => {
-      debugger;
+      this.SpinnerService.hide(); 
       this.clusterMstInfo = response.data;
       this.totalCount = response.count;
-      this.openClusterMstSearchModal(this.clusterMstSearchModal);
-    }, error => {
-        console.log(error);
+      if (this.clusterMstInfo.length>0) {
+        this.openClusterMstSearchModal(this.clusterMstSearchModal);
+      }
+      else {
+        this.toastr.warning('No Data Found');
+      }
+     }, error => {
+      this.SpinnerService.hide();
+         console.log(error);
     });
   }
   openClusterMstSearchModal(template: TemplateRef<any>) {

@@ -88,19 +88,37 @@ export class CampaignComponent implements OnInit {
   getCampaign() {
     this.SpinnerService.show();  
     this.masterService.getCampaign().subscribe(response => {
-
-      debugger;
+      this.SpinnerService.hide();  
       this.campaignMsts = response.data;
       this.totalCount = response.count;
-      this.openCampaignMstSearchModal(this.campaignMstSearchModal);
-    }, error => {
-      console.log(error);
+      if (this.campaignMsts.length>0) {
+        this.openCampaignMstSearchModal(this.campaignMstSearchModal);
+      }
+      else {
+        this.toastr.warning('No Data Found');
+      }
+     }, error => {
+      this.SpinnerService.hide();
+         console.log(error);
     });
-    this.SpinnerService.hide(); 
   }
   openCampaignMstSearchModal(template: TemplateRef<any>) {
     this.campaignMstSearchodalRef = this.modalService.show(template, this.config);
   }
+
+  dateCompare() {
+    if (this.masterService.campaignDtlFormData.subCampStartDate != null && this.masterService.campaignDtlFormData.subCampEndDate != null) {
+      if (this.masterService.campaignDtlFormData.subCampEndDate > this.masterService.campaignDtlFormData.subCampStartDate) {
+
+      }
+      else {
+        this.toastr.error('Select Appropriate Date Range', 'Error')
+        this.masterService.campaignDtlFormData.subCampStartDate = null;
+        this.masterService.campaignDtlFormData.subCampEndDate = null;
+      }
+    }
+  }
+
 
   getCampaignDtl() {
     this.campaignDtls = [];
