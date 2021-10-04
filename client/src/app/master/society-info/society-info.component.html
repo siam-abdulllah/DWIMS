@@ -1,14 +1,3 @@
-<!-- <section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1></h1>
-            </div>
-            <div class="col-sm-6">
-            </div>
-        </div>
-    </div>
-</section> -->
 <section class="content">
     <div class="container-fluid">
         <div class="row">
@@ -40,7 +29,7 @@
                                         <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <input class="form-control " placeholder="Society Name" name="societyName" #societyName="ngModel" [(ngModel)]="masterService.societyFormData.societyName" required [class.invalid]="societyName.invalid && societyName.touched">
+                                        <input class="form-control" maxlength="100" placeholder="Society Name" name="societyName" #societyName="ngModel" [(ngModel)]="masterService.societyFormData.societyName" required [class.invalid]="societyName.invalid && societyName.touched">
                                     </div>
                                     <div class="col-md-2">
                                         <label>Status</label>
@@ -73,7 +62,7 @@
                                         <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-8">
-                                        <textarea class="form-control " placeholder="Address" name="societyAddress" #societyAddress="ngModel" [(ngModel)]="masterService.societyFormData.societyAddress" required [class.invalid]="societyAddress.invalid && societyAddress.touched"></textarea>
+                                        <textarea class="form-control" maxlength="500" placeholder="Address" name="societyAddress" #societyAddress="ngModel" [(ngModel)]="masterService.societyFormData.societyAddress" required [class.invalid]="societyAddress.invalid && societyAddress.touched"></textarea>
                                     </div>
                                 </div>
                             </div>

@@ -25,11 +25,12 @@
                                 <div class="row">
                                     <div class="col-md-2">
                                         <label>Group Name</label>
+                                        <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-2">
                                         <input type="hidden" name="id" [value]="marketGroupService.marketGroupFormData.id" />
 
-                                        <input class="form-control" name="groupName" placeholder="Group Name" #groupName="ngModel" [(ngModel)]="marketGroupService.marketGroupFormData.groupName" required [class.invalid]="groupName.invalid && groupName.touched">
+                                        <input class="form-control" maxlength="50" name="groupName" placeholder="Group Name" #groupName="ngModel" [(ngModel)]="marketGroupService.marketGroupFormData.groupName" required [class.invalid]="groupName.invalid && groupName.touched">
                                     </div>
                                     <div class="col-md-2">
                                         <label>Status</label>

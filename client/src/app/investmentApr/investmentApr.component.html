@@ -25,10 +25,11 @@
                                 <div class="row">
                                     <div class="col-md-2">
                                         <label>Reference</label>
+                                        <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
                                         <input class="form-control" id="id" name="id" #id="ngModel" [(ngModel)]="investmentAprService.investmentAprFormData.id" readonly style="display: none;" required>
-                                        <input class="form-control" placeholder="Please Double Click Here" (dblclick)="getInvestmentInit()" id="referenceNo" name="referenceNo" #referenceNo="ngModel" [(ngModel)]="investmentAprService.investmentAprFormData.referenceNo" readonly>
+                                        <input class="form-control" placeholder="Please Double Click Here" (dblclick)="getInvestmentInit()" id="referenceNo" name="referenceNo" #referenceNo="ngModel" [(ngModel)]="investmentAprService.investmentAprFormData.referenceNo" readonly required>
                                     </div>
                                     <div class="col-md-2">
                                         <label>Propose For</label>
@@ -51,26 +52,12 @@
                                     </div>
                                     <div class="col-md-3">
                                         <input class="form-control" id="donationType" name="donationType" #donationType="ngModel" [(ngModel)]="investmentAprService.investmentAprFormData.donationType" readonly>
-
-                                        <!-- <select class="form-control " id="donationType" name="donationType" #donationType="ngModel" [(ngModel)]="investmentAprService.investmentAprFormData.donationType" required [class.invalid]="donationType.invalid && donationType.touched">
-                                            <option  [ngValue]="null">Select Donation Type</option>
-                                            <option *ngFor="let a of donations" [value]="a.donationTypeName">{{a.donationTypeName}}</option>
-                                        </select> -->
                                     </div>
                                     <div class="col-md-2">
                                         <label>Donation To</label>
                                     </div>
                                     <div class="col-md-3">
                                         <input class="form-control" id="donationTo" name="donationTo" #donationTo="ngModel" [(ngModel)]="investmentAprService.investmentAprFormData.donationTo" readonly>
-
-                                        <!-- <select class="form-control " (change)="onChangeDonationTo()" [disabled]="isDonationValid" id="donationTo" name="donationTo" #donationTo="ngModel" [(ngModel)]="investmentAprService.investmentAprFormData.donationTo" required [class.invalid]="donationTo.invalid && donationTo.touched">
-                                            <option  [ngValue]="null">Select Donation To</option>
-                                            <option value="Doctor">Doctor</option>
-                                            <option value="Institution">Institution</option>
-                                            <option value="Campaign">Campaign</option>
-                                            <option value="Bcds">Bcds</option>
-                                            <option value="Society">Society</option>
-                                        </select> -->
                                     </div>
                                 </div>
                             </div>
@@ -82,13 +69,6 @@
                                         <div class="col-sm-6">
                                             <h6 class=""><strong>Doctor Profile</strong></h6>
                                         </div>
-                                        <!-- <div class="col-sm-2"></div>
-                                        <div class="col-sm-2" *ngIf="isValid">
-                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentDoctor()"><i class="fa fa-save"></i>&nbsp; Save</button>
-                                        </div>
-                                        <div class="col-sm-2" *ngIf="isValid">
-                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentDoctor()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
-                                        </div> -->
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -536,9 +516,10 @@
                                                 <div class="row">
                                                     <div class="col-md-2">
                                                         <label>Prop. Inv.</label>
+                                                        <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" [disabled]="isInvOther" name="proposedAmount" placeholder="Amount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.proposedAmount" [pattern]="numberPattern">
+                                                        <input class="form-control" [disabled]="isInvOther" required name="proposedAmount" placeholder="Amount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.proposedAmount" [pattern]="numberPattern">
                                                         <div class="invalid-feedback" *ngIf="proposedAmount.errors?.pattern">Only numeric value</div>
                                                     </div>
                                                 </div>
@@ -547,9 +528,10 @@
                                                 <div class="row">
                                                     <div class="col-md-2">
                                                         <label>Purpose</label>
+                                                        <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" [disabled]="isInvOther" name="purpose" id="purpose" #purpose="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.purpose">
+                                                        <input class="form-control" [disabled]="isInvOther" required name="purpose" id="purpose" #purpose="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.purpose">
                                                     </div>
                                                 </div>
                                             </div>
@@ -557,13 +539,14 @@
                                                 <div class="row">
                                                     <div class="col-md-2">
                                                         <label>Duration</label>
+                                                        <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input class="form-control" [disabled]="isInvOther" placeholder="Calender" (onHidden)="changeDateInDetail()" name="fromDate" #fromDate="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched"
+                                                        <input class="form-control" [disabled]="isInvOther" required placeholder="Calender" (onHidden)="changeDateInDetail()" name="fromDate" #fromDate="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched"
                                                             [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentAprForm)">
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input class="form-control" [disabled]="isInvOther" placeholder="Calender" (onHidden)="changeDateInDetail()" name="toDate" #toDate="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched"
+                                                        <input class="form-control" [disabled]="isInvOther" required placeholder="Calender" (onHidden)="changeDateInDetail()" name="toDate" #toDate="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched"
                                                             [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentAprForm)">
 
                                                     </div>
@@ -585,7 +568,8 @@
                                                         <label>All SBU </label>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <input class="form-control" [disabled]="isInvOther" name="commitmentAllSBU" id="commitmentAllSBU" #commitmentAllSBU="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.commitmentAllSBU">
+                                                        <input class="form-control" [disabled]="isInvOther" name="commitmentAllSBU" id="commitmentAllSBU" #commitmentAllSBU="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.commitmentAllSBU" [pattern]="numberPattern">
+                                                        <div class="invalid-feedback" *ngIf="commitmentAllSBU.errors?.pattern">Only numeric value</div>
                                                     </div>
                                                     <div class="col-md-1">
                                                         <label>%/</label>
@@ -594,7 +578,8 @@
                                                         <label>Own SBU</label>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <input class="form-control" [disabled]="isInvOther" name="commitmentOwnSBU" id="commitmentOwnSBU" #commitmentOwnSBU="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.commitmentOwnSBU">
+                                                        <input class="form-control" [disabled]="isInvOther" name="commitmentOwnSBU" id="commitmentOwnSBU" #commitmentOwnSBU="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.commitmentOwnSBU" [pattern]="numberPattern">
+                                                        <div class="invalid-feedback" *ngIf="commitmentOwnSBU.errors?.pattern">Only numeric value</div>
                                                     </div>
                                                     <div class="col-md-1">
                                                         <label>%</label>
@@ -625,7 +610,7 @@
                                                         <label>Cheque Title</label>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" [disabled]="isInvOther" name="chequeTitle" id="chequeTitle" #chequeTitle="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.chequeTitle">
+                                                        <input class="form-control" maxlength="100" [disabled]="isInvOther" name="chequeTitle" id="chequeTitle" #chequeTitle="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.chequeTitle">
                                                     </div>
                                                 </div>
                                             </div>
