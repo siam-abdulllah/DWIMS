@@ -1,14 +1,3 @@
-<!-- <section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1></h1>
-            </div>
-            <div class="col-sm-6">
-            </div>
-        </div>
-    </div>
-</section> -->
 <section class="content">
     <div class="container-fluid">
         <div class="row">
@@ -37,7 +26,7 @@
                                         <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <input class="form-control " placeholder="Name" name="approvalAuthorityName" #approvalAuthorityName="ngModel" [(ngModel)]="masterService.approvalAuthorityFormData.approvalAuthorityName" required [class.invalid]="approvalAuthorityName.invalid && approvalAuthorityName.touched">
+                                        <input class="form-control" maxlength="50" placeholder="Name" name="approvalAuthorityName" #approvalAuthorityName="ngModel" [(ngModel)]="masterService.approvalAuthorityFormData.approvalAuthorityName" required [class.invalid]="approvalAuthorityName.invalid && approvalAuthorityName.touched">
                                     </div>
                                     <div class="col-md-2">
                                         <label>Status</label>
@@ -67,7 +56,7 @@
                                     <div class="col-md-2">
                                         <label>Remarks</label></div>
                                     <div class="col-md-3">
-                                        <textarea class="form-control " rows="1" placeholder="Remarks" name="remarks" #remarks="ngModel" [(ngModel)]="masterService.approvalAuthorityFormData.remarks" [class.invalid]="remarks.invalid && remarks.touched"></textarea>
+                                        <textarea class="form-control" maxlength="500" rows="1" placeholder="Remarks" name="remarks" #remarks="ngModel" [(ngModel)]="masterService.approvalAuthorityFormData.remarks" [class.invalid]="remarks.invalid && remarks.touched"></textarea>
                                     </div>
                                 </div>
                             </div>

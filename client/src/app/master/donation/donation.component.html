@@ -40,7 +40,7 @@
                                         <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <input class="form-control " placeholder="Donation" name="donationTypeName" #donationTypeName="ngModel" [(ngModel)]="masterService.donationFormData.donationTypeName" required [class.invalid]="donationTypeName.invalid && donationTypeName.touched">
+                                        <input class="form-control " placeholder="Donation" name="donationTypeName" #donationTypeName="ngModel" [(ngModel)]="masterService.donationFormData.donationTypeName" required [class.invalid]="donationTypeName.invalid && donationTypeName.touched" maxlength="50">
                                     </div>
                                     <div class="col-md-2">
                                         <label>Status</label>
@@ -61,7 +61,7 @@
                                     <div class="col-md-2">
                                         <label>Remarks</label></div>
                                     <div class="col-md-8">
-                                        <textarea class="form-control " placeholder="Remarks" name="remarks" #remarks="ngModel" [(ngModel)]="masterService.donationFormData.remarks" [class.invalid]="remarks.invalid && remarks.touched"></textarea>
+                                        <textarea class="form-control " placeholder="Remarks" name="remarks" #remarks="ngModel" [(ngModel)]="masterService.donationFormData.remarks" [class.invalid]="remarks.invalid && remarks.touched" maxlength="500"></textarea>
                                     </div>
                                 </div>
                             </div>

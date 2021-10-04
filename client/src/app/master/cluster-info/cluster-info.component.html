@@ -28,15 +28,15 @@
                                         <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <input class="form-control " placeholder="Cluster" name="clusterName" #clusterName="ngModel" [(ngModel)]="masterService.clusterMstFormData.clusterName" required [class.invalid]="clusterName.invalid && clusterName.touched">
+                                        <input class="form-control" maxlength="50" placeholder="Cluster" name="clusterName" #clusterName="ngModel" [(ngModel)]="masterService.clusterMstFormData.clusterName" required [class.invalid]="clusterName.invalid && clusterName.touched">
                                     </div>
                                     <div class="col-md-2">
                                         <label>Cluster Code</label>
                                         <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <input class="form-control " placeholder="Cluster Code" name="clusterCode" #clusterCode="ngModel" [(ngModel)]="masterService.clusterMstFormData.clusterCode" required [class.invalid]="clusterCode.invalid && clusterCode.touched">
-                                        <input class="form-control " placeholder="Auto Generated" name="id" #id="ngModel" [(ngModel)]="masterService.clusterMstFormData.id" readonly style="display: none;">
+                                        <input class="form-control" maxlength="50" placeholder="Cluster Code" name="clusterCode" #clusterCode="ngModel" [(ngModel)]="masterService.clusterMstFormData.clusterCode" required [class.invalid]="clusterCode.invalid && clusterCode.touched">
+                                        <input class="form-control" placeholder="Auto Generated" name="id" #id="ngModel" [(ngModel)]="masterService.clusterMstFormData.id" readonly style="display: none;">
                                     </div>
                                 </div>
                             </div>

@@ -28,15 +28,15 @@
                                         <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <input class="form-control " placeholder="Campaign" name="campaignName" #campaignName="ngModel" [(ngModel)]="masterService.campaignMstFormData.campaignName" required [class.invalid]="campaignName.invalid && campaignName.touched">
+                                        <input class="form-control" maxlength="100" placeholder="Campaign" name="campaignName" #campaignName="ngModel" [(ngModel)]="masterService.campaignMstFormData.campaignName" required [class.invalid]="campaignName.invalid && campaignName.touched">
                                     </div>
                                     <div class="col-md-2">
                                         <label>Campaign No</label>
                                         <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <input class="form-control " placeholder="Campaign No" name="campaignNo" #campaignNo="ngModel" [(ngModel)]="masterService.campaignMstFormData.campaignNo" required [class.invalid]="campaignNo.invalid && campaignNo.touched">
-                                        <input class="form-control " placeholder="Auto Generated" name="id" #id="ngModel" [(ngModel)]="masterService.campaignMstFormData.id" required [class.invalid]="id.invalid && id.touched" readonly style="display: none;">
+                                        <input class="form-control" maxlength="50" placeholder="Campaign No" name="campaignNo" #campaignNo="ngModel" [(ngModel)]="masterService.campaignMstFormData.campaignNo" required [class.invalid]="campaignNo.invalid && campaignNo.touched">
+                                        <input class="form-control" placeholder="Auto Generated" name="id" #id="ngModel" [(ngModel)]="masterService.campaignMstFormData.id" required [class.invalid]="id.invalid && id.touched" readonly style="display: none;">
                                     </div>
                                 </div>
                             </div>

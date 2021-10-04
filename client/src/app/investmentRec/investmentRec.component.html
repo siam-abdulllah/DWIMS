@@ -25,10 +25,11 @@
                                 <div class="row">
                                     <div class="col-md-2">
                                         <label>Reference</label>
+                                        <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
                                         <input class="form-control" id="id" name="id" #id="ngModel" [(ngModel)]="investmentRecService.investmentRecFormData.id" readonly style="display: none;" required>
-                                        <input class="form-control" placeholder="Please Double Click Here" (dblclick)="getInvestmentInit()" id="referenceNo" name="referenceNo" #referenceNo="ngModel" [(ngModel)]="investmentRecService.investmentRecFormData.referenceNo" readonly>
+                                        <input class="form-control" placeholder="Please Double Click Here" (dblclick)="getInvestmentInit()" id="referenceNo" required name="referenceNo" #referenceNo="ngModel" [(ngModel)]="investmentRecService.investmentRecFormData.referenceNo" readonly>
                                     </div>
                                     <div class="col-md-2">
                                         <label>Propose For</label>
@@ -539,9 +540,10 @@
                                                 <div class="row">
                                                     <div class="col-md-2">
                                                         <label>Prop. Inv.</label>
+                                                        <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" [disabled]="isInvOther" placeholder="Amount" name="proposedAmount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.proposedAmount" [pattern]="numberPattern">
+                                                        <input class="form-control" [disabled]="isInvOther" required placeholder="Amount" name="proposedAmount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.proposedAmount" [pattern]="numberPattern">
                                                         <div class="invalid-feedback" *ngIf="proposedAmount.errors?.pattern">Only numeric value</div>
                                                     </div>
                                                 </div>
@@ -550,9 +552,10 @@
                                                 <div class="row">
                                                     <div class="col-md-2">
                                                         <label>Purpose</label>
+                                                        <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" [disabled]="isInvOther" name="purpose" id="purpose" #purpose="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.purpose">
+                                                        <input class="form-control" [disabled]="isInvOther" required name="purpose" id="purpose" #purpose="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.purpose">
                                                     </div>
                                                 </div>
                                             </div>
@@ -560,13 +563,14 @@
                                                 <div class="row">
                                                     <div class="col-md-2">
                                                         <label>Duration</label>
+                                                        <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input class="form-control" [disabled]="isInvOther" placeholder="Calender" (onHidden)="changeDateInDetail()" name="fromDate" #fromDate="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched"
+                                                        <input class="form-control" [disabled]="isInvOther" required placeholder="Calender" (onHidden)="changeDateInDetail()" name="fromDate" #fromDate="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched"
                                                             [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentRecForm)">
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input class="form-control" [disabled]="isInvOther" placeholder="Calender" (onHidden)="changeDateInDetail()" name="toDate" #toDate="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched"
+                                                        <input class="form-control" [disabled]="isInvOther" required placeholder="Calender" (onHidden)="changeDateInDetail()" name="toDate" #toDate="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched"
                                                             [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentRecForm)">
 
                                                     </div>
@@ -588,7 +592,8 @@
                                                         <label>All SBU </label>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <input class="form-control" [disabled]="isInvOther" name="commitmentAllSBU" id="commitmentAllSBU" #commitmentAllSBU="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.commitmentAllSBU">
+                                                        <input class="form-control" [disabled]="isInvOther" name="commitmentAllSBU" id="commitmentAllSBU" #commitmentAllSBU="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.commitmentAllSBU" [pattern]="numberPattern">
+                                                        <div class="invalid-feedback" *ngIf="commitmentAllSBU.errors?.pattern">Only numeric value</div>
                                                     </div>
                                                     <div class="col-md-1">
                                                         <label>%/</label>
@@ -597,7 +602,8 @@
                                                         <label>Own SBU</label>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <input class="form-control" [disabled]="isInvOther" name="commitmentOwnSBU" id="commitmentOwnSBU" #commitmentOwnSBU="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.commitmentOwnSBU">
+                                                        <input class="form-control" [disabled]="isInvOther" name="commitmentOwnSBU" id="commitmentOwnSBU" #commitmentOwnSBU="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.commitmentOwnSBU" [pattern]="numberPattern">
+                                                        <div class="invalid-feedback" *ngIf="commitmentOwnSBU.errors?.pattern">Only numeric value</div>
                                                     </div>
                                                     <div class="col-md-1">
                                                         <label>%</label>
@@ -628,7 +634,7 @@
                                                         <label>Cheque Title</label>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" [disabled]="isInvOther" name="chequeTitle" id="chequeTitle" #chequeTitle="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.chequeTitle">
+                                                        <input class="form-control" [disabled]="isInvOther" maxlength="100" name="chequeTitle" id="chequeTitle" #chequeTitle="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.chequeTitle">
                                                     </div>
                                                 </div>
                                             </div>

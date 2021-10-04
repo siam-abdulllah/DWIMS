@@ -1,14 +1,3 @@
-<!-- <section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1></h1>
-            </div>
-            <div class="col-sm-6">
-            </div>
-        </div>
-    </div>
-</section> -->
 <section class="content">
     <div class="container-fluid">
         <div class="row">
@@ -40,7 +29,7 @@
                                         <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <input class="form-control " placeholder="Sub Campaign" name="subCampaignName" #subCampaignName="ngModel" [(ngModel)]="masterService.subCampaignFormData.subCampaignName" required [class.invalid]="subCampaignName.invalid && subCampaignName.touched">
+                                        <input class="form-control " placeholder="Sub Campaign" name="subCampaignName" maxlength="50" #subCampaignName="ngModel" [(ngModel)]="masterService.subCampaignFormData.subCampaignName" required [class.invalid]="subCampaignName.invalid && subCampaignName.touched">
                                     </div>
                                     <div class="col-md-2">
                                         <label>Status</label>
@@ -60,7 +49,7 @@
                                     <div class="col-md-2">
                                         <label>Remarks</label></div>
                                     <div class="col-md-8">
-                                        <textarea class="form-control " placeholder="Remarks" name="remarks" #remarks="ngModel" [(ngModel)]="masterService.subCampaignFormData.remarks" [class.invalid]="remarks.invalid && remarks.touched"></textarea>
+                                        <textarea class="form-control " placeholder="Remarks" name="remarks" maxlength="500" #remarks="ngModel" [(ngModel)]="masterService.subCampaignFormData.remarks" [class.invalid]="remarks.invalid && remarks.touched"></textarea>
                                     </div>
                                 </div>
                             </div>
