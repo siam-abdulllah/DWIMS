@@ -81,7 +81,6 @@ export class AccountService {
     return r.role;
   }
   isMenuPermitted(url: string) {
-    debugger;
     const menu = JSON.parse(localStorage.getItem("menu"));
     for (let i = 0; i < menu.length; i++) {
 

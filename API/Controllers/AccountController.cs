@@ -184,6 +184,7 @@ namespace API.Controllers
                                    join s in subMenu on mc.SubMenuId equals s.Id
                                    join r in roles on mc.RoleId equals r.Id
                                    join m in menuHeads on s.MenuHeadId equals m.Id
+                                   orderby m.MenuHeadSeq
                                    where
                                    //s.Url == menuConfigDto.Url 
                                    //&& 

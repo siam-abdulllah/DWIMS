@@ -22,22 +22,22 @@
     </div> -->
         <!-- Sidebar Menu -->
         <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column text-sm nav-legacy nav-flat" data-widget="treeview" role="menu" data-accordion="false">
+            <ul [innerHtml]="htmlToAdd" class="nav nav-pills nav-sidebar flex-column text-sm nav-legacy nav-flat" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
              with font-awesome or any other icon font library -->
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a href="/portal/home" class="nav-link">
                         <i class="nav-icon fas fa-home"></i>
                         <p>
                             Home
                         </p>
                     </a>
-                </li>
-                <li class="nav-item has-treeview">
+                </li> -->
+                <!-- <div [innerHtml]="htmlToAdd"></div> -->
+                <!-- <li class="nav-item has-treeview">
                     <a href="javascript:void(0)" class="nav-link">
                         <i class="nav-icon fas fa-user"></i>
                         <p>Master
-
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
@@ -70,13 +70,6 @@
 
                             </a>
                         </li>
-                        <!-- <li class="nav-item" routerLinkActive="active">
-                            <a routerLink="/portal/master/employee-info" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Employee Info</p>
-
-                            </a>
-                        </li> -->
                         <li class="nav-item" routerLinkActive="active">
                             <a routerLink="/portal/master/society-info" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
@@ -96,8 +89,8 @@
                             </a>
                         </li>
                     </ul>
-                </li>
-                <li class="nav-item has-treeview">
+                </li> -->
+                <!-- <li class="nav-item has-treeview">
                     <a href="javascript:void(0)" class="nav-link ">
                         <i class="nav-icon fas fa-user"></i>
                         <p>
@@ -216,7 +209,7 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> -->
                 <!-- <li class="nav-header">MULTI LEVEL EXAMPLE</li>
                 <li class="nav-item has-treeview">
                     <a routerLink="#" class="nav-link">
