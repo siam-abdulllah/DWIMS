@@ -27,18 +27,16 @@ export class SuperAdminRoleGuard implements CanActivate {
     canActivate(
       next: ActivatedRouteSnapshot,
       state: RouterStateSnapshot): boolean {
-        debugger;
       if (!this.accountService.loggedIn()) {
-        
           this.toastr.error('UnAuthorized Access!!!');
           this.router.navigate(['/login']);
           return false;
       }
-      if (this.accountService.getUserRole() === 'Administrator') {
+      // if (this.accountService.getUserRole() === 'Administrator') {
          
-          return true;
-      }
-      if (this.accountService.isMenuPermitted()) {
+      //     return true;
+      // }
+      if (this.accountService.isMenuPermitted(state.url)) {
           // console.log(this.loginService.getUserRole());
           return true;
       }
@@ -46,28 +44,4 @@ export class SuperAdminRoleGuard implements CanActivate {
       this.router.navigate(['login']);
       return false;
     }
-  // canActivate(route: ActivatedRouteSnapshot,
-  //   state: RouterStateSnapshot): boolean {
-  //     debugger;
-  //   if (!this.accountService.loggedIn()) {
-  //       this.toastr.error('Unauthorized Access!!!');
-  //       this.router.navigate(['/login']);
-  //       return false;
-  //   }
-    
-  //     this.accountService.eventPerm(state.url).subscribe(response => {
-  //       debugger;
-  //       if(response){
-  //       return true;
-  //     }
-  //     else{
-  //       this.toastr.error('Unauthorized Access!!!');
-  //       this.router.navigate(['login']);
-  //       return false;
-  //     }
-        
-  //     }, error => {
-  //         console.log(error);
-  //     });
-  // }
 }

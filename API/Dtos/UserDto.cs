@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace API.Dtos
 {
     public class UserDto
@@ -7,5 +9,6 @@ namespace API.Dtos
         public string DisplayName { get; set; }
         public string Token { get; set; }
         public string PhoneNumber { get; set; }
+        public List<MenuConfigDto> MenuList { get; set; }
     }
 }

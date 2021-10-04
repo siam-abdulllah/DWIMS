@@ -9,11 +9,8 @@ import { AccountService } from '../../account/account.service';
 })
 export class AsidenavComponent implements OnInit {
 
-  constructor(private accountService: AccountService,) { }
+  constructor(private accountService: AccountService) { }
 
   ngOnInit(): void {
-  }
-  getUserRole() {
-    return this.accountService.getUserRole();
   }
 }

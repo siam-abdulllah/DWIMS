@@ -5,6 +5,7 @@ using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
+using Infrastructure.Data;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +24,7 @@ namespace API.Controllers
         private AppIdentityDbContext _context;
         private readonly IMapper _mapper;
         public MenuConfigController(IGenericRepository<MenuHead> menuHeadRepo,IGenericRepository<MenuConfig> menuConfigRepo, IGenericRepository<SubMenu> SubMenuRepo,
-        IMapper mapper,
+        IMapper mapper, 
         AppIdentityDbContext context)
         {
             _mapper = mapper;
@@ -124,8 +125,8 @@ namespace API.Controllers
                 throw ex;
             }
         } 
-        [HttpPost("menuConfigsForSecurity")]
-        public async Task<IReadOnlyList<MenuConfigDto>> menuConfigsForSecurity(MenuConfigDto menuConfigDto)
+        [HttpGet("menuConfigsForSecurity/{roleName}")]
+        public async Task<IReadOnlyList<MenuConfigDto>> MenuConfigsForSecurity(string roleName)
         {
             try
             {
@@ -140,7 +141,7 @@ namespace API.Controllers
                              where 
                              //s.Url == menuConfigDto.Url 
                              //&& 
-                             r.Name == menuConfigDto.RoleName
+                             r.Name == roleName
                                    //orderby r.BrandName
                                    select new MenuConfigDto
                              {

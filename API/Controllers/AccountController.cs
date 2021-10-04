@@ -13,6 +13,8 @@ using AutoMapper.Configuration;
 using Core.Entities.Identity;
 using Core.Interfaces;
 using Core.Specifications;
+using Infrastructure.Data;
+using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -30,6 +32,8 @@ namespace API.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
+        private AppIdentityDbContext _context;
+        private readonly StoreContext _db;
         // private readonly IConfiguration _config;
         public AccountController(UserManager<AppUser> userManager,
         // IConfiguration config, 
@@ -37,7 +41,8 @@ namespace API.Controllers
         SignInManager<AppUser> signInManager,
         ITokenService tokenService,
         IMapper mapper,
-        IGenericIdentityRepository<AppUser> userRepo)
+        IGenericIdentityRepository<AppUser> userRepo, StoreContext db,
+        AppIdentityDbContext context)
         {
             _mapper = mapper;
             _tokenService = tokenService;
@@ -46,6 +51,8 @@ namespace API.Controllers
             // _roleManager = roleManager;
             // _config = config;
             _userRepo = userRepo;
+            _context = context;
+            _db = db;
         }
 
         [Authorize]
@@ -126,6 +133,9 @@ namespace API.Controllers
 
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
+            try
+            {
+
             var user = await _userManager.FindByNameAsync(loginDto.UserName);
 
             if (user == null) return Unauthorized(new ApiResponse(401));
@@ -144,16 +154,61 @@ namespace API.Controllers
             {
                 return BadRequest(new ApiResponse(400, "No Roles assigned to user - " + user.UserName));
             }
-
+            var menuList = MenuConfigsForSecurity(roles[0]);
             return new UserDto
             {
                 EmployeeId = user.EmployeeId,
                 Email = user.Email,
                 Token = _tokenService.CreateToken(user, roles),
-                DisplayName = user.DisplayName
+                DisplayName = user.DisplayName,
+                MenuList= menuList
             };
-        }
 
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        //[HttpGet("menuConfigsForSecurity/{roleName}")]
+        public  List<MenuConfigDto> MenuConfigsForSecurity(string roleName)
+        {
+            try
+            {
+                var menuConfig =  _db.MenuConfig.ToList();
+                var subMenu =  _db.SubMenu.ToList();
+                var roles =  _context.Roles.ToList();
+                var menuHeads =  _db.MenuHead.ToList();
+                var menuConfigs = (from mc in menuConfig
+                                   join s in subMenu on mc.SubMenuId equals s.Id
+                                   join r in roles on mc.RoleId equals r.Id
+                                   join m in menuHeads on s.MenuHeadId equals m.Id
+                                   where
+                                   //s.Url == menuConfigDto.Url 
+                                   //&& 
+                                   r.Name == roleName
+                                   //orderby r.BrandName
+                                   select new MenuConfigDto
+                                   {
+                                       Id = mc.Id,
+                                       MenuHeadName = m.MenuHeadName,
+                                       MenuHeadId = m.Id,
+                                       SubMenuId = s.Id,
+                                       SubMenuName = s.SubMenuName,
+                                       RoleId = r.Id,
+                                       RoleName = r.Name,
+                                       Url=s.Url
+                                   }
+                              ).Distinct().ToList();
+                return menuConfigs;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+        }
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>> Register(SetRegisterDto setRegDto)
         {
