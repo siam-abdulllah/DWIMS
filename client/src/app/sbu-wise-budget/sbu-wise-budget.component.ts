@@ -30,7 +30,7 @@ export class SbuWiseBudgetComponent implements OnInit {
     this.resetPage();
     this.getSBU();
     this.getSBUWiseBudget();
-    this.bsConfig = Object.assign({}, { containerClass: 'theme-green' }, { dateInputFormat: 'DD/MM/YYYY' });
+    this.bsConfig = Object.assign({}, { containerClass: 'theme-blue' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
   }
   getSBU() {

@@ -6,17 +6,17 @@
                     <div class="card card-primary">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-sm-9">
                                     <h3 class="card-title">Market Group</h3>
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-1">
                                     <button class="btn btn-success  btn-block" type="submit" [disabled]="form.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
                                 </div>
-                                <div class="col-sm-2">
-                                    <button class="btn btn-info  btn-block" type="button" (click)="getGroups()"><i class="fa fa-search"></i>Search</button>
+                                <div class="col-sm-1">
+                                    <button class="btn btn-info  btn-block" type="button" (click)="getGroups()"><i class="fa fa-search"></i> Search</button>
                                 </div>
-                                <div class="col-sm-2">
-                                    <button class="btn btn-danger  btn-block" type="button" (click)="resetPage(form)"><i class="fa fa-undo"></i>Reset</button>
+                                <div class="col-sm-1">
+                                    <button class="btn btn-danger  btn-block" type="button" (click)="resetPage(form)"><i class="fa fa-undo"></i> Reset</button>
                                 </div>
                             </div>
                         </div>
@@ -34,6 +34,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <label>Status</label>
+                                        <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-2">
 
@@ -51,6 +52,7 @@
                                     <div class="row">
                                         <div class="col-md-2">
                                             <label>Market</label>
+                                            <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-3">
                                             <ng-select [virtualScroll]="true" [items]="markets" bindLabel="marketName" bindValue="marketCode" placeholder="Select Market" id="marketCode" name="marketCode" #marketCode="ngModel" [(ngModel)]="marketGroupService.marketGroupFormData.marketCode">
@@ -61,7 +63,7 @@
                                         </select> -->
                                         </div>
                                         <div class="col-sm-2">
-                                            <button class="btn btn-info btn-block" type="button" [disabled]="form.invalid" (click)="addMarket()"><i class="fa fa-plus"></i>Add</button>
+                                            <button class="btn btn-info btn-block" type="button" [disabled]="form.invalid" (click)="addMarket()"><i class="fa fa-plus"></i> Add</button>
                                         </div>
 
                                     </div>
@@ -86,7 +88,7 @@
                                                 {{b.sbuName}}
                                             </td>
                                             <td>
-                                                <button class="btn btn-danger  btn-block" type="button" (click)="removeMarketGroups(b)">Remove</button>
+                                                <button class="btn btn-danger  btn-block" type="button" (click)="removeMarketGroups(b)"><i class="fa fa-trash"></i> Remove</button>
                                             </td>
                                         </tr>
                                     </table>
@@ -122,7 +124,7 @@
                         <tbody>
                             <tr *ngFor="let a of marketGroupMsts">
                                 <td>
-                                    <button class="btn btn-sm btn-embossed btn-success" (click)="selectMarketGroup(a)">Select</button>
+                                    <button class="btn btn-sm btn-embossed btn-success" (click)="selectMarketGroup(a)"><i class="fa fa-check"></i>Select</button>
 
                                 </td>
                                 <td style="display:none;">{{a.id}}</td>

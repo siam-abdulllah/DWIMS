@@ -6,16 +6,16 @@
                     <div class="card card-primary">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-sm-9">
                                     <h3 class="card-title">Cluster</h3>
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-1">
                                     <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="form.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-1">
                                     <button class="btn btn-info btn-lg btn-block" type="button" (click)="getClusterMstList()"><i class="fa fa-search"></i>Search</button>
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-1">
                                     <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetPage(form)"><i class="fa fa-undo"></i>Reset</button>
                                 </div>
                             </div>
@@ -83,7 +83,7 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="row">
-                                            <div class="col-sm-3">
+                                            <div class="col-sm-1">
                                                 <button class="btn btn-info btn-lg btn-block" type="button" (click)="addRegion()"><i class="fa fa-plus"></i>Add</button>
                                             </div>
                                         </div>
@@ -107,7 +107,7 @@
                                                     {{a.status}}
                                                 </td>
                                                 <td>
-                                                    <button class="btn btn-sm btn-embossed btn-primary" type="button" (click)="populateDtlsForm(a)">Edit</button>
+                                                    <button class="btn btn-sm btn-embossed btn-primary" type="button" (click)="populateDtlsForm(a)"><i class="fa fa-pen"></i>&nbsp; Edit</button>
                                                 </td>
                                             </tr>
                                         </table>
