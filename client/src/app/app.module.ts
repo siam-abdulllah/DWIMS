@@ -23,6 +23,8 @@ import { MasterModule } from './master/master.module';
 import { MasterRoutingModule } from './master/master-routing.module';
 import { AccountRoutingModule } from './account/account-routing.module';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,6 +38,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     FormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    Ng2SearchPipeModule,
     BsDatepickerModule.forRoot(),
     ModalModule.forRoot(),
     HttpClientModule,

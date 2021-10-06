@@ -10,6 +10,7 @@ import { ApprovalAuthorityComponent } from './approvalAuthority/approvalAuthorit
 import { EmployeeInfoComponent } from './employee-info/employee-info.component';
 import { MasterRoutingModule } from './master-routing.module';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 //import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
@@ -24,7 +25,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     //BrowserAnimationsModule,
     BsDatepickerModule.forRoot(), 
     NgxSpinnerModule,
-    NgSelectModule   
+    NgSelectModule ,
+    Ng2SearchPipeModule  
   ]
 })
 export class MasterModule { }

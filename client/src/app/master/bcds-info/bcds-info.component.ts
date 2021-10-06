@@ -6,6 +6,7 @@ import { MasterService } from '../master.service';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 
+
 @Component({
   selector: 'app-bcds-info',
   templateUrl: './bcds-info.component.html',
@@ -16,6 +17,7 @@ export class BcdsInfoComponent implements OnInit {
   genParams: GenericParams;
   numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
   bcdsInfo: IBcdsInfo[];
+  searchText = '';
   totalCount = 0;
   constructor(public masterService: MasterService, private router: Router, private toastr: ToastrService) { }
 
@@ -75,6 +77,7 @@ export class BcdsInfoComponent implements OnInit {
   //   this.masterService.bcdsFormData = new BcdsInfo();
   // }
   resetForm(form: NgForm) {
+    this.searchText = '';
     form.reset();
   }
   resetPage() {

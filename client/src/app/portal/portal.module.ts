@@ -9,6 +9,7 @@ import { TopnavComponent } from '../mastertheme/topnav/topnav.component';
 import { AsidenavComponent } from '../mastertheme/asidenav/asidenav.component';
 import { FooterComponent } from '../mastertheme/footer/footer.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import {DatePipe} from '@angular/common';
 import { MarketGroupComponent } from '../marketGroup/marketGroup.component';
 import { RegApprovalComponent } from '../regApproval/regApproval.component';
@@ -47,6 +48,8 @@ import { MenuConfigComponent } from '../menuConfig/menuConfig.component';
     MasterModule,
     MasterRoutingModule,
     NgxSpinnerModule,
+    Ng2SearchPipeModule,
+
   ],
   declarations: [
     PortalComponent,
@@ -67,7 +70,7 @@ import { MenuConfigComponent } from '../menuConfig/menuConfig.component';
     ClusterInfoComponent,
     MenuHeadComponent,
     SubMenuComponent,
-    MenuConfigComponent
+    MenuConfigComponent,
   ],
   providers: [DatePipe]
 })
