@@ -41,6 +41,21 @@ export class InvestmentAprService {
   getLastFiveInvestment(marketCode:string,toDayDate:string){    
     return this.http.get(this.baseUrl + 'investment/getLastFiveInvestment/'+marketCode+'/'+toDayDate);
   }
+  getLastFiveInvestmentForDoc(donationtype:string,docId:number,marketCode: string, toDayDate: string) {
+    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForDoc/' + donationtype + '/' + docId + '/' +marketCode + '/' +toDayDate);
+  }
+  getLastFiveInvestmentForInstitute(donationtype:string,instituteId:number,marketCode: string, toDayDate: string) {
+    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForInstitute/' + donationtype + '/' + instituteId + '/' +marketCode + '/' +toDayDate);
+  }
+  getLastFiveInvestmentForCampaign(donationtype:string,campaignId:number,marketCode: string, toDayDate: string) {
+    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForCampaign/' + donationtype + '/' + campaignId + '/' +marketCode + '/' +toDayDate);
+  }
+  getLastFiveInvestmentForBcds(donationtype:string,bcdsId:number,marketCode: string, toDayDate: string) {
+    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForBcds/' + donationtype + '/' + bcdsId + '/' +marketCode + '/' +toDayDate);
+  }
+  getLastFiveInvestmentForSociety(donationtype:string,societyId:number,marketCode: string, toDayDate: string) {
+    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForSociety/' + donationtype + '/' + societyId + '/' +marketCode + '/' +toDayDate);
+  }
   getCampaignMsts(){    
     return this.http.get(this.baseUrl + 'campaign/campaignMstsForInvestment');
   }

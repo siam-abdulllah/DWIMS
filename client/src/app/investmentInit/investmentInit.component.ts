@@ -39,6 +39,7 @@ export class InvestmentInitComponent implements OnInit {
   @ViewChild('search', { static: false }) searchTerm: ElementRef;
   @ViewChild('investmentInitSearchModal', { static: false }) investmentInitSearchModal: TemplateRef<any>;
   InvestmentInitSearchModalRef: BsModalRef;
+  convertedDate:string;
   empId: string;
   sbu: string;
   investmentInits: IInvestmentInit[];
@@ -165,8 +166,9 @@ export class InvestmentInitComponent implements OnInit {
         this.investmentInitService.investmentDetailFormData = data;
         this.investmentInitService.investmentDetailFormData.fromDate = new Date(data.fromDate);
         this.investmentInitService.investmentDetailFormData.toDate = new Date(data.toDate);
-        let convertedDate = this.datePipe.transform(data.fromDate, 'ddMMyyyy');
-        this.getLastFiveInvestment(this.investmentInitService.investmentInitFormData.marketCode, convertedDate);
+       debugger;
+        this.convertedDate = this.datePipe.transform(data.fromDate, 'ddMMyyyy');
+        //this.getLastFiveInvestment(this.investmentInitService.investmentInitFormData.marketCode, this.convertedDate);
 
       } else {
         this.toastr.warning('No Data Found', 'Investment');
@@ -215,6 +217,7 @@ export class InvestmentInitComponent implements OnInit {
       if (data !== undefined) {
         this.investmentInitService.investmentBcdsFormData = data;
         this.onChangeBcdsInBcds();
+        this.getLastFiveInvestment(this.investmentInitService.investmentInitFormData.marketCode, this.convertedDate);
       }
       else {
         this.toastr.warning('No Data Found', 'Investment');
@@ -229,6 +232,7 @@ export class InvestmentInitComponent implements OnInit {
       if (data !== undefined) {
         this.investmentInitService.investmentSocietyFormData = data;
         this.onChangeSocietyInSociety();
+        this.getLastFiveInvestment(this.investmentInitService.investmentInitFormData.marketCode, this.convertedDate);
       }
       else {
         this.toastr.warning('No Data Found', 'Investment');
@@ -244,6 +248,7 @@ export class InvestmentInitComponent implements OnInit {
       if (data !== undefined) {
         this.investmentInitService.investmentInstitutionFormData = data;
         this.onChangeInstitutionInInst();
+        this.getLastFiveInvestment(this.investmentInitService.investmentInitFormData.marketCode, this.convertedDate);
       }
       else {
         this.toastr.warning('No Data Found', 'Investment');
@@ -263,6 +268,7 @@ export class InvestmentInitComponent implements OnInit {
         //this.investmentInitService.investmentDoctorFormData.doctorName = String(data.doctorId);
         this.onChangeDoctorInDoc();
         this.onChangeInstitutionInDoc();
+        this.getLastFiveInvestment(this.investmentInitService.investmentInitFormData.marketCode, this.convertedDate);
       }
       else {
         this.toastr.warning('No Data Found', 'Investment');
@@ -313,14 +319,59 @@ export class InvestmentInitComponent implements OnInit {
 
   }
   getLastFiveInvestment(marketCode: string, toDayDate: string) {
-    this.investmentInitService.getLastFiveInvestment(marketCode, toDayDate).subscribe(
-      (response) => {
-        this.investmentDetailsOld = response as IInvestmentDetailOld[];
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    debugger;
+    if (this.investmentInitService.investmentInitFormData.donationTo == "Doctor") {
+      this.investmentInitService.getLastFiveInvestmentForDoc(this.investmentInitService.investmentInitFormData.donationType,this.investmentInitService.investmentDoctorFormData.doctorId,marketCode, toDayDate).subscribe(
+        (response) => {
+          this.investmentDetailsOld = response as IInvestmentDetailOld[];
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+    else if (this.investmentInitService.investmentInitFormData.donationTo == "Institution") {
+      this.investmentInitService.getLastFiveInvestmentForInstitute(this.investmentInitService.investmentInitFormData.donationType,this.investmentInitService.investmentInstitutionFormData.institutionId,marketCode, toDayDate).subscribe(
+        (response) => {
+          this.investmentDetailsOld = response as IInvestmentDetailOld[];
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+    else if (this.investmentInitService.investmentInitFormData.donationTo == "Campaign") {
+      this.investmentInitService.getLastFiveInvestmentForCampaign(this.investmentInitService.investmentInitFormData.donationType,this.investmentInitService.investmentCampaignFormData.campaignMstId,marketCode, toDayDate).subscribe(
+        (response) => {
+          this.investmentDetailsOld = response as IInvestmentDetailOld[];
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+    else if (this.investmentInitService.investmentInitFormData.donationTo == "Bcds") {
+      this.investmentInitService.getLastFiveInvestmentForBcds(this.investmentInitService.investmentInitFormData.donationType,this.investmentInitService.investmentBcdsFormData.bcdsId,marketCode, toDayDate).subscribe(
+        (response) => {
+          this.investmentDetailsOld = response as IInvestmentDetailOld[];
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+    else if (this.investmentInitService.investmentInitFormData.donationTo == "Society") {
+      
+      this.investmentInitService.getLastFiveInvestmentForSociety(this.investmentInitService.investmentInitFormData.donationType,this.investmentInitService.investmentSocietyFormData.societyId,marketCode, toDayDate).subscribe(
+        (response) => {
+          this.investmentDetailsOld = response as IInvestmentDetailOld[];
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+    
   }
   getEmployeeSbu() {
     this.accountService.getEmployeeSbu(this.investmentInitService.investmentInitFormData.employeeId).subscribe(
@@ -328,7 +379,7 @@ export class InvestmentInitComponent implements OnInit {
         this.sbu = response.sbu;
         this.investmentInitService.investmentInitFormData.marketCode = response.marketCode;
         this.getProduct();
-        this.getLastFiveInvestment(this.investmentInitService.investmentInitFormData.marketCode, this.todayDate);
+        //this.getLastFiveInvestment(this.investmentInitService.investmentInitFormData.marketCode, this.todayDate);
       },
       (error) => {
         console.log(error);
@@ -792,6 +843,7 @@ export class InvestmentInitComponent implements OnInit {
         this.onChangeDoctorInDoc();
         this.onChangeInstitutionInDoc();
         this.updateInvestmentInit();
+        this.getLastFiveInvestment(this.investmentInitService.investmentInitFormData.marketCode, this.todayDate);
         this.isDonationValid = true;
         this.toastr.success('Save successfully', 'Investment');
       },
@@ -829,6 +881,7 @@ export class InvestmentInitComponent implements OnInit {
         this.onChangeInstitutionInInst();
         this.updateInvestmentInit();
         this.isDonationValid = true;
+        this.getLastFiveInvestment(this.investmentInitService.investmentInitFormData.marketCode, this.todayDate);
         this.toastr.success('Save successfully', 'Investment');
       },
       err => { console.log(err); }
@@ -917,6 +970,7 @@ export class InvestmentInitComponent implements OnInit {
         this.updateInvestmentInit();
 
         this.isDonationValid = true;
+        this.getLastFiveInvestment(this.investmentInitService.investmentInitFormData.marketCode, this.todayDate);
         this.toastr.success('Save successfully', 'Investment');
       },
       err => { console.log(err); }
@@ -953,6 +1007,7 @@ export class InvestmentInitComponent implements OnInit {
         this.updateInvestmentInit();
 
         this.isDonationValid = true;
+        this.getLastFiveInvestment(this.investmentInitService.investmentInitFormData.marketCode, this.todayDate);
         this.toastr.success('Save successfully', 'Investment');
       },
       err => { console.log(err); }

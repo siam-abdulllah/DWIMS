@@ -26,7 +26,6 @@ export class AsidenavComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    debugger;
     const menuList = JSON.parse(localStorage.getItem("menu"));
     var menuHeadName = "";
     var menu ="<li class=\"nav-item\">" ;

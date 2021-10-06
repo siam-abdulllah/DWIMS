@@ -165,16 +165,71 @@ export class InvestmentAprComponent implements OnInit {
     this.InvestmentAprSearchModalRef.hide()
   }
   getLastFiveInvestment(marketCode: string, toDayDate: string) {
-    this.investmentAprService.getLastFiveInvestment(marketCode, toDayDate).subscribe(
-      (response) => {
-
-        this.investmentDetailsOld = response as IInvestmentDetailOld[];
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    debugger;
+    if (this.investmentAprService.investmentAprFormData.donationTo == "Doctor") {
+      this.investmentAprService.getLastFiveInvestmentForDoc(this.investmentAprService.investmentAprFormData.donationType,this.investmentAprService.investmentDoctorFormData.doctorId,marketCode, toDayDate).subscribe(
+        (response) => {
+          this.investmentDetailsOld = response as IInvestmentDetailOld[];
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+    else if (this.investmentAprService.investmentAprFormData.donationTo == "Institution") {
+      this.investmentAprService.getLastFiveInvestmentForInstitute(this.investmentAprService.investmentAprFormData.donationType,this.investmentAprService.investmentInstitutionFormData.institutionId,marketCode, toDayDate).subscribe(
+        (response) => {
+          this.investmentDetailsOld = response as IInvestmentDetailOld[];
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+    else if (this.investmentAprService.investmentAprFormData.donationTo == "Campaign") {
+      this.investmentAprService.getLastFiveInvestmentForCampaign(this.investmentAprService.investmentAprFormData.donationType,this.investmentAprService.investmentCampaignFormData.campaignMstId,marketCode, toDayDate).subscribe(
+        (response) => {
+          this.investmentDetailsOld = response as IInvestmentDetailOld[];
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+    else if (this.investmentAprService.investmentAprFormData.donationTo == "Bcds") {
+      this.investmentAprService.getLastFiveInvestmentForBcds(this.investmentAprService.investmentAprFormData.donationType,this.investmentAprService.investmentBcdsFormData.bcdsId,marketCode, toDayDate).subscribe(
+        (response) => {
+          this.investmentDetailsOld = response as IInvestmentDetailOld[];
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+    else if (this.investmentAprService.investmentAprFormData.donationTo == "Society") {
+      
+      this.investmentAprService.getLastFiveInvestmentForSociety(this.investmentAprService.investmentAprFormData.donationType,this.investmentAprService.investmentSocietyFormData.societyId,marketCode, toDayDate).subscribe(
+        (response) => {
+          this.investmentDetailsOld = response as IInvestmentDetailOld[];
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+    
   }
+  // getLastFiveInvestment(marketCode: string, toDayDate: string) {
+  //   this.investmentAprService.getLastFiveInvestment(marketCode, toDayDate).subscribe(
+  //     (response) => {
+
+  //       this.investmentDetailsOld = response as IInvestmentDetailOld[];
+  //     },
+  //     (error) => {
+  //       console.log(error);
+  //     }
+  //   );
+  // }
   getCampaignMst() {
     this.investmentAprService.getCampaignMsts().subscribe(response => {
       //

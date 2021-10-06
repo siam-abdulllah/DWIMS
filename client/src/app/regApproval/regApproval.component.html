@@ -7,16 +7,16 @@
                     <div class="card card-primary">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-sm-9">
                                     <h3 class="card-title">Registration Approval</h3>
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-1">
                                     <button class="btn btn-success btn-lg btn-block" [disabled]="regApprovalForm.invalid" type="submit"><i class="fa fa-save"></i>&nbsp; Save</button>
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-1">
                                     <button class="btn btn-info btn-lg btn-block" type="button" (click)="getRegApproved()"><i class="fa fa-search"></i>Search</button>
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-1">
                                     <button class="btn btn-danger  btn-block" type="button" (click)="resetForm(regApprovalForm)"><i class="fa fa-undo"></i>&nbsp; Reset</button>
                                 </div>
                             </div>
@@ -29,7 +29,7 @@
                                         <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <input class="form-control " (dblclick)="getEmployeeFormApproval()" placeholder="Please Double Click Here" id="employeeId" name="employeeId" #employeeId="ngModel" [(ngModel)]="regApprovalService.regApprovalFormData.employeeId" required [class.invalid]="employeeId.invalid && employeeId.touched">
+                                        <input class="form-control clickable" (dblclick)="getEmployeeFormApproval()" placeholder="Please Double Click Here" id="employeeId" name="employeeId" #employeeId="ngModel" [(ngModel)]="regApprovalService.regApprovalFormData.employeeId" required [class.invalid]="employeeId.invalid && employeeId.touched">
                                     </div>
                                 </div>
                             </div>
@@ -161,7 +161,7 @@
     </div>
 </section>
 <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
-    <p style="color: white">Please Wait. </p>
+    <p style="color: black">Please Wait. </p>
 </ngx-spinner>
 <ng-template #regApprovalSearchModal>
     <div class="modal-header" style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc));color: black;">
@@ -190,7 +190,7 @@
                         <tbody>
                             <tr *ngFor="let a of regApprovals">
                                 <td>
-                                    <button class="btn btn-sm btn-embossed btn-success" (click)="selectRegApproval(a)">Select</button>
+                                    <button class="btn btn-sm btn-embossed btn-success" (click)="selectRegApproval(a)"><i class="fa fa-check"></i>&nbsp; Select</button>
 
                                 </td>
                                 <td>{{a.employeeId}}</td>

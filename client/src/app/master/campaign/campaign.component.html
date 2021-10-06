@@ -6,17 +6,17 @@
                     <div class="card card-primary">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-sm-9">
                                     <h3 class="card-title">Campaign</h3>
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-1">
                                     <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="form.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
                                 </div>
-                                <div class="col-sm-2">
-                                    <button class="btn btn-info btn-lg btn-block" type="button" (click)="getCampaign()"><i class="fa fa-search"></i>Search</button>
+                                <div class="col-sm-1">
+                                    <button class="btn btn-info btn-lg btn-block" type="button" (click)="getCampaign()"><i class="fa fa-search"></i>&nbsp;Search</button>
                                 </div>
-                                <div class="col-sm-2">
-                                    <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetPage(form)"><i class="fa fa-undo"></i>Reset</button>
+                                <div class="col-sm-1">
+                                    <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetPage(form)"><i class="fa fa-undo"></i>&nbsp; Reset</button>
                                 </div>
                             </div>
                         </div>
@@ -100,22 +100,22 @@
                                             <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-3">
-                                            <input type="text" class="form-control" placeholder="Calender" name="subCampStartDate" id="subCampStartDate" #subCampStartDate="ngModel" [(ngModel)]="masterService.campaignDtlFormData.subCampStartDate" [class.invalid]="subCampStartDate.invalid && subCampStartDate.touched"
-                                                [bsValue]="bsValue" (bsValueChange)="dateCompare(form)" bsDatepicker [bsConfig]="bsConfig" readonly>
+                                            <input type="text" class="form-control  clickable" placeholder="Calender" name="subCampStartDate" id="subCampStartDate" #subCampStartDate="ngModel" [(ngModel)]="masterService.campaignDtlFormData.subCampStartDate" [class.invalid]="subCampStartDate.invalid && subCampStartDate.touched"
+                                                [bsValue]="bsValue" (bsValueChange)="dateCompare()" bsDatepicker [bsConfig]="bsConfig" readonly>
                                         </div>
                                         <div class="col-md-2">
                                             <label>Sub Camp. End Date</label>
                                             <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-3">
-                                            <input type="text" class="form-control" placeholder="Calender" name="subCampEndDate" id="subCampEndDate" #subCampEndDate="ngModel" [(ngModel)]="masterService.campaignDtlFormData.subCampEndDate" [class.invalid]="subCampEndDate.invalid && subCampEndDate.touched"
-                                                [bsValue]="bsValue" bsDatepicker (bsValueChange)="dateCompare(form)" [bsConfig]="bsConfig" readonly>
+                                            <input type="text" class="form-control clickable" placeholder="Calender" name="subCampEndDate" id="subCampEndDate" #subCampEndDate="ngModel" [(ngModel)]="masterService.campaignDtlFormData.subCampEndDate" [class.invalid]="subCampEndDate.invalid && subCampEndDate.touched"
+                                                [bsValue]="bsValue" bsDatepicker (bsValueChange)="dateCompare()" [bsConfig]="bsConfig" readonly>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="row">
-                                        <div class="col-sm-3">
+                                        <div class="col-sm-1">
                                             <button class="btn btn-info btn-lg btn-block" type="button" (click)="addSubCampaign()"><i class="fa fa-plus"></i>Add</button>
                                         </div>
                                     </div>
@@ -145,13 +145,13 @@
                                                 {{a.subCampEndDate| date:'dd/MM/yyyy'}}
                                             </td>
                                             <td>
-                                                <button class="btn btn-sm btn-embossed btn-primary" type="button" (click)="populateDtlsForm(a)">Edit</button>
+                                                <button class="btn btn-sm btn-embossed btn-primary" type="button" (click)="populateDtlsForm(a)"><i class="fa fa-edit"></i>Edit</button>
                                             </td>
                                             <td>
-                                                <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="showProductModal(a)">Add Product</button>
+                                                <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="showProductModal(a)" style="width: 100px;"><i class="fa fa-plus"></i>Add Product</button>
                                             </td>
                                             <td>
-                                                <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="getCampaignDtlProductClick(a)">view Product</button>
+                                                <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="getCampaignDtlProductClick(a)" style="width: 100px;"><i class="fa fa-eye"></i>View Product</button>
                                             </td>
                                         </tr>
                                     </table>
@@ -163,20 +163,20 @@
                                 <div class="form-group">
                                     <table class="table  table-bordered">
                                         <tr class="HeaderRow">
-                                            <td>Product Code</td>
+                                            <!-- <td>Product Code</td> -->
                                             <td>Product Name</td>
                                             <td></td>
                                         </tr>
                                         <tr *ngFor="let b of campaignDtlProducts">
 
-                                            <td>
+                                            <!-- <td>
                                                 {{b.productInfo.productCode}}
-                                            </td>
+                                            </td> -->
                                             <td>
                                                 {{b.productInfo.productName}}
                                             </td>
                                             <td>
-                                                <button class="btn btn-sm btn-embossed btn-danger" type="button" (click)="removeProduct(b)">Remove</button>
+                                                <button class="btn btn-sm btn-embossed btn-danger" type="button" (click)="removeProduct(b)"><i class="fa fa-trash"></i> Remove</button>
                                             </td>
                                         </tr>
                                     </table>
@@ -211,7 +211,7 @@
                                                     </tr>
                                                     <tr *ngFor="let b of campaignMsts">
                                                         <td>
-                                                            <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="selectCampaignMst(b)">Select</button>
+                                                            <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="selectCampaignMst(b)"><i class="fa fa-check"></i> Select</button>
 
                                                         </td>
                                                         <td style="display:none;">{{b.id}}</td>
@@ -264,7 +264,7 @@
                                                     </select>
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="addProduct()">Select</button>
+                                                        <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="addProduct()"><i class="fa fa-check"></i> Select</button>
 
                                                     </div>
                                                 </div>
@@ -281,5 +281,5 @@
     </div>
 </section>
 <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
-    <p style="color: white">Please Wait. </p>
+    <p style="color: black">Please Wait. </p>
 </ngx-spinner>

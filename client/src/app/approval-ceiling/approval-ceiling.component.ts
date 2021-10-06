@@ -71,15 +71,17 @@ export class ApprovalCeilingComponent implements OnInit {
 
     if (this.approvalCeilingService.approvalCeilingFormData.investmentFrom != null && this.approvalCeilingService.approvalCeilingFormData.investmentTo != null) {
       if (this.approvalCeilingService.approvalCeilingFormData.investmentTo > this.approvalCeilingService.approvalCeilingFormData.investmentFrom) {
-
+return true;
       }
       else {
-        this.toastr.error('Select Appropriate Date Range', 'Error')
+        this.toastr.error('Select Appropriate Date Range', 'Error');
+        return false;
       }
     }
   }
 
   insertApprovalCeiling(form: NgForm) {
+    if(this.dateCompare()){
     this.approvalCeilingService.insertApprovalCeiling().subscribe(
       res => {
         debugger;
@@ -94,8 +96,10 @@ export class ApprovalCeilingComponent implements OnInit {
       }
     );
   }
+  }
 
   updateApprovalCeiling(form: NgForm) {
+    if(this.dateCompare()){
     this.approvalCeilingService.updateApprovalCeiling().subscribe(
       res => {
         debugger;
@@ -103,8 +107,11 @@ export class ApprovalCeilingComponent implements OnInit {
         this.getApprovalCeiling();
         this.toastr.info('Data Updated Successfully', 'Approval Ceiling')
       },
-      err => { console.log(err); }
+      err => {  
+        this.toastr.error(err.errors[0], 'Approval Ceiling')
+      console.log(err); }
     );
+      }
   }
 
   populateForm(selectedRecord: IApprovalCeiling) {
