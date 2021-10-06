@@ -210,7 +210,9 @@ namespace API.Controllers
                     var result = _dbContext.Database.ExecuteSqlRawAsync("EXECUTE SP_InvestmentCeilingCheck @SBU,@DTYPE,@EID,@IID,@PRAMOUNT,@ASTATUS", parms.ToArray());
                     if (result.Result == 0)
                     {
-                        var alreadyExistSpec = new InvestmentAprSpecification(investmentAprDto.InvestmentInitId);
+                        return BadRequest(new ApiResponse(400, "Apprval Ceiling Exceeded"));
+                    }
+                    var alreadyExistSpec = new InvestmentAprSpecification(investmentAprDto.InvestmentInitId);
                         var alreadyExistInvestmentAprList = await _investmentAprRepo.ListAsync(alreadyExistSpec);
                         if (alreadyExistInvestmentAprList.Count > 0)
                         {
@@ -220,8 +222,6 @@ namespace API.Controllers
                                 _investmentAprRepo.Savechange();
                             }
                         }
-                        return BadRequest(new ApiResponse(400, "Apprval Ceiling Exceeded"));
-                    }
                     var invApr = new InvestmentApr
                     {
                         //ReferenceNo = investmentInitDto.ReferenceNo,

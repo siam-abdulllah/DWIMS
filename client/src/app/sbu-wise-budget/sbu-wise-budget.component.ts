@@ -50,14 +50,16 @@ export class SbuWiseBudgetComponent implements OnInit {
     });
   }
 
-  dateCompare(form: NgForm) {
+  dateCompare() {
     if (this.sbuWiseBudgetService.sbuwiseBudgeFormData.fromDate != null && this.sbuWiseBudgetService.sbuwiseBudgeFormData.toDate != null) {
       if (this.sbuWiseBudgetService.sbuwiseBudgeFormData.toDate > this.sbuWiseBudgetService.sbuwiseBudgeFormData.fromDate) {
+      return true;
       }
       else {
-        form.controls.fromDate.setValue(null);
-        form.controls.toDate.setValue(null);
-        this.toastr.error('Select Appropriate Date Range', 'Error')
+        //form.controls.fromDate.setValue(null);
+        //form.controls.toDate.setValue(null);
+        this.toastr.error('Select Appropriate Date Range', 'Error');
+        return false;
       }
     }
   }
@@ -80,6 +82,7 @@ export class SbuWiseBudgetComponent implements OnInit {
         break;
       }
     }
+    if(this.dateCompare()){
     this.sbuWiseBudgetService.insertSBUWiseBudget().subscribe(
       res => {
         debugger;
@@ -88,11 +91,11 @@ export class SbuWiseBudgetComponent implements OnInit {
         this.toastr.success('Data Saved successfully', 'SBU Wise Budget ')
       },
       err => {
-        debugger;
         this.toastr.error(err.errors[0], 'SBU Wise Budget ')
         console.log(err);
       }
     );
+  }
   }
 
   updateSBUWiseBudget(form: NgForm) {
@@ -104,6 +107,7 @@ export class SbuWiseBudgetComponent implements OnInit {
         break;
       }
     }
+    if(this.dateCompare()){
     this.sbuWiseBudgetService.updateSBUWiseBudget().subscribe(
       res => {
         debugger;
@@ -111,8 +115,11 @@ export class SbuWiseBudgetComponent implements OnInit {
         this.getSBUWiseBudget();
         this.toastr.info('Data Updated Successfully', 'SBU Wise Budget')
       },
-      err => { console.log(err); }
-    );
+      err => { 
+        this.toastr.error(err.errors[0], 'SBU Wise Budget ')
+      console.log(err); 
+    }
+    );}
   }
 
   populateForm(selectedRecord: ISBUWiseBudget) {

@@ -108,8 +108,17 @@ namespace API.Controllers
 
 
         [HttpPost("ModifySBUWiseBudget")]
-        public ActionResult<SBUWiseBudget> UpdateSBUBudget(SBUWiseBudget sbuBdgt)
+        public async Task<ActionResult<SBUWiseBudget>> UpdateSBUBudget(SBUWiseBudget sbuBdgt)
         {
+            var fromDateCheck = new SBUWiseBudgetWithFiltersForCountSpecificication(sbuBdgt.Id, sbuBdgt.FromDate, sbuBdgt.SBU);
+            var fromDateCheckList = await _sbuRepo.ListAsync(fromDateCheck);
+            var toDateCheck = new SBUWiseBudgetWithFiltersForCountSpecificication(sbuBdgt.Id, sbuBdgt.ToDate, sbuBdgt.SBU);
+            var toDateCheckList = await _sbuRepo.ListAsync(toDateCheck);
+
+            if (fromDateCheckList.Count > 0 || toDateCheckList.Count > 0)
+            {
+                return new BadRequestObjectResult(new ApiValidationErrorResponse { Errors = new[] { "Date Range Existed" } });
+            }
             var appr = new SBUWiseBudget
             {
                 Id = sbuBdgt.Id,

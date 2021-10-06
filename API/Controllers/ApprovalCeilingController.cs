@@ -101,8 +101,17 @@ namespace API.Controllers
 
 
         [HttpPost("ModifyApprovalCeiling")]
-        public ActionResult<ApprovalCeiling> UpdateApprovalCeiling(ApprovalCeiling apprclngDto)
+        public async Task<ActionResult<ApprovalCeiling>> UpdateApprovalCeiling(ApprovalCeiling apprclngDto)
         {
+            var fromDateCheck = new ApprovalCeilingWithFiltersForCountSpecificication(apprclngDto.Id, apprclngDto.ApprovalAuthorityId, apprclngDto.DonationType, apprclngDto.InvestmentFrom);
+            var fromDateCheckList = await _aptimeRepo.ListAsync(fromDateCheck);
+            var toDateCheck = new ApprovalCeilingWithFiltersForCountSpecificication(apprclngDto.Id, apprclngDto.ApprovalAuthorityId, apprclngDto.DonationType, apprclngDto.InvestmentTo);
+            var toDateCheckList = await _aptimeRepo.ListAsync(toDateCheck);
+
+            if (fromDateCheckList.Count > 0 || toDateCheckList.Count > 0)
+            {
+                return new BadRequestObjectResult(new ApiValidationErrorResponse { Errors = new[] { "Date Range Existed" } });
+            }
             var appr = new ApprovalCeiling
             {
                 Id = apprclngDto.Id,

@@ -1154,6 +1154,134 @@ namespace API.Controllers
             {
                 throw ex;
             }
+        } 
+        [HttpGet]
+        [Route("getLastFiveInvestmentForDoc/{donationtype}/{docId}/{marketCode}/{date}")]
+        public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestmentForDoc(string donationtype, string docId, string marketCode, string date)
+        {
+            try
+            {
+                var v = DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture);
+                // var empData = await _employeeRepo.GetByIdAsync(empId);
+                var reportInvestmentSpec = new ReportInvestmentSpecification(marketCode);
+                var reportInvestmentData = await _reportInvestmentInfoRepo.ListAsync(reportInvestmentSpec);
+                // var spec = new ReportInvestmentSpecification(empData.MarketCode);
+                var data = (from e in reportInvestmentData
+                            where e.DoctorId==docId && e.DonationType==donationtype &&
+                            DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) <= DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture)
+                            orderby DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) descending
+                            select new ReportInvestmentInfo
+                            {
+                                InvestmentAmount = e.InvestmentAmount,
+                                ComtSharePrcnt = e.ComtSharePrcnt,
+                                ComtSharePrcntAll = e.ComtSharePrcntAll,
+                                PrescribedSharePrcnt = e.PrescribedSharePrcnt,
+                                PrescribedSharePrcntAll = e.PrescribedSharePrcntAll
+                            }
+                             ).Distinct().Take(5).ToList();
+
+                return data;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpGet]
+        [Route("getLastFiveInvestmentForInstitute/{donationtype}/{instituteId}/{marketCode}/{date}")]
+        public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestmentForInstitute(string donationtype, string instituteId, string marketCode, string date)
+        {
+            try
+            {
+                var v = DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture);
+                // var empData = await _employeeRepo.GetByIdAsync(empId);
+                var reportInvestmentSpec = new ReportInvestmentSpecification(marketCode);
+                var reportInvestmentData = await _reportInvestmentInfoRepo.ListAsync(reportInvestmentSpec);
+                // var spec = new ReportInvestmentSpecification(empData.MarketCode);
+                var data = (from e in reportInvestmentData
+                            where e.InstituteId== instituteId && e.DonationType==donationtype &&
+                            DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) <= DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture)
+                            orderby DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) descending
+                            select new ReportInvestmentInfo
+                            {
+                                InvestmentAmount = e.InvestmentAmount,
+                                ComtSharePrcnt = e.ComtSharePrcnt,
+                                ComtSharePrcntAll = e.ComtSharePrcntAll,
+                                PrescribedSharePrcnt = e.PrescribedSharePrcnt,
+                                PrescribedSharePrcntAll = e.PrescribedSharePrcntAll
+                            }
+                             ).Distinct().Take(5).ToList();
+
+                return data;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+         [HttpGet]
+        [Route("getLastFiveInvestmentForBcds/{donationtype}/{bcdsId}/{marketCode}/{date}")]
+        public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestmentForBcds(string donationtype, string bcdsId, string marketCode, string date)
+        {
+            try
+            {
+                var v = DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture);
+                // var empData = await _employeeRepo.GetByIdAsync(empId);
+                var reportInvestmentSpec = new ReportInvestmentSpecification(marketCode);
+                var reportInvestmentData = await _reportInvestmentInfoRepo.ListAsync(reportInvestmentSpec);
+                // var spec = new ReportInvestmentSpecification(empData.MarketCode);
+                var data = (from e in reportInvestmentData
+                            where e.BcdsId== bcdsId && e.DonationType==donationtype &&
+                            DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) <= DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture)
+                            orderby DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) descending
+                            select new ReportInvestmentInfo
+                            {
+                                InvestmentAmount = e.InvestmentAmount,
+                                ComtSharePrcnt = e.ComtSharePrcnt,
+                                ComtSharePrcntAll = e.ComtSharePrcntAll,
+                                PrescribedSharePrcnt = e.PrescribedSharePrcnt,
+                                PrescribedSharePrcntAll = e.PrescribedSharePrcntAll
+                            }
+                             ).Distinct().Take(5).ToList();
+
+                return data;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+         [HttpGet]
+        [Route("getLastFiveInvestmentForSociety/{donationtype}/{societyId}/{marketCode}/{date}")]
+        public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestmentForSociety(string donationtype, string societyId, string marketCode, string date)
+        {
+            try
+            {
+                var v = DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture);
+                // var empData = await _employeeRepo.GetByIdAsync(empId);
+                var reportInvestmentSpec = new ReportInvestmentSpecification(marketCode);
+                var reportInvestmentData = await _reportInvestmentInfoRepo.ListAsync(reportInvestmentSpec);
+                // var spec = new ReportInvestmentSpecification(empData.MarketCode);
+                var data = (from e in reportInvestmentData
+                            where e.SocietyId== societyId && e.DonationType==donationtype &&
+                            DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) <= DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture)
+                            orderby DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) descending
+                            select new ReportInvestmentInfo
+                            {
+                                InvestmentAmount = e.InvestmentAmount,
+                                ComtSharePrcnt = e.ComtSharePrcnt,
+                                ComtSharePrcntAll = e.ComtSharePrcntAll,
+                                PrescribedSharePrcnt = e.PrescribedSharePrcnt,
+                                PrescribedSharePrcntAll = e.PrescribedSharePrcntAll
+                            }
+                             ).Distinct().Take(5).ToList();
+
+                return data;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
         }
 
 

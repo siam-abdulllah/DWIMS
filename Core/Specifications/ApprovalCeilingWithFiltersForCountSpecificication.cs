@@ -16,5 +16,9 @@ namespace Core.Specifications
          : base(x => x.ApprovalAuthorityId == apprvAuthId && x.DonationType == donationType && (x.InvestmentFrom.Value.Date >= dateCheck || dateCheck <= x.InvestmentTo.Value.Date))
         {
         }
+        public ApprovalCeilingWithFiltersForCountSpecificication(int id,int? apprvAuthId, string donationType, DateTimeOffset? dateCheck)
+         : base(x => x.ApprovalAuthorityId == apprvAuthId && !x.Id.Equals(id) && x.DonationType == donationType && (x.InvestmentFrom.Value.Date >= dateCheck || dateCheck <= x.InvestmentTo.Value.Date))
+        {
+        }
     }
 }

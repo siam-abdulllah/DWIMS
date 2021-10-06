@@ -37,7 +37,8 @@ namespace Core.Specifications
             : base(x => x.Id == id)
         {
 
-        } public ReportInvestmentSpecification(string marketCode)
+        }
+        public ReportInvestmentSpecification(string marketCode)
             : base(x => x.MarketCode == marketCode)
         {
 
