@@ -69,6 +69,28 @@ export class BcdsInfoComponent implements OnInit {
     );
   }
 
+  resetSearch(){
+    this.searchText = '';
+}
+
+onPageChanged(event: any){
+  const params = this.masterService.getGenParams();
+  if (params.pageNumber !== event)
+  {
+    params.pageNumber = event;
+    this.masterService.setGenParams(params);
+    this.getBcds();
+  }
+}
+
+onSearch(){
+  const params = this.masterService.getGenParams();
+  params.search = this.searchTerm.nativeElement.value;
+  params.pageNumber = 1;
+  this.masterService.setGenParams(params);
+  this.getBcds();
+}
+
   populateForm(selectedRecord: IBcdsInfo) {
     this.masterService.bcdsFormData = Object.assign({}, selectedRecord);
   }

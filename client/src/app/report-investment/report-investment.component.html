@@ -23,7 +23,6 @@
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-6">
-
                                             <table class="table table-bordered">
                                                 <tr class="HeaderRow">
                                                     <td>Report Name</td>
@@ -41,13 +40,13 @@
                                         </div>
 
                                         <div class="col-md-6">
-                                            <div class="col-md-2">
+                                            <div class="col-md-4">
                                                 <label>From Date</label>
                                             </div>
                                             <div class="col-md-6">
                                                 <input class="form-control" id="from-date" placeholder="From Date" formControlName="fromDate" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
                                             </div>
-                                            <div class="col-md-2">
+                                            <div class="col-md-4">
                                                 <label>To Date</label>
                                             </div>
                                             <div class="col-md-6">
@@ -66,10 +65,12 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-6">
-                                                <select class="form-control " id="institutionId" formControlName="institutionId" [hidden]="visIns">
+                                                <!-- <select class="form-control " id="institutionId" formControlName="institutionId" [hidden]="visIns">
                                                     <option [ngValue]="null">Select Institution</option>
                                                     <option *ngFor="let a of institutions" [value]="a.id">{{a.institutionName}}</option>
-                                                </select>
+                                                </select> -->
+                                                <ng-select [virtualScroll]="true" [items]="institutions" bindLabel="institutionName" bindValue="institutionId" placeholder="Select Institution" name="institutionId" id="institutionId" formControlName="institutionId" [hidden]="visIns">
+                                                </ng-select>
 
                                                 <select class="form-control " id="societyId" formControlName="societyId" [hidden]="visSoc">
                                                     <option [ngValue]="null">Select Society</option>
@@ -80,10 +81,12 @@
                                                     <option [ngValue]="null">Select BCDS</option>
                                                     <option *ngFor="let a of bcds" [value]="a.id">{{a.bcdsName}}</option>
                                                 </select>
-                                                <select class="form-control " id="doctorId" formControlName="doctorId" [hidden]="visDoc">
+                                                <!-- <select class="form-control " id="doctorId" formControlName="doctorId" [hidden]="visDoc">
                                                     <option [ngValue]="null">Select Doctor</option>
                                                     <option *ngFor="let a of doctor" [value]="a.id">{{a.doctorName}}</option>
-                                                </select>
+                                                </select> -->
+                                                <ng-select [virtualScroll]="true" [items]="doctor" bindLabel="doctorName" [hidden]="visDoc" bindValue="doctorId" placeholder="Select Doctor" id="doctorId" name="doctorId" formControlName="doctorId">
+                                                </ng-select>
                                             </div>
 
                                             <div class="col-md-4">
@@ -100,15 +103,21 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-6">
-                                                <select class="form-control " id="marketCode" formControlName="marketCode" [hidden]="visMarket">
+                                                <!-- <select class="form-control " id="marketCode" formControlName="marketCode" [hidden]="visMarket">
                                                     <option [ngValue]="null">Select Market</option>
                                                     <option *ngFor="let a of market" [value]="a.marketCode">{{a.marketName}}</option>
-                                                </select>
+                                                </select> -->
 
-                                                <select class="form-control " id="territoryCode" formControlName="territoryCode" [hidden]="visTerritory">
+                                                <ng-select [virtualScroll]="true" [items]="market" bindLabel="marketName" bindValue="marketCode" placeholder="Select Market" name="marketCode" id="marketCode" formControlName="marketCode" [hidden]="visMarket">
+                                                </ng-select>
+
+                                                <!-- <select class="form-control " id="territoryCode" formControlName="territoryCode" [hidden]="visTerritory">
                                                     <option [ngValue]="null">Select Territory</option>
                                                     <option *ngFor="let a of territory" [value]="a.territoryCode">{{a.territoryName}}</option>
-                                                </select>
+                                                </select> -->
+
+                                                <ng-select [virtualScroll]="true" [items]="territory" bindLabel="territoryName" bindValue="territoryCode" placeholder="Select Territory" name="territoryCode" id="territoryCode" formControlName="territoryCode" [hidden]="visTerritory">
+                                                </ng-select>
 
                                                 <select class="form-control " id="regionCode" formControlName="regionCode" [hidden]="visRegion">
                                                     <option [ngValue]="null">Select Region</option>

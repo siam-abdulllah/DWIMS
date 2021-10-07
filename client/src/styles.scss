@@ -1,121 +1,128 @@
-@import "../node_modules/ngx-bootstrap/datepicker/bs-datepicker.css";
-@import "~@ng-select/ng-select/themes/default.theme.css";
-@import "./assets/adminlte/dist/css/Customize.css";
-// .disable {
-//     pointer-events: none;
-//     cursor: default;
-// }
-@media (min-width: 992px) {
-    td>.btn {
-        width: 80px;
+    @import "../node_modules/ngx-bootstrap/datepicker/bs-datepicker.css";
+    @import "~@ng-select/ng-select/themes/default.theme.css";
+    @import "./assets/adminlte/dist/css/Customize.css";
+    // .disable {
+    //     pointer-events: none;
+    //     cursor: default;
+    // }
+    @media (min-width: 992px) {
+        td>.btn {
+            width: 80px;
+        }
     }
-}
-
-.invalid {
-    border: 1px solid red !important;
-}
-
-.invalid-feedback {
-    color: red !important;
-    font-size: smaller !important;
-    display: inline!important;
-}
-
-// .form-control {
-//     background-image: none;
-//     border: 1px solid #28b9da;
-//     border-radius: 0;
-// }
-.navbar-light {
-    background-color: #28b9da;
-}
-
-[class*=sidebar-dark] .brand-link {
-    border-bottom: 1px solid #28b9da;
-    color: rgba(255, 255, 255, .8);
-}
-
-.brand-link {
-    background-color: #28b9da;
-}
-
-.loginBGImage {
-    padding: 16px;
-    background-image: url("../src/assets/img/loginPageBackground.jpg");
-    background-repeat: no-repeat;
-    width: 100%;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    //opacity: .9;
-    height: 100%;
-}
-
-.regBGImage {
-    padding: 16px;
-    background-image: url("../src/assets/img/regPageBackground.jpg");
-    background-repeat: no-repeat;
-    width: 100%;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    // opacity: .9;
-    height: 100%;
-}
-
-.navbar-custom-menu-left {
-    float: left;
-    // padding-top: 1%;
-    // padding-left: 2%;
-    font-weight: bold;
-    color: white;
-    font-size: large;
-    text-shadow: 2px 2px 4px #000000;
-}
-
-@media (max-width: 1200px) {
+    
+    .invalid {
+        border: 1px solid red !important;
+    }
+    
+    .invalid-feedback {
+        color: red !important;
+        font-size: smaller !important;
+        display: inline!important;
+    }
+    
+    // .form-control {
+    //     background-image: none;
+    //     border: 1px solid #28b9da;
+    //     border-radius: 0;
+    // }
+    .navbar-light {
+        background-color: #28b9da;
+    }
+    
+    [class*=sidebar-dark] .brand-link {
+        border-bottom: 1px solid #28b9da;
+        color: rgba(255, 255, 255, .8);
+    }
+    
+    .brand-link {
+        background-color: #28b9da;
+    }
+    
+    .loginBGImage {
+        padding: 16px;
+        background-image: url("../src/assets/img/loginPageBackground.jpg");
+        background-repeat: no-repeat;
+        width: 100%;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        //opacity: .9;
+        height: 100%;
+    }
+    
+    .regBGImage {
+        padding: 16px;
+        background-image: url("../src/assets/img/regPageBackground.jpg");
+        background-repeat: no-repeat;
+        width: 100%;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        // opacity: .9;
+        height: 100%;
+    }
+    
+    .navbar-custom-menu-left {
+        float: left;
+        // padding-top: 1%;
+        // padding-left: 2%;
+        font-weight: bold;
+        color: white;
+        font-size: large;
+        text-shadow: 2px 2px 4px #000000;
+    }
+    
+    @media (max-width: 1200px) {
+        .navbar-custom-empInfo-left {
+            display: none;
+        }
+    }
+    
+    @media (max-width: 1200px) {
+        .navbar-custom-menu-left>.alt_companyLogo {
+            display: none;
+        }
+    }
+    
+    @media (min-width: 1200px) {
+        .navbar-custom-menu-left>.alt_systemLogo {
+            display: none;
+        }
+    }
+    
     .navbar-custom-empInfo-left {
-        display: none;
+        float: left;
+        // padding-top: 1%;
+        // padding-left: 2%;
+        //font-weight: bold;
+        color: white;
+        font-size: large;
+        text-shadow: 2px 2px 4px #715d5d;
     }
-}
-
-@media (max-width: 1200px) {
-    .navbar-custom-menu-left>.alt_companyLogo {
-        display: none;
+    
+    .navbar-custom-empInfo-left>.nav-item>.input-group {
+        padding-top: 0.1rem;
     }
-}
-
-@media (min-width: 1200px) {
-    .navbar-custom-menu-left>.alt_systemLogo {
-        display: none;
+    
+    .navbar-custom-empInfo-left>.nav-item>.input-group>p {
+        margin-bottom: 0rem;
     }
-}
-
-.navbar-custom-empInfo-left {
-    float: left;
-    // padding-top: 1%;
-    // padding-left: 2%;
-    //font-weight: bold;
-    color: white;
-    font-size: large;
-    text-shadow: 2px 2px 4px #715d5d;
-}
-
-.navbar-custom-empInfo-left>.nav-item>.input-group {
-    padding-top: 0.1rem;
-}
-
-.navbar-custom-empInfo-left>.nav-item>.input-group>p {
-    margin-bottom: 0rem;
-}
-
-.clickable {
-    cursor: pointer !important;
-}
-
-.HeaderRow {
-    font-weight: bold;
-    background: #28b9da47;
-}
+    
+    .clickable {
+        cursor: pointer !important;
+    }
+    
+    .HeaderRow {
+        font-weight: bold;
+        background: #28b9da47;
+    }
+    
+    .Searchbox {
+        border-color: rgb(66, 151, 92);
+        border-width: 3px;
+        border-radius: 15px;
+        text-align: center;
+    }

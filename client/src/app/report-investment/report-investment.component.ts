@@ -40,7 +40,7 @@ export class ReportInvestmentComponent implements OnInit {
   insSocBcdsInvestment: IInsSocBcdsInvestment[] = [];
   docCampWiseInvestment: IDocCampWiseInvestment[] = [];
   docLocWiseInvestment: IDocLocWiseInvestment[] = [];
-
+  searchText = '';
   visSoc: boolean = true;
   visBcd: boolean = true;
   visIns: boolean = true;
@@ -86,6 +86,7 @@ export class ReportInvestmentComponent implements OnInit {
       societyId: new FormControl(''),
       bcdsId: new FormControl(''),
       institutionId: new FormControl(''),
+      searchText: new FormControl(''),
       doctorId: new FormControl(''),
       donationType: new FormControl(''),
       sbu: new FormControl(''),
@@ -123,7 +124,6 @@ export class ReportInvestmentComponent implements OnInit {
   }
 
   onChangeLocationType() {
-
     this.visMarket = true;
     this.visZone = true;
     this.visTerritory = true;

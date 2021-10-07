@@ -23,6 +23,7 @@ export class MarketGroupComponent implements OnInit {
   sbu:string;
   sbuName:string;
   markets: IMarket[];
+  searchText = '';
   marketGroupMsts: IMarketGroupMst[];
   marketGroupDtls: IMarketGroupDtl[];
   totalCount = 0;
@@ -71,6 +72,10 @@ export class MarketGroupComponent implements OnInit {
          console.log(error);
     });
   }
+
+  resetSearch(){
+    this.searchText = '';
+}
   openMarketGroupSearchModal(template: TemplateRef<any>) {
     this.marketGroupSearchModalRef = this.modalService.show(template, this.config);
   }

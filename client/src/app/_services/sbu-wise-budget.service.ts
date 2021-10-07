@@ -25,6 +25,16 @@ export class SBUWiseBudgetService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
+  getGenParams(){
+    return this.genParams;
+  }
+
+   // tslint:disable-next-line: typedef
+   setGenParams(genParams: GenericParams) {
+    this.genParams = genParams;
+  }
+
+
   getSBU(){    
     return this.http.get(this.baseUrl + 'employee/getSBU');
   }

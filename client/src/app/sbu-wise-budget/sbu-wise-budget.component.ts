@@ -22,6 +22,7 @@ export class SbuWiseBudgetComponent implements OnInit {
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date = new Date();
   totalCount = 0;
+  searchText = '';
   SBUs: ISBU[];
   numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
   constructor(public sbuWiseBudgetService: SBUWiseBudgetService, private router: Router, private toastr: ToastrService) { }
@@ -63,6 +64,29 @@ export class SbuWiseBudgetComponent implements OnInit {
       }
     }
   }
+
+
+  onPageChanged(event: any){
+    const params = this.sbuWiseBudgetService.getGenParams();
+    if (params.pageNumber !== event)
+    {
+      params.pageNumber = event;
+      this.sbuWiseBudgetService.setGenParams(params);
+      this.getSBUWiseBudget();
+    }
+  }
+  
+  onSearch(){
+    const params = this.sbuWiseBudgetService.getGenParams();
+    params.search = this.searchTerm.nativeElement.value;
+    params.pageNumber = 1;
+    this.sbuWiseBudgetService.setGenParams(params);
+    this.getSBUWiseBudget();
+  }
+
+  resetSearch(){
+    this.searchText = '';
+}
 
   onSubmit(form: NgForm) {
     debugger;

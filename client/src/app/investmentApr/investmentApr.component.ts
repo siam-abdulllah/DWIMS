@@ -68,6 +68,7 @@ export class InvestmentAprComponent implements OnInit {
   marketGroupMsts: IMarketGroupMst[];
   donationToVal: string;
   totalCount = 0;
+  searchText = '';
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date = new Date();
   empId: string;
@@ -230,6 +231,9 @@ export class InvestmentAprComponent implements OnInit {
   //     }
   //   );
   // }
+  resetSearch(){
+    this.searchText = '';
+}
   getCampaignMst() {
     this.investmentAprService.getCampaignMsts().subscribe(response => {
       //

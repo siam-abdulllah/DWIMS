@@ -70,8 +70,17 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-10">
-                                <input name="filterText" class="form-control m-input" type="text" [(ngModel)]="searchText" placeholder="Search..">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input name="filterText" class="form-control m-input Searchbox" type="text" [(ngModel)]="searchText" placeholder="Search..">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button class="btn btn-danger" type="button" (click)="resetSearch()"><i class="fa fa-undo"></i>&nbsp; Reset</button>
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <table class="table  table-bordered">
@@ -81,7 +90,6 @@
                                         <td>No of Member</td>
                                         <td></td>
                                     </tr>
-                                    <!-- <tr *ngFor="let bcds of bcdsInfo | filter: searchText"> -->
                                     <tr *ngFor="let bcds of bcdsInfo | filter: searchText">
                                         <td>
                                             {{bcds.bcdsName}}

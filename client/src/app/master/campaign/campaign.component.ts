@@ -28,6 +28,7 @@ export class CampaignComponent implements OnInit {
   productSearchModalRef: BsModalRef;
   genParams: GenericParams;
   campaignMsts: ICampaignMst[];
+  searchText = '';
   campaignDtls: ICampaignDtl[];
   campaignDtlProducts: ICampaignDtlProduct[];
   SBUs: ISBU[];
@@ -322,6 +323,31 @@ export class CampaignComponent implements OnInit {
       );
     }
   }
+
+
+  onPageChanged(event: any){
+    const params = this.masterService.getGenParams();
+    if (params.pageNumber !== event)
+    {
+      params.pageNumber = event;
+      this.masterService.setGenParams(params);
+      this.getCampaign();
+    }
+  }
+  
+  onSearch(){
+    const params = this.masterService.getGenParams();
+    params.search = this.searchTerm.nativeElement.value;
+    params.pageNumber = 1;
+    this.masterService.setGenParams(params);
+    this.getCampaign();
+  }
+
+  resetSearch(){
+    this.searchText = '';
+}
+
+
   showProductModal(selectedRecord: ICampaignDtl) {
     this.masterService.campaignDtlFormData = Object.assign({}, selectedRecord);
     this.masterService.campaignDtlFormData.subCampStartDate = new Date(selectedRecord.subCampStartDate);

@@ -17,6 +17,7 @@ export class DonationComponent implements OnInit {
   searchTerm!: ElementRef;
   genParams!: GenericParams;
   donations!: IDonation[];
+  searchText = '';
   totalCount = 0;
   constructor(public masterService: MasterService, private router: Router,
     private toastr: ToastrService
@@ -71,10 +72,15 @@ export class DonationComponent implements OnInit {
     this.masterService.donationFormData = Object.assign({}, selectedRecord);
   }
   resetForm(form: NgForm) {
+    this.searchText = '';
     form.reset();
   }
   resetPage() {
     this.masterService.donationFormData=new Donation();
   }
+
+  resetSearch(){
+    this.searchText = '';
+}
 
 }

@@ -16,6 +16,7 @@ export class SubCampaignComponent implements OnInit {
   @ViewChild('search', {static: false}) searchTerm: ElementRef;
   genParams: GenericParams;
   subCampaigns: ISubCampaign[];
+  searchText = '';
   totalCount = 0;
   constructor(public masterService: MasterService, private router: Router,
     private toastr: ToastrService, private SpinnerService: NgxSpinnerService) { }
@@ -66,10 +67,33 @@ export class SubCampaignComponent implements OnInit {
     );
   }
 
+  onPageChanged(event: any){
+    const params = this.masterService.getGenParams();
+    if (params.pageNumber !== event)
+    {
+      params.pageNumber = event;
+      this.masterService.setGenParams(params);
+      this.getSubCampaign();
+    }
+  }
+  
+  onSearch(){
+    const params = this.masterService.getGenParams();
+    params.search = this.searchTerm.nativeElement.value;
+    params.pageNumber = 1;
+    this.masterService.setGenParams(params);
+    this.getSubCampaign();
+  }
+
+  resetSearch(){
+    this.searchText = '';
+}
+
   populateForm(selectedRecord: ISubCampaign) {
     this.masterService.subCampaignFormData = Object.assign({}, selectedRecord);
   }
   resetForm(form: NgForm) {
+    this.searchText = '';
     form.reset();
   }
   resetPage() {

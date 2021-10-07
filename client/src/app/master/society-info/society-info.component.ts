@@ -17,6 +17,7 @@ export class SocietyInfoComponent implements OnInit {
   genParams: GenericParams;
   numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
   societyinfo: ISocietyInfo[];
+  searchText = '';
   totalCount = 0;
   constructor(public masterService: MasterService, private router: Router, private toastr: ToastrService) { }
 
@@ -68,10 +69,33 @@ export class SocietyInfoComponent implements OnInit {
     );
   }
 
+  onPageChanged(event: any){
+    const params = this.masterService.getGenParams();
+    if (params.pageNumber !== event)
+    {
+      params.pageNumber = event;
+      this.masterService.setGenParams(params);
+      this.getSociety();
+    }
+  }
+  
+  onSearch(){
+    const params = this.masterService.getGenParams();
+    params.search = this.searchTerm.nativeElement.value;
+    params.pageNumber = 1;
+    this.masterService.setGenParams(params);
+    this.getSociety();
+  }
+
+  resetSearch(){
+    this.searchText = '';
+}
+
   populateForm(selectedRecord: ISocietyInfo) {
     this.masterService.societyFormData = Object.assign({}, selectedRecord);
   }
   resetForm(form: NgForm) {
+    this.searchText = '';
     form.form.reset();
     this.masterService.societyFormData = new SocietyInfo();
   }

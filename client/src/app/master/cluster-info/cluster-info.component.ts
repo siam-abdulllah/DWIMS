@@ -21,6 +21,7 @@ export class ClusterInfoComponent implements OnInit {
   clusterMstSearchodalRef: BsModalRef;
   genParams: GenericParams;
   regions: IRegion[];
+  searchText = '';
   clusterMstInfo: IClusterMstInfo[];
   clusterDtlInfo: IClusterDtlInfo[];
   totalCount = 0;
@@ -146,6 +147,29 @@ export class ClusterInfoComponent implements OnInit {
         console.log(error);
     });
   }
+
+  onPageChanged(event: any){
+    const params = this.masterService.getGenParams();
+    if (params.pageNumber !== event)
+    {
+      params.pageNumber = event;
+      this.masterService.setGenParams(params);
+      this.getClusterMstList();
+    }
+  }
+  
+  onSearch(){
+    const params = this.masterService.getGenParams();
+    params.search = this.searchTerm.nativeElement.value;
+    params.pageNumber = 1;
+    this.masterService.setGenParams(params);
+    this.getClusterMstList();
+  }
+
+  resetSearch(){
+    this.searchText = '';
+}
+
   resetPage(form: NgForm) {
     form.form.reset();
     this.masterService.clusterMstFormData = new ClusterMstInfo();
