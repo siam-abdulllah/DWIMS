@@ -11,6 +11,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -75,39 +76,6 @@ namespace API.Controllers
         {
             try
             {
-                //investmentInitParrams.Search = sbu;
-                //investmentRecCommentParrams.Search = sbu;
-                //investmentAprCommentParrams.Search = sbu;
-
-                //var investmentInitSpec = new InvestmentInitSpecification(investmentInitParrams);
-                //var investmentRecCommentSpec = new InvestmentRecCommentSpecification(investmentRecCommentParrams);
-                //var investmentAprCommentSpec = new InvestmentAprCommentSpecification(investmentAprCommentParrams);
-
-
-
-                //var investmentInits = await _investmentInitRepo.ListAsync(investmentInitSpec);
-                //var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
-                //var investmentAprComments = await _investmentAprCommentRepo.ListAsync(investmentAprCommentSpec);
-
-                //var investmentInitFormAppr = (from i in investmentInits
-                //                              join rc in investmentRecComments on i.Id equals rc.InvestmentInitId
-                //                              where rc.RecStatus== "Recommended" && !(from ac in investmentAprComments
-                //                                      select ac.InvestmentInitId).Contains(i.Id)
-                //                              orderby i.ReferenceNo
-                //                              select new InvestmentInitDto
-                //                              {
-                //                                  Id = i.Id,
-                //                                  ReferenceNo = i.ReferenceNo.Trim(),
-                //                                  ProposeFor = i.ProposeFor.Trim(),
-                //                                  DonationType = i.DonationType.Trim(),
-                //                                  DonationTo = i.DonationTo.Trim(),
-                //                                  EmployeeId = i.EmployeeId,
-                //                              }
-                //              ).Distinct().ToList();
-
-                //var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
-
-                //var totalItems = await _investmentInitRepo.CountAsync(countSpec);
 
                 List<SqlParameter> parms = new List<SqlParameter>
                     {
@@ -137,39 +105,6 @@ namespace API.Controllers
         {
             try
             {
-                //investmentInitParrams.Search = sbu;
-                //investmentRecCommentParrams.Search = sbu;
-                //investmentAprCommentParrams.Search = sbu;
-                //var investmentInitSpec = new InvestmentInitSpecification(investmentInitParrams);
-                //var investmentRecCommentSpec = new InvestmentRecCommentSpecification(investmentRecCommentParrams);
-                //var investmentAprCommentSpec = new InvestmentAprCommentSpecification(investmentAprCommentParrams);
-
-
-
-                //var investmentInits = await _investmentInitRepo.ListAsync(investmentInitSpec);
-                //var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
-                //var investmentAprComments = await _investmentAprCommentRepo.ListAsync(investmentAprCommentSpec);
-
-                //var investmentInitForAppr = (from i in investmentInits
-                //                             where (from rc in investmentRecComments
-                //                                    join ac in investmentAprComments on rc.InvestmentInitId equals ac.InvestmentInitId
-                //                                    select ac.InvestmentInitId).Contains(i.Id)
-                //                             orderby i.ReferenceNo
-                //                             select new InvestmentInitDto
-                //                             {
-                //                                 Id = i.Id,
-                //                                 ReferenceNo = i.ReferenceNo.Trim(),
-                //                                 ProposeFor = i.ProposeFor.Trim(),
-                //                                 DonationType = i.DonationType.Trim(),
-                //                                 DonationTo = i.DonationTo.Trim(),
-                //                                 EmployeeId = i.EmployeeId,
-                //                             }
-                //              ).Distinct().ToList();
-
-                //var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
-
-                //var totalItems = await _investmentInitRepo.CountAsync(countSpec);
-
                 List<SqlParameter> parms = new List<SqlParameter>
                     {
                         new SqlParameter("@SBU", sbu),
@@ -204,13 +139,15 @@ namespace API.Controllers
                         new SqlParameter("@EID", empId),
                         new SqlParameter("@IID", investmentAprDto.InvestmentInitId),
                         new SqlParameter("@PRAMOUNT", investmentAprDto.ProposedAmount),
-                        new SqlParameter("@ASTATUS", aprStatus)
+                        new SqlParameter("@ASTATUS", aprStatus),
+                        new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
                     };
                     // var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentCeilingCheck @SBU,@DTYPE,@EID,@PRAMOUNT,@ASTATUS", parms.ToArray()).ToList();
-                    var result = _dbContext.Database.ExecuteSqlRawAsync("EXECUTE SP_InvestmentCeilingCheck @SBU,@DTYPE,@EID,@IID,@PRAMOUNT,@ASTATUS", parms.ToArray());
-                    if (result.Result == 0)
+                    var result = _dbContext.Database.ExecuteSqlRawAsync("EXECUTE SP_InvestmentCeilingCheck @SBU,@DTYPE,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
+                    if (parms[6].Value.ToString() != "True")
+                    //if (result.Result == 0)
                     {
-                        return BadRequest(new ApiResponse(400, "Apprval Ceiling Exceeded"));
+                        return BadRequest(new ApiResponse(400, parms[6].Value.ToString()));
                     }
                     var alreadyExistSpec = new InvestmentAprSpecification(investmentAprDto.InvestmentInitId);
                         var alreadyExistInvestmentAprList = await _investmentAprRepo.ListAsync(alreadyExistSpec);

@@ -67,7 +67,6 @@ export class InvestmentInitComponent implements OnInit {
   marketGroupMsts: IMarketGroupMst[];
   donationToVal: string;
   totalCount = 0;
-  searchText = '';
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date = new Date();
   today = new Date();
@@ -159,12 +158,6 @@ export class InvestmentInitComponent implements OnInit {
          console.log(error);
     });
   }
-
-  
-  resetSearch(){
-    this.searchText = '';
-}
-
 
   getInvestmentDetails() {
     this.investmentInitService.getInvestmentDetails(this.investmentInitService.investmentDetailFormData.investmentInitId).subscribe(response => {
