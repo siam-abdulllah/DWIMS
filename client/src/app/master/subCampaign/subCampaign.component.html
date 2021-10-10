@@ -75,7 +75,7 @@
                                         <td>Remarks</td>
                                         <td></td>
                                     </tr>
-                                    <tr *ngFor="let subCampaign of subCampaigns  | filter: searchText">
+                                    <tr *ngFor="let subCampaign of subCampaigns  | paginate: config | filter: searchText">
                                         <td>
                                             {{subCampaign.subCampaignName}}
                                         </td>
@@ -90,6 +90,7 @@
                                         </td>
                                     </tr>
                                 </table>
+                                <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls>
                             </div>
                             <!-- <div class="card-footer">
                               Sample Demo by rijsat.com

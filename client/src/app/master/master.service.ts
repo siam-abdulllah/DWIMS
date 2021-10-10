@@ -106,12 +106,12 @@ export class MasterService {
   
   getCampaignDtl(mstId:number){ 
     let params = new HttpParams();
-    debugger;
+    
     if (this.genParams.search) {
       params = params.append('search', this.genParams.search);
     }
     params = params.append('sort', this.genParams.sort);
-    params = params.append('pageIndex', this.genParams.pageNumber.toString());
+    params = params.append('pageIndex', this.genParams.pageIndex.toString());
     params = params.append('pageSize', this.genParams.pageSize.toString());
 
     return this.http.get<ICampaignDtlPagination>(this.baseUrl + 'campaign/campaignDtls/'+mstId, { observe: 'response', params })
@@ -127,12 +127,12 @@ export class MasterService {
   }
   getCampaignDtlProduct(dtlId:number){ 
     let params = new HttpParams();
-    debugger;
+    
     if (this.genParams.search) {
       params = params.append('search', this.genParams.search);
     }
     params = params.append('sort', this.genParams.sort);
-    params = params.append('pageIndex', this.genParams.pageNumber.toString());
+    params = params.append('pageIndex', this.genParams.pageIndex.toString());
     params = params.append('pageSize', this.genParams.pageSize.toString());
 
     return this.http.get<ICampaignDtlProductPagination>(this.baseUrl + 'campaign/campaignDtlProducts/'+dtlId, { observe: 'response', params })
@@ -148,12 +148,12 @@ export class MasterService {
   }
   getCampaign(){    
     let params = new HttpParams();
-    debugger;
+    
     if (this.genParams.search) {
       params = params.append('search', this.genParams.search);
     }
     params = params.append('sort', this.genParams.sort);
-    params = params.append('pageIndex', this.genParams.pageNumber.toString());
+    params = params.append('pageIndex', this.genParams.pageIndex.toString());
     params = params.append('pageSize', this.genParams.pageSize.toString());
 
     return this.http.get<ICampaignMstPagination>(this.baseUrl + 'campaign/campaignMsts', { observe: 'response', params })
@@ -196,12 +196,12 @@ export class MasterService {
  
   getSubCampaign(){    
     let params = new HttpParams();
-    debugger;
+    
     if (this.genParams.search) {
       params = params.append('search', this.genParams.search);
     }
     params = params.append('sort', this.genParams.sort);
-    params = params.append('pageIndex', this.genParams.pageNumber.toString());
+    params = params.append('pageIndex', this.genParams.pageIndex.toString());
     params = params.append('pageSize', this.genParams.pageSize.toString());
 
     return this.http.get<ISubCampaignPagination>(this.baseUrl + 'subCampaign/subCampaigns', { observe: 'response', params })
@@ -227,7 +227,7 @@ getDonation(){
     params = params.append('search', this.genParams.search);
   }
   params = params.append('sort', this.genParams.sort);
-  params = params.append('pageIndex', this.genParams.pageNumber.toString());
+  params = params.append('pageIndex', this.genParams.pageIndex.toString());
   params = params.append('pageSize', this.genParams.pageSize.toString());
 
   return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
@@ -250,12 +250,12 @@ updateDonation() {
 
 getApprovalAuthority(){    
   let params = new HttpParams();
-  debugger;
+  
   if (this.genParams.search) {
     params = params.append('search', this.genParams.search);
   }
   params = params.append('sort', this.genParams.sort);
-  params = params.append('pageIndex', this.genParams.pageNumber.toString());
+  params = params.append('pageIndex', this.genParams.pageIndex.toString());
   params = params.append('pageSize', this.genParams.pageSize.toString());
 
   return this.http.get<IApprovalAuthorityPagination>(this.baseUrl + 'ApprovalAuthority/approvalAuthorities', { observe: 'response', params })
@@ -280,8 +280,9 @@ getBcdsList(){
   if (this.genParams.search) {
     params = params.append('search', this.genParams.search);
   }
+  
   params = params.append('sort', this.genParams.sort);
-  params = params.append('pageIndex', this.genParams.pageNumber.toString());
+  params = params.append('pageIndex', this.genParams.pageIndex.toString());
   params = params.append('pageSize', this.genParams.pageSize.toString());
 
   return this.http.get<IBcdsPagination>(this.baseUrl + 'Bcds/GetAllBCDS', { observe: 'response', params })
@@ -308,7 +309,7 @@ getSocietyList(){
     params = params.append('search', this.genParams.search);
   }
   params = params.append('sort', this.genParams.sort);
-  params = params.append('pageIndex', this.genParams.pageNumber.toString());
+  params = params.append('pageIndex', this.genParams.pageIndex.toString());
   params = params.append('pageSize', this.genParams.pageSize.toString());
 
   return this.http.get<ISocietyPagination>(this.baseUrl + 'Society/GetAllSociety', { observe: 'response', params })
@@ -335,7 +336,7 @@ getEmployeeList(){
     params = params.append('search', this.genParams.search);
   }
   params = params.append('sort', this.genParams.sort);
-  params = params.append('pageIndex', this.genParams.pageNumber.toString());
+  params = params.append('pageIndex', this.genParams.pageIndex.toString());
   params = params.append('pageSize', this.genParams.pageSize.toString());
 
   return this.http.get<IEmployeePagination>(this.baseUrl + 'Employee/GetAllEmployee', { observe: 'response', params })
@@ -349,12 +350,12 @@ getEmployeeList(){
 }
 getClusterMstList(){    
   let params = new HttpParams();
-  debugger;
+  
   if (this.genParams.search) {
     params = params.append('search', this.genParams.search);
   }
   params = params.append('sort', this.genParams.sort);
-  params = params.append('pageIndex', this.genParams.pageNumber.toString());
+  params = params.append('pageIndex', this.genParams.pageIndex.toString());
   params = params.append('pageSize', this.genParams.pageSize.toString());
 
   return this.http.get<IClusterMstPagination>(this.baseUrl + 'cluster/clusterMsts', { observe: 'response', params })
@@ -369,12 +370,12 @@ getClusterMstList(){
 }
 getClusterDtlList(mstId:number){    
   let params = new HttpParams();
-  debugger;
+  
   if (this.genParams.search) {
     params = params.append('search', this.genParams.search);
   }
   params = params.append('sort', this.genParams.sort);
-  params = params.append('pageIndex', this.genParams.pageNumber.toString());
+  params = params.append('pageIndex', this.genParams.pageIndex.toString());
   params = params.append('pageSize', this.genParams.pageSize.toString());
 
   return this.http.get<IClusterDtlPagination>(this.baseUrl + 'cluster/clusterDtls/'+mstId, { observe: 'response', params })

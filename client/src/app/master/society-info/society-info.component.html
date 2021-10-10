@@ -88,7 +88,7 @@
                                         <td>No of Member</td>
                                         <td></td>
                                     </tr>
-                                    <tr *ngFor="let sc of societyinfo  | filter: searchText">
+                                    <tr *ngFor="let sc of societyinfo | paginate: config | filter: searchText">
                                         <td>
                                             {{sc.societyName}}
                                         </td>
@@ -103,6 +103,7 @@
                                         </td>
                                     </tr>
                                 </table>
+                                <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls>
                             </div>
                             <!-- <div class="card-footer">
                               Sample Demo by rijsat.com

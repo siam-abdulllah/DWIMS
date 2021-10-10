@@ -156,7 +156,7 @@
                                                         <td>Status</td>
 
                                                     </tr>
-                                                    <tr *ngFor="let b of clusterMstInfo | filter: searchText">
+                                                    <tr *ngFor="let b of clusterMstInfo | paginate: configs | filter: searchText">
                                                         <td>
                                                             <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="selectClusterMst(b)">Select</button>
 
@@ -173,6 +173,7 @@
                                                         </td>
                                                     </tr>
                                                 </table>
+                                                <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls>
                                             </div>
                                         </div>
                                     </div>

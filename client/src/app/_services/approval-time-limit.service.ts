@@ -36,7 +36,7 @@ export class ApprovalTimeLimitService {
       params = params.append('search', this.genParams.search);
     }
     params = params.append('sort', this.genParams.sort);
-    params = params.append('pageIndex', this.genParams.pageNumber.toString());
+    params = params.append('pageIndex', this.genParams.pageIndex.toString());
     params = params.append('pageSize', this.genParams.pageSize.toString());
 
     return this.http.get<IApprovalTimeLimitPagination>(this.baseUrl + 'approvalTimeLimit/GetAllApprovalTime', { observe: 'response', params })

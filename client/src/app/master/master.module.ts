@@ -11,6 +11,7 @@ import { EmployeeInfoComponent } from './employee-info/employee-info.component';
 import { MasterRoutingModule } from './master-routing.module';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 //import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
@@ -26,7 +27,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     BsDatepickerModule.forRoot(), 
     NgxSpinnerModule,
     NgSelectModule ,
-    Ng2SearchPipeModule  
+    Ng2SearchPipeModule,
+    NgxPaginationModule,
   ]
 })
 export class MasterModule { }

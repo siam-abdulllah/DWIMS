@@ -22,6 +22,7 @@ export class ClusterInfoComponent implements OnInit {
   genParams: GenericParams;
   regions: IRegion[];
   searchText = '';
+  configs: any;
   clusterMstInfo: IClusterMstInfo[];
   clusterDtlInfo: IClusterDtlInfo[];
   totalCount = 0;
@@ -119,11 +120,17 @@ export class ClusterInfoComponent implements OnInit {
     }
   }
   getClusterMstList(){
+    const params = this.masterService.getGenParams();
     this.SpinnerService.show(); 
     this.masterService.getClusterMstList().subscribe(response => {
       this.SpinnerService.hide(); 
       this.clusterMstInfo = response.data;
       this.totalCount = response.count;
+      this.configs = {
+        currentPage: params.pageIndex,
+        itemsPerPage: params.pageSize,
+        totalItems:this.totalCount,
+        };
       if (this.clusterMstInfo.length>0) {
         this.openClusterMstSearchModal(this.clusterMstSearchModal);
       }
@@ -150,9 +157,9 @@ export class ClusterInfoComponent implements OnInit {
 
   onPageChanged(event: any){
     const params = this.masterService.getGenParams();
-    if (params.pageNumber !== event)
+    if (params.pageIndex !== event)
     {
-      params.pageNumber = event;
+      params.pageIndex = event;
       this.masterService.setGenParams(params);
       this.getClusterMstList();
     }
@@ -161,7 +168,7 @@ export class ClusterInfoComponent implements OnInit {
   onSearch(){
     const params = this.masterService.getGenParams();
     params.search = this.searchTerm.nativeElement.value;
-    params.pageNumber = 1;
+    params.pageIndex = 1;
     this.masterService.setGenParams(params);
     this.getClusterMstList();
   }

@@ -35,7 +35,7 @@ export class SubMenuService {
       params = params.append('search', this.genParams.search);
     }
     params = params.append('sort', this.genParams.sort);
-    params = params.append('pageIndex', this.genParams.pageNumber.toString());
+    params = params.append('pageIndex', this.genParams.pageIndex.toString());
     params = params.append('pageSize', this.genParams.pageSize.toString());
     return this.http.get<ISubMenuPagination>(this.baseUrl + 'subMenu/subMenus/'+this.subMenuFormData.menuHeadId, { observe: 'response', params })
       //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
