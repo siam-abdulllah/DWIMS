@@ -504,7 +504,7 @@ export class InvestmentAprComponent implements OnInit {
     this.getEmployeeId();
     this.getProduct();
     //this.getMarketGroupMsts();
-    this.bsConfig = Object.assign({}, { containerClass: 'theme-green' }, { dateInputFormat: 'DD/MM/YYYY' });
+    this.bsConfig = Object.assign({}, { containerClass: 'theme-blue'  }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
 
   }

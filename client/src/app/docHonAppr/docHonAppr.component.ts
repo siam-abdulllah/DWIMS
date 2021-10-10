@@ -40,7 +40,7 @@ export class DocHonApprComponent implements OnInit {
     
     this.resetPage();
     //this.getCampaign();
-    this.bsConfig = Object.assign({}, { containerClass: 'theme-green' }, { dateInputFormat: 'DD/MM/YYYY' });
+    this.bsConfig = Object.assign({}, { containerClass: 'theme-blue'  }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
   }
   changeDateInDetail(){

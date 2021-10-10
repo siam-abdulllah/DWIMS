@@ -46,7 +46,7 @@ export class RegApprovalComponent implements OnInit {
   ngOnInit() {
     this.resetPage();
     this.getRoles();
-    this.bsConfig = Object.assign({}, { containerClass: 'theme-green' }, { dateInputFormat: 'DD/MM/YYYY' });
+    this.bsConfig = Object.assign({}, { containerClass: 'theme-blue'  }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
   }
   openRegApprovalSearchModal(template: TemplateRef<any>) {

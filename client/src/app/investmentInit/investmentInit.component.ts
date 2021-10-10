@@ -87,7 +87,7 @@ export class InvestmentInitComponent implements OnInit {
     this.getDonation();
     //this.getProduct();
     //this.getMarketGroupMsts();
-    this.bsConfig = Object.assign({}, { containerClass: 'theme-green' }, { dateInputFormat: 'DD/MM/YYYY' });
+    this.bsConfig = Object.assign({}, { containerClass: 'theme-blue'  }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
   }
   openInvestmentInitSearchModal(template: TemplateRef<any>) {
@@ -158,7 +158,6 @@ export class InvestmentInitComponent implements OnInit {
          console.log(error);
     });
   }
-
   getInvestmentDetails() {
     this.investmentInitService.getInvestmentDetails(this.investmentInitService.investmentDetailFormData.investmentInitId).subscribe(response => {
       var data = response[0] as IInvestmentDetail;
@@ -198,7 +197,6 @@ export class InvestmentInitComponent implements OnInit {
       console.log(error);
     });
   }
-
   dateCompare(form: NgForm) {
     if (this.investmentInitService.investmentDetailFormData.fromDate != null && this.investmentInitService.investmentDetailFormData.toDate != null) {
       if (this.investmentInitService.investmentDetailFormData.toDate > this.investmentInitService.investmentDetailFormData.fromDate) {
