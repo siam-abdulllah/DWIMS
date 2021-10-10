@@ -95,7 +95,7 @@
                                         <td></td>
                                         <td></td>
                                     </tr>
-                                    <tr *ngFor="let a of sbuWiseBudgets  | filter: searchText">
+                                    <tr *ngFor="let a of sbuWiseBudgets | paginate: config | filter: searchText">
                                         <td>
                                             {{a.sbuName}}
                                         </td>
@@ -116,6 +116,7 @@
                                         </td>
                                     </tr>
                                 </table>
+                                <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls>
                             </div>
                         </div>
                         <!-- /.card -->

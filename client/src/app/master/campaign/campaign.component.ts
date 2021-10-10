@@ -29,6 +29,7 @@ export class CampaignComponent implements OnInit {
   genParams: GenericParams;
   campaignMsts: ICampaignMst[];
   searchText = '';
+  configs: any;
   campaignDtls: ICampaignDtl[];
   campaignDtlProducts: ICampaignDtlProduct[];
   SBUs: ISBU[];
@@ -89,11 +90,18 @@ export class CampaignComponent implements OnInit {
     });
   }
   getCampaign() {
+    const params = this.masterService.getGenParams();
     this.SpinnerService.show();
     this.masterService.getCampaign().subscribe(response => {
       this.SpinnerService.hide();
       this.campaignMsts = response.data;
       this.totalCount = response.count;
+      this.configs = {
+        currentPage: params.pageIndex,
+        itemsPerPage: params.pageSize,
+        totalItems:this.totalCount,
+        };
+
       if (this.campaignMsts.length > 0) {
         this.openCampaignMstSearchModal(this.campaignMstSearchModal);
       }
@@ -105,6 +113,8 @@ export class CampaignComponent implements OnInit {
       console.log(error);
     });
   }
+
+  
   openCampaignMstSearchModal(template: TemplateRef<any>) {
     this.campaignMstSearchodalRef = this.modalService.show(template, this.config);
   }
@@ -327,9 +337,9 @@ export class CampaignComponent implements OnInit {
 
   onPageChanged(event: any){
     const params = this.masterService.getGenParams();
-    if (params.pageNumber !== event)
+    if (params.pageIndex !== event)
     {
-      params.pageNumber = event;
+      params.pageIndex = event;
       this.masterService.setGenParams(params);
       this.getCampaign();
     }
@@ -338,7 +348,7 @@ export class CampaignComponent implements OnInit {
   onSearch(){
     const params = this.masterService.getGenParams();
     params.search = this.searchTerm.nativeElement.value;
-    params.pageNumber = 1;
+    params.pageIndex = 1;
     this.masterService.setGenParams(params);
     this.getCampaign();
   }

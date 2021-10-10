@@ -32,6 +32,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { MenuHeadComponent } from '../menuHead/menuHead.component';
 import { SubMenuComponent } from '../subMenu/subMenu.component';
 import { MenuConfigComponent } from '../menuConfig/menuConfig.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 @NgModule({
   imports: [
     
@@ -48,8 +49,8 @@ import { MenuConfigComponent } from '../menuConfig/menuConfig.component';
     MasterModule,
     MasterRoutingModule,
     NgxSpinnerModule,
+    NgxPaginationModule,
     Ng2SearchPipeModule,
-
   ],
   declarations: [
     PortalComponent,

@@ -221,7 +221,7 @@
                                                         <td>SBU</td>
                                                         <td>Brand Code</td>
                                                     </tr>
-                                                    <tr *ngFor="let b of campaignMsts  | filter: searchText">
+                                                    <tr *ngFor="let b of campaignMsts | paginate: configs | filter: searchText">
                                                         <td>
                                                             <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="selectCampaignMst(b)"><i class="fa fa-check"></i> Select</button>
 
@@ -241,6 +241,7 @@
                                                         </td>
                                                     </tr>
                                                 </table>
+                                                <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls>
                                             </div>
                                         </div>
                                     </div>

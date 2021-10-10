@@ -23,6 +23,7 @@ export class SbuWiseBudgetComponent implements OnInit {
   bsValue: Date = new Date();
   totalCount = 0;
   searchText = '';
+  config: any;
   SBUs: ISBU[];
   numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
   constructor(public sbuWiseBudgetService: SBUWiseBudgetService, private router: Router, private toastr: ToastrService) { }
@@ -43,9 +44,14 @@ export class SbuWiseBudgetComponent implements OnInit {
   }
   getSBUWiseBudget() {
     this.sbuWiseBudgetService.getSBUWiseBudget().subscribe(response => {
-      debugger;
+      const params = this.sbuWiseBudgetService.getGenParams();
       this.sbuWiseBudgets = response.data;
       this.totalCount = response.count;
+      this.config = {
+        currentPage: params.pageIndex,
+        itemsPerPage: params.pageSize,
+        totalItems:this.totalCount,
+        };
     }, error => {
       console.log(error);
     });
@@ -68,9 +74,9 @@ export class SbuWiseBudgetComponent implements OnInit {
 
   onPageChanged(event: any){
     const params = this.sbuWiseBudgetService.getGenParams();
-    if (params.pageNumber !== event)
+    if (params.pageIndex !== event)
     {
-      params.pageNumber = event;
+      params.pageIndex = event;
       this.sbuWiseBudgetService.setGenParams(params);
       this.getSBUWiseBudget();
     }
@@ -79,7 +85,7 @@ export class SbuWiseBudgetComponent implements OnInit {
   onSearch(){
     const params = this.sbuWiseBudgetService.getGenParams();
     params.search = this.searchTerm.nativeElement.value;
-    params.pageNumber = 1;
+    params.pageIndex = 1;
     this.sbuWiseBudgetService.setGenParams(params);
     this.getSBUWiseBudget();
   }

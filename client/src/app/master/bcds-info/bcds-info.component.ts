@@ -6,7 +6,6 @@ import { MasterService } from '../master.service';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 
-
 @Component({
   selector: 'app-bcds-info',
   templateUrl: './bcds-info.component.html',
@@ -18,8 +17,10 @@ export class BcdsInfoComponent implements OnInit {
   numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
   bcdsInfo: IBcdsInfo[];
   searchText = '';
+  config: any;
   totalCount = 0;
-  constructor(public masterService: MasterService, private router: Router, private toastr: ToastrService) { }
+  constructor(public masterService: MasterService, private router: Router, private toastr: ToastrService) {
+   }
 
   ngOnInit() {
     this.resetPage();
@@ -28,9 +29,15 @@ export class BcdsInfoComponent implements OnInit {
 
   getBcds(){
     this.masterService.getBcdsList().subscribe(response => {
-      debugger;
+      const params = this.masterService.getGenParams();
       this.bcdsInfo = response.data;
       this.totalCount = response.count;
+      this.config = {
+        currentPage: params.pageIndex,
+        itemsPerPage: params.pageSize,
+        totalItems:this.totalCount,
+        };
+
     }, error => {
         console.log(error);
     });
@@ -75,9 +82,9 @@ export class BcdsInfoComponent implements OnInit {
 
 onPageChanged(event: any){
   const params = this.masterService.getGenParams();
-  if (params.pageNumber !== event)
+  if (params.pageIndex !== event)
   {
-    params.pageNumber = event;
+    params.pageIndex = event;
     this.masterService.setGenParams(params);
     this.getBcds();
   }
@@ -86,7 +93,7 @@ onPageChanged(event: any){
 onSearch(){
   const params = this.masterService.getGenParams();
   params.search = this.searchTerm.nativeElement.value;
-  params.pageNumber = 1;
+  params.pageIndex = 1;
   this.masterService.setGenParams(params);
   this.getBcds();
 }
