@@ -19,12 +19,12 @@ namespace API.Controllers
     public class MenuConfigController : BaseApiController
     {
         private readonly IGenericRepository<MenuConfig> _menuConfigRepo;
-        private readonly IGenericRepository<SubMenu> _subMenuRepo; 
+        private readonly IGenericRepository<SubMenu> _subMenuRepo;
         private readonly IGenericRepository<MenuHead> _menuHeadRepo;
         private AppIdentityDbContext _context;
         private readonly IMapper _mapper;
-        public MenuConfigController(IGenericRepository<MenuHead> menuHeadRepo,IGenericRepository<MenuConfig> menuConfigRepo, IGenericRepository<SubMenu> SubMenuRepo,
-        IMapper mapper, 
+        public MenuConfigController(IGenericRepository<MenuHead> menuHeadRepo, IGenericRepository<MenuConfig> menuConfigRepo, IGenericRepository<SubMenu> SubMenuRepo,
+        IMapper mapper,
         AppIdentityDbContext context)
         {
             _mapper = mapper;
@@ -67,7 +67,7 @@ namespace API.Controllers
                 RoleId = menuConfig.RoleId,
             };
         }
-      
+
         [HttpPost("update")]
         public ActionResult<MenuConfig> UpdateMenuConfig(MenuConfig menuConfig)
         {
@@ -101,21 +101,21 @@ namespace API.Controllers
                 var roles = await _context.Roles.ToListAsync();
                 var menuHeads = await _menuHeadRepo.ListAllAsync();
                 var menuConfigs = (from mc in menuConfig
-                             join s in subMenu on mc.SubMenuId equals s.Id
-                             join r in roles on mc.RoleId equals r.Id
-                             join m in menuHeads on s.MenuHeadId equals m.Id
-                             where s.MenuHeadId == menuHeadId && mc.RoleId == roleId
-                             //orderby r.BrandName
-                             select new MenuConfigDto
-                             {
-                                 Id=mc.Id,
-                                 MenuHeadName=m.MenuHeadName,
-                                 MenuHeadId=m.Id,
-                                 SubMenuId=s.Id,
-                                 SubMenuName=s.SubMenuName,
-                                 RoleId=r.Id,
-                                 RoleName=r.Name
-                             }
+                                   join s in subMenu on mc.SubMenuId equals s.Id
+                                   join r in roles on mc.RoleId equals r.Id
+                                   join m in menuHeads on s.MenuHeadId equals m.Id
+                                   where s.MenuHeadId == menuHeadId && mc.RoleId == roleId
+                                   //orderby r.BrandName
+                                   select new MenuConfigDto
+                                   {
+                                       Id = mc.Id,
+                                       MenuHeadName = m.MenuHeadName,
+                                       MenuHeadId = m.Id,
+                                       SubMenuId = s.Id,
+                                       SubMenuName = s.SubMenuName,
+                                       RoleId = r.Id,
+                                       RoleName = r.Name
+                                   }
                               ).Distinct().ToList();
                 return menuConfigs;
             }
@@ -124,7 +124,7 @@ namespace API.Controllers
 
                 throw ex;
             }
-        } 
+        }
         [HttpGet("menuConfigsForSecurity/{roleName}")]
         public async Task<IReadOnlyList<MenuConfigDto>> MenuConfigsForSecurity(string roleName)
         {
@@ -135,24 +135,24 @@ namespace API.Controllers
                 var roles = await _context.Roles.ToListAsync();
                 var menuHeads = await _menuHeadRepo.ListAllAsync();
                 var menuConfigs = (from mc in menuConfig
-                             join s in subMenu on mc.SubMenuId equals s.Id
-                             join r in roles on mc.RoleId equals r.Id
-                             join m in menuHeads on s.MenuHeadId equals m.Id
-                             where 
-                             //s.Url == menuConfigDto.Url 
-                             //&& 
-                             r.Name == roleName
+                                   join s in subMenu on mc.SubMenuId equals s.Id
+                                   join r in roles on mc.RoleId equals r.Id
+                                   join m in menuHeads on s.MenuHeadId equals m.Id
+                                   where
+                                   //s.Url == menuConfigDto.Url 
+                                   //&& 
+                                   r.Name == roleName
                                    //orderby r.BrandName
                                    select new MenuConfigDto
-                             {
-                                 Id=mc.Id,
-                                 MenuHeadName=m.MenuHeadName,
-                                 MenuHeadId=m.Id,
-                                 SubMenuId=s.Id,
-                                 SubMenuName=s.SubMenuName,
-                                 RoleId=r.Id,
-                                 RoleName=r.Name
-                             }
+                                   {
+                                       Id = mc.Id,
+                                       MenuHeadName = m.MenuHeadName,
+                                       MenuHeadId = m.Id,
+                                       SubMenuId = s.Id,
+                                       SubMenuName = s.SubMenuName,
+                                       RoleId = r.Id,
+                                       RoleName = r.Name
+                                   }
                               ).Distinct().ToList();
                 return menuConfigs;
             }
@@ -161,13 +161,30 @@ namespace API.Controllers
 
                 throw ex;
             }
-        } 
+        }
+        [HttpGet("removeMenuConfig/{id}")]
+        public async Task<IActionResult> RemoveMenuConfig(int id)
+        {
+            try
+            {
+                var menuConfig = await _menuConfigRepo.GetByIdAsync(id);
+                _menuConfigRepo.Delete(menuConfig);
+                _menuConfigRepo.Savechange();
+                return Ok("Succsessfuly Deleted!!!");
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
         //[HttpGet("menuConfigsForSubMenu")]
         //public async Task<IReadOnlyList<MenuConfig>> GetMenuConfigsForSubMenu()
         //{
         //    try
         //    {
-              
+
         //        var menuConfig = await _menuConfigRepo.ListAllAsync();
         //        return menuConfig;
         //    }
@@ -182,7 +199,7 @@ namespace API.Controllers
         //{
         //    try
         //    {
-              
+
         //        var menuConfig = await _menuConfigRepo.ListAllAsync();
         //        return menuConfig;
         //    }
@@ -192,7 +209,7 @@ namespace API.Controllers
         //        throw ex;
         //    }
         //}
-       
-         
+
+
     }
 }

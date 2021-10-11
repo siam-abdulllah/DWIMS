@@ -14,6 +14,10 @@ import { MenuConfig } from '../shared/models/menuConfig';
   providedIn: 'root'
 })
 export class MenuConfigService {
+  removeMenuConfig(id: number) {
+    return this.http.get(this.baseUrl + 'menuConfig/removeMenuConfig/'+id,{ responseType: 'text' });
+    
+  }
 
   menuHead: IMenuHead[] = [];
   //menuHeadPagination = new MenuHeadPagination();

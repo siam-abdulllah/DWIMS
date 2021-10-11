@@ -39,15 +39,15 @@ namespace API.Controllers
                 throw ex;
             }
         }
-        [HttpGet("marketForGroup")]
-        public async Task<IReadOnlyList<MarketDto>> GetMarketForGroup()
+        [HttpGet("marketForGroup/{empId}")]
+        public async Task<IReadOnlyList<MarketDto>> GetMarketForGroup(int empId)
         {
             try
             {
                 var data = await _employeeRepo.ListAllAsync();
                 //var market = data.GroupBy(p => p.MarketCode).Select(g => g.First()).ToList();
                 var market = (from r in data
-                              where r.MarketCode!=null
+                              where r.MarketCode != null && r.Id != empId
                               orderby r.MarketName
                               select new MarketDto
                               {

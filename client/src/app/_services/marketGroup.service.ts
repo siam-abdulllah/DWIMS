@@ -72,8 +72,9 @@ export class MarketGroupService {
     );
   }
   
-  getMarkets(){    
-  return this.http.get(this.baseUrl + 'employee/marketForGroup');
+  getMarkets(empId:string){    
+    
+  return this.http.get(this.baseUrl + 'employee/marketForGroup/'+parseInt(empId));
  
 }
 

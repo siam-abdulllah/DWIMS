@@ -39,19 +39,19 @@ export class MarketGroupComponent implements OnInit {
 
   ngOnInit() {
     this.resetForm();
-    this.getMarket();
+   
     this.getEmployeeId();
   }
-  getMarket(){
-     this.marketGroupService.getMarkets().subscribe(response => {
+  getMarket(empId:string){
+     this.marketGroupService.getMarkets(empId).subscribe(response => {
       this.markets = response as IMarket[];
      }, error => {
          console.log(error);
     });
   }
   getEmployeeId() {
-
     this.empId = this.accountService.getEmployeeId();
+    this.getMarket(this.empId);
     this.marketGroupService.marketGroupFormData.employeeId = parseInt(this.empId);
 
     

@@ -123,8 +123,19 @@ getRoles() {
     this.menuConfigService.menuConfigFormData = Object.assign({}, selectedRecord);
   }
   remove(selectedRecord: IMenuConfig) {
-    this.menuConfigService.menuConfigFormData = Object.assign({}, selectedRecord);
+    var result = confirm("Do you want to delete?");
+    if (result) {
+      this.menuConfigService.removeMenuConfig(selectedRecord.id).subscribe(
+        res => {
+          this.getSubMenu();
+          this.toastr.success(res);
+          
+        },
+        err => { console.log(err); }
+      );
+    }
   }
+
   resetForm(form: NgForm) {
     form.reset();
   }

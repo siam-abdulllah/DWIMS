@@ -79,6 +79,7 @@ export class ApprovalAuthorityComponent implements OnInit {
   }
   resetForm(form: NgForm) {
     form.reset();
+    this.masterService.approvalAuthorityFormData=new ApprovalAuthority();
   }
   resetPage() {
    this.masterService.approvalAuthorityFormData=new ApprovalAuthority();

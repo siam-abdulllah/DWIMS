@@ -47,8 +47,8 @@ export class LoginComponent implements OnInit {
       this.SpinnerService.hide();  
       //this.router.navigateByUrl(this.returnUrl);
       //this.router.navigate(['/portal/home']);
-      //this.router.navigate(['/portal/home'])
-      this.router.navigate(['/portal/regApproval'])
+      this.router.navigate(['/portal/home'])
+      //this.router.navigate(['/portal/regApproval'])
   .then(() => {
     window.location.reload();
   });

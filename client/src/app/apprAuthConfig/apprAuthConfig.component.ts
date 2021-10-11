@@ -32,6 +32,11 @@ export class ApprAuthConfigComponent implements OnInit {
     this.getEmployees();
     
   }
+  customSearchFn(term: string, item: any) {
+    term = term.toLocaleLowerCase();
+    return item.employeeSAPCode.toLocaleLowerCase().indexOf(term) > -1 || 
+    item.employeeName.toLocaleLowerCase().indexOf(term) > -1;
+ }
   resetPage(form: NgForm) {
     form.reset();
     this.apprAuthConfigService.approvalAuthConfigFormData = new ApprovalAuthConfig();
