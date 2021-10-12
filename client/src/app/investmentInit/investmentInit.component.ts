@@ -384,17 +384,23 @@ export class InvestmentInitComponent implements OnInit {
       }
     );
   }
-  onChangeProposeFor() {
-    if (this.investmentInitService.investmentInitFormData.proposeFor == "BrandCampaign") {
-      this.investmentInitService.investmentInitFormData.donationTo = "Campaign";
-      this.onChangeDonationTo();
-      this.isDonationValid = true;
-    }
-    else {
-      this.isDonationValid = false;
-    }
-  }
+  // onChangeProposeFor() {
+  //   if (this.investmentInitService.investmentInitFormData.proposeFor == "BrandCampaign") {
+  //     this.investmentInitService.investmentInitFormData.donationTo = "Campaign";
+  //     this.onChangeDonationTo();
+  //     this.isDonationValid = true;
+  //   }
+  //   else {
+  //     this.isDonationValid = false;
+  //   }
+  // }
   onChangeDonationTo() {
+    if(this.investmentInitService.investmentInitFormData.proposeFor == "BrandCampaign" && this.investmentInitService.investmentInitFormData.donationTo != "Campaign")
+    {
+      this.toastr.warning("For BrandCampaign must select Campaign");
+      this.investmentInitService.investmentInitFormData.donationTo =null;
+      return false;
+    }
     if (this.investmentInitService.investmentInitFormData.donationTo == "Doctor") {
       if (this.investmentInitService.investmentDoctorFormData.id == null || this.investmentInitService.investmentDoctorFormData.id == undefined || this.investmentInitService.investmentDoctorFormData.id == 0) {
         this.investmentInitService.investmentDoctorFormData = new InvestmentDoctor();

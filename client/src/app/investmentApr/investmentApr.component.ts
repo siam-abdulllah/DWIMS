@@ -586,7 +586,7 @@ export class InvestmentAprComponent implements OnInit {
         // if(this.sbu==this.investmentAprService.investmentAprFormData.sbu && this.investmentAprService.investmentAprCommentFormData.aprStatus=='Approved')
         // {this.insertInvestmentDetails();}
         this.insertInvestmentTargetedProd();
-        this.toastr.success('Save successfully', 'Investment ')
+        //this.toastr.success('Save successfully', 'Investment ')
       },
       err => { console.log(err); }
     );
@@ -748,7 +748,7 @@ export class InvestmentAprComponent implements OnInit {
         this.getInvestmentTargetedProd();
 
         this.isDonationValid = true;
-        this.toastr.success('Save successfully', 'Investment ');
+        //this.toastr.success('Save successfully', 'Investment ');
       },
       err => { console.log(err); }
     );
