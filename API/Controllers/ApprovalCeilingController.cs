@@ -30,19 +30,25 @@ namespace API.Controllers
         // [Authorize(Policy = "DetailUserPolicy")]
         public async Task<ActionResult<IReadOnlyList<ApprovalCeiling>>> GetAllApprovalCeilingInfo([FromQuery] ApprovalCeilingSpecParams appParrams)
         {
+            try
+            {
+                var spec = new ApprovalCeilingSpecification(appParrams);
 
-            var spec = new ApprovalCeilingSpecification(appParrams);
+                var countSpec = new ApprovalCeilingWithFiltersForCountSpecificication(appParrams);
 
-            var countSpec = new ApprovalCeilingWithFiltersForCountSpecificication(appParrams);
+                var totalItems = await _aptimeRepo.CountAsync(countSpec);
 
-            var totalItems = await _aptimeRepo.CountAsync(countSpec);
+                var posts = await _aptimeRepo.ListAsync(spec);
 
-            var posts = await _aptimeRepo.ListAsync(spec);
+                var data = _mapper.Map<IReadOnlyList<ApprovalCeiling>, IReadOnlyList<ApprovalCeilingDto>>(posts);
 
-            var data = _mapper.Map<IReadOnlyList<ApprovalCeiling>, IReadOnlyList<ApprovalCeilingDto>>(posts);
+                return Ok(new Pagination<ApprovalCeilingDto>(appParrams.PageIndex, appParrams.PageSize, totalItems, data));
+            }
+            catch (Exception ex)
+            {
 
-            return Ok(new Pagination<ApprovalCeilingDto>(appParrams.PageIndex, appParrams.PageSize, totalItems, data));
-
+                throw ex;
+            }
         }
 
         [HttpPost("CreateApprovalCeiling")]
@@ -76,7 +82,7 @@ namespace API.Controllers
                     SetOn = DateTimeOffset.Now
                 };
 
-                _aptimeRepo.Add(apprclngDto);
+                _aptimeRepo.Add(appr);
                 _aptimeRepo.Savechange();
 
                 return new ApprovalCeiling
@@ -127,7 +133,7 @@ namespace API.Controllers
                 ModifiedOn = DateTimeOffset.Now
             };
 
-            _aptimeRepo.Update(apprclngDto);
+            _aptimeRepo.Update(appr);
             _aptimeRepo.Savechange();
 
             return new ApprovalCeiling

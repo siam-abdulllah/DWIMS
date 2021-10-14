@@ -1,8 +1,5 @@
 
-import {
-  InvestmentInit, IInvestmentInit, InvestmentDetail, IInvestmentDetail,
-  InvestmentTargetedProd, IInvestmentTargetedProd, InvestmentTargetedGroup, IInvestmentTargetedGroup, IInvestmentDetailOld
-} from '../shared/models/investment';
+import {InvestmentInit, IInvestmentInit, InvestmentDetail, IInvestmentDetail,InvestmentTargetedProd, IInvestmentTargetedProd, InvestmentTargetedGroup, IInvestmentTargetedGroup, IInvestmentDetailOld} from '../shared/models/investment';
 import { InvestmentDoctor, IInvestmentDoctor, InvestmentInstitution, IInvestmentInstitution, InvestmentCampaign, IInvestmentCampaign } from '../shared/models/investment';
 import { InvestmentBcds, IInvestmentBcds, InvestmentSociety, IInvestmentSociety } from '../shared/models/investment';
 import { SubCampaign, ISubCampaign } from '../shared/models/subCampaign';
@@ -384,21 +381,40 @@ export class InvestmentInitComponent implements OnInit {
       }
     );
   }
-  // onChangeProposeFor() {
-  //   if (this.investmentInitService.investmentInitFormData.proposeFor == "BrandCampaign") {
-  //     this.investmentInitService.investmentInitFormData.donationTo = "Campaign";
-  //     this.onChangeDonationTo();
-  //     this.isDonationValid = true;
-  //   }
-  //   else {
-  //     this.isDonationValid = false;
-  //   }
-  // }
-  onChangeDonationTo() {
-    if(this.investmentInitService.investmentInitFormData.proposeFor == "BrandCampaign" && this.investmentInitService.investmentInitFormData.donationTo != "Campaign")
+  onChangeProposeFor() {
+    // if (this.investmentInitService.investmentInitFormData.proposeFor == "BrandCampaign") {
+    //   this.investmentInitService.investmentInitFormData.donationTo = "Campaign";
+    //   this.onChangeDonationTo();
+    //   this.isDonationValid = true;
+    // }
+    // else {
+    //   this.isDonationValid = false;
+    // }
+    if(this.investmentInitService.investmentInitFormData.proposeFor == "BrandCampaign" && this.investmentInitService.investmentInitFormData.donationTo != "Campaign" && this.investmentInitService.investmentInitFormData.donationTo != null)
     {
-      this.toastr.warning("For BrandCampaign must select Campaign");
+      this.toastr.warning("For Brand Campaign, must select Campaign");
       this.investmentInitService.investmentInitFormData.donationTo =null;
+      return false;
+    }
+    if(this.investmentInitService.investmentInitFormData.proposeFor == "Others" && this.investmentInitService.investmentInitFormData.donationTo == "Campaign" && this.investmentInitService.investmentInitFormData.donationTo != null)
+    {
+      this.toastr.warning("For Campaign, must select Others");
+      this.investmentInitService.investmentInitFormData.donationTo =null;
+      return false;
+    }
+  }
+  onChangeDonationTo() {
+    debugger;
+    if(this.investmentInitService.investmentInitFormData.proposeFor == "BrandCampaign" && this.investmentInitService.investmentInitFormData.donationTo != "Campaign" && this.investmentInitService.investmentInitFormData.donationTo != null)
+    {
+      this.toastr.warning("For Brand Campaign, must select Campaign");
+      this.investmentInitService.investmentInitFormData.proposeFor =null;
+      return false;
+    }
+    if(this.investmentInitService.investmentInitFormData.proposeFor == "Others" && this.investmentInitService.investmentInitFormData.donationTo == "Campaign" && this.investmentInitService.investmentInitFormData.donationTo != null)
+    {
+      this.toastr.warning("For Campaign, must select Others");
+      this.investmentInitService.investmentInitFormData.proposeFor =null;
       return false;
     }
     if (this.investmentInitService.investmentInitFormData.donationTo == "Doctor") {
@@ -676,7 +692,6 @@ export class InvestmentInitComponent implements OnInit {
   }
   getMarketGroupMsts() {
     this.investmentInitService.getMarketGroupMsts(this.empId).subscribe(response => {
-      debugger;
       this.marketGroupMsts = response as IMarketGroupMst[];
     }, error => {
       console.log(error);

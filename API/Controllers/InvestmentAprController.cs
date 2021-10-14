@@ -285,27 +285,27 @@ namespace API.Controllers
             var empData = await _employeeRepo.GetByIdAsync(investmentAprDto.EmployeeId);
             var investmentInits = await _investmentInitRepo.GetByIdAsync((int)investmentAprDto.InvestmentInitId);
 
-            if (investmentInits.SBU == empData.SBU)
-            {
-                bool isTrue = false;
-                var investmentTargetedGroupSpec = new InvestmentTargetedGroupSpecification((int)investmentAprDto.InvestmentInitId);
-                var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(investmentTargetedGroupSpec);
-                var investmentAprCommentSpec = new InvestmentAprCommentSpecification((int)investmentAprDto.InvestmentInitId);
-                var investmentAprComments = await _investmentAprCommentRepo.ListAsync(investmentAprCommentSpec);
-                foreach (var v in investmentTargetedGroup)
-                {
-                    isTrue = false;
-                    foreach (var i in investmentAprComments)
-                    {
-                        if (v.InvestmentInitId == i.InvestmentInitId && v.SBU == i.SBU)
-                        {
-                            isTrue = true;
-                        }
-                    }
-                    if (!isTrue) { return BadRequest(new ApiResponse(400, "Other recommendations are not completed yet")); }
+            // if (investmentInits.SBU == empData.SBU)
+            // {
+            //     bool isTrue = false;
+            //     var investmentTargetedGroupSpec = new InvestmentTargetedGroupSpecification((int)investmentAprDto.InvestmentInitId);
+            //     var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(investmentTargetedGroupSpec);
+            //     var investmentAprCommentSpec = new InvestmentAprCommentSpecification((int)investmentAprDto.InvestmentInitId);
+            //     var investmentAprComments = await _investmentAprCommentRepo.ListAsync(investmentAprCommentSpec);
+            //     foreach (var v in investmentTargetedGroup)
+            //     {
+            //         isTrue = false;
+            //         foreach (var i in investmentAprComments)
+            //         {
+            //             if (v.InvestmentInitId == i.InvestmentInitId && v.SBU == i.SBU)
+            //             {
+            //                 isTrue = true;
+            //             }
+            //         }
+            //         if (!isTrue) { return BadRequest(new ApiResponse(400, "Other recommendations are not completed yet")); }
 
-                }
-            }
+            //     }
+            // }
             var invApr = new InvestmentAprComment
             {
                 //ReferenceNo = investmentInitDto.ReferenceNo,
