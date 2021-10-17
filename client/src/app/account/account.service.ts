@@ -53,7 +53,6 @@ export class AccountService {
 
   // tslint:disable-next-line: typedef
   login(values: any) {
-    debugger;
     return this.http.post(this.baseUrl + 'account/login', values).pipe(
       map((user: IUser) => {
         if (user) {

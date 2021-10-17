@@ -130,7 +130,6 @@ namespace API.Controllers
         }
 
        [HttpPost("login")]
-
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
             try
@@ -171,8 +170,8 @@ namespace API.Controllers
                 throw ex;
             }
         }
-        [HttpGet("ABC")]
-        public  List<MenuConfigDto> MenuConfigsForSecurity(string roleName)
+        [HttpGet("menuConfigsForSecurity")]      
+          public  List<MenuConfigDto> MenuConfigsForSecurity(string roleName)
         {
             try
             {

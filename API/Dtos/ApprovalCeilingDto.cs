@@ -14,7 +14,7 @@ namespace API.Dtos
         public int AmountPerMonth { get; set; }
         public string Additional { get; set; }
         public string Remarks { get; set; }
-        public int Status { get; set; }
+        public string Status { get; set; }
         public DateTimeOffset SetOn { get; set; }
     }
 }

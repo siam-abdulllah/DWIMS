@@ -28,7 +28,7 @@
                                         <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <select class="form-control" id="proposeFor" [disabled]="isDonationValid && isInvOther" name="proposeFor" #proposeFor="ngModel" [(ngModel)]="investmentInitService.investmentInitFormData.proposeFor" required [class.invalid]="proposeFor.invalid && proposeFor.touched">
+                                        <select class="form-control" (change)="onChangeProposeFor()" id="proposeFor" [disabled]="isDonationValid && isInvOther" name="proposeFor" #proposeFor="ngModel" [(ngModel)]="investmentInitService.investmentInitFormData.proposeFor" required [class.invalid]="proposeFor.invalid && proposeFor.touched">
                                             <option  [ngValue]="null">Select Propose For</option>
                                             <option value="BrandCampaign">Brand Campaign</option>
                                             <option value="Others">Others</option>
@@ -53,7 +53,6 @@
                                         <select class="form-control" [disabled]="isInvOther" id="donationType" name="donationType" #donationType="ngModel" [(ngModel)]="investmentInitService.investmentInitFormData.donationType" required [class.invalid]="donationType.invalid && donationType.touched">
                                             <option  [ngValue]="null">Select Donation Type</option>
                                             <option *ngFor="let a of donations" [value]="a.donationTypeName">{{a.donationTypeName}}</option>
-                                   
                                             <!-- <option value="Donation">Donation</option>
                                             <option value="Gift">Gift</option>
                                             <option value="Honorarium">Honorarium</option> -->
@@ -800,7 +799,6 @@
                         </div>
                     </div>
                 </form>
-
             </div>
         </div>
     </div>
