@@ -171,7 +171,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
-        //[HttpGet("menuConfigsForSecurity/{roleName}")]
+        [HttpGet("ABC")]
         public  List<MenuConfigDto> MenuConfigsForSecurity(string roleName)
         {
             try

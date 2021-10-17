@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Data;
 using System.Threading.Tasks;
 using API.Dtos;
 using API.Errors;
@@ -169,35 +170,49 @@ namespace API.Controllers
         }
 
 
-        //[HttpPost("GetComparativeStudy")]
-        //public async ActionResult<IReadOnlyList<RptDocLocWiseInvestmentDto>> GetComparativeStudy([FromQuery] ReportInvestmentInfoSpecParams rptParrams, ReportSearchDto search)
-        //{
+        [HttpPost("EmpLocationMapping")]
+        public object EmpLocationMapping(ReportSearchDto search)
+        {
 
-        //    List<SqlParameter> parms = new List<SqlParameter>
-        //            {
-        //                new SqlParameter("@UserId", search.UserId),
-        //                new SqlParameter("@FromDate", search.FromDate),
-        //                new SqlParameter("@ToDate", search.ToDate),
-        //                new SqlParameter("@SBU", search.SBU),
-        //                new SqlParameter("@DonationType", search.DonationType),
-        //                new SqlParameter("@InvestType", search.InvestType),
-        //                new SqlParameter("@InstitutionId", search.InstitutionId),
-        //                new SqlParameter("@SocietyId", search.SocietyId),
-        //                new SqlParameter("@BcdsId", search.BcdsId),
-        //                new SqlParameter("@LocationType", search.LocationType),
-        //                new SqlParameter("@TerritoryCode", search.TerritoryCode),
-        //                new SqlParameter("@MarketCode", search.MarketCode),
-        //                new SqlParameter("@regionCode", search.RegionCode),
-        //                new SqlParameter("@ZoneCode", search.ZoneCode),
-        //                new SqlParameter("@DivisionCode", search.DivisionCode),
-        //            };
+            string qry = "SELECT [Id], [EmployeeSAPCode], [EmployeeName], [DesignationName], [SBU], [SBUName], [MarketCode], [MarketName], " +
+                 " [TerritoryCode], [TerritoryName], [RegionCode], [RegionName], [ZoneCode], [ZoneName], [MarketGroupCode], [MarketGroupName]" +
+                 " FROM[DIDS].[dbo].[Employee] WHERE 1 = 1 ";
 
-        //    //var results = _db.Database.ExecuteSqlRaw($"EXECUTE SP_InvestmentReport @UserId,@FromDate,@ToDate, @SBU, @DonationType, @InvestType, @InstitutionId, @SocietyId, @BcdsId, @LocationType, @TerritoryCode, @MarketCode, @regionCode, @ZoneCode,  @DivisionCode");
+            if (!string.IsNullOrEmpty(search.MarketCode))
+            {
+                qry += " AND MarketCode= '" + search.MarketCode + "' ";
+            }
+            if (!string.IsNullOrEmpty(search.RegionCode))
+            {
+                qry += " AND RegionCode= '" + search.RegionCode + "' ";
+            }
+            if (!string.IsNullOrEmpty(search.TerritoryCode))
+            {
+                qry += " AND TerritoryCode= '" + search.TerritoryCode + "' ";
+            }
+            if (!string.IsNullOrEmpty(search.ZoneCode))
+            {
+                qry += " AND ZoneCode= '" + search.ZoneCode + "' ";
+            }
 
-        //    //var data = _mapper.Map<IReadOnlyList<RptDocLocWiseInvestment>, IReadOnlyList<RptDocLocWiseInvestmentDto>>(results);
+            qry += " GROUP BY [RegionCode],[ZoneCode],  [TerritoryCode] , DesignationName, [MarketCode], [Id], [EmployeeSAPCode], [EmployeeName], [SBU]," +
+                " [SBUName], [ZoneName], [RegionName], [TerritoryName], [MarketName], [MarketGroupCode], [MarketGroupName]" +
+                "  ORDER BY  [RegionCode],[ZoneCode],  [TerritoryCode] desc, DesignationName, [MarketCode]";
 
-        //    return Ok(new Pagination<RptDocLocWiseInvestmentDto>(rptParrams.PageIndex, rptParrams.PageSize, 10, data));
-        //}
+            var command = _db.Database.GetDbConnection().CreateCommand();
+
+            command.CommandText = qry;
+            command.CommandType = CommandType.Text;
+
+            _db.Database.CloseConnectionAsync();
+            _db.Database.OpenConnectionAsync();
+
+            var results = command.ExecuteReader();
+
+      
+
+            return results;
+        }
 
         [HttpGet("getReportList")]
         public async Task<ActionResult<IReadOnlyList<ReportConfigDto>>> getReportList([FromQuery] ReportConfigSpecParams rptParrams)
