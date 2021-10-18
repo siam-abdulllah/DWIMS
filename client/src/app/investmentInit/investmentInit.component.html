@@ -748,21 +748,17 @@
                                             <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="marketGroupMsts" bindLabel="groupName" bindValue="id" placeholder="Market Group" id="marketGroupMstId" name="marketGroupMstId" #marketGroupMstId="ngModel" (change)="onChangeMarketGroupInTargetedGroup()"
                                                 [(ngModel)]="investmentInitService.investmentTargetedGroupFormData.marketGroupMstId" [class.invalid]="marketGroupMstId.invalid && marketGroupMstId.touched">
                                             </ng-select>
-                                            <!-- <select class="form-control" id="marketGroupMstId" name="marketGroupMstId" #marketGroupMstId="ngModel" (change)="onChangeMarketGroupInTargetedGroup()" [(ngModel)]="investmentInitService.investmentTargetedGroupFormData.marketGroupMstId" [class.invalid]="marketGroupMstId.invalid && marketGroupMstId.touched">
-                                                
+                                            <!-- <select class="form-control" id="marketGroupMstId" name="marketGroupMstId" #marketGroupMstId="ngModel" (change)="onChangeMarketGroupInTargetedGroup()" [(ngModel)]="investmentInitService.investmentTargetedGroupFormData.marketGroupMstId" [class.invalid]="marketGroupMstId.invalid && marketGroupMstId.touched">                              
                                                 <option  [ngValue]="null">Select Market Group</option>
-                                                <option *ngFor="let a of marketGroupMsts" [value]="a.id">{{a.groupName}}</option>
-                                         
+                                                <option *ngFor="let a of marketGroupMsts" [value]="a.id">{{a.groupName}}</option>                                        
                                     </select> -->
                                         </div>
                                         <div class="col-md-3"></div>
                                         <div class="col-md-2" *ngIf="isValid && !isInvOther">
                                             <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentTargetedGroup()"><i class="fa fa-plus"></i>&nbsp; Save</button>
-
                                         </div>
                                         <div class="col-md-2" *ngIf="isValid && !isInvOther">
                                             <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentTargetedGroup()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
-
                                         </div>
                                     </div>
                                 </div>
@@ -804,7 +800,7 @@
     </div>
 </section>
 <ng-template #investmentInitSearchModal>
-    <div class="modal-header" style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc));color: black;">
+    <div class="modal-header" style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));color: black;">
         <h4 class="modal-title pull-left">Investment Initialization</h4>
         <button type="button" class="close pull-right" aria-label="Close" (click)="InvestmentInitSearchModalRef.hide()">
         <span aria-hidden="true">&times;</span>
@@ -815,7 +811,7 @@
             <div class="col-md-12">
                 <div class="table-responsive" style="border: 1px solid #bed2c9; width: 100%;">
                     <table class="table table-bordered table-responsive table-hover table-striped">
-                        <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc));">
+                        <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));">
                             <tr class="HeaderRow">
                                 <th scope="col" style="width: 7%">Action</th>
                                 <th scope="col" style="width: 0;display:none;">Id</th>
@@ -844,3 +840,6 @@
         </div>
     </div>
 </ng-template>
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
+    <p style="color: black">Please Wait. </p>
+</ngx-spinner>

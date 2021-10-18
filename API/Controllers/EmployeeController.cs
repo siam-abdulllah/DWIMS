@@ -332,7 +332,7 @@ namespace API.Controllers
         //    }
         //}
 
-        [HttpGet("GetRegion")]
+        [HttpGet("getRegion")]
         public async Task<IReadOnlyList<RegionDto>> GetRegionList()
         {
             try

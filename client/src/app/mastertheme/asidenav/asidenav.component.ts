@@ -17,7 +17,8 @@ export class AsidenavComponent implements OnInit {
   htmlToAdd: SafeHtml;
   @HostListener('click', ['$event'])
   public onClick(event) {
-    if (event.target.tagName === 'A') {
+    if (event.target.tagName === 'A' && event.target.getAttribute('href')!=="javascript:void(0)") {
+      
       this.router.navigate([event.target.getAttribute('href')]);
       event.preventDefault();
     } else {
