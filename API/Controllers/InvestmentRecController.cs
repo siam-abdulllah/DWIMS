@@ -235,27 +235,27 @@ namespace API.Controllers
             //var investmentInitSpec = new InvestmentInitSpecification((int)investmentRecDto.InvestmentInitId);
             var investmentInits = await _investmentInitRepo.GetByIdAsync((int)investmentRecDto.InvestmentInitId);
             var empData = await _employeeRepo.GetByIdAsync(investmentRecDto.EmployeeId);
-            // if (investmentInits.SBU == empData.SBU)
-            // {
-            //     bool isTrue = false;
-            //     var investmentTargetedGroupSpec = new InvestmentTargetedGroupSpecification((int)investmentRecDto.InvestmentInitId);
-            //     var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(investmentTargetedGroupSpec);
-            //     var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentRecDto.InvestmentInitId);
-            //     var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
-            //     foreach (var v in investmentTargetedGroup)
-            //     {
-            //         isTrue = false;
-            //         foreach (var i in investmentRecComments)
-            //         {
-            //             if (v.InvestmentInitId == i.InvestmentInitId && v.SBU == i.SBU)
-            //             {
-            //                 isTrue = true;
-            //             }
-            //         }
-            //         if (!isTrue) { return BadRequest(new ApiResponse(400, "Other recommendation not completed yet")); }
-            //     }
-            // }
-            //var empData = await _employeeRepo.GetByIdAsync(investmentRecDto.EmployeeId);
+            if (investmentInits.SBU == empData.SBU)
+            {
+                bool isTrue = false;
+                var investmentTargetedGroupSpec = new InvestmentTargetedGroupSpecification((int)investmentRecDto.InvestmentInitId);
+                var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(investmentTargetedGroupSpec);
+                var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentRecDto.InvestmentInitId);
+                var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
+                foreach (var v in investmentTargetedGroup)
+                {
+                    isTrue = false;
+                    foreach (var i in investmentRecComments)
+                    {
+                        if (v.InvestmentInitId == i.InvestmentInitId && v.SBU == i.SBU)
+                        {
+                            isTrue = true;
+                        }
+                    }
+                    if (!isTrue) { return BadRequest(new ApiResponse(400, "Other recommendation not completed yet")); }
+                }
+            }
+           
             var invRec = new InvestmentRecComment
             {
                 InvestmentInitId = investmentRecDto.InvestmentInitId,

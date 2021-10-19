@@ -111,7 +111,7 @@ export class RegisterComponent implements OnInit {
         employeeName: [{value: null, disabled: true}],
         designationName: [{value: null, disabled: true}],
         departmentName: [{value: null, disabled: true}],
-        email: [null,  [Validators.required]],
+        email: [{value: null, disabled: true}],
         password: [null, [Validators.required]],
         phoneNumber: [{value: null, disabled: true}],
       }),
@@ -119,6 +119,7 @@ export class RegisterComponent implements OnInit {
       //   userRoles: [null, [Validators.required]],
       // }),
     });
+    this.errors=[];
   }
 
   //############ Role ########.
@@ -206,6 +207,7 @@ export class RegisterComponent implements OnInit {
        if(response.length>0) {
         this.SpinnerService.hide();  
         //this.registerForm.reset(); 
+        this.createRegisterForm();
         this.toastr.success('Employee information found.');
         this.registerForm.controls.userForm.get('employeeId').setValue(response[0].id);
         this.registerForm.controls.userForm.get('employeeSAPCode').setValue(response[0].employeeSAPCode);
