@@ -44,6 +44,17 @@ export class ReportInvestmentService {
     );
   }
 
+  
+  getGenParams(){
+    return this.genParams;
+  }
+
+   // tslint:disable-next-line: typedef
+   setGenParams(genParams: GenericParams) {
+    this.genParams = genParams;
+  }
+
+
   getMarket(){    
     return this.http.get(this.baseUrl + 'employee/getMarket');
   }

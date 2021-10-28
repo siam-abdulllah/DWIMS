@@ -45,7 +45,7 @@ export class ReportInvestmentComponent implements OnInit {
   visBcd: boolean = true;
   visIns: boolean = true;
   visDoc: boolean = true;
-
+  config: any;
   visMarket: boolean = true;
   visZone: boolean = true;
   visTerritory: boolean = true;
@@ -117,7 +117,14 @@ export class ReportInvestmentComponent implements OnInit {
 
   getReportList() {
     this.reportInvestmentService.getReportList().subscribe(response => {
-      this.reports = response.data as IReportConfig[];
+      const params = this.reportInvestmentService.getGenParams();
+      this.reports = response.data;
+      this.totalCount = response.count;
+      this.config = {
+        currentPage: params.pageIndex,
+        itemsPerPage: params.pageSize,
+        totalItems:this.totalCount,
+        };
     }, error => {
       console.log(error);
     });
@@ -157,6 +164,17 @@ export class ReportInvestmentComponent implements OnInit {
       this.getDivision();
     }
   }
+
+  onPageChanged(event: any){
+    const params = this.reportInvestmentService.getGenParams();
+    if (params.pageIndex !== event)
+    {
+      params.pageIndex = event;
+      this.reportInvestmentService.setGenParams(params);
+      this.getReportList();
+    }
+  }
+  
 
   onChangeDonationTo() {
 
