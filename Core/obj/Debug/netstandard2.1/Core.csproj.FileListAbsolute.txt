@@ -88,3 +88,4 @@ E:\DWIMS\TestApplication\Core\obj\Debug\netstandard2.1\Core.AssemblyInfo.cs
 E:\DWIMS\TestApplication\Core\obj\Debug\netstandard2.1\Core.csproj.CoreCompileInputs.cache
 E:\DWIMS\TestApplication\Core\obj\Debug\netstandard2.1\Core.dll
 E:\DWIMS\TestApplication\Core\obj\Debug\netstandard2.1\Core.pdb
+G:\DIDS\DIDS_GIT\DWIMS\Core\obj\Debug\netstandard2.1\Core.GeneratedMSBuildEditorConfig.editorconfig

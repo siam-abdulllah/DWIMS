@@ -124,7 +124,6 @@ export class InvestmentInitComponent implements OnInit {
     this.getInvestmentDetails();
     this.getInvestmentTargetedProd();
     this.getInvestmentTargetedGroup();
-    debugger;
     if (parseInt(this.empId) == this.investmentInitService.investmentInitFormData.employeeId) {
       this.isInvOther = false;
       //this.isValid = true;
@@ -160,7 +159,6 @@ export class InvestmentInitComponent implements OnInit {
         this.investmentInitService.investmentDetailFormData = data;
         this.investmentInitService.investmentDetailFormData.fromDate = new Date(data.fromDate);
         this.investmentInitService.investmentDetailFormData.toDate = new Date(data.toDate);
-       debugger;
         this.convertedDate = this.datePipe.transform(data.fromDate, 'ddMMyyyy');
         //this.getLastFiveInvestment(this.investmentInitService.investmentInitFormData.marketCode, this.convertedDate);
 
@@ -199,7 +197,7 @@ export class InvestmentInitComponent implements OnInit {
       else {
         form.controls.fromDate.setValue(null);
         form.controls.toDate.setValue(null);
-        this.toastr.error('Select Appropriate Date Range', 'Error')
+        this.toastr.error('Select Appropriate Date Range', 'Error');
       }
     }
   }
@@ -256,7 +254,6 @@ export class InvestmentInitComponent implements OnInit {
 
       var data = response[0] as IInvestmentDoctor;
       if (data !== undefined) {
-        debugger;
         this.investmentInitService.investmentDoctorFormData = data;
         //this.investmentInitService.investmentDoctorFormData.doctorName = String(data.doctorId);
         this.onChangeDoctorInDoc();
@@ -312,7 +309,6 @@ export class InvestmentInitComponent implements OnInit {
 
   }
   getLastFiveInvestment(marketCode: string, toDayDate: string) {
-    debugger;
     if (this.investmentInitService.investmentInitFormData.donationTo == "Doctor") {
       this.investmentInitService.getLastFiveInvestmentForDoc(this.investmentInitService.investmentInitFormData.donationType,this.investmentInitService.investmentDoctorFormData.doctorId,marketCode, toDayDate).subscribe(
         (response) => {
@@ -402,7 +398,6 @@ export class InvestmentInitComponent implements OnInit {
     }
   }
   onChangeDonationTo() {
-    debugger;
     if(this.investmentInitService.investmentInitFormData.proposeFor == "BrandCampaign" && this.investmentInitService.investmentInitFormData.donationTo != "Campaign" && this.investmentInitService.investmentInitFormData.donationTo != null)
     {
       this.toastr.warning("For Brand Campaign, must select Campaign");
@@ -513,7 +508,6 @@ export class InvestmentInitComponent implements OnInit {
       }
     }
     this.investmentInitService.getCampaignDtlProducts(this.investmentInitService.investmentCampaignFormData.campaignDtlId).subscribe(response => {
-      debugger;
       this.campaignDtlProducts = response as ICampaignDtlProduct[];
     }, error => {
       console.log(error);
@@ -634,7 +628,6 @@ export class InvestmentInitComponent implements OnInit {
   getCampaignMst() {
     this.SpinnerService.show();
     this.investmentInitService.getCampaignMsts().subscribe(response => {
-      //debugger;
       this.campaignMsts = response as ICampaignMst[];
       this.investmentInitService.getDoctors().subscribe(response => {
         this.doctors = response as IDoctor[];
@@ -1038,9 +1031,7 @@ export class InvestmentInitComponent implements OnInit {
 
     // }
     if (this.investmentInitService.investmentBcdsFormData.bcdsId == null || this.investmentInitService.investmentBcdsFormData.bcdsId == undefined || this.investmentInitService.investmentBcdsFormData.bcdsId == 0) {
-      this.toastr.warning('Select Bcds First', 'Investment', {
-        positionClass: 'toast-top-right'
-      });
+      this.toastr.warning('Select Bcds First', 'Investment');
       return false;
     }
 
@@ -1065,22 +1056,18 @@ export class InvestmentInitComponent implements OnInit {
   insertInvestmentTargetedProd() {
 
     if (this.investmentInitService.investmentInitFormData.id == null || this.investmentInitService.investmentInitFormData.id == undefined || this.investmentInitService.investmentInitFormData.id == 0) {
-      this.toastr.warning('Insert Investment Initialisation First', 'Investment', {
-        positionClass: 'toast-top-right'
-      });
+      this.toastr.warning('Insert Investment Initialisation First', 'Investment');
       return false;
     }
 
     if (this.investmentInitService.investmentTargetedProdFormData.productId == null || this.investmentInitService.investmentTargetedProdFormData.productId == undefined || this.investmentInitService.investmentTargetedProdFormData.productId == 0) {
-      this.toastr.warning('Select Product First', 'Investment', {
-        positionClass: 'toast-top-right'
-      });
+      this.toastr.warning('Select Product First', 'Investment');
       return false;
     }
     if (this.investmentTargetedProds !== undefined) {
       for (let i = 0; i < this.investmentTargetedProds.length; i++) {
         if (this.investmentTargetedProds[i].productInfo.id === this.investmentInitService.investmentTargetedProdFormData.productId) {
-          alert("product already exist !");
+          this.toastr.warning("product already exist !");
           return false;
         }
       }
