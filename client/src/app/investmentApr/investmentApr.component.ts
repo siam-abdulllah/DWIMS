@@ -43,7 +43,6 @@ export class InvestmentAprComponent implements OnInit {
   InvestmentAprSearchModalRef: BsModalRef;
   investmentDetailsOld: IInvestmentDetailOld[];
   // genParams: GenericParams;
-  // campaigns: ICampaign[]; 
   investmentAprs: IInvestmentApr[];
   investmentTargetedProds: IInvestmentTargetedProd[];
   investmentTargetedGroups: IInvestmentTargetedGroup[];
@@ -285,14 +284,13 @@ export class InvestmentAprComponent implements OnInit {
         this.investmentAprService.investmentCampaignFormData.subCampStartDate = new DatePipe('en-US').transform(data.campaignDtl.subCampStartDate, 'dd/MM/yyyy');
         this.investmentAprService.investmentCampaignFormData.subCampEndDate = new DatePipe('en-US').transform(data.campaignDtl.subCampEndDate, 'dd/MM/yyyy')
         this.investmentAprService.getCampaignMsts().subscribe(response => {
-          this.campaignMsts = response as ICampaignMst[];
+        this.campaignMsts = response as ICampaignMst[];
           for (let i = 0; i < this.campaignMsts.length; i++) {
             if (this.campaignMsts[i].id == this.investmentAprService.investmentCampaignFormData.campaignDtl.mstId) {
               this.investmentAprService.investmentCampaignFormData.campaignName = this.campaignMsts[i].campaignName;
             }
           }
           this.investmentAprService.getCampaignDtls(data.campaignDtl.mstId).subscribe(response => {
-
             this.campaignDtls = response as ICampaignDtl[];
             for (let i = 0; i < this.campaignDtls.length; i++) {
               if (this.campaignDtls[i].id == data.campaignDtl.id) {

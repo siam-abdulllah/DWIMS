@@ -252,7 +252,7 @@ namespace API.Controllers
                             isTrue = true;
                         }
                     }
-                    if (!isTrue) { return BadRequest(new ApiResponse(400, "Other recommendation not completed yet")); }
+                   // if (!isTrue) { return BadRequest(new ApiResponse(400, "Other recommendation not completed yet")); }
                 }
             }
            

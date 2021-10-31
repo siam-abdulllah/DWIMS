@@ -157,7 +157,7 @@ namespace API.Controllers
             return new UserDto
             {
                 EmployeeId = user.EmployeeId,
-                Email = user.Email,
+                //Email = user.Email,
                 Token = _tokenService.CreateToken(user, roles),
                 DisplayName = user.DisplayName,
                 MenuList= menuList
