@@ -10,5 +10,7 @@ namespace API.Dtos
         public string MarketName { get; set; }
         public int? MarketGroupMstId { get; set; }
         public MarketGroupMstDto MarketGroupMst { get; set; }
+        public string SBU { get; set; }
+        public string SBUName { get; set; }
     }
 }

@@ -597,42 +597,6 @@ export class InvestmentRecComponent implements OnInit {
       this.updateInvestmentRec();
   }
   insertInvestmentRec() {
-    this.investmentRecService.insertInvestmentRec().subscribe(
-      res => {
-        //
-        this.investmentRecService.investmentRecCommentFormData = res as IInvestmentRecComment;
-        //this.investmentRecService.investmentDoctorFormData.investmentInitId=this.investmentRecService.investmentRecFormData.id;
-        //this.investmentRecService.investmentInstitutionFormData.investmentInitId=this.investmentRecService.investmentRecFormData.id;
-        this.isValid = true;
-        if (this.sbu == this.investmentRecService.investmentRecFormData.sbu) { this.insertInvestmentDetails(); }
-        this.insertInvestmentTargetedProd();
-        this.toastr.success('Save successfully', 'Investment ')
-      },
-      err => { console.log(err); }
-    );
-  }
-  updateInvestmentRec() {
-    this.investmentRecService.updateInvestmentRec().subscribe(
-      res => {
-        //
-        this.isValid = true;
-        this.investmentRecService.investmentRecCommentFormData = res as IInvestmentRecComment;
-        if (this.sbu == this.investmentRecService.investmentRecFormData.sbu) { this.insertInvestmentDetails(); }
-        this.insertInvestmentTargetedProd();
-        //this.investmentRecService.investmentDoctorFormData.investmentInitId=this.investmentRecService.investmentRecFormData.id;
-        // this.investmentRecService.investmentInstitutionFormData.investmentInitId=this.investmentRecService.investmentRecFormData.id;
-        this.toastr.info('Updated successfully', 'Investment ')
-      },
-      err => { console.log(err); }
-    );
-  }
-  insertInvestmentDetails() {
-    if (this.investmentRecService.investmentRecFormData.id == null || this.investmentRecService.investmentRecFormData.id == undefined || this.investmentRecService.investmentRecFormData.id == 0) {
-      this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
-        positionClass: 'toast-top-right'
-      });
-      return false;
-    }
     if (this.investmentRecService.investmentDetailFormData.proposedAmount == null || this.investmentRecService.investmentDetailFormData.proposedAmount == undefined || this.investmentRecService.investmentDetailFormData.proposedAmount == "") {
       this.toastr.warning('Enter Proposed Amount First', 'Investment ', {
         positionClass: 'toast-top-right'
@@ -675,6 +639,90 @@ export class InvestmentRecComponent implements OnInit {
       });
       return false;
     }
+    this.investmentRecService.insertInvestmentRec().subscribe(
+      res => {
+        //
+        this.investmentRecService.investmentRecCommentFormData = res as IInvestmentRecComment;
+        //this.investmentRecService.investmentDoctorFormData.investmentInitId=this.investmentRecService.investmentRecFormData.id;
+        //this.investmentRecService.investmentInstitutionFormData.investmentInitId=this.investmentRecService.investmentRecFormData.id;
+        this.isValid = true;
+        if (this.sbu == this.investmentRecService.investmentRecFormData.sbu) 
+        { 
+          this.insertInvestmentDetails();
+         }
+        this.insertInvestmentTargetedProd();
+        this.toastr.success('Save successfully', 'Investment')
+      },
+      err => { 
+        console.log(err); 
+      }
+    );
+  }
+  updateInvestmentRec() {
+    if (this.investmentRecService.investmentDetailFormData.proposedAmount == null || this.investmentRecService.investmentDetailFormData.proposedAmount == undefined || this.investmentRecService.investmentDetailFormData.proposedAmount == "") {
+      this.toastr.warning('Enter Proposed Amount First', 'Investment ', {
+        positionClass: 'toast-top-right'
+      });
+      return false;
+    }
+    if (this.investmentRecService.investmentDetailFormData.purpose == null || this.investmentRecService.investmentDetailFormData.purpose == undefined || this.investmentRecService.investmentDetailFormData.purpose == "") {
+      this.toastr.warning('Enter Purpose First', 'Investment ', {
+        positionClass: 'toast-top-right'
+      });
+      return false;
+    }
+    if (this.investmentRecService.investmentDetailFormData.fromDate == null || this.investmentRecService.investmentDetailFormData.fromDate == undefined) {
+      this.toastr.warning('Select From Date  First', 'Investment ', {
+        positionClass: 'toast-top-right'
+      });
+      return false;
+    }
+    if (this.investmentRecService.investmentDetailFormData.toDate == null || this.investmentRecService.investmentDetailFormData.toDate == undefined) {
+      this.toastr.warning('Select To Date  First', 'Investment ', {
+        positionClass: 'toast-top-right'
+      });
+      return false;
+    }
+    if (this.investmentRecService.investmentDetailFormData.commitmentAllSBU == null || this.investmentRecService.investmentDetailFormData.commitmentAllSBU == undefined || this.investmentRecService.investmentDetailFormData.commitmentAllSBU == "") {
+      this.toastr.warning('Enter Commitment All SBU First', 'Investment ', {
+        positionClass: 'toast-top-right'
+      });
+      return false;
+    }
+    if (this.investmentRecService.investmentDetailFormData.commitmentOwnSBU == null || this.investmentRecService.investmentDetailFormData.commitmentOwnSBU == undefined || this.investmentRecService.investmentDetailFormData.commitmentOwnSBU == "") {
+      this.toastr.warning('Enter Commitment Own SBU First', 'Investment ', {
+        positionClass: 'toast-top-right'
+      });
+      return false;
+    }
+    if (this.investmentRecService.investmentDetailFormData.paymentMethod == null || this.investmentRecService.investmentDetailFormData.paymentMethod == undefined || this.investmentRecService.investmentDetailFormData.paymentMethod == "") {
+      this.toastr.warning('Select Payment Method First', 'Investment ', {
+        positionClass: 'toast-top-right'
+      });
+      return false;
+    }
+    this.investmentRecService.updateInvestmentRec().subscribe(
+      res => {
+        //
+        this.isValid = true;
+        this.investmentRecService.investmentRecCommentFormData = res as IInvestmentRecComment;
+        if (this.sbu == this.investmentRecService.investmentRecFormData.sbu) { this.insertInvestmentDetails(); }
+        this.insertInvestmentTargetedProd();
+        //this.investmentRecService.investmentDoctorFormData.investmentInitId=this.investmentRecService.investmentRecFormData.id;
+        // this.investmentRecService.investmentInstitutionFormData.investmentInitId=this.investmentRecService.investmentRecFormData.id;
+        this.toastr.info('Updated successfully', 'Investment ')
+      },
+      err => { console.log(err); }
+    );
+  }
+  insertInvestmentDetails() {
+    if (this.investmentRecService.investmentRecFormData.id == null || this.investmentRecService.investmentRecFormData.id == undefined || this.investmentRecService.investmentRecFormData.id == 0) {
+      this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
+        positionClass: 'toast-top-right'
+      });
+      return false;
+    }
+    
 
 
     this.investmentRecService.investmentDetailFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
@@ -689,7 +737,7 @@ export class InvestmentRecComponent implements OnInit {
         this.investmentRecService.investmentDetailFormData.fromDate = new Date(data.fromDate);
         this.investmentRecService.investmentDetailFormData.toDate = new Date(data.toDate);
         this.isDonationValid = true;
-        this.toastr.success('Save successfully', 'Investment ');
+        this.toastr.success('Investment Details Save successfully', 'Investment Details');
       },
       err => { console.log(err); }
     );
@@ -736,16 +784,7 @@ export class InvestmentRecComponent implements OnInit {
     //  });
     //  return false;
     // }
-    if (this.investmentTargetedProds !== undefined) {
-      // for (let i = 0; i < this.investmentTargetedProds.length; i++) {
-      //   if(this.investmentTargetedProds[i].productInfo.id==this.investmentRecService.investmentTargetedProdFormData.productId)
-      //   {
-      //   alert("product already exist !");
-      //   return false;
-      //   }
-      // }
-    }
-    else {
+    if (this.investmentTargetedProds == undefined) {
       this.toastr.warning('Select Product First', 'Investment ', {
         positionClass: 'toast-top-right'
       });
@@ -762,28 +801,13 @@ export class InvestmentRecComponent implements OnInit {
         this.getInvestmentTargetedProd();
 
         this.isDonationValid = true;
-        this.toastr.success('Save successfully', 'Investment ');
+        this.toastr.success('Targeted Product Save successfully', 'Investment Targeted Product');
       },
       err => { console.log(err); }
     );
-    // }
-    // else{
-    //   this.investmentRecService.updateInvestmentTargetedProd().subscribe(
-    //     res => {
-    //       
-    //      this.investmentRecService.investmentTargetedProdFormData=new InvestmentTargetedProd();
-
-    //      this.getInvestmentTargetedProd();
-
-    //      this.isDonationValid=true;
-    //       this.toastr.success('Update successfully', 'Investment ');
-    //     },
-    //     err => { console.log(err); }
-    //   );
-    // }
+    
   }
   addInvestmentTargetedProd() {
-    //
     if (this.investmentRecService.investmentTargetedProdFormData.productId == null || this.investmentRecService.investmentTargetedProdFormData.productId == undefined || this.investmentRecService.investmentTargetedProdFormData.productId == 0) {
       this.toastr.warning('Select Product First', 'Investment ', {
         positionClass: 'toast-top-right'
@@ -872,8 +896,6 @@ export class InvestmentRecComponent implements OnInit {
         err => { console.log(err); }
       );
     }
-
   }
-
 }
 

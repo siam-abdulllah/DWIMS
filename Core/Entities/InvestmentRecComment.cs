@@ -25,5 +25,7 @@ namespace Core.Entities
         public string MarketGroupName { get; set; }
         public string Comments { get; set; }
         public string RecStatus { get; set; }
+        public bool? CompletionStatus { get; set; }
+        public int Priority { get; set; }
     }
 }

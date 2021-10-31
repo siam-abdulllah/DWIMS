@@ -125,7 +125,6 @@ export class InvestmentInitService {
     return this.http.get(this.baseUrl + 'investment/investmentDetails/' + investmentInitId);
   }
   getInvestmentInit(empId: number, sbu: string) {
-    ;
     let params = new HttpParams();
     if (this.genParams.search) {
       params = params.append('search', this.genParams.search);
@@ -145,9 +144,7 @@ export class InvestmentInitService {
 
   }
   insertInvestmentInit() {
-    ;
     return this.http.post(this.baseUrl + 'investment/insertInit', this.investmentInitFormData);
-
   }
 
   updateInvestmentInit() {
@@ -157,7 +154,6 @@ export class InvestmentInitService {
     return this.http.post(this.baseUrl + 'investment/updateInitOther/' + empId, this.investmentInitFormData);
   }
   insertInvestmentDetail() {
-    ;
     return this.http.post(this.baseUrl + 'investment/insertDetail', this.investmentDetailFormData);
   }
 
@@ -165,78 +161,64 @@ export class InvestmentInitService {
     return this.http.post(this.baseUrl + 'investment/updateDetail', this.investmentDetailFormData);
   }
   insertInvestmentDoctor() {
-    ;
     return this.http.post(this.baseUrl + 'investment/insertInvestmentDoctor', this.investmentDoctorFormData);
 
   }
   insertInvestmentInstitution() {
-    ;
     return this.http.post(this.baseUrl + 'investment/insertInvestmentInstitution', this.investmentInstitutionFormData);
 
   }
   insertInvestmentCampaign() {
-    ;
     return this.http.post(this.baseUrl + 'investment/insertInvestmentCampaign', this.investmentCampaignFormData);
 
   }
   insertInvestmentBcds() {
-    ;
     return this.http.post(this.baseUrl + 'investment/insertInvestmentBcds', this.investmentBcdsFormData);
 
   }
   insertInvestmentSociety() {
-    ;
     return this.http.post(this.baseUrl + 'investment/insertInvestmentSociety', this.investmentSocietyFormData);
 
   }
   insertInvestmentTargetedProd() {
-    ;
     return this.http.post(this.baseUrl + 'investment/insertInvestmentTargetedProd', this.investmentTargetedProdFormData);
 
   }
   updateInvestmentTargetedProd() {
-    ;
     return this.http.post(this.baseUrl + 'investment/updateInvestmentTargetedProd', this.investmentTargetedProdFormData);
 
   }
   insertInvestmentTargetedGroup(investmentTargetedGroups: IInvestmentTargetedGroup[]) {
-    ;
     return this.http.post(this.baseUrl + 'investment/insertInvestmentTargetedGroup', investmentTargetedGroups,
       { responseType: 'text' });
 
   }
   removeInvestmentDoctor() {
-    ;
     return this.http.post(this.baseUrl + 'investment/removeInvestmentDoctor', this.investmentDoctorFormData,
       { responseType: 'text' });
 
   }
   removeInvestmentInstitution() {
-    ;
     return this.http.post(this.baseUrl + 'investment/removeInvestmentInstitution', this.investmentInstitutionFormData,
       { responseType: 'text' });
 
   }
   removeInvestmentCampaign() {
-    ;
     return this.http.post(this.baseUrl + 'investment/removeInvestmentCampaign', this.investmentCampaignFormData,
       { responseType: 'text' });
 
   }
   removeInvestmentBcds() {
-    ;
     return this.http.post(this.baseUrl + 'investment/removeInvestmentBcds', this.investmentBcdsFormData,
       { responseType: 'text' });
 
   }
   removeInvestmentSociety() {
-    ;
     return this.http.post(this.baseUrl + 'investment/removeInvestmentSociety', this.investmentSocietyFormData,
       { responseType: 'text' });
 
   }
   removeInvestmentTargetedProd() {
-    ;
     return this.http.post(this.baseUrl + 'investment/removeInvestmentTargetedProd', this.investmentTargetedProdFormData,
       { responseType: 'text' });
 

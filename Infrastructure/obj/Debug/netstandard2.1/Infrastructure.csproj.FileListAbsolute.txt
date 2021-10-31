@@ -117,4 +117,3 @@ E:\DWIMS\TestApplication\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.
 E:\DWIMS\TestApplication\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.csproj.CoreCompileInputs.cache
 E:\DWIMS\TestApplication\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.dll
 E:\DWIMS\TestApplication\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.pdb
-E:\DWIMS\TestApplication\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.csproj.CopyComplete

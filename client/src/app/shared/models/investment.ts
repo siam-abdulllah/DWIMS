@@ -108,6 +108,8 @@ export interface IInvestmentTargetedGroup {
     completionStatus: boolean;
     marketCode: string;
     marketName: string;
+    sbuName:string;
+    sbu:string;
     marketGroupMst:IMarketGroupMst;
 }
  
@@ -118,6 +120,8 @@ export class InvestmentTargetedGroup implements IInvestmentTargetedGroup {
     completionStatus: boolean;
     marketCode: string;
     marketName: string;
+    sbuName:string;
+    sbu:string;
     marketGroupMst:IMarketGroupMst;
 }
 export interface IInvestmentDoctor {

@@ -146,7 +146,7 @@ export class InvestmentInitComponent implements OnInit {
         this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
       }
       else {
-        this.toastr.warning('No Data Found');
+        //this.toastr.warning('No Data Found');
       }
      }, error => {
       this.SpinnerService.hide();
@@ -165,7 +165,7 @@ export class InvestmentInitComponent implements OnInit {
         //this.getLastFiveInvestment(this.investmentInitService.investmentInitFormData.marketCode, this.convertedDate);
 
       } else {
-        this.toastr.warning('No Data Found', 'Investment');
+       // this.toastr.warning('No Data Found', 'Investment');
       }
     }, error => {
       console.log(error);
@@ -213,7 +213,7 @@ export class InvestmentInitComponent implements OnInit {
         this.getLastFiveInvestment(this.investmentInitService.investmentInitFormData.marketCode, this.convertedDate);
       }
       else {
-        this.toastr.warning('No Data Found', 'Investment');
+        //this.toastr.warning('No Data Found', 'Investment');
       }
     }, error => {
       console.log(error);
@@ -228,7 +228,7 @@ export class InvestmentInitComponent implements OnInit {
         this.getLastFiveInvestment(this.investmentInitService.investmentInitFormData.marketCode, this.convertedDate);
       }
       else {
-        this.toastr.warning('No Data Found', 'Investment');
+        //this.toastr.warning('No Data Found', 'Investment');
       }
 
     }, error => {
@@ -244,7 +244,7 @@ export class InvestmentInitComponent implements OnInit {
         this.getLastFiveInvestment(this.investmentInitService.investmentInitFormData.marketCode, this.convertedDate);
       }
       else {
-        this.toastr.warning('No Data Found', 'Investment');
+        //this.toastr.warning('No Data Found', 'Investment');
       }
 
     }, error => {
@@ -264,7 +264,7 @@ export class InvestmentInitComponent implements OnInit {
         this.getLastFiveInvestment(this.investmentInitService.investmentInitFormData.marketCode, this.convertedDate);
       }
       else {
-        this.toastr.warning('No Data Found', 'Investment');
+        //this.toastr.warning('No Data Found', 'Investment');
       }
 
     }, error => {
@@ -280,7 +280,7 @@ export class InvestmentInitComponent implements OnInit {
 
       }
       else {
-        this.toastr.warning('No Data Found', 'Investment');
+        //this.toastr.warning('No Data Found', 'Investment');
       }
 
     }, error => {
@@ -297,7 +297,7 @@ export class InvestmentInitComponent implements OnInit {
 
       }
       else {
-        this.toastr.warning('No Data Found', 'Investment');
+        //this.toastr.warning('No Data Found', 'Investment');
       }
 
     }, error => {
@@ -459,7 +459,6 @@ export class InvestmentInitComponent implements OnInit {
   }
   onChangeDoctorInDoc() {
     for (var i = 0; i < this.doctors.length; i++) {
-      debugger;
       if (this.doctors[i].id == this.investmentInitService.investmentDoctorFormData.doctorId) {
         //this.investmentInitService.investmentDoctorFormData.doctorName=this.doctors[i].doctorName;
         this.investmentInitService.investmentDoctorFormData.doctorCode = this.doctors[i].doctorCode;
@@ -543,8 +542,10 @@ export class InvestmentInitComponent implements OnInit {
               var marketGroupMstId = this.marketGroupMsts[i].marketGroupDtls[j].mstId;
               var marketCode = this.marketGroupMsts[i].marketGroupDtls[j].marketCode;
               var marketName = this.marketGroupMsts[i].marketGroupDtls[j].marketName;
+              var sbu = this.marketGroupMsts[i].marketGroupDtls[j].sbu;
+              var sbuName = this.marketGroupMsts[i].marketGroupDtls[j].sbuName;
 
-              data.push({ id: 0, investmentInitId: this.investmentInitService.investmentInitFormData.id, marketGroupMst: this.marketGroupMsts[i], marketGroupMstId: marketGroupMstId, marketCode: marketCode, marketName: marketName });
+              data.push({ id: 0, investmentInitId: this.investmentInitService.investmentInitFormData.id, marketGroupMst: this.marketGroupMsts[i], marketGroupMstId: marketGroupMstId, marketCode: marketCode, marketName: marketName,sbu:sbu,sbuName:sbuName });
               //this.investmentTargetedGroups.push({id:0,investmentInitId:this.investmentInitService.investmentInitFormData.id,marketGroup:null,marketGroupMstId:this.marketGroupMsts[i].marketGroupDtls[j].mstId,marketCode:this.marketGroupMsts[i].marketGroupDtls[j].marketCode,marketName:this.marketGroupMsts[i].marketGroupDtls[j].marketName});
             }
           }
@@ -1319,7 +1320,7 @@ export class InvestmentInitComponent implements OnInit {
           err => {
             this.SpinnerService.hide();
             console.log(err);
-            this.toastr.warning(err, 'Investment');
+            this.toastr.warning(err.error, 'Investment');
           }
         );
       }

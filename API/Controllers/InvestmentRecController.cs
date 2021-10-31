@@ -94,9 +94,6 @@ namespace API.Controllers
                 var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentInitSearch @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
                 var data = _mapper
                     .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
-
-
-
                 return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, 50, data));
             }
             catch (System.Exception e)
@@ -141,7 +138,7 @@ namespace API.Controllers
                 //var totalItems = await _investmentInitRepo.CountAsync(countSpec);
 
                 List<SqlParameter> parms = new List<SqlParameter>
-                    {
+                    {   
                         new SqlParameter("@SBU", sbu),
                         new SqlParameter("@EID", empId),
                         new SqlParameter("@RSTATUS", DBNull.Value),
@@ -190,6 +187,8 @@ namespace API.Controllers
                     _investmentRecRepo.Savechange();
                 }
             }
+            var spec = new ApprAuthConfigSpecification(empId, "A");
+            var apprAuthConfig = await _apprAuthConfigRepo.GetEntityWithSpec(spec);
             var invRec = new InvestmentRec
             {
                 //ReferenceNo = investmentInitDto.ReferenceNo,
@@ -204,6 +203,8 @@ namespace API.Controllers
                 PaymentMethod = investmentRecDto.PaymentMethod,
                 ChequeTitle = investmentRecDto.ChequeTitle,
                 EmployeeId = empId,
+                Priority = apprAuthConfig.ApprovalAuthority.Priority,
+                CompletionStatus = true,
                 SetOn = DateTimeOffset.Now
             };
             _investmentRecRepo.Add(invRec);
@@ -231,10 +232,12 @@ namespace API.Controllers
         [HttpPost("insertRecCom")]
         public async Task<ActionResult<InvestmentRecCommentDto>> InsertInvestmentRecomendationComment(InvestmentRecCommentDto investmentRecDto)
         {
-
+            var isComplete = false;
             //var investmentInitSpec = new InvestmentInitSpecification((int)investmentRecDto.InvestmentInitId);
             var investmentInits = await _investmentInitRepo.GetByIdAsync((int)investmentRecDto.InvestmentInitId);
             var empData = await _employeeRepo.GetByIdAsync(investmentRecDto.EmployeeId);
+            var spec = new ApprAuthConfigSpecification(investmentRecDto.EmployeeId, "A");
+            var apprAuthConfig = await _apprAuthConfigRepo.GetEntityWithSpec(spec);
             if (investmentInits.SBU == empData.SBU)
             {
                 bool isTrue = false;
@@ -242,6 +245,7 @@ namespace API.Controllers
                 var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(investmentTargetedGroupSpec);
                 var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentRecDto.InvestmentInitId);
                 var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
+                isComplete = true;
                 foreach (var v in investmentTargetedGroup)
                 {
                     isTrue = false;
@@ -252,7 +256,10 @@ namespace API.Controllers
                             isTrue = true;
                         }
                     }
-                   // if (!isTrue) { return BadRequest(new ApiResponse(400, "Other recommendation not completed yet")); }
+                    if (!isTrue) 
+                    { 
+                        return BadRequest(new ApiResponse(400, "Other recommendation not completed yet")); 
+                    }
                 }
             }
            
@@ -274,6 +281,8 @@ namespace API.Controllers
                 TerritoryName = empData.TerritoryName,
                 SBUName = empData.SBUName,
                 SBU = empData.SBU,
+                Priority = apprAuthConfig.ApprovalAuthority.Priority,
+                CompletionStatus = isComplete,
                 SetOn = DateTimeOffset.Now
             };
             _investmentRecCommentRepo.Add(invRec);
@@ -294,27 +303,31 @@ namespace API.Controllers
         {
             var investmentInits = await _investmentInitRepo.GetByIdAsync((int)investmentRecDto.InvestmentInitId);
             var empData = await _employeeRepo.GetByIdAsync(investmentRecDto.EmployeeId);
-            // if (investmentInits.SBU == empData.SBU)
-            // {
-            //     bool isTrue = false;
-            //     var investmentTargetedGroupSpec = new InvestmentTargetedGroupSpecification((int)investmentRecDto.InvestmentInitId);
-            //     var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(investmentTargetedGroupSpec);
-            //     var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentRecDto.InvestmentInitId);
-            //     var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
-            //     foreach (var v in investmentTargetedGroup)
-            //     {
-            //         isTrue = false;
-            //         foreach (var i in investmentRecComments)
-            //         {
-            //             if (v.InvestmentInitId == i.InvestmentInitId && v.SBU == i.SBU)
-            //             {
-            //                 isTrue = true;
-            //             }
-            //         }
-            //         if (!isTrue) { return BadRequest(new ApiResponse(400, "Other recommendation not completed yet")); }
-            //     }
-            // }
-            
+            var spec = new ApprAuthConfigSpecification(investmentRecDto.EmployeeId, "A");
+            var apprAuthConfig = await _apprAuthConfigRepo.GetEntityWithSpec(spec);
+            var isComplete = false;
+            if (investmentInits.SBU == empData.SBU)
+            {
+                bool isTrue = false;
+                var investmentTargetedGroupSpec = new InvestmentTargetedGroupSpecification((int)investmentRecDto.InvestmentInitId);
+                var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(investmentTargetedGroupSpec);
+                var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentRecDto.InvestmentInitId);
+                var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
+                isComplete = true;
+                foreach (var v in investmentTargetedGroup)
+                {
+                    isTrue = false;
+                    foreach (var i in investmentRecComments)
+                    {
+                        if (v.InvestmentInitId == i.InvestmentInitId && v.SBU == i.SBU)
+                        {
+                            isTrue = true;
+                        }
+                    }
+                    if (!isTrue) { return BadRequest(new ApiResponse(400, "Other recommendation not completed yet")); }
+                }
+            }
+
             var invRec = new InvestmentRecComment
             {
                 Id = investmentRecDto.Id,
@@ -334,6 +347,8 @@ namespace API.Controllers
                 TerritoryName = empData.TerritoryName,
                 SBUName = empData.SBUName,
                 SBU = empData.SBU,
+                Priority = apprAuthConfig.ApprovalAuthority.Priority,
+                CompletionStatus = isComplete,
                 ModifiedOn = DateTimeOffset.Now,
             };
             _investmentRecCommentRepo.Update(invRec);

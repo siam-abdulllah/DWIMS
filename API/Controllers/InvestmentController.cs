@@ -475,7 +475,7 @@ namespace API.Controllers
                     EmployeeId = investmentTargetedProdDto.EmployeeId,
                     SBU = investmentTargetedProdDto.SBU,
                     SetOn = DateTimeOffset.Now,
-                    ModifiedOn = DateTimeOffset.Now
+                    //ModifiedOn = DateTimeOffset.Now
                 };
                 _investmentTargetedProdRepo.Add(investmentTargetedProd);
                 _investmentTargetedProdRepo.Savechange();
@@ -508,7 +508,7 @@ namespace API.Controllers
                     ProductId = investmentTargetedProdDto.ProductId,
                     SBU = investmentTargetedProdDto.SBU,
                     EmployeeId = investmentTargetedProdDto.EmployeeId,
-                    SetOn = DateTimeOffset.Now,
+                    //SetOn = DateTimeOffset.Now,
                     ModifiedOn = DateTimeOffset.Now
                 };
                 _investmentTargetedProdRepo.Update(investmentTargetedProd);
@@ -566,7 +566,7 @@ namespace API.Controllers
 
         #region investmentTargetedGroup
         [HttpPost("insertInvestmentTargetedGroup")]
-        public async Task<IActionResult> InsertInvestmentTargetedGroup(List<InvestmentTargetedGroupDto> investmentTargetedGroupDto)
+        public async Task<ActionResult> InsertInvestmentTargetedGroup(List<InvestmentTargetedGroupDto> investmentTargetedGroupDto)
         {
             try
             {
@@ -590,6 +590,8 @@ namespace API.Controllers
                         MarketName = v.MarketName,
                         MarketGroupMstId = v.MarketGroupMstId,
                         CompletionStatus = false,
+                        SBU = v.SBU,
+                        SBUName = v.SBUName,
                         SetOn = DateTimeOffset.Now,
                         //ModifiedOn = DateTimeOffset.Now,
                         DataStatus = 0
@@ -636,7 +638,7 @@ namespace API.Controllers
                 {
                     foreach (var v in alreadyExistInvestmentTargetedProdList)
                     {
-                       _investmentTargetedProdRepo.Delete(v);
+                        _investmentTargetedProdRepo.Delete(v);
                         _investmentTargetedProdRepo.Savechange();
                     }
 
@@ -651,7 +653,7 @@ namespace API.Controllers
         }
 
         [HttpPost("removeInvestmentTargetedGroup")]
-        public async Task<IActionResult> RemoveInvestmentTargetedGroup(List<InvestmentTargetedGroupDto> investmentTargetedGroupDto)
+        public async Task<ActionResult> RemoveInvestmentTargetedGroup(List<InvestmentTargetedGroupDto> investmentTargetedGroupDto)
         {
             try
             {
@@ -662,7 +664,7 @@ namespace API.Controllers
                 {
                     foreach (var v in alreadyExistInvestmentTargetedGroupList)
                     {
-                         if (v.CompletionStatus == true) return BadRequest(new ApiResponse(400, "Tagged Market Already Submitted Investment Initialization"));
+                    if (v.CompletionStatus == true) return BadRequest(new ApiResponse(400, "Tagged Market Already Submitted Investment Initialization"));
                         _investmentTargetedGroupRepo.Delete(v);
                         _investmentTargetedGroupRepo.Savechange();
                     }

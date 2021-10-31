@@ -40,7 +40,7 @@ namespace Core.Specifications
         public ApprAuthConfigSpecification(int employeeId,string status)
             : base(x => x.EmployeeId == employeeId && x.Status == status)
         {
-            
+            AddInclude(x => x.ApprovalAuthority);
         }
         public ApprAuthConfigSpecification(int employeeId,int authId,string status)
             : base(x => x.EmployeeId == employeeId && x.ApprovalAuthorityId == authId && x.Status == status)

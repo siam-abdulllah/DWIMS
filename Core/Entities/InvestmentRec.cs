@@ -19,5 +19,7 @@ namespace Core.Entities
         public int TotalMonth { get; set; }
         public long ProposedAmount { get; set; }
         public string Purpose { get; set; }
+        public bool? CompletionStatus { get; set; }
+        public int Priority { get; set; }
     }
 }
