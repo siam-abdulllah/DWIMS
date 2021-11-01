@@ -13,6 +13,8 @@ namespace API.Dtos
         public int EmployeeId { get; set; }
         public EmployeeDto EmployeeDto { get; set; }
         public string PostingType { get; set; }
+        public string MarketGroupCode { get; set; }
+        public string MarketGroupName { get; set; } 
         public string MarketCode { get; set; }
         public string MarketName { get; set; }
         public string RegionCode { get; set; }
@@ -24,6 +26,8 @@ namespace API.Dtos
         public string DivisionCode { get; set; }
         public string DivisionName { get; set; }
         public string SBU { get; set; }
-
+        public string SBUName { get; set; }
+        public bool Confirmation { get; set; }
+        public DateTimeOffset? SubmissionDate { get; set; }
     }
 }

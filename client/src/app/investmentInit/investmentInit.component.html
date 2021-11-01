@@ -6,12 +6,16 @@
                     <div class="card card-primary">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-sm-9">
+                                <div class="col-sm-8">
                                     <h3 class="card-title">Investment Initiation</h3>
                                 </div>
                                 <div class="col-sm-1">
-                                    <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="investmentInitForm.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                    <button *ngIf="!isSubmitted" class="btn btn-warning btn-lg btn-block" type="button" (click)="confirmSubmission()" [disabled]="investmentInitForm.invalid"><i class="fa fa-save"></i>&nbsp; Submit</button>
                                 </div>
+                                <div class="col-sm-1">
+                                    <button *ngIf="!isSubmitted" class="btn btn-success btn-lg btn-block" type="submit" [disabled]="investmentInitForm.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                </div>
+
                                 <div class="col-sm-1">
                                     <button class="btn btn-info btn-lg btn-block" type="button" (click)="getInvestmentInit()"><i class="fa fa-search" ></i>Search</button>
                                 </div>
@@ -103,12 +107,18 @@
                                         <div class="col-md-3">
                                             <input class="form-control" id="id" name="id" #id="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.id" readonly style="display: none;">
                                             <input class="form-control" id="investmentInitId" name="investmentInitId" #investmentInitId="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.investmentInitId" readonly style="display: none;">
-                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="doctors" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" (change)="onChangeDoctorInDoc()" id="doctorId" name="doctorId" #doctorId="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.doctorId">
+                                            <!-- <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="doctors" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" (change)="onChangeDoctorInDoc()" id="doctorId" name="doctorId" #doctorId="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.doctorId">
+                                            </ng-select> -->
+                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="doctors" [searchFn]="customSearchFnDoc" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" (change)="onChangeDoctorInDoc()" id="doctorId" name="doctorId" #doctorId="ngModel"
+                                                [(ngModel)]="investmentInitService.investmentDoctorFormData.doctorId">
+                                                <ng-template ng-label-tmp let-item="item">
+                                                    <span [ngOptionHighlight]="search">{{ item.doctorCode}} - {{ item.doctorName}}</span>
+                                                </ng-template>
+
+                                                <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                                                    <span [ngOptionHighlight]="search">{{ item.doctorCode}} - {{ item.doctorName }}</span>
+                                                </ng-template>
                                             </ng-select>
-                                            <!-- <select class="form-control " (change)="onChangeDoctorInDoc()" id="doctorName" name="doctorName" #doctorName="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.doctorName">
-                                                <option  [ngValue]="null">Select Doctor</option>
-                                                <option *ngFor="let a of doctors" [value]="a.id">{{a.doctorName}}</option>
-                                            </select> -->
                                         </div>
                                         <div class="col-md-2">
                                             <label>Doctor Code</label>
@@ -141,13 +151,19 @@
                                             <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-3">
-                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="institutions" bindLabel="institutionName" bindValue="id" placeholder="Select Institution" (change)="onChangeInstitutionInDoc()" id="institutionId" name="institutionId" #institutionId="ngModel"
+                                            <!-- <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="institutions" bindLabel="institutionName" bindValue="id" placeholder="Select Institution" (change)="onChangeInstitutionInDoc()" id="institutionId" name="institutionId" #institutionId="ngModel"
                                                 [(ngModel)]="investmentInitService.investmentDoctorFormData.institutionId">
+                                            </ng-select> -->
+                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="institutions" [searchFn]="customSearchFnIns" bindLabel="institutionName" bindValue="id" placeholder="Select Institution" (change)="onChangeInstitutionInDoc()" id="institutionId" name="institutionId"
+                                                #institutionId="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.institutionId">
+                                                <ng-template ng-label-tmp let-item="item">
+                                                    <span [ngOptionHighlight]="search">{{ item.institutionCode}} - {{ item.institutionName}}</span>
+                                                </ng-template>
+
+                                                <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                                                    <span [ngOptionHighlight]="search">{{ item.institutionCode}} - {{ item.institutionName }}</span>
+                                                </ng-template>
                                             </ng-select>
-                                            <!-- <select class="form-control " (change)="onChangeInstitutionInDoc()"  id="institutionId" name="institutionId" #institutionId="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.institutionId">
-                                                <option  [ngValue]="null">Select Institution</option>
-                                                <option *ngFor="let a of institutions" [value]="a.id">{{a.institutionName}}</option>
-                                            </select> -->
                                         </div>
                                         <div class="col-md-2">
                                             <label>Doctor Category</label>
@@ -229,8 +245,18 @@
                                             <input class="form-control" id="id" name="id" #id="ngModel" [(ngModel)]="investmentInitService.investmentInstitutionFormData.id" readonly style="display: none;">
                                             <input class="form-control" id="investmentInitId" name="investmentInitId" #investmentInitId="ngModel" [(ngModel)]="investmentInitService.investmentInstitutionFormData.investmentInitId" readonly style="display: none;">
 
-                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="institutions" bindLabel="institutionName" bindValue="id" placeholder="Select Institution" (change)="onChangeInstitutionInInst()" name="institutionId" id="institutionId" name="institutionId"
+                                            <!-- <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="institutions" bindLabel="institutionName" bindValue="id" placeholder="Select Institution" (change)="onChangeInstitutionInInst()" name="institutionId" id="institutionId" name="institutionId"
                                                 #institutionId="ngModel" [(ngModel)]="investmentInitService.investmentInstitutionFormData.institutionId">
+                                            </ng-select> -->
+                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="institutions" [searchFn]="customSearchFnIns" bindLabel="institutionName" bindValue="id" placeholder="Select Institution" (change)="onChangeInstitutionInInst()" name="institutionId" id="institutionId"
+                                                name="institutionId" #institutionId="ngModel" [(ngModel)]="investmentInitService.investmentInstitutionFormData.institutionId">
+                                                <ng-template ng-label-tmp let-item="item">
+                                                    <span [ngOptionHighlight]="search">{{ item.institutionCode}} - {{ item.institutionName}}</span>
+                                                </ng-template>
+
+                                                <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                                                    <span [ngOptionHighlight]="search">{{ item.institutionCode}} - {{ item.institutionName }}</span>
+                                                </ng-template>
                                             </ng-select>
                                         </div>
                                         <div class="col-md-2">
@@ -238,12 +264,17 @@
                                             <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-3">
-                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="doctors" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="responsibleDoctorId" id="responsibleDoctorId" #responsibleDoctorId="ngModel" [(ngModel)]="investmentInitService.investmentInstitutionFormData.responsibleDoctorId">
+                                            <!-- <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="doctors" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="responsibleDoctorId" id="responsibleDoctorId" #responsibleDoctorId="ngModel" [(ngModel)]="investmentInitService.investmentInstitutionFormData.responsibleDoctorId">
+                                            </ng-select> -->
+                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="doctors" [searchFn]="customSearchFnDoc" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="responsibleDoctorId" id="responsibleDoctorId" #responsibleDoctorId="ngModel"
+                                                [(ngModel)]="investmentInitService.investmentInstitutionFormData.responsibleDoctorId">
+                                                <ng-template ng-label-tmp let-item="item">
+                                                    <span [ngOptionHighlight]="search">{{ item.doctorCode}} - {{ item.doctorName}}</span>
+                                                </ng-template>
+                                                <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                                                    <span [ngOptionHighlight]="search">{{ item.doctorCode}} - {{ item.doctorName }}</span>
+                                                </ng-template>
                                             </ng-select>
-                                            <!-- <select class="form-control " name="responsibleDoctorId" id="responsibleDoctorId" #responsibleDoctorId="ngModel" [(ngModel)]="investmentInitService.investmentInstitutionFormData.responsibleDoctorId">
-                                                <option  [ngValue]="null">Select Doctor</option>
-                                                <option *ngFor="let a of doctors" [value]="a.id">{{a.doctorName}}</option>
-                                            </select> -->
                                         </div>
                                     </div>
                                 </div>
@@ -350,12 +381,16 @@
                                             <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-3">
-                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="doctors" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="doctorId" id="doctorId" #doctorId="ngModel" [(ngModel)]="investmentInitService.investmentCampaignFormData.doctorId">
+                                            <!-- <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="doctors" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="doctorId" id="doctorId" #doctorId="ngModel" [(ngModel)]="investmentInitService.investmentCampaignFormData.doctorId">
+                                            </ng-select> -->
+                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="doctors" [searchFn]="customSearchFnDoc" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="doctorId" id="doctorId" #doctorId="ngModel" [(ngModel)]="investmentInitService.investmentCampaignFormData.doctorId">
+                                                <ng-template ng-label-tmp let-item="item">
+                                                    <span [ngOptionHighlight]="search">{{ item.doctorCode}} - {{ item.doctorName}}</span>
+                                                </ng-template>
+                                                <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                                                    <span [ngOptionHighlight]="search">{{ item.doctorCode}} - {{ item.doctorName }}</span>
+                                                </ng-template>
                                             </ng-select>
-                                            <!-- <select class="form-control " name="doctorId" id="doctorId" #doctorId="ngModel" [(ngModel)]="investmentInitService.investmentCampaignFormData.doctorId">
-                                                <option  [ngValue]="null">Select Doctor</option>
-                                                <option *ngFor="let a of doctors" [value]="a.id">{{a.doctorName}}</option>
-                                            </select> -->
                                         </div>
                                         <div class="col-md-2">
                                             <label>Institution Id</label>
@@ -364,13 +399,19 @@
                                         <div class="col-md-3">
                                             <input class="form-control" id="id" name="id" #id="ngModel" [(ngModel)]="investmentInitService.investmentCampaignFormData.id" readonly style="display: none;">
                                             <input class="form-control" id="investmentInitId" name="investmentInitId" #investmentInitId="ngModel" [(ngModel)]="investmentInitService.investmentCampaignFormData.investmentInitId" readonly style="display: none;">
-                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="institutions" bindLabel="institutionName" bindValue="id" placeholder="Select Institution" (change)="onChangeInstitutionInInst()" name="institutionId" id="institutionId" #institutionId="ngModel"
+                                            <!-- <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="institutions" bindLabel="institutionName" bindValue="id" placeholder="Select Institution" (change)="onChangeInstitutionInInst()" name="institutionId" id="institutionId" #institutionId="ngModel"
                                                 [(ngModel)]="investmentInitService.investmentCampaignFormData.institutionId">
+                                            </ng-select> -->
+                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="institutions" [searchFn]="customSearchFnIns" bindLabel="institutionName" bindValue="id" placeholder="Select Institution" (change)="onChangeInstitutionInInst()" name="institutionId" id="institutionId"
+                                                #institutionId="ngModel" [(ngModel)]="investmentInitService.investmentCampaignFormData.institutionId">
+                                                <ng-template ng-label-tmp let-item="item">
+                                                    <span [ngOptionHighlight]="search">{{ item.institutionCode}} - {{ item.institutionName}}</span>
+                                                </ng-template>
+
+                                                <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                                                    <span [ngOptionHighlight]="search">{{ item.institutionCode}} - {{ item.institutionName }}</span>
+                                                </ng-template>
                                             </ng-select>
-                                            <!-- <select class="form-control " (change)="onChangeInstitutionInInst()" name="institutionId" id="institutionId" #institutionId="ngModel" [(ngModel)]="investmentInitService.investmentCampaignFormData.institutionId">
-                                                <option  [ngValue]="null">Select Institution</option>
-                                                <option *ngFor="let a of institutions" [value]="a.id">{{a.institutionName}}</option>
-                                            </select> -->
                                         </div>
                                     </div>
                                 </div>
@@ -431,12 +472,17 @@
                                         </div>
                                         <div class="col-md-3">
 
-                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="doctors" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="responsibleDoctorIdBcds" id="responsibleDoctorIdBcds" #responsibleDoctorIdBcds="ngModel" [(ngModel)]="investmentInitService.investmentBcdsFormData.responsibleDoctorId">
+                                            <!-- <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="doctors" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="responsibleDoctorIdBcds" id="responsibleDoctorIdBcds" #responsibleDoctorIdBcds="ngModel" [(ngModel)]="investmentInitService.investmentBcdsFormData.responsibleDoctorId">
+                                            </ng-select> -->
+                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="doctors" [searchFn]="customSearchFnDoc" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="responsibleDoctorIdBcds" id="responsibleDoctorIdBcds" #responsibleDoctorIdBcds="ngModel"
+                                                [(ngModel)]="investmentInitService.investmentBcdsFormData.responsibleDoctorId">
+                                                <ng-template ng-label-tmp let-item="item">
+                                                    <span [ngOptionHighlight]="search">{{ item.doctorCode}} - {{ item.doctorName}}</span>
+                                                </ng-template>
+                                                <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                                                    <span [ngOptionHighlight]="search">{{ item.doctorCode}} - {{ item.doctorName }}</span>
+                                                </ng-template>
                                             </ng-select>
-                                            <!-- <select class="form-control " name="responsibleDoctorId" id="responsibleDoctorId" #responsibleDoctorId="ngModel" [(ngModel)]="investmentInitService.investmentInstitutionFormData.responsibleDoctorId">
-                                                <option  [ngValue]="null">Select Doctor</option>
-                                                <option *ngFor="let a of doctors" [value]="a.id">{{a.doctorName}}</option>
-                                            </select> -->
                                         </div>
                                     </div>
                                 </div>
@@ -494,13 +540,17 @@
                                             <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-3">
-
-                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="doctors" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="responsibleDoctorIdSoc" id="responsibleDoctorIdSoc" #responsibleDoctorIdSoc="ngModel" [(ngModel)]="investmentInitService.investmentSocietyFormData.responsibleDoctorId">
+                                            <!-- <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="doctors" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="responsibleDoctorIdSoc" id="responsibleDoctorIdSoc" #responsibleDoctorIdSoc="ngModel" [(ngModel)]="investmentInitService.investmentSocietyFormData.responsibleDoctorId">
+                                            </ng-select> -->
+                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="doctors" [searchFn]="customSearchFnDoc" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="responsibleDoctorIdSoc" id="responsibleDoctorIdSoc" #responsibleDoctorIdSoc="ngModel"
+                                                [(ngModel)]="investmentInitService.investmentSocietyFormData.responsibleDoctorId">
+                                                <ng-template ng-label-tmp let-item="item">
+                                                    <span [ngOptionHighlight]="search">{{ item.doctorCode}} - {{ item.doctorName}}</span>
+                                                </ng-template>
+                                                <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                                                    <span [ngOptionHighlight]="search">{{ item.doctorCode}} - {{ item.doctorName }}</span>
+                                                </ng-template>
                                             </ng-select>
-                                            <!-- <select class="form-control " name="responsibleDoctorId" id="responsibleDoctorId" #responsibleDoctorId="ngModel" [(ngModel)]="investmentInitService.investmentInstitutionFormData.responsibleDoctorId">
-                                                <option  [ngValue]="null">Select Doctor</option>
-                                                <option *ngFor="let a of doctors" [value]="a.id">{{a.doctorName}}</option>
-                                            </select> -->
                                         </div>
                                     </div>
                                 </div>
@@ -705,15 +755,15 @@
                                 <div class="form-group">
                                     <table class="table  table-bordered">
                                         <tr class="HeaderRow">
-                                            <td>Product Code</td>
+                                            <!-- <td>Product Code</td> -->
                                             <td>Product Name</td>
                                             <td></td>
                                             <td></td>
                                         </tr>
                                         <tr *ngFor="let a of investmentTargetedProds">
-                                            <td>
+                                            <!-- <td>
                                                 {{a.productInfo.productCode}}
-                                            </td>
+                                            </td> -->
                                             <td>
                                                 {{a.productInfo.productName}}
                                             </td>
@@ -755,7 +805,7 @@
                                         </div>
                                         <div class="col-md-3"></div>
                                         <div class="col-md-2" *ngIf="isValid && !isInvOther">
-                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentTargetedGroup()"><i class="fa fa-plus"></i>&nbsp; Save</button>
+                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentTargetedGroup()"><i class="fa fa-save"></i>&nbsp; Save</button>
                                         </div>
                                         <div class="col-md-2" *ngIf="isValid && !isInvOther">
                                             <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentTargetedGroup()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
@@ -838,6 +888,15 @@
                 </div>
             </div>
         </div>
+    </div>
+</ng-template>
+<ng-template #submissionConfirmModal>
+    <div class="modal-body text-center">
+        <div>
+            <h4>Do you want to submit ?</h4><small>(N.B. Submitted Proposal Unchangeable!)</small>
+        </div>
+        <button type="button" class="btn btn-success" (click)="confirmSubmit()">Yes</button>
+        <button type="button" class="btn btn-danger" (click)="declineSubmit()">No</button>
     </div>
 </ng-template>
 <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">

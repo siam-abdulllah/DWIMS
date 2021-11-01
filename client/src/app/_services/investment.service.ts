@@ -143,6 +143,9 @@ export class InvestmentInitService {
       );
 
   }
+  submitInvestment() {
+    return this.http.post(this.baseUrl + 'investment/submitInvestment', this.investmentInitFormData);
+  }
   insertInvestmentInit() {
     return this.http.post(this.baseUrl + 'investment/insertInit', this.investmentInitFormData);
   }

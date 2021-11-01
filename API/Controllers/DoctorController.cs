@@ -23,12 +23,12 @@ namespace API.Controllers
 
         [HttpGet("doctorsForInvestment")]
         [RequestFormLimits(ValueCountLimit = int.MaxValue)]
-        public async Task<IReadOnlyList<DoctorInfo>> GetDoctorsForInvestment()
+        public async Task<IEnumerable<DoctorInfo>> GetDoctorsForInvestment()
         {
             try
             {
                 var doctors = await _doctorRepo.ListAllAsync();
-                return doctors;
+                return doctors.OrderBy(x=>x.DoctorName);
             }
             catch (System.Exception ex)
             {

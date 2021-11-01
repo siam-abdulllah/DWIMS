@@ -84,14 +84,15 @@ namespace API.Controllers
             }
         }
         [HttpGet("getProductForInvestment")]
-        public async Task<IReadOnlyList<ProductDto>> GetProductForInvestment()
+        public async Task<IEnumerable<ProductDto>> GetProductForInvestment()
         {
             try
             {
                 var products = await _productRepo.ListAllAsync();
                 var data = _mapper
                     .Map<IReadOnlyList<ProductInfo>, IReadOnlyList<ProductDto>>(products);
-                return data;
+                return data.OrderBy(x=>x.ProductName);
+
             }
             catch (System.Exception ex)
             {
@@ -100,7 +101,7 @@ namespace API.Controllers
         } 
         [HttpGet]
         [Route("getProductForInvestment/{sbu}")]
-        public async Task<IReadOnlyList<ProductDto>> GetProductForInvestment(string sbu)
+        public async Task<IEnumerable<ProductDto>> GetProductForInvestment(string sbu)
         {
             try
             {
@@ -108,7 +109,7 @@ namespace API.Controllers
                 var products = await _productRepo.ListAsync(spec);
                 var data = _mapper
                     .Map<IReadOnlyList<ProductInfo>, IReadOnlyList<ProductDto>>(products);
-                return data;
+                return data.OrderBy(x => x.ProductName);
             }
             catch (System.Exception ex)
             {

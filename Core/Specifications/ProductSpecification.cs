@@ -21,6 +21,7 @@ namespace Core.Specifications
         public ProductSpecification(string sbu)
             : base(x => x.SBU == sbu)
         {
+            AddOrderBy(x => x.ProductName);
         }
     }
 }

@@ -23,12 +23,12 @@ namespace API.Controllers
 
 
         [HttpGet("institutionsForInvestment")]
-        public async Task<IReadOnlyList<InstitutionInfo>> GetInstitutionsForInvestment()
+        public async Task<IEnumerable<InstitutionInfo>> GetInstitutionsForInvestment()
         {
             try
             {
                 var institutions = await _institutionRepo.ListAllAsync();
-                return institutions;
+                return institutions.OrderBy(x=>x.InstitutionName);
             }
             catch (System.Exception ex)
             {

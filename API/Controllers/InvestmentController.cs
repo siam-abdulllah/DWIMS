@@ -227,6 +227,7 @@ namespace API.Controllers
                     TerritoryName = empData.TerritoryName,
                     SBUName = empData.SBUName,
                     SBU = empData.SBU,
+                    Confirmation = false,
                     SetOn = DateTimeOffset.Now
                 };
                 _investmentInitRepo.Add(investmentInit);
@@ -276,6 +277,54 @@ namespace API.Controllers
                     SBUName = empData.SBUName,
                     SBU = empData.SBU,
                     ModifiedOn = DateTimeOffset.Now,
+                };
+                _investmentInitRepo.Update(investmentInit);
+                _investmentInitRepo.Savechange();
+
+                return new InvestmentInitDto
+                {
+                    Id = investmentInit.Id,
+                    ReferenceNo = investmentInit.ReferenceNo,
+                    ProposeFor = investmentInit.ProposeFor,
+                    DonationTo = investmentInit.DonationTo,
+                    DonationType = investmentInit.DonationType,
+                    EmployeeId = investmentInit.EmployeeId
+                };
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }[HttpPost("submitInvestment")]
+        public async Task<ActionResult<InvestmentInitDto>> SubmitInvestmentInit(InvestmentInitDto investmentInitDto)
+        {
+            try
+            {
+                var empData = await _employeeRepo.GetByIdAsync(investmentInitDto.EmployeeId);
+                var investmentInit = new InvestmentInit
+                {
+                    Id = investmentInitDto.Id,
+                    ReferenceNo = investmentInitDto.ReferenceNo,
+                    ProposeFor = investmentInitDto.ProposeFor,
+                    DonationTo = investmentInitDto.DonationTo,
+                    DonationType = investmentInitDto.DonationType,
+                    EmployeeId = investmentInitDto.EmployeeId,
+                    MarketGroupCode = empData.MarketGroupCode,
+                    MarketGroupName = empData.MarketGroupName,
+                    MarketCode = empData.MarketCode,
+                    MarketName = empData.MarketName,
+                    RegionCode = empData.RegionCode,
+                    RegionName = empData.RegionName,
+                    ZoneCode = empData.ZoneCode,
+                    ZoneName = empData.ZoneName,
+                    TerritoryCode = empData.TerritoryCode,
+                    TerritoryName = empData.TerritoryName,
+                    SBUName = empData.SBUName,
+                    SBU = empData.SBU,
+                    Confirmation = true,
+                    SubmissionDate = DateTimeOffset.Now,
                 };
                 _investmentInitRepo.Update(investmentInit);
                 _investmentInitRepo.Savechange();

@@ -10,6 +10,7 @@ export interface IInvestmentInit {
     donationTo: string;
     marketCode: string;
     employeeId: number;
+    confirmation: boolean;
 }
  
 export class InvestmentInit implements IInvestmentInit {
@@ -20,6 +21,7 @@ export class InvestmentInit implements IInvestmentInit {
     donationTo: string=null;
     marketCode: string;
     employeeId: number;
+    confirmation: boolean;
 }
 
 export interface IInvestmentDetail {
