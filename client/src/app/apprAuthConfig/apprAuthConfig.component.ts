@@ -47,7 +47,6 @@ export class ApprAuthConfigComponent implements OnInit {
     this.employeesForApprAuth=[];
   }
   getApprovalAuthConfigs(){
-
     this.apprAuthConfigService.getApprovalAuthConfigs(parseInt(this.apprAuthConfigService.approvalAuthConfigFormData.approvalAuthorityId)).subscribe(response => {
       debugger;
       this.employeesForApprAuth = response as IEmployeeForApprAuth[];

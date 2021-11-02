@@ -13,7 +13,7 @@
                                     <button *ngIf="!isSubmitted" class="btn btn-warning btn-lg btn-block" type="button" (click)="confirmSubmission()" [disabled]="investmentInitForm.invalid"><i class="fa fa-save"></i>&nbsp; Submit</button>
                                 </div>
                                 <div class="col-sm-1">
-                                    <button *ngIf="!isSubmitted" class="btn btn-success btn-lg btn-block" type="submit" [disabled]="investmentInitForm.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                    <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="investmentInitForm.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
                                 </div>
 
                                 <div class="col-sm-1">
@@ -818,7 +818,7 @@
                                             <td>Market Group Name</td>
                                             <td>Market Code</td>
                                             <td>Market Name</td>
-                                            <td></td>
+                                            <td>Status</td>
                                         </tr>
                                         <tr *ngFor="let a of investmentTargetedGroups">
 

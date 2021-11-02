@@ -29,7 +29,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <input class="form-control" id="id" name="id" #id="ngModel" [(ngModel)]="investmentRecService.investmentRecFormData.id" readonly style="display: none;" required>
-                                        <input class="form-control" placeholder="Please Double Click Here" (dblclick)="getInvestmentInit()" id="referenceNo" required name="referenceNo" #referenceNo="ngModel" [(ngModel)]="investmentRecService.investmentRecFormData.referenceNo" readonly>
+                                        <input class="form-control clickable" placeholder="Please Double Click Here" (dblclick)="getInvestmentInit()" id="referenceNo" required name="referenceNo" #referenceNo="ngModel" [(ngModel)]="investmentRecService.investmentRecFormData.referenceNo" readonly>
                                     </div>
                                     <div class="col-md-2">
                                         <label>Propose For</label>
@@ -777,7 +777,7 @@
 </section>
 <ng-template #investmentInitSearchModal>
     <div class="modal-header" style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc));color: black;">
-        <h4 class="modal-title pull-left">Investment Initialization</h4>
+        <h4 class="modal-title pull-left">Investment</h4>
         <button type="button" class="close pull-right" aria-label="Close" (click)="InvestmentInitSearchModalRef.hide()">
         <span aria-hidden="true">&times;</span>
       </button>

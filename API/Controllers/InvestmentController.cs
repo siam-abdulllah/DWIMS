@@ -372,6 +372,8 @@ namespace API.Controllers
                         MarketCode = v.MarketCode,
                         MarketName = v.MarketName,
                         MarketGroupMstId = v.MarketGroupMstId,
+                        SBU = v.SBU,
+                        SBUName = v.SBUName,
                         CompletionStatus = true,
                         //SetOn = DateTimeOffset.Now,
                         ModifiedOn = DateTimeOffset.Now

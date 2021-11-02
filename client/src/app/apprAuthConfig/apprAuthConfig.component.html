@@ -33,8 +33,8 @@
                                             <option  [ngValue]="null">Select Authority</option>
                                             <option *ngFor="let approvalAuthority of approvalAuthorities" [value]="approvalAuthority.id">{{approvalAuthority.approvalAuthorityName}}</option>
                                         </select> -->
-                                        <ng-select [virtualScroll]="true" [items]="approvalAuthorities" bindLabel="approvalAuthorityName" bindValue="id" placeholder="Select" id="approvalAuthorityId" name="approvalAuthorityId" #approvalAuthorityId="ngModel" [(ngModel)]="apprAuthConfigService.approvalAuthConfigFormData.approvalAuthorityId"
-                                            required [class.invalid]="approvalAuthorityId.invalid && approvalAuthorityId.touched">
+                                        <ng-select [virtualScroll]="true" [items]="approvalAuthorities" (change)="getApprovalAuthConfigs()" bindLabel="approvalAuthorityName" bindValue="id" placeholder="Select" id="approvalAuthorityId" name="approvalAuthorityId" #approvalAuthorityId="ngModel"
+                                            [(ngModel)]="apprAuthConfigService.approvalAuthConfigFormData.approvalAuthorityId" required [class.invalid]="approvalAuthorityId.invalid && approvalAuthorityId.touched">
                                         </ng-select>
                                     </div>
                                 </div>

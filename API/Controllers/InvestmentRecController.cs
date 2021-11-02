@@ -243,7 +243,7 @@ namespace API.Controllers
                 bool isTrue = false;
                 var investmentTargetedGroupSpec = new InvestmentTargetedGroupSpecification((int)investmentRecDto.InvestmentInitId);
                 var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(investmentTargetedGroupSpec);
-                var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentRecDto.InvestmentInitId);
+                var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentRecDto.InvestmentInitId, apprAuthConfig.ApprovalAuthority.Priority,"true");
                 var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
                 isComplete = true;
                 foreach (var v in investmentTargetedGroup)
@@ -251,14 +251,14 @@ namespace API.Controllers
                     isTrue = false;
                     foreach (var i in investmentRecComments)
                     {
-                        if (v.InvestmentInitId == i.InvestmentInitId && v.SBU == i.SBU)
+                        if (v.InvestmentInitId == i.InvestmentInitId && v.SBU == i.SBU )
                         {
                             isTrue = true;
                         }
                     }
                     if (!isTrue) 
                     { 
-                        return BadRequest(new ApiResponse(400, "Other recommendation not completed yet")); 
+                        return BadRequest(new ApiResponse(400, "Other recommendation has not completed yet")); 
                     }
                 }
             }

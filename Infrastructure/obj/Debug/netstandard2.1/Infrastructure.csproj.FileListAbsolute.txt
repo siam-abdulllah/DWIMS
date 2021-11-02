@@ -102,7 +102,6 @@ G:\DIDS\DIDS_GIT\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.cs
 G:\DIDS\DIDS_GIT\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.AssemblyInfoInputs.cache
 G:\DIDS\DIDS_GIT\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.AssemblyInfo.cs
 G:\DIDS\DIDS_GIT\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.csproj.CoreCompileInputs.cache
-G:\DIDS\DIDS_GIT\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.csproj.CopyComplete
 G:\DIDS\DIDS_GIT\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.dll
 G:\DIDS\DIDS_GIT\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.pdb
 E:\DWIMS\TestApplication\Infrastructure\bin\Debug\netstandard2.1\Infrastructure.deps.json

@@ -19,11 +19,14 @@ export class LoginComponent implements OnInit {
 
   // tslint:disable-next-line: typedef
   ngOnInit() {
+    debugger;
+    this.SpinnerService.show();
     //this.returnUrl = this.activatedRoute.snapshot.queryParams.returnUrl || '/shop';
     this.returnUrl = this.activatedRoute.snapshot.queryParams.returnUrl || '/portal/home';
     //this.router.navigate(['/portal/home']);
     this.createLoginForm();
     this.body.classList.add('loginBGImage');
+    this.SpinnerService.hide();
   }
   ngOnDestroy() {
     // remove the the body classes

@@ -127,16 +127,6 @@ export class InvestmentInitComponent implements OnInit {
     this.getInvestmentDetails();
     this.getInvestmentTargetedProd();
     this.getInvestmentTargetedGroup();
-    debugger;
-    if (this.investmentInitService.investmentInitFormData.confirmation==true) {
-      this.isSubmitted = true;
-      //this.isValid = true;
-      // this.getInvestmentTargetedProd();
-    }
-    else {
-      this.isSubmitted  = false;
-      //this.isValid = false;
-    }
     if (parseInt(this.empId) == this.investmentInitService.investmentInitFormData.employeeId) {
       this.isInvOther = false;
       //this.isValid = true;
@@ -146,6 +136,16 @@ export class InvestmentInitComponent implements OnInit {
       this.isInvOther = true;
       //this.isValid = false;
     }
+    if (this.investmentInitService.investmentInitFormData.confirmation==true) {
+      this.isSubmitted = true;
+      //this.isValid = true;
+      // this.getInvestmentTargetedProd();
+    }
+    else {
+      this.isSubmitted  = false;
+      //this.isValid = false;
+    }
+    
     this.isValid = true;
     this.InvestmentInitSearchModalRef.hide()
   }
@@ -158,7 +158,7 @@ export class InvestmentInitComponent implements OnInit {
         this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
       }
       else {
-        //this.toastr.warning('No Data Found');
+        this.toastr.warning('No Data Found');
       }
      }, error => {
       this.SpinnerService.hide();
@@ -749,9 +749,15 @@ export class InvestmentInitComponent implements OnInit {
       this.insertInvestmentInit();
     else
       if (parseInt(this.empId) == this.investmentInitService.investmentInitFormData.employeeId) {
+        if(this.isSubmitted==true )
+        {
+          this.toastr.warning('This Investment has already been submitted', 'Investment');
+          return false;
+        }
         this.updateInvestmentInit();
       }
       else {
+        
         this.updateInvestmentInitOther();
       }
   }
@@ -816,6 +822,7 @@ export class InvestmentInitComponent implements OnInit {
         this.investmentInitService.investmentInstitutionFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
         this.isValid = true;
         this.isSubmitted = true;
+        this.isInvOther = true;
         this.toastr.success('Submitted successfully', 'Investment')
       },
       err => { console.log(err); }

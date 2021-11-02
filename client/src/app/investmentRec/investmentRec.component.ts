@@ -784,10 +784,11 @@ export class InvestmentRecComponent implements OnInit {
     //  });
     //  return false;
     // }
-    if (this.investmentTargetedProds == undefined) {
-      this.toastr.warning('Select Product First', 'Investment ', {
-        positionClass: 'toast-top-right'
-      });
+    debugger;
+    if (this.investmentTargetedProds == undefined || this.investmentTargetedProds.length==0) {
+      // this.toastr.warning('Select Product First', 'Investment ', {
+      //   positionClass: 'toast-top-right'
+      // });
       return false;
     }
     this.investmentRecService.investmentTargetedProdFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;

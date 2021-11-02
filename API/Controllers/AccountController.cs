@@ -28,6 +28,7 @@ namespace API.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly IGenericIdentityRepository<AppUser> _userRepo;
+
         // private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ITokenService _tokenService;
@@ -129,39 +130,44 @@ namespace API.Controllers
             return BadRequest("Problem updating the user");
         }
 
-       [HttpPost("login")]
+        [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
             try
             {
 
-            var user = await _userManager.FindByNameAsync(loginDto.UserName);
+                var user = await _userManager.FindByNameAsync(loginDto.UserName);
 
-            if (user == null) return Unauthorized(new ApiResponse(401));
+                if (user == null) return Unauthorized(new ApiResponse(401));
 
-            if (!await _userManager.IsEmailConfirmedAsync(user)) return Unauthorized(new ApiResponse(401, "Check your email to confirm your email address."));
+                if (!await _userManager.IsEmailConfirmedAsync(user)) return Unauthorized(new ApiResponse(401, "Check your email to confirm your email address."));
 
-            if (await _userManager.IsLockedOutAsync(user)) return Unauthorized(new ApiResponse(401, "Your user account has locked out for a while"));
+                if (await _userManager.IsLockedOutAsync(user)) return Unauthorized(new ApiResponse(401, "Your user account has locked out for a while"));
 
-            var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, lockoutOnFailure: true);
+                var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, lockoutOnFailure: true);
 
-            if (!result.Succeeded) return Unauthorized(new ApiResponse(401));
+                if (!result.Succeeded) return Unauthorized(new ApiResponse(401));
 
-            IList<string> roles = await _userManager.GetRolesAsync(user);
+                IList<string> roles = await _userManager.GetRolesAsync(user);
 
-            if (roles.Count == 0)
-            {
-                return BadRequest(new ApiResponse(400, "No Roles assigned to user - " + user.UserName));
-            }
-            var menuList = MenuConfigsForSecurity(roles[0]);
-            return new UserDto
-            {
-                EmployeeId = user.EmployeeId,
-                //Email = user.Email,
-                Token = _tokenService.CreateToken(user, roles),
-                DisplayName = user.DisplayName,
-                MenuList= menuList
-            };
+                if (roles.Count == 0)
+                {
+                    return BadRequest(new ApiResponse(400, "No Roles assigned to user - " + user.UserName));
+                }
+                var employeesForConfigByEmpIdList = EmployeesForConfigByEmpId(user.EmployeeId);
+                if (employeesForConfigByEmpIdList.Count == 0)
+                {
+                    return BadRequest(new ApiResponse(400, "No Approval Authority assigned to user - " + user.UserName));
+                }
+                var menuList = MenuConfigsForSecurity(roles[0]);
+                return new UserDto
+                {
+                    EmployeeId = user.EmployeeId,
+                    //Email = user.Email,
+                    Token = _tokenService.CreateToken(user, roles),
+                    DisplayName = user.DisplayName,
+                    MenuList = menuList
+                };
 
             }
             catch (Exception ex)
@@ -170,15 +176,15 @@ namespace API.Controllers
                 throw ex;
             }
         }
-        [HttpGet("menuConfigsForSecurity")]      
-          public  List<MenuConfigDto> MenuConfigsForSecurity(string roleName)
+        [HttpGet("menuConfigsForSecurity")]
+        public List<MenuConfigDto> MenuConfigsForSecurity(string roleName)
         {
             try
             {
-                var menuConfig =  _db.MenuConfig.ToList();
-                var subMenu =  _db.SubMenu.ToList();
-                var roles =  _context.Roles.ToList();
-                var menuHeads =  _db.MenuHead.ToList();
+                var menuConfig = _db.MenuConfig.ToList();
+                var subMenu = _db.SubMenu.ToList();
+                var roles = _context.Roles.ToList();
+                var menuHeads = _db.MenuHead.ToList();
                 var menuConfigs = (from mc in menuConfig
                                    join s in subMenu on mc.SubMenuId equals s.Id
                                    join r in roles on mc.RoleId equals r.Id
@@ -198,10 +204,36 @@ namespace API.Controllers
                                        SubMenuName = s.SubMenuName,
                                        RoleId = r.Id,
                                        RoleName = r.Name,
-                                       Url=s.Url
+                                       Url = s.Url
                                    }
                               ).Distinct().ToList();
                 return menuConfigs;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        [HttpGet("employeesForConfigByEmpId")]
+        public List<ApprAuthConfigDto> EmployeesForConfigByEmpId(int empId)
+        {
+            try
+            {
+                var apprAuthConfig = _db.ApprAuthConfig.ToList();
+                var apprAuthConfigs = (from a in apprAuthConfig
+                                       where
+                                       //s.Url == menuConfigDto.Url 
+                                       //&& 
+                                       a.EmployeeId == empId && a.Status == "A"
+                                       //orderby r.BrandName
+                                       select new ApprAuthConfigDto
+                                       {
+                                           Id = a.Id,
+
+                                       }
+                              ).Distinct().ToList();
+                return apprAuthConfigs;
             }
             catch (System.Exception ex)
             {
@@ -360,7 +392,7 @@ namespace API.Controllers
 
                 if (roles.Count > 0)
                 {
-                   var removeRoleObj = await _userManager.RemoveFromRolesAsync(user, roles);
+                    var removeRoleObj = await _userManager.RemoveFromRolesAsync(user, roles);
                 }
                 var roleObj = await _userManager.AddToRoleAsync(user, regApprovalDto.Role);
                 if (!roleObj.Succeeded) return BadRequest(new ApiResponse(400, "User Role Set Faild."));
