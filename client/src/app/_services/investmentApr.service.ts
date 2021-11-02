@@ -71,8 +71,8 @@ export class InvestmentAprService {
   getInvestmentTargetedProds(investmentInitId:number,sbu:string){    
     return this.http.get(this.baseUrl + 'investmentRec/investmentRecProducts/'+investmentInitId+'/'+sbu);
   }
-  getInvestmentAprDetails(investmentInitId:number){    
-    return this.http.get(this.baseUrl + 'investmentApr/investmentAprDetails/'+investmentInitId);
+  getInvestmentAprDetails(investmentInitId:number,empId:number){    
+    return this.http.get(this.baseUrl + 'investmentApr/investmentAprDetails/'+investmentInitId+'/'+empId);
   }
   getInvestmentAprProducts(investmentInitId:number,sbu:string){    
     return this.http.get(this.baseUrl + 'investmentApr/investmentAprProducts/'+investmentInitId+'/'+sbu);
@@ -148,7 +148,7 @@ export class InvestmentAprService {
   }
   insertInvestmentDetail(empId:number,sbu:string) {
     
-    return this.http.post(this.baseUrl+ 'investmentApr/insertApr/'+empId+'/'+this.investmentAprCommentFormData.aprStatus+'/'+sbu+'/'+this.investmentAprFormData.donationType, this.investmentDetailFormData);
+    return this.http.post(this.baseUrl+ 'investmentApr/insertApr/'+empId+'/'+this.investmentAprCommentFormData.recStatus+'/'+sbu+'/'+this.investmentAprFormData.donationType, this.investmentDetailFormData);
   
   }
   

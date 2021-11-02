@@ -64,7 +64,7 @@ export interface IInvestmentAprComment {
     id: number;
     investmentInitId: number;
     comments: string;
-    aprStatus: string;
+    recStatus: string;
     employeeId: number;
 }
  
@@ -72,7 +72,7 @@ export class InvestmentAprComment implements InvestmentAprComment {
     id: number=0;
     investmentInitId: number;
     comments: string;
-    aprStatus: string=null;
+    recStatus: string=null;
     employeeId: number;
 }
 export interface IInvestmentTargetedProd {

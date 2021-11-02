@@ -110,7 +110,6 @@ E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\staticwebassets\API.Stati
 E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\staticwebassets\API.StaticWebAssets.xml
 E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\scopedcss\bundle\API.styles.css
 E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\API.RazorTargetAssemblyInfo.cache
-E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\API.csproj.CopyComplete
 E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\API.dll
 E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\API.pdb
 E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\API.genruntimeconfig.cache

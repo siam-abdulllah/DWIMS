@@ -256,6 +256,7 @@ namespace API.Controllers
             try
             {
                 var empData = await _employeeRepo.GetByIdAsync(investmentInitDto.EmployeeId);
+                var existedInvestmentInit= await _investmentInitRepo.GetByIdAsync(investmentInitDto.Id);
                 var investmentInit = new InvestmentInit
                 {
                     Id = investmentInitDto.Id,
@@ -276,6 +277,7 @@ namespace API.Controllers
                     TerritoryName = empData.TerritoryName,
                     SBUName = empData.SBUName,
                     SBU = empData.SBU,
+                    SetOn = existedInvestmentInit.SetOn,
                     ModifiedOn = DateTimeOffset.Now,
                 };
                 _investmentInitRepo.Update(investmentInit);
@@ -303,6 +305,7 @@ namespace API.Controllers
             try
             {
                 var empData = await _employeeRepo.GetByIdAsync(investmentInitDto.EmployeeId);
+                var existedInvestmentInit = await _investmentInitRepo.GetByIdAsync(investmentInitDto.Id);
                 var investmentInit = new InvestmentInit
                 {
                     Id = investmentInitDto.Id,
@@ -323,6 +326,8 @@ namespace API.Controllers
                     TerritoryName = empData.TerritoryName,
                     SBUName = empData.SBUName,
                     SBU = empData.SBU,
+                    SetOn = existedInvestmentInit.SetOn,
+                    ModifiedOn = existedInvestmentInit.ModifiedOn,
                     Confirmation = true,
                     SubmissionDate = DateTimeOffset.Now,
                 };
@@ -353,33 +358,34 @@ namespace API.Controllers
             {
                 var empData = await _employeeRepo.GetByIdAsync(empId);
                 var spec = new InvestmentTargetedGroupSpecification(investmentInitDto.Id, empData.MarketCode);
-                var investmentTargetedGroupData = await _investmentTargetedGroupRepo.ListAsync(spec);
-                if (investmentTargetedGroupData.Count > 0)
-                {
-                    foreach (var v in investmentTargetedGroupData)
-                    {
-                        //if (v.CompletionStatus == true) return BadRequest(new ApiResponse(400, "Tagged Market Already Submitted Investment Initialization"));
-                        _investmentTargetedGroupRepo.Delete(v);
-                        _investmentTargetedGroupRepo.Savechange();
-                    }
-                }
-                foreach (var v in investmentTargetedGroupData)
-                {
+                var investmentTargetedGroupData = await _investmentTargetedGroupRepo.GetEntityWithSpec(spec);
+                //if (investmentTargetedGroupData.Count > 0)
+                //{
+                //    foreach (var v in investmentTargetedGroupData)
+                //    {
+                //        //if (v.CompletionStatus == true) return BadRequest(new ApiResponse(400, "Tagged Market Already Submitted Investment Initialization"));
+                //        _investmentTargetedGroupRepo.Delete(v);
+                //        _investmentTargetedGroupRepo.Savechange();
+                //    }
+                //}
+                //foreach (var v in investmentTargetedGroupData)
+                //{
                     var investmentTargetedGroup = new InvestmentTargetedGroup
                     {
-                        //Id = v.Id,
-                        InvestmentInitId = v.InvestmentInitId,
-                        MarketCode = v.MarketCode,
-                        MarketName = v.MarketName,
-                        MarketGroupMstId = v.MarketGroupMstId,
-                        SBU = v.SBU,
-                        SBUName = v.SBUName,
+                        Id = investmentTargetedGroupData.Id,
+                        DataStatus= 1,
+                        InvestmentInitId = investmentTargetedGroupData.InvestmentInitId,
+                        MarketCode = investmentTargetedGroupData.MarketCode,
+                        MarketName = investmentTargetedGroupData.MarketName,
+                        MarketGroupMstId = investmentTargetedGroupData.MarketGroupMstId,
+                        SBU = investmentTargetedGroupData.SBU,
+                        SBUName = investmentTargetedGroupData.SBUName,
                         CompletionStatus = true,
-                        //SetOn = DateTimeOffset.Now,
+                        SetOn = investmentTargetedGroupData.SetOn,
                         ModifiedOn = DateTimeOffset.Now
                     };
-                    _investmentTargetedGroupRepo.Add(investmentTargetedGroup);
-                }
+                    _investmentTargetedGroupRepo.Update(investmentTargetedGroup);
+                //}
                 _investmentTargetedGroupRepo.Savechange();
                 return new InvestmentInitDto
                 {
@@ -441,10 +447,12 @@ namespace API.Controllers
         }
 
         [HttpPost("updateDetail")]
-        public ActionResult<InvestmentDetailDto> UpdateInvestmentDetail(InvestmentDetailDto investmentDetailDto)
+        public async Task<ActionResult<InvestmentDetailDto>> UpdateInvestmentDetail(InvestmentDetailDto investmentDetailDto)
         {
             try
             {
+
+                var existedInvestmentDetail = await _investmentInitRepo.GetByIdAsync(investmentDetailDto.Id);
                 var investmentDetail = new InvestmentDetail
                 {
                     Id = investmentDetailDto.Id,
@@ -458,6 +466,7 @@ namespace API.Controllers
                     ProposedAmount = investmentDetailDto.ProposedAmount,
                     Purpose = investmentDetailDto.Purpose,
                     InvestmentInitId = investmentDetailDto.InvestmentInitId,
+                    SetOn= existedInvestmentDetail.SetOn,
                     ModifiedOn = DateTimeOffset.Now,
                 };
                 _investmentDetailRepo.Update(investmentDetail);

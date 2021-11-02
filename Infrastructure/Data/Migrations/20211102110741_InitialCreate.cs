@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Data.Migrations
 {
-    public partial class InithialCreate : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -714,7 +714,9 @@ namespace Infrastructure.Data.Migrations
                     MarketCode = table.Column<string>(nullable: true),
                     MarketName = table.Column<string>(nullable: true),
                     MarketGroupCode = table.Column<string>(nullable: true),
-                    MarketGroupName = table.Column<string>(nullable: true)
+                    MarketGroupName = table.Column<string>(nullable: true),
+                    Confirmation = table.Column<bool>(nullable: false),
+                    SubmissionDate = table.Column<DateTimeOffset>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1027,6 +1029,42 @@ namespace Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "InvestmentDetailTracker",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DataStatus = table.Column<int>(nullable: false),
+                    SetOn = table.Column<DateTimeOffset>(nullable: false),
+                    ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
+                    InvestmentInitId = table.Column<int>(nullable: true),
+                    EmployeeId = table.Column<int>(nullable: false),
+                    DonationType = table.Column<string>(nullable: true),
+                    Month = table.Column<int>(nullable: false),
+                    Year = table.Column<int>(nullable: false),
+                    FromDate = table.Column<DateTimeOffset>(nullable: false),
+                    ToDate = table.Column<DateTimeOffset>(nullable: false),
+                    ApprovedAmount = table.Column<long>(nullable: false),
+                    PaidStatus = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InvestmentDetailTracker", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InvestmentDetailTracker_Employee_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employee",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_InvestmentDetailTracker_InvestmentInit_InvestmentInitId",
+                        column: x => x.InvestmentInitId,
+                        principalTable: "InvestmentInit",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "InvestmentDoctor",
                 columns: table => new
                 {
@@ -1123,7 +1161,9 @@ namespace Infrastructure.Data.Migrations
                     ToDate = table.Column<DateTimeOffset>(nullable: false),
                     TotalMonth = table.Column<int>(nullable: false),
                     ProposedAmount = table.Column<long>(nullable: false),
-                    Purpose = table.Column<string>(nullable: true)
+                    Purpose = table.Column<string>(nullable: true),
+                    CompletionStatus = table.Column<bool>(nullable: true),
+                    Priority = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1166,7 +1206,9 @@ namespace Infrastructure.Data.Migrations
                     MarketGroupCode = table.Column<string>(nullable: true),
                     MarketGroupName = table.Column<string>(nullable: true),
                     Comments = table.Column<string>(nullable: true),
-                    RecStatus = table.Column<string>(nullable: true)
+                    RecStatus = table.Column<string>(nullable: true),
+                    CompletionStatus = table.Column<bool>(nullable: true),
+                    Priority = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1698,6 +1740,16 @@ namespace Infrastructure.Data.Migrations
                 column: "InvestmentInitId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_InvestmentDetailTracker_EmployeeId",
+                table: "InvestmentDetailTracker",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvestmentDetailTracker_InvestmentInitId",
+                table: "InvestmentDetailTracker",
+                column: "InvestmentInitId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_InvestmentDoctor_DoctorId",
                 table: "InvestmentDoctor",
                 column: "DoctorId");
@@ -1907,6 +1959,9 @@ namespace Infrastructure.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "InvestmentDetail");
+
+            migrationBuilder.DropTable(
+                name: "InvestmentDetailTracker");
 
             migrationBuilder.DropTable(
                 name: "InvestmentDoctor");

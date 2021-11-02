@@ -83,10 +83,9 @@ namespace API.Controllers
                     {
                         new SqlParameter("@SBU", sbu),
                         new SqlParameter("@EID", empId),
-                        new SqlParameter("@RSTATUS", "Recommended"),
-                        new SqlParameter("@ASTATUS", DBNull.Value)
+                        new SqlParameter("@RSTATUS", "Recommended")
                     };
-                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentRecSearch @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
+                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentAprSearch @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
                 var data = _mapper
                     .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
 
@@ -626,7 +625,20 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("investmentAprProducts/{investmentInitId}/{sbu}")]
-        public async Task<IReadOnlyList<InvestmentRecProducts>> GetInvestmentAprProducts(int investmentInitId, string sbu)
+        //public async Task<IReadOnlyList<InvestmentRecProducts>> GetInvestmentAprProducts(int investmentInitId, string sbu)
+        //{
+        //    try
+        //    {
+        //        var spec = new InvestmentRecProductSpecification(investmentInitId, sbu);
+        //        var investmentTargetedProd = await _investmentRecProductRepo.ListAsync(spec);
+        //        return investmentTargetedProd;
+        //    }
+        //    catch (System.Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
+        public async Task<IReadOnlyList<InvestmentRecProducts>> GetInvestmentRecProducts(int investmentInitId, string sbu)
         {
             try
             {
@@ -642,7 +654,20 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("investmentAprDetails/{investmentInitId}/{empId}")]
-        public async Task<IReadOnlyList<InvestmentRec>> GetInvestmentDetails(int investmentInitId,int empId)
+        //public async Task<IReadOnlyList<InvestmentRec>> GetInvestmentDetails(int investmentInitId,int empId)
+        //{
+        //    try
+        //    {
+        //        var spec = new InvestmentRecSpecification(investmentInitId, empId);
+        //        var investmentDetail = await _investmentRecRepo.ListAsync(spec);
+        //        return investmentDetail;
+        //    }
+        //    catch (System.Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
+        public async Task<IReadOnlyList<InvestmentRec>> GetInvestmentDetails(int investmentInitId, int empId)
         {
             try
             {
@@ -657,7 +682,20 @@ namespace API.Controllers
         }
         [HttpGet]
         [Route("getInvestmentAprComment/{investmentInitId}/{empId}")]
-        public async Task<IReadOnlyList<InvestmentRecComment>> GetInvestmentAprComment(int investmentInitId, int empId)
+        //public async Task<IReadOnlyList<InvestmentRecComment>> GetInvestmentAprComment(int investmentInitId, int empId)
+        //{
+        //    try
+        //    {
+        //        var spec = new InvestmentRecCommentSpecification(investmentInitId, empId);
+        //        var investmentDetail = await _investmentRecCommentRepo.ListAsync(spec);
+        //        return investmentDetail;
+        //    }
+        //    catch (System.Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
+        public async Task<IReadOnlyList<InvestmentRecComment>> GetInvestmentRecComment(int investmentInitId, int empId)
         {
             try
             {
@@ -672,12 +710,25 @@ namespace API.Controllers
         }
         [HttpGet]
         [Route("getInvestmentAprComments/{investmentInitId}")]
-        public async Task<IReadOnlyList<InvestmentAprComment>> GetInvestmentAprComments(int investmentInitId)
+        //public async Task<IReadOnlyList<InvestmentAprComment>> GetInvestmentAprComments(int investmentInitId)
+        //{
+        //    try
+        //    {
+        //        var spec = new InvestmentAprCommentSpecification(investmentInitId);
+        //        var investmentDetail = await _investmentAprCommentRepo.ListAsync(spec);
+        //        return investmentDetail;
+        //    }
+        //    catch (System.Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
+        public async Task<IReadOnlyList<InvestmentRecComment>> GetInvestmentRecComments(int investmentInitId)
         {
             try
             {
-                var spec = new InvestmentAprCommentSpecification(investmentInitId);
-                var investmentDetail = await _investmentAprCommentRepo.ListAsync(spec);
+                var spec = new InvestmentRecCommentSpecification(investmentInitId);
+                var investmentDetail = await _investmentRecCommentRepo.ListAsync(spec);
                 return investmentDetail;
             }
             catch (System.Exception ex)
