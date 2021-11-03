@@ -82,6 +82,7 @@ export class InvestmentInitComponent implements OnInit {
   constructor(private accountService: AccountService, public investmentInitService: InvestmentInitService, private router: Router,
     private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe, private SpinnerService: NgxSpinnerService) { }
   ngOnInit() {
+    this.convertedDate = this.datePipe.transform(this.today, 'ddMMyyyy');
     this.resetPageLoad()
     this.getEmployeeId();
     this.getDonation();
@@ -475,6 +476,7 @@ export class InvestmentInitComponent implements OnInit {
         break;
       }
     }
+    this.getLastFiveInvestment(this.investmentInitService.investmentInitFormData.marketCode, this.convertedDate);
   }
   onChangeInstitutionInDoc() {
     for (var i = 0; i < this.institutions.length; i++) {
@@ -494,6 +496,7 @@ export class InvestmentInitComponent implements OnInit {
         break;
       }
     }
+    this.getLastFiveInvestment(this.investmentInitService.investmentInitFormData.marketCode, this.convertedDate);
   }
   onChangeCampaignInCamp() {
 
@@ -536,8 +539,7 @@ export class InvestmentInitComponent implements OnInit {
         break;
       }
     }
-
-
+    this.getLastFiveInvestment(this.investmentInitService.investmentInitFormData.marketCode, this.convertedDate);
   }
   onChangeMarketGroupInTargetedGroup() {
     if (this.investmentTargetedGroups == null || this.investmentTargetedGroups.length == 0) {
