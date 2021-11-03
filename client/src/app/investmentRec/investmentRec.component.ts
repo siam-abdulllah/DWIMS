@@ -478,7 +478,7 @@ export class InvestmentRecComponent implements OnInit {
   }
   getInvestmentRecDetails() {
     //
-    this.investmentRecService.getInvestmentRecDetails(this.investmentRecService.investmentRecFormData.id).subscribe(response => {
+    this.investmentRecService.getInvestmentRecDetails(this.investmentRecService.investmentRecFormData.id,parseInt(this.empId)).subscribe(response => {
 
       var data = response[0] as IInvestmentRec;
       if (data !== undefined) {

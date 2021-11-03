@@ -446,7 +446,7 @@ export class InvestmentAprComponent implements OnInit {
     });
   }
   getInvestmentAprDetails() {
-    this.investmentAprService.getInvestmentAprDetails(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
+    this.investmentAprService.getInvestmentAprDetails(this.investmentAprService.investmentAprFormData.id,parseInt(this.empId)).subscribe(response => {
       var data = response[0] as IInvestmentApr;
       if (data !== undefined) {
         this.investmentAprService.investmentDetailFormData = data;
@@ -738,7 +738,7 @@ export class InvestmentAprComponent implements OnInit {
       res => {
         //
         //this.investmentAprService.investmentTargetedProdFormData=new InvestmentTargetedProd();
-        if (this.sbu == this.investmentAprService.investmentAprFormData.sbu && this.investmentAprService.investmentAprCommentFormData.aprStatus == 'Approved') 
+        if (this.sbu == this.investmentAprService.investmentAprFormData.sbu && this.investmentAprService.investmentAprCommentFormData.recStatus == 'Approved') 
         { 
           this.insertInvestmentDetails(); 
         }

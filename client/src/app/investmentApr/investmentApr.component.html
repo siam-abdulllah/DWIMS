@@ -726,7 +726,7 @@
                                             <label>Approval Status</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <select class="form-control" id="aprStatus" name="aprStatus" #aprStatus="ngModel" [(ngModel)]="investmentAprService.investmentAprCommentFormData.aprStatus" [class.invalid]="aprStatus.invalid && aprStatus.touched" required>  
+                                            <select class="form-control" id="recStatus" name="recStatus" #recStatus="ngModel" [(ngModel)]="investmentAprService.investmentAprCommentFormData.recStatus" [class.invalid]="recStatus.invalid && recStatus.touched" required>  
                                                 <option  [ngValue]="null">Select Status</option>
                                                 <option *ngIf=" !isInvOther" value="Approved">Approved</option>
                                                 <option *ngIf="!isInvOther" value="Not Approved">Not Approved</option>
