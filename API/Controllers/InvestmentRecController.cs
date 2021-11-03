@@ -453,6 +453,26 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        [Route("investmentTargetedGroups/{investmentInitId}")]
+        public async Task<IReadOnlyList<InvestmentTargetedGroup>> GetInvestmentTargetedGroups(int investmentInitId)
+        {
+            try
+            {
+                var spec = new InvestmentTargetedGroupSpecification(investmentInitId);
+                var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(spec);
+
+                var spec2 = new InvestmentRecCommentSpecification(investmentInitId);
+                var investrecComment = await _investmentRecCommentRepo.ListAsync(spec2);
+
+                return investmentTargetedGroup;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpGet]
         [Route("investmentRecDetails/{investmentInitId}")]
         public async Task<IReadOnlyList<InvestmentRec>> GetInvestmentDetails(int investmentInitId)
         {
