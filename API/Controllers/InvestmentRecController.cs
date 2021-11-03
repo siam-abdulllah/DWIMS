@@ -88,9 +88,10 @@ namespace API.Controllers
                 List<SqlParameter> parms = new List<SqlParameter>
                     {
                         new SqlParameter("@SBU", sbu),
-                        new SqlParameter("@EID", empId)
+                        new SqlParameter("@EID", empId),
+                        new SqlParameter("@RSTATUS", DBNull.Value)
                     };
-                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentRecSearch @SBU,@EID", parms.ToArray()).ToList();
+                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentInitSearch @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
                 var data = _mapper
                     .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
                 return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, 50, data));
@@ -137,13 +138,13 @@ namespace API.Controllers
                 //var totalItems = await _investmentInitRepo.CountAsync(countSpec);
 
                 List<SqlParameter> parms = new List<SqlParameter>
-                    {
+                    {   
                         new SqlParameter("@SBU", sbu),
                         new SqlParameter("@EID", empId),
                         new SqlParameter("@RSTATUS", DBNull.Value),
                         new SqlParameter("@ASTATUS", "Approved")
                     };
-                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentRecommendedSearch @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
+                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentRecSearch @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
                 var data = _mapper
                     .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
 
@@ -176,7 +177,7 @@ namespace API.Controllers
 
             // }
 
-            var alreadyExistSpec = new InvestmentRecSpecification((int)investmentRecDto.InvestmentInitId, empId);
+            var alreadyExistSpec = new InvestmentRecSpecification((int)investmentRecDto.InvestmentInitId,empId);
             var alreadyExistInvestmentRecList = await _investmentRecRepo.ListAsync(alreadyExistSpec);
             if (alreadyExistInvestmentRecList.Count > 0)
             {
@@ -242,57 +243,26 @@ namespace API.Controllers
                 bool isTrue = false;
                 var investmentTargetedGroupSpec = new InvestmentTargetedGroupSpecification((int)investmentRecDto.InvestmentInitId);
                 var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(investmentTargetedGroupSpec);
-                var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentRecDto.InvestmentInitId, apprAuthConfig.ApprovalAuthority.Priority, "true");
+                var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentRecDto.InvestmentInitId, apprAuthConfig.ApprovalAuthority.Priority,"true");
                 var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
-                if (investmentRecDto.RecStatus == "Recommended")
-                {
-                    isComplete = true;
-                }
+                isComplete = true;
                 foreach (var v in investmentTargetedGroup)
                 {
                     isTrue = false;
                     foreach (var i in investmentRecComments)
                     {
-                        if (v.InvestmentInitId == i.InvestmentInitId && v.SBU == i.SBU)
+                        if (v.InvestmentInitId == i.InvestmentInitId && v.SBU == i.SBU )
                         {
                             isTrue = true;
                         }
                     }
-                    if (!isTrue)
-                    {
-                        return BadRequest(new ApiResponse(400, "Other recommendation has not completed yet"));
+                    if (!isTrue) 
+                    { 
+                        return BadRequest(new ApiResponse(400, "Other recommendation has not completed yet")); 
                     }
                 }
-                foreach (var v in investmentRecComments)
-                {
-                    var invRecOthers = new InvestmentRecComment
-                    {
-                        Id = v.Id,
-                        InvestmentInitId = v.InvestmentInitId,
-                        EmployeeId = v.EmployeeId,
-                        Comments = v.Comments,
-                        RecStatus = v.RecStatus,
-                        MarketGroupCode = v.MarketGroupCode,
-                        MarketGroupName = v.MarketGroupName,
-                        MarketCode = v.MarketCode,
-                        MarketName = v.MarketName,
-                        RegionCode = v.RegionCode,
-                        RegionName = v.RegionName,
-                        ZoneCode = v.ZoneCode,
-                        ZoneName = v.ZoneName,
-                        TerritoryCode = v.TerritoryCode,
-                        TerritoryName = v.TerritoryName,
-                        SBUName = v.SBUName,
-                        SBU = v.SBU,
-                        Priority = v.Priority,
-                        CompletionStatus = isComplete,
-                        ModifiedOn = v.ModifiedOn,
-                        SetOn = v.SetOn
-                    };
-                    _investmentRecCommentRepo.Update(invRecOthers);
-                    _investmentRecCommentRepo.Savechange();
-                }
             }
+           
             var invRec = new InvestmentRecComment
             {
                 InvestmentInitId = investmentRecDto.InvestmentInitId,
@@ -343,10 +313,7 @@ namespace API.Controllers
                 var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(investmentTargetedGroupSpec);
                 var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentRecDto.InvestmentInitId, apprAuthConfig.ApprovalAuthority.Priority, "true");
                 var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
-                if (investmentRecDto.RecStatus == "Recommended")
-                {
-                    isComplete = true;
-                }
+                isComplete = true;
                 foreach (var v in investmentTargetedGroup)
                 {
                     isTrue = false;
@@ -358,35 +325,6 @@ namespace API.Controllers
                         }
                     }
                     if (!isTrue) { return BadRequest(new ApiResponse(400, "Other recommendation not completed yet")); }
-                }
-                foreach (var v in investmentRecComments)
-                {
-                    var invRecOthers = new InvestmentRecComment
-                    {
-                        Id = v.Id,
-                        InvestmentInitId = v.InvestmentInitId,
-                        EmployeeId = v.EmployeeId,
-                        Comments = v.Comments,
-                        RecStatus = v.RecStatus,
-                        MarketGroupCode = v.MarketGroupCode,
-                        MarketGroupName = v.MarketGroupName,
-                        MarketCode = v.MarketCode,
-                        MarketName = v.MarketName,
-                        RegionCode = v.RegionCode,
-                        RegionName = v.RegionName,
-                        ZoneCode = v.ZoneCode,
-                        ZoneName = v.ZoneName,
-                        TerritoryCode = v.TerritoryCode,
-                        TerritoryName = v.TerritoryName,
-                        SBUName = v.SBUName,
-                        SBU = v.SBU,
-                        Priority = v.Priority,
-                        CompletionStatus = isComplete,
-                        ModifiedOn = v.ModifiedOn,
-                        SetOn = v.SetOn
-                    };
-                    _investmentRecCommentRepo.Update(invRecOthers);
-                    _investmentRecCommentRepo.Savechange();
                 }
             }
 
@@ -515,12 +453,32 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Route("investmentRecDetails/{investmentInitId}/{empId}")]
-        public async Task<IReadOnlyList<InvestmentRec>> GetInvestmentDetails(int investmentInitId, int empId)
+        [Route("investmentTargetedGroups/{investmentInitId}")]
+        public async Task<IReadOnlyList<InvestmentTargetedGroup>> GetInvestmentTargetedGroups(int investmentInitId)
         {
             try
             {
-                var spec = new InvestmentRecSpecification(investmentInitId, empId);
+                var spec = new InvestmentTargetedGroupSpecification(investmentInitId);
+                var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(spec);
+
+                var spec2 = new InvestmentRecCommentSpecification(investmentInitId);
+                var investrecComment = await _investmentRecCommentRepo.ListAsync(spec2);
+
+                return investmentTargetedGroup;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpGet]
+        [Route("investmentRecDetails/{investmentInitId}")]
+        public async Task<IReadOnlyList<InvestmentRec>> GetInvestmentDetails(int investmentInitId)
+        {
+            try
+            {
+                var spec = new InvestmentRecSpecification(investmentInitId);
                 var investmentDetail = await _investmentRecRepo.ListAsync(spec);
                 return investmentDetail;
             }
