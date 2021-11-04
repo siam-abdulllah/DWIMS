@@ -14,7 +14,8 @@ namespace API.Dtos
         public string MarketCode { get; set; }
         public string MarketName { get; set; }
         public string MarketGroupName { get; set; }
-        public Int32 Priority { get; set; }
+        public int Priority { get; set; }
         public string RecStatus { get; set; }
+        public string ApprovalAuthorityName { get;  set; }
     }
 }

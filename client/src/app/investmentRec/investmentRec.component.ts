@@ -517,6 +517,7 @@ export class InvestmentRecComponent implements OnInit {
   getInvestmentTargetedGroup() {
     this.investmentRecService.getInvestmentTargetedGroups(this.investmentRecService.investmentRecFormData.id,parseInt(this.empId)).subscribe(response => {
       //
+      debugger;
       var data = response as IInvestmentTargetedGroup[];
       if (data !== undefined) {
         this.investmentTargetedGroups = data;

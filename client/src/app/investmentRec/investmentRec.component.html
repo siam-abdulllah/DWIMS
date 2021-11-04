@@ -710,16 +710,13 @@
                                 <div class="form-group">
                                     <table class="table  table-bordered">
                                         <tr class="HeaderRow">
-                                            <td>Market Group Name</td>
                                             <td>Market Code</td>
                                             <td>Market Name</td>
+                                            <td>Authority</td>
                                             <td>Status</td>
                                         </tr>
                                         <tr *ngFor="let a of investmentTargetedGroups">
 
-                                            <td>
-                                                {{a.marketGroupMst.groupName}}
-                                            </td>
                                             <td>
                                                 {{a.marketCode}}
                                             </td>
@@ -727,7 +724,10 @@
                                                 {{a.marketName}}
                                             </td>
                                             <td>
-                                                {{a.RecStatus}}
+                                                {{a.approvalAuthorityName}}
+                                            </td>
+                                            <td>
+                                                {{a.recStatus}}
                                             </td>
                                             <!-- <td>
                                                 <input type="button" (click)="removeInvestmentTargetedProd(a)" value="Remove">

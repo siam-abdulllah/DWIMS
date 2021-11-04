@@ -1189,6 +1189,12 @@ export class InvestmentInitComponent implements OnInit {
 
     // }
     //}
+    if(this.isSubmitted==true && parseInt(this.empId) == this.investmentInitService.investmentInitFormData.employeeId)
+    {
+      this.toastr.warning("Investment already submitted");
+return false;
+    }
+    else{
     if (this.investmentInitService.investmentTargetedProdFormData.id == null || this.investmentInitService.investmentTargetedProdFormData.id == undefined || this.investmentInitService.investmentTargetedProdFormData.id == 0) {
       this.SpinnerService.show();
       this.investmentInitService.insertInvestmentTargetedProd().subscribe(
@@ -1215,6 +1221,7 @@ export class InvestmentInitComponent implements OnInit {
         err => { console.log(err); }
       );
     }
+  }
   }
   insertInvestmentTargetedGroup() {
 

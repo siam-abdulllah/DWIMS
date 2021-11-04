@@ -98,6 +98,8 @@ export interface IInvestmentTargetedGroup {
     investmentInitId: number;
     marketCode: string;
     marketName: string;
+    recStatus: string;
+    approvalAuthorityName: string;
     marketGroupMst:IMarketGroupMst;
 }
  
@@ -107,6 +109,8 @@ export class InvestmentTargetedGroup implements IInvestmentTargetedGroup {
     investmentInitId: number;
     marketCode: string;
     marketName: string;
+    recStatus: string;
+    approvalAuthorityName: string;
     marketGroupMst:IMarketGroupMst;
 }
 export interface IInvestmentDoctor {

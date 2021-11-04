@@ -34,6 +34,9 @@ namespace Core.Specifications
         public ApprovalAuthoritySpecification(string status)
             : base(x => x.Status == status)
         {
+        }public ApprovalAuthoritySpecification(int id)
+            : base(x => x.Id == id)
+        {
         }
 
     }

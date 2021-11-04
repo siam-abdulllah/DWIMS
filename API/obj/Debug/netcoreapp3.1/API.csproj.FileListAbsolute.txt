@@ -1297,4 +1297,3 @@ E:\DWIMS\TestApplication\API\obj\Debug\netcoreapp3.1\API.dll
 E:\DWIMS\TestApplication\API\obj\Debug\netcoreapp3.1\API.pdb
 E:\DWIMS\TestApplication\API\obj\Debug\netcoreapp3.1\API.genruntimeconfig.cache
 G:\DIDS\DIDS_GIT\DWIMS\API\obj\Debug\netcoreapp3.1\API.GeneratedMSBuildEditorConfig.editorconfig
-E:\DWIMS\TestApplication\API\obj\Debug\netcoreapp3.1\API.csproj.CopyComplete

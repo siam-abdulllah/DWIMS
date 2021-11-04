@@ -818,6 +818,7 @@
                                             <td>Market Group Name</td>
                                             <td>Market Code</td>
                                             <td>Market Name</td>
+                                            <td>SBU</td>
                                             <td>Status</td>
                                         </tr>
                                         <tr *ngFor="let a of investmentTargetedGroups">
@@ -830,6 +831,9 @@
                                             </td>
                                             <td>
                                                 {{a.marketName}}
+                                            </td>
+                                            <td>
+                                                {{a.sbuName}}
                                             </td>
                                             <td>
                                                 <span *ngIf="a.completionStatus === false || undefined || ''">Pending</span>

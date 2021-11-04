@@ -90,10 +90,9 @@ namespace API.Controllers
                 List<SqlParameter> parms = new List<SqlParameter>
                     {
                         new SqlParameter("@SBU", sbu),
-                        new SqlParameter("@EID", empId),
-                        new SqlParameter("@RSTATUS", DBNull.Value)
+                        new SqlParameter("@EID", empId)
                     };
-                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentInitSearch @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
+                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentRecSearch @SBU,@EID", parms.ToArray()).ToList();
                 var data = _mapper
                     .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
                 return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, 50, data));
@@ -146,7 +145,7 @@ namespace API.Controllers
                         new SqlParameter("@RSTATUS", DBNull.Value),
                         new SqlParameter("@ASTATUS", "Approved")
                     };
-                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentRecSearch @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
+                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentRecommendedSearch @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
                 var data = _mapper
                     .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
 
@@ -463,41 +462,40 @@ namespace API.Controllers
                 var spec = new InvestmentTargetedGroupSpecification(investmentInitId);
                 var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(spec);
 
-                var spec2 = new InvestmentRecCommentSpecification(investmentInitId);
-                var investrecComment = await _investmentRecCommentRepo.ListAsync(spec2);
+                
 
-                var spec3 = new ApprAuthConfigSpecification();
-                var approAuthConfig = await _apprAuthConfigRepo.ListAsync(spec3);
+                var spec3 = new ApprAuthConfigSpecification(empId,"A");
+                var approAuthConfig = await _apprAuthConfigRepo.GetEntityWithSpec(spec3);
 
                 // var empSpec = new Emplp(investmentInitId);
                 // var empList = await _investmentRecCommentRepo.ListAsync(spec2);
 
                 //string sts = "Active";
 
-                var spec4 = new ApprovalAuthoritySpecification("Active");
-                var aprAuthority = await _approvalAuthorityRepo.ListAsync(spec4);
+                var spec4 = new ApprovalAuthoritySpecification(approAuthConfig.ApprovalAuthorityId);
+                var aprAuthority = await _approvalAuthorityRepo.GetEntityWithSpec(spec4);
 
+                var spec2 = new InvestmentRecCommentSpecification(investmentInitId, aprAuthority.Priority,"Recommended");
+                var investrecComment = await _investmentRecCommentRepo.ListAsync(spec2);
 
                 var stsResult = (from t in investmentTargetedGroup
-                                from u in investrecComment
-                                from c in approAuthConfig
-                                from a in aprAuthority
-                                where t.InvestmentInitId == u.InvestmentInitId
-                                && c.ApprovalAuthorityId == a.Id
-                                && u.EmployeeId == empId
-                                && u.InvestmentInitId == investmentInitId
-                                && a.Priority == u.Priority
+                                join u in investrecComment on t.InvestmentInitId equals u.InvestmentInitId  into ut
+                                 from p in ut.DefaultIfEmpty()
+                                 where 
+                                // u.EmployeeId == empId
+                                 t.InvestmentInitId == investmentInitId
+                                //&& p.Priority == aprAuthority.Priority
                               
                                 select new InvestmentTargetGroupStatusDto
                                 {
                                     InvestmentInitId = t.InvestmentInitId,
-                                    SBU =  u.SBU,
-                                    SBUName= u.SBUName,
-                                    MarketCode = u.MarketCode,
-                                    MarketName = u.MarketName,
-                                    MarketGroupName = t.MarketGroupMst.GroupName,
-                                    RecStatus = u.RecStatus,
-                                    Priority = a.Priority
+                                    SBU =  t.SBU,
+                                    SBUName= t.SBUName,
+                                    MarketCode = t.MarketCode,
+                                    MarketName = t.MarketName,
+                                    //MarketGroupName = t.MarketGroupMst.GroupName,
+                                    RecStatus = p == null ? "Pending" : p.RecStatus,
+                                    ApprovalAuthorityName=aprAuthority.ApprovalAuthorityName
                                 }).ToList();
 
                 return stsResult;

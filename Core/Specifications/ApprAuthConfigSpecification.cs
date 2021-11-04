@@ -33,7 +33,7 @@ namespace Core.Specifications
         }
 
         public ApprAuthConfigSpecification()
-      : base(x => x.Status == "A")
+             : base(x => x.Status == "A")
         {
             AddInclude(x => x.Employee);
         }
