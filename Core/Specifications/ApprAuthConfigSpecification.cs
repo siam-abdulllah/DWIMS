@@ -32,6 +32,11 @@ namespace Core.Specifications
             // }
         }
 
+        public ApprAuthConfigSpecification()
+      : base(x => x.Status == "A")
+        {
+            AddInclude(x => x.Employee);
+        }
         public ApprAuthConfigSpecification(int authId)
             : base(x => x.ApprovalAuthorityId == authId && x.Status=="A")
         {
