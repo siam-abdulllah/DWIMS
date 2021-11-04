@@ -28,6 +28,7 @@ namespace API.Controllers
         private readonly IGenericRepository<Employee> _employeeRepo;
         private readonly IGenericRepository<ReportInvestmentInfo> _reportInvestmentInfoRepo;
         private readonly IGenericRepository<ApprAuthConfig> _apprAuthConfigRepo;
+        private readonly IGenericRepository<ApprovalAuthority> _approvalAuthorityRepo;
         private readonly IGenericRepository<ApprovalCeiling> _approvalCeilingRepo;
         private readonly IGenericRepository<SBUWiseBudget> _sbuRepo;
         private readonly IMapper _mapper;
@@ -38,7 +39,7 @@ namespace API.Controllers
         IGenericRepository<InvestmentAprComment> investmentAprCommentRepo, IGenericRepository<Employee> employeeRepo,
         IGenericRepository<ReportInvestmentInfo> reportInvestmentInfoRepo,
         IGenericRepository<ApprAuthConfig> apprAuthConfigRepo,
-        IGenericRepository<ApprovalCeiling> approvalCeilingRepo,
+        IGenericRepository<ApprovalCeiling> approvalCeilingRepo, IGenericRepository<ApprovalAuthority> approvalAuthorityRepo,
         IGenericRepository<SBUWiseBudget> sbuRepo, StoreContext dbContext, IMapper mapper)
         {
             _mapper = mapper;
@@ -50,6 +51,7 @@ namespace API.Controllers
             _employeeRepo = employeeRepo;
             _apprAuthConfigRepo = apprAuthConfigRepo;
             _approvalCeilingRepo = approvalCeilingRepo;
+            _approvalAuthorityRepo = approvalAuthorityRepo;
             _reportInvestmentInfoRepo = reportInvestmentInfoRepo;
             _sbuRepo = sbuRepo;
             _dbContext = dbContext;
@@ -453,8 +455,8 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Route("investmentTargetedGroups/{investmentInitId}")]
-        public async Task<IReadOnlyList<InvestmentTargetedGroup>> GetInvestmentTargetedGroups(int investmentInitId)
+        [Route("investmentTargetedGroups/{investmentInitId}/{empId}")]
+        public async Task<IReadOnlyList<InvestmentTargetGroupStatusDto>> GetInvestmentTargetedGroups(int investmentInitId, int empId)
         {
             try
             {
@@ -464,7 +466,41 @@ namespace API.Controllers
                 var spec2 = new InvestmentRecCommentSpecification(investmentInitId);
                 var investrecComment = await _investmentRecCommentRepo.ListAsync(spec2);
 
-                return investmentTargetedGroup;
+                var spec3 = new ApprAuthConfigSpecification();
+                var approAuthConfig = await _apprAuthConfigRepo.ListAsync(spec3);
+
+                // var empSpec = new Emplp(investmentInitId);
+                // var empList = await _investmentRecCommentRepo.ListAsync(spec2);
+
+                //string sts = "Active";
+
+                var spec4 = new ApprovalAuthoritySpecification("Active");
+                var aprAuthority = await _approvalAuthorityRepo.ListAsync(spec4);
+
+
+                var stsResult = (from t in investmentTargetedGroup
+                                from u in investrecComment
+                                from c in approAuthConfig
+                                from a in aprAuthority
+                                where t.InvestmentInitId == u.InvestmentInitId
+                                && c.ApprovalAuthorityId == a.Id
+                                && u.EmployeeId == empId
+                                && u.InvestmentInitId == investmentInitId
+                                && a.Priority == u.Priority
+                              
+                                select new InvestmentTargetGroupStatusDto
+                                {
+                                    InvestmentInitId = t.InvestmentInitId,
+                                    SBU =  u.SBU,
+                                    SBUName= u.SBUName,
+                                    MarketCode = u.MarketCode,
+                                    MarketName = u.MarketName,
+                                    MarketGroupName = t.MarketGroupMst.GroupName,
+                                    RecStatus = u.RecStatus,
+                                    Priority = a.Priority
+                                }).ToList();
+
+                return stsResult;
             }
             catch (System.Exception ex)
             {
