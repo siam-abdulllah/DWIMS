@@ -19,7 +19,6 @@ export class LoginComponent implements OnInit {
 
   // tslint:disable-next-line: typedef
   ngOnInit() {
-    debugger;
     this.SpinnerService.show();
     //this.returnUrl = this.activatedRoute.snapshot.queryParams.returnUrl || '/shop';
     this.returnUrl = this.activatedRoute.snapshot.queryParams.returnUrl || '/portal/home';

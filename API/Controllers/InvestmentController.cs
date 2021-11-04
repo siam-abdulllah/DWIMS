@@ -1173,17 +1173,6 @@ namespace API.Controllers
         #endregion
 
 
-
-
-
-
-
-
-
-
-
-
-
         [HttpGet]
         [Route("getLastFiveInvestment/{marketCode}/{date}")]
         public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestment(string marketCode, string date)

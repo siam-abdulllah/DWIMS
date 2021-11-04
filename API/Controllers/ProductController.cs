@@ -29,12 +29,12 @@ namespace API.Controllers
             {
                 var data = await _productRepo.ListAllAsync();
                 var brand= (from r in data
-                            where r.Status=="Active" && r.SBU==sbu
+                            where r.Status=="Active" && r.SBU==sbu && r.BrandCode!=null
                            orderby r.BrandName
                            select new BrandDto
                            {
-                               BrandName = r.BrandName.Trim(),
-                               BrandCode = r.BrandCode.Trim()
+                               BrandName = r.BrandName,
+                               BrandCode = r.BrandCode
                            }
                               ).Distinct().ToList();
                 return brand;
