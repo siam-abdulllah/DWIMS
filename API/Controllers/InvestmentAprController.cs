@@ -94,7 +94,6 @@ namespace API.Controllers
             }
             catch (System.Exception e)
             {
-
                 throw e;
             }
         }
@@ -113,7 +112,7 @@ namespace API.Controllers
                         new SqlParameter("@RSTATUS", "Recommended"),
                         new SqlParameter("@ASTATUS", DBNull.Value)
                     };
-                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentAprSearch @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
+                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentApprpvedSearch @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
                 var data = _mapper
                     .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
 
@@ -328,7 +327,7 @@ namespace API.Controllers
 
 
         [HttpPost("InsertAprCom")]
-        public async Task<ActionResult<InvestmentAprCommentDto>> InsertInvestmentAprComment(InvestmentAprCommentDto investmentAprDto)
+        public async Task<ActionResult<InvestmentRecCommentDto>> InsertInvestmentAprComment(InvestmentRecCommentDto investmentRecDto)
         {
             //var empData = await _employeeRepo.GetByIdAsync(investmentAprDto.EmployeeId);
            // var investmentInits = await _investmentInitRepo.GetByIdAsync((int)investmentAprDto.InvestmentInitId);
@@ -380,16 +379,16 @@ namespace API.Controllers
 
             var isComplete = false;
             //var investmentInitSpec = new InvestmentInitSpecification((int)investmentRecDto.InvestmentInitId);
-            var investmentInits = await _investmentInitRepo.GetByIdAsync((int)investmentAprDto.InvestmentInitId);
-            var empData = await _employeeRepo.GetByIdAsync(investmentAprDto.EmployeeId);
-            var spec = new ApprAuthConfigSpecification(investmentAprDto.EmployeeId, "A");
+            var investmentInits = await _investmentInitRepo.GetByIdAsync((int)investmentRecDto.InvestmentInitId);
+            var empData = await _employeeRepo.GetByIdAsync(investmentRecDto.EmployeeId);
+            var spec = new ApprAuthConfigSpecification(investmentRecDto.EmployeeId, "A");
             var apprAuthConfig = await _apprAuthConfigRepo.GetEntityWithSpec(spec);
             if (investmentInits.SBU == empData.SBU)
             {
                 bool isTrue = false;
-                var investmentTargetedGroupSpec = new InvestmentTargetedGroupSpecification((int)investmentAprDto.InvestmentInitId);
+                var investmentTargetedGroupSpec = new InvestmentTargetedGroupSpecification((int)investmentRecDto.InvestmentInitId);
                 var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(investmentTargetedGroupSpec);
-                var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentAprDto.InvestmentInitId, apprAuthConfig.ApprovalAuthority.Priority, "true");
+                var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentRecDto.InvestmentInitId, apprAuthConfig.ApprovalAuthority.Priority, "true");
                 var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
                 isComplete = true;
                 foreach (var v in investmentTargetedGroup)
@@ -411,10 +410,10 @@ namespace API.Controllers
 
             var invRec = new InvestmentRecComment
             {
-                InvestmentInitId = investmentAprDto.InvestmentInitId,
-                EmployeeId = investmentAprDto.EmployeeId,
-                Comments = investmentAprDto.Comments,
-                RecStatus = investmentAprDto.AprStatus,
+                InvestmentInitId = investmentRecDto.InvestmentInitId,
+                EmployeeId = investmentRecDto.EmployeeId,
+                Comments = investmentRecDto.Comments,
+                RecStatus = investmentRecDto.RecStatus,
                 MarketGroupCode = empData.MarketGroupCode,
                 MarketGroupName = empData.MarketGroupName,
                 MarketCode = empData.MarketCode,
@@ -435,18 +434,18 @@ namespace API.Controllers
             _investmentRecCommentRepo.Savechange();
 
 
-            return new InvestmentAprCommentDto
+            return new InvestmentRecCommentDto
             {
                 Id = invRec.Id,
-                InvestmentInitId = investmentAprDto.InvestmentInitId,
-                EmployeeId = investmentAprDto.EmployeeId,
-                Comments = investmentAprDto.Comments,
-                AprStatus = investmentAprDto.AprStatus,
+                InvestmentInitId = investmentRecDto.InvestmentInitId,
+                EmployeeId = investmentRecDto.EmployeeId,
+                Comments = investmentRecDto.Comments,
+                RecStatus = investmentRecDto.RecStatus,
             };
         }
 
         [HttpPost("UpdateAprCom")]
-        public async Task<ActionResult<InvestmentAprCommentDto>> UpdateInvestmentApromendationComment(InvestmentAprCommentDto investmentAprDto)
+        public async Task<ActionResult<InvestmentRecCommentDto>> UpdateInvestmentAprComment(InvestmentRecCommentDto investmentRecDto)
         {
             // var user =  _approvalAuthorityRepo.GetByIdAsync(ApprovalAuthorityToReturnDto.Id);
             // if (user == null) return Unauthorized(new ApiResponse(401));
@@ -475,17 +474,17 @@ namespace API.Controllers
             //_investmentAprCommentRepo.Update(invApr);
             //_investmentAprCommentRepo.Savechange();
 
-            var investmentInits = await _investmentInitRepo.GetByIdAsync((int)investmentAprDto.InvestmentInitId);
-            var empData = await _employeeRepo.GetByIdAsync(investmentAprDto.EmployeeId);
-            var spec = new ApprAuthConfigSpecification(investmentAprDto.EmployeeId, "A");
+            var investmentInits = await _investmentInitRepo.GetByIdAsync((int)investmentRecDto.InvestmentInitId);
+            var empData = await _employeeRepo.GetByIdAsync(investmentRecDto.EmployeeId);
+            var spec = new ApprAuthConfigSpecification(investmentRecDto.EmployeeId, "A");
             var apprAuthConfig = await _apprAuthConfigRepo.GetEntityWithSpec(spec);
             var isComplete = false;
             if (investmentInits.SBU == empData.SBU)
             {
                 bool isTrue = false;
-                var investmentTargetedGroupSpec = new InvestmentTargetedGroupSpecification((int)investmentAprDto.InvestmentInitId);
+                var investmentTargetedGroupSpec = new InvestmentTargetedGroupSpecification((int)investmentRecDto.InvestmentInitId);
                 var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(investmentTargetedGroupSpec);
-                var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentAprDto.InvestmentInitId, apprAuthConfig.ApprovalAuthority.Priority, "true");
+                var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentRecDto.InvestmentInitId, apprAuthConfig.ApprovalAuthority.Priority, "true");
                 var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
                 isComplete = true;
                 foreach (var v in investmentTargetedGroup)
@@ -504,11 +503,11 @@ namespace API.Controllers
 
             var invRec = new InvestmentRecComment
             {
-                Id = investmentAprDto.Id,
-                InvestmentInitId = investmentAprDto.InvestmentInitId,
-                EmployeeId = investmentAprDto.EmployeeId,
-                Comments = investmentAprDto.Comments,
-                RecStatus = investmentAprDto.AprStatus,
+                Id = investmentRecDto.Id,
+                InvestmentInitId = investmentRecDto.InvestmentInitId,
+                EmployeeId = investmentRecDto.EmployeeId,
+                Comments = investmentRecDto.Comments,
+                RecStatus = investmentRecDto.RecStatus,
                 MarketGroupCode = empData.MarketGroupCode,
                 MarketGroupName = empData.MarketGroupName,
                 MarketCode = empData.MarketCode,
@@ -528,17 +527,17 @@ namespace API.Controllers
             _investmentRecCommentRepo.Update(invRec);
             _investmentRecCommentRepo.Savechange();
 
-            return new InvestmentAprCommentDto
+            return new InvestmentRecCommentDto
             {
-                Id = investmentAprDto.Id,
-                EmployeeId = investmentAprDto.EmployeeId,
-                Comments = investmentAprDto.Comments,
-                AprStatus = investmentAprDto.AprStatus,
+                Id = investmentRecDto.Id,
+                EmployeeId = investmentRecDto.EmployeeId,
+                Comments = investmentRecDto.Comments,
+                RecStatus = investmentRecDto.RecStatus,
             };
         }
 
         [HttpPost("InsertAprProd")]
-        public async Task<IActionResult> InsertInvestmentApromendationProduct(List<InvestmentAprProductsDto> investmentAprProductDto)
+        public async Task<IActionResult> InsertInvestmentApromendationProduct(List<InvestmentRecProductsDto> investmentRecProductDto)
         {
             //try
             //{
@@ -582,7 +581,7 @@ namespace API.Controllers
             //}
             try
             {
-                foreach (var i in investmentAprProductDto)
+                foreach (var i in investmentRecProductDto)
                 {
                     var alreadyExistSpec = new InvestmentRecProductSpecification(i.InvestmentInitId, i.ProductId);
                     var alreadyExistInvestmentRecProductList = await _investmentRecProductRepo.ListAsync(alreadyExistSpec);
@@ -596,7 +595,7 @@ namespace API.Controllers
                     }
                 }
 
-                foreach (var v in investmentAprProductDto)
+                foreach (var v in investmentRecProductDto)
                 {
                     var investmentRecProduct = new InvestmentRecProducts
                     {

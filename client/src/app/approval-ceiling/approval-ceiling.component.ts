@@ -20,6 +20,8 @@ export class ApprovalCeilingComponent implements OnInit {
   genParams: GenericParams;
   approvalCeilings: IApprovalCeiling[];
   totalCount = 0;
+  searchText = '';
+  config: any;
   approvalAuthorities: IApprovalAuthority[];
   donations: IDonation[];
   bsConfig: Partial<BsDatepickerConfig>;
@@ -50,10 +52,16 @@ export class ApprovalCeilingComponent implements OnInit {
     });
   }
   getApprovalCeiling(){
+    const params = this.approvalCeilingService.getGenParams();
     this.approvalCeilingService.getApprovalCeiling().subscribe(response => {
       debugger;
       this.approvalCeilings = response.data;
       this.totalCount = response.count;
+      this.config = {
+        currentPage: params.pageIndex,
+        itemsPerPage: params.pageSize,
+        totalItems:this.totalCount,
+        };
     }, error => {
         console.log(error);
     });
@@ -125,10 +133,24 @@ return true;
     form.form.reset();
     this.approvalCeilingService.approvalCeilingFormData = new ApprovalCeiling();
     //this.approvalCeilings=[];
+    this.searchText = '';
   }
   resetPage() {
     this.approvalCeilingService.approvalCeilingFormData = new ApprovalCeiling();
     this.approvalCeilings=[];
+    this.searchText = '';
   }
+  resetSearch(){
+    this.searchText = '';
+}
+onPageChanged(event: any){
+  const params = this.approvalCeilingService.getGenParams();
+  if (params.pageIndex !== event)
+  {
+    params.pageIndex = event;
+    this.approvalCeilingService.setGenParams(params);
+    this.getApprovalCeiling();
+  }
+}
 
 }

@@ -24,6 +24,13 @@ export class ApprovalCeilingService {
   approvalCeilingFormData: ApprovalCeiling = new ApprovalCeiling();
 
   constructor(private http: HttpClient, private router: Router) { }
+  getGenParams(){
+    return this.genParams;
+  }
+
+   setGenParams(genParams: GenericParams) {
+    this.genParams = genParams;
+  }
   getApprovalAuthority(){    
     return this.http.get(this.baseUrl + 'approvalAuthority/approvalAuthoritiesForConfig');
   }

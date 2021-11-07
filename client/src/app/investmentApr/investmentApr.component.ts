@@ -164,7 +164,7 @@ export class InvestmentAprComponent implements OnInit {
     this.InvestmentAprSearchModalRef.hide()
   }
   getLastFiveInvestment(marketCode: string, toDayDate: string) {
-    debugger;
+    //debugger;
     if (this.investmentAprService.investmentAprFormData.donationTo == "Doctor") {
       this.investmentAprService.getLastFiveInvestmentForDoc(this.investmentAprService.investmentAprFormData.donationType,this.investmentAprService.investmentDoctorFormData.doctorId,marketCode, toDayDate).subscribe(
         (response) => {
@@ -500,7 +500,6 @@ export class InvestmentAprComponent implements OnInit {
   ngOnInit() {
     this.resetForm();
     this.getEmployeeId();
-    this.getProduct();
     //this.getMarketGroupMsts();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-blue'  }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
@@ -560,6 +559,7 @@ export class InvestmentAprComponent implements OnInit {
       (response) => {
         //
         this.sbu = response.sbu;
+        this.getProduct();
       },
       (error) => {
         console.log(error);
@@ -574,6 +574,7 @@ export class InvestmentAprComponent implements OnInit {
       this.updateInvestmentApr();
   }
   insertInvestmentApr() {
+    debugger;
     this.investmentAprService.insertInvestmentApr().subscribe(
       res => {
         //
@@ -590,6 +591,7 @@ export class InvestmentAprComponent implements OnInit {
     );
   }
   updateInvestmentApr() {
+    debugger;
     this.investmentAprService.updateInvestmentApr().subscribe(
       res => {
         //
@@ -612,45 +614,31 @@ export class InvestmentAprComponent implements OnInit {
       return false;
     }
     if (this.investmentAprService.investmentDetailFormData.proposedAmount == null || this.investmentAprService.investmentDetailFormData.proposedAmount == undefined || this.investmentAprService.investmentDetailFormData.proposedAmount == "") {
-      this.toastr.warning('Enter Proposed Amount First', 'Investment ', {
-        positionClass: 'toast-top-right'
-      });
+      this.toastr.warning('Enter Proposed Amount First', 'Investment ');
       return false;
     }
     if (this.investmentAprService.investmentDetailFormData.purpose == null || this.investmentAprService.investmentDetailFormData.purpose == undefined || this.investmentAprService.investmentDetailFormData.purpose == "") {
-      this.toastr.warning('Enter Purpose First', 'Investment ', {
-        positionClass: 'toast-top-right'
-      });
+      this.toastr.warning('Enter Purpose First', 'Investment ');
       return false;
     }
     if (this.investmentAprService.investmentDetailFormData.fromDate == null || this.investmentAprService.investmentDetailFormData.fromDate == undefined) {
-      this.toastr.warning('Select From Date  First', 'Investment ', {
-        positionClass: 'toast-top-right'
-      });
+      this.toastr.warning('Select From Date  First', 'Investment ');
       return false;
     }
     if (this.investmentAprService.investmentDetailFormData.toDate == null || this.investmentAprService.investmentDetailFormData.toDate == undefined) {
-      this.toastr.warning('Select To Date  First', 'Investment ', {
-        positionClass: 'toast-top-right'
-      });
+      this.toastr.warning('Select To Date  First', 'Investment ');
       return false;
     }
     if (this.investmentAprService.investmentDetailFormData.commitmentAllSBU == null || this.investmentAprService.investmentDetailFormData.commitmentAllSBU == undefined || this.investmentAprService.investmentDetailFormData.commitmentAllSBU == "") {
-      this.toastr.warning('Enter Commitment All SBU First', 'Investment ', {
-        positionClass: 'toast-top-right'
-      });
+      this.toastr.warning('Enter Commitment All SBU First', 'Investment ');
       return false;
     }
     if (this.investmentAprService.investmentDetailFormData.commitmentOwnSBU == null || this.investmentAprService.investmentDetailFormData.commitmentOwnSBU == undefined || this.investmentAprService.investmentDetailFormData.commitmentOwnSBU == "") {
-      this.toastr.warning('Enter Commitment Own SBU First', 'Investment ', {
-        positionClass: 'toast-top-right'
-      });
+      this.toastr.warning('Enter Commitment Own SBU First', 'Investment ');
       return false;
     }
     if (this.investmentAprService.investmentDetailFormData.paymentMethod == null || this.investmentAprService.investmentDetailFormData.paymentMethod == undefined || this.investmentAprService.investmentDetailFormData.paymentMethod == "") {
-      this.toastr.warning('Select Payment Method First', 'Investment ', {
-        positionClass: 'toast-top-right'
-      });
+      this.toastr.warning('Select Payment Method First', 'Investment ');
       return false;
     }
 
@@ -667,10 +655,14 @@ export class InvestmentAprComponent implements OnInit {
         this.investmentAprService.investmentDetailFormData.fromDate = new Date(data.fromDate);
         this.investmentAprService.investmentDetailFormData.toDate = new Date(data.toDate);
         this.isDonationValid = true;
-        this.toastr.success('Save successfully', 'Investment ');
+        //this.toastr.success('Save successfully', 'Investment ');
+        
       },
-      err => { this.toastr.warning(err.message, 'Investment ');
+      err => { 
+        //this.toastr.warning(err.message, 'Investment ');
+        
         console.log(err); 
+        this.investmentAprService.investmentAprCommentFormData.id=0;
       }
     );
     // }
@@ -736,6 +728,7 @@ export class InvestmentAprComponent implements OnInit {
 
     this.investmentAprService.insertInvestmentTargetedProd(this.investmentTargetedProds).subscribe(
       res => {
+        debugger;
         //
         //this.investmentAprService.investmentTargetedProdFormData=new InvestmentTargetedProd();
         if (this.sbu == this.investmentAprService.investmentAprFormData.sbu && this.investmentAprService.investmentAprCommentFormData.recStatus == 'Approved') 
