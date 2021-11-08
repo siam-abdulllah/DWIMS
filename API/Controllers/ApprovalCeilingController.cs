@@ -9,7 +9,10 @@ using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
+using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -17,11 +20,13 @@ namespace API.Controllers
     {
         private readonly IGenericRepository<ApprovalCeiling> _aptimeRepo;
         private readonly IMapper _mapper;
-        public ApprovalCeilingController(IGenericRepository<ApprovalCeiling> aptimeRepo,
+        private readonly StoreContext _dbContext;
+        public ApprovalCeilingController(IGenericRepository<ApprovalCeiling> aptimeRepo,StoreContext dbContext,
         IMapper mapper)
         {
             _mapper = mapper;
             _aptimeRepo = aptimeRepo;
+            _dbContext = dbContext;
         }
 
 
@@ -43,6 +48,28 @@ namespace API.Controllers
                 var data = _mapper.Map<IReadOnlyList<ApprovalCeiling>, IReadOnlyList<ApprovalCeilingDto>>(posts);
 
                 return Ok(new Pagination<ApprovalCeilingDto>(appParrams.PageIndex, appParrams.PageSize, totalItems, data));
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+         [HttpGet("GetBudgetCeiling/{empID}/{sbu}/{donationtype}")]
+        // [Authorize(Roles = "Owner,Administrator")]
+        // [Authorize(Policy = "DetailUserPolicy")]
+        public async Task<ActionResult<IReadOnlyList<BudgetCeiling>>> GetBudgetCeiling(int empID, string sbu,string donationtype)
+        {
+            try
+            {
+                List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                        new SqlParameter("@SBU", sbu),
+                        new SqlParameter("@EID", empID),
+                        new SqlParameter("@RSTATUS", "Recommended")
+                    };
+                var results = _dbContext.BudgetCeiling.FromSqlRaw<BudgetCeiling>("EXECUTE SP_InvestmentAprSearch @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
+                return results;
             }
             catch (Exception ex)
             {

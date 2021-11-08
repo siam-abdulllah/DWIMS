@@ -5,6 +5,7 @@ using Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Infrastructure.Data
 {
@@ -66,6 +67,8 @@ namespace Infrastructure.Data
         public DbSet<MenuHead> MenuHead { get; set; }
         public DbSet<SubMenu> SubMenu { get; set; }
         public DbSet<MenuConfig> MenuConfig { get; set; }
+        [NotMapped]
+        public DbSet<BudgetCeiling> BudgetCeiling { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

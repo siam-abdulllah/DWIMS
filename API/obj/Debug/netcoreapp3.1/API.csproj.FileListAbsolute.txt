@@ -1109,6 +1109,7 @@ G:\DIDS\DIDS_GIT\DWIMS\API\bin\Debug\netcoreapp3.1\ru\Microsoft.CodeAnalysis.Wor
 G:\DIDS\DIDS_GIT\DWIMS\API\bin\Debug\netcoreapp3.1\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
 G:\DIDS\DIDS_GIT\DWIMS\API\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
 G:\DIDS\DIDS_GIT\DWIMS\API\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+G:\DIDS\DIDS_GIT\DWIMS\API\obj\Debug\netcoreapp3.1\API.GeneratedMSBuildEditorConfig.editorconfig
 E:\DWIMS\TestApplication\API\bin\Debug\netcoreapp3.1\appsettings.Development.json
 E:\DWIMS\TestApplication\API\bin\Debug\netcoreapp3.1\appsettings.json
 E:\DWIMS\TestApplication\API\bin\Debug\netcoreapp3.1\API.exe
@@ -1296,5 +1297,4 @@ E:\DWIMS\TestApplication\API\obj\Debug\netcoreapp3.1\API.RazorTargetAssemblyInfo
 E:\DWIMS\TestApplication\API\obj\Debug\netcoreapp3.1\API.dll
 E:\DWIMS\TestApplication\API\obj\Debug\netcoreapp3.1\API.pdb
 E:\DWIMS\TestApplication\API\obj\Debug\netcoreapp3.1\API.genruntimeconfig.cache
-G:\DIDS\DIDS_GIT\DWIMS\API\obj\Debug\netcoreapp3.1\API.GeneratedMSBuildEditorConfig.editorconfig
 E:\DWIMS\TestApplication\API\obj\Debug\netcoreapp3.1\API.csproj.CopyComplete

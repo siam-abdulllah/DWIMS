@@ -118,13 +118,10 @@ export class AccountService {
     return this.http.get(this.baseUrl + 'employee/getEmployeeSbuById/' + employeeId).pipe(
       map((employeeInfo: IEmployeeInfo) => {
         if (employeeInfo) {
-          // localStorage.setItem('token', user.token);
-          // this.currentUserSource.next(user);
           return employeeInfo;
         }
       })
     );
-
   }
   setEmployeeInfo(employeeId: number) {
     return this.http.get(this.baseUrl + 'employee/getEmployeeSbuById/' + employeeId).pipe(

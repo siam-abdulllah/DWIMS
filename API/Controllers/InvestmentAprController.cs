@@ -73,9 +73,7 @@ namespace API.Controllers
         }
         [HttpGet("investmentInits/{empId}/{sbu}")]
         public ActionResult<Pagination<InvestmentInitDto>> GetInvestmentInits(int empId, string sbu,
-          [FromQuery] InvestmentInitSpecParams investmentInitParrams,
-          [FromQuery] InvestmentRecCommentSpecParams investmentRecCommentParrams,
-          [FromQuery] InvestmentAprCommentSpecParams investmentAprCommentParrams)
+          [FromQuery] InvestmentInitSpecParams investmentInitParrams)
         {
             try
             {
@@ -97,11 +95,9 @@ namespace API.Controllers
                 throw e;
             }
         }
-        [HttpGet("investmentApproved/{empId}/{sbu}")]
+          [HttpGet("investmentApproved/{empId}/{sbu}")]
         public ActionResult<Pagination<InvestmentInitDto>> GetinvestmentApproved(int empId, string sbu,
-          [FromQuery] InvestmentInitSpecParams investmentInitParrams,
-          [FromQuery] InvestmentRecCommentSpecParams investmentRecCommentParrams,
-          [FromQuery] InvestmentAprCommentSpecParams investmentAprCommentParrams)
+          [FromQuery] InvestmentInitSpecParams investmentInitParrams)
         {
             try
             {
@@ -120,18 +116,15 @@ namespace API.Controllers
             }
             catch (System.Exception e)
             {
-
                 throw e;
             }
         }
 
-        [HttpPost("InsertApr/{empID}/{aprStatus}/{sbu}/{dType}")]
-        public async Task<ActionResult<InvestmentAprDto>> InsertInvestmentApr(int empId, string aprStatus, string sbu, string dType, InvestmentAprDto investmentAprDto)
+          [HttpPost("InsertApr/{empID}/{aprStatus}/{sbu}/{dType}")]
+          public async Task<ActionResult<InvestmentAprDto>> InsertInvestmentApr(int empId, string aprStatus, string sbu, string dType, InvestmentAprDto investmentAprDto)
         {
             try
             {
-                var spec = new ApprAuthConfigSpecification(empId, "A");
-                var apprAuthConfig = await _apprAuthConfigRepo.GetEntityWithSpec(spec);
                 if (aprStatus == "Approved")
                 {
                     List<SqlParameter> parms = new List<SqlParameter>
@@ -146,6 +139,7 @@ namespace API.Controllers
                     };
                     // var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentCeilingCheck @SBU,@DTYPE,@EID,@PRAMOUNT,@ASTATUS", parms.ToArray()).ToList();
                     var result = _dbContext.Database.ExecuteSqlRawAsync("EXECUTE SP_InvestmentCeilingCheck @SBU,@DTYPE,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
+                    var param=parms[6].Value;
                     if (parms[6].Value.ToString() != "True")
                     //if (result.Result == 0)
                     {
@@ -179,7 +173,8 @@ namespace API.Controllers
                     //};
                     //_investmentAprRepo.Add(invApr);
                     //_investmentAprRepo.Savechange();
-                    
+                    //var specAppr = new ApprAuthConfigSpecification(empId, "A");
+                    //var apprAuthConfigAppr = await _apprAuthConfigRepo.GetEntityWithSpec(specAppr);
                     var invRecAppr = new InvestmentRec
                     {
                         //ReferenceNo = investmentInitDto.ReferenceNo,
@@ -194,23 +189,24 @@ namespace API.Controllers
                         PaymentMethod = investmentAprDto.PaymentMethod,
                         ChequeTitle = investmentAprDto.ChequeTitle,
                         EmployeeId = empId,
-                        Priority = apprAuthConfig.ApprovalAuthority.Priority,
+                       // Priority = apprAuthConfigAppr.ApprovalAuthority.Priority,
+                        Priority = 3,
                         CompletionStatus = true,
                         SetOn = DateTimeOffset.Now
                     };
                     _investmentRecRepo.Add(invRecAppr);
                     _investmentRecRepo.Savechange();
 
-                    var alreadyDetailTrackerExistSpec = new InvestmentDetailTrackerSpecification(investmentAprDto.InvestmentInitId);
-                    var alreadyDetailTrackerExistInvestmentAprList = await _investmentDetailTrackerRepo.ListAsync(alreadyDetailTrackerExistSpec);
-                    if (alreadyDetailTrackerExistInvestmentAprList.Count > 0)
-                    {
-                        foreach (var v in alreadyDetailTrackerExistInvestmentAprList)
-                        {
-                            _investmentDetailTrackerRepo.Delete(v);
-                            _investmentDetailTrackerRepo.Savechange();
-                        }
-                    }
+                    //var alreadyDetailTrackerExistSpec = new InvestmentDetailTrackerSpecification(investmentAprDto.InvestmentInitId);
+                    //var alreadyDetailTrackerExistInvestmentAprList = await _investmentDetailTrackerRepo.ListAsync(alreadyDetailTrackerExistSpec);
+                    //if (alreadyDetailTrackerExistInvestmentAprList.Count > 0)
+                    //{
+                    //    foreach (var v in alreadyDetailTrackerExistInvestmentAprList)
+                    //    {
+                    //        _investmentDetailTrackerRepo.Delete(v);
+                    //        _investmentDetailTrackerRepo.Savechange();
+                    //    }
+                    //}
                     if (dType == "Honorarium")
                     {
                         DateTimeOffset calcDate = investmentAprDto.FromDate;
@@ -291,6 +287,8 @@ namespace API.Controllers
 
                 //var spec = new ApprAuthConfigSpecification(empId, "A");
                 //var apprAuthConfig = await _apprAuthConfigRepo.GetEntityWithSpec(spec);
+                //var spec = new ApprAuthConfigSpecification(empId, "A");
+                //var apprAuthConfig = await _apprAuthConfigRepo.GetEntityWithSpec(spec);
                 var invRec = new InvestmentRec
                 {
                     //ReferenceNo = investmentInitDto.ReferenceNo,
@@ -305,7 +303,8 @@ namespace API.Controllers
                     PaymentMethod = investmentAprDto.PaymentMethod,
                     ChequeTitle = investmentAprDto.ChequeTitle,
                     EmployeeId = empId,
-                    Priority = apprAuthConfig.ApprovalAuthority.Priority,
+                   // Priority = apprAuthConfig.ApprovalAuthority.Priority,
+                    Priority = 3,
                     CompletionStatus = true,
                     SetOn = DateTimeOffset.Now
                 };
@@ -337,8 +336,8 @@ namespace API.Controllers
 
 
 
-        [HttpPost("InsertAprCom")]
-        public async Task<ActionResult<InvestmentRecCommentDto>> InsertInvestmentAprComment(InvestmentRecCommentDto investmentRecDto)
+          [HttpPost("InsertAprCom")]
+          public async Task<ActionResult<InvestmentRecCommentDto>> InsertInvestmentAprComment(InvestmentRecCommentDto investmentRecDto)
         {
             //var empData = await _employeeRepo.GetByIdAsync(investmentAprDto.EmployeeId);
            // var investmentInits = await _investmentInitRepo.GetByIdAsync((int)investmentAprDto.InvestmentInitId);
