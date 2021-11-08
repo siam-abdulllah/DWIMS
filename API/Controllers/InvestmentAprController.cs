@@ -151,14 +151,14 @@ namespace API.Controllers
                     {
                         return BadRequest(new ApiResponse(400, parms[6].Value.ToString()));
                     }
-                    var alreadyExistSpec = new InvestmentAprSpecification(investmentAprDto.InvestmentInitId);
-                        var alreadyExistInvestmentAprList = await _investmentAprRepo.ListAsync(alreadyExistSpec);
+                        var alreadyExistSpec = new InvestmentRecSpecification(investmentAprDto.InvestmentInitId,empId );
+                        var alreadyExistInvestmentAprList = await _investmentRecRepo.ListAsync(alreadyExistSpec);
                         if (alreadyExistInvestmentAprList.Count > 0)
                         {
                             foreach (var v in alreadyExistInvestmentAprList)
                             {
-                                _investmentAprRepo.Delete(v);
-                                _investmentAprRepo.Savechange();
+                            _investmentRecRepo.Delete(v);
+                            _investmentRecRepo.Savechange();
                             }
                         }
                     //var invApr = new InvestmentApr
@@ -201,6 +201,16 @@ namespace API.Controllers
                     _investmentRecRepo.Add(invRecAppr);
                     _investmentRecRepo.Savechange();
 
+                    var alreadyDetailTrackerExistSpec = new InvestmentDetailTrackerSpecification(investmentAprDto.InvestmentInitId);
+                    var alreadyDetailTrackerExistInvestmentAprList = await _investmentDetailTrackerRepo.ListAsync(alreadyDetailTrackerExistSpec);
+                    if (alreadyDetailTrackerExistInvestmentAprList.Count > 0)
+                    {
+                        foreach (var v in alreadyDetailTrackerExistInvestmentAprList)
+                        {
+                            _investmentDetailTrackerRepo.Delete(v);
+                            _investmentDetailTrackerRepo.Savechange();
+                        }
+                    }
                     if (dType == "Honorarium")
                     {
                         DateTimeOffset calcDate = investmentAprDto.FromDate;
@@ -242,6 +252,7 @@ namespace API.Controllers
                         _investmentDetailTrackerRepo.Add(invDT);
                         _investmentDetailTrackerRepo.Savechange();
                     }
+
                     return new InvestmentAprDto
                     {
                         Id = invRecAppr.Id,

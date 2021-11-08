@@ -77,8 +77,8 @@ export class InvestmentAprService {
   getInvestmentAprProducts(investmentInitId:number,sbu:string){    
     return this.http.get(this.baseUrl + 'investmentApr/investmentAprProducts/'+investmentInitId+'/'+sbu);
   }
-  getInvestmentTargetedGroups(investmentInitId:number){    
-    return this.http.get(this.baseUrl + 'investment/investmentTargetedGroups/'+investmentInitId);
+  getInvestmentTargetedGroups(investmentInitId:number,empId:number){    
+    return this.http.get(this.baseUrl + 'InvestmentRec/investmentTargetedGroups/'+investmentInitId+'/'+empId);
   }
   getInvestmentInstitutions(investmentInitId:number){    
     return this.http.get(this.baseUrl + 'investment/investmentInstitutions/'+investmentInitId);

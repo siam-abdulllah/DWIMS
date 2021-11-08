@@ -40,7 +40,7 @@ namespace Core.Specifications
         {
 
         }public InvestmentRecSpecification(int id,int empId)
-            : base(x => x.InvestmentInitId == id &&  x.InvestmentInit.EmployeeId == empId)
+            : base(x => x.InvestmentInitId == id &&  x.EmployeeId == empId)
         {
 
         }

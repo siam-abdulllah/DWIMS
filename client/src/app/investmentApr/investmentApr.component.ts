@@ -448,6 +448,7 @@ export class InvestmentAprComponent implements OnInit {
   getInvestmentAprDetails() {
     this.investmentAprService.getInvestmentAprDetails(this.investmentAprService.investmentAprFormData.id,parseInt(this.empId)).subscribe(response => {
       var data = response[0] as IInvestmentApr;
+      debugger;
       if (data !== undefined) {
         this.investmentAprService.investmentDetailFormData = data;
         this.investmentAprService.investmentDetailFormData.id = 0;
@@ -481,8 +482,8 @@ export class InvestmentAprComponent implements OnInit {
     });
   }
   getInvestmentTargetedGroup() {
-    this.investmentAprService.getInvestmentTargetedGroups(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
-      //
+    this.investmentAprService.getInvestmentTargetedGroups(this.investmentAprService.investmentAprFormData.id,parseInt(this.empId)).subscribe(response => {
+      debugger;
       var data = response as IInvestmentTargetedGroup[];
       if (data !== undefined) {
         this.investmentTargetedGroups = data;
@@ -574,7 +575,8 @@ export class InvestmentAprComponent implements OnInit {
       this.updateInvestmentApr();
   }
   insertInvestmentApr() {
-    debugger;
+   
+    this.investmentAprService.investmentAprCommentFormData.employeeId=parseInt(this.empId);
     this.investmentAprService.insertInvestmentApr().subscribe(
       res => {
         //
@@ -585,7 +587,7 @@ export class InvestmentAprComponent implements OnInit {
         // if(this.sbu==this.investmentAprService.investmentAprFormData.sbu && this.investmentAprService.investmentAprCommentFormData.aprStatus=='Approved')
         // {this.insertInvestmentDetails();}
         this.insertInvestmentTargetedProd();
-        //this.toastr.success('Save successfully', 'Investment ')
+        this.toastr.success('Save successfully', 'Investment ')
       },
       err => { console.log(err); }
     );
@@ -688,9 +690,7 @@ export class InvestmentAprComponent implements OnInit {
   insertInvestmentTargetedProd() {
     //
     if (this.investmentAprService.investmentAprFormData.id == null || this.investmentAprService.investmentAprFormData.id == undefined || this.investmentAprService.investmentAprFormData.id == 0) {
-        this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
-        positionClass: 'toast-top-right'
-      });
+        this.toastr.warning('Insert Investment Initialisation First', 'Investment Product');
       return false;
     }
     // if(this.investmentAprService.investmentDetailFormData.id==null || this.investmentAprService.investmentDetailFormData.id==undefined || this.investmentAprService.investmentDetailFormData.id==0)
@@ -711,15 +711,13 @@ export class InvestmentAprComponent implements OnInit {
     if (this.investmentTargetedProds !== undefined) {
       for (let i = 0; i < this.investmentTargetedProds.length; i++) {
         if (this.investmentTargetedProds[i].productInfo.id == this.investmentAprService.investmentTargetedProdFormData.productId) {
-          alert("product already exist !");
+          this.toastr.warning("Product already exist !");
           return false;
         }
       }
     }
     else {
-      this.toastr.warning('Select Product First', 'Investment ', {
-        positionClass: 'toast-top-right'
-      });
+      this.toastr.warning('Select Product First', 'Investment Product');
       return false;
     }
     this.investmentAprService.investmentTargetedProdFormData.investmentInitId = this.investmentAprService.investmentAprFormData.id;
@@ -737,9 +735,9 @@ export class InvestmentAprComponent implements OnInit {
         }
     
         this.getInvestmentTargetedProd();
-
+        this.getInvestmentTargetedGroup();
         this.isDonationValid = true;
-        //this.toastr.success('Save successfully', 'Investment ');
+        this.toastr.success('Save successfully', 'Investment Product');
       },
       err => { console.log(err); }
     );
@@ -770,7 +768,7 @@ export class InvestmentAprComponent implements OnInit {
     if (this.investmentTargetedProds !== undefined) {
       for (let i = 0; i < this.investmentTargetedProds.length; i++) {
         if (this.investmentTargetedProds[i].productInfo.id == this.investmentAprService.investmentTargetedProdFormData.productId) {
-          alert("product already exist !");
+          this.toastr.warning("Product already exist !");
           return false;
         }
 
@@ -816,12 +814,14 @@ export class InvestmentAprComponent implements OnInit {
     this.investmentAprService.investmentAprFormData = new InvestmentInit();
     this.investmentTargetedProds = [];
     this.investmentTargetedGroups = [];
+    this.investmentDetailsOld = [];
     this.isValid = false;
   }
   resetForm() {
     this.investmentAprService.investmentAprFormData = new InvestmentInit();
     this.investmentTargetedProds = [];
     this.investmentTargetedGroups = [];
+    this.investmentDetailsOld = [];
     this.isValid = false;
   }
 

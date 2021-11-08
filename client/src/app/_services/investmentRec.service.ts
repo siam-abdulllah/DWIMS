@@ -71,7 +71,7 @@ export class InvestmentRecService {
     return this.http.get(this.baseUrl + 'investment/investmentTargetedProds/'+investmentInitId+'/'+sbu);
   }
   getInvestmentRecDetails(investmentInitId:number,empId:number){    
-    return this.http.get(this.baseUrl + 'investmentRec/investmentRecDetails/'+investmentInitId+'/'+empId);
+    return this.http.get(this.baseUrl + 'investmentRec/investmentRecDetails/'+investmentInitId);
   }
   getInvestmentRecProducts(investmentInitId:number,sbu:string){    
     return this.http.get(this.baseUrl + 'investmentRec/investmentRecProducts/'+investmentInitId+'/'+sbu);

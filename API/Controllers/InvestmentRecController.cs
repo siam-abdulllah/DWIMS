@@ -479,8 +479,8 @@ namespace API.Controllers
                 var investrecComment = await _investmentRecCommentRepo.ListAsync(spec2);
 
                 var stsResult = (from t in investmentTargetedGroup
-                                join u in investrecComment on t.InvestmentInitId equals u.InvestmentInitId  into ut
-                                 from p in ut.DefaultIfEmpty()
+                                join u in investrecComment on t.InvestmentInitId equals u.InvestmentInitId   into ut
+                                 from p in ut.Where(f => f.SBU == t.SBU).DefaultIfEmpty()
                                  where 
                                 // u.EmployeeId == empId
                                  t.InvestmentInitId == investmentInitId

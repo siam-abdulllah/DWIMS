@@ -240,7 +240,8 @@ namespace API.Controllers
                     ProposeFor = investmentInit.ProposeFor,
                     DonationTo = investmentInit.DonationTo,
                     DonationType = investmentInit.DonationType,
-                    EmployeeId = investmentInit.EmployeeId
+                    EmployeeId = investmentInit.EmployeeId,
+                    MarketCode = empData.MarketCode
                 };
             }
             catch (Exception ex)
@@ -290,7 +291,8 @@ namespace API.Controllers
                     ProposeFor = investmentInit.ProposeFor,
                     DonationTo = investmentInit.DonationTo,
                     DonationType = investmentInit.DonationType,
-                    EmployeeId = investmentInit.EmployeeId
+                    EmployeeId = investmentInit.EmployeeId,
+                    MarketCode = empData.MarketCode
                 };
 
             }
@@ -341,7 +343,8 @@ namespace API.Controllers
                     ProposeFor = investmentInit.ProposeFor,
                     DonationTo = investmentInit.DonationTo,
                     DonationType = investmentInit.DonationType,
-                    EmployeeId = investmentInit.EmployeeId
+                    EmployeeId = investmentInit.EmployeeId,
+                    MarketCode = empData.MarketCode
                 };
 
             }
