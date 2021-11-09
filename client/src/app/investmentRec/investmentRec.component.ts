@@ -1,6 +1,6 @@
 import {
   InvestmentRec, IInvestmentRec, InvestmentInit, IInvestmentInit,
-  InvestmentTargetedProd, IInvestmentTargetedProd, InvestmentTargetedGroup, IInvestmentTargetedGroup, IInvestmentRecComment
+  InvestmentTargetedProd, IInvestmentTargetedProd, InvestmentTargetedGroup, IInvestmentTargetedGroup, IInvestmentRecComment, InvestmentRecComment
 } from '../shared/models/investmentRec';
 import { InvestmentDoctor, IInvestmentDoctor, InvestmentInstitution, IInvestmentInstitution, InvestmentCampaign, IInvestmentCampaign } from '../shared/models/investmentRec';
 import { InvestmentBcds, IInvestmentBcds, InvestmentSociety, IInvestmentSociety } from '../shared/models/investmentRec';
@@ -535,6 +535,7 @@ export class InvestmentRecComponent implements OnInit {
       });
       return false;
     }
+    this.SpinnerService.show(); 
     this.investmentRecService.insertInvestmentRec().subscribe(
       res => {
         this.investmentRecService.investmentRecCommentFormData = res as IInvestmentRecComment;
@@ -545,10 +546,12 @@ export class InvestmentRecComponent implements OnInit {
          }
         this.insertInvestmentTargetedProd();
         this.getInvestmentTargetedGroup();
+        this.SpinnerService.hide(); 
         this.toastr.success('Save successfully', 'Investment')
       },
       err => { 
         console.log(err); 
+        this.SpinnerService.hide(); 
       }
     );
   }
@@ -595,6 +598,7 @@ export class InvestmentRecComponent implements OnInit {
       });
       return false;
     }
+    this.SpinnerService.show(); 
     this.investmentRecService.updateInvestmentRec().subscribe(
       res => {
         //
@@ -603,9 +607,11 @@ export class InvestmentRecComponent implements OnInit {
         if (this.sbu == this.investmentRecService.investmentRecFormData.sbu) { this.insertInvestmentDetails(); }
         this.insertInvestmentTargetedProd();
         this.getInvestmentTargetedGroup();
+        this.SpinnerService.hide(); 
         this.toastr.info('Updated successfully', 'Investment ')
       },
-      err => { console.log(err); }
+      err => { console.log(err); 
+        this.SpinnerService.hide(); }
     );
   }
   insertInvestmentDetails() {
@@ -707,6 +713,7 @@ export class InvestmentRecComponent implements OnInit {
   resetPage(form: NgForm) {
     form.reset();
     this.investmentRecService.investmentRecFormData = new InvestmentInit();
+    this.investmentRecService.investmentRecCommentFormData = new InvestmentRecComment();
     this.investmentTargetedProds = [];
     this.investmentTargetedGroups = [];
     this.investmentDetailsOld = [];
@@ -715,6 +722,7 @@ export class InvestmentRecComponent implements OnInit {
   }
   resetForm() {
     this.investmentRecService.investmentRecFormData = new InvestmentInit();
+    this.investmentRecService.investmentRecCommentFormData = new InvestmentRecComment();
     this.investmentTargetedProds = [];
     this.investmentTargetedGroups = [];
     this.investmentDetailsOld = [];

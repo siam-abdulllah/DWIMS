@@ -39,7 +39,7 @@ export class InvestmentAprService {
     return this.http.get(this.baseUrl + 'product/getProductForInvestment/'+sbu);
   }
   getBudget(sbu:string,empID:number,donationType:string){    
-    return this.http.get(this.baseUrl + 'product/getBudgetCeiling/'+empID+'/'+sbu+'/'+donationType);
+    return this.http.get(this.baseUrl + 'approvalCeiling/getBudgetCeiling/'+empID+'/'+sbu+'/'+donationType);
   }
   getLastFiveInvestment(marketCode:string,toDayDate:string){    
     return this.http.get(this.baseUrl + 'investment/getLastFiveInvestment/'+marketCode+'/'+toDayDate);

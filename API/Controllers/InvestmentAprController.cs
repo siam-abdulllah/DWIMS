@@ -138,13 +138,16 @@ namespace API.Controllers
                         new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
                     };
                     // var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentCeilingCheck @SBU,@DTYPE,@EID,@PRAMOUNT,@ASTATUS", parms.ToArray()).ToList();
-                    var result = _dbContext.Database.ExecuteSqlRawAsync("EXECUTE SP_InvestmentCeilingCheck @SBU,@DTYPE,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
-                    var param=parms[6].Value;
+                   // var result = _dbContext.Database.ExecuteSqlRawAsync("EXECUTE SP_InvestmentCeilingCheck @SBU,@DTYPE,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
+                    var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheck @SBU,@DTYPE,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
+                    //var param=parms[6].Value;
                     if (parms[6].Value.ToString() != "True")
                     //if (result.Result == 0)
                     {
                         return BadRequest(new ApiResponse(400, parms[6].Value.ToString()));
                     }
+                   
+                    
                         var alreadyExistSpec = new InvestmentRecSpecification(investmentAprDto.InvestmentInitId,empId );
                         var alreadyExistInvestmentAprList = await _investmentRecRepo.ListAsync(alreadyExistSpec);
                         if (alreadyExistInvestmentAprList.Count > 0)
@@ -197,16 +200,16 @@ namespace API.Controllers
                     _investmentRecRepo.Add(invRecAppr);
                     _investmentRecRepo.Savechange();
 
-                    //var alreadyDetailTrackerExistSpec = new InvestmentDetailTrackerSpecification(investmentAprDto.InvestmentInitId);
-                    //var alreadyDetailTrackerExistInvestmentAprList = await _investmentDetailTrackerRepo.ListAsync(alreadyDetailTrackerExistSpec);
-                    //if (alreadyDetailTrackerExistInvestmentAprList.Count > 0)
-                    //{
-                    //    foreach (var v in alreadyDetailTrackerExistInvestmentAprList)
-                    //    {
-                    //        _investmentDetailTrackerRepo.Delete(v);
-                    //        _investmentDetailTrackerRepo.Savechange();
-                    //    }
-                    //}
+                    var alreadyDetailTrackerExistSpec = new InvestmentDetailTrackerSpecification(investmentAprDto.InvestmentInitId);
+                    var alreadyDetailTrackerExistInvestmentAprList = await _investmentDetailTrackerRepo.ListAsync(alreadyDetailTrackerExistSpec);
+                    if (alreadyDetailTrackerExistInvestmentAprList.Count > 0)
+                    {
+                        foreach (var v in alreadyDetailTrackerExistInvestmentAprList)
+                        {
+                            _investmentDetailTrackerRepo.Delete(v);
+                            _investmentDetailTrackerRepo.Savechange();
+                        }
+                    }
                     if (dType == "Honorarium")
                     {
                         DateTimeOffset calcDate = investmentAprDto.FromDate;
@@ -543,6 +546,7 @@ namespace API.Controllers
                 EmployeeId = investmentRecDto.EmployeeId,
                 Comments = investmentRecDto.Comments,
                 RecStatus = investmentRecDto.RecStatus,
+                InvestmentInitId = investmentRecDto.InvestmentInitId,
             };
         }
 

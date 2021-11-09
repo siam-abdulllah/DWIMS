@@ -10,3 +10,4 @@ E:\DWIMS\TestApplication\Infrastructure\obj\Release\netstandard2.1\Infrastructur
 E:\DWIMS\TestApplication\Infrastructure\obj\Release\netstandard2.1\Infrastructure.csproj.CoreCompileInputs.cache
 E:\DWIMS\TestApplication\Infrastructure\obj\Release\netstandard2.1\Infrastructure.dll
 E:\DWIMS\TestApplication\Infrastructure\obj\Release\netstandard2.1\Infrastructure.pdb
+E:\DWIMS\TestApplication\Infrastructure\obj\Release\netstandard2.1\Infrastructure.csproj.CopyComplete

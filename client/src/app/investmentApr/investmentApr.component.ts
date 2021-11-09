@@ -1,6 +1,6 @@
 import {
   InvestmentApr, IInvestmentApr, InvestmentInit, IInvestmentInit,
-  InvestmentTargetedProd, IInvestmentTargetedProd, InvestmentTargetedGroup, IInvestmentTargetedGroup, IInvestmentAprComment
+  InvestmentTargetedProd, IInvestmentTargetedProd, InvestmentTargetedGroup, IInvestmentTargetedGroup, IInvestmentAprComment, InvestmentAprComment
 } from '../shared/models/investmentApr';
 import { InvestmentDoctor, IInvestmentDoctor, InvestmentInstitution, IInvestmentInstitution, InvestmentCampaign, IInvestmentCampaign } from '../shared/models/investmentApr';
 import { InvestmentBcds, IInvestmentBcds, InvestmentSociety, IInvestmentSociety } from '../shared/models/investmentApr';
@@ -27,6 +27,7 @@ import { MarketGroupDtl, IMarketGroupDtl } from '../shared/models/marketGroupDtl
 import { AccountService } from '../account/account.service';
 import { IInvestmentDetailOld } from '../shared/models/investment';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { IBudgetCeiling } from '../shared/models/budgetCeiling';
 
 @Component({
   selector: 'app-investmentApr',
@@ -49,12 +50,14 @@ export class InvestmentAprComponent implements OnInit {
   investmentDoctors: IInvestmentDoctor[];
   isValid: boolean = false;
   isInvOther: boolean = false;
+  isBudgetVisible: boolean = false;
   isDonationValid: boolean = false;
   numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
   bcds: IBcdsInfo[];
   society: ISocietyInfo[];
   markets: IMarket[];
   products: IProduct[];
+  budgetCeiling: IBudgetCeiling;
   campaignDtlproducts: IProduct[];
   subCampaigns: ISubCampaign[];
   doctors: IDoctor[];
@@ -86,6 +89,7 @@ export class InvestmentAprComponent implements OnInit {
   onSubmit(form: NgForm) {
     if (this.investmentAprService.investmentAprCommentFormData.id == null || this.investmentAprService.investmentAprCommentFormData.id == undefined || this.investmentAprService.investmentAprCommentFormData.id == 0)
       this.insertInvestmentApr();
+    //this.insertInvestmentDetails();
     else
       this.updateInvestmentApr();
   }
@@ -96,6 +100,7 @@ export class InvestmentAprComponent implements OnInit {
     this.InvestmentAprSearchModalRef = this.modalService.show(template, this.config);
   }
   selectInvestmentInit(selectedAprord: IInvestmentInit) {
+    this.resetForm();
     this.investmentAprService.investmentAprFormData = Object.assign({}, selectedAprord);
     this.investmentAprService.investmentDetailFormData.investmentInitId = selectedAprord.id;
     this.investmentAprService.investmentAprCommentFormData.investmentInitId = selectedAprord.id;
@@ -126,6 +131,7 @@ export class InvestmentAprComponent implements OnInit {
       this.isInvOther = true;
       this.isValid = false;
     }
+    this.getBudget();
     this.InvestmentInitSearchModalRef.hide()
   }
   selectInvestmentApr(selectedAprord: IInvestmentInit) {
@@ -160,6 +166,7 @@ export class InvestmentAprComponent implements OnInit {
       this.isInvOther = true;
       this.isValid = false;
     }
+    this.getBudget();
     this.InvestmentAprSearchModalRef.hide()
   }
   getLastFiveInvestment(marketCode: string, toDayDate: string) {
@@ -493,7 +500,7 @@ export class InvestmentAprComponent implements OnInit {
     }
   }
 
- 
+
   getEmployeeId() {
     this.empId = this.accountService.getEmployeeId();
     this.investmentAprService.investmentAprCommentFormData.employeeId = parseInt(this.empId);
@@ -508,41 +515,47 @@ export class InvestmentAprComponent implements OnInit {
       (error) => {
         console.log(error);
       });
-    }
-    getProduct() {
-      this.investmentAprService.getProduct(this.sbu).subscribe(response => {
-        this.products = response as IProduct[];
-      }, error => {
-        console.log(error);
-      });
-    }
-    getBudget() {
-      this.investmentAprService.getBudget(this.sbu,parseInt(this.empId),this.investmentAprService.investmentAprFormData.donationType).subscribe(response => {
-        this.products = response as IProduct[];
-      }, error => {
-        console.log(error);
-      });
-    }
+  }
+  getProduct() {
+    this.investmentAprService.getProduct(this.sbu).subscribe(response => {
+      this.products = response as IProduct[];
+    }, error => {
+      console.log(error);
+    });
+  }
+  getBudget() {
+    this.investmentAprService.getBudget(this.sbu, parseInt(this.empId), this.investmentAprService.investmentAprFormData.donationType).subscribe(response => {
+     debugger;
+      this.budgetCeiling = response[0] as IBudgetCeiling;
+      this.isBudgetVisible = true;
+    }, error => {
+      console.log(error);
+    });
+  }
   insertInvestmentApr() {
     this.investmentAprService.investmentAprCommentFormData.employeeId = parseInt(this.empId);
+    this.SpinnerService.show();
     this.investmentAprService.insertInvestmentApr().subscribe(
       res => {
         this.investmentAprService.investmentAprCommentFormData = res as IInvestmentAprComment;
         this.isValid = true;
-        this.toastr.success('Save successfully', 'Investment')
         this.insertInvestmentTargetedProd();
+        this.SpinnerService.hide();
+        this.toastr.success('Save successfully', 'Investment')
       },
       err => { console.log(err); }
     );
   }
   updateInvestmentApr() {
     debugger;
+    this.SpinnerService.show();
     this.investmentAprService.updateInvestmentApr().subscribe(
       res => {
         this.isValid = true;
         this.investmentAprService.investmentAprCommentFormData = res as IInvestmentAprComment;
-        this.toastr.success('Save successfully', 'Investment ');
         this.insertInvestmentTargetedProd();
+        this.SpinnerService.hide();
+        this.toastr.success('Save successfully', 'Investment')
       },
       err => { console.log(err); }
     );
@@ -582,6 +595,8 @@ export class InvestmentAprComponent implements OnInit {
     }
 
     this.investmentAprService.investmentDetailFormData.investmentInitId = this.investmentAprService.investmentAprFormData.id;
+
+    this.SpinnerService.show();
     this.investmentAprService.insertInvestmentDetail(parseInt(this.empId), this.sbu).subscribe(
       res => {
         var data = res as IInvestmentApr;
@@ -589,9 +604,12 @@ export class InvestmentAprComponent implements OnInit {
         this.investmentAprService.investmentDetailFormData.fromDate = new Date(data.fromDate);
         this.investmentAprService.investmentDetailFormData.toDate = new Date(data.toDate);
         this.isDonationValid = true;
+        this.SpinnerService.hide();
       },
       err => {
         console.log(err);
+        this.investmentAprService.investmentAprCommentFormData.id = 0;
+        this.SpinnerService.hide();
       }
     );
   }
@@ -614,15 +632,20 @@ export class InvestmentAprComponent implements OnInit {
       return false;
     }
     this.investmentAprService.investmentTargetedProdFormData.investmentInitId = this.investmentAprService.investmentAprFormData.id;
+    this.SpinnerService.show();
     this.investmentAprService.insertInvestmentTargetedProd(this.investmentTargetedProds).subscribe(
       res => {
         this.insertInvestmentDetails();
         this.getInvestmentTargetedProd();
         this.getInvestmentTargetedGroup();
         this.isDonationValid = true;
+        this.SpinnerService.hide();
         this.toastr.success('Save successfully', 'Investment Product');
       },
-      err => { console.log(err); }
+      err => {
+        console.log(err);
+        this.SpinnerService.hide();
+      }
     );
   }
   addInvestmentTargetedProd() {
@@ -660,17 +683,21 @@ export class InvestmentAprComponent implements OnInit {
   resetPage(form: NgForm) {
     form.reset();
     this.investmentAprService.investmentAprFormData = new InvestmentInit();
+    this.investmentAprService.investmentAprCommentFormData = new InvestmentAprComment();
     this.investmentTargetedProds = [];
     this.investmentTargetedGroups = [];
     this.investmentDetailsOld = [];
     this.isValid = false;
+    this.isBudgetVisible = false;
   }
   resetForm() {
     this.investmentAprService.investmentAprFormData = new InvestmentInit();
+    this.investmentAprService.investmentAprCommentFormData = new InvestmentAprComment();
     this.investmentTargetedProds = [];
     this.investmentTargetedGroups = [];
     this.investmentDetailsOld = [];
     this.isValid = false;
+    this.isBudgetVisible = false;
   }
 
   removeInvestmentTargetedProd(selectedAprord: IInvestmentTargetedProd) {
