@@ -288,10 +288,8 @@ namespace API.Controllers
                 //_investmentRecRepo.Add(invAprForRec);
                 //_investmentRecRepo.Savechange();
 
-                //var spec = new ApprAuthConfigSpecification(empId, "A");
-                //var apprAuthConfig = await _apprAuthConfigRepo.GetEntityWithSpec(spec);
-                //var spec = new ApprAuthConfigSpecification(empId, "A");
-                //var apprAuthConfig = await _apprAuthConfigRepo.GetEntityWithSpec(spec);
+                var spec = new ApprAuthConfigSpecification(empId, "A");
+                var apprAuthConfig = await _apprAuthConfigRepo.GetEntityWithSpec(spec);
                 var invRec = new InvestmentRec
                 {
                     //ReferenceNo = investmentInitDto.ReferenceNo,
@@ -306,8 +304,8 @@ namespace API.Controllers
                     PaymentMethod = investmentAprDto.PaymentMethod,
                     ChequeTitle = investmentAprDto.ChequeTitle,
                     EmployeeId = empId,
-                   // Priority = apprAuthConfig.ApprovalAuthority.Priority,
-                    Priority = 3,
+                    Priority = apprAuthConfig.ApprovalAuthority.Priority,
+                    //Priority = 3,
                     CompletionStatus = true,
                     SetOn = DateTimeOffset.Now
                 };

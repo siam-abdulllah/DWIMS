@@ -541,7 +541,10 @@ export class InvestmentAprComponent implements OnInit {
         this.isValid = true;
         this.insertInvestmentTargetedProd();
         this.SpinnerService.hide();
+        if (this.sbu != this.investmentAprService.investmentAprFormData.sbu) 
+        { 
         this.toastr.success('Save successfully', 'Investment')
+        }
       },
       err => { console.log(err); }
     );
@@ -555,7 +558,10 @@ export class InvestmentAprComponent implements OnInit {
         this.investmentAprService.investmentAprCommentFormData = res as IInvestmentAprComment;
         this.insertInvestmentTargetedProd();
         this.SpinnerService.hide();
+        if (this.sbu != this.investmentAprService.investmentAprFormData.sbu) 
+        { 
         this.toastr.success('Save successfully', 'Investment')
+        }
       },
       err => { console.log(err); }
     );
@@ -604,6 +610,7 @@ export class InvestmentAprComponent implements OnInit {
         this.investmentAprService.investmentDetailFormData.fromDate = new Date(data.fromDate);
         this.investmentAprService.investmentDetailFormData.toDate = new Date(data.toDate);
         this.isDonationValid = true;
+        this.toastr.success('Save successfully', 'Investment');
         this.SpinnerService.hide();
       },
       err => {
@@ -634,13 +641,18 @@ export class InvestmentAprComponent implements OnInit {
     this.investmentAprService.investmentTargetedProdFormData.investmentInitId = this.investmentAprService.investmentAprFormData.id;
     this.SpinnerService.show();
     this.investmentAprService.insertInvestmentTargetedProd(this.investmentTargetedProds).subscribe(
-      res => {
+      res => {if (this.sbu == this.investmentAprService.investmentAprFormData.sbu) 
+        { 
         this.insertInvestmentDetails();
+        }
         this.getInvestmentTargetedProd();
         this.getInvestmentTargetedGroup();
         this.isDonationValid = true;
         this.SpinnerService.hide();
+        if (this.sbu != this.investmentAprService.investmentAprFormData.sbu) 
+        { 
         this.toastr.success('Save successfully', 'Investment Product');
+        }
       },
       err => {
         console.log(err);
