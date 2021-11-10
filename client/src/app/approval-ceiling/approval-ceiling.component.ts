@@ -139,6 +139,11 @@ return true;
     this.approvalCeilingService.approvalCeilingFormData = new ApprovalCeiling();
     this.approvalCeilings=[];
     this.searchText = '';
+    this.config = {
+      currentPage: 1,
+      itemsPerPage: 10,
+      totalItems:50,
+      };
   }
   resetSearch(){
     this.searchText = '';

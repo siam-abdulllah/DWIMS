@@ -177,6 +177,11 @@ export class SbuWiseBudgetComponent implements OnInit {
   }
   resetPage() {
     this.sbuWiseBudgetService.sbuwiseBudgeFormData = new SBUWiseBudget();
+    this.config = {
+      currentPage: 1,
+      itemsPerPage: 10,
+      totalItems:50,
+      };
   }
 
 }

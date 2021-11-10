@@ -1110,7 +1110,6 @@ E:\DWIMS\TestApplication\API\obj\Debug\netcoreapp3.1\API.RazorTargetAssemblyInfo
 E:\DWIMS\TestApplication\API\obj\Debug\netcoreapp3.1\API.dll
 E:\DWIMS\TestApplication\API\obj\Debug\netcoreapp3.1\API.pdb
 E:\DWIMS\TestApplication\API\obj\Debug\netcoreapp3.1\API.genruntimeconfig.cache
-E:\DWIMS\TestApplication\API\obj\Debug\netcoreapp3.1\API.csproj.CopyComplete
 G:\DIDS\DIDS_GIT\DWIMS\API\bin\Debug\netcoreapp3.1\appsettings.Development.json
 G:\DIDS\DIDS_GIT\DWIMS\API\bin\Debug\netcoreapp3.1\appsettings.json
 G:\DIDS\DIDS_GIT\DWIMS\API\bin\Debug\netcoreapp3.1\API.exe
