@@ -58,11 +58,11 @@ export class InvestmentInitService {
   getEmployees() {
     return this.http.get(this.baseUrl + 'employee/employeesForInvestment');
   }
-  getInstitutions() {
-    return this.http.get(this.baseUrl + 'institution/institutionsForInvestment');
+  getInstitutions(marketCode:string) {
+    return this.http.get(this.baseUrl + 'institution/institutionsForInvestment/'+marketCode);
   }
-  getDoctors() {
-    return this.http.get(this.baseUrl + 'doctor/doctorsForInvestment');
+  getDoctors(marketCode:string) {
+    return this.http.get(this.baseUrl + 'doctor/doctorsForInvestment/'+marketCode);
   }
   getBcds() {
     return this.http.get(this.baseUrl + 'bcds/bcdsForInvestment');

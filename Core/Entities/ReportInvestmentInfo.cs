@@ -17,7 +17,7 @@ namespace Core.Entities
         public string BcdsId { get; set; }
         public Bcds Bcds { get; set; }
         public string SocietyId { get; set; }
-        public InvestmentSociety InvestmentSociety { get; set; }
+        public Society Society { get; set; }
         public string DoctorId { get; set; }
         public DoctorInfo DoctorInfo { get; set; }
         public string InstituteId { get; set; }

@@ -55,10 +55,10 @@ namespace API.Controllers
                 throw ex;
             }
         }
-         [HttpGet("GetBudgetCeiling/{empID}/{sbu}/{donationtype}")]
+        [HttpGet("GetBudgetCeiling/{empID}/{sbu}/{donationtype}")]
         // [Authorize(Roles = "Owner,Administrator")]
         // [Authorize(Policy = "DetailUserPolicy")]
-        public async Task<ActionResult<IReadOnlyList<BudgetCeiling>>> GetBudgetCeiling(int empID, string sbu,string donationtype)
+        public ActionResult<IReadOnlyList<BudgetCeiling>> GetBudgetCeiling(int empID, string sbu, string donationtype)
         {
             try
             {

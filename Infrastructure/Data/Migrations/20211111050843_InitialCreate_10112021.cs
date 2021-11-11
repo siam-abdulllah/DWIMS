@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Data.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InitialCreate_10112021 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -60,6 +60,30 @@ namespace Infrastructure.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BrandInfo", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BudgetCeiling",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DataStatus = table.Column<int>(nullable: false),
+                    SetOn = table.Column<DateTimeOffset>(nullable: false),
+                    ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
+                    AmountPerTransacion = table.Column<double>(nullable: false),
+                    AmountPerMonth = table.Column<double>(nullable: false),
+                    MonthlyExpense = table.Column<double>(nullable: false),
+                    MonthlyRemaining = table.Column<double>(nullable: false),
+                    SBUWiseBudget = table.Column<double>(nullable: false),
+                    SBUWiseExpense = table.Column<double>(nullable: false),
+                    SBUWiseRemaining = table.Column<double>(nullable: false),
+                    DonationType = table.Column<string>(nullable: true),
+                    SBU = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BudgetCeiling", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -780,6 +804,145 @@ namespace Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ReportInvestmentInfo",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DataStatus = table.Column<int>(nullable: false),
+                    SetOn = table.Column<DateTimeOffset>(nullable: false),
+                    ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
+                    MarketCode = table.Column<string>(nullable: true),
+                    MarketName = table.Column<string>(nullable: true),
+                    TerritoryCode = table.Column<string>(nullable: true),
+                    TerritoryName = table.Column<string>(nullable: true),
+                    RegionCode = table.Column<string>(nullable: true),
+                    RegionName = table.Column<string>(nullable: true),
+                    ZoneCode = table.Column<string>(nullable: true),
+                    ZoneName = table.Column<string>(nullable: true),
+                    DivisionCode = table.Column<string>(nullable: true),
+                    DivisionName = table.Column<string>(nullable: true),
+                    NationalCode = table.Column<string>(nullable: true),
+                    BcdsId = table.Column<string>(nullable: true),
+                    BcdsId1 = table.Column<int>(nullable: true),
+                    SocietyId = table.Column<string>(nullable: true),
+                    SocietyId1 = table.Column<int>(nullable: true),
+                    DoctorId = table.Column<string>(nullable: true),
+                    DoctorInfoId = table.Column<int>(nullable: true),
+                    InstituteId = table.Column<string>(nullable: true),
+                    InstitutionInfoId = table.Column<int>(nullable: true),
+                    DonationType = table.Column<string>(nullable: true),
+                    ExpenseDetail = table.Column<string>(nullable: true),
+                    InvestmentAmount = table.Column<string>(nullable: true),
+                    FromDate = table.Column<string>(nullable: true),
+                    ToDate = table.Column<string>(nullable: true),
+                    PrescribedSharePrcnt = table.Column<string>(nullable: true),
+                    PrescribedSharePrcntAll = table.Column<string>(nullable: true),
+                    PrescShareFromDate = table.Column<string>(nullable: true),
+                    PrescShareToDate = table.Column<string>(nullable: true),
+                    ComtSharePrcnt = table.Column<string>(nullable: true),
+                    ComtSharePrcntAll = table.Column<string>(nullable: true),
+                    DonationDuration = table.Column<string>(nullable: true),
+                    DonationFromDate = table.Column<string>(nullable: true),
+                    DonationToDate = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReportInvestmentInfo", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ReportInvestmentInfo_Bcds_BcdsId1",
+                        column: x => x.BcdsId1,
+                        principalTable: "Bcds",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ReportInvestmentInfo_DoctorInfo_DoctorInfoId",
+                        column: x => x.DoctorInfoId,
+                        principalTable: "DoctorInfo",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ReportInvestmentInfo_InstitutionInfo_InstitutionInfoId",
+                        column: x => x.InstitutionInfoId,
+                        principalTable: "InstitutionInfo",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ReportInvestmentInfo_Society_SocietyId1",
+                        column: x => x.SocietyId1,
+                        principalTable: "Society",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ReportProductInfo",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DataStatus = table.Column<int>(nullable: false),
+                    SetOn = table.Column<DateTimeOffset>(nullable: false),
+                    ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
+                    ProductCode = table.Column<string>(nullable: true),
+                    ProductName = table.Column<string>(nullable: true),
+                    SBU = table.Column<string>(nullable: true),
+                    MarketCode = table.Column<string>(nullable: true),
+                    MarketName = table.Column<string>(nullable: true),
+                    TerritoryCode = table.Column<string>(nullable: true),
+                    TerritoryName = table.Column<string>(nullable: true),
+                    RegionCode = table.Column<string>(nullable: true),
+                    RegionName = table.Column<string>(nullable: true),
+                    ZoneCode = table.Column<string>(nullable: true),
+                    ZoneName = table.Column<string>(nullable: true),
+                    DivisionCode = table.Column<string>(nullable: true),
+                    DivisionName = table.Column<string>(nullable: true),
+                    NationalCode = table.Column<string>(nullable: true),
+                    SocietyId = table.Column<string>(nullable: true),
+                    SocietyId1 = table.Column<int>(nullable: true),
+                    DoctorId = table.Column<string>(nullable: true),
+                    DoctorInfoId = table.Column<int>(nullable: true),
+                    InstituteId = table.Column<string>(nullable: true),
+                    InstitutionInfoId = table.Column<int>(nullable: true),
+                    DonationType = table.Column<string>(nullable: true),
+                    ExpenseDetail = table.Column<string>(nullable: true),
+                    InvestmentAmount = table.Column<string>(nullable: true),
+                    FromDate = table.Column<string>(nullable: true),
+                    ToDate = table.Column<string>(nullable: true),
+                    PrescribedSharePrcnt = table.Column<string>(nullable: true),
+                    PrescribedSharePrcntAll = table.Column<string>(nullable: true),
+                    PrescShareFromDate = table.Column<string>(nullable: true),
+                    PrescShareToDate = table.Column<string>(nullable: true),
+                    ComtSharePrcnt = table.Column<string>(nullable: true),
+                    ComtSharePrcntAll = table.Column<string>(nullable: true),
+                    DonationDuration = table.Column<string>(nullable: true),
+                    DonationFromDate = table.Column<string>(nullable: true),
+                    DonationToDate = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReportProductInfo", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ReportProductInfo_DoctorInfo_DoctorInfoId",
+                        column: x => x.DoctorInfoId,
+                        principalTable: "DoctorInfo",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ReportProductInfo_InstitutionInfo_InstitutionInfoId",
+                        column: x => x.InstitutionInfoId,
+                        principalTable: "InstitutionInfo",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ReportProductInfo_Society_SocietyId1",
+                        column: x => x.SocietyId1,
+                        principalTable: "Society",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CampaignDtl",
                 columns: table => new
                 {
@@ -1470,145 +1633,6 @@ namespace Infrastructure.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "ReportInvestmentInfo",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DataStatus = table.Column<int>(nullable: false),
-                    SetOn = table.Column<DateTimeOffset>(nullable: false),
-                    ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
-                    MarketCode = table.Column<string>(nullable: true),
-                    MarketName = table.Column<string>(nullable: true),
-                    TerritoryCode = table.Column<string>(nullable: true),
-                    TerritoryName = table.Column<string>(nullable: true),
-                    RegionCode = table.Column<string>(nullable: true),
-                    RegionName = table.Column<string>(nullable: true),
-                    ZoneCode = table.Column<string>(nullable: true),
-                    ZoneName = table.Column<string>(nullable: true),
-                    DivisionCode = table.Column<string>(nullable: true),
-                    DivisionName = table.Column<string>(nullable: true),
-                    NationalCode = table.Column<string>(nullable: true),
-                    BcdsId = table.Column<string>(nullable: true),
-                    BcdsId1 = table.Column<int>(nullable: true),
-                    SocietyId = table.Column<string>(nullable: true),
-                    InvestmentSocietyId = table.Column<int>(nullable: true),
-                    DoctorId = table.Column<string>(nullable: true),
-                    DoctorInfoId = table.Column<int>(nullable: true),
-                    InstituteId = table.Column<string>(nullable: true),
-                    InstitutionInfoId = table.Column<int>(nullable: true),
-                    DonationType = table.Column<string>(nullable: true),
-                    ExpenseDetail = table.Column<string>(nullable: true),
-                    InvestmentAmount = table.Column<string>(nullable: true),
-                    FromDate = table.Column<string>(nullable: true),
-                    ToDate = table.Column<string>(nullable: true),
-                    PrescribedSharePrcnt = table.Column<string>(nullable: true),
-                    PrescribedSharePrcntAll = table.Column<string>(nullable: true),
-                    PrescShareFromDate = table.Column<string>(nullable: true),
-                    PrescShareToDate = table.Column<string>(nullable: true),
-                    ComtSharePrcnt = table.Column<string>(nullable: true),
-                    ComtSharePrcntAll = table.Column<string>(nullable: true),
-                    DonationDuration = table.Column<string>(nullable: true),
-                    DonationFromDate = table.Column<string>(nullable: true),
-                    DonationToDate = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ReportInvestmentInfo", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ReportInvestmentInfo_Bcds_BcdsId1",
-                        column: x => x.BcdsId1,
-                        principalTable: "Bcds",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ReportInvestmentInfo_DoctorInfo_DoctorInfoId",
-                        column: x => x.DoctorInfoId,
-                        principalTable: "DoctorInfo",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ReportInvestmentInfo_InstitutionInfo_InstitutionInfoId",
-                        column: x => x.InstitutionInfoId,
-                        principalTable: "InstitutionInfo",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ReportInvestmentInfo_InvestmentSociety_InvestmentSocietyId",
-                        column: x => x.InvestmentSocietyId,
-                        principalTable: "InvestmentSociety",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ReportProductInfo",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DataStatus = table.Column<int>(nullable: false),
-                    SetOn = table.Column<DateTimeOffset>(nullable: false),
-                    ModifiedOn = table.Column<DateTimeOffset>(nullable: false),
-                    ProductCode = table.Column<string>(nullable: true),
-                    ProductName = table.Column<string>(nullable: true),
-                    SBU = table.Column<string>(nullable: true),
-                    MarketCode = table.Column<string>(nullable: true),
-                    MarketName = table.Column<string>(nullable: true),
-                    TerritoryCode = table.Column<string>(nullable: true),
-                    TerritoryName = table.Column<string>(nullable: true),
-                    RegionCode = table.Column<string>(nullable: true),
-                    RegionName = table.Column<string>(nullable: true),
-                    ZoneCode = table.Column<string>(nullable: true),
-                    ZoneName = table.Column<string>(nullable: true),
-                    DivisionCode = table.Column<string>(nullable: true),
-                    DivisionName = table.Column<string>(nullable: true),
-                    NationalCode = table.Column<string>(nullable: true),
-                    SocietyId = table.Column<string>(nullable: true),
-                    InvestmentSocietyId = table.Column<int>(nullable: true),
-                    DoctorId = table.Column<string>(nullable: true),
-                    DoctorInfoId = table.Column<int>(nullable: true),
-                    InstituteId = table.Column<string>(nullable: true),
-                    InstitutionInfoId = table.Column<int>(nullable: true),
-                    DonationType = table.Column<string>(nullable: true),
-                    ExpenseDetail = table.Column<string>(nullable: true),
-                    InvestmentAmount = table.Column<string>(nullable: true),
-                    FromDate = table.Column<string>(nullable: true),
-                    ToDate = table.Column<string>(nullable: true),
-                    PrescribedSharePrcnt = table.Column<string>(nullable: true),
-                    PrescribedSharePrcntAll = table.Column<string>(nullable: true),
-                    PrescShareFromDate = table.Column<string>(nullable: true),
-                    PrescShareToDate = table.Column<string>(nullable: true),
-                    ComtSharePrcnt = table.Column<string>(nullable: true),
-                    ComtSharePrcntAll = table.Column<string>(nullable: true),
-                    DonationDuration = table.Column<string>(nullable: true),
-                    DonationFromDate = table.Column<string>(nullable: true),
-                    DonationToDate = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ReportProductInfo", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ReportProductInfo_DoctorInfo_DoctorInfoId",
-                        column: x => x.DoctorInfoId,
-                        principalTable: "DoctorInfo",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ReportProductInfo_InstitutionInfo_InstitutionInfoId",
-                        column: x => x.InstitutionInfoId,
-                        principalTable: "InstitutionInfo",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ReportProductInfo_InvestmentSociety_InvestmentSocietyId",
-                        column: x => x.InvestmentSocietyId,
-                        principalTable: "InvestmentSociety",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_ApprAuthConfig_ApprovalAuthorityId",
                 table: "ApprAuthConfig",
@@ -1890,9 +1914,9 @@ namespace Infrastructure.Data.Migrations
                 column: "InstitutionInfoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ReportInvestmentInfo_InvestmentSocietyId",
+                name: "IX_ReportInvestmentInfo_SocietyId1",
                 table: "ReportInvestmentInfo",
-                column: "InvestmentSocietyId");
+                column: "SocietyId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ReportProductInfo_DoctorInfoId",
@@ -1905,9 +1929,9 @@ namespace Infrastructure.Data.Migrations
                 column: "InstitutionInfoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ReportProductInfo_InvestmentSocietyId",
+                name: "IX_ReportProductInfo_SocietyId1",
                 table: "ReportProductInfo",
-                column: "InvestmentSocietyId");
+                column: "SocietyId1");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -1923,6 +1947,9 @@ namespace Infrastructure.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "BrandInfo");
+
+            migrationBuilder.DropTable(
+                name: "BudgetCeiling");
 
             migrationBuilder.DropTable(
                 name: "CampaignDtlProduct");
@@ -1977,6 +2004,9 @@ namespace Infrastructure.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "InvestmentRecProducts");
+
+            migrationBuilder.DropTable(
+                name: "InvestmentSociety");
 
             migrationBuilder.DropTable(
                 name: "InvestmentTargetedGroup");
@@ -2036,6 +2066,9 @@ namespace Infrastructure.Data.Migrations
                 name: "CampaignDtl");
 
             migrationBuilder.DropTable(
+                name: "InvestmentInit");
+
+            migrationBuilder.DropTable(
                 name: "ProductInfo");
 
             migrationBuilder.DropTable(
@@ -2048,25 +2081,19 @@ namespace Infrastructure.Data.Migrations
                 name: "Bcds");
 
             migrationBuilder.DropTable(
+                name: "DoctorInfo");
+
+            migrationBuilder.DropTable(
                 name: "InstitutionInfo");
 
             migrationBuilder.DropTable(
-                name: "InvestmentSociety");
+                name: "Society");
 
             migrationBuilder.DropTable(
                 name: "CampaignMst");
 
             migrationBuilder.DropTable(
                 name: "SubCampaign");
-
-            migrationBuilder.DropTable(
-                name: "InvestmentInit");
-
-            migrationBuilder.DropTable(
-                name: "DoctorInfo");
-
-            migrationBuilder.DropTable(
-                name: "Society");
 
             migrationBuilder.DropTable(
                 name: "Employee");

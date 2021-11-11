@@ -231,6 +231,8 @@ export class InvestmentRecComponent implements OnInit {
       this.investmentRecs = response.data;     
       if (this.investmentRecs.length>0) {
         this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
+      }else {
+        this.toastr.warning('No Data Found');
       }
      }, error => {
       this.SpinnerService.hide();

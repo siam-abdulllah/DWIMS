@@ -11,7 +11,7 @@ namespace Core.Specifications
                (string.IsNullOrEmpty(parrams.Search))
            )
         {
-            AddInclude(x => x.InvestmentSociety);
+            AddInclude(x => x.Society);
             AddInclude(x => x.DoctorInfo);
             AddInclude(x => x.InstitutionInfo);
             AddOrderBy(x => x.SetOn);
@@ -37,7 +37,7 @@ namespace Core.Specifications
         public ReportInvestmentInfoSpecification(string fromDate, string toDate)
             : base(x => x.FromDate == fromDate && x.ToDate == toDate)
         {
-            AddInclude(x => x.InvestmentSociety);
+            AddInclude(x => x.Society);
             AddInclude(x => x.DoctorInfo);
             AddInclude(x => x.InstitutionInfo);
             AddOrderBy(x => x.SetOn);  

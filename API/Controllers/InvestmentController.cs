@@ -1231,7 +1231,6 @@ namespace API.Controllers
                                 PrescribedSharePrcntAll = e.PrescribedSharePrcntAll
                             }
                              ).Distinct().Take(5).ToList();
-
                 return data;
             }
             catch (System.Exception ex)

@@ -41,6 +41,7 @@ export class InvestmentInitComponent implements OnInit {
   convertedDate:string;
   empId: string;
   sbu: string;
+  marketCode: string;
   investmentInits: IInvestmentInit[];
   investmentTargetedProds: IInvestmentTargetedProd[];
   investmentTargetedGroups: IInvestmentTargetedGroup[];
@@ -381,6 +382,7 @@ export class InvestmentInitComponent implements OnInit {
       (response) => {
         this.sbu = response.sbu;
         this.investmentInitService.investmentInitFormData.marketCode = response.marketCode;
+        this.marketCode= response.marketCode;
         this.getProduct();
         //this.getLastFiveInvestment(this.investmentInitService.investmentInitFormData.marketCode, this.todayDate);
       },
@@ -603,9 +605,9 @@ export class InvestmentInitComponent implements OnInit {
   }
   getDoctor() {
     this.SpinnerService.show(); 
-    this.investmentInitService.getDoctors().subscribe(response => {
+    this.investmentInitService.getDoctors(this.investmentInitService.investmentInitFormData.marketCode).subscribe(response => {
       this.doctors = response as IDoctor[];
-      this.investmentInitService.getInstitutions().subscribe(response => {
+      this.investmentInitService.getInstitutions(this.investmentInitService.investmentInitFormData.marketCode).subscribe(response => {
         this.institutions = response as IInstitution[];
         if (this.investmentInitService.investmentInitFormData.id != null && this.investmentInitService.investmentInitFormData.id != undefined && this.investmentInitService.investmentInitFormData.id != 0) {
           this.getInvestmentDoctor();
@@ -629,9 +631,9 @@ export class InvestmentInitComponent implements OnInit {
  
   getInstitution() {
     this.SpinnerService.show();
-    this.investmentInitService.getInstitutions().subscribe(response => {
+    this.investmentInitService.getInstitutions(this.investmentInitService.investmentInitFormData.marketCode).subscribe(response => {
       this.institutions = response as IInstitution[];
-      this.investmentInitService.getDoctors().subscribe(response => {
+      this.investmentInitService.getDoctors(this.investmentInitService.investmentInitFormData.marketCode).subscribe(response => {
         this.doctors = response as IDoctor[];
         if (this.investmentInitService.investmentInitFormData.id != null && this.investmentInitService.investmentInitFormData.id != undefined && this.investmentInitService.investmentInitFormData.id != 0) {
           this.getInvestmentInstitution();
@@ -656,9 +658,9 @@ export class InvestmentInitComponent implements OnInit {
     this.SpinnerService.show();
     this.investmentInitService.getCampaignMsts().subscribe(response => {
       this.campaignMsts = response as ICampaignMst[];
-      this.investmentInitService.getDoctors().subscribe(response => {
+      this.investmentInitService.getDoctors(this.investmentInitService.investmentInitFormData.marketCode).subscribe(response => {
         this.doctors = response as IDoctor[];
-        this.investmentInitService.getInstitutions().subscribe(response => {
+        this.investmentInitService.getInstitutions(this.investmentInitService.investmentInitFormData.marketCode).subscribe(response => {
           this.institutions = response as IInstitution[];
           if (this.investmentInitService.investmentInitFormData.id != null && this.investmentInitService.investmentInitFormData.id != undefined && this.investmentInitService.investmentInitFormData.id != 0) {
             this.getInvestmentCampaign();
@@ -682,7 +684,7 @@ export class InvestmentInitComponent implements OnInit {
     this.SpinnerService.show();
     this.investmentInitService.getSociety().subscribe(response => {
       this.society = response as ISocietyInfo[];
-      this.investmentInitService.getDoctors().subscribe(response => {
+      this.investmentInitService.getDoctors(this.investmentInitService.investmentInitFormData.marketCode).subscribe(response => {
         this.doctors = response as IDoctor[];
         if (this.investmentInitService.investmentInitFormData.id != null && this.investmentInitService.investmentInitFormData.id != undefined && this.investmentInitService.investmentInitFormData.id != 0) {
           this.getInvestmentSociety();
@@ -701,7 +703,7 @@ export class InvestmentInitComponent implements OnInit {
     this.SpinnerService.show();
     this.investmentInitService.getBcds().subscribe(response => {
       this.bcds = response as IBcdsInfo[];
-      this.investmentInitService.getDoctors().subscribe(response => {
+      this.investmentInitService.getDoctors(this.investmentInitService.investmentInitFormData.marketCode).subscribe(response => {
         this.doctors = response as IDoctor[];
         if (this.investmentInitService.investmentInitFormData.id != null && this.investmentInitService.investmentInitFormData.id != undefined && this.investmentInitService.investmentInitFormData.id != 0) {
           this.getInvestmentBcds();
@@ -1229,6 +1231,7 @@ export class InvestmentInitComponent implements OnInit {
   resetPage(form: NgForm) {
     form.reset();
     this.investmentInitService.investmentInitFormData = new InvestmentInit();
+    this.investmentInitService.investmentInitFormData.marketCode = this.marketCode;
     this.isValid = false;
     this.isSubmitted = false;
     this.isInvOther = false;
@@ -1239,6 +1242,7 @@ export class InvestmentInitComponent implements OnInit {
   }
   resetPageLoad() {
     this.investmentInitService.investmentInitFormData = new InvestmentInit();
+    this.investmentInitService.investmentInitFormData.marketCode = this.marketCode;
     this.isValid = false;
     this.isSubmitted = false;
     this.isInvOther = false;

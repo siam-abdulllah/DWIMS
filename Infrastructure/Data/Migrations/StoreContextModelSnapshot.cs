@@ -231,6 +231,54 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("BrandInfo");
                 });
 
+            modelBuilder.Entity("Core.Entities.BudgetCeiling", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("AmountPerMonth")
+                        .HasColumnType("float");
+
+                    b.Property<double>("AmountPerTransacion")
+                        .HasColumnType("float");
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DonationType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<double>("MonthlyExpense")
+                        .HasColumnType("float");
+
+                    b.Property<double>("MonthlyRemaining")
+                        .HasColumnType("float");
+
+                    b.Property<string>("SBU")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("SBUWiseBudget")
+                        .HasColumnType("float");
+
+                    b.Property<double>("SBUWiseExpense")
+                        .HasColumnType("float");
+
+                    b.Property<double>("SBUWiseRemaining")
+                        .HasColumnType("float");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BudgetCeiling");
+                });
+
             modelBuilder.Entity("Core.Entities.CampaignDtl", b =>
                 {
                     b.Property<int>("Id")
@@ -1911,9 +1959,6 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("InvestmentAmount")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("InvestmentSocietyId")
-                        .HasColumnType("int");
-
                     b.Property<string>("MarketCode")
                         .HasColumnType("nvarchar(max)");
 
@@ -1950,6 +1995,9 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("SocietyId")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("SocietyId1")
+                        .HasColumnType("int");
+
                     b.Property<string>("TerritoryCode")
                         .HasColumnType("nvarchar(max)");
 
@@ -1973,7 +2021,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("InstitutionInfoId");
 
-                    b.HasIndex("InvestmentSocietyId");
+                    b.HasIndex("SocietyId1");
 
                     b.ToTable("ReportInvestmentInfo");
                 });
@@ -2033,9 +2081,6 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("InvestmentAmount")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("InvestmentSocietyId")
-                        .HasColumnType("int");
-
                     b.Property<string>("MarketCode")
                         .HasColumnType("nvarchar(max)");
 
@@ -2081,6 +2126,9 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("SocietyId")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("SocietyId1")
+                        .HasColumnType("int");
+
                     b.Property<string>("TerritoryCode")
                         .HasColumnType("nvarchar(max)");
 
@@ -2102,7 +2150,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("InstitutionInfoId");
 
-                    b.HasIndex("InvestmentSocietyId");
+                    b.HasIndex("SocietyId1");
 
                     b.ToTable("ReportProductInfo");
                 });
@@ -3058,9 +3106,9 @@ namespace Infrastructure.Data.Migrations
                         .WithMany()
                         .HasForeignKey("InstitutionInfoId");
 
-                    b.HasOne("Core.Entities.InvestmentSociety", "InvestmentSociety")
+                    b.HasOne("Core.Entities.Society", "Society")
                         .WithMany()
-                        .HasForeignKey("InvestmentSocietyId");
+                        .HasForeignKey("SocietyId1");
                 });
 
             modelBuilder.Entity("Core.Entities.ReportProductInfo", b =>
@@ -3073,9 +3121,9 @@ namespace Infrastructure.Data.Migrations
                         .WithMany()
                         .HasForeignKey("InstitutionInfoId");
 
-                    b.HasOne("Core.Entities.InvestmentSociety", "InvestmentSociety")
+                    b.HasOne("Core.Entities.Society", "Society")
                         .WithMany()
-                        .HasForeignKey("InvestmentSocietyId");
+                        .HasForeignKey("SocietyId1");
                 });
 #pragma warning restore 612, 618
         }
