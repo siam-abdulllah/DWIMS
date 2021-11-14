@@ -11,6 +11,7 @@ namespace Core.Specifications
            (string.IsNullOrEmpty(sbuParrams.Search) || x.SBU.ToString().ToLower().Contains(sbuParrams.Search))
        )
         {
+            AddInclude(x => x.Donation);
             AddOrderBy(x => x.FromDate);
             ApplyPaging(sbuParrams.PageSize * (sbuParrams.PageIndex - 1), sbuParrams.PageSize);
         }

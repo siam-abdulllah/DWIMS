@@ -29,7 +29,7 @@ namespace API.Controllers
 
         [HttpGet("doctorsForInvestment/{marketCode}")]
         [RequestFormLimits(ValueCountLimit = int.MaxValue)]
-        public async Task<IEnumerable<DoctorInfo>> GetDoctorsForInvestment(string marketCode)
+        public ActionResult<IEnumerable<DoctorInfo>> GetDoctorsForInvestment(string marketCode)
         {
             try
             {

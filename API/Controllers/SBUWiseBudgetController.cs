@@ -31,8 +31,6 @@ namespace API.Controllers
         {
             try
             {
-
-
                 var spec = new SBUWiseBudgetSpecificiation(sbuParrams);
 
                 var countSpec = new SBUWiseBudgetWithFiltersForCountSpecificication(sbuParrams);
@@ -61,14 +59,12 @@ namespace API.Controllers
                 var alreadyExistSBUWiseBudgetList = await _sbuRepo.ListAsync(alreadyExistSpec);
                 if (alreadyExistSBUWiseBudgetList.Count > 0)
                 {
-                    return new BadRequestObjectResult(new ApiValidationErrorResponse { Errors = new[] { "Budget already existed" } });
+                    return new BadRequestObjectResult(new ApiValidationErrorResponse { Errors = new[] { "Budget Already Existed" } });
                 }
-
-                var fromDateCheck = new SBUWiseBudgetWithFiltersForCountSpecificication(sbuBdgt.FromDate, sbuBdgt.SBU);
+                var fromDateCheck = new SBUWiseBudgetWithFiltersForCountSpecificication(sbuBdgt.FromDate, sbuBdgt.SBU,sbuBdgt.DonationId);
                 var fromDateCheckList = await _sbuRepo.ListAsync(fromDateCheck);
-                var toDateCheck = new SBUWiseBudgetWithFiltersForCountSpecificication(sbuBdgt.ToDate, sbuBdgt.SBU);
+                var toDateCheck = new SBUWiseBudgetWithFiltersForCountSpecificication(sbuBdgt.ToDate, sbuBdgt.SBU, sbuBdgt.DonationId);
                 var toDateCheckList = await _sbuRepo.ListAsync(toDateCheck);
-
                 if(fromDateCheckList.Count > 0 || toDateCheckList.Count > 0)
                 {
                     return new BadRequestObjectResult(new ApiValidationErrorResponse { Errors = new[] { "Date Range Existed" } });
@@ -78,6 +74,7 @@ namespace API.Controllers
                 {
                     SBU = sbuBdgt.SBU,
                     SBUName = sbuBdgt.SBUName,
+                    DonationId = sbuBdgt.DonationId,
                     FromDate = sbuBdgt.FromDate,
                     ToDate = sbuBdgt.ToDate,
                     Amount = sbuBdgt.Amount,
@@ -93,6 +90,7 @@ namespace API.Controllers
                     Id = sbuBdgt.Id,
                     SBU = sbuBdgt.SBU,
                     SBUName = sbuBdgt.SBUName,
+                    DonationId = sbuBdgt.DonationId,
                     FromDate = sbuBdgt.FromDate,
                     ToDate = sbuBdgt.ToDate,
                     Amount = sbuBdgt.Amount,
@@ -110,9 +108,9 @@ namespace API.Controllers
         [HttpPost("ModifySBUWiseBudget")]
         public async Task<ActionResult<SBUWiseBudget>> UpdateSBUBudget(SBUWiseBudget sbuBdgt)
         {
-            var fromDateCheck = new SBUWiseBudgetWithFiltersForCountSpecificication(sbuBdgt.Id, sbuBdgt.FromDate, sbuBdgt.SBU);
+            var fromDateCheck = new SBUWiseBudgetWithFiltersForCountSpecificication(sbuBdgt.Id, sbuBdgt.FromDate, sbuBdgt.SBU, sbuBdgt.DonationId);
             var fromDateCheckList = await _sbuRepo.ListAsync(fromDateCheck);
-            var toDateCheck = new SBUWiseBudgetWithFiltersForCountSpecificication(sbuBdgt.Id, sbuBdgt.ToDate, sbuBdgt.SBU);
+            var toDateCheck = new SBUWiseBudgetWithFiltersForCountSpecificication(sbuBdgt.Id, sbuBdgt.ToDate, sbuBdgt.SBU, sbuBdgt.DonationId);
             var toDateCheckList = await _sbuRepo.ListAsync(toDateCheck);
 
             if (fromDateCheckList.Count > 0 || toDateCheckList.Count > 0)
@@ -124,6 +122,7 @@ namespace API.Controllers
                 Id = sbuBdgt.Id,
                 SBU = sbuBdgt.SBU,
                 SBUName = sbuBdgt.SBUName,
+                DonationId = sbuBdgt.DonationId,
                 FromDate = sbuBdgt.FromDate,
                 ToDate = sbuBdgt.ToDate,
                 Amount = sbuBdgt.Amount,
@@ -139,6 +138,7 @@ namespace API.Controllers
                 Id = sbuBdgt.Id,
                 SBU = sbuBdgt.SBU,
                 SBUName = sbuBdgt.SBUName,
+                DonationId = sbuBdgt.DonationId,
                 FromDate = sbuBdgt.FromDate,
                 ToDate = sbuBdgt.ToDate,
                 Amount = sbuBdgt.Amount,

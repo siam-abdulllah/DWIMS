@@ -37,7 +37,7 @@
                                         <option *ngFor="let a of SBUs" [value]="a.sbuCode">{{a.sbuName}}</option>
                                     </select>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <label>Budget Amount</label>
                                         <span style="color:red;">*</span>
                                         <small style="color:#888889;"> numeric value</small>
@@ -46,6 +46,20 @@
                                         <input class="form-control " placeholder="Budget Amount" name="amount" #amount="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgeFormData.amount" required [class.invalid]="amount.invalid && amount.touched" [pattern]="numberPattern">
                                         <div class="invalid-feedback" *ngIf="amount.errors?.pattern">Only numeric value</div>
 
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Donation Type</label>
+                                        <span style="color:red;">*</span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select class="form-control " id="donationId" name="donationId" #donationId="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgeFormData.donationId" required [class.invalid]="donationId.invalid && donationId.touched">
+                                          <option  [ngValue]="null">Select Donation Type</option>
+                                          <option *ngFor="let a of donations" [value]="a.id">{{a.donationTypeName}}</option>
+                                      </select>
                                     </div>
                                 </div>
                             </div>
@@ -61,7 +75,7 @@
                                             [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
                                     </div>
 
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <label>To Date</label>
                                         <span style="color:red;">*</span>
                                     </div>
@@ -89,6 +103,7 @@
                                 <table class="table table-bordered">
                                     <tr class="HeaderRow">
                                         <td>SBU</td>
+                                        <td>Donation Type</td>
                                         <td>From Date </td>
                                         <td>To Date</td>
                                         <td>Budget Amount</td>
@@ -98,6 +113,9 @@
                                     <tr *ngFor="let a of sbuWiseBudgets | filter: searchText | paginate: config ">
                                         <td>
                                             {{a.sbuName}}
+                                        </td>
+                                        <td>
+                                            {{a.donation.donationTypeName}}
                                         </td>
                                         <td>
                                             {{a.fromDate | date:'dd/MM/yyyy'}}
@@ -128,3 +146,6 @@
     </div>
     <!-- /.container-fluid -->
 </section>
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
+    <p style="color: black">Please Wait. </p>
+</ngx-spinner>

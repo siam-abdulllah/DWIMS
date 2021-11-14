@@ -17,18 +17,18 @@ namespace Core.Specifications
             
         } 
         public SBUWiseBudgetWithFiltersForCountSpecificication(SBUWiseBudget sbuBdgt)
-            : base(x => x.SBU == sbuBdgt.SBU && x.FromDate.Value.Date == sbuBdgt.FromDate.Value.Date && x.ToDate.Value.Date == sbuBdgt.ToDate.Value.Date)
+            : base(x => x.SBU == sbuBdgt.SBU && x.FromDate.Value.Date == sbuBdgt.FromDate.Value.Date && x.ToDate.Value.Date == sbuBdgt.ToDate.Value.Date && x.DonationId==sbuBdgt.DonationId)
         {
             
         }
         
-        public SBUWiseBudgetWithFiltersForCountSpecificication(DateTimeOffset? dateCheck, string sbu)
-            : base( x => x.SBU == sbu && (x.FromDate.Value.Date >= dateCheck || dateCheck <= x.ToDate.Value.Date))
+        public SBUWiseBudgetWithFiltersForCountSpecificication(DateTimeOffset? dateCheck, string sbu,int donationId)
+            : base( x => x.SBU == sbu && (x.FromDate.Value.Date >= dateCheck || dateCheck <= x.ToDate.Value.Date) && x.DonationId== donationId)
         {
 
         }
-        public SBUWiseBudgetWithFiltersForCountSpecificication(int id,DateTimeOffset? dateCheck, string sbu)
-            : base(x => x.SBU == sbu && !x.Id.Equals(id) && (x.FromDate.Value.Date >= dateCheck || dateCheck <= x.ToDate.Value.Date))
+        public SBUWiseBudgetWithFiltersForCountSpecificication(int id,DateTimeOffset? dateCheck, string sbu, int donationId)
+            : base(x => x.SBU == sbu && !x.Id.Equals(id) && (x.FromDate.Value.Date >= dateCheck || dateCheck <= x.ToDate.Value.Date) && x.DonationId == donationId)
         {
 
         }

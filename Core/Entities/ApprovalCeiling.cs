@@ -8,7 +8,9 @@ namespace Core.Entities
         public int ApprovalAuthorityId { get; set; }
         [ForeignKey("ApprovalAuthorityId")]
         public ApprovalAuthority ApprovalAuthority { get; set; }
-        public string DonationType { get; set; }
+        public int DonationId { get; set; }
+        [ForeignKey("DonationId")]
+        public Donation Donation { get; set; }
         public DateTimeOffset? InvestmentFrom { get; set; }
         public DateTimeOffset? InvestmentTo { get; set; }
         public int AmountPerTransacion { get; set; }

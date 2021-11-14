@@ -44,9 +44,9 @@
                                         <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <select class="form-control " id="donationType" name="donationType" #donationType="ngModel" [(ngModel)]="approvalCeilingService.approvalCeilingFormData.donationType" required [class.invalid]="donationType.invalid && donationType.touched">
+                                        <select class="form-control " id="donationId" name="donationId" #donationId="ngModel" [(ngModel)]="approvalCeilingService.approvalCeilingFormData.donationId" required [class.invalid]="donationId.invalid && donationId.touched">
                                           <option  [ngValue]="null">Select Donation Type</option>
-                                          <option *ngFor="let a of donations" [value]="a.donationTypeName">{{a.donationTypeName}}</option>
+                                          <option *ngFor="let a of donations" [value]="a.id">{{a.donationTypeName}}</option>
                                       </select>
                                     </div>
                                 </div>
@@ -128,7 +128,7 @@
                                     <table class="table table-bordered">
                                         <tr class="HeaderRow">
                                             <td>Approval Authority</td>
-                                            <td>Investment Type</td>
+                                            <td>Donation Type</td>
                                             <td>From Date</td>
                                             <td>To Date</td>
                                             <td>Amount Per Transaction</td>
@@ -142,7 +142,7 @@
                                                 {{a.approvalAuthority.approvalAuthorityName}}
                                             </td>
                                             <td>
-                                                {{a.donationType}}
+                                                {{a.donation.donationTypeName}}
                                             </td>
                                             <td>
                                                 {{a.investmentFrom| date:'dd/MM/yyyy'}}
@@ -180,3 +180,6 @@
     </div>
     <!-- /.container-fluid -->
 </section>
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
+    <p style="color: black">Please Wait. </p>
+</ngx-spinner>

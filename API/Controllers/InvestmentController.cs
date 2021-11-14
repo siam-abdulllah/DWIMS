@@ -93,7 +93,7 @@ namespace API.Controllers
                 //                Id = i.Id,
                 //                ReferenceNo = i.ReferenceNo,
                 //                ProposeFor = i.ProposeFor,
-                //                DonationType = i.DonationType,
+                //                DonationId = i.DonationId,
                 //                DonationTo = i.DonationTo,
                 //                EmployeeId = i.EmployeeId
                 //            }
@@ -151,7 +151,7 @@ namespace API.Controllers
                 //                Id = i.Id,
                 //                ReferenceNo = i.ReferenceNo,
                 //                ProposeFor = i.ProposeFor,
-                //                DonationType = i.DonationType,
+                //                DonationId = i.DonationId,
                 //                DonationTo = i.DonationTo,
                 //                EmployeeId = i.EmployeeId
                 //            }
@@ -213,7 +213,7 @@ namespace API.Controllers
                     ReferenceNo = referenceNo,
                     ProposeFor = investmentInitDto.ProposeFor,
                     DonationTo = investmentInitDto.DonationTo,
-                    DonationType = investmentInitDto.DonationType,
+                    DonationId = investmentInitDto.DonationId,
                     EmployeeId = investmentInitDto.EmployeeId,
                     MarketGroupCode = empData.MarketGroupCode,
                     MarketGroupName = empData.MarketGroupName, 
@@ -239,7 +239,7 @@ namespace API.Controllers
                     ReferenceNo = investmentInit.ReferenceNo,
                     ProposeFor = investmentInit.ProposeFor,
                     DonationTo = investmentInit.DonationTo,
-                    DonationType = investmentInit.DonationType,
+                    DonationId = investmentInit.DonationId,
                     EmployeeId = investmentInit.EmployeeId,
                     MarketCode = empData.MarketCode
                 };
@@ -264,7 +264,7 @@ namespace API.Controllers
                     ReferenceNo = investmentInitDto.ReferenceNo,
                     ProposeFor = investmentInitDto.ProposeFor,
                     DonationTo = investmentInitDto.DonationTo,
-                    DonationType = investmentInitDto.DonationType,
+                    DonationId = investmentInitDto.DonationId,
                     EmployeeId = investmentInitDto.EmployeeId,
                     MarketGroupCode = empData.MarketGroupCode,
                     MarketGroupName = empData.MarketGroupName,
@@ -290,7 +290,7 @@ namespace API.Controllers
                     ReferenceNo = investmentInit.ReferenceNo,
                     ProposeFor = investmentInit.ProposeFor,
                     DonationTo = investmentInit.DonationTo,
-                    DonationType = investmentInit.DonationType,
+                    DonationId = investmentInit.DonationId,
                     EmployeeId = investmentInit.EmployeeId,
                     MarketCode = empData.MarketCode
                 };
@@ -314,7 +314,7 @@ namespace API.Controllers
                     ReferenceNo = investmentInitDto.ReferenceNo,
                     ProposeFor = investmentInitDto.ProposeFor,
                     DonationTo = investmentInitDto.DonationTo,
-                    DonationType = investmentInitDto.DonationType,
+                    DonationId = investmentInitDto.DonationId,
                     EmployeeId = investmentInitDto.EmployeeId,
                     MarketGroupCode = empData.MarketGroupCode,
                     MarketGroupName = empData.MarketGroupName,
@@ -342,7 +342,7 @@ namespace API.Controllers
                     ReferenceNo = investmentInit.ReferenceNo,
                     ProposeFor = investmentInit.ProposeFor,
                     DonationTo = investmentInit.DonationTo,
-                    DonationType = investmentInit.DonationType,
+                    DonationId = investmentInit.DonationId,
                     EmployeeId = investmentInit.EmployeeId,
                     MarketCode = empData.MarketCode
                 };
@@ -1250,7 +1250,7 @@ namespace API.Controllers
                 var reportInvestmentData = await _reportInvestmentInfoRepo.ListAsync(reportInvestmentSpec);
                 // var spec = new ReportInvestmentSpecification(empData.MarketCode);
                 var data = (from e in reportInvestmentData
-                            where e.InstituteId== instituteId && e.DonationType==donationtype &&
+                            where e.InstituteId== instituteId && e.DonationType == donationtype &&
                             DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) <= DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture)
                             orderby DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) descending
                             select new ReportInvestmentInfo
@@ -1282,7 +1282,7 @@ namespace API.Controllers
                 var reportInvestmentData = await _reportInvestmentInfoRepo.ListAsync(reportInvestmentSpec);
                 // var spec = new ReportInvestmentSpecification(empData.MarketCode);
                 var data = (from e in reportInvestmentData
-                            where e.BcdsId== bcdsId && e.DonationType==donationtype &&
+                            where e.BcdsId== bcdsId && e.DonationType == donationtype &&
                             DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) <= DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture)
                             orderby DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) descending
                             select new ReportInvestmentInfo
@@ -1314,7 +1314,7 @@ namespace API.Controllers
                 var reportInvestmentData = await _reportInvestmentInfoRepo.ListAsync(reportInvestmentSpec);
                 // var spec = new ReportInvestmentSpecification(empData.MarketCode);
                 var data = (from e in reportInvestmentData
-                            where e.SocietyId== societyId && e.DonationType==donationtype &&
+                            where e.SocietyId== societyId && e.DonationType == donationtype &&
                             DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) <= DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture)
                             orderby DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) descending
                             select new ReportInvestmentInfo

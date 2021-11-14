@@ -66,7 +66,10 @@ export class SBUWiseBudgetService {
     return this.http.post(this.baseUrl+ 'sBUWiseBudget/CreateSBUWiseBudget', this.sbuwiseBudgeFormData);
   }
   updateSBUWiseBudget() {
+    debugger;
     return this.http.post(this.baseUrl+ 'sBUWiseBudget/ModifySBUWiseBudget',  this.sbuwiseBudgeFormData);
 }
-
+getDonations(){    
+  return this.http.get(this.baseUrl + 'donation/donationsForInvestment');
+}
 }

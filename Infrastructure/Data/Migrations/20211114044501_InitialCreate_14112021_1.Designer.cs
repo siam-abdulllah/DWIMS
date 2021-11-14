@@ -4,14 +4,16 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    partial class StoreContextModelSnapshot : ModelSnapshot
+    [Migration("20211114044501_InitialCreate_14112021_1")]
+    partial class InitialCreate_14112021_1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,8 +110,8 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
 
-                    b.Property<int>("DonationId")
-                        .HasColumnType("int");
+                    b.Property<string>("DonationType")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset?>("InvestmentFrom")
                         .HasColumnType("datetimeoffset");
@@ -132,8 +134,6 @@ namespace Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ApprovalAuthorityId");
-
-                    b.HasIndex("DonationId");
 
                     b.ToTable("ApprovalCeiling");
                 });
@@ -2749,12 +2749,6 @@ namespace Infrastructure.Data.Migrations
                     b.HasOne("Core.Entities.ApprovalAuthority", "ApprovalAuthority")
                         .WithMany()
                         .HasForeignKey("ApprovalAuthorityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Core.Entities.Donation", "Donation")
-                        .WithMany()
-                        .HasForeignKey("DonationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

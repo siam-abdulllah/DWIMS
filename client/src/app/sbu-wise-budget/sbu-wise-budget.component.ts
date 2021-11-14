@@ -9,7 +9,9 @@ import { ToastrService } from 'ngx-toastr';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ISBU } from '../shared/models/sbu';
-
+import { IDonation } from '../shared/models/donation';
+import { DatePipe } from '@angular/common';
+import { NgxSpinnerService } from "ngx-spinner"; 
 @Component({
   selector: 'app-sbu-wise-budget',
   templateUrl: './sbu-wise-budget.component.html'
@@ -19,6 +21,7 @@ export class SbuWiseBudgetComponent implements OnInit {
   @ViewChild('search', { static: false }) searchTerm: ElementRef;
   genParams: GenericParams;
   sbuWiseBudgets: ISBUWiseBudget[];
+  donations: IDonation[];
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date = new Date();
   totalCount = 0;
@@ -26,12 +29,14 @@ export class SbuWiseBudgetComponent implements OnInit {
   config: any;
   SBUs: ISBU[];
   numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
-  constructor(public sbuWiseBudgetService: SBUWiseBudgetService, private router: Router, private toastr: ToastrService) { }
+  constructor(public sbuWiseBudgetService: SBUWiseBudgetService, private router: Router, private toastr: ToastrService,
+    private datePipe: DatePipe,private SpinnerService: NgxSpinnerService) { }
   //constructor(private router: Router, private toastr: ToastrService) { }
   ngOnInit() {
     this.resetPage();
     this.getSBU();
     this.getSBUWiseBudget();
+    this.getDonation();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-blue' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
   }
@@ -70,7 +75,13 @@ export class SbuWiseBudgetComponent implements OnInit {
       }
     }
   }
-
+  getDonation(){
+    this.sbuWiseBudgetService.getDonations().subscribe(response => {
+      this.donations = response as IDonation[];
+    }, error => {
+        console.log(error);
+    });
+  }
 
   onPageChanged(event: any){
     const params = this.sbuWiseBudgetService.getGenParams();
@@ -95,7 +106,8 @@ export class SbuWiseBudgetComponent implements OnInit {
 }
 
   onSubmit(form: NgForm) {
-    debugger;
+    this.sbuWiseBudgetService.sbuwiseBudgeFormData.fromDate = this.datePipe.transform(this.sbuWiseBudgetService.sbuwiseBudgeFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
+    this.sbuWiseBudgetService.sbuwiseBudgeFormData.toDate = this.datePipe.transform(this.sbuWiseBudgetService.sbuwiseBudgeFormData.toDate, 'yyyy-MM-dd HH:mm:ss');
     if (this.sbuWiseBudgetService.sbuwiseBudgeFormData.id == 0)
       this.insertSBUWiseBudget(form);
     else
@@ -113,15 +125,19 @@ export class SbuWiseBudgetComponent implements OnInit {
       }
     }
     if(this.dateCompare()){
+      this.SpinnerService.show();  
     this.sbuWiseBudgetService.insertSBUWiseBudget().subscribe(
       res => {
-        debugger;
         this.resetForm(form);
         this.getSBUWiseBudget();
-        this.toastr.success('Data Saved successfully', 'SBU Wise Budget ')
+        this.SpinnerService.hide();  
+        this.toastr.success('Data Saved successfully', 'SBU Wise Budget')
       },
       err => {
-        this.toastr.error(err.errors[0], 'SBU Wise Budget ')
+        this.sbuWiseBudgetService.sbuwiseBudgeFormData.fromDate = new Date(this.sbuWiseBudgetService.sbuwiseBudgeFormData.fromDate);
+        this.sbuWiseBudgetService.sbuwiseBudgeFormData.toDate = new Date(this.sbuWiseBudgetService.sbuwiseBudgeFormData.toDate);
+        this.SpinnerService.hide();  
+        this.toastr.error(err.errors[0], 'SBU Wise Budget')
         console.log(err);
       }
     );
@@ -138,14 +154,18 @@ export class SbuWiseBudgetComponent implements OnInit {
       }
     }
     if(this.dateCompare()){
+      this.SpinnerService.show();  
     this.sbuWiseBudgetService.updateSBUWiseBudget().subscribe(
       res => {
-        debugger;
         this.resetForm(form);
         this.getSBUWiseBudget();
+        this.SpinnerService.hide();  
         this.toastr.info('Data Updated Successfully', 'SBU Wise Budget')
       },
       err => { 
+        this.sbuWiseBudgetService.sbuwiseBudgeFormData.fromDate = new Date(this.sbuWiseBudgetService.sbuwiseBudgeFormData.fromDate);
+        this.sbuWiseBudgetService.sbuwiseBudgeFormData.toDate = new Date(this.sbuWiseBudgetService.sbuwiseBudgeFormData.toDate);
+        this.SpinnerService.hide(); 
         this.toastr.error(err.errors[0], 'SBU Wise Budget ')
       console.log(err); 
     }

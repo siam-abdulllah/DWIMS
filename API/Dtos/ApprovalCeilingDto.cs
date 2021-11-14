@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Entities;
+using System;
 
 namespace API.Dtos
 {
@@ -7,7 +8,8 @@ namespace API.Dtos
         public int Id { get; set; }
         public int ApprovalAuthorityId { get; set; }
         public ApprovalAuthorityToReturnDto ApprovalAuthority { get; set; }
-        public string DonationType { get; set; }
+        public int DonationId { get; set; }
+        public Donation Donation { get; set; }
         public DateTimeOffset? InvestmentFrom { get; set; }
         public DateTimeOffset? InvestmentTo { get; set; }
         public int AmountPerTransacion { get; set; }

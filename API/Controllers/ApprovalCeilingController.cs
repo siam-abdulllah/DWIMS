@@ -55,10 +55,10 @@ namespace API.Controllers
                 throw ex;
             }
         }
-        [HttpGet("GetBudgetCeiling/{empID}/{sbu}/{donationtype}")]
+        [HttpGet("GetBudgetCeiling/{empID}/{sbu}/{DonationId}")]
         // [Authorize(Roles = "Owner,Administrator")]
         // [Authorize(Policy = "DetailUserPolicy")]
-        public ActionResult<IReadOnlyList<BudgetCeiling>> GetBudgetCeiling(int empID, string sbu, string donationtype)
+        public ActionResult<IReadOnlyList<BudgetCeiling>> GetBudgetCeiling(int empID, string sbu, string DonationId)
         {
             try
             {
@@ -66,7 +66,7 @@ namespace API.Controllers
                     {
                         new SqlParameter("@SBU", sbu),
                         new SqlParameter("@EID", empID),
-                        new SqlParameter("@DTYPE", donationtype)
+                        new SqlParameter("@DTYPE", DonationId)
                     };
                 var results = _dbContext.BudgetCeiling.FromSqlRaw<BudgetCeiling>("EXECUTE SP_BudgetCeilingSearch @SBU,@EID,@DTYPE", parms.ToArray()).ToList();
                 return results;
@@ -84,9 +84,9 @@ namespace API.Controllers
         {
             try
             {
-                var fromDateCheck = new ApprovalCeilingWithFiltersForCountSpecificication(apprclngDto.ApprovalAuthorityId, apprclngDto.DonationType, apprclngDto.InvestmentFrom);
+                var fromDateCheck = new ApprovalCeilingWithFiltersForCountSpecificication(apprclngDto.ApprovalAuthorityId, apprclngDto.DonationId, apprclngDto.InvestmentFrom);
                 var fromDateCheckList = await _aptimeRepo.ListAsync(fromDateCheck);
-                var toDateCheck = new ApprovalCeilingWithFiltersForCountSpecificication(apprclngDto.ApprovalAuthorityId, apprclngDto.DonationType, apprclngDto.InvestmentTo);
+                var toDateCheck = new ApprovalCeilingWithFiltersForCountSpecificication(apprclngDto.ApprovalAuthorityId, apprclngDto.DonationId, apprclngDto.InvestmentTo);
                 var toDateCheckList = await _aptimeRepo.ListAsync(toDateCheck);
 
                 if (fromDateCheckList.Count > 0 || toDateCheckList.Count > 0)
@@ -97,7 +97,7 @@ namespace API.Controllers
 
                 var appr = new ApprovalCeiling
                 {
-                    DonationType = apprclngDto.DonationType,
+                    DonationId = apprclngDto.DonationId,
                     InvestmentFrom = apprclngDto.InvestmentFrom,
                     InvestmentTo = apprclngDto.InvestmentTo,
                     AmountPerMonth = apprclngDto.AmountPerMonth,
@@ -115,7 +115,7 @@ namespace API.Controllers
                 return new ApprovalCeiling
                 {
                     Id = appr.Id,
-                    DonationType = appr.DonationType,
+                    DonationId = appr.DonationId,
                     InvestmentFrom = appr.InvestmentFrom,
                     InvestmentTo = appr.InvestmentTo,
                     AmountPerMonth = appr.AmountPerMonth,
@@ -136,9 +136,9 @@ namespace API.Controllers
         [HttpPost("ModifyApprovalCeiling")]
         public async Task<ActionResult<ApprovalCeiling>> UpdateApprovalCeiling(ApprovalCeiling apprclngDto)
         {
-            var fromDateCheck = new ApprovalCeilingWithFiltersForCountSpecificication(apprclngDto.Id, apprclngDto.ApprovalAuthorityId, apprclngDto.DonationType, apprclngDto.InvestmentFrom);
+            var fromDateCheck = new ApprovalCeilingWithFiltersForCountSpecificication(apprclngDto.Id, apprclngDto.ApprovalAuthorityId, apprclngDto.DonationId, apprclngDto.InvestmentFrom);
             var fromDateCheckList = await _aptimeRepo.ListAsync(fromDateCheck);
-            var toDateCheck = new ApprovalCeilingWithFiltersForCountSpecificication(apprclngDto.Id, apprclngDto.ApprovalAuthorityId, apprclngDto.DonationType, apprclngDto.InvestmentTo);
+            var toDateCheck = new ApprovalCeilingWithFiltersForCountSpecificication(apprclngDto.Id, apprclngDto.ApprovalAuthorityId, apprclngDto.DonationId, apprclngDto.InvestmentTo);
             var toDateCheckList = await _aptimeRepo.ListAsync(toDateCheck);
 
             if (fromDateCheckList.Count > 0 || toDateCheckList.Count > 0)
@@ -148,7 +148,7 @@ namespace API.Controllers
             var appr = new ApprovalCeiling
             {
                 Id = apprclngDto.Id,
-                DonationType = apprclngDto.DonationType,
+                DonationId = apprclngDto.DonationId,
                 InvestmentFrom = apprclngDto.InvestmentFrom,
                 InvestmentTo = apprclngDto.InvestmentTo,
                 AmountPerMonth = apprclngDto.AmountPerMonth,
@@ -166,7 +166,7 @@ namespace API.Controllers
             return new ApprovalCeiling
             {
                 Id = appr.Id,
-                DonationType = appr.DonationType,
+                DonationId = appr.DonationId,
                 InvestmentFrom = appr.InvestmentFrom,
                 InvestmentTo = appr.InvestmentTo,
                 AmountPerMonth = appr.AmountPerMonth,

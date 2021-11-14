@@ -28,7 +28,7 @@ namespace API.Controllers
 
 
         [HttpGet("institutionsForInvestment/{marketCode}")]
-        public async Task<IEnumerable<InstitutionInfo>> GetInstitutionsForInvestment(string marketCode)
+        public ActionResult<IEnumerable<InstitutionInfo>> GetInstitutionsForInvestment(string marketCode)
         {
             try
             {

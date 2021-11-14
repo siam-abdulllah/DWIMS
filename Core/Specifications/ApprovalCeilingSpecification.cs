@@ -11,6 +11,7 @@ namespace Core.Specifications
              (string.IsNullOrEmpty(approvalParrams.Search) || x.Additional.ToLower().Contains(approvalParrams.Search))
          )
         {
+            AddInclude(x => x.Donation);
             AddInclude(x => x.ApprovalAuthority);
             AddOrderBy(x => x.SetOn);
             ApplyPaging(approvalParrams.PageSize * (approvalParrams.PageIndex - 1), approvalParrams.PageSize);

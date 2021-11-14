@@ -383,6 +383,11 @@ export class CampaignComponent implements OnInit {
     this.campaignMsts = [];
     this.campaignDtls = [];
     this.campaignDtlProducts = [];
+    this.configs = {
+      currentPage: 1,
+      itemsPerPage: 10,
+      totalItems:50,
+      };
   }
   resetForm() {
     this.masterService.campaignMstFormData = new CampaignMst();
@@ -391,5 +396,10 @@ export class CampaignComponent implements OnInit {
     this.campaignMsts = [];
     this.campaignDtls = [];
     this.campaignDtlProducts = [];
+    this.configs = {
+      currentPage: 1,
+      itemsPerPage: 10,
+      totalItems:50,
+      };
   }
 }

@@ -9,6 +9,8 @@ import { ApprovalCeilingService } from '../_services/approval-ceiling.service';
 import { IApprovalAuthority } from '../shared/models/approvalAuthority';
 import { IDonation } from '../shared/models/donation';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import { DatePipe } from '@angular/common';
+import { NgxSpinnerService } from "ngx-spinner"; 
 
 @Component({
   selector: 'app-approval-ceiling',
@@ -28,7 +30,8 @@ export class ApprovalCeilingComponent implements OnInit {
   numberPattern="^[0-9]+(.[0-9]{1,10})?$";
   bsValue: Date = new Date();
   //constructor(public approvalCeilingService: MasterService, private router: Router, private toastr: ToastrService) { }
-  constructor(public approvalCeilingService: ApprovalCeilingService,private router: Router, private toastr: ToastrService) { }
+  constructor(public approvalCeilingService: ApprovalCeilingService,private router: Router, private toastr: ToastrService,
+    private datePipe: DatePipe,private SpinnerService: NgxSpinnerService) { }
   ngOnInit() {
     this.resetPage();
     this.getApprovalAuthority();
@@ -63,20 +66,22 @@ export class ApprovalCeilingComponent implements OnInit {
         totalItems:this.totalCount,
         };
     }, error => {
+      
         console.log(error);
     });
   }
 
   onSubmit(form: NgForm) {
     debugger;
-    if (this.approvalCeilingService.approvalCeilingFormData.id == 0)
+    this.approvalCeilingService.approvalCeilingFormData.investmentFrom = this.datePipe.transform(this.approvalCeilingService.approvalCeilingFormData.investmentFrom, 'yyyy-MM-dd HH:mm:ss');
+    this.approvalCeilingService.approvalCeilingFormData.investmentTo = this.datePipe.transform(this.approvalCeilingService.approvalCeilingFormData.investmentTo, 'yyyy-MM-dd HH:mm:ss');
+   if (this.approvalCeilingService.approvalCeilingFormData.id == 0)
       this.insertApprovalCeiling(form);
     else
       this.updateApprovalCeiling(form);
   }
 
   dateCompare() {
-
     if (this.approvalCeilingService.approvalCeilingFormData.investmentFrom != null && this.approvalCeilingService.approvalCeilingFormData.investmentTo != null) {
       if (this.approvalCeilingService.approvalCeilingFormData.investmentTo > this.approvalCeilingService.approvalCeilingFormData.investmentFrom) {
 return true;
@@ -90,15 +95,20 @@ return true;
 
   insertApprovalCeiling(form: NgForm) {
     if(this.dateCompare()){
+    this.SpinnerService.show(); 
     this.approvalCeilingService.insertApprovalCeiling().subscribe(
       res => {
         debugger;
         this.resetForm(form);
         this.getApprovalCeiling();
+        this.SpinnerService.hide(); 
         this.toastr.success('Data Saved successfully', 'Approval Ceiling')
       },
       err => {
         debugger;
+        this.approvalCeilingService.approvalCeilingFormData.investmentFrom = new Date(this.approvalCeilingService.approvalCeilingFormData.investmentFrom);
+        this.approvalCeilingService.approvalCeilingFormData.investmentTo = new Date(this.approvalCeilingService.approvalCeilingFormData.investmentTo);
+        this.SpinnerService.hide(); 
         this.toastr.error(err.errors[0], 'Approval Ceiling')
         console.log(err);
       }
@@ -108,14 +118,19 @@ return true;
 
   updateApprovalCeiling(form: NgForm) {
     if(this.dateCompare()){
+    this.SpinnerService.show(); 
     this.approvalCeilingService.updateApprovalCeiling().subscribe(
       res => {
         debugger;
         this.resetForm(form);
         this.getApprovalCeiling();
+        this.SpinnerService.hide(); 
         this.toastr.info('Data Updated Successfully', 'Approval Ceiling')
       },
       err => {  
+        this.approvalCeilingService.approvalCeilingFormData.investmentFrom = new Date(this.approvalCeilingService.approvalCeilingFormData.investmentFrom);
+        this.approvalCeilingService.approvalCeilingFormData.investmentTo = new Date(this.approvalCeilingService.approvalCeilingFormData.investmentTo);
+        this.SpinnerService.hide();  
         this.toastr.error(err.errors[0], 'Approval Ceiling')
       console.log(err); }
     );

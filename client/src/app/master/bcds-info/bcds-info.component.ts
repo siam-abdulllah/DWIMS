@@ -108,8 +108,18 @@ onSearch(){
   resetForm(form: NgForm) {
     this.searchText = '';
     form.reset();
+    this.config = {
+      currentPage: 1,
+      itemsPerPage: 10,
+      totalItems:50,
+      };
   }
   resetPage() {
     this.masterService.bcdsFormData=new BcdsInfo();
+    this.config = {
+      currentPage: 1,
+      itemsPerPage: 10,
+      totalItems:50,
+      };
   }
 }
