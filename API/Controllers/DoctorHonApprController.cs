@@ -30,77 +30,76 @@ namespace API.Controllers
             _investmentDoctorRepo = investmentDoctorRepo;
         }
 
-        [HttpGet("GetAllData/{honMonth}")]
-        public async Task<ActionResult<List<DoctorHonAppr>>> GetAllDoctorHonApprInfo(string honMonth, [FromQuery] DoctorHonApprSpecParams appParrams)
-        {
-            try
-            {
-                var doctorHonApprRec=new List<DoctorHonAppr>();
-                DateTime now = DateTime.ParseExact(honMonth, "MMyyyy", CultureInfo.InvariantCulture);
-                var startDate = new DateTime(now.Year, now.Month, 1);
-                var endDate = startDate.AddMonths(1).AddDays(-1);
+        //[HttpGet("GetAllData/{honMonth}")]
+        //public async Task<ActionResult<List<DoctorHonAppr>>> GetAllDoctorHonApprInfo(string honMonth, [FromQuery] DoctorHonApprSpecParams appParrams)
+        //{
+        //    try
+        //    {
+        //        var doctorHonApprRec=new List<DoctorHonAppr>();
+        //        DateTime now = DateTime.ParseExact(honMonth, "MMyyyy", CultureInfo.InvariantCulture);
+        //        var startDate = new DateTime(now.Year, now.Month, 1);
+        //        var endDate = startDate.AddMonths(1).AddDays(-1);
 
-                var doctorHonApprSpec = new DoctorHonApprSpecification(honMonth);
-                //var investmentInitSpec = new InvestmentInitSpecification("Honorarium");
-                var investmentAprSpec = new InvestmentAprSpecification("Honorarium");
-                var investmentDoctorSpec = new InvestmentDoctorSpecification("Honorarium");
+        //        var doctorHonApprSpec = new DoctorHonApprSpecification(honMonth);
+        //        var investmentAprSpec = new InvestmentAprSpecification(1,"Honorarium");
+        //        var investmentDoctorSpec = new InvestmentDoctorSpecification("Honorarium");
 
-                var doctorHonApprApr = await _doctorHonApprRepo.ListAsync(doctorHonApprSpec);
-                var investmentApr = await _investmentAprRepo.ListAsync(investmentAprSpec);
-                var investmentDoctor = await _investmentDoctorRepo.ListAsync(investmentDoctorSpec);
-                if (doctorHonApprApr.Count > 0)
-                {
-                     doctorHonApprRec = (from i in investmentApr
-                                            join d in investmentDoctor on i.InvestmentInitId equals d.InvestmentInitId
-                                            join h in doctorHonApprApr on d.InvestmentInitId equals h.InvestmentInitId into dh
-                                            from p in dh.DefaultIfEmpty()
-                                            where i.FromDate<=startDate && i.ToDate>=endDate
-                                            orderby i.FromDate
-                                            select new DoctorHonAppr
-                                            {
-                                                Id= p == null ? 0 : p.Id,
-                                                InvestmentInitId = i.InvestmentInitId,
-                                                DoctorId = d.DoctorId,
-                                                DoctorInfo = d.DoctorInfo,
-                                                HonAmount = i.ProposedAmount / i.TotalMonth,
-                                                HonMonth = p.HonMonth,
-                                                Status = p == null ? "Pending" : p.Status,
-                                            }
-                                      ).Distinct().ToList();
-                }
-                else {
-                    doctorHonApprRec = (from i in investmentApr
-                                        join d in investmentDoctor on i.InvestmentInitId equals d.InvestmentInitId
-                                        where i.FromDate <= startDate && i.ToDate >= endDate
-                                        orderby i.FromDate
-                                        select new DoctorHonAppr
-                                        {   Id=0,
-                                            InvestmentInitId = i.InvestmentInitId,
-                                            DoctorId = d.DoctorId,
-                                            DoctorInfo = d.DoctorInfo,
-                                            HonAmount = i.ProposedAmount / i.TotalMonth,
-                                            HonMonth = honMonth,
-                                            Status ="Pending",
-                                        }
-                                         ).Distinct().ToList();
-                }
+        //        var doctorHonApprApr = await _doctorHonApprRepo.ListAsync(doctorHonApprSpec);
+        //        var investmentApr = await _investmentAprRepo.ListAsync(investmentAprSpec);
+        //        var investmentDoctor = await _investmentDoctorRepo.ListAsync(investmentDoctorSpec);
+        //        if (doctorHonApprApr.Count > 0)
+        //        {
+        //             doctorHonApprRec = (from i in investmentApr
+        //                                    join d in investmentDoctor on i.InvestmentInitId equals d.InvestmentInitId
+        //                                    join h in doctorHonApprApr on d.InvestmentInitId equals h.InvestmentInitId into dh
+        //                                    from p in dh.DefaultIfEmpty()
+        //                                    where i.FromDate<=startDate && i.ToDate>=endDate
+        //                                    orderby i.FromDate
+        //                                    select new DoctorHonAppr
+        //                                    {
+        //                                        Id= p == null ? 0 : p.Id,
+        //                                        InvestmentInitId = i.InvestmentInitId,
+        //                                        DoctorId = d.DoctorId,
+        //                                        DoctorInfo = d.DoctorInfo,
+        //                                        HonAmount = i.ProposedAmount / i.TotalMonth,
+        //                                        HonMonth = p.HonMonth,
+        //                                        Status = p == null ? "Pending" : p.Status,
+        //                                    }
+        //                              ).Distinct().ToList();
+        //        }
+        //        else {
+        //            doctorHonApprRec = (from i in investmentApr
+        //                                join d in investmentDoctor on i.InvestmentInitId equals d.InvestmentInitId
+        //                                where i.FromDate <= startDate && i.ToDate >= endDate
+        //                                orderby i.FromDate
+        //                                select new DoctorHonAppr
+        //                                {   Id=0,
+        //                                    InvestmentInitId = i.InvestmentInitId,
+        //                                    DoctorId = d.DoctorId,
+        //                                    DoctorInfo = d.DoctorInfo,
+        //                                    HonAmount = i.ProposedAmount / i.TotalMonth,
+        //                                    HonMonth = honMonth,
+        //                                    Status ="Pending",
+        //                                }
+        //                                 ).Distinct().ToList();
+        //        }
 
-                var countSpec = new DoctorHonApprWithFiltersForCountSpecificication(appParrams);
+        //        var countSpec = new DoctorHonApprWithFiltersForCountSpecificication(appParrams);
 
-                var totalItems = await _doctorHonApprRepo.CountAsync(countSpec);
-
+        //        var totalItems = await _doctorHonApprRepo.CountAsync(countSpec);
 
 
-                //var data = _mapper.Map<IReadOnlyList<DoctorHonAppr>, IReadOnlyList<DoctorHonApprDto>>(doctorHonApprApr);
 
-                return Ok(new Pagination<DoctorHonAppr>(appParrams.PageIndex, appParrams.PageSize, totalItems, doctorHonApprRec));
-            }
-            catch (Exception ex)
-            {
+        //        //var data = _mapper.Map<IReadOnlyList<DoctorHonAppr>, IReadOnlyList<DoctorHonApprDto>>(doctorHonApprApr);
 
-                throw ex;
-            }
-        }
+        //        return Ok(new Pagination<DoctorHonAppr>(appParrams.PageIndex, appParrams.PageSize, totalItems, doctorHonApprRec));
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //        throw ex;
+        //    }
+        //}
 
         [HttpPost("insertDocHonAppr")]
         public ActionResult<DoctorHonApprDto> InsertDoctorHonAppr(DoctorHonApprDto doctorHonApprDto)

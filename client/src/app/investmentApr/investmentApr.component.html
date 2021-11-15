@@ -46,7 +46,11 @@
                                         <label>Donation Type</label>
                                     </div>
                                     <div class="col-md-1">
-                                        <input class="form-control" id="donationType" name="donationType" #donationType="ngModel" [(ngModel)]="investmentAprService.investmentAprFormData.donationType" readonly>
+                                        <!-- <input class="form-control" id="donationId" name="donationId" #donationId="ngModel" [(ngModel)]="investmentAprService.investmentAprFormData.donationId" readonly> -->
+                                        <select class="form-control" [disabled]=true id="donationId" name="donationId" #donationId="ngModel" [(ngModel)]="investmentAprService.investmentAprFormData.donationId">
+                                                <option  [ngValue]="null">Select Donation Type</option>
+                                                <option *ngFor="let a of donations" [value]="a.id">{{a.donationTypeName}}</option>
+                                            </select>
                                     </div>
                                     <div class="col-md-1">
                                         <label>Donation To</label>
@@ -123,9 +127,9 @@
                                             <label>Doctor Category</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <input class="form-control" name="doctorCategory" id="doctorCategory" #donationType="ngModel" [(ngModel)]="investmentAprService.investmentDoctorFormData.doctorCategory" readonly>
+                                            <input class="form-control" name="doctorCategory" id="doctorCategory" #doctorCategory="ngModel" [(ngModel)]="investmentAprService.investmentDoctorFormData.doctorCategory" readonly>
 
-                                            <!-- <select class="form-control " name="doctorCategory" id="doctorCategory" #donationType="ngModel" [(ngModel)]="investmentAprService.investmentDoctorFormData.doctorCategory">
+                                            <!-- <select class="form-control " name="doctorCategory" id="doctorCategory" #donationId="ngModel" [(ngModel)]="investmentAprService.investmentDoctorFormData.doctorCategory">
                                             <option  [ngValue]="null">Select Doctor Category</option>
                                             <option value="Regular">Regular</option>
                                                 <option value="Migratory">Mirgratory</option>
@@ -544,7 +548,7 @@
                                             <label>Remaining Balance</label>
                                         </div>
                                         <div class="col-md-1">
-                                            <input class="form-control" id="donationType" name="donationType" #donationType="ngModel" [(ngModel)]="investmentAprService.investmentAprFormData.donationType" readonly>
+                                            <input class="form-control" id="donationId" name="donationId" #donationId="ngModel" [(ngModel)]="investmentAprService.investmentAprFormData.donationId" readonly>
                                         </div>
                                         <div class="col-md-1">
                                             <label>SBU Budget</label>
@@ -878,7 +882,7 @@
                                 <td style="display:none;">{{a.id}}</td>
                                 <td>{{a.referenceNo}}</td>
                                 <td>{{a.proposeFor}}</td>
-                                <td>{{a.donationType}}</td>
+                                <td>{{a.donationId}}</td>
                                 <td>{{a.donationTo}}</td>
                             </tr>
                         </tbody>
@@ -919,7 +923,7 @@
                                 <td style="display:none;">{{a.id}}</td>
                                 <td>{{a.referenceNo}}</td>
                                 <td>{{a.proposeFor}}</td>
-                                <td>{{a.donationType}}</td>
+                                <td>{{a.donationId}}</td>
                                 <td>{{a.donationTo}}</td>
                             </tr>
                         </tbody>

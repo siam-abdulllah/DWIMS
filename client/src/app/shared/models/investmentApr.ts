@@ -1,6 +1,7 @@
 import { IBcdsInfo } from "./bcdsInfo";
 import { ICampaignDtl, ICampaignMst } from "./campaign";
 import { IDoctor } from "./docotor";
+import { IDonation } from "./donation";
 import { IInstitution } from "./institution";
 import { IMarketGroupMst } from "./marketGroupMst";
 import { IProduct } from "./product";
@@ -10,7 +11,8 @@ export interface IInvestmentInit {
     id: number;
     referenceNo: string;
     proposeFor: string;
-    donationType: string;
+    donationId: number;
+    donation:IDonation;
     donationTo: string;
     marketCode: string;
     sbu: string;
@@ -21,7 +23,8 @@ export class InvestmentInit implements IInvestmentInit {
     id: number=0;
     referenceNo: string;
     proposeFor: string=null;
-    donationType: string=null;
+    donationId: number=null;
+    donation:IDonation;
     donationTo: string=null;
     marketCode: string;
     sbu: string;

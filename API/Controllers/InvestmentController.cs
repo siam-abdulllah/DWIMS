@@ -29,6 +29,7 @@ namespace API.Controllers
         private readonly IGenericRepository<InvestmentBcds> _investmentBcdsRepo;
         private readonly IGenericRepository<InvestmentSociety> _investmentSocietyRepo;
         private readonly IGenericRepository<Employee> _employeeRepo;
+        private readonly IGenericRepository<Donation> _donationRepo;
         private readonly IGenericRepository<ReportInvestmentInfo> _reportInvestmentInfoRepo;
         private readonly IGenericRepository<InvestmentRecComment> _investmentRecCommentRepo;
         private readonly IMapper _mapper;
@@ -40,7 +41,7 @@ namespace API.Controllers
             IGenericRepository<InvestmentSociety> investmentSocietyRepo, IGenericRepository<InvestmentBcds> investmentBcdsRepo,
             IGenericRepository<InvestmentCampaign> investmentCampaignRepo, IGenericRepository<InvestmentInstitution> investmentInstitutionRepo,
             IGenericRepository<Employee> employeeRepo, IGenericRepository<ReportInvestmentInfo> reportInvestmentInfoRepo,
-            IGenericRepository<InvestmentRecComment> investmentRecCommentRepo, StoreContext dbContext,
+            IGenericRepository<InvestmentRecComment> investmentRecCommentRepo, StoreContext dbContext, IGenericRepository<Donation> donationRepo,
             IMapper mapper)
         {
             _mapper = mapper;
@@ -57,6 +58,7 @@ namespace API.Controllers
             _reportInvestmentInfoRepo = reportInvestmentInfoRepo;
             _investmentRecCommentRepo = investmentRecCommentRepo;
             _dbContext = dbContext;
+            _donationRepo = donationRepo;
         }
         #region investmentInit
 
@@ -69,7 +71,7 @@ namespace API.Controllers
             try
             {
                 //var empData = await _employeeRepo.GetByIdAsync(empId);
-                investmentInitParrams.Search = sbu;
+                //investmentInitParrams.Search = sbu;
                 //var spec = new InvestmentInitSpecification(investmentInitParrams);
 
                 //var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
@@ -1208,8 +1210,8 @@ namespace API.Controllers
             }
         } 
         [HttpGet]
-        [Route("getLastFiveInvestmentForDoc/{donationtype}/{docId}/{marketCode}/{date}")]
-        public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestmentForDoc(string donationtype, string docId, string marketCode, string date)
+        [Route("getLastFiveInvestmentForDoc/{donationId}/{docId}/{marketCode}/{date}")]
+        public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestmentForDoc(int donationId, string docId, string marketCode, string date)
         {
             try
             {
@@ -1217,9 +1219,10 @@ namespace API.Controllers
                 // var empData = await _employeeRepo.GetByIdAsync(empId);
                 var reportInvestmentSpec = new ReportInvestmentSpecification(marketCode);
                 var reportInvestmentData = await _reportInvestmentInfoRepo.ListAsync(reportInvestmentSpec);
+                var donation = await _donationRepo.GetByIdAsync(donationId);
                 // var spec = new ReportInvestmentSpecification(empData.MarketCode);
                 var data = (from e in reportInvestmentData
-                            where e.DoctorId==docId && e.DonationType==donationtype &&
+                            where e.DoctorId==docId && e.DonationType== donation.DonationTypeName &&
                             DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) <= DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture)
                             orderby DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) descending
                             select new ReportInvestmentInfo
@@ -1239,8 +1242,8 @@ namespace API.Controllers
             }
         }
         [HttpGet]
-        [Route("getLastFiveInvestmentForInstitute/{donationtype}/{instituteId}/{marketCode}/{date}")]
-        public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestmentForInstitute(string donationtype, string instituteId, string marketCode, string date)
+        [Route("getLastFiveInvestmentForInstitute/{donationId}/{instituteId}/{marketCode}/{date}")]
+        public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestmentForInstitute(int donationId, string instituteId, string marketCode, string date)
         {
             try
             {
@@ -1248,9 +1251,10 @@ namespace API.Controllers
                 // var empData = await _employeeRepo.GetByIdAsync(empId);
                 var reportInvestmentSpec = new ReportInvestmentSpecification(marketCode);
                 var reportInvestmentData = await _reportInvestmentInfoRepo.ListAsync(reportInvestmentSpec);
+                var donation = await _donationRepo.GetByIdAsync(donationId);
                 // var spec = new ReportInvestmentSpecification(empData.MarketCode);
                 var data = (from e in reportInvestmentData
-                            where e.InstituteId== instituteId && e.DonationType == donationtype &&
+                            where e.InstituteId== instituteId && e.DonationType == donation.DonationTypeName &&
                             DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) <= DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture)
                             orderby DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) descending
                             select new ReportInvestmentInfo
@@ -1271,8 +1275,8 @@ namespace API.Controllers
             }
         }
          [HttpGet]
-        [Route("getLastFiveInvestmentForBcds/{donationtype}/{bcdsId}/{marketCode}/{date}")]
-        public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestmentForBcds(string donationtype, string bcdsId, string marketCode, string date)
+        [Route("getLastFiveInvestmentForBcds/{donationId}/{bcdsId}/{marketCode}/{date}")]
+        public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestmentForBcds(int donationId, string bcdsId, string marketCode, string date)
         {
             try
             {
@@ -1280,9 +1284,10 @@ namespace API.Controllers
                 // var empData = await _employeeRepo.GetByIdAsync(empId);
                 var reportInvestmentSpec = new ReportInvestmentSpecification(marketCode);
                 var reportInvestmentData = await _reportInvestmentInfoRepo.ListAsync(reportInvestmentSpec);
+                var donation = await _donationRepo.GetByIdAsync(donationId);
                 // var spec = new ReportInvestmentSpecification(empData.MarketCode);
                 var data = (from e in reportInvestmentData
-                            where e.BcdsId== bcdsId && e.DonationType == donationtype &&
+                            where e.BcdsId== bcdsId && e.DonationType == donation.DonationTypeName &&
                             DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) <= DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture)
                             orderby DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) descending
                             select new ReportInvestmentInfo
@@ -1303,8 +1308,8 @@ namespace API.Controllers
             }
         }
          [HttpGet]
-        [Route("getLastFiveInvestmentForSociety/{donationtype}/{societyId}/{marketCode}/{date}")]
-        public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestmentForSociety(string donationtype, string societyId, string marketCode, string date)
+        [Route("getLastFiveInvestmentForSociety/{donationId}/{societyId}/{marketCode}/{date}")]
+        public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestmentForSociety(int donationId, string societyId, string marketCode, string date)
         {
             try
             {
@@ -1312,9 +1317,10 @@ namespace API.Controllers
                 // var empData = await _employeeRepo.GetByIdAsync(empId);
                 var reportInvestmentSpec = new ReportInvestmentSpecification(marketCode);
                 var reportInvestmentData = await _reportInvestmentInfoRepo.ListAsync(reportInvestmentSpec);
+                var donation = await _donationRepo.GetByIdAsync(donationId);
                 // var spec = new ReportInvestmentSpecification(empData.MarketCode);
                 var data = (from e in reportInvestmentData
-                            where e.SocietyId== societyId && e.DonationType == donationtype &&
+                            where e.SocietyId== societyId && e.DonationType == donation.DonationTypeName &&
                             DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) <= DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture)
                             orderby DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) descending
                             select new ReportInvestmentInfo

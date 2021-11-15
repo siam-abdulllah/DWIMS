@@ -4,14 +4,16 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    partial class StoreContextModelSnapshot : ModelSnapshot
+    [Migration("20211115031947_InitialCreate_15112021")]
+    partial class InitialCreate_15112021
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1085,8 +1087,8 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
 
-                    b.Property<int>("DonationId")
-                        .HasColumnType("int");
+                    b.Property<string>("DonationType")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
@@ -1116,8 +1118,6 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DonationId");
 
                     b.HasIndex("EmployeeId");
 
@@ -2733,39 +2733,6 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("SubMenu");
                 });
 
-            modelBuilder.Entity("Core.Entities.YearlyBudget", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<long>("Amount")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("DataStatus")
-                        .HasColumnType("int");
-
-                    b.Property<DateTimeOffset>("FromDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset>("ModifiedOn")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset>("SetOn")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset>("ToDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Year")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("YearlyBudget");
-                });
-
             modelBuilder.Entity("Core.Entities.ApprAuthConfig", b =>
                 {
                     b.HasOne("Core.Entities.ApprovalAuthority", "ApprovalAuthority")
@@ -2959,12 +2926,6 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Core.Entities.InvestmentDetailTracker", b =>
                 {
-                    b.HasOne("Core.Entities.Donation", "Donation")
-                        .WithMany()
-                        .HasForeignKey("DonationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Core.Entities.Employee", "Employee")
                         .WithMany()
                         .HasForeignKey("EmployeeId")

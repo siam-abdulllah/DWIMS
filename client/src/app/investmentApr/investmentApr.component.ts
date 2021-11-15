@@ -171,7 +171,7 @@ export class InvestmentAprComponent implements OnInit {
   }
   getLastFiveInvestment(marketCode: string, toDayDate: string) {
     if (this.investmentAprService.investmentAprFormData.donationTo == "Doctor") {
-      this.investmentAprService.getLastFiveInvestmentForDoc(this.investmentAprService.investmentAprFormData.donationType, this.investmentAprService.investmentDoctorFormData.doctorId, marketCode, toDayDate).subscribe(
+      this.investmentAprService.getLastFiveInvestmentForDoc(this.investmentAprService.investmentAprFormData.donationId, this.investmentAprService.investmentDoctorFormData.doctorId, marketCode, toDayDate).subscribe(
         (response) => {
           this.investmentDetailsOld = response as IInvestmentDetailOld[];
         },
@@ -181,7 +181,7 @@ export class InvestmentAprComponent implements OnInit {
       );
     }
     else if (this.investmentAprService.investmentAprFormData.donationTo == "Institution") {
-      this.investmentAprService.getLastFiveInvestmentForInstitute(this.investmentAprService.investmentAprFormData.donationType, this.investmentAprService.investmentInstitutionFormData.institutionId, marketCode, toDayDate).subscribe(
+      this.investmentAprService.getLastFiveInvestmentForInstitute(this.investmentAprService.investmentAprFormData.donationId, this.investmentAprService.investmentInstitutionFormData.institutionId, marketCode, toDayDate).subscribe(
         (response) => {
           this.investmentDetailsOld = response as IInvestmentDetailOld[];
         },
@@ -191,7 +191,7 @@ export class InvestmentAprComponent implements OnInit {
       );
     }
     else if (this.investmentAprService.investmentAprFormData.donationTo == "Campaign") {
-      this.investmentAprService.getLastFiveInvestmentForCampaign(this.investmentAprService.investmentAprFormData.donationType, this.investmentAprService.investmentCampaignFormData.campaignMstId, marketCode, toDayDate).subscribe(
+      this.investmentAprService.getLastFiveInvestmentForCampaign(this.investmentAprService.investmentAprFormData.donationId, this.investmentAprService.investmentCampaignFormData.campaignMstId, marketCode, toDayDate).subscribe(
         (response) => {
           this.investmentDetailsOld = response as IInvestmentDetailOld[];
         },
@@ -201,7 +201,7 @@ export class InvestmentAprComponent implements OnInit {
       );
     }
     else if (this.investmentAprService.investmentAprFormData.donationTo == "Bcds") {
-      this.investmentAprService.getLastFiveInvestmentForBcds(this.investmentAprService.investmentAprFormData.donationType, this.investmentAprService.investmentBcdsFormData.bcdsId, marketCode, toDayDate).subscribe(
+      this.investmentAprService.getLastFiveInvestmentForBcds(this.investmentAprService.investmentAprFormData.donationId, this.investmentAprService.investmentBcdsFormData.bcdsId, marketCode, toDayDate).subscribe(
         (response) => {
           this.investmentDetailsOld = response as IInvestmentDetailOld[];
         },
@@ -211,7 +211,7 @@ export class InvestmentAprComponent implements OnInit {
       );
     }
     else if (this.investmentAprService.investmentAprFormData.donationTo == "Society") {
-      this.investmentAprService.getLastFiveInvestmentForSociety(this.investmentAprService.investmentAprFormData.donationType, this.investmentAprService.investmentSocietyFormData.societyId, marketCode, toDayDate).subscribe(
+      this.investmentAprService.getLastFiveInvestmentForSociety(this.investmentAprService.investmentAprFormData.donationId, this.investmentAprService.investmentSocietyFormData.societyId, marketCode, toDayDate).subscribe(
         (response) => {
           this.investmentDetailsOld = response as IInvestmentDetailOld[];
         },
@@ -524,7 +524,7 @@ export class InvestmentAprComponent implements OnInit {
     });
   }
   getBudget() {
-    this.investmentAprService.getBudget(this.sbu, parseInt(this.empId), this.investmentAprService.investmentAprFormData.donationType).subscribe(response => {
+    this.investmentAprService.getBudget(this.sbu, parseInt(this.empId), this.investmentAprService.investmentAprFormData.donationId).subscribe(response => {
      debugger;
       this.budgetCeiling = response[0] as IBudgetCeiling;
       this.isBudgetVisible = true;

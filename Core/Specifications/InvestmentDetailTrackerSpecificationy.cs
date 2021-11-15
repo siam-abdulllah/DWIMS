@@ -26,12 +26,12 @@ namespace Core.Specifications
         {
 
         }
-        public InvestmentDetailTrackerSpecification(string donationType)
-           : base(x => x.InvestmentInit.DonationType == donationType)
-        {
-            AddInclude(x => x.InvestmentInit);
+        //public InvestmentDetailTrackerSpecification(string donationType)
+        //   : base(x => x.InvestmentInit.DonationType == donationType)
+        //{
+        //    AddInclude(x => x.InvestmentInit);
 
-        }
+        //}
         //public InvestmentDetailTrackerSpecification(int employeeId,string status)
         //    : base(x => x.EmployeeId == employeeId && x.Status == status)
         //{

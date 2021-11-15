@@ -1,4 +1,5 @@
 import { ICampaignDtl } from "./campaign";
+import { IDonation } from "./donation";
 import { IMarketGroupMst } from "./marketGroupMst";
 import { IProduct } from "./product";
 
@@ -6,22 +7,24 @@ export interface IInvestmentInit {
     id: number;
     referenceNo: string;
     proposeFor: string;
-    donationType: string;
     donationTo: string;
     marketCode: string;
     employeeId: number;
     confirmation: boolean;
+    donationId: number;
+    donation:IDonation;
 }
  
 export class InvestmentInit implements IInvestmentInit {
     id: number=0;
     referenceNo: string;
     proposeFor: string=null;
-    donationType: string=null;
     donationTo: string=null;
     marketCode: string;
     employeeId: number;
     confirmation: boolean;
+    donationId: number=null;
+    donation:IDonation;
 }
 
 export interface IInvestmentDetail {

@@ -36,6 +36,7 @@ namespace API.Controllers
         private readonly IGenericRepository<ApprAuthConfig> _apprAuthConfigRepo;
         private readonly IGenericRepository<ApprovalCeiling> _approvalCeilingRepo;
         private readonly IGenericRepository<InvestmentDetailTracker> _investmentDetailTrackerRepo;
+        private readonly IGenericRepository<Donation> _donationRepo;
 
         public InvestmentAprController(IGenericRepository<ApprovalCeiling> approvalCeilingRepo,
             IGenericRepository<ApprAuthConfig> apprAuthConfigRepo,
@@ -52,7 +53,8 @@ namespace API.Controllers
             StoreContext dbContext,
             IGenericRepository<InvestmentRec> investmentRecRepo,
             IGenericRepository<InvestmentDetailTracker> investmentDetailTrackerRepo,
-            IMapper mapper)
+            IGenericRepository<Donation> donationRepo,
+        IMapper mapper)
         {
             _mapper = mapper;
             _investmentAprRepo = investmentAprRepo;
@@ -70,6 +72,7 @@ namespace API.Controllers
             _approvalCeilingRepo = approvalCeilingRepo;
             _investmentRecRepo = investmentRecRepo;
             _investmentDetailTrackerRepo = investmentDetailTrackerRepo;
+            _donationRepo = donationRepo;
         }
         [HttpGet("investmentInits/{empId}/{sbu}")]
         public ActionResult<Pagination<InvestmentInitDto>> GetInvestmentInits(int empId, string sbu,
@@ -120,8 +123,8 @@ namespace API.Controllers
             }
         }
 
-          [HttpPost("InsertApr/{empID}/{aprStatus}/{sbu}/{dType}")]
-          public async Task<ActionResult<InvestmentAprDto>> InsertInvestmentApr(int empId, string aprStatus, string sbu, string dType, InvestmentAprDto investmentAprDto)
+          [HttpPost("InsertApr/{empID}/{aprStatus}/{sbu}/{donationId}")]
+          public async Task<ActionResult<InvestmentAprDto>> InsertInvestmentApr(int empId, string aprStatus, string sbu, int donationId, InvestmentAprDto investmentAprDto)
         {
             try
             {
@@ -130,16 +133,16 @@ namespace API.Controllers
                     List<SqlParameter> parms = new List<SqlParameter>
                     {
                         new SqlParameter("@SBU", sbu),
-                        new SqlParameter("@DTYPE", dType),
+                        new SqlParameter("@DID", donationId),
                         new SqlParameter("@EID", empId),
                         new SqlParameter("@IID", investmentAprDto.InvestmentInitId),
                         new SqlParameter("@PRAMOUNT", investmentAprDto.ProposedAmount),
                         new SqlParameter("@ASTATUS", aprStatus),
                         new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
                     };
-                    // var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentCeilingCheck @SBU,@DTYPE,@EID,@PRAMOUNT,@ASTATUS", parms.ToArray()).ToList();
-                   // var result = _dbContext.Database.ExecuteSqlRawAsync("EXECUTE SP_InvestmentCeilingCheck @SBU,@DTYPE,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
-                    var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheck @SBU,@DTYPE,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
+                    // var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentCeilingCheck @SBU,@DID,@EID,@PRAMOUNT,@ASTATUS", parms.ToArray()).ToList();
+                   // var result = _dbContext.Database.ExecuteSqlRawAsync("EXECUTE SP_InvestmentCeilingCheck @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
+                    var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheck @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
                     //var param=parms[6].Value;
                     if (parms[6].Value.ToString() != "True")
                     //if (result.Result == 0)
@@ -210,7 +213,9 @@ namespace API.Controllers
                             _investmentDetailTrackerRepo.Savechange();
                         }
                     }
-                    if (dType == "Honorarium")
+
+                    var donation = await _donationRepo.GetByIdAsync(donationId);
+                    if (donation.DonationTypeName == "Honorarium")
                     {
                         DateTimeOffset calcDate = investmentAprDto.FromDate;
                         for (int i = 0; i < investmentAprDto.TotalMonth; i++)
@@ -219,7 +224,7 @@ namespace API.Controllers
                             var invDT = new InvestmentDetailTracker
                             {
                                 InvestmentInitId = investmentAprDto.InvestmentInitId,
-                                DonationType = dType,
+                                DonationId = donationId,
                                 ApprovedAmount = investmentAprDto.ProposedAmount,
                                 Month = calcDate.Month,
                                 Year = calcDate.Year,
@@ -238,7 +243,7 @@ namespace API.Controllers
                         var invDT = new InvestmentDetailTracker
                         {
                             InvestmentInitId = investmentAprDto.InvestmentInitId,
-                            DonationType = dType,
+                            DonationId = donationId,
                             ApprovedAmount = investmentAprDto.ProposedAmount,
                             Month = 0,
                             Year = 0,

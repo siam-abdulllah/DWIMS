@@ -12,7 +12,9 @@ namespace Core.Entities
         public InvestmentInit InvestmentInit { get; set; }
         public int EmployeeId { get; set; }
         public Employee Employee { get; set; }
-        public string DonationType { get; set; }
+        public int DonationId { get; set; }
+        [ForeignKey("DonationId")]
+        public Donation Donation { get; set; }
         public int Month { get; set; }
         public int Year { get; set; }
         public DateTimeOffset FromDate { get; set; }

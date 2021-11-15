@@ -54,9 +54,9 @@
                                         <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <select class="form-control" [disabled]="isInvOther" id="donationType" name="donationType" #donationType="ngModel" [(ngModel)]="investmentInitService.investmentInitFormData.donationType" required [class.invalid]="donationType.invalid && donationType.touched">
+                                        <select class="form-control" [disabled]="isInvOther" id="donationId" name="donationId" #donationId="ngModel" [(ngModel)]="investmentInitService.investmentInitFormData.donationId" required [class.invalid]="donationId.invalid && donationId.touched">
                                             <option  [ngValue]="null">Select Donation Type</option>
-                                            <option *ngFor="let a of donations" [value]="a.donationTypeName">{{a.donationTypeName}}</option>
+                                            <option *ngFor="let a of donations" [value]="a.id">{{a.donationTypeName}}</option>
                                             <!-- <option value="Donation">Donation</option>
                                             <option value="Gift">Gift</option>
                                             <option value="Honorarium">Honorarium</option> -->
@@ -169,7 +169,7 @@
                                             <label>Doctor Category</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <select class="form-control" [disabled]="isInvOther" name="doctorCategory" id="doctorCategory" #donationType="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.doctorCategory">
+                                            <select class="form-control" [disabled]="isInvOther" name="doctorCategory" id="doctorCategory" #donationId="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.doctorCategory">
                                             <option  [ngValue]="null">Select Doctor Category</option>
                                             <option value="Regular">Regular</option>
                                                 <option value="Migratory">Mirgratory</option>
@@ -884,7 +884,7 @@
                                 <td style="display:none;">{{a.id}}</td>
                                 <td>{{a.referenceNo}}</td>
                                 <td>{{a.proposeFor}}</td>
-                                <td>{{a.donationType}}</td>
+                                <td>{{a.donationId}}</td>
                                 <td>{{a.donationTo}}</td>
                             </tr>
                         </tbody>

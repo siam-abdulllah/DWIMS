@@ -325,7 +325,7 @@ export class InvestmentInitComponent implements OnInit {
   }
   getLastFiveInvestment(marketCode: string, toDayDate: string) {
     if (this.investmentInitService.investmentInitFormData.donationTo == "Doctor") {
-      this.investmentInitService.getLastFiveInvestmentForDoc(this.investmentInitService.investmentInitFormData.donationType,this.investmentInitService.investmentDoctorFormData.doctorId,marketCode, toDayDate).subscribe(
+      this.investmentInitService.getLastFiveInvestmentForDoc(this.investmentInitService.investmentInitFormData.donationId,this.investmentInitService.investmentDoctorFormData.doctorId,marketCode, toDayDate).subscribe(
         (response) => {
           this.investmentDetailsOld = response as IInvestmentDetailOld[];
         },
@@ -335,7 +335,7 @@ export class InvestmentInitComponent implements OnInit {
       );
     }
     else if (this.investmentInitService.investmentInitFormData.donationTo == "Institution") {
-      this.investmentInitService.getLastFiveInvestmentForInstitute(this.investmentInitService.investmentInitFormData.donationType,this.investmentInitService.investmentInstitutionFormData.institutionId,marketCode, toDayDate).subscribe(
+      this.investmentInitService.getLastFiveInvestmentForInstitute(this.investmentInitService.investmentInitFormData.donationId,this.investmentInitService.investmentInstitutionFormData.institutionId,marketCode, toDayDate).subscribe(
         (response) => {
           this.investmentDetailsOld = response as IInvestmentDetailOld[];
         },
@@ -345,7 +345,7 @@ export class InvestmentInitComponent implements OnInit {
       );
     }
     else if (this.investmentInitService.investmentInitFormData.donationTo == "Campaign") {
-      this.investmentInitService.getLastFiveInvestmentForCampaign(this.investmentInitService.investmentInitFormData.donationType,this.investmentInitService.investmentCampaignFormData.campaignMstId,marketCode, toDayDate).subscribe(
+      this.investmentInitService.getLastFiveInvestmentForCampaign(this.investmentInitService.investmentInitFormData.donationId,this.investmentInitService.investmentCampaignFormData.campaignMstId,marketCode, toDayDate).subscribe(
         (response) => {
           this.investmentDetailsOld = response as IInvestmentDetailOld[];
         },
@@ -355,7 +355,7 @@ export class InvestmentInitComponent implements OnInit {
       );
     }
     else if (this.investmentInitService.investmentInitFormData.donationTo == "Bcds") {
-      this.investmentInitService.getLastFiveInvestmentForBcds(this.investmentInitService.investmentInitFormData.donationType,this.investmentInitService.investmentBcdsFormData.bcdsId,marketCode, toDayDate).subscribe(
+      this.investmentInitService.getLastFiveInvestmentForBcds(this.investmentInitService.investmentInitFormData.donationId,this.investmentInitService.investmentBcdsFormData.bcdsId,marketCode, toDayDate).subscribe(
         (response) => {
           this.investmentDetailsOld = response as IInvestmentDetailOld[];
         },
@@ -366,7 +366,7 @@ export class InvestmentInitComponent implements OnInit {
     }
     else if (this.investmentInitService.investmentInitFormData.donationTo == "Society") {
       
-      this.investmentInitService.getLastFiveInvestmentForSociety(this.investmentInitService.investmentInitFormData.donationType,this.investmentInitService.investmentSocietyFormData.societyId,marketCode, toDayDate).subscribe(
+      this.investmentInitService.getLastFiveInvestmentForSociety(this.investmentInitService.investmentInitFormData.donationId,this.investmentInitService.investmentSocietyFormData.societyId,marketCode, toDayDate).subscribe(
         (response) => {
           this.investmentDetailsOld = response as IInvestmentDetailOld[];
         },

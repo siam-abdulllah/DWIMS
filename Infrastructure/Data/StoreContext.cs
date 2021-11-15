@@ -67,6 +67,7 @@ namespace Infrastructure.Data
         public DbSet<MenuHead> MenuHead { get; set; }
         public DbSet<SubMenu> SubMenu { get; set; }
         public DbSet<MenuConfig> MenuConfig { get; set; }
+        public DbSet<YearlyBudget> YearlyBudget { get; set; }
         [NotMapped]
         public DbSet<BudgetCeiling> BudgetCeiling { get; set; }
 

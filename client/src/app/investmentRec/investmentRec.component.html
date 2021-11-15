@@ -51,12 +51,12 @@
                                         <label>Donation Type</label>
                                     </div>
                                     <div class="col-md-3">
-                                        <input class="form-control" id="donationType" name="donationType" #donationType="ngModel" [(ngModel)]="investmentRecService.investmentRecFormData.donationType" readonly>
+                                        <!-- <input class="form-control" id="donationId" name="donationId" #donationId="ngModel" [(ngModel)]="investmentRecService.investmentRecFormData.donationId" readonly> -->
 
-                                        <!-- <select class="form-control " id="donationType" name="donationType" #donationType="ngModel" [(ngModel)]="investmentRecService.investmentRecFormData.donationType" required [class.invalid]="donationType.invalid && donationType.touched">
+                                        <select class="form-control" [disabled]=true id="donationId" name="donationId" #donationId="ngModel" [(ngModel)]="investmentRecService.investmentRecFormData.donationId">
                                             <option  [ngValue]="null">Select Donation Type</option>
-                                            <option *ngFor="let a of donations" [value]="a.donationTypeName">{{a.donationTypeName}}</option>
-                                        </select> -->
+                                            <option *ngFor="let a of donations" [value]="a.id">{{a.donationTypeName}}</option>
+                                        </select>
                                     </div>
                                     <div class="col-md-2">
                                         <label>Donation To</label>
@@ -147,9 +147,9 @@
                                             <label>Doctor Category</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <input class="form-control" name="doctorCategory" id="doctorCategory" #donationType="ngModel" [(ngModel)]="investmentRecService.investmentDoctorFormData.doctorCategory" readonly>
+                                            <input class="form-control" name="doctorCategory" id="doctorCategory" #donationId="ngModel" [(ngModel)]="investmentRecService.investmentDoctorFormData.doctorCategory" readonly>
 
-                                            <!-- <select class="form-control " name="doctorCategory" id="doctorCategory" #donationType="ngModel" [(ngModel)]="investmentRecService.investmentDoctorFormData.doctorCategory">
+                                            <!-- <select class="form-control " name="doctorCategory" id="doctorCategory" #donationId="ngModel" [(ngModel)]="investmentRecService.investmentDoctorFormData.doctorCategory">
                                             <option  [ngValue]="null">Select Doctor Category</option>
                                             <option value="Regular">Regular</option>
                                                 <option value="Migratory">Mirgratory</option>
@@ -810,7 +810,7 @@
                                 <td style="display:none;">{{a.id}}</td>
                                 <td>{{a.referenceNo}}</td>
                                 <td>{{a.proposeFor}}</td>
-                                <td>{{a.donationType}}</td>
+                                <td>{{a.donationId}}</td>
                                 <td>{{a.donationTo}}</td>
                             </tr>
                         </tbody>
@@ -851,7 +851,7 @@
                                 <td style="display:none;">{{a.id}}</td>
                                 <td>{{a.referenceNo}}</td>
                                 <td>{{a.proposeFor}}</td>
-                                <td>{{a.donationType}}</td>
+                                <td>{{a.donationId}}</td>
                                 <td>{{a.donationTo}}</td>
                             </tr>
                         </tbody>

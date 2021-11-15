@@ -66,9 +66,9 @@ namespace API.Controllers
                     {
                         new SqlParameter("@SBU", sbu),
                         new SqlParameter("@EID", empID),
-                        new SqlParameter("@DTYPE", DonationId)
+                        new SqlParameter("@DID", DonationId)
                     };
-                var results = _dbContext.BudgetCeiling.FromSqlRaw<BudgetCeiling>("EXECUTE SP_BudgetCeilingSearch @SBU,@EID,@DTYPE", parms.ToArray()).ToList();
+                var results = _dbContext.BudgetCeiling.FromSqlRaw<BudgetCeiling>("EXECUTE SP_BudgetCeilingSearch @SBU,@EID,@DID", parms.ToArray()).ToList();
                 return results;
             }
             catch (Exception ex)
