@@ -139,7 +139,7 @@ namespace API.Controllers
                 //var totalItems = await _investmentInitRepo.CountAsync(countSpec);
 
                 List<SqlParameter> parms = new List<SqlParameter>
-                    {   
+                    {
                         new SqlParameter("@SBU", sbu),
                         new SqlParameter("@EID", empId),
                         new SqlParameter("@RSTATUS", DBNull.Value),
@@ -178,7 +178,7 @@ namespace API.Controllers
 
             // }
 
-            var alreadyExistSpec = new InvestmentRecSpecification((int)investmentRecDto.InvestmentInitId,empId);
+            var alreadyExistSpec = new InvestmentRecSpecification((int)investmentRecDto.InvestmentInitId, empId);
             var alreadyExistInvestmentRecList = await _investmentRecRepo.ListAsync(alreadyExistSpec);
             if (alreadyExistInvestmentRecList.Count > 0)
             {
@@ -244,26 +244,29 @@ namespace API.Controllers
                 bool isTrue = false;
                 var investmentTargetedGroupSpec = new InvestmentTargetedGroupSpecification((int)investmentRecDto.InvestmentInitId);
                 var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(investmentTargetedGroupSpec);
-                var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentRecDto.InvestmentInitId, apprAuthConfig.ApprovalAuthority.Priority,"true");
+                var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentRecDto.InvestmentInitId, apprAuthConfig.ApprovalAuthority.Priority, "true");
                 var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
-                isComplete = true;
+                if (investmentRecDto.RecStatus == "Recommended")
+                {
+                    isComplete = true;
+                }
                 foreach (var v in investmentTargetedGroup)
                 {
                     isTrue = false;
                     foreach (var i in investmentRecComments)
                     {
-                        if (v.InvestmentInitId == i.InvestmentInitId && v.SBU == i.SBU )
+                        if (v.InvestmentInitId == i.InvestmentInitId && v.SBU == i.SBU)
                         {
                             isTrue = true;
                         }
                     }
-                    if (!isTrue) 
-                    { 
-                        return BadRequest(new ApiResponse(400, "Other recommendation has not completed yet")); 
+                    if (!isTrue)
+                    {
+                        return BadRequest(new ApiResponse(400, "Other recommendation has not completed yet"));
                     }
                 }
             }
-           
+
             var invRec = new InvestmentRecComment
             {
                 InvestmentInitId = investmentRecDto.InvestmentInitId,
@@ -462,9 +465,9 @@ namespace API.Controllers
                 var spec = new InvestmentTargetedGroupSpecification(investmentInitId);
                 var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(spec);
 
-                
 
-                var spec3 = new ApprAuthConfigSpecification(empId,"A");
+
+                var spec3 = new ApprAuthConfigSpecification(empId, "A");
                 var approAuthConfig = await _apprAuthConfigRepo.GetEntityWithSpec(spec3);
 
                 // var empSpec = new Emplp(investmentInitId);
@@ -475,28 +478,28 @@ namespace API.Controllers
                 var spec4 = new ApprovalAuthoritySpecification(approAuthConfig.ApprovalAuthorityId);
                 var aprAuthority = await _approvalAuthorityRepo.GetEntityWithSpec(spec4);
 
-                var spec2 = new InvestmentRecCommentSpecification(investmentInitId, aprAuthority.Priority,"Recommended");
+                var spec2 = new InvestmentRecCommentSpecification(investmentInitId, aprAuthority.Priority, "Recommended");
                 var investrecComment = await _investmentRecCommentRepo.ListAsync(spec2);
 
                 var stsResult = (from t in investmentTargetedGroup
-                                join u in investrecComment on t.InvestmentInitId equals u.InvestmentInitId   into ut
+                                 join u in investrecComment on t.InvestmentInitId equals u.InvestmentInitId into ut
                                  from p in ut.Where(f => f.SBU == t.SBU).DefaultIfEmpty()
-                                 where 
-                                // u.EmployeeId == empId
+                                 where
+                                 // u.EmployeeId == empId
                                  t.InvestmentInitId == investmentInitId
-                                //&& p.Priority == aprAuthority.Priority
-                              
-                                select new InvestmentTargetGroupStatusDto
-                                {
-                                    InvestmentInitId = t.InvestmentInitId,
-                                    SBU =  t.SBU,
-                                    SBUName= t.SBUName,
-                                    MarketCode = t.MarketCode,
-                                    MarketName = t.MarketName,
-                                    //MarketGroupName = t.MarketGroupMst.GroupName,
-                                    RecStatus = p == null ? "Pending" : p.RecStatus,
-                                    ApprovalAuthorityName=aprAuthority.ApprovalAuthorityName
-                                }).ToList();
+                                 //&& p.Priority == aprAuthority.Priority
+
+                                 select new InvestmentTargetGroupStatusDto
+                                 {
+                                     InvestmentInitId = t.InvestmentInitId,
+                                     SBU = t.SBU,
+                                     SBUName = t.SBUName,
+                                     MarketCode = t.MarketCode,
+                                     MarketName = t.MarketName,
+                                     //MarketGroupName = t.MarketGroupMst.GroupName,
+                                     RecStatus = p == null ? "Pending" : p.RecStatus,
+                                     ApprovalAuthorityName = aprAuthority.ApprovalAuthorityName
+                                 }).ToList();
 
                 return stsResult;
             }

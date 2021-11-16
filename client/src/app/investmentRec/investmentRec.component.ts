@@ -80,9 +80,17 @@ export class InvestmentRecComponent implements OnInit {
     ngOnInit() {
       this.resetForm();
       this.getEmployeeId();
+      this.getDonation();
       this.bsConfig = Object.assign({}, { containerClass: 'theme-blue'  }, { dateInputFormat: 'DD/MM/YYYY' });
       this.bsValue = new Date();
   
+    }
+    getDonation() {
+      this.investmentRecService.getDonations().subscribe(response => {
+        this.donations = response as IDonation[];
+      }, error => {
+        console.log(error);
+      });
     }
   openInvestmentInitSearchModal(template: TemplateRef<any>) {
     this.InvestmentInitSearchModalRef = this.modalService.show(template, this.config);
@@ -163,7 +171,6 @@ export class InvestmentRecComponent implements OnInit {
     this.InvestmentRecSearchModalRef.hide()
   }
   getLastFiveInvestment(marketCode: string, toDayDate: string) {
-    debugger;
     if (this.investmentRecService.investmentRecFormData.donationTo == "Doctor") {
       this.investmentRecService.getLastFiveInvestmentForDoc(this.investmentRecService.investmentRecFormData.donationId,this.investmentRecService.investmentDoctorFormData.doctorId,marketCode, toDayDate).subscribe(
         (response) => {
@@ -358,10 +365,10 @@ export class InvestmentRecComponent implements OnInit {
       var data = response[0] as IInvestmentDoctor;
       if (data !== undefined) {
         this.investmentRecService.investmentDoctorFormData = data;
-        this.investmentRecService.investmentDoctorFormData.doctorName = data.doctorInfo.doctorName;
+        this.investmentRecService.investmentDoctorFormData.doctorName = data.doctorInfo.doctorCode+'-'+data.doctorInfo.doctorName;
         this.investmentRecService.investmentDoctorFormData.degree = data.doctorInfo.degree;
         this.investmentRecService.investmentDoctorFormData.designation = data.doctorInfo.designation;
-        this.investmentRecService.investmentDoctorFormData.institutionName = data.institutionInfo.institutionName;
+        this.investmentRecService.investmentDoctorFormData.institutionName = data.institutionInfo.institutionCode+'-'+data.institutionInfo.institutionName;
         this.investmentRecService.investmentDoctorFormData.address = data.institutionInfo.address;
       }
 
@@ -435,8 +442,6 @@ export class InvestmentRecComponent implements OnInit {
   }
   getInvestmentTargetedGroup() {
     this.investmentRecService.getInvestmentTargetedGroups(this.investmentRecService.investmentRecFormData.id,parseInt(this.empId)).subscribe(response => {
-      //
-      debugger;
       var data = response as IInvestmentTargetedGroup[];
       if (data !== undefined) {
         this.investmentTargetedGroups = data;
@@ -650,7 +655,6 @@ export class InvestmentRecComponent implements OnInit {
       });
       return false;
     }
-    debugger;
     if (this.investmentTargetedProds == undefined || this.investmentTargetedProds.length==0) {
       return false;
     }

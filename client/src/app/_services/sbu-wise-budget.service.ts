@@ -10,6 +10,7 @@ import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { GenericParams } from '../shared/models/genericParams';
 import { IPagination, Pagination } from '../shared/models/pagination';
+import { IYearlyBudget, YearlyBudget } from '../shared/models/yearlyBudget';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +21,10 @@ export class SBUWiseBudgetService {
   genParams = new GenericParams();
 
   sbuWiseBudgets: ISBUWiseBudget[]= [];
+  yearlyBudgets: IYearlyBudget[]= [];
   sbuwiseBudgetPagination = new SBUWiseBudgetPagination();
-  sbuwiseBudgeFormData: SBUWiseBudget = new SBUWiseBudget();
+  sbuwiseBudgetFormData: SBUWiseBudget = new SBUWiseBudget();
+  yearlyBudgetForm: YearlyBudget = new YearlyBudget();
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -37,6 +40,9 @@ export class SBUWiseBudgetService {
 
   getSBU(){    
     return this.http.get(this.baseUrl + 'employee/getSBU');
+  }
+  getYearlyTotalAmount(year:string){    
+    return this.http.get(this.baseUrl + 'sBUWiseBudget/getYearlyTotalAmount/'+year);
   }
   getSBUWiseBudget(){    
     let params = new HttpParams();
@@ -58,16 +64,16 @@ export class SBUWiseBudgetService {
     ); 
   }
 
-  removeSBUWiseBudget(sbuwiseBudgeFormData: ISBUWiseBudget) {
-    return this.http.post(this.baseUrl+ 'sBUWiseBudget/removeSBUWiseBudget', sbuwiseBudgeFormData,
+  removeSBUWiseBudget(sbuwiseBudgetFormData: ISBUWiseBudget) {
+    return this.http.post(this.baseUrl+ 'sBUWiseBudget/removeSBUWiseBudget', sbuwiseBudgetFormData,
     {responseType: 'text'});
   }
   insertSBUWiseBudget() {
-    return this.http.post(this.baseUrl+ 'sBUWiseBudget/CreateSBUWiseBudget', this.sbuwiseBudgeFormData);
+    return this.http.post(this.baseUrl+ 'sBUWiseBudget/CreateSBUWiseBudget', this.sbuwiseBudgetFormData);
   }
   updateSBUWiseBudget() {
     debugger;
-    return this.http.post(this.baseUrl+ 'sBUWiseBudget/ModifySBUWiseBudget',  this.sbuwiseBudgeFormData);
+    return this.http.post(this.baseUrl+ 'sBUWiseBudget/ModifySBUWiseBudget',  this.sbuwiseBudgetFormData);
 }
 getDonations(){    
   return this.http.get(this.baseUrl + 'donation/donationsForInvestment');

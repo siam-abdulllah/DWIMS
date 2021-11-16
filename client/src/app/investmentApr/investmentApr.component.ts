@@ -83,6 +83,7 @@ export class InvestmentAprComponent implements OnInit {
   ngOnInit() {
     this.resetForm();
     this.getEmployeeId();
+    this.getDonation();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-blue' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
   }
@@ -92,6 +93,12 @@ export class InvestmentAprComponent implements OnInit {
     //this.insertInvestmentDetails();
     else
       this.updateInvestmentApr();
+  } getDonation() {
+    this.investmentAprService.getDonations().subscribe(response => {
+      this.donations = response as IDonation[];
+    }, error => {
+      console.log(error);
+    });
   }
   openInvestmentInitSearchModal(template: TemplateRef<any>) {
     this.InvestmentInitSearchModalRef = this.modalService.show(template, this.config);
@@ -430,7 +437,6 @@ export class InvestmentAprComponent implements OnInit {
   getInvestmentAprDetails() {
     this.investmentAprService.getInvestmentAprDetails(this.investmentAprService.investmentAprFormData.id, parseInt(this.empId)).subscribe(response => {
       var data = response[0] as IInvestmentApr;
-      debugger;
       if (data !== undefined) {
         this.investmentAprService.investmentDetailFormData = data;
         this.investmentAprService.investmentDetailFormData.id = 0;
@@ -460,7 +466,6 @@ export class InvestmentAprComponent implements OnInit {
   }
   getInvestmentTargetedGroup() {
     this.investmentAprService.getInvestmentTargetedGroups(this.investmentAprService.investmentAprFormData.id, parseInt(this.empId)).subscribe(response => {
-      debugger;
       var data = response as IInvestmentTargetedGroup[];
       if (data !== undefined) {
         this.investmentTargetedGroups = data;
@@ -525,7 +530,6 @@ export class InvestmentAprComponent implements OnInit {
   }
   getBudget() {
     this.investmentAprService.getBudget(this.sbu, parseInt(this.empId), this.investmentAprService.investmentAprFormData.donationId).subscribe(response => {
-     debugger;
       this.budgetCeiling = response[0] as IBudgetCeiling;
       this.isBudgetVisible = true;
     }, error => {
@@ -550,7 +554,6 @@ export class InvestmentAprComponent implements OnInit {
     );
   }
   updateInvestmentApr() {
-    debugger;
     this.SpinnerService.show();
     this.investmentAprService.updateInvestmentApr().subscribe(
       res => {

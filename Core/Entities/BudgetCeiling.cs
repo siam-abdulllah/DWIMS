@@ -11,7 +11,7 @@ namespace Core.Entities
         public  double SBUWiseBudget { get; set; }
         public  double SBUWiseExpense { get; set; }
         public  double SBUWiseRemaining { get; set; }
-        public string DonationType { get; set; }
+        public int DonationId { get; set; }
         public string SBU { get; set; }
         //public string SBUName { get; set; }
     }

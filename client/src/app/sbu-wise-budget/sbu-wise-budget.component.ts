@@ -37,11 +37,18 @@ export class SbuWiseBudgetComponent implements OnInit {
     this.getSBU();
     this.getSBUWiseBudget();
     this.getDonation();
-    this.bsConfig = Object.assign({}, { containerClass: 'theme-blue' }, { dateInputFormat: 'DD/MM/YYYY' });
+    this.bsConfig = Object.assign({}, { containerClass: 'theme-blue'  }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
   }
   getSBU() {
     this.sbuWiseBudgetService.getSBU().subscribe(response => {
+      this.SBUs = response as ISBU[];
+    }, error => {
+      console.log(error);
+    });
+  }
+  OnYearchange() {
+    this.sbuWiseBudgetService.getYearlyTotalAmount(this.sbuWiseBudgetService.yearlyBudgetForm.year).subscribe(response => {
       this.SBUs = response as ISBU[];
     }, error => {
       console.log(error);
@@ -63,8 +70,8 @@ export class SbuWiseBudgetComponent implements OnInit {
   }
 
   dateCompare() {
-    if (this.sbuWiseBudgetService.sbuwiseBudgeFormData.fromDate != null && this.sbuWiseBudgetService.sbuwiseBudgeFormData.toDate != null) {
-      if (this.sbuWiseBudgetService.sbuwiseBudgeFormData.toDate > this.sbuWiseBudgetService.sbuwiseBudgeFormData.fromDate) {
+    if (this.sbuWiseBudgetService.sbuwiseBudgetFormData.fromDate != null && this.sbuWiseBudgetService.sbuwiseBudgetFormData.toDate != null) {
+      if (this.sbuWiseBudgetService.sbuwiseBudgetFormData.toDate > this.sbuWiseBudgetService.sbuwiseBudgetFormData.fromDate) {
       return true;
       }
       else {
@@ -106,9 +113,9 @@ export class SbuWiseBudgetComponent implements OnInit {
 }
 
   onSubmit(form: NgForm) {
-    this.sbuWiseBudgetService.sbuwiseBudgeFormData.fromDate = this.datePipe.transform(this.sbuWiseBudgetService.sbuwiseBudgeFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
-    this.sbuWiseBudgetService.sbuwiseBudgeFormData.toDate = this.datePipe.transform(this.sbuWiseBudgetService.sbuwiseBudgeFormData.toDate, 'yyyy-MM-dd HH:mm:ss');
-    if (this.sbuWiseBudgetService.sbuwiseBudgeFormData.id == 0)
+    this.sbuWiseBudgetService.sbuwiseBudgetFormData.fromDate = this.datePipe.transform(this.sbuWiseBudgetService.sbuwiseBudgetFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
+    this.sbuWiseBudgetService.sbuwiseBudgetFormData.toDate = this.datePipe.transform(this.sbuWiseBudgetService.sbuwiseBudgetFormData.toDate, 'yyyy-MM-dd HH:mm:ss');
+    if (this.sbuWiseBudgetService.sbuwiseBudgetFormData.id == 0)
       this.insertSBUWiseBudget(form);
     else
       this.updateSBUWiseBudget(form);
@@ -117,9 +124,9 @@ export class SbuWiseBudgetComponent implements OnInit {
 
   insertSBUWiseBudget(form: NgForm) {
     for (let i = 0; i < this.SBUs.length; i++) {
-      if (this.SBUs[i].sbuCode === this.sbuWiseBudgetService.sbuwiseBudgeFormData.sbu) {
+      if (this.SBUs[i].sbuCode === this.sbuWiseBudgetService.sbuwiseBudgetFormData.sbu) {
 
-        this.sbuWiseBudgetService.sbuwiseBudgeFormData.sbuName = this.SBUs[i].sbuName;
+        this.sbuWiseBudgetService.sbuwiseBudgetFormData.sbuName = this.SBUs[i].sbuName;
 
         break;
       }
@@ -134,8 +141,8 @@ export class SbuWiseBudgetComponent implements OnInit {
         this.toastr.success('Data Saved successfully', 'SBU Wise Budget')
       },
       err => {
-        this.sbuWiseBudgetService.sbuwiseBudgeFormData.fromDate = new Date(this.sbuWiseBudgetService.sbuwiseBudgeFormData.fromDate);
-        this.sbuWiseBudgetService.sbuwiseBudgeFormData.toDate = new Date(this.sbuWiseBudgetService.sbuwiseBudgeFormData.toDate);
+        this.sbuWiseBudgetService.sbuwiseBudgetFormData.fromDate = new Date(this.sbuWiseBudgetService.sbuwiseBudgetFormData.fromDate);
+        this.sbuWiseBudgetService.sbuwiseBudgetFormData.toDate = new Date(this.sbuWiseBudgetService.sbuwiseBudgetFormData.toDate);
         this.SpinnerService.hide();  
         this.toastr.error(err.errors[0], 'SBU Wise Budget')
         console.log(err);
@@ -146,9 +153,9 @@ export class SbuWiseBudgetComponent implements OnInit {
 
   updateSBUWiseBudget(form: NgForm) {
     for (let i = 0; i < this.SBUs.length; i++) {
-      if (this.SBUs[i].sbuCode === this.sbuWiseBudgetService.sbuwiseBudgeFormData.sbu) {
+      if (this.SBUs[i].sbuCode === this.sbuWiseBudgetService.sbuwiseBudgetFormData.sbu) {
 
-        this.sbuWiseBudgetService.sbuwiseBudgeFormData.sbuName = this.SBUs[i].sbuName;
+        this.sbuWiseBudgetService.sbuwiseBudgetFormData.sbuName = this.SBUs[i].sbuName;
 
         break;
       }
@@ -163,8 +170,8 @@ export class SbuWiseBudgetComponent implements OnInit {
         this.toastr.info('Data Updated Successfully', 'SBU Wise Budget')
       },
       err => { 
-        this.sbuWiseBudgetService.sbuwiseBudgeFormData.fromDate = new Date(this.sbuWiseBudgetService.sbuwiseBudgeFormData.fromDate);
-        this.sbuWiseBudgetService.sbuwiseBudgeFormData.toDate = new Date(this.sbuWiseBudgetService.sbuwiseBudgeFormData.toDate);
+        this.sbuWiseBudgetService.sbuwiseBudgetFormData.fromDate = new Date(this.sbuWiseBudgetService.sbuwiseBudgetFormData.fromDate);
+        this.sbuWiseBudgetService.sbuwiseBudgetFormData.toDate = new Date(this.sbuWiseBudgetService.sbuwiseBudgetFormData.toDate);
         this.SpinnerService.hide(); 
         this.toastr.error(err.errors[0], 'SBU Wise Budget ')
       console.log(err); 
@@ -173,9 +180,9 @@ export class SbuWiseBudgetComponent implements OnInit {
   }
 
   populateForm(selectedRecord: ISBUWiseBudget) {
-    this.sbuWiseBudgetService.sbuwiseBudgeFormData = Object.assign({}, selectedRecord);
-    this.sbuWiseBudgetService.sbuwiseBudgeFormData.fromDate = new Date(selectedRecord.fromDate);
-    this.sbuWiseBudgetService.sbuwiseBudgeFormData.toDate = new Date(selectedRecord.toDate);
+    this.sbuWiseBudgetService.sbuwiseBudgetFormData = Object.assign({}, selectedRecord);
+    this.sbuWiseBudgetService.sbuwiseBudgetFormData.fromDate = new Date(selectedRecord.fromDate);
+    this.sbuWiseBudgetService.sbuwiseBudgetFormData.toDate = new Date(selectedRecord.toDate);
 
   }
   remove(selectedRecord: ISBUWiseBudget) {
@@ -193,10 +200,10 @@ export class SbuWiseBudgetComponent implements OnInit {
 
   resetForm(form: NgForm) {
     form.form.reset();
-    this.sbuWiseBudgetService.sbuwiseBudgeFormData = new SBUWiseBudget();
+    this.sbuWiseBudgetService.sbuwiseBudgetFormData = new SBUWiseBudget();
   }
   resetPage() {
-    this.sbuWiseBudgetService.sbuwiseBudgeFormData = new SBUWiseBudget();
+    this.sbuWiseBudgetService.sbuwiseBudgetFormData = new SBUWiseBudget();
     this.config = {
       currentPage: 1,
       itemsPerPage: 10,

@@ -24,7 +24,24 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <input type="hidden" name="id" #id="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgeFormData.id" />
+                            <input type="hidden" name="id" #id="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgetFormData.id" />
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Year</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input class="form-control" placeholder="Calender" name="year" [(ngModel)]="sbuWiseBudgetService.yearlyBudgetForm.year" [bsValue]="bsValue" (onHidden)="OnYearchange()" bsDatepicker [bsConfig]="{ minMode:'year', adaptivePosition: true, dateInputFormat: 'YYYY' }">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Total Budget</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input class="form-control " placeholder="Budget Amount" name="totalAmount" #totalAmount="ngModel" [(ngModel)]="sbuWiseBudgetService.yearlyBudgetForm.amount" required [class.invalid]="totalAmount.invalid && totalAmount.touched" [pattern]="numberPattern">
+                                        <div class="invalid-feedback" *ngIf="totalAmount.errors?.pattern">Only numeric value</div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-2">
@@ -32,7 +49,7 @@
                                         <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <select class="form-control " id="sbu" name="sbu" #sbu="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgeFormData.sbu" required [class.invalid]="sbu.invalid && sbu.touched">
+                                        <select class="form-control " id="sbu" name="sbu" #sbu="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgetFormData.sbu" required [class.invalid]="sbu.invalid && sbu.touched">
                                         <option  [ngValue]="null">Select SBU</option>
                                         <option *ngFor="let a of SBUs" [value]="a.sbuCode">{{a.sbuName}}</option>
                                     </select>
@@ -43,7 +60,7 @@
                                         <small style="color:#888889;"> numeric value</small>
                                     </div>
                                     <div class="col-md-3">
-                                        <input class="form-control " placeholder="Budget Amount" name="amount" #amount="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgeFormData.amount" required [class.invalid]="amount.invalid && amount.touched" [pattern]="numberPattern">
+                                        <input class="form-control " placeholder="Budget Amount" name="amount" #amount="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgetFormData.amount" required [class.invalid]="amount.invalid && amount.touched" [pattern]="numberPattern">
                                         <div class="invalid-feedback" *ngIf="amount.errors?.pattern">Only numeric value</div>
 
                                     </div>
@@ -56,7 +73,7 @@
                                         <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <select class="form-control " id="donationId" name="donationId" #donationId="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgeFormData.donationId" required [class.invalid]="donationId.invalid && donationId.touched">
+                                        <select class="form-control " id="donationId" name="donationId" #donationId="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgetFormData.donationId" required [class.invalid]="donationId.invalid && donationId.touched">
                                           <option  [ngValue]="null">Select Donation Type</option>
                                           <option *ngFor="let a of donations" [value]="a.id">{{a.donationTypeName}}</option>
                                       </select>
@@ -70,8 +87,8 @@
                                         <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <!-- <input class="form-control" placeholder="Calender" name="fromDate" #fromDate="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgeFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig"> -->
-                                        <input class="form-control clickable" readonly placeholder="Calender" required name="fromDate" #fromDate="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgeFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched" (bsValueChange)="dateCompare()"
+                                        <!-- <input class="form-control" placeholder="Calender" name="fromDate" #fromDate="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgetFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig"> -->
+                                        <input class="form-control clickable" readonly placeholder="Calender" required name="fromDate" #fromDate="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgetFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched" (bsValueChange)="dateCompare()"
                                             [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
                                     </div>
 
@@ -80,7 +97,7 @@
                                         <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <input class="form-control clickable" readonly placeholder="Calender" required name="toDate" #toDate="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgeFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched" [bsValue]="bsValue" (bsValueChange)="dateCompare()"
+                                        <input class="form-control clickable" readonly placeholder="Calender" required name="toDate" #toDate="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgetFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched" [bsValue]="bsValue" (bsValueChange)="dateCompare()"
                                             bsDatepicker [bsConfig]="bsConfig">
                                     </div>
                                 </div>

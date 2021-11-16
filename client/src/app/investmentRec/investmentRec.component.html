@@ -54,7 +54,7 @@
                                         <!-- <input class="form-control" id="donationId" name="donationId" #donationId="ngModel" [(ngModel)]="investmentRecService.investmentRecFormData.donationId" readonly> -->
 
                                         <select class="form-control" [disabled]=true id="donationId" name="donationId" #donationId="ngModel" [(ngModel)]="investmentRecService.investmentRecFormData.donationId">
-                                            <option  [ngValue]="null">Select Donation Type</option>
+                                            <!-- <option  [ngValue]="null">Select Donation Type</option> -->
                                             <option *ngFor="let a of donations" [value]="a.id">{{a.donationTypeName}}</option>
                                         </select>
                                     </div>
@@ -136,7 +136,7 @@
                                             <label>Institution</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <input class="form-control" name="designation" readonly id="institutionId" name="institutionId" #institutionId="ngModel" [(ngModel)]="investmentRecService.investmentDoctorFormData.institutionId">
+                                            <input class="form-control" name="institutionName" readonly id="institutionName" name="institutionName" #institutionId="ngModel" [(ngModel)]="investmentRecService.investmentDoctorFormData.institutionName">
 
                                             <!-- <select class="form-control " (change)="onChangeInstitutionInDoc()" id="institutionId" name="institutionId" #institutionId="ngModel" [(ngModel)]="investmentRecService.investmentDoctorFormData.institutionId">
                                                 <option  [ngValue]="null">Select Institution</option>

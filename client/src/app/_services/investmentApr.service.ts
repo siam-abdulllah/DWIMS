@@ -34,7 +34,9 @@ export class InvestmentAprService {
   
   constructor(private http: HttpClient, private router: Router) { }
 
-  
+  getDonations() {
+    return this.http.get(this.baseUrl + 'donation/donationsForInvestment');
+  }
   getProduct(sbu:string){    
     return this.http.get(this.baseUrl + 'product/getProductForInvestment/'+sbu);
   }
