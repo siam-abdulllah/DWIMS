@@ -123,6 +123,16 @@ export class SbuWiseBudgetComponent implements OnInit {
 
 
   insertSBUWiseBudget(form: NgForm) {
+    if(this.sbuWiseBudgetService.yearlyBudgetForm.year==null || this.sbuWiseBudgetService.yearlyBudgetForm.year=="" || this.sbuWiseBudgetService.yearlyBudgetForm.year==undefined)
+    {
+      this.toastr.warning('Please Select Year First');
+return false;
+    }
+    if(this.sbuWiseBudgetService.yearlyBudgetForm.amount==null || this.sbuWiseBudgetService.yearlyBudgetForm.amount==0 || this.sbuWiseBudgetService.yearlyBudgetForm.amount==undefined)
+    {
+      this.toastr.warning('Please enter amount first');
+      return false;
+    }
     for (let i = 0; i < this.SBUs.length; i++) {
       if (this.SBUs[i].sbuCode === this.sbuWiseBudgetService.sbuwiseBudgetFormData.sbu) {
 
@@ -133,7 +143,7 @@ export class SbuWiseBudgetComponent implements OnInit {
     }
     if(this.dateCompare()){
       this.SpinnerService.show();  
-    this.sbuWiseBudgetService.insertSBUWiseBudget().subscribe(
+    this.sbuWiseBudgetService.insertSBUWiseBudget(this.sbuWiseBudgetService.yearlyBudgetForm.year,this.sbuWiseBudgetService.yearlyBudgetForm.amount).subscribe(
       res => {
         this.resetForm(form);
         this.getSBUWiseBudget();
@@ -152,6 +162,16 @@ export class SbuWiseBudgetComponent implements OnInit {
   }
 
   updateSBUWiseBudget(form: NgForm) {
+    if(this.sbuWiseBudgetService.yearlyBudgetForm.year==null || this.sbuWiseBudgetService.yearlyBudgetForm.year=="" || this.sbuWiseBudgetService.yearlyBudgetForm.year==undefined)
+    {
+      this.toastr.warning('Please Select Year First');
+return false;
+    }
+    if(this.sbuWiseBudgetService.yearlyBudgetForm.amount==null || this.sbuWiseBudgetService.yearlyBudgetForm.amount==0 || this.sbuWiseBudgetService.yearlyBudgetForm.amount==undefined)
+    {
+      this.toastr.warning('Please enter amount first');
+      return false;
+    }
     for (let i = 0; i < this.SBUs.length; i++) {
       if (this.SBUs[i].sbuCode === this.sbuWiseBudgetService.sbuwiseBudgetFormData.sbu) {
 
@@ -162,7 +182,7 @@ export class SbuWiseBudgetComponent implements OnInit {
     }
     if(this.dateCompare()){
       this.SpinnerService.show();  
-    this.sbuWiseBudgetService.updateSBUWiseBudget().subscribe(
+    this.sbuWiseBudgetService.updateSBUWiseBudget(this.sbuWiseBudgetService.yearlyBudgetForm.year,this.sbuWiseBudgetService.yearlyBudgetForm.amount).subscribe(
       res => {
         this.resetForm(form);
         this.getSBUWiseBudget();

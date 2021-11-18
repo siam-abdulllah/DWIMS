@@ -16,12 +16,14 @@ namespace API.Controllers
     public class SBUWiseBudgetController : BaseApiController
     {
         private readonly IGenericRepository<SBUWiseBudget> _sbuRepo;
+        private readonly IGenericRepository<YearlyBudget> _yearlyBudgetRepo;
         private readonly IMapper _mapper;
-        public SBUWiseBudgetController(IGenericRepository<SBUWiseBudget> sbuRepo,
+        public SBUWiseBudgetController(IGenericRepository<SBUWiseBudget> sbuRepo, IGenericRepository<YearlyBudget> yearlyBudgetRepo,
         IMapper mapper)
         {
             _mapper = mapper;
             _sbuRepo = sbuRepo;
+            _yearlyBudgetRepo = yearlyBudgetRepo;
         }
 
         [HttpGet("GetAllSBUBudget")]
@@ -50,11 +52,42 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost("CreateSBUWiseBudget")]
-        public async Task<ActionResult<SBUWiseBudget>> SaveSBUBudget(SBUWiseBudget sbuBdgt)
+        [HttpPost("CreateSBUWiseBudget/{year}/{amount}")]
+        public async Task<ActionResult<SBUWiseBudget>> SaveSBUBudget(SBUWiseBudget sbuBdgt,string year,string amount)
         {
             try
             {
+                var alreadyExistYearlyBudgetSpec = new YearlyBudgetSpecificiation(year);
+                var alreadyExistYearlyBudget = await _yearlyBudgetRepo.GetEntityWithSpec(alreadyExistYearlyBudgetSpec);
+                if (alreadyExistYearlyBudget != null)
+                {
+                    var yearlyBUdget = new YearlyBudget
+                    {
+                        Id= alreadyExistYearlyBudget.Id,
+                        Year = alreadyExistYearlyBudget.Year,
+                        Amount = Convert.ToInt32(amount),
+                        FromDate = alreadyExistYearlyBudget.FromDate,
+                        ToDate = alreadyExistYearlyBudget.ToDate,
+                        SetOn = alreadyExistYearlyBudget.SetOn,
+                        ModifiedOn = DateTimeOffset.Now
+                    };
+
+                    _yearlyBudgetRepo.Update(yearlyBUdget);
+                    _yearlyBudgetRepo.Savechange();
+                }
+                else {
+                    var yearlyBUdget = new YearlyBudget
+                    {
+                        Year = year,
+                        Amount = Convert.ToInt32(amount),
+                        FromDate = new DateTime(Convert.ToInt16(year), 1, 1),
+                        ToDate = new DateTime(Convert.ToInt16(year), 12, 31),
+                        SetOn = DateTimeOffset.Now
+                    };
+
+                    _yearlyBudgetRepo.Add(yearlyBUdget);
+                    _yearlyBudgetRepo.Savechange();
+                }
                 var alreadyExistSpec = new SBUWiseBudgetWithFiltersForCountSpecificication(sbuBdgt);
                 var alreadyExistSBUWiseBudgetList = await _sbuRepo.ListAsync(alreadyExistSpec);
                 if (alreadyExistSBUWiseBudgetList.Count > 0)
@@ -105,9 +138,41 @@ namespace API.Controllers
         }
 
 
-        [HttpPost("ModifySBUWiseBudget")]
-        public async Task<ActionResult<SBUWiseBudget>> UpdateSBUBudget(SBUWiseBudget sbuBdgt)
+        [HttpPost("ModifySBUWiseBudget/{year}/{amount}")]
+        public async Task<ActionResult<SBUWiseBudget>> UpdateSBUBudget(SBUWiseBudget sbuBdgt, string year, string amount)
         {
+            var alreadyExistYearlyBudgetSpec = new YearlyBudgetSpecificiation(year);
+            var alreadyExistYearlyBudget = await _yearlyBudgetRepo.GetEntityWithSpec(alreadyExistYearlyBudgetSpec);
+            if (alreadyExistYearlyBudget != null)
+            {
+                var yearlyBUdget = new YearlyBudget
+                {
+                    Id = alreadyExistYearlyBudget.Id,
+                    Year = alreadyExistYearlyBudget.Year,
+                    Amount = Convert.ToInt32(amount),
+                    FromDate = alreadyExistYearlyBudget.FromDate,
+                    ToDate = alreadyExistYearlyBudget.ToDate,
+                    SetOn = alreadyExistYearlyBudget.SetOn,
+                    ModifiedOn = DateTimeOffset.Now
+                };
+
+                _yearlyBudgetRepo.Update(yearlyBUdget);
+                _yearlyBudgetRepo.Savechange();
+            }
+            else
+            {
+                var yearlyBUdget = new YearlyBudget
+                {
+                    Year = year,
+                    Amount = Convert.ToInt32(amount),
+                    FromDate = new DateTime(Convert.ToInt16(year), 1, 1),
+                    ToDate = new DateTime(Convert.ToInt16(year), 12, 31),
+                    SetOn = DateTimeOffset.Now
+                };
+
+                _yearlyBudgetRepo.Add(yearlyBUdget);
+                _yearlyBudgetRepo.Savechange();
+            }
             var fromDateCheck = new SBUWiseBudgetWithFiltersForCountSpecificication(sbuBdgt.Id, sbuBdgt.FromDate, sbuBdgt.SBU, sbuBdgt.DonationId);
             var fromDateCheckList = await _sbuRepo.ListAsync(fromDateCheck);
             var toDateCheck = new SBUWiseBudgetWithFiltersForCountSpecificication(sbuBdgt.Id, sbuBdgt.ToDate, sbuBdgt.SBU, sbuBdgt.DonationId);
@@ -163,6 +228,21 @@ namespace API.Controllers
                     return Ok("Succsessfuly Deleted!!!");
                 }
                 return NotFound();
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        } 
+        [HttpPost("getYearlyTotalAmount/{year}")]
+        public async Task<ActionResult<YearlyBudget>> GetYearlyTotalAmount(string year)
+        {
+            try
+            {
+                var alreadyExistSpec = new YearlyBudgetSpecificiation(year);
+                var alreadyExistYearlyBudget = await _yearlyBudgetRepo.GetEntityWithSpec(alreadyExistSpec);
+                
+                return alreadyExistYearlyBudget;
             }
             catch (System.Exception ex)
             {

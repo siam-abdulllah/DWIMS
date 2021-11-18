@@ -19,7 +19,6 @@ export class SBUWiseBudgetService {
   roles: IRole[] = [];
   baseUrl = environment.apiUrl;
   genParams = new GenericParams();
-
   sbuWiseBudgets: ISBUWiseBudget[]= [];
   yearlyBudgets: IYearlyBudget[]= [];
   sbuwiseBudgetPagination = new SBUWiseBudgetPagination();
@@ -68,12 +67,12 @@ export class SBUWiseBudgetService {
     return this.http.post(this.baseUrl+ 'sBUWiseBudget/removeSBUWiseBudget', sbuwiseBudgetFormData,
     {responseType: 'text'});
   }
-  insertSBUWiseBudget() {
-    return this.http.post(this.baseUrl+ 'sBUWiseBudget/CreateSBUWiseBudget', this.sbuwiseBudgetFormData);
+  insertSBUWiseBudget(year:string,amount:number) {
+    return this.http.post(this.baseUrl+ 'sBUWiseBudget/CreateSBUWiseBudget/'+year+'/'+amount, this.sbuwiseBudgetFormData);
   }
-  updateSBUWiseBudget() {
+  updateSBUWiseBudget(year:string,amount:number) {
     debugger;
-    return this.http.post(this.baseUrl+ 'sBUWiseBudget/ModifySBUWiseBudget',  this.sbuwiseBudgetFormData);
+    return this.http.post(this.baseUrl+ 'sBUWiseBudget/ModifySBUWiseBudget/'+year+'/'+amount,  this.sbuwiseBudgetFormData);
 }
 getDonations(){    
   return this.http.get(this.baseUrl + 'donation/donationsForInvestment');
