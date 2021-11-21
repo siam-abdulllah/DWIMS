@@ -29,12 +29,14 @@
                                 <div class="row">
                                     <div class="col-md-2">
                                         <label>Year</label>
+                                        <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <input class="form-control" placeholder="Calender" name="year" [(ngModel)]="sbuWiseBudgetService.yearlyBudgetForm.year" [bsValue]="bsValue" (onHidden)="OnYearchange()" bsDatepicker [bsConfig]="{ minMode:'year', adaptivePosition: true, dateInputFormat: 'YYYY' }">
+                                        <input class="form-control clickable" placeholder="Calender" name="year" [(ngModel)]="sbuWiseBudgetService.yearlyBudgetForm.year" [bsValue]="bsValue" (onHidden)="OnYearchange()" bsDatepicker [bsConfig]="{ minMode:'year', adaptivePosition: true, dateInputFormat: 'YYYY' }">
                                     </div>
                                     <div class="col-md-2">
                                         <label>Total Budget</label>
+                                        <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
                                         <input class="form-control " placeholder="Budget Amount" name="totalAmount" #totalAmount="ngModel" [(ngModel)]="sbuWiseBudgetService.yearlyBudgetForm.amount" required [class.invalid]="totalAmount.invalid && totalAmount.touched" [pattern]="numberPattern">
@@ -123,6 +125,7 @@
                                         <td>Donation Type</td>
                                         <td>From Date </td>
                                         <td>To Date</td>
+                                        <td>Year</td>
                                         <td>Budget Amount</td>
                                         <td></td>
                                         <td></td>
@@ -139,6 +142,9 @@
                                         </td>
                                         <td>
                                             {{a.toDate | date:'dd/MM/yyyy'}}
+                                        </td>
+                                        <td>
+                                            {{a.year}}
                                         </td>
                                         <td>
                                             {{a.amount}}

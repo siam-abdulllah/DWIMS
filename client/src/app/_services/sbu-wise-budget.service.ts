@@ -40,7 +40,7 @@ export class SBUWiseBudgetService {
   getSBU(){    
     return this.http.get(this.baseUrl + 'employee/getSBU');
   }
-  getYearlyTotalAmount(year:string){    
+  getYearlyTotalAmount(year:string){  
     return this.http.get(this.baseUrl + 'sBUWiseBudget/getYearlyTotalAmount/'+year);
   }
   getSBUWiseBudget(){    

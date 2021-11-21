@@ -10,6 +10,7 @@ export interface ISBUWiseBudget {
     fromDate: any;
     toDate: any;
     status: string;
+    year: any;
     donation:IDonation;
 }
 
@@ -22,6 +23,7 @@ export class SBUWiseBudget implements ISBUWiseBudget {
     fromDate: any;
     toDate: any;
     status: string;
+    year: any;
     donation:IDonation;
 }
 

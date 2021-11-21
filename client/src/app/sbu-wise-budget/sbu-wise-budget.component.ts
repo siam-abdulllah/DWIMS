@@ -11,7 +11,8 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ISBU } from '../shared/models/sbu';
 import { IDonation } from '../shared/models/donation';
 import { DatePipe } from '@angular/common';
-import { NgxSpinnerService } from "ngx-spinner"; 
+import { NgxSpinnerService } from "ngx-spinner";
+import { IYearlyBudget } from '../shared/models/yearlyBudget';
 @Component({
   selector: 'app-sbu-wise-budget',
   templateUrl: './sbu-wise-budget.component.html'
@@ -30,14 +31,14 @@ export class SbuWiseBudgetComponent implements OnInit {
   SBUs: ISBU[];
   numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
   constructor(public sbuWiseBudgetService: SBUWiseBudgetService, private router: Router, private toastr: ToastrService,
-    private datePipe: DatePipe,private SpinnerService: NgxSpinnerService) { }
+    private datePipe: DatePipe, private SpinnerService: NgxSpinnerService) { }
   //constructor(private router: Router, private toastr: ToastrService) { }
   ngOnInit() {
     this.resetPage();
     this.getSBU();
     this.getSBUWiseBudget();
     this.getDonation();
-    this.bsConfig = Object.assign({}, { containerClass: 'theme-blue'  }, { dateInputFormat: 'DD/MM/YYYY' });
+    this.bsConfig = Object.assign({}, { containerClass: 'theme-blue' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
   }
   getSBU() {
@@ -48,22 +49,33 @@ export class SbuWiseBudgetComponent implements OnInit {
     });
   }
   OnYearchange() {
-    this.sbuWiseBudgetService.getYearlyTotalAmount(this.sbuWiseBudgetService.yearlyBudgetForm.year).subscribe(response => {
-      this.SBUs = response as ISBU[];
-    }, error => {
-      console.log(error);
-    });
+    if (this.sbuWiseBudgetService.yearlyBudgetForm.year != null && this.sbuWiseBudgetService.yearlyBudgetForm.year != "" && this.sbuWiseBudgetService.yearlyBudgetForm.year != undefined) {
+      this.sbuWiseBudgetService.getYearlyTotalAmount(this.sbuWiseBudgetService.yearlyBudgetForm.year).subscribe(response => {
+       debugger;
+       if(response!=null){
+        this.sbuWiseBudgetService.yearlyBudgetForm = response as IYearlyBudget;
+      }
+      }, error => {
+        console.log(error);
+      });
+    }
+
   }
   getSBUWiseBudget() {
     this.sbuWiseBudgetService.getSBUWiseBudget().subscribe(response => {
       const params = this.sbuWiseBudgetService.getGenParams();
       this.sbuWiseBudgets = response.data;
+      this.sbuWiseBudgets = response.data;
+      this.sbuWiseBudgets.forEach(element => {
+        var convertedDate=new Date(element.toDate);
+       element.year=convertedDate.getFullYear();
+     });
       this.totalCount = response.count;
       this.config = {
         currentPage: params.pageIndex,
         itemsPerPage: params.pageSize,
-        totalItems:this.totalCount,
-        };
+        totalItems: this.totalCount,
+      };
     }, error => {
       console.log(error);
     });
@@ -72,7 +84,7 @@ export class SbuWiseBudgetComponent implements OnInit {
   dateCompare() {
     if (this.sbuWiseBudgetService.sbuwiseBudgetFormData.fromDate != null && this.sbuWiseBudgetService.sbuwiseBudgetFormData.toDate != null) {
       if (this.sbuWiseBudgetService.sbuwiseBudgetFormData.toDate > this.sbuWiseBudgetService.sbuwiseBudgetFormData.fromDate) {
-      return true;
+        return true;
       }
       else {
         //form.controls.fromDate.setValue(null);
@@ -82,25 +94,24 @@ export class SbuWiseBudgetComponent implements OnInit {
       }
     }
   }
-  getDonation(){
+  getDonation() {
     this.sbuWiseBudgetService.getDonations().subscribe(response => {
       this.donations = response as IDonation[];
     }, error => {
-        console.log(error);
+      console.log(error);
     });
   }
 
-  onPageChanged(event: any){
+  onPageChanged(event: any) {
     const params = this.sbuWiseBudgetService.getGenParams();
-    if (params.pageIndex !== event)
-    {
+    if (params.pageIndex !== event) {
       params.pageIndex = event;
       this.sbuWiseBudgetService.setGenParams(params);
       this.getSBUWiseBudget();
     }
   }
-  
-  onSearch(){
+
+  onSearch() {
     const params = this.sbuWiseBudgetService.getGenParams();
     params.search = this.searchTerm.nativeElement.value;
     params.pageIndex = 1;
@@ -108,9 +119,9 @@ export class SbuWiseBudgetComponent implements OnInit {
     this.getSBUWiseBudget();
   }
 
-  resetSearch(){
+  resetSearch() {
     this.searchText = '';
-}
+  }
 
   onSubmit(form: NgForm) {
     this.sbuWiseBudgetService.sbuwiseBudgetFormData.fromDate = this.datePipe.transform(this.sbuWiseBudgetService.sbuwiseBudgetFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
@@ -123,13 +134,11 @@ export class SbuWiseBudgetComponent implements OnInit {
 
 
   insertSBUWiseBudget(form: NgForm) {
-    if(this.sbuWiseBudgetService.yearlyBudgetForm.year==null || this.sbuWiseBudgetService.yearlyBudgetForm.year=="" || this.sbuWiseBudgetService.yearlyBudgetForm.year==undefined)
-    {
+    if (this.sbuWiseBudgetService.yearlyBudgetForm.year == null || this.sbuWiseBudgetService.yearlyBudgetForm.year == "" || this.sbuWiseBudgetService.yearlyBudgetForm.year == undefined) {
       this.toastr.warning('Please Select Year First');
-return false;
+      return false;
     }
-    if(this.sbuWiseBudgetService.yearlyBudgetForm.amount==null || this.sbuWiseBudgetService.yearlyBudgetForm.amount==0 || this.sbuWiseBudgetService.yearlyBudgetForm.amount==undefined)
-    {
+    if (this.sbuWiseBudgetService.yearlyBudgetForm.amount == null || this.sbuWiseBudgetService.yearlyBudgetForm.amount == 0 || this.sbuWiseBudgetService.yearlyBudgetForm.amount == undefined) {
       this.toastr.warning('Please enter amount first');
       return false;
     }
@@ -141,34 +150,32 @@ return false;
         break;
       }
     }
-    if(this.dateCompare()){
-      this.SpinnerService.show();  
-    this.sbuWiseBudgetService.insertSBUWiseBudget(this.sbuWiseBudgetService.yearlyBudgetForm.year,this.sbuWiseBudgetService.yearlyBudgetForm.amount).subscribe(
-      res => {
-        this.resetForm(form);
-        this.getSBUWiseBudget();
-        this.SpinnerService.hide();  
-        this.toastr.success('Data Saved successfully', 'SBU Wise Budget')
-      },
-      err => {
-        this.sbuWiseBudgetService.sbuwiseBudgetFormData.fromDate = new Date(this.sbuWiseBudgetService.sbuwiseBudgetFormData.fromDate);
-        this.sbuWiseBudgetService.sbuwiseBudgetFormData.toDate = new Date(this.sbuWiseBudgetService.sbuwiseBudgetFormData.toDate);
-        this.SpinnerService.hide();  
-        this.toastr.error(err.errors[0], 'SBU Wise Budget')
-        console.log(err);
-      }
-    );
-  }
+    if (this.dateCompare()) {
+      this.SpinnerService.show();
+      this.sbuWiseBudgetService.insertSBUWiseBudget(this.sbuWiseBudgetService.yearlyBudgetForm.year, this.sbuWiseBudgetService.yearlyBudgetForm.amount).subscribe(
+        res => {
+          this.resetForm(form);
+          this.getSBUWiseBudget();
+          this.SpinnerService.hide();
+          this.toastr.success('Data Saved successfully', 'SBU Wise Budget')
+        },
+        err => {
+          this.sbuWiseBudgetService.sbuwiseBudgetFormData.fromDate = new Date(this.sbuWiseBudgetService.sbuwiseBudgetFormData.fromDate);
+          this.sbuWiseBudgetService.sbuwiseBudgetFormData.toDate = new Date(this.sbuWiseBudgetService.sbuwiseBudgetFormData.toDate);
+          this.SpinnerService.hide();
+          this.toastr.error(err.errors[0], 'SBU Wise Budget')
+          console.log(err);
+        }
+      );
+    }
   }
 
   updateSBUWiseBudget(form: NgForm) {
-    if(this.sbuWiseBudgetService.yearlyBudgetForm.year==null || this.sbuWiseBudgetService.yearlyBudgetForm.year=="" || this.sbuWiseBudgetService.yearlyBudgetForm.year==undefined)
-    {
+    if (this.sbuWiseBudgetService.yearlyBudgetForm.year == null || this.sbuWiseBudgetService.yearlyBudgetForm.year == "" || this.sbuWiseBudgetService.yearlyBudgetForm.year == undefined) {
       this.toastr.warning('Please Select Year First');
-return false;
+      return false;
     }
-    if(this.sbuWiseBudgetService.yearlyBudgetForm.amount==null || this.sbuWiseBudgetService.yearlyBudgetForm.amount==0 || this.sbuWiseBudgetService.yearlyBudgetForm.amount==undefined)
-    {
+    if (this.sbuWiseBudgetService.yearlyBudgetForm.amount == null || this.sbuWiseBudgetService.yearlyBudgetForm.amount == 0 || this.sbuWiseBudgetService.yearlyBudgetForm.amount == undefined) {
       this.toastr.warning('Please enter amount first');
       return false;
     }
@@ -180,30 +187,32 @@ return false;
         break;
       }
     }
-    if(this.dateCompare()){
-      this.SpinnerService.show();  
-    this.sbuWiseBudgetService.updateSBUWiseBudget(this.sbuWiseBudgetService.yearlyBudgetForm.year,this.sbuWiseBudgetService.yearlyBudgetForm.amount).subscribe(
-      res => {
-        this.resetForm(form);
-        this.getSBUWiseBudget();
-        this.SpinnerService.hide();  
-        this.toastr.info('Data Updated Successfully', 'SBU Wise Budget')
-      },
-      err => { 
-        this.sbuWiseBudgetService.sbuwiseBudgetFormData.fromDate = new Date(this.sbuWiseBudgetService.sbuwiseBudgetFormData.fromDate);
-        this.sbuWiseBudgetService.sbuwiseBudgetFormData.toDate = new Date(this.sbuWiseBudgetService.sbuwiseBudgetFormData.toDate);
-        this.SpinnerService.hide(); 
-        this.toastr.error(err.errors[0], 'SBU Wise Budget ')
-      console.log(err); 
+    if (this.dateCompare()) {
+      this.SpinnerService.show();
+      this.sbuWiseBudgetService.updateSBUWiseBudget(this.sbuWiseBudgetService.yearlyBudgetForm.year, this.sbuWiseBudgetService.yearlyBudgetForm.amount).subscribe(
+        res => {
+          this.resetForm(form);
+          this.getSBUWiseBudget();
+          this.SpinnerService.hide();
+          this.toastr.info('Data Updated Successfully', 'SBU Wise Budget')
+        },
+        err => {
+          this.sbuWiseBudgetService.sbuwiseBudgetFormData.fromDate = new Date(this.sbuWiseBudgetService.sbuwiseBudgetFormData.fromDate);
+          this.sbuWiseBudgetService.sbuwiseBudgetFormData.toDate = new Date(this.sbuWiseBudgetService.sbuwiseBudgetFormData.toDate);
+          this.SpinnerService.hide();
+          this.toastr.error(err.errors[0], 'SBU Wise Budget ')
+          console.log(err);
+        }
+      );
     }
-    );}
   }
 
   populateForm(selectedRecord: ISBUWiseBudget) {
     this.sbuWiseBudgetService.sbuwiseBudgetFormData = Object.assign({}, selectedRecord);
     this.sbuWiseBudgetService.sbuwiseBudgetFormData.fromDate = new Date(selectedRecord.fromDate);
     this.sbuWiseBudgetService.sbuwiseBudgetFormData.toDate = new Date(selectedRecord.toDate);
-
+    this.sbuWiseBudgetService.yearlyBudgetForm.year = this.sbuWiseBudgetService.sbuwiseBudgetFormData.toDate.getFullYear();
+    this.OnYearchange();
   }
   remove(selectedRecord: ISBUWiseBudget) {
     var result = confirm("Do you want to delete?");
@@ -227,8 +236,8 @@ return false;
     this.config = {
       currentPage: 1,
       itemsPerPage: 10,
-      totalItems:50,
-      };
+      totalItems: 50,
+    };
   }
 
 }

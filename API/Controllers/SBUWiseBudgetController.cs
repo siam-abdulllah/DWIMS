@@ -234,7 +234,7 @@ namespace API.Controllers
                 throw ex;
             }
         } 
-        [HttpPost("getYearlyTotalAmount/{year}")]
+        [HttpGet("getYearlyTotalAmount/{year}")]
         public async Task<ActionResult<YearlyBudget>> GetYearlyTotalAmount(string year)
         {
             try
