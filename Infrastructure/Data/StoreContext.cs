@@ -70,6 +70,8 @@ namespace Infrastructure.Data
         public DbSet<YearlyBudget> YearlyBudget { get; set; }
         [NotMapped]
         public DbSet<BudgetCeiling> BudgetCeiling { get; set; }
+        [NotMapped]
+        public DbSet<RptSBUWiseExpSummart> RptSBUWiseExpSummart { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

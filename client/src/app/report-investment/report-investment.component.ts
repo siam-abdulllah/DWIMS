@@ -15,6 +15,7 @@ import { DatePipe } from '@angular/common';
 import { IDocLocWiseInvestment } from './../shared/models/rptDocLocWiseInvestment';
 import { IDocCampWiseInvestment } from '../shared/models/rptDocCampWiseInvestment';
 import { IInsSocBcdsInvestment } from '../shared/models/rptInsSocBcdsInvestment';
+import { ISBUWiseExpSummaryReport } from '../shared/models/rptSBUWiseExpSummaryReport';
 
 import { ICampaignMst } from '../shared/models/campaign';
 import { ISubCampaign } from '../shared/models/subCampaign';
@@ -40,6 +41,7 @@ export class ReportInvestmentComponent implements OnInit {
   insSocBcdsInvestment: IInsSocBcdsInvestment[] = [];
   docCampWiseInvestment: IDocCampWiseInvestment[] = [];
   docLocWiseInvestment: IDocLocWiseInvestment[] = [];
+  sBUWiseExpSummaryReport :ISBUWiseExpSummaryReport[] = [];
   searchText = '';
   visSoc: boolean = true;
   visBcd: boolean = true;
@@ -113,6 +115,11 @@ export class ReportInvestmentComponent implements OnInit {
     this.createInvestmentSearchForm();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-blue' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
+    this.config = {
+      currentPage: 1,
+      itemsPerPage: 10,
+      totalItems:50,
+      };
   }
 
   getReportList() {
@@ -166,6 +173,7 @@ export class ReportInvestmentComponent implements OnInit {
   }
 
   onPageChanged(event: any){
+    debugger;
     const params = this.reportInvestmentService.getGenParams();
     if (params.pageIndex !== event)
     {
@@ -356,6 +364,9 @@ export class ReportInvestmentComponent implements OnInit {
     }
     if (rpt == "SBU wise Investment And Commitment vs Share") {
       this.getSBUWiseInvestCommitShareIndivDocReport();
+    }
+    if (rpt == "SBU wise Budget And Expense Summary") {
+      this.getSBUWiseBudgetInvest();
     }
   }
 
@@ -1341,8 +1352,10 @@ getSBUWiseInvestCommitShareIndivDocReport()  {
   });
 }
 
+
+
 /// ********************************************
-/// View SBU wise Investment And Commitment vs Share (Individual Doctor)
+/// View SBU wise Budget And Expense
 /// ********************************************
 
 viewSBUWiseInvestCommitShareIndivDocReport() {
@@ -1387,11 +1400,8 @@ viewSBUWiseInvestCommitShareIndivDocReport() {
   this.getReport(col, rowD, 'SBU wise Investment And Commitment vs Share (Individual Doctor)', 'Square Pharmaceuticals Ltd.', '48, Square Center, Mohakhali');
 }
 
-
-
-
 /// ********************************************
-/// Generate Doctor Wise Invest in All Portfolio (Not Fixed, Column Missing)
+/// Generate SBU wise Investment And Commitment vs Share (Individual Doctor)
 /// ********************************************
 
 getDocWiseInvestAllPortfolioReport()  {
@@ -1436,8 +1446,7 @@ getDocWiseInvestAllPortfolioReport()  {
 }
 
 /// ********************************************
-/// View Doctor Wise Invest in All Portfolio (Not Fixed, Column Missing)0
-
+/// View Doctor Wise Invest in All Portfolio (Not Fixed, Column Missing)
 /// ********************************************
 
 viewDocWiseInvestAllPortfolioReport() {
@@ -1482,6 +1491,82 @@ viewDocWiseInvestAllPortfolioReport() {
   //this.getReport(col, rowD, title, orgName, orgAddress);
   this.getReport(col, rowD, 'Doctor Wise Invest in All Portfolio', 'Square Pharmaceuticals Ltd.', '48, Square Center, Mohakhali');
 }
+
+/// ********************************************
+/// Generate SBU wise Budget And Expense
+/// ********************************************
+
+getSBUWiseBudgetInvest()  {
+  const investmentReportSearchDto: IInvestmentReportSearchDto = {
+    fromDate: this.investmentSearchForm.value.fromDate,
+    toDate: this.investmentSearchForm.value.toDate,
+    sbu: this.investmentSearchForm.value.sbu,
+    userId: 0,
+    donationType: this.investmentSearchForm.value.donationType,
+    investType: this.investmentSearchForm.value.donationTo,
+    institutionId: this.investmentSearchForm.value.institutionId,
+    societyId: this.investmentSearchForm.value.societyId,
+    bcdsId: this.investmentSearchForm.value.bcdsId,
+    doctorId: this.investmentSearchForm.value.doctorId,
+    locationType: this.investmentSearchForm.value.locationType,
+    territoryCode: this.investmentSearchForm.value.territoryCode,
+    marketCode: this.investmentSearchForm.value.marketCode,
+    regionCode: this.investmentSearchForm.value.regionCode,
+    zoneCode: this.investmentSearchForm.value.zoneCode,
+    divisionCode: this.investmentSearchForm.value.divisionCode,
+    brandCode: this.investmentSearchForm.value.brandCode,
+    campaignName: this.investmentSearchForm.value.campaignName,
+    subCampaignName: this.investmentSearchForm.value.subCampaignName,
+  };
+
+  this.reportInvestmentService.GetSBUWiseExpSummaryReport(investmentReportSearchDto).subscribe(resp => {
+    // this.reportInvestmentService.getInsSocietyBCDSWiseInvestment().subscribe(resp => {  
+    this.sBUWiseExpSummaryReport = resp as ISBUWiseExpSummaryReport[];
+    if (this.sBUWiseExpSummaryReport.length <= 0) {
+      this.toastr.warning('No Data Found', 'Report');
+    }
+  
+    this.viewSBUWiseBudgetInvest();
+  }, error => {
+    console.log(error);
+  });
+}
+
+/// ********************************************
+/// View SBU wise Budget And Expense
+/// ********************************************
+
+viewSBUWiseBudgetInvest() {
+  debugger;
+  if (this.docCampWiseInvestment.length <= 0) {
+    return false;
+  }
+
+  const r =  this.sBUWiseExpSummaryReport as ISBUWiseExpSummaryReport[];
+
+  let row: any[] = [];
+  let rowD: any[] = [];
+  let col = ['SBU Name', 'Donation Type','Budget' , 'Expense' ]; // initialization for headers
+
+  let slNO = 0;
+  for (const a of r) {
+    console.log(r);
+    //row.push(++slNO);
+    row.push(a.sBUName);
+    row.push(a.donationType);
+    row.push(a.budget);
+    row.push(a.expense);
+
+    rowD.push(row);
+    row = [];
+  }
+  //this.getReport(col, rowD, title, orgName, orgAddress);
+  this.getReport(col, rowD, 'SBU wise Budget And Expense Summary Report', 'Square Pharmaceuticals Ltd.', '48, Square Center, Mohakhali');
+}
+
+
+
+
 
 
 

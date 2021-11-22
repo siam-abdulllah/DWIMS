@@ -110,5 +110,9 @@ export class ReportInvestmentService {
   return this.http.post(this.baseUrl + 'reportInvestment/GetDoctorCampaingWiseInvestment', model);
 }
 
+GetSBUWiseExpSummaryReport(model: any) {
+  return this.http.post(this.baseUrl + 'reportInvestment/GetSBUWiseExpSummaryReport', model);
+}
+
 }
 
