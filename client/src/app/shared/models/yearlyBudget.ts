@@ -1,6 +1,6 @@
 export interface IYearlyBudget {
     id: number;
-    year: string;
+    year: any;
     amount: number;
     fromDate: any;
     toDate: any;
@@ -9,7 +9,7 @@ export interface IYearlyBudget {
 
 export class YearlyBudget implements IYearlyBudget {
     id: number = 0;
-    year: string;
+    year: any;
     amount: number;
     fromDate: any;
     toDate: any;
