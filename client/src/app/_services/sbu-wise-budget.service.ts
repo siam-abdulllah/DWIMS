@@ -43,6 +43,9 @@ export class SBUWiseBudgetService {
   getYearlyTotalAmount(year:number){  
     return this.http.get(this.baseUrl + 'sBUWiseBudget/getYearlyTotalAmount/'+year);
   }
+  getYearlyTotalExpense(year:number){  
+    return this.http.get(this.baseUrl + 'sBUWiseBudget/getYearlyTotalExpense/'+year);
+  }
   getSBUWiseBudget(){    
     let params = new HttpParams();
     

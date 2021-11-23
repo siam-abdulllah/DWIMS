@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Dtos;
@@ -243,6 +244,38 @@ namespace API.Controllers
                 var alreadyExistYearlyBudget = await _yearlyBudgetRepo.GetEntityWithSpec(alreadyExistSpec);
                 
                 return alreadyExistYearlyBudget;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }  
+        [HttpGet("getYearlyTotalExpense/{year}")]
+        public async Task<ActionResult<string>> GetYearlyTotalExpense(string year)
+        {
+            try
+            {
+                var allData = await _sbuRepo.ListAllAsync();
+                string totalExpense = "";
+                //totalExpense=allData.AsEnumerable().Where(x=>x.FromDate >= new DateTime(year, 1, 1) && x.ToDate <= new DateTime(year, 12, 31)).Sum(o => o.Amount).ToString();
+                var items = (from o in allData
+                                   where o.FromDate.Value.Date >= DateTime.ParseExact("01/01/"+year, "dd/MM/yyyy", CultureInfo.InvariantCulture)
+                                   && o.ToDate.Value.Date <= DateTime.ParseExact("31/12/" + year, "dd/MM/yyyy", CultureInfo.InvariantCulture)
+                             // && o.ToDate <= new DateTime(year, 12, 31)
+                             select new { o.Amount,o.FromDate,o.ToDate,o.Id}
+                  ).ToList();
+                totalExpense = items.Select(c=>c.Amount).Sum().ToString();
+                //var market = (from r in allData
+                //              where r.FromDate!=null
+                //              select new MarketDto
+                //              {
+                //                  MarketCode = r.MarketCode,
+                //                  MarketName = r.MarketName,
+                //                  SBU = r.SBU,
+                //                  SBUName = r.SBUName,
+                //              }
+                //              ).First();
+                return totalExpense;
             }
             catch (System.Exception ex)
             {
