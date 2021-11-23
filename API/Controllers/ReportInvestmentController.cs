@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using API.Dtos;
 using API.Errors;
 using API.Helpers;
+using System;
 using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
@@ -13,6 +14,7 @@ using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace API.Controllers
 {
@@ -117,6 +119,50 @@ namespace API.Controllers
             var results = _db.RptDocCampWiseInvestment.FromSqlRaw(qry).ToList();
             return results;
         }
+
+
+        [HttpPost("GetSBUWiseExpSummaryReport")]
+        public ActionResult<IReadOnlyList<RptSBUWiseExpSummart>> SBUWiseExpSummaryReport([FromQuery] ReportInvestmentInfoSpecParams rptParrams, ReportSearchDto search)
+        {
+
+            string[] formats = {"M/d/yyyy h:mm:ss tt", "M/d/yyyy h:mm tt",
+                   "MM/dd/yyyy hh:mm:ss", "M/d/yyyy h:mm:ss",
+                   "M/d/yyyy hh:mm tt", "M/d/yyyy hh tt",
+                   "M/d/yyyy h:mm", "M/d/yyyy h:mm",
+                   "MM/dd/yyyy hh:mm", "M/dd/yyyy hh:mm",
+                   "MM/d/yyyy HH:mm:ss.ffffff",
+                   "dd-MMM-yy hh:mm:ss",
+                   "dd-MM-yy", "dd-MM-yyyy"};
+
+            CultureInfo provider = CultureInfo.InvariantCulture;  
+            // It throws Argument null exception  
+            //DateTime fd = DateTime.ParseExact(search.FromDate.ToString(), formats, provider);
+            //DateTime td = DateTime.ParseExact(search.ToDate.ToString(), formats, provider);
+
+            string qry = "select CAST(ROW_NUMBER() OVER (ORDER BY c.SBU) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, SUM (e.ApprovedAmount) Expense, c.SBUName, c.SBU, c.Amount Budget,  c.DonationId, d.DonationTypeName " +
+            " from SBUWiseBudget c, InvestmentInit b  inner join InvestmentDetailTracker e on e.InvestmentInitId = b.Id " +
+            " left join Donation d on d.Id = b.DonationId "+
+            " where b.SBU = c.SBU AND c.DonationId = e.DonationId AND e.PaidStatus = 'Paid' " +
+            " AND  (CONVERT(date,c.FromDate) >= CAST('01-01-2021' as Date) AND CAST('12-31-2021' as Date) >= CONVERT(date,c.ToDate)) "+
+            " AND (CONVERT(date,e.FromDate) >= CAST('01-01-2021' as Date) AND CAST('12-31-2021' as Date) >= CONVERT(date,e.ToDate)) ";
+    
+            if (!string.IsNullOrEmpty(search.SBU))
+            {
+                qry += " AND C.SBUName = '" + search.SBU + "' ";
+            }
+            if (!string.IsNullOrEmpty(search.DonationType))
+            {
+                qry += " AND d.DonationTypeName = '" + search.DonationType + "' ";
+            }
+
+            qry += " group by  c.SBUName,c.SBU, c.Amount,  c.DonationId, d.DonationTypeName ";
+
+            var results = _db.RptSBUWiseExpSummart.FromSqlRaw(qry).ToList();
+
+            return results;
+        }
+
+
 
         [HttpPost("GetDoctorLocationWiseInvestment")]
         public ActionResult<IReadOnlyList<RptDocLocWiseInvestment>> GetDoctorLocationWiseInvestment([FromQuery] ReportInvestmentInfoSpecParams rptParrams, ReportSearchDto search)
