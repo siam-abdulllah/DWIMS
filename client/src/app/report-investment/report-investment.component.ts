@@ -1522,6 +1522,7 @@ getSBUWiseBudgetInvest()  {
   this.reportInvestmentService.GetSBUWiseExpSummaryReport(investmentReportSearchDto).subscribe(resp => {
     // this.reportInvestmentService.getInsSocietyBCDSWiseInvestment().subscribe(resp => {  
     this.sBUWiseExpSummaryReport = resp as ISBUWiseExpSummaryReport[];
+    debugger;
     if (this.sBUWiseExpSummaryReport.length <= 0) {
       this.toastr.warning('No Data Found', 'Report');
     }
@@ -1537,11 +1538,11 @@ getSBUWiseBudgetInvest()  {
 /// ********************************************
 
 viewSBUWiseBudgetInvest() {
-  debugger;
-  if (this.docCampWiseInvestment.length <= 0) {
+
+  if (this.sBUWiseExpSummaryReport.length <= 0) {
     return false;
   }
-
+  debugger;
   const r =  this.sBUWiseExpSummaryReport as ISBUWiseExpSummaryReport[];
 
   let row: any[] = [];
@@ -1549,11 +1550,11 @@ viewSBUWiseBudgetInvest() {
   let col = ['SBU Name', 'Donation Type','Budget' , 'Expense' ]; // initialization for headers
 
   let slNO = 0;
+
   for (const a of r) {
-    console.log(r);
-    //row.push(++slNO);
-    row.push(a.sBUName);
-    row.push(a.donationType);
+ 
+    row.push(a.sbuName);
+    row.push(a.donationTypeName);
     row.push(a.budget);
     row.push(a.expense);
 

@@ -1,9 +1,7 @@
 export interface ISBUWiseExpSummaryReport {
-    id: number;
-    investmentInitId: number;
-    sBU: string;
-    sBUName: string;
-    donationType: string;
+    sbu: string;
+    sbuName: string;
+    donationTypeName: string;
     donationId: string;
     expense: number;
     budget: number;
