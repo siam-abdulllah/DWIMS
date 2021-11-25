@@ -143,8 +143,8 @@ namespace API.Controllers
             " from SBUWiseBudget c, InvestmentInit b  inner join InvestmentDetailTracker e on e.InvestmentInitId = b.Id " +
             " left join Donation d on d.Id = b.DonationId "+
             " where b.SBU = c.SBU AND c.DonationId = e.DonationId AND e.PaidStatus = 'Paid' " +
-            " AND  (CONVERT(date,c.FromDate) >= CAST('01-01-2021' as Date) AND CAST('12-31-2021' as Date) >= CONVERT(date,c.ToDate)) "+
-            " AND (CONVERT(date,e.FromDate) >= CAST('01-01-2021' as Date) AND CAST('12-31-2021' as Date) >= CONVERT(date,e.ToDate)) ";
+            " AND  (CONVERT(date,c.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,c.ToDate)) "+
+            " AND (CONVERT(date,e.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,e.ToDate)) ";
     
             if (!string.IsNullOrEmpty(search.SBU))
             {
