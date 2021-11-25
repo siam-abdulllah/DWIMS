@@ -14,7 +14,6 @@ using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using System.Globalization;
 
 namespace API.Controllers
 {
@@ -125,37 +124,27 @@ namespace API.Controllers
         public ActionResult<IReadOnlyList<RptSBUWiseExpSummart>> SBUWiseExpSummaryReport([FromQuery] ReportInvestmentInfoSpecParams rptParrams, ReportSearchDto search)
         {
 
-            string[] formats = {"M/d/yyyy h:mm:ss tt", "M/d/yyyy h:mm tt",
-                   "MM/dd/yyyy hh:mm:ss", "M/d/yyyy h:mm:ss",
-                   "M/d/yyyy hh:mm tt", "M/d/yyyy hh tt",
-                   "M/d/yyyy h:mm", "M/d/yyyy h:mm",
-                   "MM/dd/yyyy hh:mm", "M/dd/yyyy hh:mm",
-                   "MM/d/yyyy HH:mm:ss.ffffff",
-                   "dd-MMM-yy hh:mm:ss",
-                   "dd-MM-yy", "dd-MM-yyyy"};
-
-            CultureInfo provider = CultureInfo.InvariantCulture;  
-            // It throws Argument null exception  
-            //DateTime fd = DateTime.ParseExact(search.FromDate.ToString(), formats, provider);
-            //DateTime td = DateTime.ParseExact(search.ToDate.ToString(), formats, provider);
-
-            string qry = "select CAST(ROW_NUMBER() OVER (ORDER BY c.SBU) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, SUM (e.ApprovedAmount) Expense, c.SBUName, c.SBU, c.Amount Budget,  c.DonationId, d.DonationTypeName " +
-            " from SBUWiseBudget c, InvestmentInit b  inner join InvestmentDetailTracker e on e.InvestmentInitId = b.Id " +
-            " left join Donation d on d.Id = b.DonationId "+
-            " where b.SBU = c.SBU AND c.DonationId = e.DonationId AND e.PaidStatus = 'Paid' " +
-            " AND  (CONVERT(date,c.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,c.ToDate)) "+
-            " AND (CONVERT(date,e.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,e.ToDate)) ";
+            // string qry = "select CAST(ROW_NUMBER() OVER (ORDER BY c.SBU) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, SUM (e.ApprovedAmount) Expense, c.SBUName, c.SBU, c.Amount Budget,  c.DonationId, d.DonationTypeName " +
+            // " from SBUWiseBudget c, InvestmentInit b  inner join InvestmentDetailTracker e on e.InvestmentInitId = b.Id " +
+            // " left join Donation d on d.Id = b.DonationId "+
+            // " where b.SBU = c.SBU AND c.DonationId = e.DonationId AND e.PaidStatus = 'Paid' " +
+            // " AND  (CONVERT(date,c.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,c.ToDate)) "+
+            // " AND (CONVERT(date,e.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,e.ToDate)) ";
     
+            string qry = " select CAST(ROW_NUMBER() OVER (ORDER BY a.SBU) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.SBU, a.SBUName, a.DonationId, d.DonationTypeName,  a.Amount Budget,  "+
+                        " (select ISNULL(SUM(ApprovedAmount),0) from InvestmentDetailTracker e inner join InvestmentInit c on c.Id = e.InvestmentInitId  where e.PaidStatus = 'Paid' AND e.DonationId = a.DonationId AND c.SBU = a.SBU AND   "+
+                        " (CONVERT(date,e.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,e.ToDate))) Expense  "+
+                        " from SBUWiseBudget a inner join Donation d on d.Id = a.DonationId AND "+
+                        " (CONVERT(date,a.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,a.ToDate)) ";
+
             if (!string.IsNullOrEmpty(search.SBU))
             {
-                qry += " AND C.SBUName = '" + search.SBU + "' ";
+                qry += " AND a.SBUName = '" + search.SBU + "' ";
             }
             if (!string.IsNullOrEmpty(search.DonationType))
             {
                 qry += " AND d.DonationTypeName = '" + search.DonationType + "' ";
             }
-
-            qry += " group by  c.SBUName,c.SBU, c.Amount,  c.DonationId, d.DonationTypeName ";
 
             var results = _db.RptSBUWiseExpSummart.FromSqlRaw(qry).ToList();
 
