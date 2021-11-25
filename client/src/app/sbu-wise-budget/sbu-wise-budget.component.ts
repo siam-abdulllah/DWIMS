@@ -53,18 +53,30 @@ export class SbuWiseBudgetComponent implements OnInit {
     if (this.sbuWiseBudgetService.yearlyBudgetForm.year != null && this.sbuWiseBudgetService.yearlyBudgetForm.year != "" && this.sbuWiseBudgetService.yearlyBudgetForm.year != undefined) {
       var year = new Date(this.sbuWiseBudgetService.yearlyBudgetForm.year).getFullYear();
       this.sbuWiseBudgetService.getYearlyTotalAmount(year).subscribe(response => {
-        debugger;
+        ////debugger;
         if (response != null) {
           this.sbuWiseBudgetService.yearlyBudgetForm = response as IYearlyBudget;
-          if (this.sbuWiseBudgetService.yearlyBudgetForm.amount != null && this.sbuWiseBudgetService.yearlyBudgetForm.amount != 0 && this.sbuWiseBudgetService.yearlyBudgetForm.amount != undefined && this.sbuWiseBudgets != null) {
-            var totalExpense = 0;
-            this.sbuWiseBudgets.forEach(element => {
-              if (element.year == this.sbuWiseBudgetService.yearlyBudgetForm.year) {
-                totalExpense = totalExpense + element.amount;
-              }
-            });
-            this.remainingBudget = this.sbuWiseBudgetService.yearlyBudgetForm.amount - totalExpense;
+        }
+        if (this.sbuWiseBudgetService.yearlyBudgetForm.amount != null && this.sbuWiseBudgetService.yearlyBudgetForm.amount != 0 && this.sbuWiseBudgetService.yearlyBudgetForm.amount != undefined) {
+
+          var totalExpense = "";
+          var year = 0;
+          if (typeof (this.sbuWiseBudgetService.yearlyBudgetForm.year) !== 'string') {
+            year = new Date(this.sbuWiseBudgetService.yearlyBudgetForm.year).getFullYear();
           }
+          else {
+            year = parseInt(this.sbuWiseBudgetService.yearlyBudgetForm.year);
+          }
+          this.sbuWiseBudgetService.getYearlyTotalExpense(year).subscribe(response => {
+            //debugger;
+            if (response != null) {
+              totalExpense = response as string;
+              this.remainingBudget = this.sbuWiseBudgetService.yearlyBudgetForm.amount - parseInt(totalExpense);
+              this.onTotalAmountchange();
+            }
+          }, error => {
+            console.log(error);
+          });
         }
       }, error => {
         console.log(error);
@@ -74,17 +86,26 @@ export class SbuWiseBudgetComponent implements OnInit {
   }
   getTotalBudgetByYear(year: number) {
     this.sbuWiseBudgetService.getYearlyTotalAmount(year).subscribe(response => {
-      debugger;
+      //debugger;
       if (response != null) {
         this.sbuWiseBudgetService.yearlyBudgetForm = response as IYearlyBudget;
         if (this.sbuWiseBudgetService.yearlyBudgetForm.amount != null && this.sbuWiseBudgetService.yearlyBudgetForm.amount != 0 && this.sbuWiseBudgetService.yearlyBudgetForm.amount != undefined && this.sbuWiseBudgets != null) {
-          var totalExpense = 0;
-          this.sbuWiseBudgets.forEach(element => {
-            if (element.year == this.sbuWiseBudgetService.yearlyBudgetForm.year) {
-              totalExpense = totalExpense + element.amount;
+          var totalExpense = "";
+          // this.sbuWiseBudgets.forEach(element => {
+          //   if (element.year == this.sbuWiseBudgetService.yearlyBudgetForm.year) {
+          //     totalExpense = totalExpense + element.amount;
+          //   }
+          // });
+          // this.remainingBudget = this.sbuWiseBudgetService.yearlyBudgetForm.amount - totalExpense;
+          this.sbuWiseBudgetService.getYearlyTotalExpense(this.sbuWiseBudgetService.yearlyBudgetForm.year).subscribe(response => {
+            //debugger;
+            if (response != null) {
+              totalExpense = response as string;
+              this.remainingBudget = this.sbuWiseBudgetService.yearlyBudgetForm.amount - parseInt(totalExpense);
             }
+          }, error => {
+            console.log(error);
           });
-          this.remainingBudget = this.sbuWiseBudgetService.yearlyBudgetForm.amount - totalExpense;
         }
       }
     }, error => {
@@ -92,19 +113,44 @@ export class SbuWiseBudgetComponent implements OnInit {
     });
   }
   onTotalAmountchange() {
-    if (this.sbuWiseBudgetService.yearlyBudgetForm.amount != null && this.sbuWiseBudgetService.yearlyBudgetForm.amount != 0 && this.sbuWiseBudgetService.yearlyBudgetForm.amount != undefined && this.sbuWiseBudgets != null) {
-      var totalExpense = 0;
-      this.sbuWiseBudgets.forEach(element => {
-        if (element.year == this.sbuWiseBudgetService.yearlyBudgetForm.year) {
-          totalExpense = totalExpense + element.amount;
-        }
-      });
-      if (totalExpense != 0) {
-        this.remainingBudget = this.sbuWiseBudgetService.yearlyBudgetForm.amount - totalExpense;
+    if (this.sbuWiseBudgetService.yearlyBudgetForm.amount != null && this.sbuWiseBudgetService.yearlyBudgetForm.amount != 0 && this.sbuWiseBudgetService.yearlyBudgetForm.amount != undefined
+      && this.sbuWiseBudgetService.yearlyBudgetForm.year != null && this.sbuWiseBudgetService.yearlyBudgetForm.year != 0 && this.sbuWiseBudgetService.yearlyBudgetForm.year != undefined) {
+      var totalExpense = "";
+      var year = 0;
+      //debugger;
+      //if(this.sbuWiseBudgetService.yearlyBudgetForm.year.length>3)
+      if (typeof (this.sbuWiseBudgetService.yearlyBudgetForm.year) !== 'string') {
+        year = new Date(this.sbuWiseBudgetService.yearlyBudgetForm.year).getFullYear();
       }
       else {
-        this.remainingBudget = this.sbuWiseBudgetService.yearlyBudgetForm.amount;
+        year = parseInt(this.sbuWiseBudgetService.yearlyBudgetForm.year);
       }
+      this.sbuWiseBudgetService.getYearlyTotalExpense(year).subscribe(response => {
+        //debugger;
+        if (response != null) {
+          totalExpense = response as string;
+          this.remainingBudget = this.sbuWiseBudgetService.yearlyBudgetForm.amount - parseInt(totalExpense);
+          if (this.sbuWiseBudgetService.yearlyBudgetForm.amount != null && this.sbuWiseBudgetService.yearlyBudgetForm.amount != 0
+            && this.sbuWiseBudgetService.yearlyBudgetForm.amount != undefined) {
+            this.onAmountchange();
+          }
+        }
+      }, error => {
+        console.log(error);
+      });
+
+
+      //   this.sbuWiseBudgets.forEach(element => {
+      //     if (element.year == this.sbuWiseBudgetService.yearlyBudgetForm.year) {
+      //       totalExpense = totalExpense + element.amount;
+      //     }
+      //   });
+      //   if (totalExpense != 0) {
+      //     this.remainingBudget = this.sbuWiseBudgetService.yearlyBudgetForm.amount - totalExpense;
+      //   }
+      //   else {
+      //     this.remainingBudget = this.sbuWiseBudgetService.yearlyBudgetForm.amount;
+      //   }
     }
   }
   onAmountchange() {
@@ -114,7 +160,7 @@ export class SbuWiseBudgetComponent implements OnInit {
         && this.sbuWiseBudgetService.sbuwiseBudgetFormData.amount != undefined) {
         if (this.remainingBudget < this.sbuWiseBudgetService.sbuwiseBudgetFormData.amount) {
           this.toastr.warning("Total budget exceeded");
-          this.sbuWiseBudgetService.sbuwiseBudgetFormData.amount=0;
+          this.sbuWiseBudgetService.sbuwiseBudgetFormData.amount = 0;
           return false;
         }
       }
@@ -133,7 +179,8 @@ export class SbuWiseBudgetComponent implements OnInit {
   getSBUWiseBudget() {
     this.sbuWiseBudgetService.getSBUWiseBudget().subscribe(response => {
       const params = this.sbuWiseBudgetService.getGenParams();
-      this.sbuWiseBudgets = response.data;
+      // this.sbuWiseBudgets = response.data;
+      //debugger;
       this.sbuWiseBudgets = response.data;
       this.sbuWiseBudgets.forEach(element => {
         var convertedDate = new Date(element.toDate);
@@ -219,8 +266,7 @@ export class SbuWiseBudgetComponent implements OnInit {
       this.toastr.warning('Please enter amount first');
       return false;
     }
-    if(this.sbuWiseBudgetService.sbuwiseBudgetFormData.amount==0)
-    {
+    if (this.sbuWiseBudgetService.sbuwiseBudgetFormData.amount == 0) {
       this.toastr.warning('SBU wise budget must be greater than zero');
       return false;
     }
@@ -259,8 +305,7 @@ export class SbuWiseBudgetComponent implements OnInit {
       this.toastr.warning('Please enter amount first');
       return false;
     }
-    if(this.sbuWiseBudgetService.sbuwiseBudgetFormData.amount==0)
-    {
+    if (this.sbuWiseBudgetService.sbuwiseBudgetFormData.amount == 0) {
       this.toastr.warning('SBU wise budget must be greater than zero');
       return false;
     }
