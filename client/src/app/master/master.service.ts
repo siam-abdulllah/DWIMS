@@ -94,8 +94,8 @@ export class MasterService {
   getBrand(sbu:string){    
     return this.http.get(this.baseUrl + 'product/getBrand/'+sbu);
   }
-  getProduct(brandCode:string){    
-    return this.http.get(this.baseUrl + 'product/getProduct/'+brandCode);
+  getProduct(brandCode:string,sbu:string){    
+    return this.http.get(this.baseUrl + 'product/getProduct/'+brandCode+'/'+sbu);
   }
   getSubCampaignForCamp(){    
     return this.http.get(this.baseUrl + 'subCampaign/subCampaignsForCamp');
