@@ -28,7 +28,7 @@
                                                     <td>Report Name</td>
                                                     <td>Select</td>
                                                 </tr>
-                                                <tr *ngFor="let rpt of reports">
+                                                <tr *ngFor="let rpt of reports | paginate: config">
                                                     <td>
                                                         {{rpt.reportName}}
                                                     </td>
