@@ -1,0 +1,95 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <form novalidate autocomplete="off" #form="ngForm" (submit)="onSubmit(form)">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h3 class="card-title">Campaign</h3>
+                                </div>
+                                <div class="col-sm-1">
+                                    <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="form.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                </div>
+                                <div class="col-sm-1">
+                                    <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetPage(form)"><i class="fa fa-undo"></i>&nbsp; Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <fieldset>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Sub Camp. Start Date</label>
+                                            <span style="color:red;">*</span>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="text" class="form-control  clickable" placeholder="Calender" name="StartDate" id="StartDate" #StartDate="ngModel" [(ngModel)]="masterService.campaignDtlFormData.StartDate" [class.invalid]="StartDate.invalid && StartDate.touched" [bsValue]="bsValue"
+                                                (bsValueChange)="dateCompare()" bsDatepicker [bsConfig]="bsConfig" readonly>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Sub Camp. End Date</label>
+                                            <span style="color:red;">*</span>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="text" class="form-control clickable" placeholder="Calender" name="EndDate" id="EndDate" #EndDate="ngModel" [(ngModel)]="masterService.campaignDtlFormData.EndDate" [class.invalid]="EndDate.invalid && EndDate.touched" [bsValue]="bsValue" bsDatepicker
+                                                (bsValueChange)="dateCompare()" [bsConfig]="bsConfig" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-1">
+                                            <button class="btn btn-info btn-lg btn-block" type="button" (click)="addSubCampaign()"><i class="fa fa-plus"></i>Add</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <table class="table  table-bordered">
+                                        <tr class="HeaderRow">
+                                            <td>Sub Campaign</td>
+                                            <td>Budget</td>
+                                            <td>Start Date</td>
+                                            <td>End Date</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr *ngFor="let a of campaignDtls">
+                                            <td>
+                                                {{a.subCampaign.subCampaignName}}
+                                            </td>
+                                            <td>
+                                                {{a.budget}}
+                                            </td>
+                                            <td>
+                                                {{a.StartDate| date:'dd/MM/yyyy'}}
+                                            </td>
+                                            <td>
+                                                {{a.EndDate| date:'dd/MM/yyyy'}}
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-embossed btn-primary" type="button" (click)="populateDtlsForm(a)"><i class="fa fa-edit"></i>Edit</button>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="showProductModal(a)" style="width: 100px;"><i class="fa fa-plus"></i>Add Product</button>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="getCampaignDtlProductClick(a)" style="width: 100px;"><i class="fa fa-eye"></i>View Product</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
+    <p style="color: black">Please Wait. </p>
+</ngx-spinner>
