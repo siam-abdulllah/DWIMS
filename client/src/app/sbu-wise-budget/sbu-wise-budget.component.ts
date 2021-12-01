@@ -198,12 +198,19 @@ export class SbuWiseBudgetComponent implements OnInit {
   }
 
   dateCompare() {
+    var year=0;
+    if (typeof (this.sbuWiseBudgetService.yearlyBudgetForm.year) !== 'string') {
+      year = new Date(this.sbuWiseBudgetService.yearlyBudgetForm.year).getFullYear();
+    }
+    else {
+      year = parseInt(this.sbuWiseBudgetService.yearlyBudgetForm.year);
+    }
     if (this.sbuWiseBudgetService.sbuwiseBudgetFormData.fromDate != null && this.sbuWiseBudgetService.sbuwiseBudgetFormData.toDate != null) {
-      if (this.sbuWiseBudgetService.yearlyBudgetForm.year != new Date(this.sbuWiseBudgetService.sbuwiseBudgetFormData.fromDate).getFullYear()) {
+      if (year != new Date(this.sbuWiseBudgetService.sbuwiseBudgetFormData.fromDate).getFullYear()) {
         this.toastr.warning('Select Appropriate Date Range');
         return false;
       }
-      if (this.sbuWiseBudgetService.yearlyBudgetForm.year != new Date(this.sbuWiseBudgetService.sbuwiseBudgetFormData.toDate).getFullYear()) {
+      if (year != new Date(this.sbuWiseBudgetService.sbuwiseBudgetFormData.toDate).getFullYear()) {
         this.toastr.warning('Select Appropriate Date Range');
         return false;
       }
@@ -277,8 +284,15 @@ export class SbuWiseBudgetComponent implements OnInit {
       }
     }
     if (this.dateCompare()) {
+      var year=0;
+    if (typeof (this.sbuWiseBudgetService.yearlyBudgetForm.year) !== 'string') {
+      year = new Date(this.sbuWiseBudgetService.yearlyBudgetForm.year).getFullYear();
+    }
+    else {
+      year = parseInt(this.sbuWiseBudgetService.yearlyBudgetForm.year);
+    }
       this.SpinnerService.show();
-      this.sbuWiseBudgetService.insertSBUWiseBudget(this.sbuWiseBudgetService.yearlyBudgetForm.year, this.sbuWiseBudgetService.yearlyBudgetForm.amount).subscribe(
+      this.sbuWiseBudgetService.insertSBUWiseBudget(year, this.sbuWiseBudgetService.yearlyBudgetForm.amount).subscribe(
         res => {
           this.resetForm(form);
           this.getSBUWiseBudget();
@@ -316,8 +330,15 @@ export class SbuWiseBudgetComponent implements OnInit {
       }
     }
     if (this.dateCompare()) {
+      var year=0;
+    if (typeof (this.sbuWiseBudgetService.yearlyBudgetForm.year) !== 'string') {
+      year = new Date(this.sbuWiseBudgetService.yearlyBudgetForm.year).getFullYear();
+    }
+    else {
+      year = parseInt(this.sbuWiseBudgetService.yearlyBudgetForm.year);
+    }
       this.SpinnerService.show();
-      this.sbuWiseBudgetService.updateSBUWiseBudget(this.sbuWiseBudgetService.yearlyBudgetForm.year, this.sbuWiseBudgetService.yearlyBudgetForm.amount).subscribe(
+      this.sbuWiseBudgetService.updateSBUWiseBudget(year, this.sbuWiseBudgetService.yearlyBudgetForm.amount).subscribe(
         res => {
           this.resetForm(form);
           this.getSBUWiseBudget();

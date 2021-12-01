@@ -70,10 +70,10 @@ export class SBUWiseBudgetService {
     return this.http.post(this.baseUrl+ 'sBUWiseBudget/removeSBUWiseBudget', sbuwiseBudgetFormData,
     {responseType: 'text'});
   }
-  insertSBUWiseBudget(year:string,amount:number) {
+  insertSBUWiseBudget(year:number,amount:number) {
     return this.http.post(this.baseUrl+ 'sBUWiseBudget/CreateSBUWiseBudget/'+year+'/'+amount, this.sbuwiseBudgetFormData);
   }
-  updateSBUWiseBudget(year:string,amount:number) {
+  updateSBUWiseBudget(year:number,amount:number) {
     debugger;
     return this.http.post(this.baseUrl+ 'sBUWiseBudget/ModifySBUWiseBudget/'+year+'/'+amount,  this.sbuwiseBudgetFormData);
 }
