@@ -148,30 +148,33 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <table class="table  table-bordered">
-                                                    <tr>
-                                                        <th scope="col" style="width: 7%">Action</th>
-                                                        <th scope="col" style="width: 0;display:none;">Id</th>
-                                                        <td>Cluster Code</td>
-                                                        <td>Cluster Name</td>
-                                                        <td>Status</td>
+                                                    <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));">
+                                                        <tr>
+                                                            <th scope="col" style="width: 7%">Action</th>
+                                                            <th scope="col" style="width: 0;display:none;">Id</th>
+                                                            <td>Cluster Code</td>
+                                                            <td>Cluster Name</td>
+                                                            <td>Status</td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let b of clusterMstInfo | paginate: configs | filter: searchText">
+                                                            <td>
+                                                                <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="selectClusterMst(b)">Select</button>
 
-                                                    </tr>
-                                                    <tr *ngFor="let b of clusterMstInfo | paginate: configs | filter: searchText">
-                                                        <td>
-                                                            <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="selectClusterMst(b)">Select</button>
-
-                                                        </td>
-                                                        <td style="display:none;">{{b.id}}</td>
-                                                        <td>
-                                                            {{b.clusterCode}}
-                                                        </td>
-                                                        <td>
-                                                            {{b.clusterName}}
-                                                        </td>
-                                                        <td>
-                                                            {{b.status}}
-                                                        </td>
-                                                    </tr>
+                                                            </td>
+                                                            <td style="display:none;">{{b.id}}</td>
+                                                            <td>
+                                                                {{b.clusterCode}}
+                                                            </td>
+                                                            <td>
+                                                                {{b.clusterName}}
+                                                            </td>
+                                                            <td>
+                                                                {{b.status}}
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
                                                 </table>
                                                 <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls>
                                             </div>

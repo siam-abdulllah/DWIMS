@@ -81,26 +81,30 @@
 
                             <div class="form-group">
                                 <table class="table">
-                                    <tr class="HeaderRow">
-                                        <td>Donation</td>
-                                        <td>Status</td>
-                                        <td>Remarks</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr *ngFor="let donation of donations  | paginate: config | filter: searchText">
-                                        <td>
-                                            {{donation.donationTypeName}}
-                                        </td>
-                                        <td>
-                                            {{donation.status}}
-                                        </td>
-                                        <td>
-                                            {{donation.remarks}}
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-info  btn-block" type="button" (click)="populateForm(donation)"><i class="fa fa-pen"></i>&nbsp; Edit</button>
-                                        </td>
-                                    </tr>
+                                    <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));">
+                                        <tr class="HeaderRow">
+                                            <td>Donation</td>
+                                            <td>Status</td>
+                                            <td>Remarks</td>
+                                            <td></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let donation of donations  | paginate: config | filter: searchText">
+                                            <td>
+                                                {{donation.donationTypeName}}
+                                            </td>
+                                            <td>
+                                                {{donation.status}}
+                                            </td>
+                                            <td>
+                                                {{donation.remarks}}
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-info  btn-block" type="button" (click)="populateForm(donation)"><i class="fa fa-pen"></i>&nbsp; Edit</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
                                 </table>
                                 <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls>
                             </div>

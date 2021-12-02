@@ -40,7 +40,7 @@
                                         <small style="color:#888889;"> numeric value</small>
                                     </div>
                                     <div class="col-md-2">
-                                        <input class="form-control " placeholder="Budget Amount" (keyup)="onTotalAmountchange()" name="totalAmount" #totalAmount="ngModel" [(ngModel)]="sbuWiseBudgetService.yearlyBudgetForm.amount" required [class.invalid]="totalAmount.invalid && totalAmount.touched"
+                                        <input class="form-control " placeholder="Total Budget Amount" (keyup)="onTotalAmountchange()" name="totalAmount" #totalAmount="ngModel" [(ngModel)]="sbuWiseBudgetService.yearlyBudgetForm.amount" required [class.invalid]="totalAmount.invalid && totalAmount.touched"
                                             [pattern]="numberPattern">
                                         <div class="invalid-feedback" *ngIf="totalAmount.errors?.pattern">Only numeric value</div>
                                     </div>

@@ -84,26 +84,30 @@
                             </div>
                             <div class="form-group">
                                 <table class="table  table-bordered">
-                                    <tr class="HeaderRow">
-                                        <td>BCDS Name</td>
-                                        <td>Address</td>
-                                        <td>No of Member</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr *ngFor="let bcds of bcdsInfo | paginate: config | filter: searchText ">
-                                        <td>
-                                            {{bcds.bcdsName}}
-                                        </td>
-                                        <td>
-                                            {{bcds.bcdsAddress}}
-                                        </td>
-                                        <td>
-                                            {{bcds.noOfMember}}
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-info  btn-block" type="button" (click)="populateForm(bcds)"><i class="fa fa-pen"></i>&nbsp; Edit</button>
-                                        </td>
-                                    </tr>
+                                    <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));">
+                                        <tr class="HeaderRow">
+                                            <td>BCDS Name</td>
+                                            <td>Address</td>
+                                            <td>No of Member</td>
+                                            <td></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let bcds of bcdsInfo | paginate: config | filter: searchText ">
+                                            <td>
+                                                {{bcds.bcdsName}}
+                                            </td>
+                                            <td>
+                                                {{bcds.bcdsAddress}}
+                                            </td>
+                                            <td>
+                                                {{bcds.noOfMember}}
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-info  btn-block" type="button" (click)="populateForm(bcds)"><i class="fa fa-pen"></i>&nbsp; Edit</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
                                 </table>
                                 <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls>
                             </div>

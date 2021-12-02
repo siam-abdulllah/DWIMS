@@ -69,26 +69,30 @@
 
                             <div class="form-group">
                                 <table class="table">
-                                    <tr class="HeaderRow">
-                                        <td>Sub Campaign</td>
-                                        <td>Status</td>
-                                        <td>Remarks</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr *ngFor="let subCampaign of subCampaigns  | paginate: config | filter: searchText">
-                                        <td>
-                                            {{subCampaign.subCampaignName}}
-                                        </td>
-                                        <td>
-                                            {{subCampaign.status}}
-                                        </td>
-                                        <td>
-                                            {{subCampaign.remarks}}
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-info  btn-block" type="button" (click)="populateForm(subCampaign)"><i class="fa fa-pen"></i>&nbsp; Edit</button>
-                                        </td>
-                                    </tr>
+                                    <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));">
+                                        <tr class="HeaderRow">
+                                            <td>Sub Campaign</td>
+                                            <td>Status</td>
+                                            <td>Remarks</td>
+                                            <td></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let subCampaign of subCampaigns  | paginate: config | filter: searchText">
+                                            <td>
+                                                {{subCampaign.subCampaignName}}
+                                            </td>
+                                            <td>
+                                                {{subCampaign.status}}
+                                            </td>
+                                            <td>
+                                                {{subCampaign.remarks}}
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-info  btn-block" type="button" (click)="populateForm(subCampaign)"><i class="fa fa-pen"></i>&nbsp; Edit</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
                                 </table>
                                 <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls>
                             </div>

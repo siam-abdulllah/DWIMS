@@ -23,12 +23,12 @@ namespace Core.Specifications
         }
         
         public SBUWiseBudgetWithFiltersForCountSpecificication(DateTimeOffset? dateCheck, string sbu,int donationId)
-            : base( x => x.SBU == sbu && (x.FromDate.Value.Date >= dateCheck || dateCheck <= x.ToDate.Value.Date) && x.DonationId== donationId)
+            : base( x => x.SBU == sbu && (x.FromDate.Value.Date <= dateCheck && dateCheck <= x.ToDate.Value.Date) && x.DonationId== donationId)
         {
 
         }
         public SBUWiseBudgetWithFiltersForCountSpecificication(int id,DateTimeOffset? dateCheck, string sbu, int donationId)
-            : base(x => x.SBU == sbu && !x.Id.Equals(id) && (x.FromDate.Value.Date >= dateCheck || dateCheck <= x.ToDate.Value.Date) && x.DonationId == donationId)
+            : base(x => x.SBU == sbu && !x.Id.Equals(id) && (x.FromDate.Value.Date <= dateCheck && dateCheck <= x.ToDate.Value.Date) && x.DonationId == donationId)
         {
 
         }

@@ -62,30 +62,34 @@
                             </div>
                             <div class="form-group">
                                 <table class="table">
-                                    <tr class="HeaderRow">
-                                        <td>Authority Name</td>
-                                        <td>Priority</td>
-                                        <td>Status</td>
-                                        <td>Remarks</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr *ngFor="let approvalAuthority of approvalAuthoritys">
-                                        <td>
-                                            {{approvalAuthority.approvalAuthorityName}}
-                                        </td>
-                                        <td>
-                                            {{approvalAuthority.priority}}
-                                        </td>
-                                        <td>
-                                            {{approvalAuthority.status}}
-                                        </td>
-                                        <td>
-                                            {{approvalAuthority.remarks}}
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-info  btn-block" type="button" (click)="populateForm(approvalAuthority)"><i class="fa fa-pen"></i>&nbsp; Edit</button>
-                                        </td>
-                                    </tr>
+                                    <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));">
+                                        <tr class="HeaderRow">
+                                            <td>Authority Name</td>
+                                            <td>Priority</td>
+                                            <td>Status</td>
+                                            <td>Remarks</td>
+                                            <td></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let approvalAuthority of approvalAuthoritys">
+                                            <td>
+                                                {{approvalAuthority.approvalAuthorityName}}
+                                            </td>
+                                            <td>
+                                                {{approvalAuthority.priority}}
+                                            </td>
+                                            <td>
+                                                {{approvalAuthority.status}}
+                                            </td>
+                                            <td>
+                                                {{approvalAuthority.remarks}}
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-info  btn-block" type="button" (click)="populateForm(approvalAuthority)"><i class="fa fa-pen"></i>&nbsp; Edit</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
                                 </table>
                             </div>
                         </div>

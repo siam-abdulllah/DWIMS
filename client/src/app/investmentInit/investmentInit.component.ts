@@ -875,7 +875,11 @@ export class InvestmentInitComponent implements OnInit {
     );
   }
   insertInvestmentDetails() {
-    
+    if(this.isSubmitted==true )
+        {
+          this.toastr.warning('This Investment has already been submitted', 'Investment');
+          return false;
+        }
     if (this.investmentInitService.investmentInitFormData.id == null || this.investmentInitService.investmentInitFormData.id == undefined || this.investmentInitService.investmentInitFormData.id == 0) {
       this.toastr.warning('Insert Investment Initialisation First', 'Investment Detail');
       return false;
@@ -945,6 +949,11 @@ export class InvestmentInitComponent implements OnInit {
 
   }
   insertInvestmentDoctor() {
+    if(this.isSubmitted==true )
+        {
+          this.toastr.warning('This Investment has already been submitted', 'Investment');
+          return false;
+        }
     if (this.investmentInitService.investmentInitFormData.id == null || this.investmentInitService.investmentInitFormData.id == undefined || this.investmentInitService.investmentInitFormData.id == 0) {
       this.toastr.warning('Insert Investment Initialisation First', 'Investment Doctor');
       return false;
@@ -979,6 +988,11 @@ export class InvestmentInitComponent implements OnInit {
     );
   }
   insertInvestmentInstitution() {
+    if(this.isSubmitted==true )
+        {
+          this.toastr.warning('This Investment has already been submitted', 'Investment');
+          return false;
+        }
     if (this.investmentInitService.investmentInitFormData.id == null || this.investmentInitService.investmentInitFormData.id == undefined || this.investmentInitService.investmentInitFormData.id == 0) {
       this.toastr.warning('Insert Investment Initialisation First', 'Investment Institution');
       return false;
@@ -1010,6 +1024,11 @@ export class InvestmentInitComponent implements OnInit {
     );
   }
   insertInvestmentCampaign() {
+    if(this.isSubmitted==true )
+        {
+          this.toastr.warning('This Investment has already been submitted', 'Investment');
+          return false;
+        }
     if (this.investmentInitService.investmentInitFormData.id == null || this.investmentInitService.investmentInitFormData.id == undefined || this.investmentInitService.investmentInitFormData.id == 0) {
       this.toastr.warning('Insert Investment Initialisation First', 'Investment Campaign');
       return false;
@@ -1053,6 +1072,11 @@ export class InvestmentInitComponent implements OnInit {
     );
   }
   insertInvestmentSociety() {
+    if(this.isSubmitted==true )
+        {
+          this.toastr.warning('This Investment has already been submitted', 'Investment');
+          return false;
+        }
     if (this.investmentInitService.investmentInitFormData.id == null || this.investmentInitService.investmentInitFormData.id == undefined || this.investmentInitService.investmentInitFormData.id == 0) {
       this.toastr.warning('Insert Investment Initialisation First', 'Investment Society');
       return false;
@@ -1085,7 +1109,11 @@ export class InvestmentInitComponent implements OnInit {
     );
   }
   insertInvestmentBcds() {
-
+    if(this.isSubmitted==true )
+    {
+      this.toastr.warning('This Investment has already been submitted', 'Investment');
+      return false;
+    }
     if (this.investmentInitService.investmentInitFormData.id == null || this.investmentInitService.investmentInitFormData.id == undefined || this.investmentInitService.investmentInitFormData.id == 0) {
       this.toastr.warning('Insert Investment Initialisation First', 'Investment Bcds');
       return false;

@@ -74,7 +74,7 @@ export class CampaignComponent implements OnInit {
   }
   getProduct() {
     this.SpinnerService.show();
-    this.masterService.getProduct(this.masterService.campaignMstFormData.brandCode).subscribe(response => {
+    this.masterService.getProduct(this.masterService.campaignMstFormData.brandCode,this.masterService.campaignMstFormData.sbu).subscribe(response => {
       debugger;
       this.products = response as IProduct[];
     }, error => {
