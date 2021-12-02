@@ -1547,7 +1547,7 @@ viewSBUWiseBudgetInvest() {
 
   let row: any[] = [];
   let rowD: any[] = [];
-  let col = ['SBU Name', 'Donation Type','Budget' , 'Expense' ]; // initialization for headers
+  let col = ['SBU Name', 'Donation Type','Budget' , 'Expense', 'Remaining' ]; // initialization for headers
 
   let slNO = 0;
 
@@ -1557,6 +1557,7 @@ viewSBUWiseBudgetInvest() {
     row.push(a.donationTypeName);
     row.push(a.budget);
     row.push(a.expense);
+    row.push(a.budget - a.expense);
 
     rowD.push(row);
     row = [];

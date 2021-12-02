@@ -27,4 +27,11 @@ namespace API.Dtos
         public string CampaignName { get; set; }
         public string SubCampaignName { get; set; }
     }
+
+
+    public class SearchDto
+    {
+        public DateTime FromDate { get; set; }
+        public DateTime ToDate { get; set; } 
+    }
 }

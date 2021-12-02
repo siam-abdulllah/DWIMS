@@ -49,6 +49,7 @@ namespace API.Helpers
             CreateMap<ClusterDtl, ClusterDtlDto>().ReverseMap();
             CreateMap<RptDocLocWiseInvestment, RptDocLocWiseInvestmentDto>().ReverseMap();
             CreateMap<RptDocCampWiseInvestment, RptDocCampWiseInvestmentDto>().ReverseMap();
+            CreateMap<RptInvestmentSummary, RptInvestmentSummaryDto>().ReverseMap();
         }
     }
 }

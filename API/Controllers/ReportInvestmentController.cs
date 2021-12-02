@@ -152,6 +152,33 @@ namespace API.Controllers
         }
 
 
+        [HttpPost("GetInvestmentSummaryReport")]
+        public ActionResult<IReadOnlyList<RptInvestmentSummary>> GetInvestmentSummaryReport( SearchDto dt,  [FromQuery] ReportInvestmentInfoSpecParams rptParrams)
+        {
+
+            // string qry = "select CAST(ROW_NUMBER() OVER (ORDER BY c.SBU) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, SUM (e.ApprovedAmount) Expense, c.SBUName, c.SBU, c.Amount Budget,  c.DonationId, d.DonationTypeName " +
+            // " from SBUWiseBudget c, InvestmentInit b  inner join InvestmentDetailTracker e on e.InvestmentInitId = b.Id " +
+            // " left join Donation d on d.Id = b.DonationId "+
+            // " where b.SBU = c.SBU AND c.DonationId = e.DonationId AND e.PaidStatus = 'Paid' " +
+            // " AND  (CONVERT(date,c.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,c.ToDate)) "+
+            // " AND (CONVERT(date,e.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,e.ToDate)) ";
+
+            string qry = " select CAST(a.Id AS INT) as Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.ReferenceNo, d.DonationTypeName, a.DonationTo, b.ProposedAmount, b.FromDate, b.ToDate, dbo.fnGetInvestmentStatus(a.Id) InvStatus, e.EmployeeName " +
+                " from InvestmentInit a " +
+                " left join InvestmentDetail b on a.Id = b.InvestmentInitId " +
+                " inner join Donation d on d.Id = a.DonationId " +
+                " left join Employee e on e.Id = a.EmployeeId " +
+                " Where 1 = 1 " +
+                " AND(CONVERT(date, b.FromDate) >= CAST('"+ dt.FromDate + "' as Date) AND CAST('"+ dt.ToDate + "' as Date) >= CONVERT(date, b.ToDate)) ";
+
+            var results = _db.RptInvestmentSummary.FromSqlRaw(qry).ToList();
+
+            //var data = _mapper.Map<IReadOnlyList<RptInvestmentSummary>, IReadOnlyList<RptInvestmentSummaryDto>>(results);
+
+            return Ok(new Pagination<RptInvestmentSummary>(rptParrams.PageIndex, rptParrams.PageSize, results.Count, results));
+        }
+
+
 
         [HttpPost("GetDoctorLocationWiseInvestment")]
         public ActionResult<IReadOnlyList<RptDocLocWiseInvestment>> GetDoctorLocationWiseInvestment([FromQuery] ReportInvestmentInfoSpecParams rptParrams, ReportSearchDto search)

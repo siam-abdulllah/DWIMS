@@ -2,19 +2,19 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
-                <form novalidate autocomplete="off" #form="ngForm" (submit)="onSubmit(form)">
+                <form novalidate autocomplete="off" #form="ngForm">
                     <div class="card card-primary">
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-sm-9">
-                                    <h3 class="card-title">Campaign</h3>
+                                    <h3 class="card-title">Investment Summary reportService</h3>
                                 </div>
-                                <div class="col-sm-1">
+                                <!-- <div class="col-sm-1">
                                     <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="form.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
                                 </div>
                                 <div class="col-sm-1">
                                     <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetPage(form)"><i class="fa fa-undo"></i>&nbsp; Reset</button>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                         <div class="card-body">
@@ -22,65 +22,76 @@
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-2">
-                                            <label>Sub Camp. Start Date</label>
+                                            <label>From Date</label>
                                             <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-3">
-                                            <input type="text" class="form-control  clickable" placeholder="Calender" name="StartDate" id="StartDate" #StartDate="ngModel" [(ngModel)]="masterService.campaignDtlFormData.StartDate" [class.invalid]="StartDate.invalid && StartDate.touched" [bsValue]="bsValue"
-                                                (bsValueChange)="dateCompare()" bsDatepicker [bsConfig]="bsConfig" readonly>
+                                            <input type="text" class="form-control  clickable" placeholder="Calender" name="fromDate" id="fromDate" #StartDate="ngModel" [(ngModel)]="reportService.rptInvestSummaryFormData.fromDate" [bsValue]="bsValue" (bsValueChange)="dateCompare()" bsDatepicker
+                                                [bsConfig]="bsConfig" readonly>
                                         </div>
                                         <div class="col-md-2">
-                                            <label>Sub Camp. End Date</label>
+                                            <label>To Date</label>
                                             <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-3">
-                                            <input type="text" class="form-control clickable" placeholder="Calender" name="EndDate" id="EndDate" #EndDate="ngModel" [(ngModel)]="masterService.campaignDtlFormData.EndDate" [class.invalid]="EndDate.invalid && EndDate.touched" [bsValue]="bsValue" bsDatepicker
-                                                (bsValueChange)="dateCompare()" [bsConfig]="bsConfig" readonly>
+                                            <input type="text" class="form-control clickable" placeholder="Calender" name="toDate" id="toDate" #EndDate="ngModel" [(ngModel)]="reportService.rptInvestSummaryFormData.toDate" [bsValue]="bsValue" bsDatepicker (bsValueChange)="dateCompare()" [bsConfig]="bsConfig"
+                                                readonly>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-sm-1">
-                                            <button class="btn btn-info btn-lg btn-block" type="button" (click)="addSubCampaign()"><i class="fa fa-plus"></i>Add</button>
+                                            <button class="btn btn-info btn-lg btn-block" type="button" (click)="ViewData()"><i class="fa fa-plus"></i>Add</button>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <table class="table  table-bordered">
                                         <tr class="HeaderRow">
-                                            <td>Sub Campaign</td>
-                                            <td>Budget</td>
-                                            <td>Start Date</td>
-                                            <td>End Date</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                            <td>Investment Ref No</td>
+                                            <td>Donation Type</td>
+                                            <td>Donation To</td>
+                                            <td>Proposed Amount</td>
+                                            <td>From Date</td>
+                                            <td>ToDate</td>
+                                            <td>Status</td>
+                                            <td>Proposed By</td>
                                         </tr>
-                                        <tr *ngFor="let a of campaignDtls">
+                                        <tr *ngFor="let a of reports | paginate: configs">
+                                            <!-- <td>
+                                                {{a.id}}
+                                            </td> -->
                                             <td>
-                                                {{a.subCampaign.subCampaignName}}
+                                                {{a.referenceNo}}
                                             </td>
                                             <td>
-                                                {{a.budget}}
+                                                {{a.donationTypeName}}
                                             </td>
                                             <td>
-                                                {{a.StartDate| date:'dd/MM/yyyy'}}
+                                                {{a.donationTo}}
                                             </td>
                                             <td>
-                                                {{a.EndDate| date:'dd/MM/yyyy'}}
+                                                {{a.proposedAmount}}
                                             </td>
                                             <td>
-                                                <button class="btn btn-sm btn-embossed btn-primary" type="button" (click)="populateDtlsForm(a)"><i class="fa fa-edit"></i>Edit</button>
+                                                {{a.fromDate| date:'dd/MM/yyyy'}}
                                             </td>
                                             <td>
-                                                <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="showProductModal(a)" style="width: 100px;"><i class="fa fa-plus"></i>Add Product</button>
+                                                {{a.toDate| date:'dd/MM/yyyy'}}
                                             </td>
                                             <td>
+                                                {{a.invStatus}}
+                                            </td>
+                                            <td>
+                                                {{a.employeeName}}
+                                            </td>
+                                            <!-- <td>
                                                 <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="getCampaignDtlProductClick(a)" style="width: 100px;"><i class="fa fa-eye"></i>View Product</button>
-                                            </td>
+                                            </td> -->
                                         </tr>
                                     </table>
+                                    <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls>
                                 </div>
                             </fieldset>
                         </div>

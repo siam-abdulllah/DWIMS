@@ -28,6 +28,7 @@ import { ApprovalTimeLimitComponent } from '../approval-time-limit/approval-time
 import { SbuWiseBudgetComponent } from '../sbu-wise-budget/sbu-wise-budget.component';
 import { DocHonApprComponent } from '../docHonAppr/docHonAppr.component';
 import { ClusterInfoComponent } from '../master/cluster-info/cluster-info.component';
+import { RptInvestSummaryComponent } from '../rptInvestmentSummary/rptInvestmentSummary.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { MenuHeadComponent } from '../menuHead/menuHead.component';
 import { SubMenuComponent } from '../subMenu/subMenu.component';
@@ -66,6 +67,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     InvestmentAprComponent,
     RegApprovalComponent,
     ReportInvestmentComponent,
+    RptInvestSummaryComponent,
     SbuWiseBudgetComponent,
     DocHonApprComponent,
     ClusterInfoComponent,
