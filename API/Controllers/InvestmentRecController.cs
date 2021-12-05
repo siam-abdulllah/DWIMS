@@ -446,7 +446,8 @@ namespace API.Controllers
         {
             try
             {
-                var spec = new InvestmentRecProductSpecification(investmentInitId, sbu);
+                var spec = new InvestmentRecProductSpecification(investmentInitId);
+                //var spec = new InvestmentRecProductSpecification(investmentInitId, sbu);
                 var investmentTargetedProd = await _investmentRecProductRepo.ListAsync(spec);
                 return investmentTargetedProd;
             }

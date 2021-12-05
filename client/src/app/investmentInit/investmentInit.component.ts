@@ -288,6 +288,7 @@ export class InvestmentInitComponent implements OnInit {
 
       var data = response as IInvestmentTargetedProd[];
       if (data !== undefined) {
+        debugger;
         this.investmentTargetedProds = data;
 
       }

@@ -84,6 +84,7 @@ export interface IInvestmentTargetedProd {
     productId: number;
     productInfo:IProduct;
     employeeId: number;
+    sbu: string;
 }
  
 export class InvestmentTargetedProd implements IInvestmentTargetedProd {
@@ -92,6 +93,7 @@ export class InvestmentTargetedProd implements IInvestmentTargetedProd {
     productId: number=null;
     productInfo:IProduct;
     employeeId: number;
+    sbu: string;
 }
 export interface IInvestmentTargetedGroup {
     id: number;

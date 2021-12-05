@@ -673,23 +673,27 @@
                                 <div class="form-group">
                                     <table class="table  table-bordered">
                                         <tr class="HeaderRow">
-                                            <td>Product Code</td>
+                                            <!-- <td>Product Code</td> -->
                                             <td>Product Name</td>
+                                            <td>SBU</td>
                                             <td></td>
                                             <td></td>
                                         </tr>
                                         <tr *ngFor="let a of investmentTargetedProds">
-                                            <td>
+                                            <!-- <td>
                                                 {{a.productInfo.productCode}}
-                                            </td>
+                                            </td> -->
                                             <td>
                                                 {{a.productInfo.productName}}
                                             </td>
                                             <td>
-                                                <input type="button" (click)="editInvestmentTargetedProd(a)" value="Edit">
+                                                {{a.productInfo.sbuName}}
                                             </td>
                                             <td>
-                                                <input type="button" (click)="removeInvestmentTargetedProd(a)" value="Remove">
+                                                <input type="button" *ngIf="sbu==a.sbu" (click)="editInvestmentTargetedProd(a)" value="Edit">
+                                            </td>
+                                            <td>
+                                                <input type="button" *ngIf="sbu==a.sbu" (click)="removeInvestmentTargetedProd(a)" value="Remove">
                                             </td>
                                         </tr>
                                     </table>

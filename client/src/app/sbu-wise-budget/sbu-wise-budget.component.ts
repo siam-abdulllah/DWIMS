@@ -31,6 +31,8 @@ export class SbuWiseBudgetComponent implements OnInit {
   remainingBudget: number;
   SBUs: ISBU[];
   numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
+  selectedBudgetAmount: number;
+  selectedRemainingBudget: number;
   constructor(public sbuWiseBudgetService: SBUWiseBudgetService, private router: Router, private toastr: ToastrService,
     private datePipe: DatePipe, private SpinnerService: NgxSpinnerService) { }
   //constructor(private router: Router, private toastr: ToastrService) { }
@@ -71,7 +73,9 @@ export class SbuWiseBudgetComponent implements OnInit {
             //debugger;
             if (response != null) {
               totalExpense = response as string;
+              this.selectedBudgetAmount=0;
               this.remainingBudget = this.sbuWiseBudgetService.yearlyBudgetForm.amount - parseInt(totalExpense);
+              this.selectedRemainingBudget=this.remainingBudget;
               this.onTotalAmountchange();
             }
           }, error => {
@@ -102,6 +106,7 @@ export class SbuWiseBudgetComponent implements OnInit {
             if (response != null) {
               totalExpense = response as string;
               this.remainingBudget = this.sbuWiseBudgetService.yearlyBudgetForm.amount - parseInt(totalExpense);
+              this.selectedRemainingBudget= this.remainingBudget;
             }
           }, error => {
             console.log(error);
@@ -158,11 +163,16 @@ export class SbuWiseBudgetComponent implements OnInit {
       && this.sbuWiseBudgetService.yearlyBudgetForm.amount != undefined) {
       if (this.sbuWiseBudgetService.sbuwiseBudgetFormData.amount != null && this.sbuWiseBudgetService.sbuwiseBudgetFormData.amount != 0
         && this.sbuWiseBudgetService.sbuwiseBudgetFormData.amount != undefined) {
-        if (this.remainingBudget < this.sbuWiseBudgetService.sbuwiseBudgetFormData.amount) {
+          //this.selectedRemainingBudget= this.remainingBudget;
+          debugger;
+          if (this.remainingBudget < this.sbuWiseBudgetService.sbuwiseBudgetFormData.amount) {
           this.toastr.warning("Total budget exceeded");
           this.sbuWiseBudgetService.sbuwiseBudgetFormData.amount = 0;
+          this.remainingBudget=this.selectedRemainingBudget+this.selectedBudgetAmount;
           return false;
         }
+        this.remainingBudget=this.selectedRemainingBudget+(this.selectedBudgetAmount-this.sbuWiseBudgetService.sbuwiseBudgetFormData.amount);
+        
       }
       // else {
       //   this.sbuWiseBudgetService.sbuwiseBudgetFormData.amount=0;
@@ -358,6 +368,7 @@ export class SbuWiseBudgetComponent implements OnInit {
 
   populateForm(selectedRecord: ISBUWiseBudget) {
     this.sbuWiseBudgetService.sbuwiseBudgetFormData = Object.assign({}, selectedRecord);
+    this.selectedBudgetAmount=selectedRecord.amount;
     this.sbuWiseBudgetService.sbuwiseBudgetFormData.fromDate = new Date(selectedRecord.fromDate);
     this.sbuWiseBudgetService.sbuwiseBudgetFormData.toDate = new Date(selectedRecord.toDate);
     this.sbuWiseBudgetService.yearlyBudgetForm.year = this.sbuWiseBudgetService.sbuwiseBudgetFormData.toDate.getFullYear();

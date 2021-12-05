@@ -600,7 +600,8 @@ namespace API.Controllers
         {
             try
             {
-                var spec = new InvestmentTargetedProdSpecification(investmentInitId,sbu);
+                ///var spec = new InvestmentTargetedProdSpecification(investmentInitId,sbu);
+                var spec = new InvestmentTargetedProdSpecification(investmentInitId);
                 var investmentTargetedProd = await _investmentTargetedProdRepo.ListAsync(spec);
                 return investmentTargetedProd;
             }

@@ -468,7 +468,8 @@
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-sm-6">
-                                            <h6 class=" "><strong>Investment Details</strong></h6>
+                                            <h6 class=" "><strong>Investment Details &nbsp;&nbsp; &nbsp;&nbsp;<b style="color: rgb(255, 81, 0);">Donation Type: {{donationName}}</b></strong></h6>
+                                            <h6> </h6>
                                         </div>
                                         <div class="col-sm-2"></div>
                                         <!-- <div class="col-sm-2" *ngIf="isValid">
@@ -486,9 +487,6 @@
                                             <div class="form-group">
                                                 <table class="table  table-bordered" style="font-weight: bold;font-size: 12px;">
                                                     <tr>
-                                                        <td style="color: rgb(255, 81, 0);">
-                                                            Donation Type: {{donationName}}
-                                                        </td>
                                                         <td>
                                                             Trns. Limit
                                                         </td>
@@ -744,23 +742,27 @@
                                 <div class="form-group">
                                     <table class="table  table-bordered">
                                         <tr class="HeaderRow">
-                                            <td>Product Code</td>
+                                            <!-- <td>Product Code</td> -->
                                             <td>Product Name</td>
+                                            <td>SBU</td>
                                             <td></td>
                                             <td></td>
                                         </tr>
                                         <tr *ngFor="let a of investmentTargetedProds">
-                                            <td>
+                                            <!-- <td>
                                                 {{a.productInfo.productCode}}
-                                            </td>
+                                            </td> -->
                                             <td>
                                                 {{a.productInfo.productName}}
                                             </td>
                                             <td>
-                                                <input type="button" (click)="editInvestmentTargetedProd(a)" value="Edit">
+                                                {{a.productInfo.sbuName}}
                                             </td>
                                             <td>
-                                                <input type="button" (click)="removeInvestmentTargetedProd(a)" value="Remove">
+                                                <input type="button" *ngIf="sbu==a.sbu" (click)="editInvestmentTargetedProd(a)" value="Edit">
+                                            </td>
+                                            <td>
+                                                <input type="button" *ngIf="sbu==a.sbu" (click)="removeInvestmentTargetedProd(a)" value="Remove">
                                             </td>
                                         </tr>
                                     </table>

@@ -689,10 +689,12 @@ export class InvestmentRecComponent implements OnInit {
         if (this.products[i].id == this.investmentRecService.investmentTargetedProdFormData.productId) {
           let data = new InvestmentTargetedProd();
           data.id = 0;
+          data.sbu = this.sbu;
           data.employeeId = parseInt(this.empId);
           data.investmentInitId = this.investmentRecService.investmentRecFormData.id;
           data.productId = this.investmentRecService.investmentTargetedProdFormData.productId;
           data.productInfo = this.products[i];
+          debugger;
           this.investmentTargetedProds.push(data);
           return false;
         }

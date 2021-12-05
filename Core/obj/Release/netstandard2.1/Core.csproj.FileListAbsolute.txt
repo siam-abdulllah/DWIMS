@@ -17,3 +17,4 @@ E:\DWIMS\TestApplication\Core\obj\Release\netstandard2.1\Core.AssemblyInfo.cs
 E:\DWIMS\TestApplication\Core\obj\Release\netstandard2.1\Core.csproj.CoreCompileInputs.cache
 E:\DWIMS\TestApplication\Core\obj\Release\netstandard2.1\Core.dll
 E:\DWIMS\TestApplication\Core\obj\Release\netstandard2.1\Core.pdb
+E:\DWIMS\TestApplication\Core\obj\Release\netstandard2.1\Core.csproj.AssemblyReference.cache
