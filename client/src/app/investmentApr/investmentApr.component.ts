@@ -72,6 +72,7 @@ export class InvestmentAprComponent implements OnInit {
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date = new Date();
   empId: string;
+  donationName: string;
   sbu: string;
   config = {
     keyboard: false,
@@ -109,6 +110,8 @@ export class InvestmentAprComponent implements OnInit {
   selectInvestmentInit(selectedAprord: IInvestmentInit) {
     this.resetForm();
     this.investmentAprService.investmentAprFormData = Object.assign({}, selectedAprord);
+    var selectedDonation= this.donations.filter(res=>res.id==selectedAprord.donationId).map(ele=>ele.donationTypeName);
+    this.donationName=selectedDonation[0];
     this.investmentAprService.investmentDetailFormData.investmentInitId = selectedAprord.id;
     this.investmentAprService.investmentAprCommentFormData.investmentInitId = selectedAprord.id;
     this.isDonationValid = true;
@@ -143,6 +146,8 @@ export class InvestmentAprComponent implements OnInit {
   }
   selectInvestmentApr(selectedAprord: IInvestmentInit) {
     this.investmentAprService.investmentAprFormData = Object.assign({}, selectedAprord);
+    var selectedDonation= this.donations.filter(res=>res.id==selectedAprord.donationId).map(ele=>ele.donationTypeName);
+    this.donationName=selectedDonation[0];
     this.investmentAprService.investmentDetailFormData.investmentInitId = selectedAprord.id;
     this.investmentAprService.investmentAprCommentFormData.investmentInitId = selectedAprord.id;
     this.isDonationValid = true;

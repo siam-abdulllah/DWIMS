@@ -34,6 +34,7 @@ import { MenuHeadComponent } from '../menuHead/menuHead.component';
 import { SubMenuComponent } from '../subMenu/subMenu.component';
 import { MenuConfigComponent } from '../menuConfig/menuConfig.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { InvestmentRcvComponent } from '../investmentRcv/investmentRcv.component';
 @NgModule({
   imports: [
     
@@ -65,6 +66,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     InvestmentInitComponent,
     InvestmentRecComponent,
     InvestmentAprComponent,
+    InvestmentRcvComponent,
     RegApprovalComponent,
     ReportInvestmentComponent,
     RptInvestSummaryComponent,
