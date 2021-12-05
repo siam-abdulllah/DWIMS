@@ -1547,12 +1547,12 @@ viewSBUWiseBudgetInvest() {
 
   let row: any[] = [];
   let rowD: any[] = [];
-  let col = ['SBU Name', 'Donation Type','Budget' , 'Expense', 'Remaining' ]; // initialization for headers
+  let col = ['SBU Code', 'SBU Name', 'Donation Type','Budget' , 'Expense', 'Remaining' ]; // initialization for headers
 
   let slNO = 0;
 
   for (const a of r) {
- 
+    row.push(a.sbu);
     row.push(a.sbuName);
     row.push(a.donationTypeName);
     row.push(a.budget);
