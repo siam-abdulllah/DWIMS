@@ -16365,12 +16365,24 @@ textarea.form-control.is-warning {
     z-index: 1; */
 }
 
-.card-header.stick {
+
+@media (min-width: 992px) {
+  .card-header.stick {
     position: fixed;
     top: 0;
     z-index: 10000;
     width: 77.8%;
     border-radius: 0 0 0.5em 0.5em;
+  }
+}
+@media (max-width: 992px) {
+  .card-header.stick {
+    position: fixed;
+    top: 0;
+    z-index: 10000;
+    width: 100%;
+    border-radius: 0 0 0.5em 0.5em;
+  }
 }
 
 .card-primary:not(.card-outline)>.card-header a.active {
