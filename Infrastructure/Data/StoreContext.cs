@@ -54,6 +54,7 @@ namespace Infrastructure.Data
         public DbSet<InvestmentAprComment> InvestmentAprComment { get; set; }
         public DbSet<InvestmentAprProducts> InvestmentAprProducts { get; set; }
         public DbSet<InvestmentRec> InvestmentRec { get; set; }
+        public DbSet<InvestmentRecv> InvestmentRecv { get; set; }
         public DbSet<InvestmentRecComment> InvestmentRecComment { get; set; }
         public DbSet<InvestmentRecProducts> InvestmentRecProducts { get; set; }
         public DbSet<ReportProductInfo> ReportProductInfo { get; set; }
