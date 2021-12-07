@@ -28,6 +28,7 @@ namespace API.Controllers
             var donation = new Donation
             {
                 DonationTypeName = donationToReturnDto.DonationTypeName,
+                DonationShortName = donationToReturnDto.DonationShortName,
                 Remarks = donationToReturnDto.Remarks,
                 Status = donationToReturnDto.Status,
                 SetOn = DateTimeOffset.Now
@@ -57,16 +58,19 @@ namespace API.Controllers
             };
         }
         [HttpPost("update")]
-        public ActionResult<DonationToReturnDto> UpdateDonation(DonationToReturnDto donationToReturnDto)
+        public async Task<ActionResult<DonationToReturnDto>> UpdateDonationAsync(DonationToReturnDto donationToReturnDto)
         {
             // var user =  _donationRepo.GetByIdAsync(donationToReturnDto.Id);
             // if (user == null) return Unauthorized(new ApiResponse(401));
+            var donations = await _donationRepo.GetByIdAsync(donationToReturnDto.Id);
             var donation = new Donation
             {
                 Id = donationToReturnDto.Id,
                 DonationTypeName = donationToReturnDto.DonationTypeName,
+                DonationShortName = donationToReturnDto.DonationShortName,
                 Remarks = donationToReturnDto.Remarks,
                 Status = donationToReturnDto.Status,
+                SetOn = donations.SetOn,
                 ModifiedOn = DateTimeOffset.Now
 
         };

@@ -56,7 +56,7 @@ export class DonationComponent implements OnInit {
         debugger;
         this.resetForm(form);
         this.getDonation();
-        this.toastr.success('Submitted successfully', 'Donation')
+        this.toastr.success('Save successfully', 'Donation')
       },
       err => { console.log(err); }
     );
