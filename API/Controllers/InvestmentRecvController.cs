@@ -69,7 +69,7 @@ namespace API.Controllers
             _donationRepo = donationRepo;
         }
        
-        [HttpGet("investmentApproved/{empId}/{sbu}")]
+        [HttpGet("investmentInits/{empId}/{sbu}")]
         public ActionResult<Pagination<InvestmentInitDto>> GetInvestmentInits(int empId, string sbu,
           [FromQuery] InvestmentInitSpecParams investmentInitParrams)
         {
@@ -79,7 +79,7 @@ namespace API.Controllers
                     {
                         new SqlParameter("@SBU", sbu),
                         new SqlParameter("@EID", empId),
-                        new SqlParameter("@RSTATUS", "Recommended")
+                        new SqlParameter("@RSTATUS", "Approved")
                     };
                 var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentRecvSearch @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
                 var data = _mapper
@@ -93,7 +93,7 @@ namespace API.Controllers
                 throw e;
             }
         }
-        [HttpGet("investmentReceived/{empId}/{sbu}")]
+        [HttpGet("GetinvestmentReceived/{empId}/{sbu}")]
         public ActionResult<Pagination<InvestmentInitDto>> GetinvestmentApproved(int empId, string sbu,
           [FromQuery] InvestmentInitSpecParams investmentInitParrams)
         {
@@ -103,10 +103,8 @@ namespace API.Controllers
                     {
                         new SqlParameter("@SBU", sbu),
                         new SqlParameter("@EID", empId),
-                        new SqlParameter("@RSTATUS", "Recommended"),
-                        new SqlParameter("@ASTATUS", DBNull.Value)
                     };
-                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentApprpvedSearch @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
+                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_ReceivedInvestment @SBU,@EID", parms.ToArray()).ToList();
                 var data = _mapper
                     .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
 
@@ -118,179 +116,15 @@ namespace API.Controllers
             }
         }
 
-          [HttpPost("InsertRecv/{empID}/{RecvStatus}/{sbu}/{donationId}")]
-          public async Task<ActionResult<InvestmentRecvDto>> InsertInvestmentRecv(int empId, string RecvStatus, string sbu, int donationId, InvestmentRecvDto investmentRecvDto)
+          [HttpPost("InsertRecv")]
+          public async Task<ActionResult<InvestmentRecvDto>> InsertInvestmentRecv(InvestmentRecvDto investmentRecvDto)
         {
             try
             {
-                if (RecvStatus == "Approved")
-                {
-                    List<SqlParameter> parms = new List<SqlParameter>
-                    {
-                        new SqlParameter("@SBU", sbu),
-                        new SqlParameter("@DID", donationId),
-                        new SqlParameter("@EID", empId),
-                        new SqlParameter("@IID", investmentRecvDto.InvestmentInitId),
-                        new SqlParameter("@PRAMOUNT", investmentRecvDto.ProposedAmount),
-                        new SqlParameter("@ASTATUS", RecvStatus),
-                        new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
-                    };
-                    // var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentCeilingCheck @SBU,@DID,@EID,@PRAMOUNT,@ASTATUS", parms.ToArray()).ToList();
-                   // var result = _dbContext.Database.ExecuteSqlRawAsync("EXECUTE SP_InvestmentCeilingCheck @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
-                    var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheck @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
-                    //var param=parms[6].Value;
-                    if (parms[6].Value.ToString() != "True")
-                    //if (result.Result == 0)
-                    {
-                        return BadRequest(new ApiResponse(400, parms[6].Value.ToString()));
-                    }
-                   
-                    
-                        var alreadyExistSpec = new InvestmentRecSpecification(investmentRecvDto.InvestmentInitId,empId );
-                        var alreadyExistInvestmentRecvList = await _investmentRecRepo.ListAsync(alreadyExistSpec);
-                        if (alreadyExistInvestmentRecvList.Count > 0)
-                        {
-                            foreach (var v in alreadyExistInvestmentRecvList)
-                            {
-                            _investmentRecRepo.Delete(v);
-                            _investmentRecRepo.Savechange();
-                            }
-                        }
-                    //var invRecv = new InvestmentRecv
-                    //{
-                    //    //ReferenceNo = investmentInitDto.ReferenceNo,
-                    //    InvestmentInitId = investmentRecvDto.InvestmentInitId,
-                    //    ProposedAmount = investmentRecvDto.ProposedAmount,
-                    //    Purpose = investmentRecvDto.Purpose,
-                    //    CommitmentAllSBU = investmentRecvDto.CommitmentAllSBU,
-                    //    CommitmentOwnSBU = investmentRecvDto.CommitmentOwnSBU,
-                    //    FromDate = investmentRecvDto.FromDate,
-                    //    ToDate = investmentRecvDto.ToDate,
-                    //    TotalMonth = investmentRecvDto.TotalMonth,
-                    //    PaymentMethod = investmentRecvDto.PaymentMethod,
-                    //    ChequeTitle = investmentRecvDto.ChequeTitle,
-                    //    EmployeeId = empId,
-                    //    SetOn = DateTimeOffset.Now
-                    //};
-                    //_investmentRecvRepo.Add(invRecv);
-                    //_investmentRecvRepo.Savechange();
-                    //var specAppr = new ApprAuthConfigSpecification(empId, "A");
-                    //var apprAuthConfigAppr = await _apprAuthConfigRepo.GetEntityWithSpec(specAppr);
-                    var invRecAppr = new InvestmentRec
-                    {
-                        //ReferenceNo = investmentInitDto.ReferenceNo,
-                        InvestmentInitId = investmentRecvDto.InvestmentInitId,
-                        ProposedAmount = investmentRecvDto.ProposedAmount,
-                        Purpose = investmentRecvDto.Purpose,
-                        CommitmentAllSBU = investmentRecvDto.CommitmentAllSBU,
-                        CommitmentOwnSBU = investmentRecvDto.CommitmentOwnSBU,
-                        FromDate = investmentRecvDto.FromDate,
-                        ToDate = investmentRecvDto.ToDate,
-                        TotalMonth = investmentRecvDto.TotalMonth,
-                        PaymentMethod = investmentRecvDto.PaymentMethod,
-                        ChequeTitle = investmentRecvDto.ChequeTitle,
-                        EmployeeId = empId,
-                       // Priority = apprAuthConfigAppr.ApprovalAuthority.Priority,
-                        Priority = 3,
-                        CompletionStatus = true,
-                        SetOn = DateTimeOffset.Now
-                    };
-                    _investmentRecRepo.Add(invRecAppr);
-                    _investmentRecRepo.Savechange();
-
-                    var alreadyDetailTrackerExistSpec = new InvestmentDetailTrackerSpecification(investmentRecvDto.InvestmentInitId);
-                    var alreadyDetailTrackerExistInvestmentRecvList = await _investmentDetailTrackerRepo.ListAsync(alreadyDetailTrackerExistSpec);
-                    if (alreadyDetailTrackerExistInvestmentRecvList.Count > 0)
-                    {
-                        foreach (var v in alreadyDetailTrackerExistInvestmentRecvList)
-                        {
-                            _investmentDetailTrackerRepo.Delete(v);
-                            _investmentDetailTrackerRepo.Savechange();
-                        }
-                    }
-
-                    var donation = await _donationRepo.GetByIdAsync(donationId);
-                    if (donation.DonationTypeName == "Honorarium")
-                    {
-                        DateTimeOffset calcDate = investmentRecvDto.FromDate;
-                        for (int i = 0; i < investmentRecvDto.TotalMonth; i++)
-                        {
-                            calcDate = calcDate.AddMonths(i);
-                            var invDT = new InvestmentDetailTracker
-                            {
-                                InvestmentInitId = investmentRecvDto.InvestmentInitId,
-                                DonationId = donationId,
-                                ApprovedAmount = investmentRecvDto.ProposedAmount,
-                                Month = calcDate.Month,
-                                Year = calcDate.Year,
-                                FromDate = investmentRecvDto.FromDate,
-                                ToDate = investmentRecvDto.ToDate,
-                                PaidStatus = "Paid",
-                                EmployeeId = empId,
-                                SetOn = DateTimeOffset.Now
-                            };
-                            _investmentDetailTrackerRepo.Add(invDT);
-
-                        }
-                        _investmentDetailTrackerRepo.Savechange();
-                    }
-                    else {
-                        var invDT = new InvestmentDetailTracker
-                        {
-                            InvestmentInitId = investmentRecvDto.InvestmentInitId,
-                            DonationId = donationId,
-                            ApprovedAmount = investmentRecvDto.ProposedAmount,
-                            Month = 0,
-                            Year = 0,
-                            FromDate = investmentRecvDto.FromDate,
-                            ToDate = investmentRecvDto.ToDate,
-                            PaidStatus = "Paid",
-                            EmployeeId = empId,
-                            SetOn = DateTimeOffset.Now
-                        };
-                        _investmentDetailTrackerRepo.Add(invDT);
-                        _investmentDetailTrackerRepo.Savechange();
-                    }
-
-                    return new InvestmentRecvDto
-                    {
-                        Id = invRecAppr.Id,
-                        InvestmentInitId = investmentRecvDto.InvestmentInitId,
-                        ProposedAmount = investmentRecvDto.ProposedAmount,
-                        Purpose = investmentRecvDto.Purpose,
-                        CommitmentAllSBU = investmentRecvDto.CommitmentAllSBU,
-                        CommitmentOwnSBU = investmentRecvDto.CommitmentOwnSBU,
-                        FromDate = investmentRecvDto.FromDate,
-                        ToDate = investmentRecvDto.ToDate,
-                        TotalMonth = investmentRecvDto.TotalMonth,
-                        PaymentMethod = investmentRecvDto.PaymentMethod,
-                        ChequeTitle = investmentRecvDto.ChequeTitle,
-                        EmployeeId = investmentRecvDto.EmployeeId,
-                    };
-                }
-
-                //var invRecvForRec = new InvestmentRec
-                //{
-                //    //ReferenceNo = investmentInitDto.ReferenceNo,
-                //    InvestmentInitId = investmentRecvDto.InvestmentInitId,
-                //    ProposedAmount = investmentRecvDto.ProposedAmount,
-                //    Purpose = investmentRecvDto.Purpose,
-                //    CommitmentAllSBU = investmentRecvDto.CommitmentAllSBU,
-                //    CommitmentOwnSBU = investmentRecvDto.CommitmentOwnSBU,
-                //    FromDate = investmentRecvDto.FromDate,
-                //    ToDate = investmentRecvDto.ToDate,
-                //    TotalMonth = investmentRecvDto.TotalMonth,
-                //    PaymentMethod = investmentRecvDto.PaymentMethod,
-                //    ChequeTitle = investmentRecvDto.ChequeTitle,
-                //    EmployeeId = empId,
-                //    SetOn = DateTimeOffset.Now
-                //};
-                //_investmentRecRepo.Add(invRecvForRec);
-                //_investmentRecRepo.Savechange();
-
-                var spec = new ApprAuthConfigSpecification(empId, "A");
+                var spec = new ApprAuthConfigSpecification(investmentRecvDto.EmployeeId, "A");
                 var apprAuthConfig = await _apprAuthConfigRepo.GetEntityWithSpec(spec);
-                var invRec = new InvestmentRec
+                var empData = await _employeeRepo.GetByIdAsync(investmentRecvDto.EmployeeId);
+                var invRec = new InvestmentRecv
                 {
                     //ReferenceNo = investmentInitDto.ReferenceNo,
                     InvestmentInitId = investmentRecvDto.InvestmentInitId,
@@ -303,14 +137,26 @@ namespace API.Controllers
                     TotalMonth = investmentRecvDto.TotalMonth,
                     PaymentMethod = investmentRecvDto.PaymentMethod,
                     ChequeTitle = investmentRecvDto.ChequeTitle,
-                    EmployeeId = empId,
+                    EmployeeId = investmentRecvDto.EmployeeId,
+                    MarketGroupCode = empData.MarketGroupCode,
+                    MarketGroupName = empData.MarketGroupName,
+                    MarketCode = empData.MarketCode,
+                    MarketName = empData.MarketName,
+                    RegionCode = empData.RegionCode,
+                    RegionName = empData.RegionName,
+                    ZoneCode = empData.ZoneCode,
+                    ZoneName = empData.ZoneName,
+                    TerritoryCode = empData.TerritoryCode,
+                    TerritoryName = empData.TerritoryName,
+                    SBUName = empData.SBUName,
+                    SBU = empData.SBU,
                     Priority = apprAuthConfig.ApprovalAuthority.Priority,
-                    //Priority = 3,
-                    CompletionStatus = true,
+                    ReceiveStatus = investmentRecvDto.ReceiveStatus,
+                    Comments = investmentRecvDto.Comments,
                     SetOn = DateTimeOffset.Now
                 };
-                _investmentRecRepo.Add(invRec);
-                _investmentRecRepo.Savechange();
+                _investmentRecvRepo.Add(invRec);
+                _investmentRecvRepo.Savechange();
 
                 return new InvestmentRecvDto
                 {
@@ -326,11 +172,78 @@ namespace API.Controllers
                     PaymentMethod = investmentRecvDto.PaymentMethod,
                     ChequeTitle = investmentRecvDto.ChequeTitle,
                     EmployeeId = investmentRecvDto.EmployeeId,
+                    ReceiveStatus = investmentRecvDto.ReceiveStatus,
+                    Comments = investmentRecvDto.Comments,
                 };
             }
             catch (Exception ex)
             {
+                throw ex;
+            }
+        }
 
+   [HttpPost("UpdateRecv")]
+          public async Task<ActionResult<InvestmentRecvDto>> UpdateInvestmentRecv(InvestmentRecvDto investmentRecvDto)
+        {
+            try
+            {
+                var spec = new ApprAuthConfigSpecification(investmentRecvDto.EmployeeId, "A");
+                var apprAuthConfig = await _apprAuthConfigRepo.GetEntityWithSpec(spec);
+                var empData = await _employeeRepo.GetByIdAsync(investmentRecvDto.EmployeeId);
+                var invRec = new InvestmentRecv
+                {
+                    Id = investmentRecvDto.Id,
+                    InvestmentInitId = investmentRecvDto.InvestmentInitId,
+                    ProposedAmount = investmentRecvDto.ProposedAmount,
+                    Purpose = investmentRecvDto.Purpose,
+                    CommitmentAllSBU = investmentRecvDto.CommitmentAllSBU,
+                    CommitmentOwnSBU = investmentRecvDto.CommitmentOwnSBU,
+                    FromDate = investmentRecvDto.FromDate,
+                    ToDate = investmentRecvDto.ToDate,
+                    TotalMonth = investmentRecvDto.TotalMonth,
+                    PaymentMethod = investmentRecvDto.PaymentMethod,
+                    ChequeTitle = investmentRecvDto.ChequeTitle,
+                    EmployeeId = investmentRecvDto.EmployeeId,
+                    MarketGroupCode = empData.MarketGroupCode,
+                    MarketGroupName = empData.MarketGroupName,
+                    MarketCode = empData.MarketCode,
+                    MarketName = empData.MarketName,
+                    RegionCode = empData.RegionCode,
+                    RegionName = empData.RegionName,
+                    ZoneCode = empData.ZoneCode,
+                    ZoneName = empData.ZoneName,
+                    TerritoryCode = empData.TerritoryCode,
+                    TerritoryName = empData.TerritoryName,
+                    SBUName = empData.SBUName,
+                    SBU = empData.SBU,
+                    Priority = apprAuthConfig.ApprovalAuthority.Priority,
+                    ReceiveStatus = investmentRecvDto.ReceiveStatus,
+                    Comments = investmentRecvDto.Comments,
+                    SetOn = DateTimeOffset.Now
+                };
+                _investmentRecvRepo.Update(invRec);
+                _investmentRecvRepo.Savechange();
+
+                return new InvestmentRecvDto
+                {
+                    Id = invRec.Id,
+                    InvestmentInitId = investmentRecvDto.InvestmentInitId,
+                    ProposedAmount = investmentRecvDto.ProposedAmount,
+                    Purpose = investmentRecvDto.Purpose,
+                    CommitmentAllSBU = investmentRecvDto.CommitmentAllSBU,
+                    CommitmentOwnSBU = investmentRecvDto.CommitmentOwnSBU,
+                    FromDate = investmentRecvDto.FromDate,
+                    ToDate = investmentRecvDto.ToDate,
+                    TotalMonth = investmentRecvDto.TotalMonth,
+                    PaymentMethod = investmentRecvDto.PaymentMethod,
+                    ChequeTitle = investmentRecvDto.ChequeTitle,
+                    EmployeeId = investmentRecvDto.EmployeeId,
+                    ReceiveStatus = investmentRecvDto.ReceiveStatus,
+                    Comments = investmentRecvDto.Comments,
+                };
+            }
+            catch (Exception ex)
+            {
                 throw ex;
             }
         }
@@ -693,20 +606,21 @@ namespace API.Controllers
             }
         }
         [HttpGet]
-        [Route("getInvestmentRecvComment/{investmentInitId}/{empId}")]
-        //public async Task<IReadOnlyList<InvestmentRecComment>> GetInvestmentRecvComment(int investmentInitId, int empId)
-        //{
-        //    try
-        //    {
-        //        var spec = new InvestmentRecCommentSpecification(investmentInitId, empId);
-        //        var investmentDetail = await _investmentRecCommentRepo.ListAsync(spec);
-        //        return investmentDetail;
-        //    }
-        //    catch (System.Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
+        [Route("getInvestmentRecvComment/{investmentInitId}")]
+        public async Task<IReadOnlyList<InvestmentRecv>> GetInvestmentRecvComment(int investmentInitId)
+        {
+            try
+            {
+                var spec = new InvestmentRecvSpecification(investmentInitId);
+                var investmentDetail = await _investmentRecvRepo.ListAsync(spec);
+                return investmentDetail;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public async Task<IReadOnlyList<InvestmentRecComment>> GetInvestmentRecComment(int investmentInitId, int empId)
         {
             try
@@ -720,8 +634,8 @@ namespace API.Controllers
                 throw ex;
             }
         }
-        [HttpGet]
-        [Route("getInvestmentRecvComments/{investmentInitId}")]
+        //[HttpGet]
+        //[Route("getInvestmentRecvComments/{investmentInitId}")]
         //public async Task<IReadOnlyList<InvestmentRecvComment>> GetInvestmentRecvComments(int investmentInitId)
         //{
         //    try
@@ -735,19 +649,19 @@ namespace API.Controllers
         //        throw ex;
         //    }
         //}
-        public async Task<IReadOnlyList<InvestmentRecComment>> GetInvestmentRecComments(int investmentInitId)
-        {
-            try
-            {
-                var spec = new InvestmentRecCommentSpecification(investmentInitId);
-                var investmentDetail = await _investmentRecCommentRepo.ListAsync(spec);
-                return investmentDetail;
-            }
-            catch (System.Exception ex)
-            {
-                throw ex;
-            }
-        }
+        // public async Task<IReadOnlyList<InvestmentRecComment>> GetInvestmentRecComments(int investmentInitId)
+        // {
+        //     try
+        //     {
+        //         var spec = new InvestmentRecCommentSpecification(investmentInitId);
+        //         var investmentDetail = await _investmentRecCommentRepo.ListAsync(spec);
+        //         return investmentDetail;
+        //     }
+        //     catch (System.Exception ex)
+        //     {
+        //         throw ex;
+        //     }
+        // }
 
     }
 }
