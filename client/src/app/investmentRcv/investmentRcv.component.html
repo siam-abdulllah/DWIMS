@@ -572,7 +572,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <!-- <div class="col-md-6">
                                             <div class="form-group">
                                                 <table class="table  table-bordered">
                                                     <tr class="HeaderRow">
@@ -601,8 +601,8 @@
                                                     </tr>
                                                 </table>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
+                                        </div> -->
+                                        <div class="col-md-12">
                                             <div class="form-group">
                                                 <div class="row">
                                                     <div class="col-md-2">
@@ -610,7 +610,8 @@
                                                         <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" [disabled]="isInvOther" required name="proposedAmount" placeholder="Amount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentRcvService.investmentDetailFormData.proposedAmount" [pattern]="numberPattern">
+                                                        <input class="form-control" [disabled]="isInvOther" required name="proposedAmount" placeholder="Amount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentRcvService.investmentDetailFormData.proposedAmount" [pattern]="numberPattern"
+                                                            readonly>
                                                         <div class="invalid-feedback" *ngIf="proposedAmount.errors?.pattern">Only numeric value</div>
                                                     </div>
                                                 </div>
@@ -622,7 +623,7 @@
                                                         <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" [disabled]="isInvOther" required name="purpose" id="purpose" #purpose="ngModel" [(ngModel)]="investmentRcvService.investmentDetailFormData.purpose">
+                                                        <input class="form-control" [disabled]="isInvOther" required name="purpose" id="purpose" #purpose="ngModel" [(ngModel)]="investmentRcvService.investmentDetailFormData.purpose" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -634,11 +635,11 @@
                                                     </div>
                                                     <div class="col-md-3">
                                                         <input class="form-control" [disabled]="isInvOther" required placeholder="Calender" (onHidden)="changeDateInDetail()" name="fromDate" #fromDate="ngModel" [(ngModel)]="investmentRcvService.investmentDetailFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched"
-                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentRcvForm)">
+                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentRcvForm)" readonly>
                                                     </div>
                                                     <div class="col-md-3">
                                                         <input class="form-control" [disabled]="isInvOther" required placeholder="Calender" (onHidden)="changeDateInDetail()" name="toDate" #toDate="ngModel" [(ngModel)]="investmentRcvService.investmentDetailFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched"
-                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentRcvForm)">
+                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentRcvForm)" readonly>
 
                                                     </div>
                                                     <div class="col-md-2">
@@ -659,7 +660,7 @@
                                                         <label>All SBU </label>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <input class="form-control" [disabled]="isInvOther" name="commitmentAllSBU" id="commitmentAllSBU" #commitmentAllSBU="ngModel" [(ngModel)]="investmentRcvService.investmentDetailFormData.commitmentAllSBU" [pattern]="numberPattern">
+                                                        <input class="form-control" [disabled]="isInvOther" name="commitmentAllSBU" id="commitmentAllSBU" #commitmentAllSBU="ngModel" [(ngModel)]="investmentRcvService.investmentDetailFormData.commitmentAllSBU" [pattern]="numberPattern" readonly>
                                                         <div class="invalid-feedback" *ngIf="commitmentAllSBU.errors?.pattern">Only numeric value</div>
                                                     </div>
                                                     <div class="col-md-1">
@@ -669,7 +670,7 @@
                                                         <label>Own SBU</label>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <input class="form-control" [disabled]="isInvOther" name="commitmentOwnSBU" id="commitmentOwnSBU" #commitmentOwnSBU="ngModel" [(ngModel)]="investmentRcvService.investmentDetailFormData.commitmentOwnSBU" [pattern]="numberPattern">
+                                                        <input class="form-control" [disabled]="isInvOther" name="commitmentOwnSBU" id="commitmentOwnSBU" #commitmentOwnSBU="ngModel" [(ngModel)]="investmentRcvService.investmentDetailFormData.commitmentOwnSBU" [pattern]="numberPattern" readonly>
                                                         <div class="invalid-feedback" *ngIf="commitmentOwnSBU.errors?.pattern">Only numeric value</div>
                                                     </div>
                                                     <div class="col-md-1">
@@ -683,8 +684,7 @@
                                                         <label>Payment Method</label>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <select class="form-control" [disabled]="isInvOther" name="paymentMethod" id="paymentMethod" #paymentMethod="ngModel" [(ngModel)]="investmentRcvService.investmentDetailFormData.paymentMethod">
-                                                        
+                                                        <select class="form-control" [disabled]="isInvOther" name="paymentMethod" id="paymentMethod" #paymentMethod="ngModel" [(ngModel)]="investmentRcvService.investmentDetailFormData.paymentMethod" readonly>    
                                                             <option  [ngValue]="null">Select Payment Method</option>
                                                             <option value="Cash">Cash</option>
                                                             <option value="Cheque">Cheque</option>
@@ -701,7 +701,7 @@
                                                         <label>Cheque Title</label>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" maxlength="100" [disabled]="isInvOther" name="chequeTitle" id="chequeTitle" #chequeTitle="ngModel" [(ngModel)]="investmentRcvService.investmentDetailFormData.chequeTitle">
+                                                        <input class="form-control" maxlength="100" [disabled]="isInvOther" name="chequeTitle" id="chequeTitle" #chequeTitle="ngModel" [(ngModel)]="investmentRcvService.investmentDetailFormData.chequeTitle" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -720,8 +720,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-md-2">
+                                    <!-- <div class="row">
+                                         <div class="col-md-2">
                                             <label>Product</label>
                                         </div>
                                         <div class="col-md-3">
@@ -735,63 +735,56 @@
                                             <button class="btn btn-primary btn-lg btn-block" type="button" (click)="addInvestmentTargetedProd()"><i class="fa fa-plus"></i>&nbsp; Add</button>
 
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <div class="form-group">
                                     <table class="table  table-bordered">
                                         <tr class="HeaderRow">
-                                            <!-- <td>Product Code</td> -->
+                                            <td>Product Code</td>
                                             <td>Product Name</td>
                                             <td>SBU</td>
-                                            <td></td>
-                                            <td></td>
+
                                         </tr>
                                         <tr *ngFor="let a of investmentTargetedProds">
-                                            <!-- <td>
+                                            <td>
                                                 {{a.productInfo.productCode}}
-                                            </td> -->
+                                            </td>
                                             <td>
                                                 {{a.productInfo.productName}}
                                             </td>
                                             <td>
                                                 {{a.productInfo.sbuName}}
                                             </td>
-                                            <td>
-                                                <input type="button" *ngIf="sbu==a.sbu" (click)="editInvestmentTargetedProd(a)" value="Edit">
-                                            </td>
-                                            <td>
-                                                <input type="button" *ngIf="sbu==a.sbu" (click)="removeInvestmentTargetedProd(a)" value="Remove">
-                                            </td>
                                         </tr>
                                     </table>
                                 </div>
                             </fieldset>
                             <fieldset>
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <h6 class=" "><strong>Targeted Group</strong></h6>
                                         </div>
                                         <div class="col-sm-2"></div>
-                                        <!-- <div class="col-sm-2">
+                                        <div class="col-sm-2">
                                             <button class="btn btn-success btn-lg btn-block" type="button"><i class="fa fa-save"></i>&nbsp; Save</button>
-                                        </div> -->
+                                        </div> 
                                     </div>
-                                </div>
-                                <div class="form-group">
+                                </div> -->
+                                <!-- <div class="form-group">
                                     <table class="table  table-bordered">
                                         <tr class="HeaderRow">
-                                            <!-- <td>Market Group Name</td> -->
+                                             <td>Market Group Name</td> 
                                             <td>Market Code</td>
                                             <td>Market Name</td>
                                             <td>Authority</td>
-                                            <td>Status</td>
+                                             <td>Status</td> 
                                         </tr>
                                         <tr *ngFor="let a of investmentTargetedGroups">
 
-                                            <!-- <td>
+                                             <td>
                                                 {{a.marketGroupMst.groupName}}
-                                            </td> -->
+                                            </td> 
                                             <td>
                                                 {{a.marketCode}}
                                             </td>
@@ -804,12 +797,12 @@
                                             <td>
                                                 {{a.recStatus}}
                                             </td>
-                                            <!-- <td>
+                                             <td>
                                                 <input type="button" (click)="removeInvestmentTargetedProd(a)" value="Remove">
-                                            </td> -->
+                                            </td>
                                         </tr>
                                     </table>
-                                </div>
+                                </div> -->
                             </fieldset>
                             <fieldset>
                                 <div class="form-group">
@@ -878,7 +871,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let a of investmentRcvs">
+                            <tr *ngFor="let a of investmentInits">
                                 <td>
                                     <button class="btn btn-sm btn-embossed btn-success" (click)="selectInvestmentInit(a)">Select</button>
 
@@ -919,7 +912,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let a of investmentRcvs">
+                            <tr *ngFor="let a of investmentInits">
                                 <td>
                                     <button class="btn btn-sm btn-embossed btn-success" (click)="selectinvestmentRcv(a)">Select</button>
 

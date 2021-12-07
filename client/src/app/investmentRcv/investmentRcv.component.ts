@@ -67,6 +67,7 @@ export class InvestmentRcvComponent implements OnInit {
   campaignDtls: ICampaignDtl[];
   campaignDtlProducts: ICampaignDtlProduct[];
   marketGroupMsts: IMarketGroupMst[];
+  investmentInits: IInvestmentInit[];
   donationToVal: string;
   totalCount = 0;
   bsConfig: Partial<BsDatepickerConfig>;
@@ -78,6 +79,7 @@ export class InvestmentRcvComponent implements OnInit {
     class: 'modal-lg',
     ignoreBackdropClick: true
   };
+
   constructor(private accountService: AccountService, public investmentRcvService: InvestmentRcvService, private router: Router,
     private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe, private SpinnerService: NgxSpinnerService) { }
   ngOnInit() {
@@ -105,6 +107,7 @@ export class InvestmentRcvComponent implements OnInit {
   }
   openinvestmentRcvSearchModal(template: TemplateRef<any>) {
     this.investmentRcvSearchModalRef = this.modalService.show(template, this.config);
+ 
   }
   selectInvestmentInit(selectedAprord: IInvestmentInit) {
     this.resetForm();
@@ -138,7 +141,7 @@ export class InvestmentRcvComponent implements OnInit {
       this.isInvOther = true;
       this.isValid = false;
     }
-    this.getBudget();
+    //this.getBudget();
     this.InvestmentInitSearchModalRef.hide()
   }
   selectinvestmentRcv(selectedAprord: IInvestmentInit) {
@@ -164,7 +167,7 @@ export class InvestmentRcvComponent implements OnInit {
     this.getinvestmentRcvDetails();
     this.getinvestmentRcvProducts();
     this.getinvestmentRcvComment();
-    this.getInvestmentTargetedGroup();
+  
     if (this.sbu == this.investmentRcvService.investmentRcvFormData.sbu) {
       this.isInvOther = false;
       this.isValid = true;
@@ -173,7 +176,7 @@ export class InvestmentRcvComponent implements OnInit {
       this.isInvOther = true;
       this.isValid = false;
     }
-    this.getBudget();
+    //this.getBudget();
     this.investmentRcvSearchModalRef.hide()
   }
   getLastFiveInvestment(marketCode: string, toDayDate: string) {
@@ -240,8 +243,8 @@ export class InvestmentRcvComponent implements OnInit {
     this.SpinnerService.show();
     this.investmentRcvService.getInvestmentInit(parseInt(this.empId), this.sbu).subscribe(response => {
       this.SpinnerService.hide();
-      this.investmentRcvs = response.data;
-      if (this.investmentRcvs.length > 0) {
+      this.investmentInits = response.data;
+      if (this.investmentInits.length > 0) {
         this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
       }
       else {
@@ -256,8 +259,8 @@ export class InvestmentRcvComponent implements OnInit {
     this.SpinnerService.show();
     this.investmentRcvService.getInvestmentApproved(parseInt(this.empId), this.sbu).subscribe(response => {
       this.SpinnerService.hide();
-      this.investmentRcvs = response.data;
-      if (this.investmentRcvs.length > 0) {
+      this.investmentInits = response.data;
+      if (this.investmentInits.length > 0) {
         this.openinvestmentRcvSearchModal(this.investmentRcvSearchModal);
       }
       else {
@@ -388,11 +391,10 @@ export class InvestmentRcvComponent implements OnInit {
     });
   }
   getinvestmentRcvComment() {
-    this.investmentRcvService.getInvestmentRcvComment(this.investmentRcvService.investmentRcvFormData.id, this.empId).subscribe(response => {
+    this.investmentRcvService.getInvestmentRcvComment(this.investmentRcvService.investmentRcvFormData.id).subscribe(response => {
       var data = response[0] as IInvestmentRcvComment;
       if (data !== undefined) {
         this.investmentRcvService.investmentRcvCommentFormData = data;
-
       }
       else {
         this.toastr.warning('No Data Found', 'Investment ');
@@ -528,22 +530,53 @@ export class InvestmentRcvComponent implements OnInit {
       console.log(error);
     });
   }
-  getBudget() {
-    this.investmentRcvService.getBudget(this.sbu, parseInt(this.empId), this.investmentRcvService.investmentRcvFormData.donationId).subscribe(response => {
-      this.budgetCeiling = response[0] as IBudgetCeiling;
-      this.isBudgetVisible = true;
-    }, error => {
-      console.log(error);
-    });
-  }
+  // getBudget() {
+  //   this.investmentRcvService.getBudget(this.sbu, parseInt(this.empId), this.investmentRcvService.investmentRcvFormData.donationId).subscribe(response => {
+  //     this.budgetCeiling = response[0] as IBudgetCeiling;
+  //     this.isBudgetVisible = true;
+  //   }, error => {
+  //     console.log(error);
+  //   });
+  // }
   insertinvestmentRcv() {
+
+    const investRecvhDto: IInvestmentRcvInsert = {
+      id: 0,
+      investmentInitId: this.investmentRcvService.investmentRcvCommentFormData.investmentInitId,
+      chequeTitle: this.investmentRcvService.investmentDetailFormData.chequeTitle,
+      paymentMethod: this.investmentRcvService.investmentDetailFormData.paymentMethod,
+      commitmentAllSBU: this.investmentRcvService.investmentDetailFormData.commitmentAllSBU,
+      commitmentOwnSBU: this.investmentRcvService.investmentDetailFormData.commitmentOwnSBU,
+      totalMonth: this.investmentRcvService.investmentDetailFormData.totalMonth,
+      proposedAmount: this.investmentRcvService.investmentDetailFormData.proposedAmount,
+      purpose: this.investmentRcvService.investmentDetailFormData.purpose,
+      marketCode: this.investmentRcvService.investmentDetailFormData.marketCode,
+      sbu: this.investmentRcvService.investmentDetailFormData.sbu,
+      fromDate: this.investmentRcvService.investmentDetailFormData.fromDate,
+      toDate: this.investmentRcvService.investmentDetailFormData.toDate,
+      receiveStatus: this.investmentRcvService.investmentRcvCommentFormData.recStatus,
+      comments: this.investmentRcvService.investmentRcvCommentFormData.comments,
+      employeeId: parseInt(this.empId),
+      sbuName: '',
+      zoneCode: '',
+      zoneName: '',
+      regionCode: '',
+      regionName: '',
+      territoryCode: '',
+      territoryName: '',
+      marketName: '',
+      marketGroupCode: '',
+      marketGroupName: '',
+      priority: 0
+    };
+
     this.investmentRcvService.investmentRcvCommentFormData.employeeId = parseInt(this.empId);
     this.SpinnerService.show();
-    this.investmentRcvService.insertInvestmentRcv().subscribe(
+    this.investmentRcvService.insertInvestmentRcv(investRecvhDto).subscribe(
       res => {
         this.investmentRcvService.investmentRcvCommentFormData = res as IInvestmentRcvComment;
         this.isValid = true;
-        this.insertInvestmentTargetedProd();
+        //this.insertInvestmentTargetedProd();
         this.SpinnerService.hide();
         if (this.sbu != this.investmentRcvService.investmentRcvFormData.sbu) 
         { 
@@ -554,12 +587,43 @@ export class InvestmentRcvComponent implements OnInit {
     );
   }
   updateinvestmentRcv() {
+
+    const investRecvhDto: IInvestmentRcvInsert = {
+      id: this.investmentRcvService.investmentRcvCommentFormData.id,
+      investmentInitId: this.investmentRcvService.investmentRcvCommentFormData.investmentInitId,
+      chequeTitle: this.investmentRcvService.investmentDetailFormData.chequeTitle,
+      paymentMethod: this.investmentRcvService.investmentDetailFormData.paymentMethod,
+      commitmentAllSBU: this.investmentRcvService.investmentDetailFormData.commitmentAllSBU,
+      commitmentOwnSBU: this.investmentRcvService.investmentDetailFormData.commitmentOwnSBU,
+      totalMonth: this.investmentRcvService.investmentDetailFormData.totalMonth,
+      proposedAmount: this.investmentRcvService.investmentDetailFormData.proposedAmount,
+      purpose: this.investmentRcvService.investmentDetailFormData.purpose,
+      marketCode: this.investmentRcvService.investmentDetailFormData.marketCode,
+      sbu: this.investmentRcvService.investmentDetailFormData.sbu,
+      fromDate: this.investmentRcvService.investmentDetailFormData.fromDate,
+      toDate: this.investmentRcvService.investmentDetailFormData.toDate,
+      receiveStatus: this.investmentRcvService.investmentRcvCommentFormData.recStatus,
+      comments: this.investmentRcvService.investmentRcvCommentFormData.comments,
+      employeeId: parseInt(this.empId),
+      sbuName: '',
+      zoneCode: '',
+      zoneName: '',
+      regionCode: '',
+      regionName: '',
+      territoryCode: '',
+      territoryName: '',
+      marketName: '',
+      marketGroupCode: '',
+      marketGroupName: '',
+      priority: 0
+    };
+
     this.SpinnerService.show();
-    this.investmentRcvService.updateInvestmentRcv().subscribe(
+    this.investmentRcvService.updateInvestmentRcv(investRecvhDto).subscribe(
       res => {
         this.isValid = true;
         this.investmentRcvService.investmentRcvCommentFormData = res as IInvestmentRcvComment;
-        this.insertInvestmentTargetedProd();
+        //this.insertInvestmentTargetedProd();
         this.SpinnerService.hide();
         if (this.sbu != this.investmentRcvService.investmentRcvFormData.sbu) 
         { 
@@ -624,45 +688,45 @@ export class InvestmentRcvComponent implements OnInit {
     );
   }
 
-  insertInvestmentTargetedProd() {
-    if (this.investmentRcvService.investmentRcvFormData.id == null || this.investmentRcvService.investmentRcvFormData.id == undefined || this.investmentRcvService.investmentRcvFormData.id == 0) {
-      this.toastr.warning('Insert Investment Initialisation First', 'Investment Product');
-      return false;
-    }
-    if (this.investmentTargetedProds !== undefined) {
-      for (let i = 0; i < this.investmentTargetedProds.length; i++) {
-        if (this.investmentTargetedProds[i].productInfo.id == this.investmentRcvService.investmentTargetedProdFormData.productId) {
-          this.toastr.warning("Product already exist !");
-          return false;
-        }
-      }
-    }
-    else {
-      this.toastr.warning('Select Product First', 'Investment Product');
-      return false;
-    }
-    this.investmentRcvService.investmentTargetedProdFormData.investmentInitId = this.investmentRcvService.investmentRcvFormData.id;
-    this.SpinnerService.show();
-    this.investmentRcvService.insertInvestmentTargetedProd(this.investmentTargetedProds).subscribe(
-      res => {if (this.sbu == this.investmentRcvService.investmentRcvFormData.sbu) 
-        { 
-        this.insertInvestmentDetails();
-        }
-        this.getInvestmentTargetedProd();
-        this.getInvestmentTargetedGroup();
-        this.isDonationValid = true;
-        this.SpinnerService.hide();
-        if (this.sbu != this.investmentRcvService.investmentRcvFormData.sbu) 
-        { 
-        this.toastr.success('Save successfully', 'Investment Product');
-        }
-      },
-      err => {
-        console.log(err);
-        this.SpinnerService.hide();
-      }
-    );
-  }
+  // insertInvestmentTargetedProd() {
+  //   if (this.investmentRcvService.investmentRcvFormData.id == null || this.investmentRcvService.investmentRcvFormData.id == undefined || this.investmentRcvService.investmentRcvFormData.id == 0) {
+  //     this.toastr.warning('Insert Investment Initialisation First', 'Investment Product');
+  //     return false;
+  //   }
+  //   if (this.investmentTargetedProds !== undefined) {
+  //     for (let i = 0; i < this.investmentTargetedProds.length; i++) {
+  //       if (this.investmentTargetedProds[i].productInfo.id == this.investmentRcvService.investmentTargetedProdFormData.productId) {
+  //         this.toastr.warning("Product already exist !");
+  //         return false;
+  //       }
+  //     }
+  //   }
+  //   else {
+  //     this.toastr.warning('Select Product First', 'Investment Product');
+  //     return false;
+  //   }
+  //   this.investmentRcvService.investmentTargetedProdFormData.investmentInitId = this.investmentRcvService.investmentRcvFormData.id;
+  //   this.SpinnerService.show();
+  //   this.investmentRcvService.insertInvestmentTargetedProd(this.investmentTargetedProds).subscribe(
+  //     res => {if (this.sbu == this.investmentRcvService.investmentRcvFormData.sbu) 
+  //       { 
+  //       this.insertInvestmentDetails();
+  //       }
+  //       this.getInvestmentTargetedProd();
+  //       this.getInvestmentTargetedGroup();
+  //       this.isDonationValid = true;
+  //       this.SpinnerService.hide();
+  //       if (this.sbu != this.investmentRcvService.investmentRcvFormData.sbu) 
+  //       { 
+  //       this.toastr.success('Save successfully', 'Investment Product');
+  //       }
+  //     },
+  //     err => {
+  //       console.log(err);
+  //       this.SpinnerService.hide();
+  //     }
+  //   );
+  // }
   addInvestmentTargetedProd() {
     if (this.investmentRcvService.investmentTargetedProdFormData.productId == null || this.investmentRcvService.investmentTargetedProdFormData.productId == undefined || this.investmentRcvService.investmentTargetedProdFormData.productId == 0) {
       this.toastr.warning('Select Product First', 'Investment ');
@@ -735,4 +799,66 @@ export class InvestmentRcvComponent implements OnInit {
       );
     }
   }
+}
+
+
+
+export interface IInvestmentRcvInsert {
+  id: number;
+  investmentInitId: number;
+  employeeId : number;
+  sbu: string;
+  sbuName: string;
+  zoneCode: string;
+  zoneName: string;
+  regionCode: string;
+  regionName: string;
+  territoryCode: string;
+  territoryName: string;
+  marketCode: string;
+  marketName: string;
+  marketGroupCode: string;
+  marketGroupName: string;
+  comments: string;
+  chequeTitle: string;
+  paymentMethod: string;
+  commitmentAllSBU: string;
+  commitmentOwnSBU: string;
+  fromDate: Date;
+  toDate: Date;
+  totalMonth: number;
+  proposedAmount: string;
+  priority: number;
+  purpose: string;
+  receiveStatus: string;
+}
+
+export class InvestmentRcvInsert implements IInvestmentRcvInsert {
+  id: number;
+  investmentInitId: number;
+  employeeId : number;
+  sbu: string;
+  sbuName: string;
+  zoneCode: string;
+  zoneName: string;
+  regionCode: string;
+  regionName: string;
+  territoryCode: string;
+  territoryName: string;
+  marketCode: string;
+  marketName: string;
+  marketGroupCode: string;
+  marketGroupName: string;
+  comments: string;
+  chequeTitle: string;
+  paymentMethod: string;
+  commitmentAllSBU: string;
+  commitmentOwnSBU: string;
+  fromDate: Date;
+  toDate: Date;
+  totalMonth: number;
+  proposedAmount: string;
+  priority: number;
+  purpose: string;
+  receiveStatus: string;
 }

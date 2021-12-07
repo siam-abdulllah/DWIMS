@@ -13,6 +13,7 @@ export interface IInvestmentInit {
     confirmation: boolean;
     donationId: number;
     donation:IDonation;
+    sbu:string;
 }
  
 export class InvestmentInit implements IInvestmentInit {
@@ -25,6 +26,7 @@ export class InvestmentInit implements IInvestmentInit {
     confirmation: boolean;
     donationId: number=null;
     donation:IDonation;
+    sbu:string;
 }
 
 export interface IInvestmentDetail {

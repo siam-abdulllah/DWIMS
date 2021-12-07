@@ -32,37 +32,37 @@ export class InvestmentInit implements IInvestmentInit {
 }
 
 
-export interface IInvestmentRcv {
-    id: number;
-    investmentInitId: number;
-    chequeTitle: string;
-    paymentMethod: string;
-    commitmentAllSBU: string;
-    commitmentOwnSBU: string;
-    shareAllSBU: string;
-    shareOwnSBU: string;
-    totalMonth: number;
-    proposedAmount: string;
-    purpose: string;
-    fromDate: Date;
-    toDate: Date;
-}
+// export interface IInvestmentRcv {
+//     id: number;
+//     investmentInitId: number;
+//     chequeTitle: string;
+//     paymentMethod: string;
+//     commitmentAllSBU: string;
+//     commitmentOwnSBU: string;
+//     shareAllSBU: string;
+//     shareOwnSBU: string;
+//     totalMonth: number;
+//     proposedAmount: string;
+//     purpose: string;
+//     fromDate: Date;
+//     toDate: Date;
+// }
  
-export class InvestmentRcv implements IInvestmentRcv {
-    id: number=0;
-    investmentInitId: number;
-    chequeTitle: string;
-    paymentMethod: string=null;
-    commitmentAllSBU: string;
-    commitmentOwnSBU: string;
-    shareAllSBU: string;
-    shareOwnSBU: string;
-    totalMonth: number;
-    proposedAmount: string;
-    purpose: string;
-    fromDate: Date;
-    toDate: Date;
-}
+// export class InvestmentRcv implements IInvestmentRcv {
+//     id: number=0;
+//     investmentInitId: number;
+//     chequeTitle: string;
+//     paymentMethod: string=null;
+//     commitmentAllSBU: string;
+//     commitmentOwnSBU: string;
+//     shareAllSBU: string;
+//     shareOwnSBU: string;
+//     totalMonth: number;
+//     proposedAmount: string;
+//     purpose: string;
+//     fromDate: Date;
+//     toDate: Date;
+// }
 export interface IInvestmentRcvComment {
     id: number;
     investmentInitId: number;
@@ -264,4 +264,48 @@ export class InvestmentSociety implements IInvestmentSociety {
     responsibleDoctorName: string;
     doctorInfo:IDoctor;
     society:ISocietyInfo;
+}
+
+
+
+export interface IInvestmentRcv {
+    id: number;
+    investmentInitId: number;
+    chequeTitle: string;
+    paymentMethod: string;
+    commitmentAllSBU: string;
+    commitmentOwnSBU: string;
+    shareAllSBU: string;
+    shareOwnSBU: string;
+    totalMonth: number;
+    donationId: number;
+    donation:IDonation;
+    donationTo: string;
+    proposedAmount: string;
+    purpose: string;
+    marketCode: string;
+    sbu: string;
+    fromDate: Date;
+    toDate: Date;
+}
+ 
+export class InvestmentRcv implements IInvestmentRcv {
+    id: number=0;
+    investmentInitId: number;
+    chequeTitle: string;
+    paymentMethod: string=null;
+    donationId: number=null;
+    commitmentAllSBU: string;
+    commitmentOwnSBU: string;
+    shareAllSBU: string;
+    shareOwnSBU: string;
+    totalMonth: number;
+    donation:IDonation;
+    donationTo: string=null;
+    proposedAmount: string;
+    purpose: string;
+    marketCode: string;
+    sbu: string;
+    fromDate: Date;
+    toDate: Date;
 }
