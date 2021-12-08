@@ -684,6 +684,8 @@ export class InvestmentAprComponent implements OnInit {
       for (let i = 0; i < this.products.length; i++) {
         if (this.products[i].id == this.investmentAprService.investmentTargetedProdFormData.productId) {
           let data = new InvestmentTargetedProd();
+          
+          data.sbu = this.sbu;
           data.employeeId = parseInt(this.empId);
           data.investmentInitId = this.investmentAprService.investmentAprFormData.id;
           data.productId = this.investmentAprService.investmentTargetedProdFormData.productId;

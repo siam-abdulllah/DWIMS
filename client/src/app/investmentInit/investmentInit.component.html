@@ -15,7 +15,6 @@
                                 <div class="col-sm-1">
                                     <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="investmentInitForm.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
                                 </div>
-
                                 <div class="col-sm-1">
                                     <button class="btn btn-info btn-lg btn-block" type="button" (click)="getInvestmentInit()"><i class="fa fa-search" ></i>Search</button>
                                 </div>
@@ -79,25 +78,14 @@
                                 </div>
                             </div>
                             <fieldset *ngIf="investmentInitService.investmentInitFormData.donationTo=='Doctor'">
-                                <!-- <legend>Doctor Profile</legend> -->
-
-                                <div class="form-group">
+                                <legend>Doctor Profile</legend>
+                                <!-- <div class="form-group">
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <h6 class=""><strong>Doctor Profile</strong></h6>
                                         </div>
-                                        <div class="col-sm-2"></div>
-                                        <div class="col-sm-2" *ngIf="isValid && !isInvOther">
-                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentDoctor()"><i class="fa fa-save"></i>&nbsp; Save</button>
-                                        </div>
-                                        <div class="col-sm-2" *ngIf="isValid && !isInvOther">
-                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentDoctor()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
-                                        </div>
-                                        <!-- <div class="col-sm-2" *ngIf="isValid">
-                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetInvestmentDoctor()"><i class="fa fa-search"></i>Reset</button>
-                                        </div> -->
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-2">
@@ -216,25 +204,23 @@
                                         </div>
                                     </div>
                                 </div>
-                            </fieldset>
-                            <fieldset *ngIf="investmentInitService.investmentInitFormData.donationTo=='Institution'">
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-sm-6">
-                                            <h6 class=""><strong>Institution Profile</strong></h6>
+                                            <!-- <h6 class=""><strong>Doctor Profile</strong></h6> -->
                                         </div>
                                         <div class="col-sm-2"></div>
                                         <div class="col-sm-2" *ngIf="isValid && !isInvOther">
-                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentInstitution()"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentDoctor()"><i class="fa fa-save"></i>&nbsp; Save</button>
                                         </div>
                                         <div class="col-sm-2" *ngIf="isValid && !isInvOther">
-                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentInstitution()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
+                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentDoctor()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
                                         </div>
-                                        <!-- <div class="col-sm-2" *ngIf="isValid">
-                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetInvestmentInstitution()"><i class="fa fa-search"></i>Reset</button>
-                                        </div> -->
                                     </div>
                                 </div>
+                            </fieldset>
+                            <fieldset *ngIf="investmentInitService.investmentInitFormData.donationTo=='Institution'">
+                                <legend>Institution Profile</legend>
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-2">
@@ -311,23 +297,27 @@
                                         </div>
                                     </div>
                                 </div>
-                            </fieldset>
-                            <fieldset *ngIf="investmentInitService.investmentInitFormData.donationTo=='Campaign'">
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-sm-6">
-                                            <h6 class=""><strong>Campaign Info</strong></h6>
+                                            <!-- <h6 class=""><strong>Institution Profile</strong></h6> -->
                                         </div>
                                         <div class="col-sm-2"></div>
                                         <div class="col-sm-2" *ngIf="isValid && !isInvOther">
-                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentCampaign()"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentInstitution()"><i class="fa fa-save"></i>&nbsp; Save</button>
                                         </div>
                                         <div class="col-sm-2" *ngIf="isValid && !isInvOther">
-                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentCampaign()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
+                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentInstitution()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
                                         </div>
-
+                                        <!-- <div class="col-sm-2" *ngIf="isValid">
+                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetInvestmentInstitution()"><i class="fa fa-search"></i>Reset</button>
+                                        </div> -->
                                     </div>
                                 </div>
+                            </fieldset>
+                            <fieldset *ngIf="investmentInitService.investmentInitFormData.donationTo=='Campaign'">
+                                <legend>Campaign Info</legend>
+
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-2">
@@ -434,22 +424,25 @@
                                         </table>
                                     </div>
                                 </div>
-                            </fieldset>
-                            <fieldset *ngIf="investmentInitService.investmentInitFormData.donationTo=='Bcds'">
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-sm-6">
-                                            <h6 class=""><strong>BCDS</strong></h6>
+                                            <!-- <h6 class=""><strong>Campaign Info</strong></h6> -->
                                         </div>
                                         <div class="col-sm-2"></div>
                                         <div class="col-sm-2" *ngIf="isValid && !isInvOther">
-                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentBcds()"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentCampaign()"><i class="fa fa-save"></i>&nbsp; Save</button>
                                         </div>
                                         <div class="col-sm-2" *ngIf="isValid && !isInvOther">
-                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentBcds()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
+                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentCampaign()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
                                         </div>
+
                                     </div>
                                 </div>
+                            </fieldset>
+                            <fieldset *ngIf="investmentInitService.investmentInitFormData.donationTo=='Bcds'">
+                                <legend>BCDS</legend>
+
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-2">
@@ -502,23 +495,24 @@
                                         </div>
                                     </div>
                                 </div>
-                            </fieldset>
-                            <fieldset *ngIf="investmentInitService.investmentInitFormData.donationTo=='Society'">
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-sm-6">
-                                            <h6 class=""><strong>Society</strong></h6>
+                                            <!-- <h6 class=""><strong>BCDS</strong></h6> -->
                                         </div>
                                         <div class="col-sm-2"></div>
                                         <div class="col-sm-2" *ngIf="isValid && !isInvOther">
-                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentSociety()"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentBcds()"><i class="fa fa-save"></i>&nbsp; Save</button>
                                         </div>
                                         <div class="col-sm-2" *ngIf="isValid && !isInvOther">
-                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentSociety()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
+                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentBcds()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
                                         </div>
-
                                     </div>
                                 </div>
+                            </fieldset>
+                            <fieldset *ngIf="investmentInitService.investmentInitFormData.donationTo=='Society'">
+                                <legend>Society</legend>
+
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-2">
@@ -570,23 +564,25 @@
                                         </div>
                                     </div>
                                 </div>
-                            </fieldset>
-                            <fieldset>
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-sm-6">
-                                            <h6 class=""><strong>Investment Details</strong></h6>
+                                            <!-- <h6 class=""><strong>Society</strong></h6> -->
                                         </div>
                                         <div class="col-sm-2"></div>
                                         <div class="col-sm-2" *ngIf="isValid && !isInvOther">
-                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentDetails()"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentSociety()"><i class="fa fa-save"></i>&nbsp; Save</button>
                                         </div>
-                                        <!-- <div class="col-sm-2" *ngIf="isValid">
-                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentBcds()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
-                                        </div> -->
+                                        <div class="col-sm-2" *ngIf="isValid && !isInvOther">
+                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentSociety()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
+                                        </div>
 
                                     </div>
                                 </div>
+                            </fieldset>
+                            <fieldset>
+                                <legend>Investment Details</legend>
+
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-6">
@@ -726,15 +722,30 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <!-- <h6 class=""><strong>Investment Details</strong></h6> -->
+                                        </div>
+                                        <div class="col-sm-2"></div>
+                                        <div class="col-sm-2" *ngIf="isValid && !isInvOther">
+                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentDetails()"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                        </div>
+                                        <!-- <div class="col-sm-2" *ngIf="isValid">
+                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentBcds()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
+                                        </div> -->
+                                    </div>
+                                </div>
                             </fieldset>
                             <fieldset>
                                 <div class="form-group">
-                                    <div class="row">
+                                    <legend>Targeted Products of SBU</legend>
+                                    <!-- <div class="row">
                                         <div class="col-sm-6">
                                             <h6 class=""><strong>Targeted Products of SBU</strong></h6>
                                         </div>
                                         <div class="col-sm-2"></div>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <div class="form-group">
                                     <div class="row">
@@ -898,7 +909,7 @@
         </div>
     </div>
 </ng-template>
-<ng-template #submissionConfirmModal>
+<ng-template #submissionConfirmModal style="bottom: -50px;">
     <div class="modal-body text-center">
         <div>
             <h4>Do you want to submit ?</h4><small>(N.B. Submitted Proposal Unchangeable!)</small>

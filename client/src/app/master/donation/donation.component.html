@@ -59,9 +59,18 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-2">
-                                        <label>Remarks</label></div>
-                                    <div class="col-md-8">
-                                        <textarea class="form-control " placeholder="Remarks" name="remarks" #remarks="ngModel" [(ngModel)]="masterService.donationFormData.remarks" [class.invalid]="remarks.invalid && remarks.touched" maxlength="500"></textarea>
+                                        <label>Short Name</label>
+                                        <span style="color:red;">*</span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input class="form-control" placeholder="Short Name" name="donationShortName" #donationShortName="ngModel" [(ngModel)]="masterService.donationFormData.donationShortName" [class.invalid]="donationShortName.invalid && donationShortName.touched" maxlength="50"
+                                            required>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Remarks</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <textarea class="form-control" rows="1" placeholder="Remarks" name="remarks" #remarks="ngModel" [(ngModel)]="masterService.donationFormData.remarks" [class.invalid]="remarks.invalid && remarks.touched" maxlength="500"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -84,6 +93,7 @@
                                     <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));">
                                         <tr class="HeaderRow">
                                             <td>Donation</td>
+                                            <td>Short Name</td>
                                             <td>Status</td>
                                             <td>Remarks</td>
                                             <td></td>
@@ -93,6 +103,9 @@
                                         <tr *ngFor="let donation of donations  | paginate: config | filter: searchText">
                                             <td>
                                                 {{donation.donationTypeName}}
+                                            </td>
+                                            <td>
+                                                {{donation.donationShortName}}
                                             </td>
                                             <td>
                                                 {{donation.status}}

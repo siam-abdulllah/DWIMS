@@ -16370,7 +16370,7 @@ textarea.form-control.is-warning {
   .card-header.stick {
     position: fixed;
     top: 0;
-    z-index: 10000;
+    z-index: 1000;
     width: 77.8%;
     border-radius: 0 0 0.5em 0.5em;
   }
@@ -16379,7 +16379,7 @@ textarea.form-control.is-warning {
   .card-header.stick {
     position: fixed;
     top: 0;
-    z-index: 10000;
+    z-index: 1000;
     width: 100%;
     border-radius: 0 0 0.5em 0.5em;
   }
