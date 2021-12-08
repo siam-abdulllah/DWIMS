@@ -8,7 +8,6 @@ import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from "ngx-spinner";
 import { RptInvestSummaryService } from '../_services/report-investsummary.service';
-
 import { GenericParams } from './../shared/models/genericParams';
 
 @Component({
@@ -17,14 +16,11 @@ import { GenericParams } from './../shared/models/genericParams';
   styles: [
   ]
 })
+
 export class RptInvestSummaryComponent implements OnInit {
   @ViewChild('search', { static: false }) searchTerm: ElementRef;
-  // @ViewChild('campaignMstSearchModal', { static: false }) campaignMstSearchModal: TemplateRef<any>;
-  // @ViewChild('productSearchModal', { static: false }) productSearchModal: TemplateRef<any>;
   @ViewChild('fromDate') fromDate: ElementRef;
   @ViewChild('toDate') toDate: ElementRef;
-  // campaignMstSearchodalRef: BsModalRef;
-  // productSearchModalRef: BsModalRef;
   genParams: GenericParams;
   searchText = '';
   configs: any;
@@ -39,6 +35,7 @@ export class RptInvestSummaryComponent implements OnInit {
     class: 'modal-lg',
     ignoreBackdropClick: true
   };
+
   constructor(private router: Router,
     public reportService: RptInvestSummaryService,
     private toastr: ToastrService, private modalService: BsModalService,
@@ -46,7 +43,6 @@ export class RptInvestSummaryComponent implements OnInit {
 
   ngOnInit() {
     this.resetForm();
-    //this.getProduct();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-blue' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
     this.configs = {
@@ -56,19 +52,12 @@ export class RptInvestSummaryComponent implements OnInit {
       };
   }
 
-  
-  // openCampaignMstSearchModal(template: TemplateRef<any>) {
-  //   this.campaignMstSearchodalRef = this.modalService.show(template, this.config);
-  // }
-
   dateCompare() {
     if (this.reportService.rptInvestSummaryFormData.fromDate != null && this.reportService.rptInvestSummaryFormData.toDate != null) {
       if (this.reportService.rptInvestSummaryFormData.toDate > this.reportService.rptInvestSummaryFormData.fromDate) {
         return true;
       }
       else {
-        //form.controls.StartDate.setValue(null);
-        //form.controls.EndDate.setValue(null);
         this.toastr.error('Select Appropriate Date Range', 'Error');
         return false;
       }
@@ -76,7 +65,6 @@ export class RptInvestSummaryComponent implements OnInit {
   }
 
   ViewData() {
-
     const  searchDto: IReportSearchDto = {
       fromDate: this.reportService.rptInvestSummaryFormData.fromDate,
       toDate: this.reportService.rptInvestSummaryFormData.toDate,
@@ -96,8 +84,6 @@ export class RptInvestSummaryComponent implements OnInit {
     });
   }
 
-
-
   onPageChanged(event: any){
     const params = this.reportService.getGenParams();
     if (params.pageIndex !== event)
@@ -107,14 +93,6 @@ export class RptInvestSummaryComponent implements OnInit {
       this.ViewData();
     }
   }
-  
-  // onSearch(){
-  //   const params = this.masterService.getGenParams();
-  //   params.search = this.searchTerm.nativeElement.value;
-  //   params.pageIndex = 1;
-  //   this.masterService.setGenParams(params);
-  //   this.getCampaign();
-  // }
 
   resetSearch(){
     this.searchText = '';
@@ -137,7 +115,6 @@ export class RptInvestSummaryComponent implements OnInit {
       };
   }
 }
-
 
 interface IReportSearchDto {
   fromDate: Date | undefined | null;

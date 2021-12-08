@@ -7,7 +7,7 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-sm-9">
-                                    <h3 class="card-title">Investment Summary reportService</h3>
+                                    <h3 class="card-title">Investment Summary Report</h3>
                                 </div>
                                 <!-- <div class="col-sm-1">
                                     <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="form.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
@@ -37,10 +37,6 @@
                                             <input type="text" class="form-control clickable" placeholder="Calender" name="toDate" id="toDate" #EndDate="ngModel" [(ngModel)]="reportService.rptInvestSummaryFormData.toDate" [bsValue]="bsValue" bsDatepicker (bsValueChange)="dateCompare()" [bsConfig]="bsConfig"
                                                 readonly>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="row">
                                         <div class="col-sm-1">
                                             <button class="btn btn-info btn-lg btn-block" type="button" (click)="ViewData()"><i class="fa fa-eye"></i>&nbsp;View</button>
                                         </div>
@@ -57,6 +53,8 @@
                                             <td>ToDate</td>
                                             <td>Status</td>
                                             <td>Proposed By</td>
+                                            <td>Receive Status</td>
+                                            <td>Received By</td>
                                         </tr>
                                         <tr *ngFor="let a of reports | paginate: configs">
                                             <!-- <td>
@@ -85,6 +83,12 @@
                                             </td>
                                             <td>
                                                 {{a.employeeName}}
+                                            </td>
+                                            <td>
+                                                {{a.receiveStatus}}
+                                            </td>
+                                            <td>
+                                                {{a.receiveBy}}
                                             </td>
                                             <!-- <td>
                                                 <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="getCampaignDtlProductClick(a)" style="width: 100px;"><i class="fa fa-eye"></i>View Product</button>

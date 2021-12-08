@@ -822,7 +822,7 @@
                                             <label>Receiving Status</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <select class="form-control" id="recStatus" name="recStatus" #recStatus="ngModel" [(ngModel)]="investmentRcvService.investmentRcvCommentFormData.recStatus" [class.invalid]="recStatus.invalid && recStatus.touched" required>  
+                                            <select class="form-control" id="receiveStatus" name="receiveStatus" #receiveStatus="ngModel" [(ngModel)]="investmentRcvService.investmentRcvCommentFormData.receiveStatus" [class.invalid]="receiveStatus.invalid && receiveStatus.touched" required>  
                                                 <option  [ngValue]="null">Select Status</option>
                                                 <!-- <option *ngIf=" !isInvOther" value="Approved">Approved</option>
                                                 <option *ngIf="!isInvOther" value="Not Approved">Not Approved</option> -->

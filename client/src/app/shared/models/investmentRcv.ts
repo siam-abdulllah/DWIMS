@@ -67,7 +67,7 @@ export interface IInvestmentRcvComment {
     id: number;
     investmentInitId: number;
     comments: string;
-    recStatus: string;
+    receiveStatus: string;
     employeeId: number;
 }
  
@@ -75,7 +75,7 @@ export class InvestmentRcvComment implements InvestmentRcvComment {
     id: number=0;
     investmentInitId: number;
     comments: string;
-    recStatus: string=null;
+    receiveStatus: string=null;
     employeeId: number;
 }
 export interface IInvestmentTargetedProd {

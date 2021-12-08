@@ -394,6 +394,7 @@ export class InvestmentRcvComponent implements OnInit {
     this.investmentRcvService.getInvestmentRcvComment(this.investmentRcvService.investmentRcvFormData.id).subscribe(response => {
       var data = response[0] as IInvestmentRcvComment;
       if (data !== undefined) {
+        debugger;
         this.investmentRcvService.investmentRcvCommentFormData = data;
       }
       else {
@@ -554,7 +555,7 @@ export class InvestmentRcvComponent implements OnInit {
       sbu: this.investmentRcvService.investmentDetailFormData.sbu,
       fromDate: this.investmentRcvService.investmentDetailFormData.fromDate,
       toDate: this.investmentRcvService.investmentDetailFormData.toDate,
-      receiveStatus: this.investmentRcvService.investmentRcvCommentFormData.recStatus,
+      receiveStatus: this.investmentRcvService.investmentRcvCommentFormData.receiveStatus,
       comments: this.investmentRcvService.investmentRcvCommentFormData.comments,
       employeeId: parseInt(this.empId),
       sbuName: '',
@@ -578,9 +579,9 @@ export class InvestmentRcvComponent implements OnInit {
         this.isValid = true;
         //this.insertInvestmentTargetedProd();
         this.SpinnerService.hide();
-        if (this.sbu != this.investmentRcvService.investmentRcvFormData.sbu) 
+        if (this.investmentRcvService.investmentRcvFormData.id > 0) 
         { 
-        this.toastr.success('Save successfully', 'Investment')
+        this.toastr.success('Save Successfully', 'Investment')
         }
       },
       err => { console.log(err); }
@@ -602,7 +603,7 @@ export class InvestmentRcvComponent implements OnInit {
       sbu: this.investmentRcvService.investmentDetailFormData.sbu,
       fromDate: this.investmentRcvService.investmentDetailFormData.fromDate,
       toDate: this.investmentRcvService.investmentDetailFormData.toDate,
-      receiveStatus: this.investmentRcvService.investmentRcvCommentFormData.recStatus,
+      receiveStatus: this.investmentRcvService.investmentRcvCommentFormData.receiveStatus,
       comments: this.investmentRcvService.investmentRcvCommentFormData.comments,
       employeeId: parseInt(this.empId),
       sbuName: '',
@@ -625,9 +626,10 @@ export class InvestmentRcvComponent implements OnInit {
         this.investmentRcvService.investmentRcvCommentFormData = res as IInvestmentRcvComment;
         //this.insertInvestmentTargetedProd();
         this.SpinnerService.hide();
-        if (this.sbu != this.investmentRcvService.investmentRcvFormData.sbu) 
+        debugger;
+        if (this.investmentRcvService.investmentRcvFormData.id > 0) 
         { 
-        this.toastr.success('Save successfully', 'Investment')
+        this.toastr.success('Updated Successfully', 'Investment Received')
         }
       },
       err => { console.log(err); }

@@ -8,6 +8,8 @@ export interface IrptInvestSummary {
     toDate: Date;
     invStatus: string;
     employeeName: string;
+    receiveStatus: string;
+    receiveBy: string;
 }
 
 export class rptInvestSummary implements IrptInvestSummary {
@@ -20,4 +22,6 @@ export class rptInvestSummary implements IrptInvestSummary {
     toDate: Date;
     invStatus: string;
     employeeName: string;
+    receiveStatus: string;
+    receiveBy: string;
 }

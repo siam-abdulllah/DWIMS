@@ -74,7 +74,6 @@ export class InvestmentRcvService {
     return this.http.get(this.baseUrl + 'investment/investmentDoctors/'+investmentInitId);
   }
   getInvestmentRcvComment(investmentInitId:number){    
-    debugger;
     return this.http.get(this.baseUrl + 'investmentRecv/getInvestmentRecvComment/'+investmentInitId);
   }
   getInvestmentDetails(investmentInitId:number){    
@@ -163,7 +162,7 @@ export class InvestmentRcvService {
   }
   insertInvestmentDetail(empId:number,sbu:string) {
     
-    return this.http.post(this.baseUrl+ 'investmentRcv/insertRcv/'+empId+'/'+this.investmentRcvCommentFormData.recStatus+'/'+sbu+'/'+this.investmentRcvFormData.donationId, this.investmentDetailFormData);
+    return this.http.post(this.baseUrl+ 'investmentRcv/insertRcv/'+empId+'/'+this.investmentRcvCommentFormData.receiveStatus+'/'+sbu+'/'+this.investmentRcvFormData.donationId, this.investmentDetailFormData);
   
   }
   
