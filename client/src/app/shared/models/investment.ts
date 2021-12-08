@@ -91,6 +91,25 @@ export class InvestmentDetailOld implements IInvestmentDetailOld {
     fromDate: Date;
     toDate: Date;
 }
+export interface ILastFiveInvestmentDetail {
+    id: number;
+    comtSharePrcntAll: string;
+    comtSharePrcnt: string;
+    prescribedSharePrcntAll: string;
+    prescribedSharePrcnt: string;
+    investmentAmount: string;
+    donationShortName: string;
+}
+ 
+export class LastFiveInvestmentDetail implements ILastFiveInvestmentDetail {
+    id: number;
+    comtSharePrcntAll: string;
+    comtSharePrcnt: string;
+    prescribedSharePrcntAll: string;
+    prescribedSharePrcnt: string;
+    investmentAmount: string;
+    donationShortName: string;
+}
 export interface IInvestmentTargetedProd {
     id: number;
     investmentInitId: number;

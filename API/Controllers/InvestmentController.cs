@@ -218,7 +218,7 @@ namespace API.Controllers
                     DonationId = investmentInitDto.DonationId,
                     EmployeeId = investmentInitDto.EmployeeId,
                     MarketGroupCode = empData.MarketGroupCode,
-                    MarketGroupName = empData.MarketGroupName, 
+                    MarketGroupName = empData.MarketGroupName,
                     MarketCode = empData.MarketCode,
                     MarketName = empData.MarketName,
                     RegionCode = empData.RegionCode,
@@ -259,7 +259,7 @@ namespace API.Controllers
             try
             {
                 var empData = await _employeeRepo.GetByIdAsync(investmentInitDto.EmployeeId);
-                var existedInvestmentInit= await _investmentInitRepo.GetByIdAsync(investmentInitDto.Id);
+                var existedInvestmentInit = await _investmentInitRepo.GetByIdAsync(investmentInitDto.Id);
                 var investmentInit = new InvestmentInit
                 {
                     Id = investmentInitDto.Id,
@@ -303,7 +303,8 @@ namespace API.Controllers
 
                 throw ex;
             }
-        }[HttpPost("submitInvestment")]
+        }
+        [HttpPost("submitInvestment")]
         public async Task<ActionResult<InvestmentInitDto>> SubmitInvestmentInit(InvestmentInitDto investmentInitDto)
         {
             try
@@ -375,21 +376,21 @@ namespace API.Controllers
                 //}
                 //foreach (var v in investmentTargetedGroupData)
                 //{
-                    var investmentTargetedGroup = new InvestmentTargetedGroup
-                    {
-                        Id = investmentTargetedGroupData.Id,
-                        DataStatus= 1,
-                        InvestmentInitId = investmentTargetedGroupData.InvestmentInitId,
-                        MarketCode = investmentTargetedGroupData.MarketCode,
-                        MarketName = investmentTargetedGroupData.MarketName,
-                        MarketGroupMstId = investmentTargetedGroupData.MarketGroupMstId,
-                        SBU = investmentTargetedGroupData.SBU,
-                        SBUName = investmentTargetedGroupData.SBUName,
-                        CompletionStatus = true,
-                        SetOn = investmentTargetedGroupData.SetOn,
-                        ModifiedOn = DateTimeOffset.Now
-                    };
-                    _investmentTargetedGroupRepo.Update(investmentTargetedGroup);
+                var investmentTargetedGroup = new InvestmentTargetedGroup
+                {
+                    Id = investmentTargetedGroupData.Id,
+                    DataStatus = 1,
+                    InvestmentInitId = investmentTargetedGroupData.InvestmentInitId,
+                    MarketCode = investmentTargetedGroupData.MarketCode,
+                    MarketName = investmentTargetedGroupData.MarketName,
+                    MarketGroupMstId = investmentTargetedGroupData.MarketGroupMstId,
+                    SBU = investmentTargetedGroupData.SBU,
+                    SBUName = investmentTargetedGroupData.SBUName,
+                    CompletionStatus = true,
+                    SetOn = investmentTargetedGroupData.SetOn,
+                    ModifiedOn = DateTimeOffset.Now
+                };
+                _investmentTargetedGroupRepo.Update(investmentTargetedGroup);
                 //}
                 _investmentTargetedGroupRepo.Savechange();
                 return new InvestmentInitDto
@@ -471,7 +472,7 @@ namespace API.Controllers
                     ProposedAmount = investmentDetailDto.ProposedAmount,
                     Purpose = investmentDetailDto.Purpose,
                     InvestmentInitId = investmentDetailDto.InvestmentInitId,
-                    SetOn= existedInvestmentDetail.SetOn,
+                    SetOn = existedInvestmentDetail.SetOn,
                     ModifiedOn = DateTimeOffset.Now,
                 };
                 _investmentDetailRepo.Update(investmentDetail);
@@ -730,7 +731,7 @@ namespace API.Controllers
                 {
                     foreach (var v in alreadyExistInvestmentTargetedGroupList)
                     {
-                    if (v.CompletionStatus == true) return BadRequest(new ApiResponse(400, "Tagged Market Already Submitted Investment Initialization"));
+                        if (v.CompletionStatus == true) return BadRequest(new ApiResponse(400, "Tagged Market Already Submitted Investment Initialization"));
                         _investmentTargetedGroupRepo.Delete(v);
                         _investmentTargetedGroupRepo.Savechange();
                     }
@@ -1209,10 +1210,10 @@ namespace API.Controllers
             {
                 throw ex;
             }
-        } 
+        }
         [HttpGet]
         [Route("getLastFiveInvestmentForDoc/{donationId}/{docId}/{marketCode}/{date}")]
-        public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestmentForDoc(int donationId, int docId, string marketCode, string date)
+        public IReadOnlyList<LastFiveInvestmentInfo> GetLastFiveInvestmentForDoc(int donationId, int docId, string marketCode, string date)
         {
             //try
             //{
@@ -1244,13 +1245,48 @@ namespace API.Controllers
             try
             {
                 var convertedDate = DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture);
-                List<SqlParameter> parms = new List<SqlParameter>
-                    {
-                        new SqlParameter("@DOCID", docId),
-                        new SqlParameter("@MCODE", marketCode),
-                        new SqlParameter("@FDATE", convertedDate)
-                    };
-                var results = _dbContext.ReportInvestmentInfo.FromSqlRaw<ReportInvestmentInfo>("EXECUTE SP_LastFiveInvestmentForDocSearch @DOCID,@MCODE,@FDATE", parms.ToArray()).ToList();
+                //List<SqlParameter> parms = new List<SqlParameter>
+                //    {
+                //        new SqlParameter("@DOCID", docId),
+                //        new SqlParameter("@MCODE", marketCode),
+                //        new SqlParameter("@FDATE", convertedDate)
+                //    };
+                //var results = _dbContext.LastFiveInvestmentInfo.FromSqlRaw<LastFiveInvestmentInfo>("EXECUTE SP_LastFiveInvestmentForDocSearch @DOCID,@MCODE,@FDATE", parms.ToArray()).ToList();
+                string qry = " SELECT TOP (5) CAST(ROW_NUMBER() OVER (ORDER BY ProposedAmount) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,DonationShortName" +
+                            ",ProposedAmount AS InvestmentAmount" +
+                            ",CommitmentAllSBU AS  ComtSharePrcntAll" +
+                            ",CommitmentOwnSBU AS  ComtSharePrcnt" +
+                            ",(" +
+                            " SELECT AVG(TRY_CONVERT(FLOAT, PrescribedSharePrcnt))" +
+                            " FROM ReportInvestmentInfo R" +
+                            " WHERE R.DoctorId = '"+ docId + "'" +
+                            " AND R.MarketCode = '"+ marketCode + "'" +
+                            " AND R.DonationType = D.DonationTypeName" +
+                            " AND CONVERT(NVARCHAR(6), TRY_CONVERT(DATE, R.FromDate, 103), 112) = CONVERT(NVARCHAR(6), IR.FromDate, 112)" +
+                            " ) AS  PrescribedSharePrcnt" +
+                            " ,(" +
+                            " SELECT AVG(TRY_CONVERT(FLOAT, PrescribedSharePrcnt))" +
+                            " FROM ReportInvestmentInfo R" +
+                            " WHERE R.DoctorId = '" + docId + "'" +
+                            " AND R.DonationType = D.DonationTypeName" +
+                            " AND CONVERT(NVARCHAR(6), TRY_CONVERT(DATE, R.FromDate, 103), 112) = CONVERT(NVARCHAR(6), IR.FromDate, 112)" +
+                            " ) AS  PrescribedSharePrcntAll" +
+                            " FROM InvestmentRecComment IRC" +
+                            " INNER JOIN InvestmentDoctor ID ON IRC.InvestmentInitId = ID.InvestmentInitId" +
+                            " INNER JOIN InvestmentRec IR ON IRC.InvestmentInitId = IR.InvestmentInitId" +
+                            " AND IRC.Priority = IR.Priority" +
+                            " INNER JOIN InvestmentInit II ON IRC.InvestmentInitId = II.Id" +
+                            " INNER JOIN Donation D ON II.DonationId = D.Id" +
+                            " WHERE IRC.RecStatus = 'Approved'" +
+                            " AND CONVERT(DATE, IR.FromDate) <= Cast('"+ convertedDate + "' as date)" +
+                            " AND ID.DoctorId = "+ docId + "" +
+                            " AND II.MarketCode = '"+ marketCode + "'" +
+                            " ORDER BY IR.FromDate DESC";
+
+
+
+                var results = _dbContext.LastFiveInvestmentInfo.FromSqlRaw(qry).ToList();
+
 
                 return results;
             }
@@ -1261,97 +1297,212 @@ namespace API.Controllers
         }
         [HttpGet]
         [Route("getLastFiveInvestmentForInstitute/{donationId}/{instituteId}/{marketCode}/{date}")]
-        public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestmentForInstitute(int donationId, string instituteId, string marketCode, string date)
+        public IReadOnlyList<LastFiveInvestmentInfo> GetLastFiveInvestmentForInstitute(int donationId, string instituteId, string marketCode, string date)
         {
             try
             {
-                var v = DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture);
-                // var empData = await _employeeRepo.GetByIdAsync(empId);
-                var reportInvestmentSpec = new ReportInvestmentSpecification(marketCode);
-                var reportInvestmentData = await _reportInvestmentInfoRepo.ListAsync(reportInvestmentSpec);
-                var donation = await _donationRepo.GetByIdAsync(donationId);
-                // var spec = new ReportInvestmentSpecification(empData.MarketCode);
-                var data = (from e in reportInvestmentData
-                            where e.InstituteId== instituteId && e.DonationType == donation.DonationTypeName &&
-                            DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) <= DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture)
-                            orderby DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) descending
-                            select new ReportInvestmentInfo
-                            {
-                                InvestmentAmount = e.InvestmentAmount,
-                                ComtSharePrcnt = e.ComtSharePrcnt,
-                                ComtSharePrcntAll = e.ComtSharePrcntAll,
-                                PrescribedSharePrcnt = e.PrescribedSharePrcnt,
-                                PrescribedSharePrcntAll = e.PrescribedSharePrcntAll
-                            }
-                             ).Distinct().Take(5).ToList();
+                //var v = DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture);
+                //// var empData = await _employeeRepo.GetByIdAsync(empId);
+                //var reportInvestmentSpec = new ReportInvestmentSpecification(marketCode);
+                //var reportInvestmentData = await _reportInvestmentInfoRepo.ListAsync(reportInvestmentSpec);
+                //var donation = await _donationRepo.GetByIdAsync(donationId);
+                //// var spec = new ReportInvestmentSpecification(empData.MarketCode);
+                //var data = (from e in reportInvestmentData
+                //            where e.InstituteId == instituteId && e.DonationType == donation.DonationTypeName &&
+                //            DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) <= DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture)
+                //            orderby DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) descending
+                //            select new ReportInvestmentInfo
+                //            {
+                //                InvestmentAmount = e.InvestmentAmount,
+                //                ComtSharePrcnt = e.ComtSharePrcnt,
+                //                ComtSharePrcntAll = e.ComtSharePrcntAll,
+                //                PrescribedSharePrcnt = e.PrescribedSharePrcnt,
+                //                PrescribedSharePrcntAll = e.PrescribedSharePrcntAll
+                //            }
+                //             ).Distinct().Take(5).ToList();
 
-                return data;
+                //return data;
+                var convertedDate = DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture);
+                string qry = " SELECT TOP (5) CAST(ROW_NUMBER() OVER (ORDER BY ProposedAmount) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,DonationShortName" +
+                           ",ProposedAmount AS InvestmentAmount" +
+                           ",CommitmentAllSBU AS  ComtSharePrcntAll" +
+                           ",CommitmentOwnSBU AS  ComtSharePrcnt" +
+                           ",(" +
+                           " SELECT AVG(TRY_CONVERT(FLOAT, PrescribedSharePrcnt))" +
+                           " FROM ReportInvestmentInfo R" +
+                           " WHERE R.InstituteId = '" + instituteId + "'" +
+                           " AND R.MarketCode = '" + marketCode + "'" +
+                           " AND R.DonationType = D.DonationTypeName" +
+                           " AND CONVERT(NVARCHAR(6), TRY_CONVERT(DATE, R.FromDate, 103), 112) = CONVERT(NVARCHAR(6), IR.FromDate, 112)" +
+                           " ) AS  PrescribedSharePrcnt" +
+                           " ,(" +
+                           " SELECT AVG(TRY_CONVERT(FLOAT, PrescribedSharePrcnt))" +
+                           " FROM ReportInvestmentInfo R" +
+                           " WHERE R.InstituteId = '" + instituteId + "'" +
+                           " AND R.DonationType = D.DonationTypeName" +
+                           " AND CONVERT(NVARCHAR(6), TRY_CONVERT(DATE, R.FromDate, 103), 112) = CONVERT(NVARCHAR(6), IR.FromDate, 112)" +
+                           " ) AS  PrescribedSharePrcntAll" +
+                           " FROM InvestmentRecComment IRC" +
+                           " INNER JOIN InvestmentInstitution ID ON IRC.InvestmentInitId = ID.InvestmentInitId" +
+                           " INNER JOIN InvestmentRec IR ON IRC.InvestmentInitId = IR.InvestmentInitId" +
+                           " AND IRC.Priority = IR.Priority" +
+                           " INNER JOIN InvestmentInit II ON IRC.InvestmentInitId = II.Id" +
+                           " INNER JOIN Donation D ON II.DonationId = D.Id" +
+                           " WHERE IRC.RecStatus = 'Approved'" +
+                           " AND CONVERT(DATE, IR.FromDate) <= Cast('" + convertedDate + "' as date)" +
+                           " AND ID.InstitutionId = " + instituteId + "" +
+                           " AND II.MarketCode = '" + marketCode + "'" +
+                           " ORDER BY IR.FromDate DESC";
+
+
+
+                var results = _dbContext.LastFiveInvestmentInfo.FromSqlRaw(qry).ToList();
+
+
+                return results;
             }
             catch (System.Exception ex)
             {
                 throw ex;
             }
         }
-         [HttpGet]
+        [HttpGet]
         [Route("getLastFiveInvestmentForBcds/{donationId}/{bcdsId}/{marketCode}/{date}")]
-        public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestmentForBcds(int donationId, string bcdsId, string marketCode, string date)
+        public  IReadOnlyList<LastFiveInvestmentInfo> GetLastFiveInvestmentForBcds(int donationId, string bcdsId, string marketCode, string date)
         {
             try
             {
-                var v = DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture);
-                // var empData = await _employeeRepo.GetByIdAsync(empId);
-                var reportInvestmentSpec = new ReportInvestmentSpecification(marketCode);
-                var reportInvestmentData = await _reportInvestmentInfoRepo.ListAsync(reportInvestmentSpec);
-                var donation = await _donationRepo.GetByIdAsync(donationId);
-                // var spec = new ReportInvestmentSpecification(empData.MarketCode);
-                var data = (from e in reportInvestmentData
-                            where e.BcdsId== bcdsId && e.DonationType == donation.DonationTypeName &&
-                            DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) <= DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture)
-                            orderby DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) descending
-                            select new ReportInvestmentInfo
-                            {
-                                InvestmentAmount = e.InvestmentAmount,
-                                ComtSharePrcnt = e.ComtSharePrcnt,
-                                ComtSharePrcntAll = e.ComtSharePrcntAll,
-                                PrescribedSharePrcnt = e.PrescribedSharePrcnt,
-                                PrescribedSharePrcntAll = e.PrescribedSharePrcntAll
-                            }
-                             ).Distinct().Take(5).ToList();
+                //var v = DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture);
+                //// var empData = await _employeeRepo.GetByIdAsync(empId);
+                //var reportInvestmentSpec = new ReportInvestmentSpecification(marketCode);
+                //var reportInvestmentData = await _reportInvestmentInfoRepo.ListAsync(reportInvestmentSpec);
+                //var donation = await _donationRepo.GetByIdAsync(donationId);
+                //// var spec = new ReportInvestmentSpecification(empData.MarketCode);
+                //var data = (from e in reportInvestmentData
+                //            where e.BcdsId == bcdsId && e.DonationType == donation.DonationTypeName &&
+                //            DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) <= DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture)
+                //            orderby DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) descending
+                //            select new ReportInvestmentInfo
+                //            {
+                //                InvestmentAmount = e.InvestmentAmount,
+                //                ComtSharePrcnt = e.ComtSharePrcnt,
+                //                ComtSharePrcntAll = e.ComtSharePrcntAll,
+                //                PrescribedSharePrcnt = e.PrescribedSharePrcnt,
+                //                PrescribedSharePrcntAll = e.PrescribedSharePrcntAll
+                //            }
+                //             ).Distinct().Take(5).ToList();
 
-                return data;
+                //return data;
+                var convertedDate = DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture);
+                string qry = " SELECT TOP (5) CAST(ROW_NUMBER() OVER (ORDER BY ProposedAmount) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,DonationShortName" +
+                           ",ProposedAmount AS InvestmentAmount" +
+                           ",CommitmentAllSBU AS  ComtSharePrcntAll" +
+                           ",CommitmentOwnSBU AS  ComtSharePrcnt" +
+                           ",(" +
+                           " SELECT AVG(TRY_CONVERT(FLOAT, PrescribedSharePrcnt))" +
+                           " FROM ReportInvestmentInfo R" +
+                           " WHERE R.BcdsId = '" + bcdsId + "'" +
+                           " AND R.MarketCode = '" + marketCode + "'" +
+                           " AND R.DonationType = D.DonationTypeName" +
+                           " AND CONVERT(NVARCHAR(6), TRY_CONVERT(DATE, R.FromDate, 103), 112) = CONVERT(NVARCHAR(6), IR.FromDate, 112)" +
+                           " ) AS  PrescribedSharePrcnt" +
+                           " ,(" +
+                           " SELECT AVG(TRY_CONVERT(FLOAT, PrescribedSharePrcnt))" +
+                           " FROM ReportInvestmentInfo R" +
+                           " WHERE R.BcdsId = '" + bcdsId + "'" +
+                           " AND R.DonationType = D.DonationTypeName" +
+                           " AND CONVERT(NVARCHAR(6), TRY_CONVERT(DATE, R.FromDate, 103), 112) = CONVERT(NVARCHAR(6), IR.FromDate, 112)" +
+                           " ) AS  PrescribedSharePrcntAll" +
+                           " FROM InvestmentRecComment IRC" +
+                           " INNER JOIN InvestmentBcds ID ON IRC.InvestmentInitId = ID.InvestmentInitId" +
+                           " INNER JOIN InvestmentRec IR ON IRC.InvestmentInitId = IR.InvestmentInitId" +
+                           " AND IRC.Priority = IR.Priority" +
+                           " INNER JOIN InvestmentInit II ON IRC.InvestmentInitId = II.Id" +
+                           " INNER JOIN Donation D ON II.DonationId = D.Id" +
+                           " WHERE IRC.RecStatus = 'Approved'" +
+                           " AND CONVERT(DATE, IR.FromDate) <= Cast('" + convertedDate + "' as date)" +
+                           " AND ID.BcdsId = " + bcdsId + "" +
+                           " AND II.MarketCode = '" + marketCode + "'" +
+                           " ORDER BY IR.FromDate DESC";
+
+
+
+                var results = _dbContext.LastFiveInvestmentInfo.FromSqlRaw(qry).ToList();
+
+
+                return results;
             }
             catch (System.Exception ex)
             {
                 throw ex;
             }
         }
-         [HttpGet]
+        [HttpGet]
         [Route("getLastFiveInvestmentForSociety/{donationId}/{societyId}/{marketCode}/{date}")]
-        public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestmentForSociety(int donationId, string societyId, string marketCode, string date)
+        public IReadOnlyList<LastFiveInvestmentInfo> GetLastFiveInvestmentForSociety(int donationId, string societyId, string marketCode, string date)
         {
             try
             {
-                var v = DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture);
-                // var empData = await _employeeRepo.GetByIdAsync(empId);
-                var reportInvestmentSpec = new ReportInvestmentSpecification(marketCode);
-                var reportInvestmentData = await _reportInvestmentInfoRepo.ListAsync(reportInvestmentSpec);
-                var donation = await _donationRepo.GetByIdAsync(donationId);
-                // var spec = new ReportInvestmentSpecification(empData.MarketCode);
-                var data = (from e in reportInvestmentData
-                            where e.SocietyId== societyId && e.DonationType == donation.DonationTypeName &&
-                            DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) <= DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture)
-                            orderby DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) descending
-                            select new ReportInvestmentInfo
-                            {
-                                InvestmentAmount = e.InvestmentAmount,
-                                ComtSharePrcnt = e.ComtSharePrcnt,
-                                ComtSharePrcntAll = e.ComtSharePrcntAll,
-                                PrescribedSharePrcnt = e.PrescribedSharePrcnt,
-                                PrescribedSharePrcntAll = e.PrescribedSharePrcntAll
-                            }
-                             ).Distinct().Take(5).ToList();
+                //var v = DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture);
+                //// var empData = await _employeeRepo.GetByIdAsync(empId);
+                //var reportInvestmentSpec = new ReportInvestmentSpecification(marketCode);
+                //var reportInvestmentData = await _reportInvestmentInfoRepo.ListAsync(reportInvestmentSpec);
+                //var donation = await _donationRepo.GetByIdAsync(donationId);
+                //// var spec = new ReportInvestmentSpecification(empData.MarketCode);
+                //var data = (from e in reportInvestmentData
+                //            where e.SocietyId == societyId && e.DonationType == donation.DonationTypeName &&
+                //            DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) <= DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture)
+                //            orderby DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) descending
+                //            select new ReportInvestmentInfo
+                //            {
+                //                InvestmentAmount = e.InvestmentAmount,
+                //                ComtSharePrcnt = e.ComtSharePrcnt,
+                //                ComtSharePrcntAll = e.ComtSharePrcntAll,
+                //                PrescribedSharePrcnt = e.PrescribedSharePrcnt,
+                //                PrescribedSharePrcntAll = e.PrescribedSharePrcntAll
+                //            }
+                //             ).Distinct().Take(5).ToList();
 
-                return data;
+                //return data;
+                var convertedDate = DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture);
+                string qry = " SELECT TOP (5) CAST(ROW_NUMBER() OVER (ORDER BY ProposedAmount) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,DonationShortName" +
+                           ",ProposedAmount AS InvestmentAmount" +
+                           ",CommitmentAllSBU AS  ComtSharePrcntAll" +
+                           ",CommitmentOwnSBU AS  ComtSharePrcnt" +
+                           ",(" +
+                           " SELECT AVG(TRY_CONVERT(FLOAT, PrescribedSharePrcnt))" +
+                           " FROM ReportInvestmentInfo R" +
+                           " WHERE R.SocietyId = '" + societyId + "'" +
+                           " AND R.MarketCode = '" + marketCode + "'" +
+                           " AND R.DonationType = D.DonationTypeName" +
+                           " AND CONVERT(NVARCHAR(6), TRY_CONVERT(DATE, R.FromDate, 103), 112) = CONVERT(NVARCHAR(6), IR.FromDate, 112)" +
+                           " ) AS  PrescribedSharePrcnt" +
+                           " ,(" +
+                           " SELECT AVG(TRY_CONVERT(FLOAT, PrescribedSharePrcnt))" +
+                           " FROM ReportInvestmentInfo R" +
+                           " WHERE R.SocietyId = '" + societyId + "'" +
+                           " AND R.DonationType = D.DonationTypeName" +
+                           " AND CONVERT(NVARCHAR(6), TRY_CONVERT(DATE, R.FromDate, 103), 112) = CONVERT(NVARCHAR(6), IR.FromDate, 112)" +
+                           " ) AS  PrescribedSharePrcntAll" +
+                           " FROM InvestmentRecComment IRC" +
+                           " INNER JOIN InvestmentSociety ID ON IRC.InvestmentInitId = ID.InvestmentInitId" +
+                           " INNER JOIN InvestmentRec IR ON IRC.InvestmentInitId = IR.InvestmentInitId" +
+                           " AND IRC.Priority = IR.Priority" +
+                           " INNER JOIN InvestmentInit II ON IRC.InvestmentInitId = II.Id" +
+                           " INNER JOIN Donation D ON II.DonationId = D.Id" +
+                           " WHERE IRC.RecStatus = 'Approved'" +
+                           " AND CONVERT(DATE, IR.FromDate) <= Cast('" + convertedDate + "' as date)" +
+                           " AND ID.SocietyId = " + societyId + "" +
+                           " AND II.MarketCode = '" + marketCode + "'" +
+                           " ORDER BY IR.FromDate DESC";
+
+
+
+                var results = _dbContext.LastFiveInvestmentInfo.FromSqlRaw(qry).ToList();
+
+
+                return results;
+
             }
             catch (System.Exception ex)
             {

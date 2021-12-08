@@ -25,7 +25,7 @@ import { ISocietyInfo } from '../shared/models/societyInfo';
 import { MarketGroupMst, IMarketGroupMst } from '../shared/models/marketGroupMst';
 import { MarketGroupDtl, IMarketGroupDtl } from '../shared/models/marketGroupDtl';
 import { AccountService } from '../account/account.service';
-import { IInvestmentDetailOld } from '../shared/models/investment';
+import { IInvestmentDetailOld, ILastFiveInvestmentDetail } from '../shared/models/investment';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { IBudgetCeiling } from '../shared/models/budgetCeiling';
 
@@ -43,6 +43,7 @@ export class InvestmentRcvComponent implements OnInit {
   InvestmentInitSearchModalRef: BsModalRef;
   investmentRcvSearchModalRef: BsModalRef;
   investmentDetailsOld: IInvestmentDetailOld[];
+  lastFiveInvestmentDetail:ILastFiveInvestmentDetail[];
   investmentRcvs: IInvestmentRcv[];
   investmentTargetedProds: IInvestmentTargetedProd[];
   investmentTargetedGroups: IInvestmentTargetedGroup[];
@@ -183,7 +184,7 @@ export class InvestmentRcvComponent implements OnInit {
     if (this.investmentRcvService.investmentRcvFormData.donationTo == "Doctor") {
       this.investmentRcvService.getLastFiveInvestmentForDoc(this.investmentRcvService.investmentRcvFormData.donationId, this.investmentRcvService.investmentDoctorFormData.doctorId, marketCode, toDayDate).subscribe(
         (response) => {
-          this.investmentDetailsOld = response as IInvestmentDetailOld[];
+          this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
         },
         (error) => {
           console.log(error);
@@ -193,7 +194,7 @@ export class InvestmentRcvComponent implements OnInit {
     else if (this.investmentRcvService.investmentRcvFormData.donationTo == "Institution") {
       this.investmentRcvService.getLastFiveInvestmentForInstitute(this.investmentRcvService.investmentRcvFormData.donationId, this.investmentRcvService.investmentInstitutionFormData.institutionId, marketCode, toDayDate).subscribe(
         (response) => {
-          this.investmentDetailsOld = response as IInvestmentDetailOld[];
+          this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
         },
         (error) => {
           console.log(error);
@@ -203,7 +204,7 @@ export class InvestmentRcvComponent implements OnInit {
     else if (this.investmentRcvService.investmentRcvFormData.donationTo == "Campaign") {
       this.investmentRcvService.getLastFiveInvestmentForCampaign(this.investmentRcvService.investmentRcvFormData.donationId, this.investmentRcvService.investmentCampaignFormData.campaignMstId, marketCode, toDayDate).subscribe(
         (response) => {
-          this.investmentDetailsOld = response as IInvestmentDetailOld[];
+          this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
         },
         (error) => {
           console.log(error);
@@ -213,7 +214,7 @@ export class InvestmentRcvComponent implements OnInit {
     else if (this.investmentRcvService.investmentRcvFormData.donationTo == "Bcds") {
       this.investmentRcvService.getLastFiveInvestmentForBcds(this.investmentRcvService.investmentRcvFormData.donationId, this.investmentRcvService.investmentBcdsFormData.bcdsId, marketCode, toDayDate).subscribe(
         (response) => {
-          this.investmentDetailsOld = response as IInvestmentDetailOld[];
+          this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
         },
         (error) => {
           console.log(error);
@@ -223,7 +224,7 @@ export class InvestmentRcvComponent implements OnInit {
     else if (this.investmentRcvService.investmentRcvFormData.donationTo == "Society") {
       this.investmentRcvService.getLastFiveInvestmentForSociety(this.investmentRcvService.investmentRcvFormData.donationId, this.investmentRcvService.investmentSocietyFormData.societyId, marketCode, toDayDate).subscribe(
         (response) => {
-          this.investmentDetailsOld = response as IInvestmentDetailOld[];
+          this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
         },
         (error) => {
           console.log(error);
@@ -768,6 +769,7 @@ export class InvestmentRcvComponent implements OnInit {
     this.investmentTargetedProds = [];
     this.investmentTargetedGroups = [];
     this.investmentDetailsOld = [];
+    this.lastFiveInvestmentDetail = [];
     this.isValid = false;
     this.isBudgetVisible = false;
   }
@@ -777,6 +779,7 @@ export class InvestmentRcvComponent implements OnInit {
     this.investmentTargetedProds = [];
     this.investmentTargetedGroups = [];
     this.investmentDetailsOld = [];
+    this.lastFiveInvestmentDetail = [];
     this.isValid = false;
     this.isBudgetVisible = false;
   }
