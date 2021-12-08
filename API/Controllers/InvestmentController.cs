@@ -1212,30 +1212,47 @@ namespace API.Controllers
         } 
         [HttpGet]
         [Route("getLastFiveInvestmentForDoc/{donationId}/{docId}/{marketCode}/{date}")]
-        public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestmentForDoc(int donationId, string docId, string marketCode, string date)
+        public async Task<IReadOnlyList<ReportInvestmentInfo>> GetLastFiveInvestmentForDoc(int donationId, int docId, string marketCode, string date)
         {
+            //try
+            //{
+            //    var v = DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture);
+            //    // var empData = await _employeeRepo.GetByIdAsync(empId);
+            //    var reportInvestmentSpec = new ReportInvestmentSpecification(marketCode);
+            //    var reportInvestmentData = await _reportInvestmentInfoRepo.ListAsync(reportInvestmentSpec);
+            //    var donation = await _donationRepo.GetByIdAsync(donationId);
+            //    // var spec = new ReportInvestmentSpecification(empData.MarketCode);
+            //    var data = (from e in reportInvestmentData
+            //                where e.DoctorId==docId && e.DonationType== donation.DonationTypeName &&
+            //                DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) <= DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture)
+            //                orderby DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) descending
+            //                select new ReportInvestmentInfo
+            //                {
+            //                    InvestmentAmount = e.InvestmentAmount,
+            //                    ComtSharePrcnt = e.ComtSharePrcnt,
+            //                    ComtSharePrcntAll = e.ComtSharePrcntAll,
+            //                    PrescribedSharePrcnt = e.PrescribedSharePrcnt,
+            //                    PrescribedSharePrcntAll = e.PrescribedSharePrcntAll
+            //                }
+            //                 ).Distinct().Take(5).ToList();
+            //    return data;
+            //}
+            //catch (System.Exception ex)
+            //{
+            //    throw ex;
+            //}
             try
             {
-                var v = DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture);
-                // var empData = await _employeeRepo.GetByIdAsync(empId);
-                var reportInvestmentSpec = new ReportInvestmentSpecification(marketCode);
-                var reportInvestmentData = await _reportInvestmentInfoRepo.ListAsync(reportInvestmentSpec);
-                var donation = await _donationRepo.GetByIdAsync(donationId);
-                // var spec = new ReportInvestmentSpecification(empData.MarketCode);
-                var data = (from e in reportInvestmentData
-                            where e.DoctorId==docId && e.DonationType== donation.DonationTypeName &&
-                            DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) <= DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture)
-                            orderby DateTime.ParseExact(e.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) descending
-                            select new ReportInvestmentInfo
-                            {
-                                InvestmentAmount = e.InvestmentAmount,
-                                ComtSharePrcnt = e.ComtSharePrcnt,
-                                ComtSharePrcntAll = e.ComtSharePrcntAll,
-                                PrescribedSharePrcnt = e.PrescribedSharePrcnt,
-                                PrescribedSharePrcntAll = e.PrescribedSharePrcntAll
-                            }
-                             ).Distinct().Take(5).ToList();
-                return data;
+                var convertedDate = DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture);
+                List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                        new SqlParameter("@DOCID", docId),
+                        new SqlParameter("@MCODE", marketCode),
+                        new SqlParameter("@FDATE", convertedDate)
+                    };
+                var results = _dbContext.ReportInvestmentInfo.FromSqlRaw<ReportInvestmentInfo>("EXECUTE SP_LastFiveInvestmentForDocSearch @DOCID,@MCODE,@FDATE", parms.ToArray()).ToList();
+
+                return results;
             }
             catch (System.Exception ex)
             {

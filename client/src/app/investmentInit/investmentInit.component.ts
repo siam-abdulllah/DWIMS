@@ -472,6 +472,7 @@ export class InvestmentInitComponent implements OnInit {
   onChangeDoctorInDoc() {
     for (var i = 0; i < this.doctors.length; i++) {
       if (this.doctors[i].id == this.investmentInitService.investmentDoctorFormData.doctorId) {
+        debugger;
         //this.investmentInitService.investmentDoctorFormData.doctorName=this.doctors[i].doctorName;
         this.investmentInitService.investmentDoctorFormData.doctorCode = this.doctors[i].doctorCode;
         this.investmentInitService.investmentDoctorFormData.degree = this.doctors[i].degree;
