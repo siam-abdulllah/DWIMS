@@ -157,9 +157,9 @@ export interface IInvestmentDoctor {
     doctorId: number;
     doctorName: string;
     doctorCode: string;
-    address: string;
-    degree: string;
-    designation: string;
+    //address: string;
+    //degree: string;
+    //designation: string;
     doctorCategory: string;
     doctorType: string;
     practiceDayPerMonth: string;
@@ -172,12 +172,12 @@ export class InvestmentDoctor implements IInvestmentDoctor {
     investmentInitId: number;
     institutionId: number=null;
     doctorId: number=null;
-    degree: string;
-    designation: string;
+    //degree: string;
+    //designation: string;
     doctorCategory: string=null;
     doctorName: string=null;
     doctorCode: string;
-    address: string;
+    //address: string;
     doctorType: string=null;
     practiceDayPerMonth: string;
     patientsPerDay: string;

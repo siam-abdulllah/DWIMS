@@ -476,8 +476,8 @@ export class InvestmentInitComponent implements OnInit {
         debugger;
         //this.investmentInitService.investmentDoctorFormData.doctorName=this.doctors[i].doctorName;
         this.investmentInitService.investmentDoctorFormData.doctorCode = this.doctors[i].doctorCode;
-        this.investmentInitService.investmentDoctorFormData.degree = this.doctors[i].degree;
-        this.investmentInitService.investmentDoctorFormData.designation = this.doctors[i].designation;
+        //this.investmentInitService.investmentDoctorFormData.degree = this.doctors[i].degree;
+        //this.investmentInitService.investmentDoctorFormData.designation = this.doctors[i].designation;
         break;
       }
     }
@@ -486,7 +486,7 @@ export class InvestmentInitComponent implements OnInit {
   onChangeInstitutionInDoc() {
     for (var i = 0; i < this.institutions.length; i++) {
       if (this.institutions[i].id == this.investmentInitService.investmentDoctorFormData.institutionId) {
-        this.investmentInitService.investmentDoctorFormData.address = this.institutions[i].address;
+        //this.investmentInitService.investmentDoctorFormData.address = this.institutions[i].address;
 
         break;
       }

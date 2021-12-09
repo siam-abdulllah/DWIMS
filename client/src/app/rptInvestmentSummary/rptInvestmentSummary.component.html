@@ -51,8 +51,10 @@
                                             <td>Proposed Amount</td>
                                             <td>From Date</td>
                                             <td>ToDate</td>
-                                            <td>Status</td>
+                                            <td>Market</td>
                                             <td>Proposed By</td>
+                                            <td>Status</td>
+                                            <td>Approved By</td>
                                             <td>Receive Status</td>
                                             <td>Received By</td>
                                         </tr>
@@ -79,10 +81,16 @@
                                                 {{a.toDate| date:'dd/MM/yyyy'}}
                                             </td>
                                             <td>
-                                                {{a.invStatus}}
+                                                {{a.marketName}}
                                             </td>
                                             <td>
                                                 {{a.employeeName}}
+                                            </td>
+                                            <td>
+                                                {{a.invStatus}}
+                                            </td>
+                                            <td>
+                                                {{a.approvedBy}}
                                             </td>
                                             <td>
                                                 {{a.receiveStatus}}
