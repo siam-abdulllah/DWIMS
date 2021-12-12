@@ -98,7 +98,6 @@ export class ReportInvestmentService {
   getSubCampaign(){    
     return this.http.get(this.baseUrl + 'subCampaign/subCampaignsForCamp');
   }
-  
   getInsSocietyBCDSWiseInvestment(model: any) {
      return this.http.post(this.baseUrl + 'reportInvestment/GetInsSocietyBCDSWiseInvestment',model);
   }
@@ -113,6 +112,10 @@ export class ReportInvestmentService {
 
 GetSBUWiseExpSummaryReport(model: any) {
   return this.http.post(this.baseUrl + 'reportInvestment/GetSBUWiseExpSummaryReport', model);
+}
+
+GetEmpWiseExpSummaryReport(model: any) {
+  return this.http.post(this.baseUrl + 'reportInvestment/GetEmpWiseExpSummaryReport', model);
 }
 
 }

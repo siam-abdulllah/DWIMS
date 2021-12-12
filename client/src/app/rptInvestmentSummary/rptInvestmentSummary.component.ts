@@ -8,7 +8,7 @@ import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from "ngx-spinner";
 import { RptInvestSummaryService } from '../_services/report-investsummary.service';
-import { GenericParams } from './../shared/models/genericParams';
+import { GenericParams } from '../shared/models/genericParams';
 
 @Component({
   selector: 'rptInvestmentSummary',

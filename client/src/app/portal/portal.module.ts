@@ -29,6 +29,7 @@ import { SbuWiseBudgetComponent } from '../sbu-wise-budget/sbu-wise-budget.compo
 import { DocHonApprComponent } from '../docHonAppr/docHonAppr.component';
 import { ClusterInfoComponent } from '../master/cluster-info/cluster-info.component';
 import { RptInvestSummaryComponent } from '../rptInvestmentSummary/rptInvestmentSummary.component';
+import { RptInvestmentDetailComponent } from '../RptInvestmentDetail/rptInvestmentDetail.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { MenuHeadComponent } from '../menuHead/menuHead.component';
 import { SubMenuComponent } from '../subMenu/subMenu.component';
@@ -70,6 +71,7 @@ import { InvestmentRcvComponent } from '../investmentRcv/investmentRcv.component
     RegApprovalComponent,
     ReportInvestmentComponent,
     RptInvestSummaryComponent,
+    RptInvestmentDetailComponent,
     SbuWiseBudgetComponent,
     DocHonApprComponent,
     ClusterInfoComponent,

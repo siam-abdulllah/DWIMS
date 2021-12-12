@@ -15,7 +15,7 @@ import { DatePipe } from '@angular/common';
 import { IDocLocWiseInvestment } from './../shared/models/rptDocLocWiseInvestment';
 import { IDocCampWiseInvestment } from '../shared/models/rptDocCampWiseInvestment';
 import { IInsSocBcdsInvestment } from '../shared/models/rptInsSocBcdsInvestment';
-import { ISBUWiseExpSummaryReport } from '../shared/models/rptSBUWiseExpSummaryReport';
+import { IEmpWiseExpSummaryReport, ISBUWiseExpSummaryReport } from '../shared/models/rptSBUWiseExpSummaryReport';
 
 import { ICampaignMst } from '../shared/models/campaign';
 import { ISubCampaign } from '../shared/models/subCampaign';
@@ -42,6 +42,7 @@ export class ReportInvestmentComponent implements OnInit {
   docCampWiseInvestment: IDocCampWiseInvestment[] = [];
   docLocWiseInvestment: IDocLocWiseInvestment[] = [];
   sBUWiseExpSummaryReport :ISBUWiseExpSummaryReport[] = [];
+  empWiseExpSummaryReport :IEmpWiseExpSummaryReport[] = [];
   searchText = '';
   visSoc: boolean = true;
   visBcd: boolean = true;
@@ -1565,6 +1566,100 @@ viewSBUWiseBudgetInvest() {
   //this.getReport(col, rowD, title, orgName, orgAddress);
   this.getReport(col, rowD, 'SBU wise Budget And Expense Summary Report', 'Square Pharmaceuticals Ltd.', '48, Square Center, Mohakhali');
 }
+
+
+
+
+
+/// ********************************************
+/// Generate Employee wise Budget And Expense
+/// ********************************************
+
+getEmpWiseBudgetInvest()  {
+  const investmentReportSearchDto: IInvestmentReportSearchDto = {
+    fromDate: this.investmentSearchForm.value.fromDate,
+    toDate: this.investmentSearchForm.value.toDate,
+    sbu: this.investmentSearchForm.value.sbu,
+    userId: 0,
+    donationType: this.investmentSearchForm.value.donationType,
+    investType: this.investmentSearchForm.value.donationTo,
+    institutionId: this.investmentSearchForm.value.institutionId,
+    societyId: this.investmentSearchForm.value.societyId,
+    bcdsId: this.investmentSearchForm.value.bcdsId,
+    doctorId: this.investmentSearchForm.value.doctorId,
+    locationType: this.investmentSearchForm.value.locationType,
+    territoryCode: this.investmentSearchForm.value.territoryCode,
+    marketCode: this.investmentSearchForm.value.marketCode,
+    regionCode: this.investmentSearchForm.value.regionCode,
+    zoneCode: this.investmentSearchForm.value.zoneCode,
+    divisionCode: this.investmentSearchForm.value.divisionCode,
+    brandCode: this.investmentSearchForm.value.brandCode,
+    campaignName: this.investmentSearchForm.value.campaignName,
+    subCampaignName: this.investmentSearchForm.value.subCampaignName,
+  };
+
+  this.reportInvestmentService.GetSBUWiseExpSummaryReport(investmentReportSearchDto).subscribe(resp => {
+    // this.reportInvestmentService.getInsSocietyBCDSWiseInvestment().subscribe(resp => {  
+    this.empWiseExpSummaryReport = resp as IEmpWiseExpSummaryReport[];
+    debugger;
+    if (this.empWiseExpSummaryReport.length <= 0) {
+      this.toastr.warning('No Data Found', 'Report');
+    }
+  
+    this.viewEmpWiseBudgetInvest();
+  }, error => {
+    console.log(error);
+  });
+}
+
+/// ********************************************
+/// View Employee wise Budget And Expense
+/// ********************************************
+
+viewEmpWiseBudgetInvest() {
+
+  if (this.empWiseExpSummaryReport.length <= 0) {
+    return false;
+  }
+  debugger;
+  const r =  this.empWiseExpSummaryReport as IEmpWiseExpSummaryReport[];
+
+  let row: any[] = [];
+  let rowD: any[] = [];
+  let col = ['Employee Name', 'Duration', 'Donation Type','Budget' , 'Expense', 'Remaining' ]; // initialization for headers
+
+  let slNO = 0;
+
+  for (const a of r) {
+    row.push(a.employeeName);
+    row.push(a.duration);
+    row.push(a.donationTypeName);
+    row.push(a.budget);
+    row.push(a.expense);
+    row.push(a.budget - a.expense);
+
+    rowD.push(row);
+    row = [];
+  }
+  //this.getReport(col, rowD, title, orgName, orgAddress);
+  this.getReport(col, rowD, 'Employee wise Budget And Expense Summary Report', 'Square Pharmaceuticals Ltd.', '48, Square Center, Mohakhali');
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
