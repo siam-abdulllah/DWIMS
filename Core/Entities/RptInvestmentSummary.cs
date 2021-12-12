@@ -16,5 +16,7 @@ namespace Core.Entities
         public string EmployeeName { get; set; }      
         public string ReceiveStatus { get; set; }
         public string ReceiveBy { get; set; }
+        public string ApprovedBy { get; set; }
+         public string MarketName { get; set; }
     }
 }

@@ -74,7 +74,9 @@ namespace Infrastructure.Data
         [NotMapped]
         public DbSet<RptSBUWiseExpSummart> RptSBUWiseExpSummart { get; set; }
         [NotMapped]
-        public DbSet<RptInvestmentSummary> RptInvestmentSummary { get; set; }
+        public DbSet<RptInvestmentSummary> RptInvestmentSummary { get; set; } 
+        [NotMapped]
+        public DbSet<LastFiveInvestmentInfo> LastFiveInvestmentInfo { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

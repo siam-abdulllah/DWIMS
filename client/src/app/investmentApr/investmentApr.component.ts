@@ -25,7 +25,7 @@ import { ISocietyInfo } from '../shared/models/societyInfo';
 import { MarketGroupMst, IMarketGroupMst } from '../shared/models/marketGroupMst';
 import { MarketGroupDtl, IMarketGroupDtl } from '../shared/models/marketGroupDtl';
 import { AccountService } from '../account/account.service';
-import { IInvestmentDetailOld } from '../shared/models/investment';
+import { IInvestmentDetailOld, ILastFiveInvestmentDetail } from '../shared/models/investment';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { IBudgetCeiling } from '../shared/models/budgetCeiling';
 
@@ -43,6 +43,7 @@ export class InvestmentAprComponent implements OnInit {
   InvestmentInitSearchModalRef: BsModalRef;
   InvestmentAprSearchModalRef: BsModalRef;
   investmentDetailsOld: IInvestmentDetailOld[];
+  lastFiveInvestmentDetail:ILastFiveInvestmentDetail[];
   investmentAprs: IInvestmentApr[];
   investmentTargetedProds: IInvestmentTargetedProd[];
   investmentTargetedGroups: IInvestmentTargetedGroup[];
@@ -185,7 +186,7 @@ export class InvestmentAprComponent implements OnInit {
     if (this.investmentAprService.investmentAprFormData.donationTo == "Doctor") {
       this.investmentAprService.getLastFiveInvestmentForDoc(this.investmentAprService.investmentAprFormData.donationId, this.investmentAprService.investmentDoctorFormData.doctorId, marketCode, toDayDate).subscribe(
         (response) => {
-          this.investmentDetailsOld = response as IInvestmentDetailOld[];
+          this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
         },
         (error) => {
           console.log(error);
@@ -195,7 +196,7 @@ export class InvestmentAprComponent implements OnInit {
     else if (this.investmentAprService.investmentAprFormData.donationTo == "Institution") {
       this.investmentAprService.getLastFiveInvestmentForInstitute(this.investmentAprService.investmentAprFormData.donationId, this.investmentAprService.investmentInstitutionFormData.institutionId, marketCode, toDayDate).subscribe(
         (response) => {
-          this.investmentDetailsOld = response as IInvestmentDetailOld[];
+          this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
         },
         (error) => {
           console.log(error);
@@ -205,7 +206,7 @@ export class InvestmentAprComponent implements OnInit {
     else if (this.investmentAprService.investmentAprFormData.donationTo == "Campaign") {
       this.investmentAprService.getLastFiveInvestmentForCampaign(this.investmentAprService.investmentAprFormData.donationId, this.investmentAprService.investmentCampaignFormData.campaignMstId, marketCode, toDayDate).subscribe(
         (response) => {
-          this.investmentDetailsOld = response as IInvestmentDetailOld[];
+          this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
         },
         (error) => {
           console.log(error);
@@ -215,7 +216,7 @@ export class InvestmentAprComponent implements OnInit {
     else if (this.investmentAprService.investmentAprFormData.donationTo == "Bcds") {
       this.investmentAprService.getLastFiveInvestmentForBcds(this.investmentAprService.investmentAprFormData.donationId, this.investmentAprService.investmentBcdsFormData.bcdsId, marketCode, toDayDate).subscribe(
         (response) => {
-          this.investmentDetailsOld = response as IInvestmentDetailOld[];
+          this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
         },
         (error) => {
           console.log(error);
@@ -225,7 +226,7 @@ export class InvestmentAprComponent implements OnInit {
     else if (this.investmentAprService.investmentAprFormData.donationTo == "Society") {
       this.investmentAprService.getLastFiveInvestmentForSociety(this.investmentAprService.investmentAprFormData.donationId, this.investmentAprService.investmentSocietyFormData.societyId, marketCode, toDayDate).subscribe(
         (response) => {
-          this.investmentDetailsOld = response as IInvestmentDetailOld[];
+          this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
         },
         (error) => {
           console.log(error);
@@ -709,6 +710,7 @@ export class InvestmentAprComponent implements OnInit {
     this.investmentTargetedProds = [];
     this.investmentTargetedGroups = [];
     this.investmentDetailsOld = [];
+    this.lastFiveInvestmentDetail = [];
     this.isValid = false;
     this.isBudgetVisible = false;
   }
@@ -718,6 +720,7 @@ export class InvestmentAprComponent implements OnInit {
     this.investmentTargetedProds = [];
     this.investmentTargetedGroups = [];
     this.investmentDetailsOld = [];
+    this.lastFiveInvestmentDetail = [];
     this.isValid = false;
     this.isBudgetVisible = false;
   }

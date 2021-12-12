@@ -25,7 +25,7 @@ import { ISocietyInfo } from '../shared/models/societyInfo';
 import { MarketGroupMst, IMarketGroupMst } from '../shared/models/marketGroupMst';
 import { MarketGroupDtl, IMarketGroupDtl } from '../shared/models/marketGroupDtl';
 import { AccountService } from '../account/account.service';
-import { IInvestmentDetailOld } from '../shared/models/investment';
+import { IInvestmentDetailOld, ILastFiveInvestmentDetail } from '../shared/models/investment';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
@@ -70,6 +70,7 @@ export class InvestmentRecComponent implements OnInit {
   empId: string;
   sbu: string;
   investmentDetailsOld: IInvestmentDetailOld[];
+  lastFiveInvestmentDetail:ILastFiveInvestmentDetail[];
   config = {
     keyboard: false,
     class: 'modal-lg',
@@ -174,7 +175,7 @@ export class InvestmentRecComponent implements OnInit {
     if (this.investmentRecService.investmentRecFormData.donationTo == "Doctor") {
       this.investmentRecService.getLastFiveInvestmentForDoc(this.investmentRecService.investmentRecFormData.donationId,this.investmentRecService.investmentDoctorFormData.doctorId,marketCode, toDayDate).subscribe(
         (response) => {
-          this.investmentDetailsOld = response as IInvestmentDetailOld[];
+          this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
         },
         (error) => {
           console.log(error);
@@ -184,7 +185,7 @@ export class InvestmentRecComponent implements OnInit {
     else if (this.investmentRecService.investmentRecFormData.donationTo == "Institution") {
       this.investmentRecService.getLastFiveInvestmentForInstitute(this.investmentRecService.investmentRecFormData.donationId,this.investmentRecService.investmentInstitutionFormData.institutionId,marketCode, toDayDate).subscribe(
         (response) => {
-          this.investmentDetailsOld = response as IInvestmentDetailOld[];
+          this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
         },
         (error) => {
           console.log(error);
@@ -194,7 +195,7 @@ export class InvestmentRecComponent implements OnInit {
     else if (this.investmentRecService.investmentRecFormData.donationTo == "Campaign") {
       this.investmentRecService.getLastFiveInvestmentForCampaign(this.investmentRecService.investmentRecFormData.donationId,this.investmentRecService.investmentCampaignFormData.campaignMstId,marketCode, toDayDate).subscribe(
         (response) => {
-          this.investmentDetailsOld = response as IInvestmentDetailOld[];
+          this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
         },
         (error) => {
           console.log(error);
@@ -204,7 +205,7 @@ export class InvestmentRecComponent implements OnInit {
     else if (this.investmentRecService.investmentRecFormData.donationTo == "Bcds") {
       this.investmentRecService.getLastFiveInvestmentForBcds(this.investmentRecService.investmentRecFormData.donationId,this.investmentRecService.investmentBcdsFormData.bcdsId,marketCode, toDayDate).subscribe(
         (response) => {
-          this.investmentDetailsOld = response as IInvestmentDetailOld[];
+          this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
         },
         (error) => {
           console.log(error);
@@ -214,7 +215,7 @@ export class InvestmentRecComponent implements OnInit {
     else if (this.investmentRecService.investmentRecFormData.donationTo == "Society") {
       this.investmentRecService.getLastFiveInvestmentForSociety(this.investmentRecService.investmentRecFormData.donationId,this.investmentRecService.investmentSocietyFormData.societyId,marketCode, toDayDate).subscribe(
         (response) => {
-          this.investmentDetailsOld = response as IInvestmentDetailOld[];
+          this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
         },
         (error) => {
           console.log(error);
@@ -725,6 +726,7 @@ export class InvestmentRecComponent implements OnInit {
     this.investmentTargetedProds = [];
     this.investmentTargetedGroups = [];
     this.investmentDetailsOld = [];
+    this.lastFiveInvestmentDetail = [];
     this.isValid = false;
     this.isInvOther = false;
   }
@@ -734,6 +736,7 @@ export class InvestmentRecComponent implements OnInit {
     this.investmentTargetedProds = [];
     this.investmentTargetedGroups = [];
     this.investmentDetailsOld = [];
+    this.lastFiveInvestmentDetail = [];
     this.isValid = false;
     this.isInvOther = false;
   }

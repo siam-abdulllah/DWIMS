@@ -509,13 +509,17 @@
                                             <div class="form-group">
                                                 <table class="table  table-bordered">
                                                     <tr class="HeaderRow">
+                                                        <td>Donation</td>
                                                         <td>Investment</td>
                                                         <td>Commitment-All</td>
                                                         <td>Commitment-Own</td>
                                                         <td>Share-All</td>
                                                         <td>Share-Own</td>
                                                     </tr>
-                                                    <tr *ngFor="let a of investmentDetailsOld">
+                                                    <tr *ngFor="let a of lastFiveInvestmentDetail">
+                                                        <td>
+                                                            {{a.donationShortName}}
+                                                        </td>
                                                         <td>
                                                             {{a.investmentAmount}}
                                                         </td>

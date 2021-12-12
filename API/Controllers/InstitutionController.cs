@@ -41,6 +41,7 @@ namespace API.Controllers
                                {
                                    InstitutionName = d.InstitutionName,
                                    InstitutionCode = d.InstitutionCode,
+                                   Address = d.Address,
                                    Id = d.Id
                                }
                              ).Distinct().ToList();

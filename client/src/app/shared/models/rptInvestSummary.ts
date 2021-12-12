@@ -10,6 +10,8 @@ export interface IrptInvestSummary {
     employeeName: string;
     receiveStatus: string;
     receiveBy: string;
+    approvedBy: string;
+    marketName: string;
 }
 
 export class rptInvestSummary implements IrptInvestSummary {
@@ -24,4 +26,6 @@ export class rptInvestSummary implements IrptInvestSummary {
     employeeName: string;
     receiveStatus: string;
     receiveBy: string;
+    approvedBy: string;
+    marketName: string;
 }

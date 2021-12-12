@@ -46,6 +46,8 @@ namespace API.Controllers
                              {
                                  DoctorName = d.DoctorName,
                                  DoctorCode = d.DoctorCode,
+                                 Degree = d.Degree,
+                                 Designation= d.Designation,
                                  Id=d.Id
                              }
                               ).Distinct().ToList();

@@ -91,6 +91,25 @@ export class InvestmentDetailOld implements IInvestmentDetailOld {
     fromDate: Date;
     toDate: Date;
 }
+export interface ILastFiveInvestmentDetail {
+    id: number;
+    comtSharePrcntAll: string;
+    comtSharePrcnt: string;
+    prescribedSharePrcntAll: string;
+    prescribedSharePrcnt: string;
+    investmentAmount: string;
+    donationShortName: string;
+}
+ 
+export class LastFiveInvestmentDetail implements ILastFiveInvestmentDetail {
+    id: number;
+    comtSharePrcntAll: string;
+    comtSharePrcnt: string;
+    prescribedSharePrcntAll: string;
+    prescribedSharePrcnt: string;
+    investmentAmount: string;
+    donationShortName: string;
+}
 export interface IInvestmentTargetedProd {
     id: number;
     investmentInitId: number;
@@ -138,9 +157,9 @@ export interface IInvestmentDoctor {
     doctorId: number;
     doctorName: string;
     doctorCode: string;
-    address: string;
-    degree: string;
-    designation: string;
+    //address: string;
+    //degree: string;
+    //designation: string;
     doctorCategory: string;
     doctorType: string;
     practiceDayPerMonth: string;
@@ -153,12 +172,12 @@ export class InvestmentDoctor implements IInvestmentDoctor {
     investmentInitId: number;
     institutionId: number=null;
     doctorId: number=null;
-    degree: string;
-    designation: string;
+    //degree: string;
+    //designation: string;
     doctorCategory: string=null;
     doctorName: string=null;
     doctorCode: string;
-    address: string;
+    //address: string;
     doctorType: string=null;
     practiceDayPerMonth: string;
     patientsPerDay: string;
