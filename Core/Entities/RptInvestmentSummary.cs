@@ -17,5 +17,6 @@ namespace Core.Entities
         public string ReceiveStatus { get; set; }
         public string ReceiveBy { get; set; }
         public string ApprovedBy { get; set; }
+         public string MarketName { get; set; }
     }
 }
