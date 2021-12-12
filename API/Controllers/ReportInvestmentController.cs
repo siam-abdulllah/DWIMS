@@ -34,7 +34,7 @@ namespace API.Controllers
         }
 
         [HttpPost("GetInsSocietyBCDSWiseInvestment")]
-        public ActionResult<IReadOnlyList<InstSocDocInvestmentDto>> GetInstituteInvestment([FromQuery] ReportInvestmentInfoSpecParams rptParrams,ReportSearchDto search)
+        public ActionResult<IReadOnlyList<InstSocDocInvestmentDto>> GetInstituteInvestment([FromQuery] ReportInvestmentInfoSpecParams rptParrams, ReportSearchDto search)
         {
 
             List<SqlParameter> parms = new List<SqlParameter>
@@ -68,7 +68,7 @@ namespace API.Controllers
         public ActionResult<IReadOnlyList<RptDocCampWiseInvestment>> GetDoctorCampaingWiseInvestment([FromQuery] ReportInvestmentInfoSpecParams rptParrams, ReportSearchDto search)
         {
             string qry = "SELECT * FROM RptDocCampWiseInvestment ";
-            qry += "WHERE FromDate >= '"+ search.FromDate + "' AND  '" + search.ToDate + "' <= ToDate ";
+            qry += "WHERE FromDate >= '" + search.FromDate + "' AND  '" + search.ToDate + "' <= ToDate ";
 
             if (!string.IsNullOrEmpty(search.MarketCode))
             {
@@ -130,12 +130,12 @@ namespace API.Controllers
             // " where b.SBU = c.SBU AND c.DonationId = e.DonationId AND e.PaidStatus = 'Paid' " +
             // " AND  (CONVERT(date,c.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,c.ToDate)) "+
             // " AND (CONVERT(date,e.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,e.ToDate)) ";
-    
-            string qry = " select CAST(ROW_NUMBER() OVER (ORDER BY a.SBU) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.SBU, a.SBUName, a.DonationId, d.DonationTypeName,  a.Amount Budget,  "+
-                        " (select ISNULL(SUM(ApprovedAmount),0) from InvestmentDetailTracker e inner join InvestmentInit c on c.Id = e.InvestmentInitId  where e.PaidStatus = 'Paid' AND e.DonationId = a.DonationId AND c.SBU = a.SBU AND   "+
-                        " (CONVERT(date,e.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,e.ToDate))) Expense  "+
-                        " from SBUWiseBudget a inner join Donation d on d.Id = a.DonationId AND "+
-                        " (CONVERT(date,a.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,a.ToDate)) ";
+
+            string qry = " select CAST(ROW_NUMBER() OVER (ORDER BY a.SBU) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.SBU, a.SBUName, a.DonationId, d.DonationTypeName,  a.Amount Budget,  " +
+                        " (select ISNULL(SUM(ApprovedAmount),0) from InvestmentDetailTracker e inner join InvestmentInit c on c.Id = e.InvestmentInitId  where e.PaidStatus = 'Paid' AND e.DonationId = a.DonationId AND c.SBU = a.SBU AND   " +
+                        " (CONVERT(date,e.FromDate) >= CAST('" + search.FromDate + "' as Date) AND CAST('" + search.ToDate + "' as Date) >= CONVERT(date,e.ToDate))) Expense  " +
+                        " from SBUWiseBudget a inner join Donation d on d.Id = a.DonationId AND " +
+                        " (CONVERT(date,a.FromDate) >= CAST('" + search.FromDate + "' as Date) AND CAST('" + search.ToDate + "' as Date) >= CONVERT(date,a.ToDate)) ";
 
             if (!string.IsNullOrEmpty(search.SBU))
             {
@@ -153,9 +153,11 @@ namespace API.Controllers
 
 
         [HttpPost("GetInvestmentSummaryReport")]
-        public ActionResult<IReadOnlyList<RptInvestmentSummary>> GetInvestmentSummaryReport( SearchDto dt,  [FromQuery] ReportInvestmentInfoSpecParams rptParrams)
+        public ActionResult<IReadOnlyList<RptInvestmentSummary>> GetInvestmentSummaryReport(SearchDto dt, [FromQuery] ReportInvestmentInfoSpecParams rptParrams)
         {
 
+            string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode=" + dt.EmpId;
+            var empData = _db.Employee.FromSqlRaw(empQry).ToList();
             // string qry = "select CAST(ROW_NUMBER() OVER (ORDER BY c.SBU) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, SUM (e.ApprovedAmount) Expense, c.SBUName, c.SBU, c.Amount Budget,  c.DonationId, d.DonationTypeName " +
             // " from SBUWiseBudget c, InvestmentInit b  inner join InvestmentDetailTracker e on e.InvestmentInitId = b.Id " +
             // " left join Donation d on d.Id = b.DonationId "+
@@ -171,7 +173,32 @@ namespace API.Controllers
                 " left join Employee e on e.Id = a.EmployeeId " +
                 " left join Employee rcvBy on rcvBy.Id = rcv.EmployeeId " +
                 " Where 1 = 1 " +
-                " AND(CONVERT(date, b.FromDate) >= CAST('"+ dt.FromDate + "' as Date) AND CAST('"+ dt.ToDate + "' as Date) >= CONVERT(date, b.ToDate)) ";
+                " AND(CONVERT(date, b.FromDate) >= CAST('" + dt.FromDate + "' as Date) AND CAST('" + dt.ToDate + "' as Date) >= CONVERT(date, b.ToDate)) ";
+            if (dt.UserRole != "Administrator")
+            {
+                qry = qry + " AND (" +
+                            " e.MarketGroupCode = COALESCE(NULLIF('" + empData[0].MarketGroupCode + "',''), 'All')" +
+                            " OR COALESCE(NULLIF('" + empData[0].MarketGroupCode + "',''), 'All') = 'All'" +
+                            " )" +
+                            " AND (" +
+                            " e.MarketCode = COALESCE(NULLIF('" + empData[0].MarketCode + "',''), 'All')" +
+                            " OR COALESCE(NULLIF('" + empData[0].MarketCode + "',''), 'All') = 'All'" +
+                            " )" +
+                            " AND (" +
+                            " e.TerritoryCode = COALESCE(NULLIF('" + empData[0].TerritoryCode + "',''), 'All')" +
+                            " OR COALESCE(NULLIF('" + empData[0].TerritoryCode + "',''), 'All') = 'All'" +
+                            " )" +
+                            " AND (" +
+                            " e.RegionCode = COALESCE(NULLIF('" + empData[0].RegionCode + "',''), 'All')" +
+                            " OR COALESCE(NULLIF('" + empData[0].RegionCode + "',''), 'All') = 'All'" +
+                            " )" +
+                            " AND (" +
+                            " e.ZoneCode = COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All')" +
+                            " OR COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All') = 'All'" +
+                            " )";
+            }
+
+
 
             var results = _db.RptInvestmentSummary.FromSqlRaw(qry).ToList();
 
@@ -187,7 +214,7 @@ namespace API.Controllers
         {
             string qry = "SELECT * FROM RptDocLocWiseInvestment ";
             qry += "WHERE FromDate >= '" + search.FromDate + "' AND  '" + search.ToDate + "' <= ToDate ";
-            
+
             if (!string.IsNullOrEmpty(search.MarketCode))
             {
                 qry += " AND MarketCode= '" + search.MarketCode + "' ";
@@ -273,7 +300,7 @@ namespace API.Controllers
 
             var results = command.ExecuteReader();
 
-      
+
 
             return results;
         }

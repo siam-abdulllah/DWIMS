@@ -9,6 +9,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from "ngx-spinner";
 import { RptInvestSummaryService } from '../_services/report-investsummary.service';
 import { GenericParams } from './../shared/models/genericParams';
+import { AccountService } from '../account/account.service';
 
 @Component({
   selector: 'rptInvestmentSummary',
@@ -22,6 +23,7 @@ export class RptInvestSummaryComponent implements OnInit {
   @ViewChild('fromDate') fromDate: ElementRef;
   @ViewChild('toDate') toDate: ElementRef;
   genParams: GenericParams;
+  empId: string;
   searchText = '';
   configs: any;
   searchDto: IReportSearchDto;
@@ -35,14 +37,16 @@ export class RptInvestSummaryComponent implements OnInit {
     class: 'modal-lg',
     ignoreBackdropClick: true
   };
+  userRole: any;
 
   constructor(private router: Router,
     public reportService: RptInvestSummaryService,
     private toastr: ToastrService, private modalService: BsModalService,
-    private SpinnerService: NgxSpinnerService) { }
+    private SpinnerService: NgxSpinnerService,private accountService: AccountService,) { }
 
   ngOnInit() {
     this.resetForm();
+    this.getEmployeeId();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-blue' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
     this.configs = {
@@ -51,7 +55,11 @@ export class RptInvestSummaryComponent implements OnInit {
       totalItems:50,
       };
   }
+  getEmployeeId() {
+    this.empId = this.accountService.getEmployeeId();
+    this.userRole = this.accountService.getUserRole();
 
+  }
   dateCompare() {
     if (this.reportService.rptInvestSummaryFormData.fromDate != null && this.reportService.rptInvestSummaryFormData.toDate != null) {
       if (this.reportService.rptInvestSummaryFormData.toDate > this.reportService.rptInvestSummaryFormData.fromDate) {
@@ -68,6 +76,8 @@ export class RptInvestSummaryComponent implements OnInit {
     const  searchDto: IReportSearchDto = {
       fromDate: this.reportService.rptInvestSummaryFormData.fromDate,
       toDate: this.reportService.rptInvestSummaryFormData.toDate,
+      userRole:this.userRole,
+      empId:this.empId
     };
 
     this.reportService.GetInvestmentSummaryReport(searchDto).subscribe(response => {
@@ -119,4 +129,6 @@ export class RptInvestSummaryComponent implements OnInit {
 interface IReportSearchDto {
   fromDate: Date | undefined | null;
   toDate: Date | undefined | null;
+  userRole:string;
+  empId:string;
 }

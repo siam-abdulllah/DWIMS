@@ -33,5 +33,8 @@ namespace API.Dtos
     {
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; } 
+        public int EmpId { get; set; } 
+        public string UserRole { get; set; } 
+
     }
 }
