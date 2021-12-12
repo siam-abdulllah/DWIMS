@@ -5,6 +5,7 @@ import { ApprovalCeilingComponent } from '../approval-ceiling/approval-ceiling.c
 import { ApprovalTimeLimitComponent } from '../approval-time-limit/approval-time-limit.component';
 import { DocHonApprComponent } from '../docHonAppr/docHonAppr.component';
 import { RptInvestSummaryComponent } from '../rptInvestmentSummary/rptInvestmentSummary.component';
+import { RptInvestmentDetailComponent } from '../RptInvestmentDetail/rptInvestmentDetail.component';
 import { RegApprovalComponent } from '../regApproval/regApproval.component';
 import { InvestmentInitComponent } from '../investmentInit/investmentInit.component';
 import { InvestmentRecComponent } from '../investmentRec/investmentRec.component';
@@ -43,6 +44,7 @@ const portalRoutes: Routes = [
         {path: 'sbu-wise-budget', component: SbuWiseBudgetComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'rptInvestment', component: ReportInvestmentComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'rptInvestmentSummary', component: RptInvestSummaryComponent},
+        {path: 'rptInvestmentDetail', component: RptInvestmentDetailComponent},
         {path: 'cluster', component: ClusterInfoComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'menuHead', component: MenuHeadComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'subMenu', component: SubMenuComponent, canActivate: [SuperAdminRoleGuard]},

@@ -11,6 +11,7 @@ import { RptInvestSummaryService } from '../_services/report-investsummary.servi
 import { GenericParams } from './../shared/models/genericParams';
 import { AccountService } from '../account/account.service';
 
+
 @Component({
   selector: 'rptInvestmentSummary',
   templateUrl: './rptInvestmentSummary.component.html',
