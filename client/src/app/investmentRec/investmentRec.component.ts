@@ -76,6 +76,7 @@ export class InvestmentRecComponent implements OnInit {
     class: 'modal-lg',
     ignoreBackdropClick: true
   };
+  userRole: any;
   constructor(private accountService: AccountService, public investmentRecService: InvestmentRecService, private router: Router,
     private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe, private SpinnerService: NgxSpinnerService) { }
     ngOnInit() {
@@ -249,7 +250,7 @@ export class InvestmentRecComponent implements OnInit {
   }
   getInvestmentRecommended() {
     this.SpinnerService.show(); 
-    this.investmentRecService.getInvestmentRecommended(parseInt(this.empId), this.sbu).subscribe(response => {
+    this.investmentRecService.getInvestmentRecommended(parseInt(this.empId), this.sbu,this.userRole).subscribe(response => {
       this.SpinnerService.hide();
       this.investmentRecs = response.data;
       if (this.investmentRecs.length>0) {
@@ -478,6 +479,7 @@ export class InvestmentRecComponent implements OnInit {
   }
   getEmployeeId() {
     this.empId = this.accountService.getEmployeeId();
+    this.userRole = this.accountService.getUserRole();
     this.investmentRecService.investmentRecCommentFormData.employeeId = parseInt(this.empId);
     this.getEmployeeSbu();
   }

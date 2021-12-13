@@ -80,6 +80,7 @@ export class InvestmentAprComponent implements OnInit {
     class: 'modal-lg',
     ignoreBackdropClick: true
   };
+  userRole: any;
   constructor(private accountService: AccountService, public investmentAprService: InvestmentAprService, private router: Router,
     private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe, private SpinnerService: NgxSpinnerService) { }
   ngOnInit() {
@@ -260,7 +261,7 @@ export class InvestmentAprComponent implements OnInit {
   }
   getInvestmentApproved() {
     this.SpinnerService.show();
-    this.investmentAprService.getInvestmentApproved(parseInt(this.empId), this.sbu).subscribe(response => {
+    this.investmentAprService.getInvestmentApproved(parseInt(this.empId), this.sbu,this.userRole).subscribe(response => {
       this.SpinnerService.hide();
       this.investmentAprs = response.data;
       if (this.investmentAprs.length > 0) {
@@ -514,6 +515,7 @@ export class InvestmentAprComponent implements OnInit {
 
   getEmployeeId() {
     this.empId = this.accountService.getEmployeeId();
+    this.userRole = this.accountService.getUserRole();
     this.investmentAprService.investmentAprCommentFormData.employeeId = parseInt(this.empId);
     this.getEmployeeSbu();
   }

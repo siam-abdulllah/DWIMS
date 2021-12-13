@@ -40,6 +40,7 @@ export class InvestmentInitComponent implements OnInit {
   submissionConfirmRef: BsModalRef;
   convertedDate:string;
   empId: string;
+  userRole: string;
   sbu: string;
   marketCode: string;
   investmentInits: IInvestmentInit[];
@@ -50,6 +51,7 @@ export class InvestmentInitComponent implements OnInit {
   investmentDoctors: IInvestmentDoctor[];
   isValid: boolean = false;
   isInvOther: boolean = false;
+  isAdmin: boolean = false;
   isDonationValid: boolean = false;
   isSubmitted: boolean = false;
   investmentInitForm: NgForm;
@@ -154,7 +156,7 @@ export class InvestmentInitComponent implements OnInit {
   }
   getInvestmentInit() {
     this.SpinnerService.show(); 
-    this.investmentInitService.getInvestmentInit(parseInt(this.empId), this.sbu).subscribe(response => {
+    this.investmentInitService.getInvestmentInit(parseInt(this.empId), this.sbu,this.userRole).subscribe(response => {
       this.SpinnerService.hide();
       this.investmentInits = response.data;
       if (this.investmentInits.length>0) {
@@ -320,6 +322,14 @@ export class InvestmentInitComponent implements OnInit {
   }
   getEmployeeId() {
     this.empId = this.accountService.getEmployeeId();
+    this.userRole = this.accountService.getUserRole();
+    if(this.userRole=='Administrator')
+    {
+      this.isAdmin=true;
+    }
+    else{
+      this.isAdmin=false;
+    }
     this.investmentInitService.investmentInitFormData.employeeId = parseInt(this.empId);
     this.getMarketGroupMsts();
     this.getEmployeeSbu();

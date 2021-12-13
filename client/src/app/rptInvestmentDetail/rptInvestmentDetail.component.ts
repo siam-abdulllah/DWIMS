@@ -80,6 +80,7 @@ export class RptInvestmentDetailComponent implements OnInit {
     class: 'modal-lg',
     ignoreBackdropClick: true
   };
+  userRole: any;
   constructor(private accountService: AccountService, public investmentInitService: InvestmentInitService, private router: Router,
     private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe, private SpinnerService: NgxSpinnerService) { }
   ngOnInit() {
@@ -153,7 +154,7 @@ export class RptInvestmentDetailComponent implements OnInit {
   }
   getInvestmentInit() {
     this.SpinnerService.show(); 
-    this.investmentInitService.getInvestmentInit(parseInt(this.empId), this.sbu).subscribe(response => {
+    this.investmentInitService.getInvestmentInit(parseInt(this.empId), this.sbu,this.userRole).subscribe(response => {
       this.SpinnerService.hide();
       this.investmentInits = response.data;
       if (this.investmentInits.length>0) {
@@ -319,6 +320,7 @@ export class RptInvestmentDetailComponent implements OnInit {
   }
   getEmployeeId() {
     this.empId = this.accountService.getEmployeeId();
+    this.userRole = this.accountService.getUserRole();
     this.investmentInitService.investmentInitFormData.employeeId = parseInt(this.empId);
     this.getMarketGroupMsts();
     this.getEmployeeSbu();
@@ -474,8 +476,8 @@ export class RptInvestmentDetailComponent implements OnInit {
       if (this.doctors[i].id == this.investmentInitService.investmentDoctorFormData.doctorId) {
         //this.investmentInitService.investmentDoctorFormData.doctorName=this.doctors[i].doctorName;
         this.investmentInitService.investmentDoctorFormData.doctorCode = this.doctors[i].doctorCode;
-        this.investmentInitService.investmentDoctorFormData.degree = this.doctors[i].degree;
-        this.investmentInitService.investmentDoctorFormData.designation = this.doctors[i].designation;
+        //this.investmentInitService.investmentDoctorFormData.degree = this.doctors[i].degree;
+        //this.investmentInitService.investmentDoctorFormData.designation = this.doctors[i].designation;
         break;
       }
     }
@@ -484,7 +486,7 @@ export class RptInvestmentDetailComponent implements OnInit {
   onChangeInstitutionInDoc() {
     for (var i = 0; i < this.institutions.length; i++) {
       if (this.institutions[i].id == this.investmentInitService.investmentDoctorFormData.institutionId) {
-        this.investmentInitService.investmentDoctorFormData.address = this.institutions[i].address;
+        //this.investmentInitService.investmentDoctorFormData.address = this.institutions[i].address;
 
         break;
       }

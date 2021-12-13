@@ -3,9 +3,7 @@ using System.Linq;
 using System.Data;
 using System.Threading.Tasks;
 using API.Dtos;
-using API.Errors;
 using API.Helpers;
-using System;
 using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
@@ -122,9 +120,7 @@ namespace API.Controllers
 
         [HttpPost("GetSBUWiseExpSummaryReport")]
         public ActionResult<IReadOnlyList<RptSBUWiseExpSummart>> SBUWiseExpSummaryReport([FromQuery] ReportInvestmentInfoSpecParams rptParrams, ReportSearchDto search)
-
-        {
-
+        //{ 
             // string qry = "select CAST(ROW_NUMBER() OVER (ORDER BY c.SBU) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, SUM (e.ApprovedAmount) Expense, c.SBUName, c.SBU, c.Amount Budget,  c.DonationId, d.DonationTypeName " +
             // " from SBUWiseBudget c, InvestmentInit b  inner join InvestmentDetailTracker e on e.InvestmentInitId = b.Id " +
             // " left join Donation d on d.Id = b.DonationId "+
