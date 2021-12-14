@@ -45,6 +45,7 @@ export class InvestmentAprComponent implements OnInit {
   investmentDetailsOld: IInvestmentDetailOld[];
   lastFiveInvestmentDetail:ILastFiveInvestmentDetail[];
   investmentAprs: IInvestmentApr[];
+  investmentInits: IInvestmentInit[];
   investmentTargetedProds: IInvestmentTargetedProd[];
   investmentTargetedGroups: IInvestmentTargetedGroup[];
   investmentDetails: IInvestmentApr[];
@@ -53,6 +54,8 @@ export class InvestmentAprComponent implements OnInit {
   isInvOther: boolean = false;
   isBudgetVisible: boolean = false;
   isDonationValid: boolean = false;
+  searchText = '';
+  configs: any;
   numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
   bcds: IBcdsInfo[];
   society: ISocietyInfo[];
@@ -72,6 +75,7 @@ export class InvestmentAprComponent implements OnInit {
   totalCount = 0;
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date = new Date();
+  isAdmin: boolean = false;
   empId: string;
   donationName: string;
   sbu: string;
@@ -96,7 +100,8 @@ export class InvestmentAprComponent implements OnInit {
     //this.insertInvestmentDetails();
     else
       this.updateInvestmentApr();
-  } getDonation() {
+  } 
+  getDonation() {
     this.investmentAprService.getDonations().subscribe(response => {
       this.donations = response as IDonation[];
     }, error => {
@@ -247,8 +252,8 @@ export class InvestmentAprComponent implements OnInit {
     this.SpinnerService.show();
     this.investmentAprService.getInvestmentInit(parseInt(this.empId), this.sbu).subscribe(response => {
       this.SpinnerService.hide();
-      this.investmentAprs = response.data;
-      if (this.investmentAprs.length > 0) {
+      this.investmentInits = response.data;
+      if (this.investmentInits.length > 0) {
         this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
       }
       else {
@@ -260,11 +265,19 @@ export class InvestmentAprComponent implements OnInit {
     });
   }
   getInvestmentApproved() {
+    const params = this.investmentAprService.getGenParams();
     this.SpinnerService.show();
     this.investmentAprService.getInvestmentApproved(parseInt(this.empId), this.sbu,this.userRole).subscribe(response => {
       this.SpinnerService.hide();
-      this.investmentAprs = response.data;
-      if (this.investmentAprs.length > 0) {
+      this.investmentInits = response.data;
+      this.totalCount = response.count;
+      debugger;
+      this.configs = {
+        currentPage: params.pageIndex,
+        itemsPerPage: params.pageSize,
+        totalItems: this.totalCount,
+      };
+      if (this.investmentInits.length > 0) {
         this.openInvestmentAprSearchModal(this.investmentAprSearchModal);
       }
       else {
@@ -516,6 +529,13 @@ export class InvestmentAprComponent implements OnInit {
   getEmployeeId() {
     this.empId = this.accountService.getEmployeeId();
     this.userRole = this.accountService.getUserRole();
+    if(this.userRole=='Administrator')
+    {
+      this.isAdmin=true;
+    }
+    else{
+      this.isAdmin=false;
+    }
     this.investmentAprService.investmentAprCommentFormData.employeeId = parseInt(this.empId);
     this.getEmployeeSbu();
   }
@@ -713,8 +733,14 @@ export class InvestmentAprComponent implements OnInit {
     this.investmentTargetedGroups = [];
     this.investmentDetailsOld = [];
     this.lastFiveInvestmentDetail = [];
+    this.isAdmin = false;
     this.isValid = false;
     this.isBudgetVisible = false;
+    this.configs = {
+      currentPage: 1,
+      itemsPerPage: 10,
+      totalItems: 50,
+    };
   }
   resetForm() {
     this.investmentAprService.investmentAprFormData = new InvestmentInit();
@@ -723,8 +749,14 @@ export class InvestmentAprComponent implements OnInit {
     this.investmentTargetedGroups = [];
     this.investmentDetailsOld = [];
     this.lastFiveInvestmentDetail = [];
+    this.isAdmin = false;
     this.isValid = false;
     this.isBudgetVisible = false;
+    this.configs = {
+      currentPage: 1,
+      itemsPerPage: 10,
+      totalItems: 50,
+    };
   }
 
   removeInvestmentTargetedProd(selectedAprord: IInvestmentTargetedProd) {
@@ -746,5 +778,34 @@ export class InvestmentAprComponent implements OnInit {
         err => { console.log(err); }
       );
     }
+  }
+  onPageChanged(event: any) {
+    const params = this.investmentAprService.getGenParams();
+    if (params.pageIndex !== event) {
+      params.pageIndex = event;
+      this.investmentAprService.setGenParams(params);
+      this.getInvestmentApprovedPgChange();
+    }
+  }
+  getInvestmentApprovedPgChange() {
+    const params = this.investmentAprService.getGenParams();
+    this.SpinnerService.show();
+    this.investmentAprService.getInvestmentApproved(parseInt(this.empId), this.sbu,this.userRole).subscribe(response => {
+      this.SpinnerService.hide();
+      this.investmentInits = response.data;
+      this.totalCount = response.count;
+      this.configs = {
+        currentPage: params.pageIndex,
+        itemsPerPage: params.pageSize,
+        totalItems: this.totalCount,
+      };
+    
+    }, error => {
+      this.SpinnerService.hide();
+      console.log(error);
+    });
+  }
+  resetSearch() {
+    this.searchText = '';
   }
 }

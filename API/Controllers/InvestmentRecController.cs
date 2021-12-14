@@ -154,9 +154,8 @@ namespace API.Controllers
                                                      EmployeeId = i.EmployeeId,
                                                  }
                                   ).Distinct().ToList();
-                    var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
-                    var totalItems = await _investmentInitRepo.CountAsync(countSpec);
-                    return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, totalItems, investmentInitFormRec));
+                    
+                    return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, investmentInitFormRec.Count(), investmentInitFormRec));
                 }
 
                 else
@@ -172,8 +171,9 @@ namespace API.Controllers
                     var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentRecommendedSearch @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
                     var data = _mapper
                         .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
-
-                    return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, 50, data));
+                    var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
+                    var totalItems = await _investmentInitRepo.CountAsync(countSpec);
+                    return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, results.Count(), data));
                 }
             }
             catch (System.Exception e)

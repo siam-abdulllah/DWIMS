@@ -42,10 +42,13 @@ export class InvestmentRecComponent implements OnInit {
   InvestmentInitSearchModalRef: BsModalRef;
   InvestmentRecSearchModalRef: BsModalRef;
   investmentRecs: IInvestmentRec[];
+  investmentInits: IInvestmentInit[];
   investmentTargetedProds: IInvestmentTargetedProd[];
   investmentTargetedGroups: IInvestmentTargetedGroup[];
   investmentDetails: IInvestmentRec[];
   investmentDoctors: IInvestmentDoctor[];
+  searchText = '';
+  configs: any;
   isValid: boolean = false;
   isInvOther: boolean = false;
   isDonationValid: boolean = false;
@@ -67,6 +70,7 @@ export class InvestmentRecComponent implements OnInit {
   totalCount = 0;
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date = new Date();
+  isAdmin: boolean = false;
   empId: string;
   sbu: string;
   investmentDetailsOld: IInvestmentDetailOld[];
@@ -234,11 +238,13 @@ export class InvestmentRecComponent implements OnInit {
     });
   }
   getInvestmentInit() {
+    
     this.SpinnerService.show(); 
     this.investmentRecService.getInvestmentInit(parseInt(this.empId), this.sbu).subscribe(response => {
       this.SpinnerService.hide(); 
-      this.investmentRecs = response.data;     
-      if (this.investmentRecs.length>0) {
+      this.investmentInits = response.data;    
+      
+      if (this.investmentInits.length>0) {
         this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
       }else {
         this.toastr.warning('No Data Found');
@@ -249,11 +255,18 @@ export class InvestmentRecComponent implements OnInit {
     });
   }
   getInvestmentRecommended() {
+    const params = this.investmentRecService.getGenParams();
     this.SpinnerService.show(); 
     this.investmentRecService.getInvestmentRecommended(parseInt(this.empId), this.sbu,this.userRole).subscribe(response => {
       this.SpinnerService.hide();
-      this.investmentRecs = response.data;
-      if (this.investmentRecs.length>0) {
+      this.investmentInits = response.data;
+      this.totalCount = response.count; 
+      this.configs = {
+        currentPage: params.pageIndex,
+        itemsPerPage: params.pageSize,
+        totalItems: this.totalCount,
+      };
+      if (this.investmentInits.length>0) {
         this.openInvestmentRecSearchModal(this.investmentRecSearchModal);
       }
       else {
@@ -480,6 +493,13 @@ export class InvestmentRecComponent implements OnInit {
   getEmployeeId() {
     this.empId = this.accountService.getEmployeeId();
     this.userRole = this.accountService.getUserRole();
+    if(this.userRole=='Administrator')
+    {
+      this.isAdmin=true;
+    }
+    else{
+      this.isAdmin=false;
+    }
     this.investmentRecService.investmentRecCommentFormData.employeeId = parseInt(this.empId);
     this.getEmployeeSbu();
   }
@@ -729,8 +749,14 @@ export class InvestmentRecComponent implements OnInit {
     this.investmentTargetedGroups = [];
     this.investmentDetailsOld = [];
     this.lastFiveInvestmentDetail = [];
+    this.isAdmin = false;
     this.isValid = false;
     this.isInvOther = false;
+    this.configs = {
+      currentPage: 1,
+      itemsPerPage: 10,
+      totalItems: 50,
+    };
   }
   resetForm() {
     this.investmentRecService.investmentRecFormData = new InvestmentInit();
@@ -739,8 +765,14 @@ export class InvestmentRecComponent implements OnInit {
     this.investmentTargetedGroups = [];
     this.investmentDetailsOld = [];
     this.lastFiveInvestmentDetail = [];
+    this.isAdmin = false;
     this.isValid = false;
     this.isInvOther = false;
+    this.configs = {
+      currentPage: 1,
+      itemsPerPage: 10,
+      totalItems: 50,
+    };
   }
 
   removeInvestmentTargetedProd(selectedRecord: IInvestmentTargetedProd) {
@@ -763,6 +795,34 @@ export class InvestmentRecComponent implements OnInit {
         err => { console.log(err); }
       );
     }
+  }
+  onPageChanged(event: any) {
+    const params = this.investmentRecService.getGenParams();
+    if (params.pageIndex !== event) {
+      params.pageIndex = event;
+      this.investmentRecService.setGenParams(params);
+      this.getInvestmentRecommendedPgChange();
+    }
+  }
+  getInvestmentRecommendedPgChange() {
+    const params = this.investmentRecService.getGenParams();
+    this.SpinnerService.show(); 
+    this.investmentRecService.getInvestmentRecommended(parseInt(this.empId), this.sbu,this.userRole).subscribe(response => {
+      this.SpinnerService.hide();
+      this.investmentInits = response.data;
+      this.totalCount = response.count;
+      this.configs = {
+        currentPage: params.pageIndex,
+        itemsPerPage: params.pageSize,
+        totalItems: this.totalCount,
+      };
+     }, error => {
+      this.SpinnerService.hide();
+         console.log(error);
+    });
+  }
+  resetSearch() {
+    this.searchText = '';
   }
 }
 

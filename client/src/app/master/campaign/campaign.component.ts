@@ -74,7 +74,7 @@ export class CampaignComponent implements OnInit {
   }
   getProduct() {
     this.SpinnerService.show();
-    this.masterService.getProduct(this.masterService.campaignMstFormData.brandCode,this.masterService.campaignMstFormData.sbu).subscribe(response => {
+    this.masterService.getProduct(this.masterService.campaignMstFormData.brandCode, this.masterService.campaignMstFormData.sbu).subscribe(response => {
       debugger;
       this.products = response as IProduct[];
     }, error => {
@@ -99,11 +99,13 @@ export class CampaignComponent implements OnInit {
       this.configs = {
         currentPage: params.pageIndex,
         itemsPerPage: params.pageSize,
-        totalItems:this.totalCount,
-        };
+        totalItems: this.totalCount,
+      };
 
       if (this.campaignMsts.length > 0) {
-        this.openCampaignMstSearchModal(this.campaignMstSearchModal);
+        if (params.pageIndex == 1) {
+          this.openCampaignMstSearchModal(this.campaignMstSearchModal);
+        }
       }
       else {
         this.toastr.warning('No Data Found');
@@ -114,7 +116,7 @@ export class CampaignComponent implements OnInit {
     });
   }
 
-  
+
   openCampaignMstSearchModal(template: TemplateRef<any>) {
     this.campaignMstSearchodalRef = this.modalService.show(template, this.config);
   }
@@ -335,17 +337,16 @@ export class CampaignComponent implements OnInit {
   }
 
 
-  onPageChanged(event: any){
+  onPageChanged(event: any) {
     const params = this.masterService.getGenParams();
-    if (params.pageIndex !== event)
-    {
+    if (params.pageIndex !== event) {
       params.pageIndex = event;
       this.masterService.setGenParams(params);
       this.getCampaign();
     }
   }
-  
-  onSearch(){
+
+  onSearch() {
     const params = this.masterService.getGenParams();
     params.search = this.searchTerm.nativeElement.value;
     params.pageIndex = 1;
@@ -353,9 +354,9 @@ export class CampaignComponent implements OnInit {
     this.getCampaign();
   }
 
-  resetSearch(){
+  resetSearch() {
     this.searchText = '';
-}
+  }
 
 
   showProductModal(selectedRecord: ICampaignDtl) {
@@ -386,8 +387,8 @@ export class CampaignComponent implements OnInit {
     this.configs = {
       currentPage: 1,
       itemsPerPage: 10,
-      totalItems:50,
-      };
+      totalItems: 50,
+    };
   }
   resetForm() {
     this.masterService.campaignMstFormData = new CampaignMst();
@@ -399,7 +400,7 @@ export class CampaignComponent implements OnInit {
     this.configs = {
       currentPage: 1,
       itemsPerPage: 10,
-      totalItems:50,
-      };
+      totalItems: 50,
+    };
   }
 }

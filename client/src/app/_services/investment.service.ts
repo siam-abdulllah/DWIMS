@@ -124,6 +124,12 @@ export class InvestmentInitService {
   getInvestmentDetails(investmentInitId: number) {
     return this.http.get(this.baseUrl + 'investment/investmentDetails/' + investmentInitId);
   }
+  getGenParams(){
+    return this.genParams;
+  }
+  setGenParams(genParams: GenericParams) {
+    this.genParams = genParams;
+  }
   getInvestmentInit(empId: number, sbu: string,userRole:string) {
     let params = new HttpParams();
     if (this.genParams.search) {
