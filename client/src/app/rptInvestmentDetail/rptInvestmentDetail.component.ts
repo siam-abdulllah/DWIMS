@@ -1,7 +1,8 @@
 
 import {InvestmentInit, IInvestmentInit, InvestmentDetail, IInvestmentDetail,InvestmentTargetedProd, IInvestmentTargetedProd, InvestmentTargetedGroup, IInvestmentTargetedGroup, IInvestmentDetailOld} from '../shared/models/investment';
-import { InvestmentDoctor, IInvestmentDoctor, InvestmentInstitution, IInvestmentInstitution, InvestmentCampaign, IInvestmentCampaign } from '../shared/models/investment';
+import { InvestmentInstitution, IInvestmentInstitution, InvestmentCampaign, IInvestmentCampaign } from '../shared/models/investment';
 import { InvestmentBcds, IInvestmentBcds, InvestmentSociety, IInvestmentSociety } from '../shared/models/investment';
+import { InvestmentDoctor, IInvestmentDoctor} from '../shared/models/investmentRec';
 import { SubCampaign, ISubCampaign } from '../shared/models/subCampaign';
 import { Donation, IDonation } from '../shared/models/donation';
 import { Doctor, IDoctor } from '../shared/models/docotor';
@@ -9,7 +10,7 @@ import { Institution, IInstitution } from '../shared/models/institution';
 //import { GenericParams } from '../shared/models/genericParams';
 import { Component, ElementRef, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { InvestmentInitService } from '../_services/investment.service';
+import { RptInvestmentDetailService } from '../_services/report-investdetail.service';
 import { FormGroup, NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
@@ -80,7 +81,7 @@ export class RptInvestmentDetailComponent implements OnInit {
     class: 'modal-lg',
     ignoreBackdropClick: true
   };
-  constructor(private accountService: AccountService, public investmentInitService: InvestmentInitService, private router: Router,
+  constructor(private accountService: AccountService, public investmentInitService: RptInvestmentDetailService, private router: Router,
     private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe, private SpinnerService: NgxSpinnerService) { }
   ngOnInit() {
     this.convertedDate = this.datePipe.transform(this.today, 'ddMMyyyy');
@@ -472,8 +473,8 @@ export class RptInvestmentDetailComponent implements OnInit {
   onChangeDoctorInDoc() {
     for (var i = 0; i < this.doctors.length; i++) {
       if (this.doctors[i].id == this.investmentInitService.investmentDoctorFormData.doctorId) {
-        //this.investmentInitService.investmentDoctorFormData.doctorName=this.doctors[i].doctorName;
-        this.investmentInitService.investmentDoctorFormData.doctorCode = this.doctors[i].doctorCode;
+        this.investmentInitService.investmentDoctorFormData.doctorName=this.doctors[i].doctorName;
+        //this.investmentInitService.investmentDoctorFormData.doctorCode = this.doctors[i].doctorCode;
         this.investmentInitService.investmentDoctorFormData.degree = this.doctors[i].degree;
         this.investmentInitService.investmentDoctorFormData.designation = this.doctors[i].designation;
         break;
@@ -484,7 +485,7 @@ export class RptInvestmentDetailComponent implements OnInit {
   onChangeInstitutionInDoc() {
     for (var i = 0; i < this.institutions.length; i++) {
       if (this.institutions[i].id == this.investmentInitService.investmentDoctorFormData.institutionId) {
-        this.investmentInitService.investmentDoctorFormData.address = this.institutions[i].address;
+        //this.investmentInitService.investmentDoctorFormData.address = this.institutions[i].address;
 
         break;
       }
