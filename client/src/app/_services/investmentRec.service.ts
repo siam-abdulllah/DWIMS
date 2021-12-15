@@ -11,6 +11,7 @@ import { BehaviorSubject, ReplaySubject, of, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { GenericParams } from '../shared/models/genericParams';
+import { IInvestmentInitPagination, InvestmentInitPagination } from '../shared/models/investmentPagination';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,8 @@ import { GenericParams } from '../shared/models/genericParams';
 export class InvestmentRecService {
   investmentRecs: IInvestmentRec[]=[];
   investmentRecPagination = new InvestmentRecPagination();
+  investmentInits: IInvestmentInit[]=[];
+  investmentInitPagination = new InvestmentInitPagination();
   investmentRecFormData: InvestmentInit = new InvestmentInit();
   investmentDetailFormData: InvestmentRec = new InvestmentRec();
   investmentRecCommentFormData: InvestmentRecComment = new InvestmentRecComment();
@@ -33,6 +36,12 @@ export class InvestmentRecService {
 
   
   constructor(private http: HttpClient, private router: Router) { }
+  getGenParams(){
+    return this.genParams;
+  }
+  setGenParams(genParams: GenericParams) {
+    this.genParams = genParams;
+  }
   getDonations() {
     return this.http.get(this.baseUrl + 'donation/donationsForInvestment');
   }
@@ -109,18 +118,18 @@ export class InvestmentRecService {
     params = params.append('sort', this.genParams.sort);
     params = params.append('pageIndex', this.genParams.pageIndex.toString());
     params = params.append('pageSize', this.genParams.pageSize.toString());
-    return this.http.get<IInvestmentRecPagination>(this.baseUrl + 'investmentRec/investmentInits/'+empId+'/'+sbu, { observe: 'response', params })
+    return this.http.get<IInvestmentInitPagination>(this.baseUrl + 'investmentRec/investmentInits/'+empId+'/'+sbu, { observe: 'response', params })
     //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
     .pipe(
       map(response => {
-        this.investmentRecs = [...this.investmentRecs, ...response.body.data]; 
-        this.investmentRecPagination = response.body;
-        return this.investmentRecPagination;
+        this.investmentInits = [...this.investmentInits, ...response.body.data]; 
+        this.investmentInitPagination = response.body;
+        return this.investmentInitPagination;
       })
     );
     
   }
-  getInvestmentRecommended(empId:number,sbu:string){    
+  getInvestmentRecommended(empId:number,sbu:string,userRole:string){    
     let params = new HttpParams();
     if (this.genParams.search) {
       params = params.append('search', this.genParams.search);
@@ -128,13 +137,13 @@ export class InvestmentRecService {
     params = params.append('sort', this.genParams.sort);
     params = params.append('pageIndex', this.genParams.pageIndex.toString());
     params = params.append('pageSize', this.genParams.pageSize.toString());
-    return this.http.get<IInvestmentRecPagination>(this.baseUrl + 'investmentRec/investmentRecommended/'+empId+'/'+sbu, { observe: 'response', params })
+    return this.http.get<IInvestmentInitPagination>(this.baseUrl + 'investmentRec/investmentRecommended/'+empId+'/'+sbu+'/'+userRole, { observe: 'response', params })
     //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
     .pipe(
       map(response => {
-        this.investmentRecs = [...this.investmentRecs, ...response.body.data]; 
-        this.investmentRecPagination = response.body;
-        return this.investmentRecPagination;
+        this.investmentInits = [...this.investmentInits, ...response.body.data]; 
+        this.investmentInitPagination = response.body;
+        return this.investmentInitPagination;
       })
     );
     

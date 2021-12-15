@@ -63,10 +63,9 @@ namespace API.Controllers
         #region investmentInit
 
 
-        [HttpGet("investmentInits/{empId}/{sbu}")]
-        public ActionResult<Pagination<InvestmentInitDto>> GetInvestmentInits(int empId, string sbu,
-          [FromQuery] InvestmentInitSpecParams investmentInitParrams,
-          [FromQuery] InvestmentRecCommentSpecParams investmentRecCommentParrams)
+        [HttpGet("investmentInits/{empId}/{sbu}/{userRole}")]
+        public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetInvestmentInits(int empId, string sbu, string userRole,
+          [FromQuery] InvestmentInitSpecParams investmentInitParrams)
         {
             try
             {
@@ -101,20 +100,59 @@ namespace API.Controllers
                 //            }
                 //              ).Distinct().ToList();
                 // var results = _dbContext.Query<InvestmentInitDto>().FromSql("EXECUTE dbo.SP_InvestmentInitSearch {0},{1}", sbu,empId).ToList();
-                List<SqlParameter> parms = new List<SqlParameter>
+                if (userRole == "Administrator")
+                {
+                    
+                    var spec = new InvestmentInitSpecification(investmentInitParrams);
+
+                    var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
+
+                    var totalItems = await _investmentInitRepo.CountAsync(countSpec);
+
+                    var investmentInits = await _investmentInitRepo.ListAsync(spec);
+
+                    //investmentRecCommentParrams.Search = sbu;
+                    //var investmentRecCommentSpec = new InvestmentRecCommentSpecification(investmentRecCommentParrams);
+                    //var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
+
+                    //var data = (from i in investmentInits
+                    //            where i.MarketCode == empData.MarketCode && i.SBU==sbu
+                    //            && !(from rc in investmentRecComments
+                    //                 where rc.RecStatus == "Recommended"
+                    //                 select rc.InvestmentInitId).Contains(i.Id)
+                    //            orderby i.SetOn descending
+                    //            select new InvestmentInitDto
+                    //            {
+                    //                Id = i.Id,
+                    //                ReferenceNo = i.ReferenceNo,
+                    //                ProposeFor = i.ProposeFor,
+                    //                DonationId = i.DonationId,
+                    //                DonationTo = i.DonationTo,
+                    //                EmployeeId = i.EmployeeId
+                    //            }
+                    //              ).Distinct().ToList();
+                    var data = _mapper
+                        .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(investmentInits);
+                    return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, totalItems, data));
+                }
+
+                else
+                {
+                    List<SqlParameter> parms = new List<SqlParameter>
                     {
                         new SqlParameter("@SBU", sbu),
                         new SqlParameter("@EID", empId),
                         new SqlParameter("@RSTATUS", "Recommended")
                     };
-                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentInitSearch @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
+                    var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentInitSearch @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
 
 
-                var data = _mapper
-                    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
+                    var data = _mapper
+                        .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
 
-                //  return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, totalItems, results));
-                return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, 10, data));
+                    //  return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, totalItems, results));
+                    return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, 10, data));
+                }
             }
             catch (System.Exception e)
             {
@@ -1259,8 +1297,8 @@ namespace API.Controllers
                             ",(" +
                             " SELECT AVG(TRY_CONVERT(FLOAT, PrescribedSharePrcnt))" +
                             " FROM ReportInvestmentInfo R" +
-                            " WHERE R.DoctorId = '"+ docId + "'" +
-                            " AND R.MarketCode = '"+ marketCode + "'" +
+                            " WHERE R.DoctorId = '" + docId + "'" +
+                            " AND R.MarketCode = '" + marketCode + "'" +
                             " AND R.DonationType = D.DonationTypeName" +
                             " AND CONVERT(NVARCHAR(6), TRY_CONVERT(DATE, R.FromDate, 103), 112) = CONVERT(NVARCHAR(6), IR.FromDate, 112)" +
                             " ) AS  PrescribedSharePrcnt" +
@@ -1278,9 +1316,9 @@ namespace API.Controllers
                             " INNER JOIN InvestmentInit II ON IRC.InvestmentInitId = II.Id" +
                             " INNER JOIN Donation D ON II.DonationId = D.Id" +
                             " WHERE IRC.RecStatus = 'Approved'" +
-                            " AND CONVERT(DATE, IR.FromDate) <= Cast('"+ convertedDate + "' as date)" +
-                            " AND ID.DoctorId = "+ docId + "" +
-                            " AND II.MarketCode = '"+ marketCode + "'" +
+                            " AND CONVERT(DATE, IR.FromDate) <= Cast('" + convertedDate + "' as date)" +
+                            " AND ID.DoctorId = " + docId + "" +
+                            " AND II.MarketCode = '" + marketCode + "'" +
                             " ORDER BY IR.FromDate DESC";
 
 
@@ -1368,7 +1406,7 @@ namespace API.Controllers
         }
         [HttpGet]
         [Route("getLastFiveInvestmentForBcds/{donationId}/{bcdsId}/{marketCode}/{date}")]
-        public  IReadOnlyList<LastFiveInvestmentInfo> GetLastFiveInvestmentForBcds(int donationId, string bcdsId, string marketCode, string date)
+        public IReadOnlyList<LastFiveInvestmentInfo> GetLastFiveInvestmentForBcds(int donationId, string bcdsId, string marketCode, string date)
         {
             try
             {

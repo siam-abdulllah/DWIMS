@@ -42,7 +42,7 @@ namespace API.Controllers
             IGenericRepository<ApprAuthConfig> apprAuthConfigRepo,
             IGenericRepository<SBUWiseBudget> sbuRepo,
             IGenericRepository<InvestmentTargetedGroup> investmentTargetedGroupRepo,
-            IGenericRepository<InvestmentInit> investmentInitRepo, 
+            IGenericRepository<InvestmentInit> investmentInitRepo,
             IGenericRepository<InvestmentRecProducts> investmentRecProductRepo,
             IGenericRepository<InvestmentRecComment> investmentRecCommentRepo,
             IGenericRepository<InvestmentApr> investmentAprRepo,
@@ -98,24 +98,53 @@ namespace API.Controllers
                 throw e;
             }
         }
-          [HttpGet("investmentApproved/{empId}/{sbu}")]
-        public ActionResult<Pagination<InvestmentInitDto>> GetinvestmentApproved(int empId, string sbu,
-          [FromQuery] InvestmentInitSpecParams investmentInitParrams)
+        [HttpGet("investmentApproved/{empId}/{sbu}/{userRole}")]
+        public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetinvestmentApproved(int empId, string sbu,string userRole,
+        [FromQuery] InvestmentInitSpecParams investmentInitParrams)
         {
             try
             {
-                List<SqlParameter> parms = new List<SqlParameter>
+                if (userRole == "Administrator")
+                {
+
+                    var investmentInits = await _investmentInitRepo.ListAllAsync();
+                    var investmentRecComments = await _investmentRecCommentRepo.ListAllAsync();
+                    //var investmentAprComments = await _investmentAprCommentRepo.ListAllAsync();
+                    var investmentInitFormRec = (from i in investmentInits
+                                                join rc in investmentRecComments on i.Id equals rc.InvestmentInitId
+                                                where rc.RecStatus == "Approved"
+                                                orderby i.ReferenceNo
+                                                select new InvestmentInitDto
+                                                {
+                                                    Id = i.Id,
+                                                    ReferenceNo = i.ReferenceNo,
+                                                    ProposeFor = i.ProposeFor,
+                                                    DonationId = i.DonationId,
+                                                    DonationTo = i.DonationTo,
+                                                    EmployeeId = i.EmployeeId,
+                                                }
+                                                    ).Distinct().ToList();
+                    //var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
+                    //var totalItems = await _investmentInitRepo.CountAsync(countSpec);
+                    return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, investmentInitFormRec.Count(), investmentInitFormRec));
+                }
+
+                else
+                {
+                    List<SqlParameter> parms = new List<SqlParameter>
                     {
                         new SqlParameter("@SBU", sbu),
                         new SqlParameter("@EID", empId),
                         new SqlParameter("@RSTATUS", "Recommended"),
                         new SqlParameter("@ASTATUS", DBNull.Value)
                     };
-                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentApprpvedSearch @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
-                var data = _mapper
-                    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
-
-                return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, 50, data));
+                    var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentApprpvedSearch @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
+                    var data = _mapper
+                        .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
+                    var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
+                    var totalItems = await _investmentInitRepo.CountAsync(countSpec);
+                    return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, results.Count(), data));
+                }
             }
             catch (System.Exception e)
             {
@@ -123,8 +152,8 @@ namespace API.Controllers
             }
         }
 
-          [HttpPost("InsertApr/{empID}/{aprStatus}/{sbu}/{donationId}")]
-          public async Task<ActionResult<InvestmentAprDto>> InsertInvestmentApr(int empId, string aprStatus, string sbu, int donationId, InvestmentAprDto investmentAprDto)
+        [HttpPost("InsertApr/{empID}/{aprStatus}/{sbu}/{donationId}")]
+        public async Task<ActionResult<InvestmentAprDto>> InsertInvestmentApr(int empId, string aprStatus, string sbu, int donationId, InvestmentAprDto investmentAprDto)
         {
             try
             {
@@ -141,7 +170,7 @@ namespace API.Controllers
                         new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
                     };
                     // var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentCeilingCheck @SBU,@DID,@EID,@PRAMOUNT,@ASTATUS", parms.ToArray()).ToList();
-                   // var result = _dbContext.Database.ExecuteSqlRawAsync("EXECUTE SP_InvestmentCeilingCheck @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
+                    // var result = _dbContext.Database.ExecuteSqlRawAsync("EXECUTE SP_InvestmentCeilingCheck @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
                     var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheck @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
                     //var param=parms[6].Value;
                     if (parms[6].Value.ToString() != "True")
@@ -149,18 +178,18 @@ namespace API.Controllers
                     {
                         return BadRequest(new ApiResponse(400, parms[6].Value.ToString()));
                     }
-                   
-                    
-                        var alreadyExistSpec = new InvestmentRecSpecification(investmentAprDto.InvestmentInitId,empId );
-                        var alreadyExistInvestmentAprList = await _investmentRecRepo.ListAsync(alreadyExistSpec);
-                        if (alreadyExistInvestmentAprList.Count > 0)
+
+
+                    var alreadyExistSpec = new InvestmentRecSpecification(investmentAprDto.InvestmentInitId, empId);
+                    var alreadyExistInvestmentAprList = await _investmentRecRepo.ListAsync(alreadyExistSpec);
+                    if (alreadyExistInvestmentAprList.Count > 0)
+                    {
+                        foreach (var v in alreadyExistInvestmentAprList)
                         {
-                            foreach (var v in alreadyExistInvestmentAprList)
-                            {
                             _investmentRecRepo.Delete(v);
                             _investmentRecRepo.Savechange();
-                            }
                         }
+                    }
                     //var invApr = new InvestmentApr
                     //{
                     //    //ReferenceNo = investmentInitDto.ReferenceNo,
@@ -195,7 +224,7 @@ namespace API.Controllers
                         PaymentMethod = investmentAprDto.PaymentMethod,
                         ChequeTitle = investmentAprDto.ChequeTitle,
                         EmployeeId = empId,
-                       // Priority = apprAuthConfigAppr.ApprovalAuthority.Priority,
+                        // Priority = apprAuthConfigAppr.ApprovalAuthority.Priority,
                         Priority = 3,
                         CompletionStatus = true,
                         SetOn = DateTimeOffset.Now
@@ -239,7 +268,8 @@ namespace API.Controllers
                         }
                         _investmentDetailTrackerRepo.Savechange();
                     }
-                    else {
+                    else
+                    {
                         var invDT = new InvestmentDetailTracker
                         {
                             InvestmentInitId = investmentAprDto.InvestmentInitId,
@@ -342,11 +372,11 @@ namespace API.Controllers
 
 
 
-          [HttpPost("InsertAprCom")]
-          public async Task<ActionResult<InvestmentRecCommentDto>> InsertInvestmentAprComment(InvestmentRecCommentDto investmentRecDto)
+        [HttpPost("InsertAprCom")]
+        public async Task<ActionResult<InvestmentRecCommentDto>> InsertInvestmentAprComment(InvestmentRecCommentDto investmentRecDto)
         {
             //var empData = await _employeeRepo.GetByIdAsync(investmentAprDto.EmployeeId);
-           // var investmentInits = await _investmentInitRepo.GetByIdAsync((int)investmentAprDto.InvestmentInitId);
+            // var investmentInits = await _investmentInitRepo.GetByIdAsync((int)investmentAprDto.InvestmentInitId);
 
             // if (investmentInits.SBU == empData.SBU)
             // {

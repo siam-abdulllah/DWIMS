@@ -10,7 +10,7 @@
                                     <h3 class="card-title">Investment Initiation</h3>
                                 </div>
                                 <div class="col-sm-1">
-                                    <button *ngIf="!isSubmitted" class="btn btn-warning btn-lg btn-block" type="button" (click)="confirmSubmission()" [disabled]="investmentInitForm.invalid"><i class="fa fa-save"></i>&nbsp; Submit</button>
+                                    <button *ngIf="!isSubmitted" class="btn btn-warning btn-lg btn-block" type="button" (click)="confirmSubmission()" [disabled]="investmentInitForm.invalid"><i class="fa fa-paper-plane"></i>&nbsp; Submit</button>
                                 </div>
                                 <div class="col-sm-1">
                                     <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="investmentInitForm.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
@@ -31,7 +31,8 @@
                                         <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <select class="form-control" (change)="onChangeProposeFor()" id="proposeFor" [disabled]="isDonationValid && isInvOther" name="proposeFor" #proposeFor="ngModel" [(ngModel)]="investmentInitService.investmentInitFormData.proposeFor" required [class.invalid]="proposeFor.invalid && proposeFor.touched">
+                                        <select class="form-control" (change)="onChangeProposeFor()" id="proposeFor" [disabled]="isDonationValid && isInvOther && !isAdmin" name="proposeFor" #proposeFor="ngModel" [(ngModel)]="investmentInitService.investmentInitFormData.proposeFor" required
+                                            [class.invalid]="proposeFor.invalid && proposeFor.touched">
                                             <option  [ngValue]="null">Select Propose For</option>
                                             <option value="BrandCampaign">Brand Campaign</option>
                                             <option value="Others">Others</option>
@@ -53,7 +54,7 @@
                                         <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <select class="form-control" [disabled]="isInvOther" id="donationId" name="donationId" #donationId="ngModel" [(ngModel)]="investmentInitService.investmentInitFormData.donationId" required [class.invalid]="donationId.invalid && donationId.touched">
+                                        <select class="form-control" [disabled]="isInvOther && !isAdmin" id="donationId" name="donationId" #donationId="ngModel" [(ngModel)]="investmentInitService.investmentInitFormData.donationId" required [class.invalid]="donationId.invalid && donationId.touched">
                                             <option  [ngValue]="null">Select Donation Type</option>
                                             <option *ngFor="let a of donations" [value]="a.id">{{a.donationTypeName}}</option>
                                             <!-- <option value="Donation">Donation</option>
@@ -66,7 +67,8 @@
                                         <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <select class="form-control " (change)="onChangeDonationTo()" [disabled]="isDonationValid && isInvOther" id="donationTo" name="donationTo" #donationTo="ngModel" [(ngModel)]="investmentInitService.investmentInitFormData.donationTo" required [class.invalid]="donationTo.invalid && donationTo.touched">
+                                        <select class="form-control" (change)="onChangeDonationTo()" [disabled]="isDonationValid && isInvOther && !isAdmin" id="donationTo" name="donationTo" #donationTo="ngModel" [(ngModel)]="investmentInitService.investmentInitFormData.donationTo" required
+                                            [class.invalid]="donationTo.invalid && donationTo.touched">
                                             <option  [ngValue]="null">Select Donation To</option>
                                             <option value="Doctor">Doctor</option>
                                             <option value="Institution">Institution</option>
@@ -95,9 +97,9 @@
                                         <div class="col-md-3">
                                             <input class="form-control" id="id" name="id" #id="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.id" readonly style="display: none;">
                                             <input class="form-control" id="investmentInitId" name="investmentInitId" #investmentInitId="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.investmentInitId" readonly style="display: none;">
-                                            <!-- <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="doctors" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" (change)="onChangeDoctorInDoc()" id="doctorId" name="doctorId" #doctorId="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.doctorId">
+                                            <!-- <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="doctors" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" (change)="onChangeDoctorInDoc()" id="doctorId" name="doctorId" #doctorId="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.doctorId">
                                             </ng-select> -->
-                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="doctors" [searchFn]="customSearchFnDoc" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" (change)="onChangeDoctorInDoc()" id="doctorId" name="doctorId" #doctorId="ngModel"
+                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="doctors" [searchFn]="customSearchFnDoc" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" (change)="onChangeDoctorInDoc()" id="doctorId" name="doctorId" #doctorId="ngModel"
                                                 [(ngModel)]="investmentInitService.investmentDoctorFormData.doctorId">
                                                 <ng-template ng-label-tmp let-item="item">
                                                     <span [ngOptionHighlight]="search">{{ item.doctorCode}} - {{ item.doctorName}}</span>
@@ -139,11 +141,11 @@
                                             <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-3">
-                                            <!-- <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="institutions" bindLabel="institutionName" bindValue="id" placeholder="Select Institution" (change)="onChangeInstitutionInDoc()" id="institutionId" name="institutionId" #institutionId="ngModel"
+                                            <!-- <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="institutions" bindLabel="institutionName" bindValue="id" placeholder="Select Institution" (change)="onChangeInstitutionInDoc()" id="institutionId" name="institutionId" #institutionId="ngModel"
                                                 [(ngModel)]="investmentInitService.investmentDoctorFormData.institutionId">
                                             </ng-select> -->
-                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="institutions" [searchFn]="customSearchFnIns" bindLabel="institutionName" bindValue="id" placeholder="Select Institution" (change)="onChangeInstitutionInDoc()" id="institutionId" name="institutionId"
-                                                #institutionId="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.institutionId">
+                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="institutions" [searchFn]="customSearchFnIns" bindLabel="institutionName" bindValue="id" placeholder="Select Institution" (change)="onChangeInstitutionInDoc()" id="institutionId"
+                                                name="institutionId" #institutionId="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.institutionId">
                                                 <ng-template ng-label-tmp let-item="item">
                                                     <span [ngOptionHighlight]="search">{{ item.institutionCode}} - {{ item.institutionName}}</span>
                                                 </ng-template>
@@ -157,7 +159,7 @@
                                             <label>Doctor Category</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <select class="form-control" [disabled]="isInvOther" name="doctorCategory" id="doctorCategory" #donationId="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.doctorCategory">
+                                            <select class="form-control" [disabled]="isInvOther && !isAdmin" name="doctorCategory" id="doctorCategory" #donationId="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.doctorCategory">
                                             <option  [ngValue]="null">Select Doctor Category</option>
                                             <option value="Regular">Regular</option>
                                                 <option value="Migratory">Mirgratory</option>
@@ -177,7 +179,7 @@
                                             <label>Doctor Type</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <select class="form-control" [disabled]="isInvOther" name="doctorType" id="doctorType" #doctorType="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.doctorType">
+                                            <select class="form-control" [disabled]="isInvOther && !isAdmin" name="doctorType" id="doctorType" #doctorType="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.doctorType">
                                             <option  [ngValue]="null">Select Doctor Type</option>
                                                  <option value="A">A</option>
                                                 <option value="B">B</option>
@@ -192,14 +194,15 @@
                                             <label>No. Of Prac. Day/ Month</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <input class="form-control" [disabled]="isInvOther" name="practiceDayPerMonth" id="practiceDayPerMonth" name="practiceDayPerMonth" #practiceDayPerMonth="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.practiceDayPerMonth" [pattern]="numberPattern">
+                                            <input class="form-control" [disabled]="isInvOther && !isAdmin" name="practiceDayPerMonth" id="practiceDayPerMonth" name="practiceDayPerMonth" #practiceDayPerMonth="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.practiceDayPerMonth"
+                                                [pattern]="numberPattern">
                                             <div class="invalid-feedback" *ngIf="practiceDayPerMonth.errors?.pattern">Only numeric value</div>
                                         </div>
                                         <div class="col-md-2">
                                             <label>No. Of Patients Day</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <input class="form-control" [disabled]="isInvOther" name="patientsPerDay" id="patientsPerDay" name="patientsPerDay" #patientsPerDay="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.patientsPerDay" [pattern]="numberPattern">
+                                            <input class="form-control" [disabled]="isInvOther && !isAdmin" name="patientsPerDay" id="patientsPerDay" name="patientsPerDay" #patientsPerDay="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.patientsPerDay" [pattern]="numberPattern">
                                             <div class="invalid-feedback" *ngIf="patientsPerDay.errors?.pattern">Only numeric value</div>
                                         </div>
                                     </div>
@@ -210,10 +213,10 @@
                                             <!-- <h6 class=""><strong>Doctor Profile</strong></h6> -->
                                         </div>
                                         <div class="col-sm-2"></div>
-                                        <div class="col-sm-2" *ngIf="isValid && !isInvOther">
+                                        <div class="col-sm-2" *ngIf="(isValid && isAdmin) || (isValid && !isInvOther)">
                                             <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentDoctor()"><i class="fa fa-save"></i>&nbsp; Save</button>
                                         </div>
-                                        <div class="col-sm-2" *ngIf="isValid && !isInvOther">
+                                        <div class="col-sm-2" *ngIf="(isValid && isAdmin) || (isValid && !isInvOther)">
                                             <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentDoctor()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
                                         </div>
                                     </div>
@@ -234,8 +237,8 @@
                                             <!-- <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="institutions" bindLabel="institutionName" bindValue="id" placeholder="Select Institution" (change)="onChangeInstitutionInInst()" name="institutionId" id="institutionId" name="institutionId"
                                                 #institutionId="ngModel" [(ngModel)]="investmentInitService.investmentInstitutionFormData.institutionId">
                                             </ng-select> -->
-                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="institutions" [searchFn]="customSearchFnIns" bindLabel="institutionName" bindValue="id" placeholder="Select Institution" (change)="onChangeInstitutionInInst()" name="institutionId" id="institutionId"
-                                                name="institutionId" #institutionId="ngModel" [(ngModel)]="investmentInitService.investmentInstitutionFormData.institutionId">
+                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="institutions" [searchFn]="customSearchFnIns" bindLabel="institutionName" bindValue="id" placeholder="Select Institution" (change)="onChangeInstitutionInInst()" name="institutionId"
+                                                id="institutionId" name="institutionId" #institutionId="ngModel" [(ngModel)]="investmentInitService.investmentInstitutionFormData.institutionId">
                                                 <ng-template ng-label-tmp let-item="item">
                                                     <span [ngOptionHighlight]="search">{{ item.institutionCode}} - {{ item.institutionName}}</span>
                                                 </ng-template>
@@ -250,9 +253,9 @@
                                             <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-3">
-                                            <!-- <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="doctors" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="responsibleDoctorId" id="responsibleDoctorId" #responsibleDoctorId="ngModel" [(ngModel)]="investmentInitService.investmentInstitutionFormData.responsibleDoctorId">
+                                            <!-- <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="doctors" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="responsibleDoctorId" id="responsibleDoctorId" #responsibleDoctorId="ngModel" [(ngModel)]="investmentInitService.investmentInstitutionFormData.responsibleDoctorId">
                                             </ng-select> -->
-                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="doctors" [searchFn]="customSearchFnDoc" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="responsibleDoctorId" id="responsibleDoctorId" #responsibleDoctorId="ngModel"
+                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="doctors" [searchFn]="customSearchFnDoc" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="responsibleDoctorId" id="responsibleDoctorId" #responsibleDoctorId="ngModel"
                                                 [(ngModel)]="investmentInitService.investmentInstitutionFormData.responsibleDoctorId">
                                                 <ng-template ng-label-tmp let-item="item">
                                                     <span [ngOptionHighlight]="search">{{ item.doctorCode}} - {{ item.doctorName}}</span>
@@ -286,14 +289,14 @@
                                             <label>No. Of Bed</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <input class="form-control" [disabled]="isInvOther" name="noOfBed" id="noOfBed" #noOfBed="ngModel" [(ngModel)]="investmentInitService.investmentInstitutionFormData.noOfBed" [pattern]="numberPattern">
+                                            <input class="form-control" [disabled]="isInvOther && !isAdmin" name="noOfBed" id="noOfBed" #noOfBed="ngModel" [(ngModel)]="investmentInitService.investmentInstitutionFormData.noOfBed" [pattern]="numberPattern">
                                             <div class="invalid-feedback" *ngIf="noOfBed.errors?.pattern">Only numeric value</div>
                                         </div>
                                         <div class="col-md-2">
                                             <label>Department/ Unit</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <input class="form-control" maxlength="100" [disabled]="isInvOther" name="departmentUnit" id="departmentUnit" #departmentUnit="ngModel" [(ngModel)]="investmentInitService.investmentInstitutionFormData.departmentUnit">
+                                            <input class="form-control" maxlength="100" [disabled]="isInvOther && !isAdmin" name="departmentUnit" id="departmentUnit" #departmentUnit="ngModel" [(ngModel)]="investmentInitService.investmentInstitutionFormData.departmentUnit">
                                         </div>
                                     </div>
                                 </div>
@@ -303,10 +306,10 @@
                                             <!-- <h6 class=""><strong>Institution Profile</strong></h6> -->
                                         </div>
                                         <div class="col-sm-2"></div>
-                                        <div class="col-sm-2" *ngIf="isValid && !isInvOther">
+                                        <div class="col-sm-2" *ngIf="(isValid && isAdmin) || (isValid && !isInvOther)">
                                             <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentInstitution()"><i class="fa fa-save"></i>&nbsp; Save</button>
                                         </div>
-                                        <div class="col-sm-2" *ngIf="isValid && !isInvOther">
+                                        <div class="col-sm-2" *ngIf="(isValid && isAdmin) || (isValid && !isInvOther)">
                                             <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentInstitution()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
                                         </div>
                                         <!-- <div class="col-sm-2" *ngIf="isValid">
@@ -325,10 +328,10 @@
                                             <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-3">
-                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="campaignMsts" bindLabel="campaignName" bindValue="id" placeholder="Select Campaign" (change)="onChangeCampaignInCamp()" name="campaignMstId" id="campaignMstId" #campaignMstId="ngModel"
+                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="campaignMsts" bindLabel="campaignName" bindValue="id" placeholder="Select Campaign" (change)="onChangeCampaignInCamp()" name="campaignMstId" id="campaignMstId" #campaignMstId="ngModel"
                                                 [(ngModel)]="investmentInitService.investmentCampaignFormData.campaignMstId">
                                             </ng-select>
-                                            <!-- <select class="form-control " (change)="onChangeCampaignInCamp()" name="campaignMstId" id="campaignMstId" #campaignMstId="ngModel" [(ngModel)]="investmentInitService.investmentCampaignFormData.campaignMstId">
+                                            <!-- <select class="form-control" (change)="onChangeCampaignInCamp()" name="campaignMstId" id="campaignMstId" #campaignMstId="ngModel" [(ngModel)]="investmentInitService.investmentCampaignFormData.campaignMstId">
                                                 <option  [ngValue]="null">Select Campaign</option>
                                                 <option *ngFor="let a of campaignMsts" [value]="a.id">{{a.campaignName}}</option>
                                             </select> -->
@@ -338,10 +341,10 @@
                                             <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-3">
-                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="campaignDtls" bindLabel="subCampaign.subCampaignName" bindValue="id" placeholder="Select Sub-Campaign" (change)="onChangeSubCampaignInCamp()" name="campaignDtlId" id="campaignDtlId" #campaignDtlId="ngModel"
-                                                [(ngModel)]="investmentInitService.investmentCampaignFormData.campaignDtlId">
+                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="campaignDtls" bindLabel="subCampaign.subCampaignName" bindValue="id" placeholder="Select Sub-Campaign" (change)="onChangeSubCampaignInCamp()" name="campaignDtlId" id="campaignDtlId"
+                                                #campaignDtlId="ngModel" [(ngModel)]="investmentInitService.investmentCampaignFormData.campaignDtlId">
                                             </ng-select>
-                                            <!-- <select class="form-control " (change)="onChangeSubCampaignInCamp()" name="campaignDtlId" id="campaignDtlId" #campaignDtlId="ngModel" [(ngModel)]="investmentInitService.investmentCampaignFormData.campaignDtlId">
+                                            <!-- <select class="form-control" (change)="onChangeSubCampaignInCamp()" name="campaignDtlId" id="campaignDtlId" #campaignDtlId="ngModel" [(ngModel)]="investmentInitService.investmentCampaignFormData.campaignDtlId">
                                                     <option  [ngValue]="null">Select Sub-Campaign</option>
                                                     <option *ngFor="let a of campaignDtls" [value]="a.id">{{a.subCampaign.subCampaignName}}</option>
                                                 </select> -->
@@ -371,9 +374,9 @@
                                             <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-3">
-                                            <!-- <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="doctors" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="doctorId" id="doctorId" #doctorId="ngModel" [(ngModel)]="investmentInitService.investmentCampaignFormData.doctorId">
+                                            <!-- <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="doctors" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="doctorId" id="doctorId" #doctorId="ngModel" [(ngModel)]="investmentInitService.investmentCampaignFormData.doctorId">
                                             </ng-select> -->
-                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="doctors" [searchFn]="customSearchFnDoc" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="doctorId" id="doctorId" #doctorId="ngModel" [(ngModel)]="investmentInitService.investmentCampaignFormData.doctorId">
+                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="doctors" [searchFn]="customSearchFnDoc" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="doctorId" id="doctorId" #doctorId="ngModel" [(ngModel)]="investmentInitService.investmentCampaignFormData.doctorId">
                                                 <ng-template ng-label-tmp let-item="item">
                                                     <span [ngOptionHighlight]="search">{{ item.doctorCode}} - {{ item.doctorName}}</span>
                                                 </ng-template>
@@ -389,11 +392,11 @@
                                         <div class="col-md-3">
                                             <input class="form-control" id="id" name="id" #id="ngModel" [(ngModel)]="investmentInitService.investmentCampaignFormData.id" readonly style="display: none;">
                                             <input class="form-control" id="investmentInitId" name="investmentInitId" #investmentInitId="ngModel" [(ngModel)]="investmentInitService.investmentCampaignFormData.investmentInitId" readonly style="display: none;">
-                                            <!-- <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="institutions" bindLabel="institutionName" bindValue="id" placeholder="Select Institution" (change)="onChangeInstitutionInInst()" name="institutionId" id="institutionId" #institutionId="ngModel"
+                                            <!-- <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="institutions" bindLabel="institutionName" bindValue="id" placeholder="Select Institution" (change)="onChangeInstitutionInInst()" name="institutionId" id="institutionId" #institutionId="ngModel"
                                                 [(ngModel)]="investmentInitService.investmentCampaignFormData.institutionId">
                                             </ng-select> -->
-                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="institutions" [searchFn]="customSearchFnIns" bindLabel="institutionName" bindValue="id" placeholder="Select Institution" (change)="onChangeInstitutionInInst()" name="institutionId" id="institutionId"
-                                                #institutionId="ngModel" [(ngModel)]="investmentInitService.investmentCampaignFormData.institutionId">
+                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="institutions" [searchFn]="customSearchFnIns" bindLabel="institutionName" bindValue="id" placeholder="Select Institution" (change)="onChangeInstitutionInInst()" name="institutionId"
+                                                id="institutionId" #institutionId="ngModel" [(ngModel)]="investmentInitService.investmentCampaignFormData.institutionId">
                                                 <ng-template ng-label-tmp let-item="item">
                                                     <span [ngOptionHighlight]="search">{{ item.institutionCode}} - {{ item.institutionName}}</span>
                                                 </ng-template>
@@ -430,11 +433,11 @@
                                             <!-- <h6 class=""><strong>Campaign Info</strong></h6> -->
                                         </div>
                                         <div class="col-sm-2"></div>
-                                        <div class="col-sm-2" *ngIf="isValid && !isInvOther">
+                                        <div class="col-sm-2" *ngIf="(isValid && isAdmin) || (isValid && !isInvOther)">
                                             <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentCampaign()"><i class="fa fa-save"></i>&nbsp; Save</button>
                                         </div>
-                                        <div class="col-sm-2" *ngIf="isValid && !isInvOther">
-                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentCampaign()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
+                                        <div class="col-sm-2" *ngIf="(isValid && isAdmin) || (isValid && !isInvOther)">
+                                            <button class=" btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentCampaign()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
                                         </div>
 
                                     </div>
@@ -451,10 +454,10 @@
                                         </div>
                                         <div class="col-md-3">
                                             <input class="form-control" id="id" name="id" #id="ngModel" [(ngModel)]="investmentInitService.investmentBcdsFormData.id" readonly style="display: none;">
-                                            <input class="form-control" id="investmentInitId" name="investmentInitId" #investmentInitId="ngModel" [(ngModel)]="investmentInitService.investmentBcdsFormData.investmentInitId" readonly style="display: none;">
-                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="bcds" bindLabel="bcdsName" bindValue="id" placeholder="Select Bcds" (change)="onChangeBcdsInBcds()" name="bcdsId" id="bcdsId" #bcdsId="ngModel" [(ngModel)]="investmentInitService.investmentBcdsFormData.bcdsId">
+                                            <input class="form-control" id="investmentInitId" name="investmentInitId" #investmentInitId="ngModel" [(ngModel)]="investmentInitService.investmentBcdsFormData.investmentInitId" readonly style="display:none;">
+                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="bcds" bindLabel="bcdsName" bindValue="id" placeholder="Select Bcds" (change)="onChangeBcdsInBcds()" name="bcdsId" id="bcdsId" #bcdsId="ngModel" [(ngModel)]="investmentInitService.investmentBcdsFormData.bcdsId">
                                             </ng-select>
-                                            <!-- <select class="form-control " (change)="onChangeBcdsInBcds()" name="bcdsId" id="bcdsId" #bcdsId="ngModel" [(ngModel)]="investmentInitService.investmentBcdsFormData.bcdsId">
+                                            <!-- <select class="form-control" (change)="onChangeBcdsInBcds()" name="bcdsId" id="bcdsId" #bcdsId="ngModel" [(ngModel)]="investmentInitService.investmentBcdsFormData.bcdsId">
                                                 <option  [ngValue]="null">Select Bcds</option>
                                                 <option *ngFor="let a of bcds" [value]="a.id">{{a.bcdsName}}</option>
                                             </select> -->
@@ -465,9 +468,10 @@
                                         </div>
                                         <div class="col-md-3">
 
-                                            <!-- <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="doctors" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="responsibleDoctorIdBcds" id="responsibleDoctorIdBcds" #responsibleDoctorIdBcds="ngModel" [(ngModel)]="investmentInitService.investmentBcdsFormData.responsibleDoctorId">
+                                            <!-- <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="doctors" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="responsibleDoctorIdBcds" id="responsibleDoctorIdBcds
+                                        " #responsibleDoctorIdBcds="ngModel" [(ngModel)]="investmentInitService.investmentBcdsFormData.responsibleDoctorId">
                                             </ng-select> -->
-                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="doctors" [searchFn]="customSearchFnDoc" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="responsibleDoctorIdBcds" id="responsibleDoctorIdBcds" #responsibleDoctorIdBcds="ngModel"
+                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="doctors" [searchFn]="customSearchFnDoc" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="responsibleDoctorIdBcds" id="responsibleDoctorIdBcds" #responsibleDoctorIdBcds="ngModel"
                                                 [(ngModel)]="investmentInitService.investmentBcdsFormData.responsibleDoctorId">
                                                 <ng-template ng-label-tmp let-item="item">
                                                     <span [ngOptionHighlight]="search">{{ item.doctorCode}} - {{ item.doctorName}}</span>
@@ -501,10 +505,10 @@
                                             <!-- <h6 class=""><strong>BCDS</strong></h6> -->
                                         </div>
                                         <div class="col-sm-2"></div>
-                                        <div class="col-sm-2" *ngIf="isValid && !isInvOther">
+                                        <div class="col-sm-2" *ngIf="(isValid && isAdmin) || (isValid && !isInvOther)">
                                             <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentBcds()"><i class="fa fa-save"></i>&nbsp; Save</button>
                                         </div>
-                                        <div class="col-sm-2" *ngIf="isValid && !isInvOther">
+                                        <div class="col-sm-2" *ngIf="(isValid && isAdmin) || (isValid && !isInvOther)">
                                             <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentBcds()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
                                         </div>
                                     </div>
@@ -521,10 +525,10 @@
                                         </div>
                                         <div class="col-md-3">
                                             <input class="form-control" id="id" name="id" #id="ngModel" [(ngModel)]="investmentInitService.investmentSocietyFormData.id" readonly style="display: none;">
-                                            <input class="form-control" id="investmentInitId" name="investmentInitId" #investmentInitId="ngModel" [(ngModel)]="investmentInitService.investmentSocietyFormData.investmentInitId" readonly style="display: none;">
-                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="society" bindLabel="societyName" bindValue="id" placeholder="Select Society" (change)="onChangeSocietyInSociety()" name="societyId" id="societyId" #societyId="ngModel" [(ngModel)]="investmentInitService.investmentSocietyFormData.societyId">
+                                            <input class="form-control" id="investmentInitId" name="investmentInitId" #investmentInitId="ngModel" [(ngModel)]="investmentInitService.investmentSocietyFormData.investmentInitId" readonly style="display:none;">
+                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="society" bindLabel="societyName" bindValue="id" placeholder="Select Society" (change)="onChangeSocietyInSociety()" name="societyId" id="societyId" #societyId="ngModel" [(ngModel)]="investmentInitService.investmentSocietyFormData.societyId">
                                             </ng-select>
-                                            <!-- <select class="form-control " (change)="onChangeSocietyInSociety()" name="societyId" id="societyId" #societyId="ngModel" [(ngModel)]="investmentInitService.investmentSocietyFormData.societyId">
+                                            <!-- <select class="form-control" (change)="onChangeSocietyInSociety()" name="societyId" id="societyId" #societyId="ngModel" [(ngModel)]="investmentInitService.investmentSocietyFormData.societyId">
                                                 <option  [ngValue]="null">Select Society</option>
                                                 <option *ngFor="let a of society" [value]="a.id">{{a.societyName}}</option>
                                             </select> -->
@@ -534,9 +538,10 @@
                                             <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-3">
-                                            <!-- <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="doctors" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="responsibleDoctorIdSoc" id="responsibleDoctorIdSoc" #responsibleDoctorIdSoc="ngModel" [(ngModel)]="investmentInitService.investmentSocietyFormData.responsibleDoctorId">
+                                            <!-- <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="doctors" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="responsibleDoctorIdSoc" id="responsibleDoctorIdSoc
+                                        " #responsibleDoctorIdSoc="ngModel" [(ngModel)]="investmentInitService.investmentSocietyFormData.responsibleDoctorId">
                                             </ng-select> -->
-                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="doctors" [searchFn]="customSearchFnDoc" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="responsibleDoctorIdSoc" id="responsibleDoctorIdSoc" #responsibleDoctorIdSoc="ngModel"
+                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="doctors" [searchFn]="customSearchFnDoc" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="responsibleDoctorIdSoc" id="responsibleDoctorIdSoc" #responsibleDoctorIdSoc="ngModel"
                                                 [(ngModel)]="investmentInitService.investmentSocietyFormData.responsibleDoctorId">
                                                 <ng-template ng-label-tmp let-item="item">
                                                     <span [ngOptionHighlight]="search">{{ item.doctorCode}} - {{ item.doctorName}}</span>
@@ -570,10 +575,10 @@
                                             <!-- <h6 class=""><strong>Society</strong></h6> -->
                                         </div>
                                         <div class="col-sm-2"></div>
-                                        <div class="col-sm-2" *ngIf="isValid && !isInvOther">
+                                        <div class="col-sm-2" *ngIf="(isValid && isAdmin) || (isValid && !isInvOther)">
                                             <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentSociety()"><i class="fa fa-save"></i>&nbsp; Save</button>
                                         </div>
-                                        <div class="col-sm-2" *ngIf="isValid && !isInvOther">
+                                        <div class="col-sm-2" *ngIf="(isValid && isAdmin) || (isValid && !isInvOther)">
                                             <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentSociety()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
                                         </div>
 
@@ -587,7 +592,7 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <table class="table  table-bordered">
+                                                <table class="table table-bordered">
                                                     <tr class="HeaderRow">
                                                         <td>Donation</td>
                                                         <td>Investment</td>
@@ -627,7 +632,7 @@
                                                         <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" [disabled]="isInvOther" placeholder="Amount" name="proposedAmount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.proposedAmount" [pattern]="numberPattern">
+                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" placeholder="Amount" name="proposedAmount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.proposedAmount" [pattern]="numberPattern">
                                                         <div class="invalid-feedback" *ngIf="proposedAmount.errors?.pattern">Only numeric value</div>
                                                     </div>
                                                 </div>
@@ -639,7 +644,7 @@
                                                         <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" [disabled]="isInvOther" placeholder="Purpose" name="purpose" id="purpose" #purpose="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.purpose" maxLength="100">
+                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" placeholder="Purpose" name="purpose" id="purpose" #purpose="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.purpose" maxLength="100">
                                                         <div class="invalid-feedback" *ngIf="purpose.errors?.maxLength">Maximum 100 Character long</div>
                                                     </div>
                                                 </div>
@@ -651,11 +656,11 @@
                                                         <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input class="form-control" [disabled]="isInvOther" placeholder="Calender" (onHidden)="changeDateInDetail()" name="fromDate" #fromDate="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched"
+                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" placeholder="Calender" (onHidden)="changeDateInDetail()" name="fromDate" #fromDate="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched"
                                                             [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentInitForm)">
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input class="form-control" [disabled]="isInvOther" placeholder="Calender" (onHidden)="changeDateInDetail()" name="toDate" #toDate="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched"
+                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" placeholder="Calender" (onHidden)="changeDateInDetail()" name="toDate" #toDate="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched"
                                                             [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentInitForm)">
 
                                                     </div>
@@ -677,7 +682,7 @@
                                                         <label>All SBU </label>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <input class="form-control" [disabled]="isInvOther" name="commitmentAllSBU" id="commitmentAllSBU" #commitmentAllSBU="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.commitmentAllSBU" [pattern]="numberPattern">
+                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" name="commitmentAllSBU" id="commitmentAllSBU" #commitmentAllSBU="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.commitmentAllSBU" [pattern]="numberPattern">
                                                         <div class="invalid-feedback" *ngIf="commitmentAllSBU.errors?.pattern">Only numeric value</div>
                                                     </div>
                                                     <div class="col-md-1">
@@ -687,7 +692,7 @@
                                                         <label>Own SBU</label>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <input class="form-control" [disabled]="isInvOther" name="commitmentOwnSBU" id="commitmentOwnSBU" #commitmentOwnSBU="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.commitmentOwnSBU" [pattern]="numberPattern">
+                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" name="commitmentOwnSBU" id="commitmentOwnSBU" #commitmentOwnSBU="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.commitmentOwnSBU" [pattern]="numberPattern">
                                                         <div class="invalid-feedback" *ngIf="commitmentOwnSBU.errors?.pattern">Only numeric value</div>
                                                     </div>
                                                     <div class="col-md-1">
@@ -701,7 +706,7 @@
                                                         <label>Payment Method</label>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <select class="form-control" [disabled]="isInvOther" name="paymentMethod" id="paymentMethod" #paymentMethod="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.paymentMethod">
+                                                        <select class="form-control" [disabled]="isInvOther && !isAdmin" name="paymentMethod" id="paymentMethod" #paymentMethod="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.paymentMethod">
                                                         
                                                             <option  [ngValue]="null">Select Payment Method</option>
                                                             <option value="Cash">Cash</option>
@@ -719,7 +724,7 @@
                                                         <label>Cheque Title</label>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" maxlength="100" [disabled]="isInvOther" placeholder="Cheque Title" name="chequeTitle" id="chequeTitle" #chequeTitle="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.chequeTitle">
+                                                        <input class="form-control" maxlength="100" [disabled]="isInvOther && !isAdmin" placeholder="Cheque Title" name="chequeTitle" id="chequeTitle" #chequeTitle="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.chequeTitle">
                                                     </div>
                                                 </div>
                                             </div>
@@ -732,7 +737,7 @@
                                             <!-- <h6 class=""><strong>Investment Details</strong></h6> -->
                                         </div>
                                         <div class="col-sm-2"></div>
-                                        <div class="col-sm-2" *ngIf="isValid && !isInvOther">
+                                        <div class="col-sm-2" *ngIf="(isValid && isAdmin) || (isValid && !isInvOther)">
                                             <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentDetails()"><i class="fa fa-save"></i>&nbsp; Save</button>
                                         </div>
                                         <!-- <div class="col-sm-2" *ngIf="isValid">
@@ -768,7 +773,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <table class="table  table-bordered">
+                                    <table class="table table-bordered">
                                         <tr class="HeaderRow">
                                             <!-- <td>Product Code</td> -->
                                             <td>Product Name</td>
@@ -809,30 +814,32 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="row" *ngIf="!isInvOther">
+                                    <!-- <div class="row" *ngIf="!isInvOther"> -->
+                                    <div class="row">
                                         <div class="col-md-2">
                                             <label>Group</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="marketGroupMsts" bindLabel="groupName" bindValue="id" placeholder="Market Group" id="marketGroupMstId" name="marketGroupMstId" #marketGroupMstId="ngModel" (change)="onChangeMarketGroupInTargetedGroup()"
+                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="marketGroupMsts" bindLabel="groupName" bindValue="id" placeholder="Market Group" id="marketGroupMstId" name="marketGroupMstId" #marketGroupMstId="ngModel" (change)="onChangeMarketGroupInTargetedGroup()"
                                                 [(ngModel)]="investmentInitService.investmentTargetedGroupFormData.marketGroupMstId" [class.invalid]="marketGroupMstId.invalid && marketGroupMstId.touched">
                                             </ng-select>
-                                            <!-- <select class="form-control" id="marketGroupMstId" name="marketGroupMstId" #marketGroupMstId="ngModel" (change)="onChangeMarketGroupInTargetedGroup()" [(ngModel)]="investmentInitService.investmentTargetedGroupFormData.marketGroupMstId" [class.invalid]="marketGroupMstId.invalid && marketGroupMstId.touched">                              
+                                            <!-- <select class="form-control" id="marketGroupMstId" name="marketGroupMstId" #marketGroupMstId="ngModel" (change)="onChangeMarketGroupInTargetedGroup()" [(ngModel)]="investmentInitService.investmentTargetedGroupFormData.marketGroupMstId
+                                       " [class.invalid]="marketGroupMstId.invalid && marketGroupMstId.touched">                              
                                                 <option  [ngValue]="null">Select Market Group</option>
                                                 <option *ngFor="let a of marketGroupMsts" [value]="a.id">{{a.groupName}}</option>                                        
                                     </select> -->
                                         </div>
                                         <div class="col-md-3"></div>
-                                        <div class="col-md-2" *ngIf="isValid && !isInvOther">
+                                        <div class="col-md-2" *ngIf="(isValid && isAdmin) || (isValid && !isInvOther)">
                                             <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentTargetedGroup()"><i class="fa fa-save"></i>&nbsp; Save</button>
                                         </div>
-                                        <div class="col-md-2" *ngIf="isValid && !isInvOther">
+                                        <div class="col-md-2" *ngIf="(isValid && isAdmin) || (isValid && !isInvOther)">
                                             <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentTargetedGroup()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <table class="table  table-bordered">
+                                    <table class="table table-bordered">
                                         <tr class="HeaderRow">
                                             <td>Market Group Name</td>
                                             <td>Market Code</td>
@@ -855,8 +862,8 @@
                                                 {{a.sbuName}}
                                             </td>
                                             <td>
-                                                <span *ngIf="a.completionStatus === false || undefined || ''">Pending</span>
-                                                <span *ngIf="a.completionStatus === true ''">Recommended</span>
+                                                <span *ngIf="a.completionStatus===false || undefined || ''">Pending</span>
+                                                <span *ngIf="a.completionStatus===true || ''">Recommended</span>
                                             </td>
                                             <!-- <td>
                                                 <input type="button" (click)="removeInvestmentTargetedProd(a)" value="Remove">
@@ -882,32 +889,49 @@
     <div class="modal-body" style="padding: 20px 30px 20px 30px;">
         <div class="row">
             <div class="col-md-12">
-                <div class="table-responsive" style="border: 1px solid #bed2c9; width: 100%;">
-                    <table class="table table-bordered table-responsive table-hover table-striped">
-                        <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));">
-                            <tr class="HeaderRow">
-                                <th scope="col" style="width: 7%">Action</th>
-                                <th scope="col" style="width: 0;display:none;">Id</th>
-                                <th scope="col" style="width: 9%">Reference No</th>
-                                <th scope="col" style="width: 8%">Propose For</th>
-                                <th scope="col" style="width: 8%">Donation Type</th>
-                                <th scope="col" style="width: 8%">Donation To</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let a of investmentInits">
-                                <td>
-                                    <button class="btn btn-sm btn-embossed btn-success" (click)="selectInvestmentInit(a)">Select</button>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-2">
+                        </div>
+                        <div class="col-md-6">
+                            <input name="filterText" class="form-control m-input Searchbox" type="text" [(ngModel)]="searchText" placeholder="Search..">
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-danger" type="button" (click)="resetSearch()"><i class="fa fa-undo"></i>&nbsp; Reset</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive" style="border: 1px solid #bed2c9; width: 100%;">
+                            <table class="table table-bordered table-responsive table-hover table-striped">
+                                <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));">
+                                    <tr class="HeaderRow">
+                                        <th scope="col" style="width: 7%">Action</th>
+                                        <th scope="col" style="width: 0;display:none;">Id</th>
+                                        <th scope="col" style="width: 9%">Reference No</th>
+                                        <th scope="col" style="width: 8%">Propose For</th>
+                                        <th scope="col" style="width: 8%">Donation Type</th>
+                                        <th scope="col" style="width: 8%">Donation To</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let a of investmentInits | paginate: configs | filter: searchText">
+                                        <td>
+                                            <button class="btn btn-sm btn-embossed btn-success" (click)="selectInvestmentInit(a)">Select</button>
 
-                                </td>
-                                <td style="display:none;">{{a.id}}</td>
-                                <td>{{a.referenceNo}}</td>
-                                <td>{{a.proposeFor}}</td>
-                                <td>{{a.donationId}}</td>
-                                <td>{{a.donationTo}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                        </td>
+                                        <td style="display:none;">{{a.id}}</td>
+                                        <td>{{a.referenceNo}}</td>
+                                        <td>{{a.proposeFor}}</td>
+                                        <td>{{a.donationId}}</td>
+                                        <td>{{a.donationTo}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

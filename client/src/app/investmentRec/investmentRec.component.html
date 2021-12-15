@@ -547,7 +547,7 @@
                                                         <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" [disabled]="isInvOther" required placeholder="Amount" name="proposedAmount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.proposedAmount" [pattern]="numberPattern">
+                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" required placeholder="Amount" name="proposedAmount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.proposedAmount" [pattern]="numberPattern">
                                                         <div class="invalid-feedback" *ngIf="proposedAmount.errors?.pattern">Only numeric value</div>
                                                     </div>
                                                 </div>
@@ -559,7 +559,7 @@
                                                         <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" [disabled]="isInvOther" required name="purpose" id="purpose" #purpose="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.purpose">
+                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" required name="purpose" id="purpose" #purpose="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.purpose">
                                                     </div>
                                                 </div>
                                             </div>
@@ -570,11 +570,11 @@
                                                         <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input class="form-control" [disabled]="isInvOther" required placeholder="Calender" (onHidden)="changeDateInDetail()" name="fromDate" #fromDate="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched"
+                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" required placeholder="Calender" (onHidden)="changeDateInDetail()" name="fromDate" #fromDate="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched"
                                                             [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentRecForm)">
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input class="form-control" [disabled]="isInvOther" required placeholder="Calender" (onHidden)="changeDateInDetail()" name="toDate" #toDate="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched"
+                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" required placeholder="Calender" (onHidden)="changeDateInDetail()" name="toDate" #toDate="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched"
                                                             [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentRecForm)">
 
                                                     </div>
@@ -582,7 +582,7 @@
                                                         <label>Total Month</label>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <input class="form-control" [disabled]="isInvOther" name="totalMonth" id="totalMonth" #totalMonth="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.totalMonth" readonly>
+                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" name="totalMonth" id="totalMonth" #totalMonth="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.totalMonth" readonly>
 
                                                     </div>
                                                 </div>
@@ -596,7 +596,7 @@
                                                         <label>All SBU </label>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <input class="form-control" [disabled]="isInvOther" name="commitmentAllSBU" id="commitmentAllSBU" #commitmentAllSBU="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.commitmentAllSBU" [pattern]="numberPattern">
+                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" name="commitmentAllSBU" id="commitmentAllSBU" #commitmentAllSBU="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.commitmentAllSBU" [pattern]="numberPattern">
                                                         <div class="invalid-feedback" *ngIf="commitmentAllSBU.errors?.pattern">Only numeric value</div>
                                                     </div>
                                                     <div class="col-md-1">
@@ -606,7 +606,7 @@
                                                         <label>Own SBU</label>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <input class="form-control" [disabled]="isInvOther" name="commitmentOwnSBU" id="commitmentOwnSBU" #commitmentOwnSBU="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.commitmentOwnSBU" [pattern]="numberPattern">
+                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" name="commitmentOwnSBU" id="commitmentOwnSBU" #commitmentOwnSBU="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.commitmentOwnSBU" [pattern]="numberPattern">
                                                         <div class="invalid-feedback" *ngIf="commitmentOwnSBU.errors?.pattern">Only numeric value</div>
                                                     </div>
                                                     <div class="col-md-1">
@@ -620,7 +620,7 @@
                                                         <label>Payment Method</label>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <select class="form-control" [disabled]="isInvOther" name="paymentMethod" id="paymentMethod" #paymentMethod="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.paymentMethod">
+                                                        <select class="form-control" [disabled]="isInvOther && !isAdmin" name="paymentMethod" id="paymentMethod" #paymentMethod="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.paymentMethod">
                                                         
                                                             <option  [ngValue]="null">Select Payment Method</option>
                                                             <option value="Cash">Cash</option>
@@ -638,7 +638,7 @@
                                                         <label>Cheque Title</label>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" [disabled]="isInvOther" maxlength="100" name="chequeTitle" id="chequeTitle" #chequeTitle="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.chequeTitle">
+                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" maxlength="100" name="chequeTitle" id="chequeTitle" #chequeTitle="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.chequeTitle">
                                                     </div>
                                                 </div>
                                             </div>
@@ -810,7 +810,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let a of investmentRecs">
+                            <tr *ngFor="let a of investmentInits">
                                 <td>
                                     <button class="btn btn-sm btn-embossed btn-success" (click)="selectInvestmentInit(a)">Select</button>
 
@@ -838,32 +838,48 @@
     <div class="modal-body" style="padding: 20px 30px 20px 30px;">
         <div class="row">
             <div class="col-md-12">
-                <div class="table-responsive" style="border: 1px solid #bed2c9; width: 100%;">
-                    <table class="table table-bordered table-responsive table-hover table-striped">
-                        <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc));">
-                            <tr class="HeaderRow">
-                                <th scope="col" style="width: 7%">Action</th>
-                                <th scope="col" style="width: 0;display:none;">Id</th>
-                                <th scope="col" style="width: 9%">Reference No</th>
-                                <th scope="col" style="width: 8%">Propose For</th>
-                                <th scope="col" style="width: 8%">Donation Type</th>
-                                <th scope="col" style="width: 8%">Donation To</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let a of investmentRecs">
-                                <td>
-                                    <button class="btn btn-sm btn-embossed btn-success" (click)="selectInvestmentRec(a)">Select</button>
-
-                                </td>
-                                <td style="display:none;">{{a.id}}</td>
-                                <td>{{a.referenceNo}}</td>
-                                <td>{{a.proposeFor}}</td>
-                                <td>{{a.donationId}}</td>
-                                <td>{{a.donationTo}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-2">
+                        </div>
+                        <div class="col-md-6">
+                            <input name="filterText" class="form-control m-input Searchbox" type="text" [(ngModel)]="searchText" placeholder="Search..">
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-danger" type="button" (click)="resetSearch()"><i class="fa fa-undo"></i>&nbsp; Reset</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive" style="border: 1px solid #bed2c9; width: 100%;">
+                            <table class="table table-bordered table-responsive table-hover table-striped">
+                                <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc));">
+                                    <tr class="HeaderRow">
+                                        <th scope="col" style="width: 7%">Action</th>
+                                        <th scope="col" style="width: 0;display:none;">Id</th>
+                                        <th scope="col" style="width: 9%">Reference No</th>
+                                        <th scope="col" style="width: 8%">Propose For</th>
+                                        <th scope="col" style="width: 8%">Donation Type</th>
+                                        <th scope="col" style="width: 8%">Donation To</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let a of investmentInits | paginate: configs | filter: searchText">
+                                        <td>
+                                            <button class="btn btn-sm btn-embossed btn-success" (click)="selectInvestmentRec(a)">Select</button>
+                                        </td>
+                                        <td style="display:none;">{{a.id}}</td>
+                                        <td>{{a.referenceNo}}</td>
+                                        <td>{{a.proposeFor}}</td>
+                                        <td>{{a.donationId}}</td>
+                                        <td>{{a.donationTo}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

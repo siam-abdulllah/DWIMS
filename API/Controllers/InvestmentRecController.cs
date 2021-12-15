@@ -59,8 +59,7 @@ namespace API.Controllers
         }
         [HttpGet("investmentInits/{empId}/{sbu}")]
         public ActionResult<Pagination<InvestmentInitDto>> GetInvestmentInits(int empId, string sbu,
-          [FromQuery] InvestmentInitSpecParams investmentInitParrams,
-          [FromQuery] InvestmentRecCommentSpecParams investmentRecCommentParrams)
+          [FromQuery] InvestmentInitSpecParams investmentInitParrams)
         {
             try
             {
@@ -103,11 +102,9 @@ namespace API.Controllers
                 throw e;
             }
         }
-        [HttpGet("investmentRecommended/{empId}/{sbu}")]
-        public ActionResult<Pagination<InvestmentInitDto>> GetinvestmentRecommended(int empId, string sbu,
-          [FromQuery] InvestmentInitSpecParams investmentInitParrams,
-          [FromQuery] InvestmentRecCommentSpecParams investmentRecCommentParrams,
-          [FromQuery] InvestmentAprCommentSpecParams investmentAprCommentParrams)
+        [HttpGet("investmentRecommended/{empId}/{sbu}/{userRole}")]
+        public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetinvestmentRecommended(int empId, string sbu, string userRole,
+          [FromQuery] InvestmentInitSpecParams investmentInitParrams)
         {
             try
             {
@@ -137,19 +134,47 @@ namespace API.Controllers
                 //              ).Distinct().ToList();
                 //var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
                 //var totalItems = await _investmentInitRepo.CountAsync(countSpec);
+                if (userRole == "Administrator")
+                {
+                    
+                    var investmentInits = await _investmentInitRepo.ListAllAsync();
+                    var investmentRecComments = await _investmentRecCommentRepo.ListAllAsync();
+                    //var investmentAprComments = await _investmentAprCommentRepo.ListAllAsync();
+                    var investmentInitFormRec = (from i in investmentInits
+                                                 join rc in investmentRecComments on i.Id equals rc.InvestmentInitId
+                                                 where rc.RecStatus != "Approved"
+                                                 orderby i.ReferenceNo
+                                                 select new InvestmentInitDto
+                                                 {
+                                                     Id = i.Id,
+                                                     ReferenceNo = i.ReferenceNo,
+                                                     ProposeFor = i.ProposeFor,
+                                                     DonationId = i.DonationId,
+                                                     DonationTo = i.DonationTo,
+                                                     EmployeeId = i.EmployeeId,
+                                                 }
+                                  ).Distinct().ToList();
+                    
+                    return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, investmentInitFormRec.Count(), investmentInitFormRec));
+                }
 
-                List<SqlParameter> parms = new List<SqlParameter>
+                else
+                {
+
+                    List<SqlParameter> parms = new List<SqlParameter>
                     {
                         new SqlParameter("@SBU", sbu),
                         new SqlParameter("@EID", empId),
                         new SqlParameter("@RSTATUS", DBNull.Value),
                         new SqlParameter("@ASTATUS", "Approved")
                     };
-                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentRecommendedSearch @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
-                var data = _mapper
-                    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
-
-                return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, 50, data));
+                    var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentRecommendedSearch @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
+                    var data = _mapper
+                        .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
+                    var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
+                    var totalItems = await _investmentInitRepo.CountAsync(countSpec);
+                    return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, results.Count(), data));
+                }
             }
             catch (System.Exception e)
             {

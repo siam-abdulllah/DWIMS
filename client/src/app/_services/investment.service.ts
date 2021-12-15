@@ -124,7 +124,13 @@ export class InvestmentInitService {
   getInvestmentDetails(investmentInitId: number) {
     return this.http.get(this.baseUrl + 'investment/investmentDetails/' + investmentInitId);
   }
-  getInvestmentInit(empId: number, sbu: string) {
+  getGenParams(){
+    return this.genParams;
+  }
+  setGenParams(genParams: GenericParams) {
+    this.genParams = genParams;
+  }
+  getInvestmentInit(empId: number, sbu: string,userRole:string) {
     let params = new HttpParams();
     if (this.genParams.search) {
       params = params.append('search', this.genParams.search);
@@ -132,7 +138,7 @@ export class InvestmentInitService {
     params = params.append('sort', this.genParams.sort);
     params = params.append('pageIndex', this.genParams.pageIndex.toString());
     params = params.append('pageSize', this.genParams.pageSize.toString());
-    return this.http.get<IInvestmentInitPagination>(this.baseUrl + 'investment/investmentInits/' + empId + '/' + sbu, { observe: 'response', params })
+    return this.http.get<IInvestmentInitPagination>(this.baseUrl + 'investment/investmentInits/' + empId + '/' + sbu+'/'+userRole, { observe: 'response', params })
       //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
       .pipe(
         map(response => {

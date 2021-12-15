@@ -68,6 +68,7 @@ export class RptInvestmentDetailComponent implements OnInit {
   campaignDtlProducts: ICampaignDtlProduct[];
   marketGroupMsts: IMarketGroupMst[];
   donationToVal: string;
+  userRole: any;
   totalCount = 0;
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date = new Date();
@@ -81,7 +82,9 @@ export class RptInvestmentDetailComponent implements OnInit {
     class: 'modal-lg',
     ignoreBackdropClick: true
   };
+
   constructor(private accountService: AccountService, public investmentInitService: RptInvestmentDetailService, private router: Router,
+
     private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe, private SpinnerService: NgxSpinnerService) { }
   ngOnInit() {
     this.convertedDate = this.datePipe.transform(this.today, 'ddMMyyyy');
@@ -154,7 +157,7 @@ export class RptInvestmentDetailComponent implements OnInit {
   }
   getInvestmentInit() {
     this.SpinnerService.show(); 
-    this.investmentInitService.getInvestmentInit(parseInt(this.empId), this.sbu).subscribe(response => {
+    this.investmentInitService.getInvestmentInit(parseInt(this.empId), this.sbu,this.userRole).subscribe(response => {
       this.SpinnerService.hide();
       this.investmentInits = response.data;
       if (this.investmentInits.length>0) {
@@ -320,6 +323,7 @@ export class RptInvestmentDetailComponent implements OnInit {
   }
   getEmployeeId() {
     this.empId = this.accountService.getEmployeeId();
+    this.userRole = this.accountService.getUserRole();
     this.investmentInitService.investmentInitFormData.employeeId = parseInt(this.empId);
     this.getMarketGroupMsts();
     this.getEmployeeSbu();
@@ -477,6 +481,7 @@ export class RptInvestmentDetailComponent implements OnInit {
         //this.investmentInitService.investmentDoctorFormData.doctorCode = this.doctors[i].doctorCode;
         this.investmentInitService.investmentDoctorFormData.degree = this.doctors[i].degree;
         this.investmentInitService.investmentDoctorFormData.designation = this.doctors[i].designation;
+
         break;
       }
     }
