@@ -1,6 +1,7 @@
 import { rptInvestSummaryPagination, IrptInvestSummaryPagination } from '../shared/models/rptInvestSummaryPagination';
 import { IrptInvestSummary, rptInvestSummary } from '../shared/models/rptInvestSummary';
 import { Component, ElementRef, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -10,6 +11,7 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { RptInvestSummaryService } from '../_services/report-investsummary.service';
 import { GenericParams } from './../shared/models/genericParams';
 import { AccountService } from '../account/account.service';
+import { InvestmentInit } from '../shared/models/investmentRec';
 
 
 @Component({
@@ -33,6 +35,7 @@ export class RptInvestSummaryComponent implements OnInit {
   reports: IrptInvestSummary[] = [];
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date = new Date();
+  baseUrl = environment.rptUrl;
   config = {
     keyboard: false,
     class: 'modal-lg',
@@ -103,6 +106,15 @@ export class RptInvestSummaryComponent implements OnInit {
       this.reportService.setGenParams(params);
       this.ViewData();
     }
+  }
+
+  getSummaryDetail(selectedRecord: InvestmentInit){
+
+    this.router.navigate(
+      ['rptInvestmentDetail'],
+      { queryParams: { id: selectedRecord.id } }
+    );
+
   }
 
   resetSearch(){

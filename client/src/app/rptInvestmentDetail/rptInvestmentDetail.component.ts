@@ -87,6 +87,8 @@ export class RptInvestmentDetailComponent implements OnInit {
 
     private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe, private SpinnerService: NgxSpinnerService) { }
   ngOnInit() {
+    debugger;
+    alert('Show');
     this.convertedDate = this.datePipe.transform(this.today, 'ddMMyyyy');
     this.resetPageLoad()
     this.getEmployeeId();

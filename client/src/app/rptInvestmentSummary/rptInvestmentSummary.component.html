@@ -57,6 +57,7 @@
                                             <td>Completed By</td>
                                             <td>Receive Status</td>
                                             <td>Received By</td>
+                                            <td>Details</td>
                                         </tr>
                                         <tr *ngFor="let a of reports | paginate: configs">
                                             <!-- <td>
@@ -98,9 +99,9 @@
                                             <td>
                                                 {{a.receiveBy}}
                                             </td>
-                                            <!-- <td>
-                                                <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="getCampaignDtlProductClick(a)" style="width: 100px;"><i class="fa fa-eye"></i>View Product</button>
-                                            </td> -->
+                                            <td>
+                                                <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="getSummaryDetail(a)" style="width: 100px;"><i class="fa fa-eye"></i>View Product</button>
+                                            </td>
                                         </tr>
                                     </table>
                                     <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls>
