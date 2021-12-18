@@ -13,6 +13,7 @@ import { BehaviorSubject, ReplaySubject, of, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { GenericParams } from '../shared/models/genericParams';
+import { InvestmentRcvComment } from '../shared/models/investmentRcv';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,9 @@ import { GenericParams } from '../shared/models/genericParams';
 export class RptInvestmentDetailService {
   investmentInits: IInvestmentInit[] = [];
   investmentInitPagination = new InvestmentInitPagination();
+  investmentRcvFormData: InvestmentInit = new InvestmentInit();
   investmentInitFormData: InvestmentInit = new InvestmentInit();
+  investmentRcvCommentFormData: InvestmentRcvComment = new InvestmentRcvComment();
   investmentDetailFormData: InvestmentDetail = new InvestmentDetail();
   investmentTargetedProdFormData: InvestmentTargetedProd = new InvestmentTargetedProd();
   investmentTargetedGroupFormData: InvestmentTargetedGroup = new InvestmentTargetedGroup();
@@ -108,6 +111,14 @@ export class RptInvestmentDetailService {
   }
   getInvestmentTargetedGroups(investmentInitId: number) {
     return this.http.get(this.baseUrl + 'investment/investmentTargetedGroups/' + investmentInitId);
+  }
+
+  getInvestmentRcvComment(investmentInitId:number){    
+    return this.http.get(this.baseUrl + 'investmentRecv/getInvestmentRecvComment/'+investmentInitId);
+  }
+  getInvestmentTargetedGroupStatus(investmentInitId:number,empId:number){    
+    //return this.http.get(this.baseUrl + 'investment/investmentTargetedGroups/'+investmentInitId);
+    return this.http.get(this.baseUrl + 'InvestmentRec/investmentTargetedGroups/'+investmentInitId+'/'+empId);
   }
   getInvestmentInstitutions(investmentInitId: number) {
     return this.http.get(this.baseUrl + 'investment/investmentInstitutions/' + investmentInitId);

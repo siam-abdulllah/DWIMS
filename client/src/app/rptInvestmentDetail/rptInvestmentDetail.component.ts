@@ -1,5 +1,6 @@
 
 import {InvestmentInit, IInvestmentInit, InvestmentDetail, IInvestmentDetail,InvestmentTargetedProd, IInvestmentTargetedProd, InvestmentTargetedGroup, IInvestmentTargetedGroup, IInvestmentDetailOld} from '../shared/models/investment';
+import { IInvestmentRcvComment, InvestmentRcvComment} from '../shared/models/investmentRcv';
 import { InvestmentInstitution, IInvestmentInstitution, InvestmentCampaign, IInvestmentCampaign } from '../shared/models/investment';
 import { InvestmentBcds, IInvestmentBcds, InvestmentSociety, IInvestmentSociety } from '../shared/models/investment';
 import { InvestmentDoctor, IInvestmentDoctor} from '../shared/models/investmentRec';
@@ -46,6 +47,7 @@ export class RptInvestmentDetailComponent implements OnInit {
   investmentInits: IInvestmentInit[];
   investmentTargetedProds: IInvestmentTargetedProd[];
   investmentTargetedGroups: IInvestmentTargetedGroup[];
+  investmentRcvFormData: InvestmentInit = new InvestmentInit();
   investmentDetailsOld: IInvestmentDetailOld[];
   investmentDoctors: IInvestmentDoctor[];
   isValid: boolean = false;
@@ -55,6 +57,7 @@ export class RptInvestmentDetailComponent implements OnInit {
   investmentInitForm: NgForm;
   numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
   bcds: IBcdsInfo[];
+  investmentRcvCommentFormData: InvestmentRcvComment = new InvestmentRcvComment();
   society: ISocietyInfo[];
   markets: IMarket[];
   products: IProduct[];
@@ -135,6 +138,7 @@ export class RptInvestmentDetailComponent implements OnInit {
     this.getInvestmentDetails();
     this.getInvestmentTargetedProd();
     this.getInvestmentTargetedGroup();
+    this.getInvestmentTargetedGroupStatus();
     if (parseInt(this.empId) == this.investmentInitService.investmentInitFormData.employeeId) {
       this.isInvOther = false;
       //this.isValid = true;
@@ -171,6 +175,22 @@ export class RptInvestmentDetailComponent implements OnInit {
      }, error => {
       this.SpinnerService.hide();
          console.log(error);
+    });
+  }
+
+  getinvestmentRcvComment() {
+    this.investmentInitService.getInvestmentRcvComment(this.investmentInitService.investmentRcvFormData.id).subscribe(response => {
+      var data = response[0] as IInvestmentRcvComment;
+      if (data !== undefined) {
+        debugger;
+        this.investmentInitService.investmentRcvCommentFormData = data;
+      }
+      else {
+        this.toastr.warning('No Data Found', 'Investment ');
+      }
+
+    }, error => {
+      console.log(error);
     });
   }
   getInvestmentDetails() {
@@ -317,6 +337,18 @@ export class RptInvestmentDetailComponent implements OnInit {
       }
       else {
         //this.toastr.warning('No Data Found', 'Investment');
+      }
+
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  getInvestmentTargetedGroupStatus() {
+    this.investmentInitService.getInvestmentTargetedGroupStatus(this.investmentInitService.investmentInitFormData.id,parseInt(this.empId)).subscribe(response => {
+      var data = response as IInvestmentTargetedGroup[];
+      if (data !== undefined) {
+        this.investmentTargetedGroups = data;
       }
 
     }, error => {
@@ -875,6 +907,7 @@ export class RptInvestmentDetailComponent implements OnInit {
     this.investmentInitService.updateInvestmentInitOther(parseInt(this.empId)).subscribe(
       res => {
         this.getInvestmentTargetedGroup();
+        this.getInvestmentTargetedGroupStatus();
         //this.isValid = true;
         //this.investmentInitService.investmentDoctorFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
         //this.investmentInitService.investmentInstitutionFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
@@ -1239,6 +1272,7 @@ export class RptInvestmentDetailComponent implements OnInit {
         res => {
           this.investmentInitService.investmentTargetedProdFormData = new InvestmentTargetedProd();
           this.getInvestmentTargetedGroup();
+          this.getInvestmentTargetedGroupStatus();
           this.isDonationValid = true;
           this.SpinnerService.hide();
           this.toastr.success(res);
@@ -1409,6 +1443,7 @@ export class RptInvestmentDetailComponent implements OnInit {
             //this.isDonationValid=false;
             this.investmentInitService.investmentTargetedGroupFormData = new InvestmentTargetedGroup();
             this.getInvestmentTargetedGroup();
+            this.getInvestmentTargetedGroupStatus();
             this.SpinnerService.hide();
             this.toastr.success(res);
           },
