@@ -20,14 +20,17 @@ namespace API.Controllers
         private readonly StoreContext _db;
         private readonly IGenericRepository<ReportConfig> _rptConfitRepo;
         private readonly IGenericRepository<ReportInvestmentInfo> _investRepo;
+        private readonly IGenericRepository<InvestmentInit> _investmentInitRepo;
         private readonly IMapper _mapper;
+         private readonly StoreContext _dbContext;
 
 
-        public ReportInvestmentController(IGenericRepository<ReportInvestmentInfo> investRepo, IGenericRepository<ReportConfig> rptConfitRepo, IMapper mapper, StoreContext db)
+        public ReportInvestmentController(IGenericRepository<ReportInvestmentInfo> investRepo, IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<ReportConfig> rptConfitRepo, IMapper mapper, StoreContext db)
         {
             _mapper = mapper;
             _investRepo = investRepo;
             _rptConfitRepo = rptConfitRepo;
+            _investmentInitRepo = investmentInitRepo;
             _db = db;
         }
 
@@ -351,5 +354,37 @@ namespace API.Controllers
 
             return Ok(new Pagination<ReportConfigDto>(rptParrams.PageIndex, rptParrams.PageSize, totalItems, data));
         }
+
+        
+        [HttpGet("investmentInits/{id}")]
+        public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetInvestmentInits(int id, [FromQuery] InvestmentInitSpecParams investmentInitParrams)
+        {
+            try
+            {
+
+                
+                var spec = new InvestmentInitSpecification(investmentInitParrams);
+
+                var countSpec = new InvestmentInitWithFiltersForCountSpecificication(id);
+
+                var totalItems = await _investmentInitRepo.CountAsync(countSpec);
+
+                var investmentInits = await _investmentInitRepo.ListAsync(spec);
+
+                var dt = (from t in investmentInits
+                            where t.Id == id
+                            select t).ToList(); 
+
+                var data = _mapper
+                    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(dt);
+                return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, totalItems, data));
+            
+            }
+            catch (System.Exception e)
+            {
+                throw e;
+            }
+        }
+
     }
 }

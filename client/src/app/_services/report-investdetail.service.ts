@@ -5,8 +5,8 @@ import {
   InvestmentInit, IInvestmentInit, InvestmentDetail, IInvestmentDetail,
   InvestmentTargetedProd, IInvestmentTargetedProd, InvestmentTargetedGroup, IInvestmentTargetedGroup
 } from '../shared/models/investment';
-import { InvestmentInstitution, IInvestmentInstitution, InvestmentCampaign, IInvestmentCampaign } from '../shared/models/investment';
-import { InvestmentBcds, IInvestmentBcds, InvestmentSociety, IInvestmentSociety } from '../shared/models/investment';
+import { InvestmentInstitution, IInvestmentInstitution, InvestmentCampaign, IInvestmentCampaign } from '../shared/models/investmentRcv';
+import { InvestmentBcds, IInvestmentBcds, InvestmentSociety, IInvestmentSociety } from '../shared/models/investmentRcv';
 import { InvestmentDoctor, IInvestmentDoctor} from '../shared/models/investmentRec';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, ReplaySubject, of, from } from 'rxjs';
@@ -85,8 +85,8 @@ export class RptInvestmentDetailService {
   getSubCampaigns() {
     return this.http.get(this.baseUrl + 'campaign/subCampaignsForInvestment');
   }
-  getInvestmentDoctors(investmentInitId: number) {
-    return this.http.get(this.baseUrl + 'investment/investmentDoctors/' + investmentInitId);
+  getInvestmentDoctors(investmentInitId:number){    
+    return this.http.get(this.baseUrl + 'investment/investmentDoctors/'+investmentInitId);
   }
   getInvestmentTargetedProds(investmentInitId: number, sbu: string) {
     return this.http.get(this.baseUrl + 'investment/investmentTargetedProds/' + investmentInitId + '/' + sbu);
@@ -120,8 +120,8 @@ export class RptInvestmentDetailService {
     //return this.http.get(this.baseUrl + 'investment/investmentTargetedGroups/'+investmentInitId);
     return this.http.get(this.baseUrl + 'InvestmentRec/investmentTargetedGroups/'+investmentInitId+'/'+empId);
   }
-  getInvestmentInstitutions(investmentInitId: number) {
-    return this.http.get(this.baseUrl + 'investment/investmentInstitutions/' + investmentInitId);
+  getInvestmentInstitutions(investmentInitId:number){    
+    return this.http.get(this.baseUrl + 'investment/investmentInstitutions/'+investmentInitId);
   }
   getInvestmentCampaigns(investmentInitId: number) {
     return this.http.get(this.baseUrl + 'investment/investmentCampaigns/' + investmentInitId);
@@ -135,7 +135,7 @@ export class RptInvestmentDetailService {
   getInvestmentDetails(investmentInitId: number) {
     return this.http.get(this.baseUrl + 'investment/investmentDetails/' + investmentInitId);
   }
-  getInvestmentInit(empId: number, sbu: string,userRole:string) {
+  getInvestmentInit(id: number) {
     let params = new HttpParams();
     if (this.genParams.search) {
       params = params.append('search', this.genParams.search);
@@ -143,7 +143,7 @@ export class RptInvestmentDetailService {
     params = params.append('sort', this.genParams.sort);
     params = params.append('pageIndex', this.genParams.pageIndex.toString());
     params = params.append('pageSize', this.genParams.pageSize.toString());
-    return this.http.get<IInvestmentInitPagination>(this.baseUrl + 'investment/investmentInits/' + empId + '/' + sbu+'/'+userRole, { observe: 'response', params })
+    return this.http.get<IInvestmentInitPagination>(this.baseUrl + 'ReportInvestment/investmentInits/' + id,  { observe: 'response', params })
       //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
       .pipe(
         map(response => {
