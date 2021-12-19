@@ -391,45 +391,20 @@ namespace API.Controllers
 
        [HttpGet]
         [Route("investmentTargetedGroups/{investmentInitId}")]
-        public async Task<IReadOnlyList<InvestmentTargetGroupStatusDto>> GetInvestmentTargetedGroups(int investmentInitId)
+        public async Task<IReadOnlyList<InvestmentTargetGroupSQL>> GetInvestmentTargetedGroups(int investmentInitId)
         {
             try
             {
-                var spec = new InvestmentTargetedGroupSpecification(investmentInitId);
-                var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(spec);
+               string qry = " select i.Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.InvestmentInitId, a.SBU, a.SBUName, a.MarketCode, a.MarketName,  a.MarketGroupName, a.[Priority], ISNULL(a.RecStatus, 'N/A') RecStatus, ISNULL(c.ApprovalAuthorityName, 'N/A') ApprovalAuthorityName " +
+                            " from InvestmentInit i  " +
+                            " left join InvestmentRecComment a on a.InvestmentInitId = i.Id " +
+                            " left join ApprAuthConfig b on a.EmployeeId = b.EmployeeId " +
+                            " left join ApprovalAuthority c on b.ApprovalAuthorityId = c.Id  " +
+                            " where i.Id = "+ investmentInitId +" ";
+            
+                var results = _db.InvestmentTargetGroupSQL.FromSqlRaw(qry).ToList();
 
-                var spec3 = new ApprAuthConfigSpecification();
-                var approAuthConfig = await _apprAuthConfigRepo.GetEntityWithSpec(spec3);
-
-                // var empSpec = new Emplp(investmentInitId);
-                // var empList = await _investmentRecCommentRepo.ListAsync(spec2);
-
-                //string sts = "Active";
-
-                var spec4 = new ApprovalAuthoritySpecification(approAuthConfig.ApprovalAuthorityId);
-                var aprAuthority = await _approvalAuthorityRepo.GetEntityWithSpec(spec4);
-
-                var spec2 = new InvestmentRecCommentSpecification(investmentInitId, aprAuthority.Priority, "Recommended");
-                var investrecComment = await _investmentRecCommentRepo.ListAsync(spec2);
-
-                var stsResult = (from t in investmentTargetedGroup
-                                 join u in investrecComment on t.InvestmentInitId equals u.InvestmentInitId into ut
-                                 from p in ut.Where(f => f.SBU == t.SBU).DefaultIfEmpty()
-                                 where
-                                 t.InvestmentInitId == investmentInitId
-                                 select new InvestmentTargetGroupStatusDto
-                                 {
-                                     InvestmentInitId = t.InvestmentInitId,
-                                     SBU = t.SBU,
-                                     SBUName = t.SBUName,
-                                     MarketCode = t.MarketCode,
-                                     MarketName = t.MarketName,
-                                     //MarketGroupName = t.MarketGroupMst.GroupName,
-                                     RecStatus = p == null ? "Pending" : p.RecStatus,
-                                     ApprovalAuthorityName = aprAuthority.ApprovalAuthorityName,
-                                 }).ToList();
-
-                return stsResult;
+                return results;
             }
             catch (System.Exception ex)
             {

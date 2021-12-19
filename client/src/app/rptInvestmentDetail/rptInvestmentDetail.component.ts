@@ -462,8 +462,9 @@ export class RptInvestmentDetailComponent implements OnInit {
   }
 
   getInvestmentTargetedGroupStatus() {
-    this.investmentInitService.getInvestmentTargetedGroupStatus(this.investmentInitService.investmentInitFormData.id,parseInt(this.empId)).subscribe(response => {
+    this.investmentInitService.getInvestmentTargetedGroupStatus(this.investmentInitService.investmentInitFormData.id).subscribe(response => {
       var data = response as IInvestmentTargetedGroup[];
+      debugger;
       if (data !== undefined) {
         this.investmentTargetedGroupss2 = data;
       }

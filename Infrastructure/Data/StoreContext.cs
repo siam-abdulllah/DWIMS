@@ -77,6 +77,8 @@ namespace Infrastructure.Data
         public DbSet<RptInvestmentSummary> RptInvestmentSummary { get; set; } 
         [NotMapped]
         public DbSet<LastFiveInvestmentInfo> LastFiveInvestmentInfo { get; set; }
+        [NotMapped]
+        public DbSet<InvestmentTargetGroupSQL> InvestmentTargetGroupSQL { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

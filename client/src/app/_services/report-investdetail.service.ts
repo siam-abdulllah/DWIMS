@@ -116,7 +116,7 @@ export class RptInvestmentDetailService {
   getInvestmentRcvComment(investmentInitId:number){    
     return this.http.get(this.baseUrl + 'investmentRecv/getInvestmentRecvComment/'+investmentInitId);
   }
-  getInvestmentTargetedGroupStatus(investmentInitId:number,empId:number){    
+  getInvestmentTargetedGroupStatus(investmentInitId:number){    
     //return this.http.get(this.baseUrl + 'investment/investmentTargetedGroups/'+investmentInitId);
     return this.http.get(this.baseUrl + 'ReportInvestment/investmentTargetedGroups/'+investmentInitId);
   }
