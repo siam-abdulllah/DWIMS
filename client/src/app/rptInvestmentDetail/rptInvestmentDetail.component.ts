@@ -91,8 +91,8 @@ export class RptInvestmentDetailComponent implements OnInit {
     private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe, private SpinnerService: NgxSpinnerService) { }
   ngOnInit() {
     debugger;
-    alert('Show');
     this.convertedDate = this.datePipe.transform(this.today, 'ddMMyyyy');
+    ///this.selectInvestmentInit(1);
     this.resetPageLoad()
     this.getEmployeeId();
     this.getDonation();
@@ -102,6 +102,10 @@ export class RptInvestmentDetailComponent implements OnInit {
   openInvestmentInitSearchModal(template: TemplateRef<any>) {
     this.InvestmentInitSearchModalRef = this.modalService.show(template, this.config);
   }
+
+
+
+  
   selectInvestmentInit(selectedRecord: IInvestmentInit) {
     this.investmentInitService.investmentInitFormData = Object.assign({}, selectedRecord);
     this.investmentInitService.investmentDoctorFormData.investmentInitId = selectedRecord.id;

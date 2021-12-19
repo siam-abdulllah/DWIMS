@@ -587,9 +587,9 @@
 
                                 <div class="form-group">
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <!--<div class="col-md-6">
                                             <div class="form-group">
-                                                <table class="table  table-bordered">
+                                                 <table class="table  table-bordered">
                                                     <tr class="HeaderRow">
                                                         <td>Investment</td>
                                                         <td>Commitment-All</td>
@@ -614,10 +614,10 @@
                                                             {{a.prescribedSharePrcnt}}
                                                         </td>
                                                     </tr>
-                                                </table>
+                                                </table> 
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
+                                        </div>-->
+                                        <div class="col-md-12">
                                             <div class="form-group">
                                                 <div class="row">
                                                     <div class="col-md-2">
@@ -749,7 +749,7 @@
                                         <div class="col-sm-2"></div>
                                     </div> -->
                                 </div>
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-2">
                                             <label>Product</label>
@@ -764,7 +764,7 @@
                                             <button class="btn btn-primary btn-lg btn-block" type="button" (click)="insertInvestmentTargetedProd()"><i class="fa fa-plus"></i>&nbsp; Add</button>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="form-group">
                                     <table class="table  table-bordered">
                                         <tr class="HeaderRow">
@@ -806,7 +806,7 @@
                                         </div> -->
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <div class="row" *ngIf="!isInvOther">
                                         <div class="col-md-2">
                                             <label>Group</label>
@@ -814,12 +814,12 @@
                                         <div class="col-md-3">
                                             <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="marketGroupMsts" bindLabel="groupName" bindValue="id" placeholder="Market Group" id="marketGroupMstId" name="marketGroupMstId" #marketGroupMstId="ngModel" (change)="onChangeMarketGroupInTargetedGroup()"
                                                 [(ngModel)]="investmentInitService.investmentTargetedGroupFormData.marketGroupMstId" [class.invalid]="marketGroupMstId.invalid && marketGroupMstId.touched">
-                                            </ng-select>
-                                            <!-- <select class="form-control" id="marketGroupMstId" name="marketGroupMstId" #marketGroupMstId="ngModel" (change)="onChangeMarketGroupInTargetedGroup()" [(ngModel)]="investmentInitService.investmentTargetedGroupFormData.marketGroupMstId" [class.invalid]="marketGroupMstId.invalid && marketGroupMstId.touched">                              
+                                            </ng-select> -->
+                                <!-- <select class="form-control" id="marketGroupMstId" name="marketGroupMstId" #marketGroupMstId="ngModel" (change)="onChangeMarketGroupInTargetedGroup()" [(ngModel)]="investmentInitService.investmentTargetedGroupFormData.marketGroupMstId" [class.invalid]="marketGroupMstId.invalid && marketGroupMstId.touched">                              
                                                 <option  [ngValue]="null">Select Market Group</option>
                                                 <option *ngFor="let a of marketGroupMsts" [value]="a.id">{{a.groupName}}</option>                                        
                                     </select> -->
-                                        </div>
+                                <!-- </div>
                                         <div class="col-md-3"></div>
                                         <div class="col-md-2" *ngIf="isValid && !isInvOther">
                                             <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentTargetedGroup()"><i class="fa fa-save"></i>&nbsp; Save</button>
@@ -828,7 +828,7 @@
                                             <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentTargetedGroup()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="form-group">
                                     <table class="table  table-bordered">
                                         <tr class="HeaderRow">
@@ -922,7 +922,7 @@
                                             <label>Receiving Status</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <select class="form-control" id="receiveStatus" name="receiveStatus" #receiveStatus="ngModel" [(ngModel)]="investmentRcvService.investmentRcvCommentFormData.receiveStatus" [class.invalid]="receiveStatus.invalid && receiveStatus.touched" required>  
+                                            <select class="form-control" id="receiveStatus" name="receiveStatus" #receiveStatus="ngModel" [(ngModel)]="investmentInitService.investmentRcvCommentFormData.receiveStatus" [class.invalid]="receiveStatus.invalid && receiveStatus.touched" required>  
                                                 <option  [ngValue]="null">Select Status</option>
                                                 <!-- <option *ngIf=" !isInvOther" value="Approved">Approved</option>
                                                 <option *ngIf="!isInvOther" value="Not Approved">Not Approved</option> -->
@@ -934,7 +934,7 @@
                                             <label>Comments</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <input class="form-control" name="comments" id="comments" #comments="ngModel" [(ngModel)]="investmentRcvService.investmentRcvCommentFormData.comments">
+                                            <input class="form-control" name="comments" id="comments" #comments="ngModel" [(ngModel)]="investmentInitService.investmentRcvCommentFormData.comments">
                                         </div>
                                     </div>
                                 </div>
