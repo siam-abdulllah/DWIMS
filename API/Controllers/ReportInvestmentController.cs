@@ -21,16 +21,23 @@ namespace API.Controllers
         private readonly IGenericRepository<ReportConfig> _rptConfitRepo;
         private readonly IGenericRepository<ReportInvestmentInfo> _investRepo;
         private readonly IGenericRepository<InvestmentInit> _investmentInitRepo;
+        private readonly IGenericRepository<InvestmentTargetedGroup> _investmentTargetedGroupRepo;
+        private readonly IGenericRepository<InvestmentRecComment> _investmentRecCommentRepo;
+        private readonly IGenericRepository<ApprAuthConfig> _apprAuthConfigRepo;
+        private readonly IGenericRepository<ApprovalAuthority> _approvalAuthorityRepo;
         private readonly IMapper _mapper;
-         private readonly StoreContext _dbContext;
 
-
-        public ReportInvestmentController(IGenericRepository<ReportInvestmentInfo> investRepo, IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<ReportConfig> rptConfitRepo, IMapper mapper, StoreContext db)
+        public ReportInvestmentController(IGenericRepository<ReportInvestmentInfo> investRepo, IGenericRepository<InvestmentTargetedGroup> investmentTargetedGroupRepo,IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<ApprovalAuthority> approvalAuthorityRepo,IGenericRepository<InvestmentRecComment> investmentRecCommentRepo,
+             IGenericRepository<ApprAuthConfig> apprAuthConfigRepo, IGenericRepository<ReportConfig> rptConfitRepo, IMapper mapper, StoreContext db)
         {
             _mapper = mapper;
             _investRepo = investRepo;
             _rptConfitRepo = rptConfitRepo;
             _investmentInitRepo = investmentInitRepo;
+            _investmentTargetedGroupRepo = investmentTargetedGroupRepo;
+            _investmentRecCommentRepo = investmentRecCommentRepo;
+            _apprAuthConfigRepo = apprAuthConfigRepo;
+            _approvalAuthorityRepo = approvalAuthorityRepo;
             _db = db;
         }
 
@@ -363,20 +370,16 @@ namespace API.Controllers
             {
 
                 
-                var spec = new InvestmentInitSpecification(investmentInitParrams);
+                var spec = new InvestmentInitSpecification(id);
 
-                var countSpec = new InvestmentInitWithFiltersForCountSpecificication(id);
+                var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
 
                 var totalItems = await _investmentInitRepo.CountAsync(countSpec);
 
                 var investmentInits = await _investmentInitRepo.ListAsync(spec);
 
-                var dt = (from t in investmentInits
-                            where t.Id == id
-                            select t).ToList(); 
-
                 var data = _mapper
-                    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(dt);
+                    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(investmentInits);
                 return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, totalItems, data));
             
             }
@@ -385,6 +388,55 @@ namespace API.Controllers
                 throw e;
             }
         }
+
+       [HttpGet]
+        [Route("investmentTargetedGroups/{investmentInitId}")]
+        public async Task<IReadOnlyList<InvestmentTargetGroupStatusDto>> GetInvestmentTargetedGroups(int investmentInitId)
+        {
+            try
+            {
+                var spec = new InvestmentTargetedGroupSpecification(investmentInitId);
+                var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(spec);
+
+                var spec3 = new ApprAuthConfigSpecification();
+                var approAuthConfig = await _apprAuthConfigRepo.GetEntityWithSpec(spec3);
+
+                // var empSpec = new Emplp(investmentInitId);
+                // var empList = await _investmentRecCommentRepo.ListAsync(spec2);
+
+                //string sts = "Active";
+
+                var spec4 = new ApprovalAuthoritySpecification(approAuthConfig.ApprovalAuthorityId);
+                var aprAuthority = await _approvalAuthorityRepo.GetEntityWithSpec(spec4);
+
+                var spec2 = new InvestmentRecCommentSpecification(investmentInitId, aprAuthority.Priority, "Recommended");
+                var investrecComment = await _investmentRecCommentRepo.ListAsync(spec2);
+
+                var stsResult = (from t in investmentTargetedGroup
+                                 join u in investrecComment on t.InvestmentInitId equals u.InvestmentInitId into ut
+                                 from p in ut.Where(f => f.SBU == t.SBU).DefaultIfEmpty()
+                                 where
+                                 t.InvestmentInitId == investmentInitId
+                                 select new InvestmentTargetGroupStatusDto
+                                 {
+                                     InvestmentInitId = t.InvestmentInitId,
+                                     SBU = t.SBU,
+                                     SBUName = t.SBUName,
+                                     MarketCode = t.MarketCode,
+                                     MarketName = t.MarketName,
+                                     //MarketGroupName = t.MarketGroupMst.GroupName,
+                                     RecStatus = p == null ? "Pending" : p.RecStatus,
+                                     ApprovalAuthorityName = aprAuthority.ApprovalAuthorityName,
+                                 }).ToList();
+
+                return stsResult;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
 
     }
 }

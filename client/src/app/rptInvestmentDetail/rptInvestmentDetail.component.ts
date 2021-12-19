@@ -92,12 +92,16 @@ export class RptInvestmentDetailComponent implements OnInit {
 
     private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe, private SpinnerService: NgxSpinnerService) { }
   ngOnInit() {
+    var url_string = window.location.href
+    var url = new URL(url_string);
+    var c = url.searchParams.get("c");
+    console.log(c);
     this.convertedDate = this.datePipe.transform(this.today, 'ddMMyyyy');
     ///this.selectInvestmentInit(1);
     this.resetPageLoad()
     this.getEmployeeId();
     this.getDonation();
-    this.GetData(1002);
+    this.GetData(1009);
     this.bsConfig = Object.assign({}, { containerClass: 'theme-blue'  }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
   }
@@ -109,7 +113,7 @@ export class RptInvestmentDetailComponent implements OnInit {
   GetData(id)
   {
 
-    this.getInvestmentInit("1002");
+    this.getInvestmentInit(id);
 
     this.investmentInitService.investmentInitFormData.id = id;
     this.investmentInitService.investmentRcvFormData.id = id;

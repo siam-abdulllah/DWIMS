@@ -118,7 +118,7 @@ export class RptInvestmentDetailService {
   }
   getInvestmentTargetedGroupStatus(investmentInitId:number,empId:number){    
     //return this.http.get(this.baseUrl + 'investment/investmentTargetedGroups/'+investmentInitId);
-    return this.http.get(this.baseUrl + 'InvestmentRec/investmentTargetedGroups/'+investmentInitId+'/'+empId);
+    return this.http.get(this.baseUrl + 'ReportInvestment/investmentTargetedGroups/'+investmentInitId);
   }
   getInvestmentInstitutions(investmentInitId:number){    
     return this.http.get(this.baseUrl + 'investment/investmentInstitutions/'+investmentInitId);
