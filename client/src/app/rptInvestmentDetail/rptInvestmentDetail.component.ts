@@ -94,14 +94,13 @@ export class RptInvestmentDetailComponent implements OnInit {
   ngOnInit() {
     var url_string = window.location.href
     var url = new URL(url_string);
-    var c = url.searchParams.get("c");
-    console.log(c);
+    var v=url.pathname.split("/");
     this.convertedDate = this.datePipe.transform(this.today, 'ddMMyyyy');
     ///this.selectInvestmentInit(1);
     this.resetPageLoad()
     this.getEmployeeId();
     this.getDonation();
-    this.GetData(1009);
+    this.GetData(v[3]);
     this.bsConfig = Object.assign({}, { containerClass: 'theme-blue'  }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
   }
