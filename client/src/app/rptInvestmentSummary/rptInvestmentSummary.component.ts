@@ -109,11 +109,15 @@ export class RptInvestSummaryComponent implements OnInit {
   }
 
   getSummaryDetail(selectedRecord: InvestmentInit){
-
-    this.router.navigate(
-      ['rptInvestmentDetail'],
-      { queryParams: { id: selectedRecord.id } }
-    );
+  debugger;
+    // this.router.navigate(
+    //   ['rptInvestmentDetail'],
+    //   { queryParams: { id: selectedRecord.id } }
+    // );
+    //this.router.navigate(['./rptInvestmentDetail'], {relativeTo: this.router});
+    //this.router.navigate( ['/','rptInvestmentDetail', selectedRecord.id]);
+    this.router.navigate([]).then(result => {  window.open('/portal/rptInvestmentDetail/'+selectedRecord.id, '_blank'); });;
+    
 
   }
 
