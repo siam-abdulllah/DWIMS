@@ -13,6 +13,7 @@ export interface IInvestmentInit {
     proposeFor: string;
     donationTo: string;
     marketCode: string;
+    marketName: string;
     sbu: string;
     employeeId: number;
     donationId: number;
@@ -25,6 +26,7 @@ export class InvestmentInit implements IInvestmentInit {
     proposeFor: string=null;
     donationTo: string=null;
     marketCode: string;
+    marketName: string;
     sbu: string;
     employeeId: number;
     donationId: number=null;
