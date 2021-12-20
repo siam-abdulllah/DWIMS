@@ -465,6 +465,7 @@ export class RptInvestmentDetailComponent implements OnInit {
       var data = response as IInvestmentTargetedGroup[];
       debugger;
       if (data !== undefined) {
+        debugger;
         this.investmentTargetedGroupss2 = data;
       }
 
