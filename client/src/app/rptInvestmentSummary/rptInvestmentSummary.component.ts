@@ -35,7 +35,7 @@ export class RptInvestSummaryComponent implements OnInit {
   reports: IrptInvestSummary[] = [];
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date = new Date();
-  baseUrl = environment.rptUrl;
+  baseUrl = environment.apiUrl;
   config = {
     keyboard: false,
     class: 'modal-lg',

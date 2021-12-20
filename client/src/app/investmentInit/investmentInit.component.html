@@ -124,13 +124,13 @@
                                             <label>Degree</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <input class="form-control" name="degree" readonly id="degree" name="degree" #degree="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.degree">
+                                            <input class="form-control" name="degree" readonly id="degree" name="degree" [(ngModel)]="degree">
                                         </div>
                                         <div class="col-md-2">
                                             <label>Designation</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <input class="form-control" name="designation" readonly id="designation" name="designation" #designation="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.designation">
+                                            <input class="form-control" name="designation" readonly id="designation" name="designation" [(ngModel)]="designation">
                                         </div>
                                     </div>
                                 </div>
@@ -173,7 +173,7 @@
                                             <label>Address</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <input class="form-control" name="address" readonly id="address" name="address" #address="ngModel" [(ngModel)]="investmentInitService.investmentDoctorFormData.address">
+                                            <input class="form-control" name="docInstaddress" readonly id="docInstaddress" name="docInstaddress" [(ngModel)]="docInstaddress">
                                         </div>
                                         <div class="col-md-2">
                                             <label>Doctor Type</label>
@@ -273,13 +273,13 @@
                                             <label>Address</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <input class="form-control" name="address" id="address" #address="ngModel" [(ngModel)]="investmentInitService.investmentInstitutionFormData.address" readonly>
+                                            <input class="form-control" name="instaddress" id="instaddress" [(ngModel)]="instaddress" readonly>
                                         </div>
                                         <div class="col-md-2">
                                             <label>Institution Type</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <input class="form-control" name="institutionType" id="institutionType" #institutionType="ngModel" [(ngModel)]="investmentInitService.investmentInstitutionFormData.institutionType" readonly>
+                                            <input class="form-control" name="institutionType" id="institutionType" [(ngModel)]="institutionType" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -911,7 +911,8 @@
                                         <th scope="col" style="width: 0;display:none;">Id</th>
                                         <th scope="col" style="width: 9%">Reference No</th>
                                         <th scope="col" style="width: 8%">Propose For</th>
-                                        <th scope="col" style="width: 8%">Donation Type</th>
+                                        <th scope="col" style="width: 8%">Market Name</th>
+                                        <!-- <th scope="col" style="width: 8%">Donation Type</th> -->
                                         <th scope="col" style="width: 8%">Donation To</th>
                                     </tr>
                                 </thead>
@@ -924,7 +925,8 @@
                                         <td style="display:none;">{{a.id}}</td>
                                         <td>{{a.referenceNo}}</td>
                                         <td>{{a.proposeFor}}</td>
-                                        <td>{{a.donationId}}</td>
+                                        <td>{{a.marketName}}</td>
+                                        <!-- <td>{{a.donationId}}</td> -->
                                         <td>{{a.donationTo}}</td>
                                     </tr>
                                 </tbody>

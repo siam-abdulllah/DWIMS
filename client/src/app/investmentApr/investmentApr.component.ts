@@ -85,6 +85,7 @@ export class InvestmentAprComponent implements OnInit {
     ignoreBackdropClick: true
   };
   userRole: any;
+  convertedDate: string;
   constructor(private accountService: AccountService, public investmentAprService: InvestmentAprService, private router: Router,
     private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe, private SpinnerService: NgxSpinnerService) { }
   ngOnInit() {
@@ -122,6 +123,7 @@ export class InvestmentAprComponent implements OnInit {
     this.investmentAprService.investmentDetailFormData.investmentInitId = selectedAprord.id;
     this.investmentAprService.investmentAprCommentFormData.investmentInitId = selectedAprord.id;
     this.isDonationValid = true;
+    this.convertedDate = this.datePipe.transform(selectedAprord.setOn, 'ddMMyyyy');
     if (this.investmentAprService.investmentAprFormData.donationTo == "Doctor") {
       this.getInvestmentDoctor();
     }
@@ -143,12 +145,13 @@ export class InvestmentAprComponent implements OnInit {
     if (this.sbu == this.investmentAprService.investmentAprFormData.sbu) {
       this.isInvOther = false;
       this.isValid = true;
+      this.getBudget();
     }
     else {
       this.isInvOther = true;
       this.isValid = false;
     }
-    this.getBudget();
+    
     this.InvestmentInitSearchModalRef.hide()
   }
   selectInvestmentApr(selectedAprord: IInvestmentInit) {
@@ -158,6 +161,7 @@ export class InvestmentAprComponent implements OnInit {
     this.investmentAprService.investmentDetailFormData.investmentInitId = selectedAprord.id;
     this.investmentAprService.investmentAprCommentFormData.investmentInitId = selectedAprord.id;
     this.isDonationValid = true;
+    this.convertedDate = this.datePipe.transform(selectedAprord.setOn, 'ddMMyyyy');
     if (this.investmentAprService.investmentAprFormData.donationTo == "Doctor") {
       this.getInvestmentDoctor();
     }
@@ -180,17 +184,18 @@ export class InvestmentAprComponent implements OnInit {
     if (this.sbu == this.investmentAprService.investmentAprFormData.sbu) {
       this.isInvOther = false;
       this.isValid = true;
+      this.getBudget();
     }
     else {
       this.isInvOther = true;
       this.isValid = false;
     }
-    this.getBudget();
+   
     this.InvestmentAprSearchModalRef.hide()
   }
   getLastFiveInvestment(marketCode: string, toDayDate: string) {
     if (this.investmentAprService.investmentAprFormData.donationTo == "Doctor") {
-      this.investmentAprService.getLastFiveInvestmentForDoc(this.investmentAprService.investmentAprFormData.donationId, this.investmentAprService.investmentDoctorFormData.doctorId, marketCode, toDayDate).subscribe(
+      this.investmentAprService.getLastFiveInvestmentForDoc(this.investmentAprService.investmentAprFormData.donationId, this.investmentAprService.investmentDoctorFormData.doctorId, marketCode, toDayDate).then(
         (response) => {
           this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
         },
@@ -390,7 +395,7 @@ export class InvestmentAprComponent implements OnInit {
     });
   }
   getInvestmentDoctor() {
-    this.investmentAprService.getInvestmentDoctors(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
+    this.investmentAprService.getInvestmentDoctors(this.investmentAprService.investmentAprFormData.id).then(response => {
       var data = response[0] as IInvestmentDoctor;
       if (data !== undefined) {
         this.investmentAprService.investmentDoctorFormData = data;
@@ -430,8 +435,8 @@ export class InvestmentAprComponent implements OnInit {
         this.investmentAprService.investmentDetailFormData.id = 0;
         this.investmentAprService.investmentDetailFormData.fromDate = new Date(data.fromDate);
         this.investmentAprService.investmentDetailFormData.toDate = new Date(data.toDate);
-        let convertedDate = this.datePipe.transform(data.fromDate, 'ddMMyyyy');
-        this.getLastFiveInvestment(this.investmentAprService.investmentAprFormData.marketCode, convertedDate);
+        //let convertedDate = this.datePipe.transform(data.fromDate, 'ddMMyyyy');
+        this.getLastFiveInvestment(this.investmentAprService.investmentAprFormData.marketCode, this.convertedDate);
       } else {
         this.toastr.warning('No Data Found', 'Investment');
       }
@@ -462,8 +467,8 @@ export class InvestmentAprComponent implements OnInit {
         this.investmentAprService.investmentDetailFormData.id = 0;
         this.investmentAprService.investmentDetailFormData.fromDate = new Date(data.fromDate);
         this.investmentAprService.investmentDetailFormData.toDate = new Date(data.toDate);
-        let convertedDate = this.datePipe.transform(data.fromDate, 'ddMMyyyy');
-        this.getLastFiveInvestment(this.investmentAprService.investmentAprFormData.marketCode, convertedDate);
+        //let convertedDate = this.datePipe.transform(data.fromDate, 'ddMMyyyy');
+        this.getLastFiveInvestment(this.investmentAprService.investmentAprFormData.marketCode, this.convertedDate);
       } else {
         this.getInvestmentDetails();
       }

@@ -17,6 +17,7 @@ export interface IInvestmentInit {
     marketCode: string;
     sbu: string;
     employeeId: number;
+    setOn: Date;
 }
  
 export class InvestmentInit implements IInvestmentInit {
@@ -29,6 +30,7 @@ export class InvestmentInit implements IInvestmentInit {
     marketCode: string;
     sbu: string;
     employeeId: number;
+    setOn: Date;
 }
 
 

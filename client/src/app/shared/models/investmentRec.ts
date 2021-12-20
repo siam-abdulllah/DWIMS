@@ -18,6 +18,7 @@ export interface IInvestmentInit {
     employeeId: number;
     donationId: number;
     donation:IDonation;
+    setOn: Date;
 }
  
 export class InvestmentInit implements IInvestmentInit {
@@ -31,6 +32,7 @@ export class InvestmentInit implements IInvestmentInit {
     employeeId: number;
     donationId: number=null;
     donation:IDonation;
+    setOn: Date;
 }
 
 

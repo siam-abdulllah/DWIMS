@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://localhost:5001/api/',
-  rptUrl: 'https://localhost:4200/portal/'
+  apiUrl: 'https://localhost:5001/api/'
+  //rptUrl: 'https://localhost:4200/portal/'
 };
 
 /*

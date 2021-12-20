@@ -1298,4 +1298,3 @@ G:\DIDS\DIDS_GIT\DWIMS\API\obj\Debug\netcoreapp3.1\API.dll
 G:\DIDS\DIDS_GIT\DWIMS\API\obj\Debug\netcoreapp3.1\API.pdb
 G:\DIDS\DIDS_GIT\DWIMS\API\obj\Debug\netcoreapp3.1\API.genruntimeconfig.cache
 E:\DWIMS\TestApplication\API\obj\Debug\netcoreapp3.1\API.csproj.CopyComplete
-G:\DIDS\DIDS_GIT\DWIMS\API\obj\Debug\netcoreapp3.1\API.csproj.CopyComplete

@@ -7,6 +7,8 @@ namespace API.Dtos
     public class InvestmentInitDto
     {
         public int Id { get; set; }
+
+        public DateTimeOffset SetOn { get; set; }
         public string ReferenceNo { get; set; }
         public string ProposeFor { get; set; }
         public int DonationId { get; set; }

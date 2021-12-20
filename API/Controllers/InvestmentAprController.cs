@@ -120,10 +120,13 @@ namespace API.Controllers
                                                     ReferenceNo = i.ReferenceNo,
                                                     ProposeFor = i.ProposeFor,
                                                     DonationId = i.DonationId,
+                                                    MarketCode = i.MarketCode,
+                                                    MarketName = i.MarketName,
                                                     DonationTo = i.DonationTo,
                                                     EmployeeId = i.EmployeeId,
+                                                    SetOn = i.SetOn
                                                 }
-                                                    ).Distinct().ToList();
+                                                    ).Distinct().OrderByDescending(x => x.SetOn).ToList();
                     //var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
                     //var totalItems = await _investmentInitRepo.CountAsync(countSpec);
                     return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, investmentInitFormRec.Count(), investmentInitFormRec));

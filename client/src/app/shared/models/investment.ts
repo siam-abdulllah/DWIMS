@@ -15,6 +15,7 @@ export interface IInvestmentInit {
     donationId: number;
     donation:IDonation;
     sbu:string;
+    setOn: Date;
 }
  
 export class InvestmentInit implements IInvestmentInit {
@@ -29,6 +30,7 @@ export class InvestmentInit implements IInvestmentInit {
     donationId: number=null;
     donation:IDonation;
     sbu:string;
+    setOn: Date;
 }
 
 export interface IInvestmentDetail {

@@ -48,6 +48,7 @@ export class InvestmentRecComponent implements OnInit {
   investmentDetails: IInvestmentRec[];
   investmentDoctors: IInvestmentDoctor[];
   searchText = '';
+  convertedDate: string;
   configs: any;
   isValid: boolean = false;
   isInvOther: boolean = false;
@@ -109,6 +110,8 @@ export class InvestmentRecComponent implements OnInit {
     this.investmentRecService.investmentDetailFormData.investmentInitId = selectedRecord.id;
     this.investmentRecService.investmentRecCommentFormData.investmentInitId = selectedRecord.id;
     this.isDonationValid = true;
+    debugger;
+    this.convertedDate = this.datePipe.transform(selectedRecord.setOn, 'ddMMyyyy');
     if (this.investmentRecService.investmentRecFormData.donationTo == "Doctor") {
 
       this.getInvestmentDoctor();
@@ -143,6 +146,9 @@ export class InvestmentRecComponent implements OnInit {
     this.investmentRecService.investmentRecFormData = Object.assign({}, selectedRecord);
     this.investmentRecService.investmentDetailFormData.investmentInitId = selectedRecord.id;
     this.investmentRecService.investmentRecCommentFormData.investmentInitId = selectedRecord.id;
+    
+    debugger;
+    this.convertedDate = this.datePipe.transform(selectedRecord.setOn, 'ddMMyyyy');
     this.isDonationValid = true;
     if (this.investmentRecService.investmentRecFormData.donationTo == "Doctor") {
 
@@ -177,8 +183,9 @@ export class InvestmentRecComponent implements OnInit {
     this.InvestmentRecSearchModalRef.hide()
   }
   getLastFiveInvestment(marketCode: string, toDayDate: string) {
+    debugger;
     if (this.investmentRecService.investmentRecFormData.donationTo == "Doctor") {
-      this.investmentRecService.getLastFiveInvestmentForDoc(this.investmentRecService.investmentRecFormData.donationId,this.investmentRecService.investmentDoctorFormData.doctorId,marketCode, toDayDate).subscribe(
+      this.investmentRecService.getLastFiveInvestmentForDoc(this.investmentRecService.investmentRecFormData.donationId,this.investmentRecService.investmentDoctorFormData.doctorId,marketCode, toDayDate).then(
         (response) => {
           this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
         },
@@ -376,7 +383,7 @@ export class InvestmentRecComponent implements OnInit {
     });
   }
   getInvestmentDoctor() {
-    this.investmentRecService.getInvestmentDoctors(this.investmentRecService.investmentRecFormData.id).subscribe(response => {
+    this.investmentRecService.getInvestmentDoctors(this.investmentRecService.investmentRecFormData.id).then(response => {
       var data = response[0] as IInvestmentDoctor;
       if (data !== undefined) {
         this.investmentRecService.investmentDoctorFormData = data;
@@ -410,8 +417,8 @@ export class InvestmentRecComponent implements OnInit {
         this.investmentRecService.investmentDetailFormData.id = 0;
         this.investmentRecService.investmentDetailFormData.fromDate = new Date(data.fromDate);
         this.investmentRecService.investmentDetailFormData.toDate = new Date(data.toDate);
-        let convertedDate = this.datePipe.transform(data.fromDate, 'ddMMyyyy');
-        this.getLastFiveInvestment(this.investmentRecService.investmentRecFormData.marketCode, convertedDate);
+        //let convertedDate = this.datePipe.transform(data.fromDate, 'ddMMyyyy');
+        this.getLastFiveInvestment(this.investmentRecService.investmentRecFormData.marketCode, this.convertedDate);
       } 
     }, error => {
       console.log(error);
@@ -435,8 +442,8 @@ export class InvestmentRecComponent implements OnInit {
         this.investmentRecService.investmentDetailFormData.id = 0;
         this.investmentRecService.investmentDetailFormData.fromDate = new Date(data.fromDate);
         this.investmentRecService.investmentDetailFormData.toDate = new Date(data.toDate);
-        let convertedDate = this.datePipe.transform(data.fromDate, 'ddMMyyyy');
-        this.getLastFiveInvestment(this.investmentRecService.investmentRecFormData.marketCode, convertedDate);
+        //let convertedDate = this.datePipe.transform(data.fromDate, 'ddMMyyyy');
+        this.getLastFiveInvestment(this.investmentRecService.investmentRecFormData.marketCode, this.convertedDate);
       } else {
         this.getInvestmentDetails();
       }
