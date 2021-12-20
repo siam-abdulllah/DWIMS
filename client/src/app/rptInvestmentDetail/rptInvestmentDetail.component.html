@@ -7,7 +7,7 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-sm-8">
-                                    <h3 class="card-title">Investment Initiation</h3>
+                                    <h3 class="card-title">Investment Detail Report</h3>
                                 </div>
                                 <!-- <div class="col-sm-1">
                                     <button *ngIf="!isSubmitted" class="btn btn-warning btn-lg btn-block" type="button" (click)="confirmSubmission()" [disabled]="investmentInitForm.invalid"><i class="fa fa-save"></i>&nbsp; Submit</button>
@@ -18,8 +18,8 @@
                                 <div class="col-sm-1">
                                     <button class="btn btn-info btn-lg btn-block" type="button" (click)="getInvestmentInit()"><i class="fa fa-search" ></i>Search</button>
                                 </div> -->
-                                <div class="col-sm-1">
-                                    <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetPage(investmentInitForm)"><i class="fa fa-undo"></i>Reset</button>
+                                <div class="col-sm-2">
+                                    <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetPage(investmentInitForm)"><i class="fa fa-window-close"></i>Close Report</button>
                                 </div>
                             </div>
                         </div>
@@ -28,11 +28,9 @@
                                 <div class="row">
                                     <div class="col-md-2">
                                         <label>Propose For</label>
-                                        <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <select class="form-control" id="proposeFor" [disabled]="isDonationValid && isInvOther" name="proposeFor" #proposeFor="ngModel" [(ngModel)]="investmentInitService.investmentInitFormData.proposeFor" required [class.invalid]="proposeFor.invalid && proposeFor.touched"
-                                            readonly>
+                                        <select class="form-control" id="proposeFor" [disabled]="true" name="proposeFor" #proposeFor="ngModel" [(ngModel)]="investmentInitService.investmentInitFormData.proposeFor" required [class.invalid]="proposeFor.invalid && proposeFor.touched" readonly>
                                             <option  [ngValue]="null">Select Propose For</option>
                                             <option value="BrandCampaign">Brand Campaign</option>
                                             <option value="Others">Others</option>
@@ -51,10 +49,9 @@
                                 <div class="row">
                                     <div class="col-md-2">
                                         <label>Donation Type</label>
-                                        <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <select class="form-control" [disabled]="isInvOther" id="donationId" name="donationId" #donationId="ngModel" [(ngModel)]="investmentInitService.investmentInitFormData.donationId" required [class.invalid]="donationId.invalid && donationId.touched" readonly>
+                                        <select class="form-control" [disabled]="true" id="donationId" name="donationId" #donationId="ngModel" [(ngModel)]="investmentInitService.investmentInitFormData.donationId" required [class.invalid]="donationId.invalid && donationId.touched" readonly>
                                             <option  [ngValue]="null">Select Donation Type</option>
                                             <option *ngFor="let a of donations" [value]="a.id">{{a.donationTypeName}}</option>
                                             <!-- <option value="Donation">Donation</option>
@@ -64,10 +61,9 @@
                                     </div>
                                     <div class="col-md-2">
                                         <label>Donation To</label>
-                                        <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <select class="form-control " (change)="onChangeDonationTo()" [disabled]="isDonationValid && isInvOther" id="donationTo" name="donationTo" #donationTo="ngModel" [(ngModel)]="investmentInitService.investmentInitFormData.donationTo" required [class.invalid]="donationTo.invalid && donationTo.touched"
+                                        <select class="form-control " (change)="onChangeDonationTo()" [disabled]="true" id="donationTo" name="donationTo" #donationTo="ngModel" [(ngModel)]="investmentInitService.investmentInitFormData.donationTo" required [class.invalid]="donationTo.invalid && donationTo.touched"
                                             readonly>
                                             <option  [ngValue]="null">Select Donation To</option>
                                             <option value="Doctor">Doctor</option>
@@ -482,7 +478,7 @@
                                 </div>
                             </fieldset>
                             <fieldset disabled>
-                                <legend>Investment Details</legend>
+                                <h6><strong>Investment Details</strong></h6>
 
                                 <div class="form-group">
                                     <div class="row">
@@ -521,7 +517,6 @@
                                                 <div class="row">
                                                     <div class="col-md-2">
                                                         <label>Prop. Inv.</label>
-                                                        <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-10">
                                                         <input class="form-control" [disabled]="isInvOther" placeholder="Amount" name="proposedAmount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.proposedAmount" [pattern]="numberPattern">
@@ -533,7 +528,6 @@
                                                 <div class="row">
                                                     <div class="col-md-2">
                                                         <label>Purpose</label>
-                                                        <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-10">
                                                         <input class="form-control" [disabled]="isInvOther" placeholder="Purpose" name="purpose" id="purpose" #purpose="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.purpose" maxLength="100">
@@ -545,7 +539,6 @@
                                                 <div class="row">
                                                     <div class="col-md-2">
                                                         <label>Duration</label>
-                                                        <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-3">
                                                         <input class="form-control" [disabled]="isInvOther" placeholder="Calender" (onHidden)="changeDateInDetail()" name="fromDate" #fromDate="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched"
@@ -640,7 +633,7 @@
                             </fieldset>
                             <fieldset>
                                 <div class="form-group">
-                                    <legend>Targeted Products of SBU</legend>
+                                    <legend><strong>Targeted Products of SBU</strong></legend>
                                     <!-- <div class="row">
                                         <div class="col-sm-6">
                                             <h6 class=""><strong>Targeted Products of SBU</strong></h6>

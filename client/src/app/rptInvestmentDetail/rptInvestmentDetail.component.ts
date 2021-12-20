@@ -252,7 +252,8 @@ export class RptInvestmentDetailComponent implements OnInit {
         this.investmentInitService.investmentInitFormData.proposeFor =  this.investmentInits[0].proposeFor;
         this.investmentInitService.investmentInitFormData.referenceNo =  this.investmentInits[0].referenceNo;
         this.investmentInitService.investmentInitFormData.donationTo =  this.investmentInits[0].donationTo;
-      
+        this.investmentInitService.investmentInitFormData.donationId =  this.investmentInits[0].donationId;
+        
         if (this.investmentInitService.investmentInitFormData.donationTo == "Doctor") {
           this.getDoctor();
           //this.getInstitution();
@@ -1345,16 +1346,17 @@ export class RptInvestmentDetailComponent implements OnInit {
     //this.investmentInitService.campaignFormData = Object.assign({}, selectedRecord);
   }
   resetPage(form: NgForm) {
-    form.reset();
-    this.investmentInitService.investmentInitFormData = new InvestmentInit();
-    this.investmentInitService.investmentInitFormData.marketCode = this.marketCode;
-    this.isValid = false;
-    this.isSubmitted = false;
-    this.isInvOther = false;
-    this.isDonationValid = false;
-    this.investmentTargetedGroups = [];
-    this.investmentTargetedProds = [];
-    this.investmentDetailsOld = [];
+    window.close();
+    // form.reset();
+    // this.investmentInitService.investmentInitFormData = new InvestmentInit();
+    // this.investmentInitService.investmentInitFormData.marketCode = this.marketCode;
+    // this.isValid = false;
+    // this.isSubmitted = false;
+    // this.isInvOther = false;
+    // this.isDonationValid = false;
+    // this.investmentTargetedGroups = [];
+    // this.investmentTargetedProds = [];
+    // this.investmentDetailsOld = [];
   }
   resetPageLoad() {
     this.investmentInitService.investmentInitFormData = new InvestmentInit();
