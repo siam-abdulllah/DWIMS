@@ -522,6 +522,12 @@ export class InvestmentRecComponent implements OnInit {
     );
   }
   onSubmit(form: NgForm) {
+    if (this.investmentRecService.investmentTargetedProdFormData.productId != null && this.investmentRecService.investmentTargetedProdFormData.productId != undefined && this.investmentRecService.investmentTargetedProdFormData.productId != 0) {
+      this.toastr.warning('Please Add the Selected Product First', 'Investment ', {
+        positionClass: 'toast-top-right'
+      });
+      return false;
+    }
     if (this.investmentRecService.investmentRecCommentFormData.id == null || this.investmentRecService.investmentRecCommentFormData.id == undefined || this.investmentRecService.investmentRecCommentFormData.id == 0)
       this.insertInvestmentRec();
     else
@@ -726,6 +732,7 @@ export class InvestmentRecComponent implements OnInit {
           data.productInfo = this.products[i];
           debugger;
           this.investmentTargetedProds.push(data);
+          this.investmentRecService.investmentTargetedProdFormData=new InvestmentTargetedProd;
           return false;
         }
 
@@ -738,12 +745,42 @@ export class InvestmentRecComponent implements OnInit {
 
   editInvestmentTargetedProd(selectedRecord: IInvestmentTargetedProd) {
     this.investmentRecService.investmentTargetedProdFormData = Object.assign({}, selectedRecord);
+    const index: number = this.investmentTargetedProds.indexOf(selectedRecord);
+    if (index !== -1) {
+        this.investmentTargetedProds.splice(index, 1);
+    }
     // var e = (document.getElementById("marketCode")) as HTMLSelectElement;
     // var sel = e.selectedIndex;
     // var opt = e.options[sel];
     // var selectedMarketCode = opt.value;
     // var selectedMarketName = opt.innerHTML;
 
+  }
+  removeInvestmentTargetedProd(selectedRecord: IInvestmentTargetedProd) {
+    
+    
+    var c = confirm("Are you sure you want to delete that?");
+    if (c == true) {
+      if (this.investmentTargetedProds.find(x => x.productId == selectedRecord.productId)) {
+        this.investmentTargetedProds.splice(this.investmentTargetedProds.findIndex(x => x.productId == selectedRecord.productId), 1);
+      }
+      if (this.investmentRecService.investmentRecCommentFormData.id == null || this.investmentRecService.investmentRecCommentFormData.id == undefined || this.investmentRecService.investmentRecCommentFormData.id == 0) {
+        //this.investmentRecService.investmentTargetedProdFormData = new InvestmentTargetedProd();
+        return false;
+      }
+      this.investmentRecService.investmentTargetedProdFormData = Object.assign({}, selectedRecord);
+      this.investmentRecService.removeInvestmentTargetedProd().subscribe(
+        res => {
+          //
+          this.toastr.success(res);
+          this.investmentRecService.investmentTargetedProdFormData = new InvestmentTargetedProd();
+          this.getInvestmentTargetedProd();
+        },
+        err => { 
+          console.log(err); 
+        }
+      );
+    }
   }
   populateForm() {
     //this.investmentRecService.campaignFormData = Object.assign({}, selectedRecord);
@@ -782,27 +819,7 @@ export class InvestmentRecComponent implements OnInit {
     };
   }
 
-  removeInvestmentTargetedProd(selectedRecord: IInvestmentTargetedProd) {
-    if (this.investmentTargetedProds.find(x => x.productId == selectedRecord.productId)) {
-      this.investmentTargetedProds.splice(this.investmentTargetedProds.findIndex(x => x.productId == selectedRecord.productId), 1);
-    }
-    if (this.investmentRecService.investmentRecCommentFormData.id == null || this.investmentRecService.investmentRecCommentFormData.id == undefined || this.investmentRecService.investmentRecCommentFormData.id == 0) {
-      return false;
-    }
-    this.investmentRecService.investmentTargetedProdFormData = Object.assign({}, selectedRecord);
-    var c = confirm("Are you sure you want to delete that?");
-    if (c == true) {
-      this.investmentRecService.removeInvestmentTargetedProd().subscribe(
-        res => {
-          //
-          this.toastr.success(res);
-          this.investmentRecService.investmentTargetedProdFormData = new InvestmentTargetedProd();
-          this.getInvestmentTargetedProd();
-        },
-        err => { console.log(err); }
-      );
-    }
-  }
+ 
   onPageChanged(event: any) {
     const params = this.investmentRecService.getGenParams();
     if (params.pageIndex !== event) {
