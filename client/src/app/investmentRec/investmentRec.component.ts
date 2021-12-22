@@ -245,7 +245,6 @@ export class InvestmentRecComponent implements OnInit {
     });
   }
   getInvestmentInit() {
-    
     this.SpinnerService.show(); 
     this.investmentRecService.getInvestmentInit(parseInt(this.empId), this.sbu).subscribe(response => {
       this.SpinnerService.hide(); 
@@ -664,9 +663,6 @@ export class InvestmentRecComponent implements OnInit {
       });
       return false;
     }
-    
-
-
     this.investmentRecService.investmentDetailFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
     this.investmentRecService.insertInvestmentDetail(parseInt(this.empId), this.sbu).subscribe(
       res => {
@@ -675,7 +671,7 @@ export class InvestmentRecComponent implements OnInit {
         this.investmentRecService.investmentDetailFormData.fromDate = new Date(data.fromDate);
         this.investmentRecService.investmentDetailFormData.toDate = new Date(data.toDate);
         this.isDonationValid = true;
-        this.toastr.success('Investment Details Save successfully', 'Investment Details');
+       // this.toastr.success('Investment Details Save successfully', 'Investment Details');
       },
       err => { console.log(err); }
     );
@@ -697,10 +693,10 @@ export class InvestmentRecComponent implements OnInit {
     this.investmentRecService.investmentTargetedProdFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
     this.investmentRecService.insertInvestmentTargetedProd(this.investmentTargetedProds).subscribe(
       res => {
-        this.getInvestmentTargetedProd();
+        this.getInvestmentRecProducts();
 
         this.isDonationValid = true;
-        this.toastr.success('Targeted Product Save successfully', 'Investment Targeted Product');
+        //this.toastr.success('Targeted Product Save successfully', 'Investment Targeted Product');
       },
       err => { console.log(err); }
     );
@@ -743,24 +739,27 @@ export class InvestmentRecComponent implements OnInit {
 
   }
 
-  editInvestmentTargetedProd(selectedRecord: IInvestmentTargetedProd) {
-    this.investmentRecService.investmentTargetedProdFormData = Object.assign({}, selectedRecord);
-    const index: number = this.investmentTargetedProds.indexOf(selectedRecord);
-    if (index !== -1) {
-        this.investmentTargetedProds.splice(index, 1);
-    }
-    // var e = (document.getElementById("marketCode")) as HTMLSelectElement;
-    // var sel = e.selectedIndex;
-    // var opt = e.options[sel];
-    // var selectedMarketCode = opt.value;
-    // var selectedMarketName = opt.innerHTML;
+  // editInvestmentTargetedProd(selectedRecord: IInvestmentTargetedProd) {
+  //   this.investmentRecService.investmentTargetedProdFormData = Object.assign({}, selectedRecord);
+  //   const index: number = this.investmentTargetedProds.indexOf(selectedRecord);
+  //   if (index !== -1) {
+  //       this.investmentTargetedProds.splice(index, 1);
+  //   }
+  //   // var e = (document.getElementById("marketCode")) as HTMLSelectElement;
+  //   // var sel = e.selectedIndex;
+  //   // var opt = e.options[sel];
+  //   // var selectedMarketCode = opt.value;
+  //   // var selectedMarketName = opt.innerHTML;
 
-  }
+  // }
   removeInvestmentTargetedProd(selectedRecord: IInvestmentTargetedProd) {
-    
-    
     var c = confirm("Are you sure you want to delete that?");
     if (c == true) {
+      if (this.investmentRecService.investmentRecCommentFormData.id == null || this.investmentRecService.investmentRecCommentFormData.id == undefined || this.investmentRecService.investmentRecCommentFormData.id == 0) {
+        //this.investmentRecService.investmentTargetedProdFormData = new InvestmentTargetedProd();
+        this.toastr.warning("Please Save Data First!")
+        return false;
+      }
       if (this.investmentTargetedProds.find(x => x.productId == selectedRecord.productId)) {
         this.investmentTargetedProds.splice(this.investmentTargetedProds.findIndex(x => x.productId == selectedRecord.productId), 1);
       }
@@ -774,7 +773,7 @@ export class InvestmentRecComponent implements OnInit {
           //
           this.toastr.success(res);
           this.investmentRecService.investmentTargetedProdFormData = new InvestmentTargetedProd();
-          this.getInvestmentTargetedProd();
+          this.getInvestmentRecProducts();
         },
         err => { 
           console.log(err); 

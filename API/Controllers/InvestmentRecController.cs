@@ -136,7 +136,7 @@ namespace API.Controllers
                 //var totalItems = await _investmentInitRepo.CountAsync(countSpec);
                 if (userRole == "Administrator")
                 {
-                    
+
                     var investmentInits = await _investmentInitRepo.ListAllAsync();
                     var investmentRecComments = await _investmentRecCommentRepo.ListAllAsync();
                     //var investmentAprComments = await _investmentAprCommentRepo.ListAllAsync();
@@ -156,8 +156,8 @@ namespace API.Controllers
                                                      EmployeeId = i.EmployeeId,
                                                      SetOn = i.SetOn
                                                  }
-                                  ).Distinct().OrderByDescending(x=>x.SetOn).ToList();
-                    
+                                  ).Distinct().OrderByDescending(x => x.SetOn).ToList();
+
                     return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, investmentInitFormRec.Count(), investmentInitFormRec));
                 }
 
@@ -409,64 +409,101 @@ namespace API.Controllers
                     var alreadyExistInvestmentRecProductList = await _investmentRecProductRepo.ListAsync(alreadyExistSpec);
                     if (alreadyExistInvestmentRecProductList.Count > 0)
                     {
-                        foreach (var v in alreadyExistInvestmentRecProductList)
+                        //foreach (var v in alreadyExistInvestmentRecProductList)
+                        //{
+                        //    _investmentRecProductRepo.Delete(v);
+                        //    _investmentRecProductRepo.Savechange();
+                        //}
+                    }
+                    else
+                    {
+                        var investmentRecProduct = new InvestmentRecProducts
                         {
-                            _investmentRecProductRepo.Delete(v);
-                            _investmentRecProductRepo.Savechange();
-                        }
+                            //ReferenceNo = investmentRecDto.ReferenceNo,
+                            InvestmentInitId = i.InvestmentInitId,
+                            ProductId = i.ProductId,
+                            EmployeeId = i.EmployeeId,
+                            SBU = i.ProductInfo.SBU,
+                            SetOn = DateTimeOffset.Now,
+                            ModifiedOn = DateTimeOffset.Now
+                        };
+                        _investmentRecProductRepo.Add(investmentRecProduct);
                     }
                 }
-
-                foreach (var v in investmentRecProductDto)
-                {
-                    var investmentRecProduct = new InvestmentRecProducts
-                    {
-                        //ReferenceNo = investmentRecDto.ReferenceNo,
-                        InvestmentInitId = v.InvestmentInitId,
-                        ProductId = v.ProductId,
-                        EmployeeId = v.EmployeeId,
-                        SBU = v.ProductInfo.SBU,
-                        SetOn = DateTimeOffset.Now,
-                        ModifiedOn = DateTimeOffset.Now
-                    };
-                    _investmentRecProductRepo.Add(investmentRecProduct);
-                }
-
+                //foreach (var v in investmentRecProductDto)
+                //{
+                //    var investmentRecProduct = new InvestmentRecProducts
+                //    {
+                //        //ReferenceNo = investmentRecDto.ReferenceNo,
+                //        InvestmentInitId = v.InvestmentInitId,
+                //        ProductId = v.ProductId,
+                //        EmployeeId = v.EmployeeId,
+                //        SBU = v.ProductInfo.SBU,
+                //        SetOn = DateTimeOffset.Now,
+                //        ModifiedOn = DateTimeOffset.Now
+                //    };
+                //    _investmentRecProductRepo.Add(investmentRecProduct);
+                //}
                 _investmentRecProductRepo.Savechange();
-
                 return Ok("Succsessfuly Saved!!!");
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
         }
 
-        [HttpPost("updateRecProd")]
-        public ActionResult<InvestmentRecProductsDto> UpdateInvestmentRecomendationProduct(InvestmentRecProductsDto investmentRecDto)
-        {
-            // var user =  _approvalAuthorityRepo.GetByIdAsync(ApprovalAuthorityToReturnDto.Id);
-            // if (user == null) return Unauthorized(new ApiResponse(401));
-            var invRec = new InvestmentRecProducts
-            {
-                Id = investmentRecDto.Id,
-                InvestmentInitId = investmentRecDto.InvestmentInitId,
-                ProductId = investmentRecDto.ProductId,
-                SBU = investmentRecDto.SBU,
-                EmployeeId = investmentRecDto.EmployeeId,
-                ModifiedOn = DateTimeOffset.Now,
-            };
-            _investmentRecProductRepo.Update(invRec);
-            _investmentRecProductRepo.Savechange();
+        //[HttpPost("updateRecProd")]
+        //public ActionResult<InvestmentRecProductsDto> UpdateInvestmentRecomendationProduct(InvestmentRecProductsDto investmentRecDto)
+        //{
+        //    // var user =  _approvalAuthorityRepo.GetByIdAsync(ApprovalAuthorityToReturnDto.Id);
+        //    // if (user == null) return Unauthorized(new ApiResponse(401));
+        //    var invRec = new InvestmentRecProducts
+        //    {
+        //        Id = investmentRecDto.Id,
+        //        InvestmentInitId = investmentRecDto.InvestmentInitId,
+        //        ProductId = investmentRecDto.ProductId,
+        //        SBU = investmentRecDto.SBU,
+        //        EmployeeId = investmentRecDto.EmployeeId,
+        //        ModifiedOn = DateTimeOffset.Now,
+        //    };
+        //    _investmentRecProductRepo.Update(invRec);
+        //    _investmentRecProductRepo.Savechange();
 
-            return new InvestmentRecProductsDto
+        //    return new InvestmentRecProductsDto
+        //    {
+        //        Id = invRec.Id,
+        //        InvestmentInitId = investmentRecDto.InvestmentInitId,
+        //        ProductId = investmentRecDto.ProductId,
+        //    };
+        //}
+
+        [HttpPost("removeInvestmentTargetedProd")]
+        public async Task<IActionResult> RemoveInvestmentTargetedProd(InvestmentTargetedProd investmentTargetedProd)
+        {
+            try
             {
-                Id = invRec.Id,
-                InvestmentInitId = investmentRecDto.InvestmentInitId,
-                ProductId = investmentRecDto.ProductId,
-            };
+                //var response = new HttpResponseMessage();
+                var alreadyExistSpec = new InvestmentRecProductSpecification(investmentTargetedProd.InvestmentInitId, investmentTargetedProd.ProductId);
+                var alreadyExistInvestmentTargetedProdList = await _investmentRecProductRepo.ListAsync(alreadyExistSpec);
+                if (alreadyExistInvestmentTargetedProdList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentTargetedProdList)
+                    {
+                        _investmentRecProductRepo.Delete(v);
+                        _investmentRecProductRepo.Savechange();
+                    }
+
+                    return Ok("Succsessfuly Deleted!!!");
+                }
+                return NotFound();
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
         }
+
 
         [HttpGet]
         [Route("investmentRecProducts/{investmentInitId}/{sbu}")]

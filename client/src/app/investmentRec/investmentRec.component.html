@@ -680,7 +680,7 @@
                                             <!-- <td>Product Code</td> -->
                                             <td>Product Name</td>
                                             <td>SBU</td>
-                                            <td></td>
+                                            <!-- <td></td> -->
                                             <td></td>
                                         </tr>
                                         <tr *ngFor="let a of investmentTargetedProds">
@@ -693,9 +693,9 @@
                                             <td>
                                                 {{a.productInfo.sbuName}}
                                             </td>
-                                            <td>
+                                            <!-- <td>
                                                 <input type="button" *ngIf="sbu==a.sbu" (click)="editInvestmentTargetedProd(a)" value="Edit">
-                                            </td>
+                                            </td> -->
                                             <td>
                                                 <input type="button" *ngIf="sbu==a.sbu" (click)="removeInvestmentTargetedProd(a)" value="Remove">
                                             </td>

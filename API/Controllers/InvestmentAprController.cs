@@ -643,22 +643,35 @@ namespace API.Controllers
                             _investmentRecProductRepo.Savechange();
                         }
                     }
+                    else {
+                        var investmentRecProduct = new InvestmentRecProducts
+                        {
+                            //ReferenceNo = investmentRecDto.ReferenceNo,
+                            InvestmentInitId = i.InvestmentInitId,
+                            ProductId = i.ProductId,
+                            EmployeeId = i.EmployeeId,
+                            SBU = i.ProductInfo.SBU,
+                            SetOn = DateTimeOffset.Now,
+                            ModifiedOn = DateTimeOffset.Now
+                        };
+                        _investmentRecProductRepo.Add(investmentRecProduct);
+                    }
                 }
 
-                foreach (var v in investmentRecProductDto)
-                {
-                    var investmentRecProduct = new InvestmentRecProducts
-                    {
-                        //ReferenceNo = investmentRecDto.ReferenceNo,
-                        InvestmentInitId = v.InvestmentInitId,
-                        ProductId = v.ProductId,
-                        EmployeeId = v.EmployeeId,
-                        SBU = v.ProductInfo.SBU,
-                        SetOn = DateTimeOffset.Now,
-                        ModifiedOn = DateTimeOffset.Now
-                    };
-                    _investmentRecProductRepo.Add(investmentRecProduct);
-                }
+                //foreach (var v in investmentRecProductDto)
+                //{
+                //    var investmentRecProduct = new InvestmentRecProducts
+                //    {
+                //        //ReferenceNo = investmentRecDto.ReferenceNo,
+                //        InvestmentInitId = v.InvestmentInitId,
+                //        ProductId = v.ProductId,
+                //        EmployeeId = v.EmployeeId,
+                //        SBU = v.ProductInfo.SBU,
+                //        SetOn = DateTimeOffset.Now,
+                //        ModifiedOn = DateTimeOffset.Now
+                //    };
+                //    _investmentRecProductRepo.Add(investmentRecProduct);
+                //}
 
                 _investmentRecProductRepo.Savechange();
 
@@ -671,7 +684,31 @@ namespace API.Controllers
             }
         }
 
+        [HttpPost("removeInvestmentTargetedProd")]
+        public async Task<IActionResult> RemoveInvestmentTargetedProd(InvestmentTargetedProd investmentTargetedProd)
+        {
+            try
+            {
+                //var response = new HttpResponseMessage();
+                var alreadyExistSpec = new InvestmentRecProductSpecification(investmentTargetedProd.InvestmentInitId, investmentTargetedProd.ProductId);
+                var alreadyExistInvestmentTargetedProdList = await _investmentRecProductRepo.ListAsync(alreadyExistSpec);
+                if (alreadyExistInvestmentTargetedProdList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentTargetedProdList)
+                    {
+                        _investmentRecProductRepo.Delete(v);
+                        _investmentRecProductRepo.Savechange();
+                    }
 
+                    return Ok("Succsessfuly Deleted!!!");
+                }
+                return NotFound();
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
         [HttpGet]
         [Route("investmentAprProducts/{investmentInitId}/{sbu}")]
         //public async Task<IReadOnlyList<InvestmentRecProducts>> GetInvestmentAprProducts(int investmentInitId, string sbu)
