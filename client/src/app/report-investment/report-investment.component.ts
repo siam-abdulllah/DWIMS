@@ -1556,9 +1556,9 @@ viewSBUWiseBudgetInvest() {
     row.push(a.sbu);
     row.push(a.sbuName);
     row.push(a.donationTypeName);
-    row.push(a.budget);
-    row.push(a.expense);
-    row.push(a.budget - a.expense);
+    row.push((a.budget).toLocaleString());
+    row.push((a.expense).toLocaleString());
+    row.push((a.budget - a.expense).toLocaleString());
 
     rowD.push(row);
     row = [];
@@ -1634,9 +1634,9 @@ viewEmpWiseBudgetInvest() {
     row.push(a.employeeName);
     row.push(a.duration);
     row.push(a.donationTypeName);
-    row.push(a.budget);
-    row.push(a.expense);
-    row.push(a.budget - a.expense);
+    row.push((a.budget).toLocaleString());
+    row.push(a.expense.toLocaleString());
+    row.push((a.budget - a.expense).toLocaleString());
 
     rowD.push(row);
     row = [];
@@ -1644,29 +1644,6 @@ viewEmpWiseBudgetInvest() {
   //this.getReport(col, rowD, title, orgName, orgAddress);
   this.getReport(col, rowD, 'Employee wise Budget And Expense Summary Report', 'Square Pharmaceuticals Ltd.', '48, Square Center, Mohakhali');
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   getReport(col: any[], rowD: any[], title: any, orgName: any, orgAddress: any) {
