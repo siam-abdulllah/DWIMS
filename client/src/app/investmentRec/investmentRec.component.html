@@ -810,7 +810,7 @@
     </div>
 </section>
 <ng-template #investmentInitSearchModal>
-    <div class="modal-header" style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc));color: black;">
+    <div class="modal-header" style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));color: black;">
         <h4 class="modal-title pull-left">Investment</h4>
         <button type="button" class="close pull-right" aria-label="Close" (click)="InvestmentInitSearchModalRef.hide()">
         <span aria-hidden="true">&times;</span>
@@ -821,7 +821,7 @@
             <div class="col-md-12">
                 <div class="table-responsive" style="border: 1px solid #bed2c9; width: 100%;">
                     <table class="table table-bordered table-responsive table-hover table-striped">
-                        <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc));">
+                        <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));">
                             <tr class="HeaderRow">
                                 <th scope="col" style="width: 7%">Action</th>
                                 <th scope="col" style="width: 0;display:none;">Id</th>
@@ -835,7 +835,7 @@
                         <tbody>
                             <tr *ngFor="let a of investmentInits">
                                 <td>
-                                    <button class="btn btn-sm btn-embossed btn-success" (click)="selectInvestmentInit(a)">Select</button>
+                                    <button class="btn btn-sm btn-embossed btn-success" (click)="selectInvestmentInit(a)"> <i class="fa fa-check" aria-hidden="true"></i>Select</button>
 
                                 </td>
                                 <td style="display:none;">{{a.id}}</td>
@@ -854,7 +854,7 @@
     </div>
 </ng-template>
 <ng-template #investmentRecSearchModal>
-    <div class="modal-header" style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc));color: black;">
+    <div class="modal-header" style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));color: black;">
         <h4 class="modal-title pull-left">Investment Recommendation</h4>
         <button type="button" class="close pull-right" aria-label="Close" (click)="InvestmentRecSearchModalRef.hide()">
         <span aria-hidden="true">&times;</span>
@@ -879,7 +879,7 @@
                     <div class="col-md-12">
                         <div class="table-responsive" style="border: 1px solid #bed2c9; width: 100%;">
                             <table class="table table-bordered table-responsive table-hover table-striped">
-                                <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc));">
+                                <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));">
                                     <tr class="HeaderRow">
                                         <th scope="col" style="width: 7%">Action</th>
                                         <th scope="col" style="width: 0;display:none;">Id</th>
@@ -893,7 +893,7 @@
                                 <tbody>
                                     <tr *ngFor="let a of investmentInits | paginate: configs | filter: searchText">
                                         <td>
-                                            <button class="btn btn-sm btn-embossed btn-success" (click)="selectInvestmentRec(a)">Select</button>
+                                            <button class="btn btn-sm btn-embossed btn-success" (click)="selectInvestmentRec(a)"> <i class="fa fa-check" aria-hidden="true"></i>Select</button>
                                         </td>
                                         <td style="display:none;">{{a.id}}</td>
                                         <td>{{a.referenceNo}}</td>
