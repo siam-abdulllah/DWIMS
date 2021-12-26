@@ -9,11 +9,13 @@ export interface IInvestmentInit {
     proposeFor: string;
     donationTo: string;
     marketCode: string;
+    marketName: string;
     employeeId: number;
     confirmation: boolean;
     donationId: number;
     donation:IDonation;
     sbu:string;
+    setOn: Date;
 }
  
 export class InvestmentInit implements IInvestmentInit {
@@ -22,11 +24,13 @@ export class InvestmentInit implements IInvestmentInit {
     proposeFor: string=null;
     donationTo: string=null;
     marketCode: string;
+    marketName: string;
     employeeId: number;
     confirmation: boolean;
     donationId: number=null;
     donation:IDonation;
     sbu:string;
+    setOn: Date;
 }
 
 export interface IInvestmentDetail {

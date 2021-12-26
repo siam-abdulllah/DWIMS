@@ -42,6 +42,10 @@ export class InvestmentInitComponent implements OnInit {
   empId: string;
   searchText = '';
   configs: any;
+  degree: any;
+  designation: any;
+  docInstaddress: any;
+  instaddress: any;
   userRole: string;
   sbu: string;
   marketCode: string;
@@ -85,6 +89,7 @@ export class InvestmentInitComponent implements OnInit {
     class: 'modal-lg',
     ignoreBackdropClick: true
   };
+  institutionType: string;
   constructor(private accountService: AccountService, public investmentInitService: InvestmentInitService, private router: Router,
     private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe, private SpinnerService: NgxSpinnerService) { }
   ngOnInit() {
@@ -106,6 +111,8 @@ export class InvestmentInitComponent implements OnInit {
     this.investmentInitService.investmentBcdsFormData.investmentInitId = selectedRecord.id;
     this.investmentInitService.investmentSocietyFormData.investmentInitId = selectedRecord.id;
     this.investmentInitService.investmentDetailFormData.investmentInitId = selectedRecord.id;
+    debugger;
+    this.convertedDate = this.datePipe.transform(selectedRecord.setOn, 'ddMMyyyy');
     this.isDonationValid = true;
     if (this.investmentInitService.investmentInitFormData.donationTo == "Doctor") {
       this.getDoctor();
@@ -187,7 +194,7 @@ export class InvestmentInitComponent implements OnInit {
         this.investmentInitService.investmentDetailFormData = data;
         this.investmentInitService.investmentDetailFormData.fromDate = new Date(data.fromDate);
         this.investmentInitService.investmentDetailFormData.toDate = new Date(data.toDate);
-        this.convertedDate = this.datePipe.transform(data.fromDate, 'ddMMyyyy');
+        //this.convertedDate = this.datePipe.transform(data.fromDate, 'ddMMyyyy');
         //this.getLastFiveInvestment(this.investmentInitService.investmentInitFormData.marketCode, this.convertedDate);
 
       } else {
@@ -491,8 +498,8 @@ export class InvestmentInitComponent implements OnInit {
         debugger;
         //this.investmentInitService.investmentDoctorFormData.doctorName=this.doctors[i].doctorName;
         this.investmentInitService.investmentDoctorFormData.doctorCode = this.doctors[i].doctorCode;
-        //this.investmentInitService.investmentDoctorFormData.degree = this.doctors[i].degree;
-        //this.investmentInitService.investmentDoctorFormData.designation = this.doctors[i].designation;
+        this.degree = this.doctors[i].degree;
+        this.designation = this.doctors[i].designation;
         break;
       }
     }
@@ -501,7 +508,7 @@ export class InvestmentInitComponent implements OnInit {
   onChangeInstitutionInDoc() {
     for (var i = 0; i < this.institutions.length; i++) {
       if (this.institutions[i].id == this.investmentInitService.investmentDoctorFormData.institutionId) {
-        //this.investmentInitService.investmentDoctorFormData.address = this.institutions[i].address;
+        this.docInstaddress = this.institutions[i].address;
 
         break;
       }
@@ -510,9 +517,9 @@ export class InvestmentInitComponent implements OnInit {
   onChangeInstitutionInInst() {
     for (var i = 0; i < this.institutions.length; i++) {
       if (this.institutions[i].id == this.investmentInitService.investmentInstitutionFormData.institutionId) {
-        this.investmentInitService.investmentInstitutionFormData.address = this.institutions[i].address;
-        this.investmentInitService.investmentInstitutionFormData.institutionType = this.institutions[i].institutionType;
-
+        this.instaddress = this.institutions[i].address;
+        this.institutionType = this.institutions[i].institutionType;
+        debugger;
         break;
       }
     }

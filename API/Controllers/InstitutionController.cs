@@ -41,6 +41,7 @@ namespace API.Controllers
                                {
                                    InstitutionName = d.InstitutionName,
                                    InstitutionCode = d.InstitutionCode,
+                                   InstitutionType = d.InstitutionType,
                                    Address = d.Address,
                                    Id = d.Id
                                }

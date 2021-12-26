@@ -749,7 +749,7 @@
                                             <!-- <td>Product Code</td> -->
                                             <td>Product Name</td>
                                             <td>SBU</td>
-                                            <td></td>
+                                            <!-- <td></td> -->
                                             <td></td>
                                         </tr>
                                         <tr *ngFor="let a of investmentTargetedProds">
@@ -762,9 +762,9 @@
                                             <td>
                                                 {{a.productInfo.sbuName}}
                                             </td>
-                                            <td>
+                                            <!-- <td>
                                                 <input type="button" *ngIf="sbu==a.sbu" (click)="editInvestmentTargetedProd(a)" value="Edit">
-                                            </td>
+                                            </td> -->
                                             <td>
                                                 <input type="button" *ngIf="sbu==a.sbu" (click)="removeInvestmentTargetedProd(a)" value="Remove">
                                             </td>
@@ -863,7 +863,7 @@
 </section>
 <ng-template #investmentInitSearchModal>
     <div class="modal-header" style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc));color: black;">
-        <h4 class="modal-title pull-left">Investment Initialization</h4>
+        <h4 class="modal-title pull-left">Investment</h4>
         <button type="button" class="close pull-right" aria-label="Close" (click)="InvestmentInitSearchModalRef.hide()">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -879,7 +879,8 @@
                                 <th scope="col" style="width: 0;display:none;">Id</th>
                                 <th scope="col" style="width: 9%">Reference No</th>
                                 <th scope="col" style="width: 8%">Propose For</th>
-                                <th scope="col" style="width: 8%">Donation Type</th>
+                                <th scope="col" style="width: 8%">Market Name</th>
+                                <!-- <th scope="col" style="width: 8%">Donation Type</th> -->
                                 <th scope="col" style="width: 8%">Donation To</th>
                             </tr>
                         </thead>
@@ -892,7 +893,8 @@
                                 <td style="display:none;">{{a.id}}</td>
                                 <td>{{a.referenceNo}}</td>
                                 <td>{{a.proposeFor}}</td>
-                                <td>{{a.donationId}}</td>
+                                <td>{{a.marketName}}</td>
+                                <!-- <td>{{a.donationId}}</td> -->
                                 <td>{{a.donationTo}}</td>
                             </tr>
                         </tbody>
@@ -904,7 +906,7 @@
 </ng-template>
 <ng-template #investmentAprSearchModal>
     <div class="modal-header" style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc));color: black;">
-        <h4 class="modal-title pull-left">Investment Initialization</h4>
+        <h4 class="modal-title pull-left">Investment Approval</h4>
         <button type="button" class="close pull-right" aria-label="Close" (click)="InvestmentAprSearchModalRef.hide()">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -934,7 +936,8 @@
                                         <th scope="col" style="width: 0;display:none;">Id</th>
                                         <th scope="col" style="width: 9%">Reference No</th>
                                         <th scope="col" style="width: 8%">Propose For</th>
-                                        <th scope="col" style="width: 8%">Donation Type</th>
+                                        <th scope="col" style="width: 8%">Market Name</th>
+                                        <!-- <th scope="col" style="width: 8%">Donation Type</th> -->
                                         <th scope="col" style="width: 8%">Donation To</th>
                                     </tr>
                                 </thead>
@@ -947,7 +950,8 @@
                                         <td style="display:none;">{{a.id}}</td>
                                         <td>{{a.referenceNo}}</td>
                                         <td>{{a.proposeFor}}</td>
-                                        <td>{{a.donationId}}</td>
+                                        <td>{{a.marketName}}</td>
+                                        <!-- <td>{{a.donationId}}</td> -->
                                         <td>{{a.donationTo}}</td>
                                     </tr>
                                 </tbody>

@@ -48,8 +48,8 @@ export class InvestmentRecService {
   getLastFiveInvestment(marketCode:string,toDayDate:string){    
     return this.http.get(this.baseUrl + 'investment/getLastFiveInvestment/'+marketCode+'/'+toDayDate);
   }
-  getLastFiveInvestmentForDoc(donationId:number,docId:number,marketCode: string, toDayDate: string) {
-    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForDoc/' + donationId + '/' + docId + '/' +marketCode + '/' +toDayDate);
+  async getLastFiveInvestmentForDoc(donationId:number,docId:number,marketCode: string, toDayDate: string) {
+    return await  this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForDoc/' + donationId + '/' + docId + '/' +marketCode + '/' +toDayDate).toPromise();
   }
   getLastFiveInvestmentForInstitute(donationId:number,instituteId:number,marketCode: string, toDayDate: string) {
     return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForInstitute/' + donationId + '/' + instituteId + '/' +marketCode + '/' +toDayDate);
@@ -69,8 +69,8 @@ export class InvestmentRecService {
   getCampaignMsts(){    
     return this.http.get(this.baseUrl + 'campaign/campaignMstsForInvestment');
   }
-  getInvestmentDoctors(investmentInitId:number){    
-    return this.http.get(this.baseUrl + 'investment/investmentDoctors/'+investmentInitId);
+  async  getInvestmentDoctors(investmentInitId:number){    
+    return await  this.http.get(this.baseUrl + 'investment/investmentDoctors/'+investmentInitId).toPromise();
   }
   getInvestmentRecComment(investmentInitId:number,empId:string){    
     return this.http.get(this.baseUrl + 'investmentRec/getInvestmentRecComment/'+investmentInitId+'/'+parseInt(empId));
@@ -173,8 +173,8 @@ export class InvestmentRecService {
   }
   
   removeInvestmentTargetedProd() {
-    
-    return this.http.post(this.baseUrl+ 'investment/removeInvestmentTargetedProd', this.investmentTargetedProdFormData,
+    debugger;
+    return this.http.post(this.baseUrl+ 'investmentRec/removeInvestmentTargetedProd', this.investmentTargetedProdFormData,
     {responseType: 'text'});
 
   }

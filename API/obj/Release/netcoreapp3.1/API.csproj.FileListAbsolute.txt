@@ -373,4 +373,3 @@ E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\API.csproj.CopyComplete
 E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\API.dll
 E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\API.pdb
 E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\API.genruntimeconfig.cache
-G:\DIDS\DIDS_GIT\DWIMS\API\obj\Release\netcoreapp3.1\API.csproj.CopyComplete
