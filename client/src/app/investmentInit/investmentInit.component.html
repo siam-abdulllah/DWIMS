@@ -1,3 +1,17 @@
+<style>
+    @media screen and (min-width: 0px) and (max-width: 450px) {
+        #longHead {
+            display: none;
+        }
+    }
+    
+    @media screen and (min-width: 450px) and (max-width: 4000px) {
+        #shortHead {
+            display: none;
+        }
+    }
+</style>
+
 <section class="content">
     <div class="container-fluid">
         <div class="row">
@@ -593,13 +607,21 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <table class="table table-bordered">
-                                                    <tr class="HeaderRow">
-                                                        <td>Donation</td>
-                                                        <td>Investment</td>
-                                                        <td>Commitment-All</td>
-                                                        <td>Commitment-Own</td>
-                                                        <td>Share-All</td>
-                                                        <td>Share-Own</td>
+                                                    <tr id="longHead" class="HeaderRow">
+                                                        <td>Invest Type</td>
+                                                        <td>Amount</td>
+                                                        <td>Commitment All</td>
+                                                        <td>Commitment Own</td>
+                                                        <td>Share All</td>
+                                                        <td>Share Own</td>
+                                                    </tr>
+                                                    <tr id="shortHead" class="HeaderRow">
+                                                        <td>Inv Type</td>
+                                                        <td>Amt</td>
+                                                        <td>Cmmt All</td>
+                                                        <td>Cmmt Own</td>
+                                                        <td>Share All</td>
+                                                        <td>Share Own</td>
                                                     </tr>
                                                     <tr *ngFor="let a of lastFiveInvestmentDetail">
                                                         <td>
