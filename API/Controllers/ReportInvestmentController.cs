@@ -395,22 +395,38 @@ namespace API.Controllers
         {
             try
             {
-               string qry = " select CAST(ROW_NUMBER() OVER (ORDER BY (Select 1)) AS INT)  AS Id, 1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.InvestmentInitId, a.SBU, a.SBUName, e.MarketCode, e.MarketName,  '' MarketGroupName, a.[Priority], ISNULL(a.RecStatus, 'N/A') RecStatus, ISNULL(c.ApprovalAuthorityName, 'N/A') ApprovalAuthorityName " +
-               " from InvestmentInit i " +
-               " left join InvestmentTargetedGroup e on e.InvestmentInitId = i.Id " +
-               " left join InvestmentRecComment a on a.InvestmentInitId = i.Id " +
-               " left join Employee emp on emp.Id = a.EmployeeId " +
-               " left join ApprAuthConfig b on a.EmployeeId = b.EmployeeId " +
-               " left join ApprovalAuthority c on b.ApprovalAuthorityId = c.Id " +
-               " where i.Id = "+ investmentInitId +" and e.SBU = a.SBU " +
+               string qry = " SELECT  CAST(ROW_NUMBER() OVER (ORDER BY (SELECT 1)) AS INT) AS Id,  " +
+               " 1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.InvestmentInitId, a.SBU, a.SBUName,  " +
+               " a.EmployeeId EmpId, emp.EmployeeName, e.MarketCode, e.MarketName,'' MarketGroupName, a.[Priority], ISNULL(a.RecStatus, 'N/A') RecStatus,  " +
+               " ISNULL(c.ApprovalAuthorityName, 'N/A') ApprovalAuthorityName " +
+               " FROM InvestmentInit i " +
+               " LEFT JOIN InvestmentRecComment a ON a.InvestmentInitId = i.Id " +
+               " LEFT JOIN Employee emp ON emp.Id = a.EmployeeId " +
+               " LEFT JOIN InvestmentTargetedGroup e ON e.InvestmentInitId = i.Id " +
+               " LEFT JOIN ApprAuthConfig b ON b.EmployeeId = a.EmployeeId " +
+               " LEFT JOIN ApprovalAuthority c ON b.ApprovalAuthorityId = c.Id " +
+               " WHERE i.Id = " + investmentInitId + " AND b.[Status] = 'A' AND a.SBU = e.SBU   " +
                " UNION " +
-               " select CAST(ROW_NUMBER() OVER (ORDER BY (Select 1)) AS INT)  AS Id , 1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, r.InvestmentInitId, a.SBU, a.SBUName, a.MarketCode, a.MarketName, '' MarketGroupName, r.[Priority], ISNULL(r.RecStatus, 'N/A') RecStatus, ISNULL(c.ApprovalAuthorityName, 'N/A') ApprovalAuthorityName  " +
-               " from InvestmentInit a " +
-               " left join Employee e on e.Id  = a.EmployeeId " +
-               " left join InvestmentRecComment r on r.InvestmentInitId = a.Id " +
-               " left join ApprovalAuthority c on r.[Priority] = c.[Priority] " +
-               " where a.Id = "+ investmentInitId +"  and a.SBU = r.SBU " +
-               " ORDER BY [Priority], RecStatus desc ";
+               " SELECT CAST(ROW_NUMBER() OVER (ORDER BY (SELECT 1)) AS INT) AS Id, " +
+               " 1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, r.InvestmentInitId, a.SBU, a.SBUName,  " +
+               " r.EmployeeId EmpId, e.EmployeeName, a.MarketCode, a.MarketName,'' MarketGroupName, r.[Priority], ISNULL(r.RecStatus, 'N/A') RecStatus,  " +
+               " ISNULL(c.ApprovalAuthorityName, 'N/A') ApprovalAuthorityName " +
+               " FROM InvestmentInit a " +
+               " LEFT JOIN InvestmentRecComment r ON r.InvestmentInitId = a.Id " +
+               " LEFT JOIN Employee e ON e.Id = r.EmployeeId " +
+               " LEFT JOIN ApprovalAuthority c ON r.[Priority] = c.[Priority] " +
+               " WHERE a.Id = " + investmentInitId + " AND a.SBU = r.SBU " +
+               " ORDER BY [Priority], RecStatus DESC ";
+
+
+
+
+
+
+
+
+
+
 
                 var results = _db.InvestmentTargetGroupSQL.FromSqlRaw(qry).ToList();
 

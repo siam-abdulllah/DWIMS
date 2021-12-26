@@ -1,6 +1,6 @@
 
-import {InvestmentInit, IInvestmentInit, InvestmentDetail, IInvestmentDetail,InvestmentTargetedProd, IInvestmentTargetedProd, InvestmentTargetedGroup, IInvestmentTargetedGroup, IInvestmentDetailOld} from '../shared/models/investment';
-import { IInvestmentRcvComment, InvestmentRcvComment} from '../shared/models/investmentRcv';
+import {InvestmentInit, IInvestmentInit, InvestmentDetail, IInvestmentDetail,InvestmentTargetedProd, IInvestmentTargetedProd,  IInvestmentDetailOld} from '../shared/models/investment';
+import { IInvestmentRcvComment, InvestmentRcvComment, InvestmentTargetedGroup, IInvestmentTargetedGroup,} from '../shared/models/investmentRcv';
 import { InvestmentInstitution, IInvestmentInstitution, InvestmentCampaign, IInvestmentCampaign } from '../shared/models/investmentRcv';
 import { InvestmentBcds, IInvestmentBcds, InvestmentSociety, IInvestmentSociety } from '../shared/models/investmentRcv';
 import { InvestmentDoctor, IInvestmentDoctor} from '../shared/models/investmentRec';
@@ -1300,39 +1300,7 @@ export class RptInvestmentDetailComponent implements OnInit {
     }
   }
   }
-  insertInvestmentTargetedGroup() {
 
-    if (this.investmentInitService.investmentInitFormData.id == null || this.investmentInitService.investmentInitFormData.id == undefined || this.investmentInitService.investmentInitFormData.id == 0) {
-      this.toastr.warning('Insert Investment Initialisation First', 'Investment Group');
-      return false;
-    }
-
-    if (this.investmentInitService.investmentTargetedGroupFormData.marketGroupMstId == null || this.investmentInitService.investmentTargetedGroupFormData.marketGroupMstId == undefined || this.investmentInitService.investmentTargetedGroupFormData.marketGroupMstId == 0) {
-      this.toastr.warning('Select Market Group First', 'Investment Group');
-      return false;
-    }
-    if (this.investmentTargetedGroups != null && this.investmentTargetedGroups.length > 0) {
-      this.investmentInitService.investmentTargetedGroupFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
-      this.SpinnerService.show();
-      this.investmentInitService.insertInvestmentTargetedGroup(this.investmentTargetedGroups).subscribe(
-        res => {
-          this.investmentInitService.investmentTargetedProdFormData = new InvestmentTargetedProd();
-          this.getInvestmentTargetedGroup();
-          this.getInvestmentTargetedGroupStatus();
-          this.isDonationValid = true;
-          this.SpinnerService.hide();
-          this.toastr.success(res);
-        },
-        err => { 
-          this.SpinnerService.hide();
-          console.log(err); 
-        }
-      );
-    }
-    else {
-      this.toastr.warning('Select Market Group First', 'Investment Group');
-    }
-  }
   editInvestmentTargetedProd(selectedRecord: IInvestmentTargetedProd) {
     this.investmentInitService.investmentTargetedProdFormData = Object.assign({}, selectedRecord);
     // var e = (document.getElementById("marketCode")) as HTMLSelectElement;
@@ -1444,32 +1412,6 @@ export class RptInvestmentDetailComponent implements OnInit {
       );
     }
   }
-  removeInvestmentTargetedGroup() {
-    //this.investmentInitService.investmentTargetedProdFormData = Object.assign({}, selectedRecord);
-    if (this.investmentTargetedGroups != null && this.investmentTargetedGroups.length > 0) {
-      var c = confirm("Are you sure you want to delete that?");
-      if (c == true) {
-        this.SpinnerService.show();
-        this.investmentInitService.removeInvestmentTargetedGroup(this.investmentTargetedGroups).subscribe(
-          res => {
-            //this.isDonationValid=false;
-            this.investmentInitService.investmentTargetedGroupFormData = new InvestmentTargetedGroup();
-            this.getInvestmentTargetedGroup();
-            this.getInvestmentTargetedGroupStatus();
-            this.SpinnerService.hide();
-            this.toastr.success(res);
-          },
-          err => {
-            this.SpinnerService.hide();
-            console.log(err);
-            this.toastr.warning(err.error, 'Investment Group');
-          }
-        );
-      }
-    }
-    else {
-      this.toastr.warning('No Market Group Found', 'Investment Group');
-    }
-  }
+
 }
 
