@@ -386,7 +386,7 @@
                                             </ng-select>
                                         </div>
                                         <div class="col-md-2">
-                                            <label>Institution Id</label>
+                                            <label>Institution</label>
                                             <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-3">
@@ -778,7 +778,7 @@
                                             <!-- <td>Product Code</td> -->
                                             <td>Product Name</td>
                                             <td>SBU</td>
-                                            <td></td>
+                                            <!-- <td></td> -->
                                             <td></td>
                                         </tr>
                                         <tr *ngFor="let a of investmentTargetedProds">
@@ -791,9 +791,9 @@
                                             <td>
                                                 {{a.productInfo.sbuName}}
                                             </td>
-                                            <td>
+                                            <!-- <td>
                                                 <input type="button" *ngIf="sbu==a.sbu" (click)="editInvestmentTargetedProd(a)" value="Edit">
-                                            </td>
+                                            </td> -->
                                             <td>
                                                 <input type="button" *ngIf="sbu==a.sbu" (click)="removeInvestmentTargetedProd(a)" value="Remove">
                                             </td>
@@ -919,7 +919,7 @@
                                 <tbody>
                                     <tr *ngFor="let a of investmentInits | paginate: configs | filter: searchText">
                                         <td>
-                                            <button class="btn btn-sm btn-embossed btn-success" (click)="selectInvestmentInit(a)">Select</button>
+                                            <button class="btn btn-sm btn-embossed btn-success" (click)="selectInvestmentInit(a)"><i class="fa fa-check" aria-hidden="true"></i>Select</button>
 
                                         </td>
                                         <td style="display:none;">{{a.id}}</td>

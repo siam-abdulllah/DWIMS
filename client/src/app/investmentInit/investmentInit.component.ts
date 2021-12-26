@@ -1261,15 +1261,15 @@ export class InvestmentInitComponent implements OnInit {
       this.toastr.warning('Select Market Group First', 'Investment Group');
     }
   }
-  editInvestmentTargetedProd(selectedRecord: IInvestmentTargetedProd) {
-    this.investmentInitService.investmentTargetedProdFormData = Object.assign({}, selectedRecord);
-    // var e = (document.getElementById("marketCode")) as HTMLSelectElement;
-    // var sel = e.selectedIndex;
-    // var opt = e.options[sel];
-    // var selectedMarketCode = opt.value;
-    // var selectedMarketName = opt.innerHTML;
+  // editInvestmentTargetedProd(selectedRecord: IInvestmentTargetedProd) {
+  //   this.investmentInitService.investmentTargetedProdFormData = Object.assign({}, selectedRecord);
+  //   // var e = (document.getElementById("marketCode")) as HTMLSelectElement;
+  //   // var sel = e.selectedIndex;
+  //   // var opt = e.options[sel];
+  //   // var selectedMarketCode = opt.value;
+  //   // var selectedMarketName = opt.innerHTML;
 
-  }
+  // }
   populateForm() {
     //this.investmentInitService.campaignFormData = Object.assign({}, selectedRecord);
   }
@@ -1399,16 +1399,22 @@ export class InvestmentInitComponent implements OnInit {
     }
   }
   removeInvestmentTargetedProd(selectedRecord: IInvestmentTargetedProd) {
-    this.investmentInitService.investmentTargetedProdFormData = Object.assign({}, selectedRecord);
+    if (this.isSubmitted == true && parseInt(this.empId) == this.investmentInitService.investmentInitFormData.employeeId) {
+      this.toastr.warning("Investment already submitted");
+      return false;
+    }
     var c = confirm("Are you sure you want to delete that?");
     if (c == true) {
+      this.investmentInitService.investmentTargetedProdFormData = Object.assign({}, selectedRecord);
       this.SpinnerService.show();
+      debugger;
       this.investmentInitService.removeInvestmentTargetedProd().subscribe(
         res => {
           //this.isDonationValid=false;
           this.investmentInitService.investmentTargetedProdFormData = new InvestmentTargetedProd();
           this.getInvestmentTargetedProd();
           this.SpinnerService.hide();
+
           this.toastr.success(res);
         },
         err => {

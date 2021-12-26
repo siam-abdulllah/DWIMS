@@ -732,12 +732,29 @@ export class InvestmentAprComponent implements OnInit {
   // }
   removeInvestmentTargetedProd(selectedAprord: IInvestmentTargetedProd) {
     
-    
+    if (this.investmentAprService.investmentAprCommentFormData.id == null || this.investmentAprService.investmentAprCommentFormData.id == undefined || this.investmentAprService.investmentAprCommentFormData.id == 0) {
+      var c = confirm("Are you sure you want to remove this product?");
+      if (c == true) {
+        if (this.investmentTargetedProds.find(x => x.productId == selectedAprord.productId)) {
+          this.investmentTargetedProds.splice(this.investmentTargetedProds.findIndex(x => x.productId == selectedAprord.productId), 1);
+          this.toastr.success("Successfully Removed. Please Save the data.");
+          return false;
+        }
+      }
+    }
+    else {
     var c = confirm("Are you sure you want to delete that?");
     if (c == true) {
-      if (this.investmentAprService.investmentAprCommentFormData.id == null || this.investmentAprService.investmentAprCommentFormData.id == undefined || this.investmentAprService.investmentAprCommentFormData.id == 0) {
-        this.toastr.warning("Please Save Data First!") 
-        return false;
+      // if (this.investmentAprService.investmentAprCommentFormData.id == null || this.investmentAprService.investmentAprCommentFormData.id == undefined || this.investmentAprService.investmentAprCommentFormData.id == 0) {
+      //   this.toastr.warning("Please Save Data First!") 
+      //   return false;
+      // }
+      if (selectedAprord.id == 0) {
+        if (this.investmentTargetedProds.find(x => x.productId == selectedAprord.productId)) {
+          this.investmentTargetedProds.splice(this.investmentTargetedProds.findIndex(x => x.productId == selectedAprord.productId), 1);
+          this.toastr.success("Successfully Removed");
+          return false;
+        }
       }
       this.investmentAprService.investmentTargetedProdFormData = Object.assign({}, selectedAprord);
       if (this.investmentTargetedProds.find(x => x.productId == selectedAprord.productId)) {
@@ -753,6 +770,7 @@ export class InvestmentAprComponent implements OnInit {
         err => { console.log(err); }
       );
     }
+  }
   }
   populateForm() {
   }
