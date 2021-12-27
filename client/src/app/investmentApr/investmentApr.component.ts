@@ -115,7 +115,7 @@ export class InvestmentAprComponent implements OnInit {
   openInvestmentAprSearchModal(template: TemplateRef<any>) {
     this.InvestmentAprSearchModalRef = this.modalService.show(template, this.config);
   }
-  selectInvestmentInit(selectedAprord: IInvestmentInit) {
+  async selectInvestmentInit(selectedAprord: IInvestmentInit) {
     this.resetForm();
     this.investmentAprService.investmentAprFormData = Object.assign({}, selectedAprord);
     var selectedDonation= this.donations.filter(res=>res.id==selectedAprord.donationId).map(ele=>ele.donationTypeName);
@@ -125,21 +125,21 @@ export class InvestmentAprComponent implements OnInit {
     this.isDonationValid = true;
     this.convertedDate = this.datePipe.transform(selectedAprord.setOn, 'ddMMyyyy');
     if (this.investmentAprService.investmentAprFormData.donationTo == "Doctor") {
-      this.getInvestmentDoctor();
+      await this.getInvestmentDoctor();
     }
     else if (this.investmentAprService.investmentAprFormData.donationTo == "Institution") {
-      this.getInvestmentInstitution();
+      await this.getInvestmentInstitution();
     }
     else if (this.investmentAprService.investmentAprFormData.donationTo == "Campaign") {
-      this.getInvestmentCampaign();
+      await this.getInvestmentCampaign();
     }
     else if (this.investmentAprService.investmentAprFormData.donationTo == "Bcds") {
-      this.getInvestmentBcds();
+      await this.getInvestmentBcds();
     }
     else if (this.investmentAprService.investmentAprFormData.donationTo == "Society") {
-      this.getInvestmentSociety();
+      await this.getInvestmentSociety();
     }
-    this.getInvestmentDetails();
+    await this.getInvestmentDetails();
     this.getInvestmentTargetedProd();
     this.getInvestmentTargetedGroup();
     if (this.sbu == this.investmentAprService.investmentAprFormData.sbu) {
@@ -154,7 +154,7 @@ export class InvestmentAprComponent implements OnInit {
     
     this.InvestmentInitSearchModalRef.hide()
   }
-  selectInvestmentApr(selectedAprord: IInvestmentInit) {
+  async selectInvestmentApr(selectedAprord: IInvestmentInit) {
     this.investmentAprService.investmentAprFormData = Object.assign({}, selectedAprord);
     var selectedDonation= this.donations.filter(res=>res.id==selectedAprord.donationId).map(ele=>ele.donationTypeName);
     this.donationName=selectedDonation[0];
@@ -163,28 +163,28 @@ export class InvestmentAprComponent implements OnInit {
     this.isDonationValid = true;
     this.convertedDate = this.datePipe.transform(selectedAprord.setOn, 'ddMMyyyy');
     if (this.investmentAprService.investmentAprFormData.donationTo == "Doctor") {
-      this.getInvestmentDoctor();
+      await this.getInvestmentDoctor();
     }
     else if (this.investmentAprService.investmentAprFormData.donationTo == "Institution") {
-      this.getInvestmentInstitution();
+      await this.getInvestmentInstitution();
     }
     else if (this.investmentAprService.investmentAprFormData.donationTo == "Campaign") {
-      this.getInvestmentCampaign();
+      await this.getInvestmentCampaign();
     }
     else if (this.investmentAprService.investmentAprFormData.donationTo == "Bcds") {
-      this.getInvestmentBcds();
+      await this.getInvestmentBcds();
     }
     else if (this.investmentAprService.investmentAprFormData.donationTo == "Society") {
-      this.getInvestmentSociety();
+      await this.getInvestmentSociety();
     }
-    this.getInvestmentAprDetails();
+    await this.getInvestmentAprDetails();
     this.getInvestmentAprProducts();
     this.getInvestmentAprComment();
     this.getInvestmentTargetedGroup();
     if (this.sbu == this.investmentAprService.investmentAprFormData.sbu) {
       this.isInvOther = false;
       this.isValid = true;
-      this.getBudget();
+      await this.getBudget();
     }
     else {
       this.isInvOther = true;
@@ -193,9 +193,9 @@ export class InvestmentAprComponent implements OnInit {
    
     this.InvestmentAprSearchModalRef.hide()
   }
-  getLastFiveInvestment(marketCode: string, toDayDate: string) {
+  async getLastFiveInvestment(marketCode: string, toDayDate: string) {
     if (this.investmentAprService.investmentAprFormData.donationTo == "Doctor") {
-      this.investmentAprService.getLastFiveInvestmentForDoc(this.investmentAprService.investmentAprFormData.donationId, this.investmentAprService.investmentDoctorFormData.doctorId, marketCode, toDayDate).then(
+      await this.investmentAprService.getLastFiveInvestmentForDoc(this.investmentAprService.investmentAprFormData.donationId, this.investmentAprService.investmentDoctorFormData.doctorId, marketCode, toDayDate).then(
         (response) => {
           this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
         },
@@ -205,7 +205,7 @@ export class InvestmentAprComponent implements OnInit {
       );
     }
     else if (this.investmentAprService.investmentAprFormData.donationTo == "Institution") {
-      this.investmentAprService.getLastFiveInvestmentForInstitute(this.investmentAprService.investmentAprFormData.donationId, this.investmentAprService.investmentInstitutionFormData.institutionId, marketCode, toDayDate).subscribe(
+      await this.investmentAprService.getLastFiveInvestmentForInstitute(this.investmentAprService.investmentAprFormData.donationId, this.investmentAprService.investmentInstitutionFormData.institutionId, marketCode, toDayDate).then(
         (response) => {
           this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
         },
@@ -215,7 +215,7 @@ export class InvestmentAprComponent implements OnInit {
       );
     }
     else if (this.investmentAprService.investmentAprFormData.donationTo == "Campaign") {
-      this.investmentAprService.getLastFiveInvestmentForCampaign(this.investmentAprService.investmentAprFormData.donationId, this.investmentAprService.investmentCampaignFormData.campaignMstId, marketCode, toDayDate).subscribe(
+      await this.investmentAprService.getLastFiveInvestmentForCampaign(this.investmentAprService.investmentAprFormData.donationId, this.investmentAprService.investmentCampaignFormData.campaignMstId, marketCode, toDayDate).then(
         (response) => {
           this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
         },
@@ -225,7 +225,7 @@ export class InvestmentAprComponent implements OnInit {
       );
     }
     else if (this.investmentAprService.investmentAprFormData.donationTo == "Bcds") {
-      this.investmentAprService.getLastFiveInvestmentForBcds(this.investmentAprService.investmentAprFormData.donationId, this.investmentAprService.investmentBcdsFormData.bcdsId, marketCode, toDayDate).subscribe(
+      await this.investmentAprService.getLastFiveInvestmentForBcds(this.investmentAprService.investmentAprFormData.donationId, this.investmentAprService.investmentBcdsFormData.bcdsId, marketCode, toDayDate).then(
         (response) => {
           this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
         },
@@ -235,7 +235,7 @@ export class InvestmentAprComponent implements OnInit {
       );
     }
     else if (this.investmentAprService.investmentAprFormData.donationTo == "Society") {
-      this.investmentAprService.getLastFiveInvestmentForSociety(this.investmentAprService.investmentAprFormData.donationId, this.investmentAprService.investmentSocietyFormData.societyId, marketCode, toDayDate).subscribe(
+      await this.investmentAprService.getLastFiveInvestmentForSociety(this.investmentAprService.investmentAprFormData.donationId, this.investmentAprService.investmentSocietyFormData.societyId, marketCode, toDayDate).then(
         (response) => {
           this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
         },
@@ -341,8 +341,8 @@ export class InvestmentAprComponent implements OnInit {
     });
 
   }
-  getInvestmentBcds() {
-    this.investmentAprService.getInvestmentBcds(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
+  async getInvestmentBcds() {
+    await this.investmentAprService.getInvestmentBcds(this.investmentAprService.investmentAprFormData.id).then(response => {
       var data = response[0] as IInvestmentBcds;
       if (data !== undefined) {
         this.investmentAprService.investmentBcdsFormData = data;
@@ -359,8 +359,8 @@ export class InvestmentAprComponent implements OnInit {
       console.log(error);
     });
   }
-  getInvestmentSociety() {
-    this.investmentAprService.getInvestmentSociety(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
+  async getInvestmentSociety() {
+    await this.investmentAprService.getInvestmentSociety(this.investmentAprService.investmentAprFormData.id).then(response => {
       var data = response[0] as IInvestmentSociety;
       if (data !== undefined) {
         this.investmentAprService.investmentSocietyFormData = data;
@@ -376,8 +376,8 @@ export class InvestmentAprComponent implements OnInit {
       console.log(error);
     });
   }
-  getInvestmentInstitution() {
-    this.investmentAprService.getInvestmentInstitutions(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
+  async getInvestmentInstitution() {
+    await this.investmentAprService.getInvestmentInstitutions(this.investmentAprService.investmentAprFormData.id).then(response => {
       var data = response[0] as IInvestmentInstitution;
       if (data !== undefined) {
         this.investmentAprService.investmentInstitutionFormData = data;
@@ -394,8 +394,8 @@ export class InvestmentAprComponent implements OnInit {
       console.log(error);
     });
   }
-  getInvestmentDoctor() {
-    this.investmentAprService.getInvestmentDoctors(this.investmentAprService.investmentAprFormData.id).then(response => {
+  async getInvestmentDoctor() {
+    await this.investmentAprService.getInvestmentDoctors(this.investmentAprService.investmentAprFormData.id).then(response => {
       var data = response[0] as IInvestmentDoctor;
       if (data !== undefined) {
         this.investmentAprService.investmentDoctorFormData = data;
@@ -427,8 +427,8 @@ export class InvestmentAprComponent implements OnInit {
       console.log(error);
     });
   }
-  getInvestmentDetails() {
-    this.investmentAprService.getInvestmentDetails(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
+  async getInvestmentDetails() {
+    await this.investmentAprService.getInvestmentDetails(this.investmentAprService.investmentAprFormData.id).then(response => {
       var data = response[0] as IInvestmentApr;
       if (data !== undefined) {
         this.investmentAprService.investmentDetailFormData = data;
@@ -459,8 +459,8 @@ export class InvestmentAprComponent implements OnInit {
       console.log(error);
     });
   }
-  getInvestmentAprDetails() {
-    this.investmentAprService.getInvestmentAprDetails(this.investmentAprService.investmentAprFormData.id, parseInt(this.empId)).subscribe(response => {
+  async getInvestmentAprDetails() {
+    await this.investmentAprService.getInvestmentAprDetails(this.investmentAprService.investmentAprFormData.id, parseInt(this.empId)).then(response => {
       var data = response[0] as IInvestmentApr;
       if (data !== undefined) {
         this.investmentAprService.investmentDetailFormData = data;
@@ -502,8 +502,6 @@ export class InvestmentAprComponent implements OnInit {
       console.log(error);
     });
   }
-
-
 
   changeDateInDetail() {
     if (this.investmentAprService.investmentDetailFormData.fromDate == null || this.investmentAprService.investmentDetailFormData.fromDate == undefined) {

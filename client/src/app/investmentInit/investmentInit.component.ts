@@ -111,7 +111,6 @@ export class InvestmentInitComponent implements OnInit {
     this.investmentInitService.investmentBcdsFormData.investmentInitId = selectedRecord.id;
     this.investmentInitService.investmentSocietyFormData.investmentInitId = selectedRecord.id;
     this.investmentInitService.investmentDetailFormData.investmentInitId = selectedRecord.id;
-    debugger;
     this.convertedDate = this.datePipe.transform(selectedRecord.setOn, 'ddMMyyyy');
     this.isDonationValid = true;
     if (this.investmentInitService.investmentInitFormData.donationTo == "Doctor") {
@@ -351,9 +350,9 @@ export class InvestmentInitComponent implements OnInit {
     this.getEmployeeSbu();
 
   }
-  getLastFiveInvestment(marketCode: string, toDayDate: string) {
+  async  getLastFiveInvestment(marketCode: string, toDayDate: string) {
     if (this.investmentInitService.investmentInitFormData.donationTo == "Doctor") {
-      this.investmentInitService.getLastFiveInvestmentForDoc(this.investmentInitService.investmentInitFormData.donationId, this.investmentInitService.investmentDoctorFormData.doctorId, marketCode, toDayDate).subscribe(
+      await this.investmentInitService.getLastFiveInvestmentForDoc(this.investmentInitService.investmentInitFormData.donationId, this.investmentInitService.investmentDoctorFormData.doctorId, marketCode, toDayDate).then(
         (response) => {
           this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
         },
@@ -363,7 +362,7 @@ export class InvestmentInitComponent implements OnInit {
       );
     }
     else if (this.investmentInitService.investmentInitFormData.donationTo == "Institution") {
-      this.investmentInitService.getLastFiveInvestmentForInstitute(this.investmentInitService.investmentInitFormData.donationId, this.investmentInitService.investmentInstitutionFormData.institutionId, marketCode, toDayDate).subscribe(
+      await this.investmentInitService.getLastFiveInvestmentForInstitute(this.investmentInitService.investmentInitFormData.donationId, this.investmentInitService.investmentInstitutionFormData.institutionId, marketCode, toDayDate).then(
         (response) => {
           this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
         },
@@ -373,7 +372,7 @@ export class InvestmentInitComponent implements OnInit {
       );
     }
     else if (this.investmentInitService.investmentInitFormData.donationTo == "Campaign") {
-      this.investmentInitService.getLastFiveInvestmentForCampaign(this.investmentInitService.investmentInitFormData.donationId, this.investmentInitService.investmentCampaignFormData.campaignMstId, marketCode, toDayDate).subscribe(
+      await this.investmentInitService.getLastFiveInvestmentForCampaign(this.investmentInitService.investmentInitFormData.donationId, this.investmentInitService.investmentCampaignFormData.campaignMstId, marketCode, toDayDate).then(
         (response) => {
           this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
         },
@@ -383,7 +382,7 @@ export class InvestmentInitComponent implements OnInit {
       );
     }
     else if (this.investmentInitService.investmentInitFormData.donationTo == "Bcds") {
-      this.investmentInitService.getLastFiveInvestmentForBcds(this.investmentInitService.investmentInitFormData.donationId, this.investmentInitService.investmentBcdsFormData.bcdsId, marketCode, toDayDate).subscribe(
+      await this.investmentInitService.getLastFiveInvestmentForBcds(this.investmentInitService.investmentInitFormData.donationId, this.investmentInitService.investmentBcdsFormData.bcdsId, marketCode, toDayDate).then(
         (response) => {
           this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
         },
@@ -394,7 +393,7 @@ export class InvestmentInitComponent implements OnInit {
     }
     else if (this.investmentInitService.investmentInitFormData.donationTo == "Society") {
 
-      this.investmentInitService.getLastFiveInvestmentForSociety(this.investmentInitService.investmentInitFormData.donationId, this.investmentInitService.investmentSocietyFormData.societyId, marketCode, toDayDate).subscribe(
+      await this.investmentInitService.getLastFiveInvestmentForSociety(this.investmentInitService.investmentInitFormData.donationId, this.investmentInitService.investmentSocietyFormData.societyId, marketCode, toDayDate).then(
         (response) => {
           this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
         },
@@ -495,7 +494,6 @@ export class InvestmentInitComponent implements OnInit {
   onChangeDoctorInDoc() {
     for (var i = 0; i < this.doctors.length; i++) {
       if (this.doctors[i].id == this.investmentInitService.investmentDoctorFormData.doctorId) {
-        debugger;
         //this.investmentInitService.investmentDoctorFormData.doctorName=this.doctors[i].doctorName;
         this.investmentInitService.investmentDoctorFormData.doctorCode = this.doctors[i].doctorCode;
         this.degree = this.doctors[i].degree;
@@ -533,15 +531,6 @@ export class InvestmentInitComponent implements OnInit {
       console.log(error);
     });
   }
-  onChangeBcdsInBcds() {
-    for (var i = 0; i < this.bcds.length; i++) {
-      if (this.bcds[i].id == this.investmentInitService.investmentBcdsFormData.bcdsId) {
-        this.investmentInitService.investmentBcdsFormData.bcdsAddress = this.bcds[i].bcdsAddress;
-        this.investmentInitService.investmentBcdsFormData.noOfMember = this.bcds[i].noOfMember;
-        break;
-      }
-    }
-  }
   onChangeSubCampaignInCamp() {
     for (var i = 0; i < this.campaignDtls.length; i++) {
       if (this.campaignDtls[i].id == this.investmentInitService.investmentCampaignFormData.campaignDtlId) {
@@ -563,6 +552,16 @@ export class InvestmentInitComponent implements OnInit {
         this.investmentInitService.investmentSocietyFormData.societyAddress = this.society[i].societyAddress;
         this.investmentInitService.investmentSocietyFormData.noOfMember = this.society[i].noOfMember;
 
+        break;
+      }
+    }
+    this.getLastFiveInvestment(this.investmentInitService.investmentInitFormData.marketCode, this.convertedDate);
+  }
+  onChangeBcdsInBcds() {
+    for (var i = 0; i < this.bcds.length; i++) {
+      if (this.bcds[i].id == this.investmentInitService.investmentBcdsFormData.bcdsId) {
+        this.investmentInitService.investmentBcdsFormData.bcdsAddress = this.bcds[i].bcdsAddress;
+        this.investmentInitService.investmentBcdsFormData.noOfMember = this.bcds[i].noOfMember;
         break;
       }
     }

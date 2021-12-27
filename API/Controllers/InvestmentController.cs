@@ -102,7 +102,7 @@ namespace API.Controllers
                 // var results = _dbContext.Query<InvestmentInitDto>().FromSql("EXECUTE dbo.SP_InvestmentInitSearch {0},{1}", sbu,empId).ToList();
                 if (userRole == "Administrator")
                 {
-                    
+
                     var spec = new InvestmentInitSpecification(investmentInitParrams);
 
                     var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
@@ -1294,21 +1294,23 @@ namespace API.Controllers
                             ",ProposedAmount AS InvestmentAmount" +
                             ",CommitmentAllSBU AS  ComtSharePrcntAll" +
                             ",CommitmentOwnSBU AS  ComtSharePrcnt" +
-                            ",(" +
-                            " SELECT AVG(TRY_CONVERT(FLOAT, PrescribedSharePrcnt))" +
-                            " FROM ReportInvestmentInfo R" +
-                            " WHERE R.DoctorId = '" + docId + "'" +
-                            " AND R.MarketCode = '" + marketCode + "'" +
-                            " AND R.DonationType = D.DonationTypeName" +
-                            " AND CONVERT(NVARCHAR(6), TRY_CONVERT(DATE, R.FromDate, 103), 112) = CONVERT(NVARCHAR(6), IR.FromDate, 112)" +
-                            " ) AS  PrescribedSharePrcnt" +
-                            " ,(" +
-                            " SELECT AVG(TRY_CONVERT(FLOAT, PrescribedSharePrcnt))" +
-                            " FROM ReportInvestmentInfo R" +
-                            " WHERE R.DoctorId = '" + docId + "'" +
-                            " AND R.DonationType = D.DonationTypeName" +
-                            " AND CONVERT(NVARCHAR(6), TRY_CONVERT(DATE, R.FromDate, 103), 112) = CONVERT(NVARCHAR(6), IR.FromDate, 112)" +
-                            " ) AS  PrescribedSharePrcntAll" +
+                            // ",(" +
+                            // " SELECT AVG(TRY_CONVERT(FLOAT, PrescribedSharePrcnt))" +
+                            // " FROM ReportInvestmentInfo R" +
+                            // " WHERE R.DoctorId = '" + docId + "'" +
+                            // " AND R.MarketCode = '" + marketCode + "'" +
+                            // " AND R.DonationType = D.DonationTypeName" +
+                            // " AND CONVERT(NVARCHAR(6), TRY_CONVERT(DATE, R.FromDate, 103), 112) = CONVERT(NVARCHAR(6), IR.FromDate, 112)" +
+                            // " ) AS  PrescribedSharePrcnt" +
+                            // " ,(" +
+                            // " SELECT AVG(TRY_CONVERT(FLOAT, PrescribedSharePrcnt))" +
+                            // " FROM ReportInvestmentInfo R" +
+                            // " WHERE R.DoctorId = '" + docId + "'" +
+                            // " AND R.DonationType = D.DonationTypeName" +
+                            // " AND CONVERT(NVARCHAR(6), TRY_CONVERT(DATE, R.FromDate, 103), 112) = CONVERT(NVARCHAR(6), IR.FromDate, 112)" +
+                            // " ) AS  PrescribedSharePrcntAll" +
+                            ",[dbo].[fnGetPrescribedSharePrcntDoc] ('" + docId + "','" + marketCode + "',D.DonationTypeName,IR.FromDate) AS  PrescribedSharePrcnt" +
+                            ",[dbo].[fnGetPrescribedSharePrcntAllDoc] ('" + docId + "',D.DonationTypeName,IR.FromDate) AS  PrescribedSharePrcntAll" +
                             " FROM InvestmentRecComment IRC" +
                             " INNER JOIN InvestmentDoctor ID ON IRC.InvestmentInitId = ID.InvestmentInitId" +
                             " INNER JOIN InvestmentRec IR ON IRC.InvestmentInitId = IR.InvestmentInitId" +
@@ -1362,35 +1364,37 @@ namespace API.Controllers
                 //return data;
                 var convertedDate = DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture);
                 string qry = " SELECT TOP (5) CAST(ROW_NUMBER() OVER (ORDER BY ProposedAmount) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,DonationShortName" +
-                           ",ProposedAmount AS InvestmentAmount" +
-                           ",CommitmentAllSBU AS  ComtSharePrcntAll" +
-                           ",CommitmentOwnSBU AS  ComtSharePrcnt" +
-                           ",(" +
-                           " SELECT AVG(TRY_CONVERT(FLOAT, PrescribedSharePrcnt))" +
-                           " FROM ReportInvestmentInfo R" +
-                           " WHERE R.InstituteId = '" + instituteId + "'" +
-                           " AND R.MarketCode = '" + marketCode + "'" +
-                           " AND R.DonationType = D.DonationTypeName" +
-                           " AND CONVERT(NVARCHAR(6), TRY_CONVERT(DATE, R.FromDate, 103), 112) = CONVERT(NVARCHAR(6), IR.FromDate, 112)" +
-                           " ) AS  PrescribedSharePrcnt" +
-                           " ,(" +
-                           " SELECT AVG(TRY_CONVERT(FLOAT, PrescribedSharePrcnt))" +
-                           " FROM ReportInvestmentInfo R" +
-                           " WHERE R.InstituteId = '" + instituteId + "'" +
-                           " AND R.DonationType = D.DonationTypeName" +
-                           " AND CONVERT(NVARCHAR(6), TRY_CONVERT(DATE, R.FromDate, 103), 112) = CONVERT(NVARCHAR(6), IR.FromDate, 112)" +
-                           " ) AS  PrescribedSharePrcntAll" +
-                           " FROM InvestmentRecComment IRC" +
-                           " INNER JOIN InvestmentInstitution ID ON IRC.InvestmentInitId = ID.InvestmentInitId" +
-                           " INNER JOIN InvestmentRec IR ON IRC.InvestmentInitId = IR.InvestmentInitId" +
-                           " AND IRC.Priority = IR.Priority" +
-                           " INNER JOIN InvestmentInit II ON IRC.InvestmentInitId = II.Id" +
-                           " INNER JOIN Donation D ON II.DonationId = D.Id" +
-                           " WHERE IRC.RecStatus = 'Approved'" +
-                           " AND CONVERT(DATE, IR.FromDate) <= Cast('" + convertedDate + "' as date)" +
-                           " AND ID.InstitutionId = " + instituteId + "" +
-                           " AND II.MarketCode = '" + marketCode + "'" +
-                           " ORDER BY IR.FromDate DESC";
+                            ",ProposedAmount AS InvestmentAmount" +
+                            ",CommitmentAllSBU AS  ComtSharePrcntAll" +
+                            ",CommitmentOwnSBU AS  ComtSharePrcnt" +
+                            // ",(" +
+                            // " SELECT AVG(TRY_CONVERT(FLOAT, PrescribedSharePrcnt))" +
+                            // " FROM ReportInvestmentInfo R" +
+                            // " WHERE R.InstituteId = '" + instituteId + "'" +
+                            // " AND R.MarketCode = '" + marketCode + "'" +
+                            // " AND R.DonationType = D.DonationTypeName" +
+                            // " AND CONVERT(NVARCHAR(6), TRY_CONVERT(DATE, R.FromDate, 103), 112) = CONVERT(NVARCHAR(6), IR.FromDate, 112)" +
+                            // " ) AS  PrescribedSharePrcnt" +
+                            // " ,(" +
+                            // " SELECT AVG(TRY_CONVERT(FLOAT, PrescribedSharePrcnt))" +
+                            // " FROM ReportInvestmentInfo R" +
+                            // " WHERE R.InstituteId = '" + instituteId + "'" +
+                            // " AND R.DonationType = D.DonationTypeName" +
+                            // " AND CONVERT(NVARCHAR(6), TRY_CONVERT(DATE, R.FromDate, 103), 112) = CONVERT(NVARCHAR(6), IR.FromDate, 112)" +
+                            // " ) AS  PrescribedSharePrcntAll" +
+                            ",[dbo].[fnGetPrescribedSharePrcntIns] ('" + instituteId + "','" + marketCode + "',D.DonationTypeName,IR.FromDate) AS  PrescribedSharePrcnt" +
+                            ",[dbo].[fnGetPrescribedSharePrcntAllIns] ('" + instituteId + "',D.DonationTypeName,IR.FromDate) AS  PrescribedSharePrcntAll" +
+                            " FROM InvestmentRecComment IRC" +
+                            " INNER JOIN InvestmentInstitution ID ON IRC.InvestmentInitId = ID.InvestmentInitId" +
+                            " INNER JOIN InvestmentRec IR ON IRC.InvestmentInitId = IR.InvestmentInitId" +
+                            " AND IRC.Priority = IR.Priority" +
+                            " INNER JOIN InvestmentInit II ON IRC.InvestmentInitId = II.Id" +
+                            " INNER JOIN Donation D ON II.DonationId = D.Id" +
+                            " WHERE IRC.RecStatus = 'Approved'" +
+                            " AND CONVERT(DATE, IR.FromDate) <= Cast('" + convertedDate + "' as date)" +
+                            " AND ID.InstitutionId = " + instituteId + "" +
+                            " AND II.MarketCode = '" + marketCode + "'" +
+                            " ORDER BY IR.FromDate DESC";
 
 
 
@@ -1433,35 +1437,38 @@ namespace API.Controllers
                 //return data;
                 var convertedDate = DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture);
                 string qry = " SELECT TOP (5) CAST(ROW_NUMBER() OVER (ORDER BY ProposedAmount) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,DonationShortName" +
-                           ",ProposedAmount AS InvestmentAmount" +
-                           ",CommitmentAllSBU AS  ComtSharePrcntAll" +
-                           ",CommitmentOwnSBU AS  ComtSharePrcnt" +
-                           ",(" +
-                           " SELECT AVG(TRY_CONVERT(FLOAT, PrescribedSharePrcnt))" +
-                           " FROM ReportInvestmentInfo R" +
-                           " WHERE R.BcdsId = '" + bcdsId + "'" +
-                           " AND R.MarketCode = '" + marketCode + "'" +
-                           " AND R.DonationType = D.DonationTypeName" +
-                           " AND CONVERT(NVARCHAR(6), TRY_CONVERT(DATE, R.FromDate, 103), 112) = CONVERT(NVARCHAR(6), IR.FromDate, 112)" +
-                           " ) AS  PrescribedSharePrcnt" +
-                           " ,(" +
-                           " SELECT AVG(TRY_CONVERT(FLOAT, PrescribedSharePrcnt))" +
-                           " FROM ReportInvestmentInfo R" +
-                           " WHERE R.BcdsId = '" + bcdsId + "'" +
-                           " AND R.DonationType = D.DonationTypeName" +
-                           " AND CONVERT(NVARCHAR(6), TRY_CONVERT(DATE, R.FromDate, 103), 112) = CONVERT(NVARCHAR(6), IR.FromDate, 112)" +
-                           " ) AS  PrescribedSharePrcntAll" +
-                           " FROM InvestmentRecComment IRC" +
-                           " INNER JOIN InvestmentBcds ID ON IRC.InvestmentInitId = ID.InvestmentInitId" +
-                           " INNER JOIN InvestmentRec IR ON IRC.InvestmentInitId = IR.InvestmentInitId" +
-                           " AND IRC.Priority = IR.Priority" +
-                           " INNER JOIN InvestmentInit II ON IRC.InvestmentInitId = II.Id" +
-                           " INNER JOIN Donation D ON II.DonationId = D.Id" +
-                           " WHERE IRC.RecStatus = 'Approved'" +
-                           " AND CONVERT(DATE, IR.FromDate) <= Cast('" + convertedDate + "' as date)" +
-                           " AND ID.BcdsId = " + bcdsId + "" +
-                           " AND II.MarketCode = '" + marketCode + "'" +
-                           " ORDER BY IR.FromDate DESC";
+                            ",ProposedAmount AS InvestmentAmount" +
+                            ",CommitmentAllSBU AS  ComtSharePrcntAll" +
+                            ",CommitmentOwnSBU AS  ComtSharePrcnt" +
+                            // ",(" +
+                            // " SELECT AVG(TRY_CONVERT(FLOAT, PrescribedSharePrcnt))" +
+                            // " FROM ReportInvestmentInfo R" +
+                            // " WHERE R.BcdsId = '" + bcdsId + "'" +
+                            // " AND R.MarketCode = '" + marketCode + "'" +
+                            // " AND R.DonationType = D.DonationTypeName" +
+                            // " AND CONVERT(NVARCHAR(6), TRY_CONVERT(DATE, R.FromDate, 103), 112) = CONVERT(NVARCHAR(6), IR.FromDate, 112)" +
+                            // " ) AS  PrescribedSharePrcnt" +
+                            // " ,(" +
+                            // " SELECT AVG(TRY_CONVERT(FLOAT, PrescribedSharePrcnt))" +
+                            // " FROM ReportInvestmentInfo R" +
+                            // " WHERE R.BcdsId = '" + bcdsId + "'" +
+                            // " AND R.DonationType = D.DonationTypeName" +
+                            // " AND CONVERT(NVARCHAR(6), TRY_CONVERT(DATE, R.FromDate, 103), 112) = CONVERT(NVARCHAR(6), IR.FromDate, 112)" +
+                            // " ) AS  PrescribedSharePrcntAll" +
+                            ",[dbo].[fnGetPrescribedSharePrcntBcds] ('" + bcdsId + "','" + marketCode + "',D.DonationTypeName,IR.FromDate) AS  PrescribedSharePrcnt" +
+                            ",[dbo].[fnGetPrescribedSharePrcntAllBcds] ('" + bcdsId + "',D.DonationTypeName,IR.FromDate) AS  PrescribedSharePrcntAll" +
+                            
+                            " FROM InvestmentRecComment IRC" +
+                            " INNER JOIN InvestmentBcds ID ON IRC.InvestmentInitId = ID.InvestmentInitId" +
+                            " INNER JOIN InvestmentRec IR ON IRC.InvestmentInitId = IR.InvestmentInitId" +
+                            " AND IRC.Priority = IR.Priority" +
+                            " INNER JOIN InvestmentInit II ON IRC.InvestmentInitId = II.Id" +
+                            " INNER JOIN Donation D ON II.DonationId = D.Id" +
+                            " WHERE IRC.RecStatus = 'Approved'" +
+                            " AND CONVERT(DATE, IR.FromDate) <= Cast('" + convertedDate + "' as date)" +
+                            " AND ID.BcdsId = " + bcdsId + "" +
+                            " AND II.MarketCode = '" + marketCode + "'" +
+                            " ORDER BY IR.FromDate DESC";
 
 
 
@@ -1504,35 +1511,38 @@ namespace API.Controllers
                 //return data;
                 var convertedDate = DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture);
                 string qry = " SELECT TOP (5) CAST(ROW_NUMBER() OVER (ORDER BY ProposedAmount) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,DonationShortName" +
-                           ",ProposedAmount AS InvestmentAmount" +
-                           ",CommitmentAllSBU AS  ComtSharePrcntAll" +
-                           ",CommitmentOwnSBU AS  ComtSharePrcnt" +
-                           ",(" +
-                           " SELECT AVG(TRY_CONVERT(FLOAT, PrescribedSharePrcnt))" +
-                           " FROM ReportInvestmentInfo R" +
-                           " WHERE R.SocietyId = '" + societyId + "'" +
-                           " AND R.MarketCode = '" + marketCode + "'" +
-                           " AND R.DonationType = D.DonationTypeName" +
-                           " AND CONVERT(NVARCHAR(6), TRY_CONVERT(DATE, R.FromDate, 103), 112) = CONVERT(NVARCHAR(6), IR.FromDate, 112)" +
-                           " ) AS  PrescribedSharePrcnt" +
-                           " ,(" +
-                           " SELECT AVG(TRY_CONVERT(FLOAT, PrescribedSharePrcnt))" +
-                           " FROM ReportInvestmentInfo R" +
-                           " WHERE R.SocietyId = '" + societyId + "'" +
-                           " AND R.DonationType = D.DonationTypeName" +
-                           " AND CONVERT(NVARCHAR(6), TRY_CONVERT(DATE, R.FromDate, 103), 112) = CONVERT(NVARCHAR(6), IR.FromDate, 112)" +
-                           " ) AS  PrescribedSharePrcntAll" +
-                           " FROM InvestmentRecComment IRC" +
-                           " INNER JOIN InvestmentSociety ID ON IRC.InvestmentInitId = ID.InvestmentInitId" +
-                           " INNER JOIN InvestmentRec IR ON IRC.InvestmentInitId = IR.InvestmentInitId" +
-                           " AND IRC.Priority = IR.Priority" +
-                           " INNER JOIN InvestmentInit II ON IRC.InvestmentInitId = II.Id" +
-                           " INNER JOIN Donation D ON II.DonationId = D.Id" +
-                           " WHERE IRC.RecStatus = 'Approved'" +
-                           " AND CONVERT(DATE, IR.FromDate) <= Cast('" + convertedDate + "' as date)" +
-                           " AND ID.SocietyId = " + societyId + "" +
-                           " AND II.MarketCode = '" + marketCode + "'" +
-                           " ORDER BY IR.FromDate DESC";
+                            ",ProposedAmount AS InvestmentAmount" +
+                            ",CommitmentAllSBU AS  ComtSharePrcntAll" +
+                            ",CommitmentOwnSBU AS  ComtSharePrcnt" +
+                            // ",(" +
+                            // " SELECT AVG(TRY_CONVERT(FLOAT, PrescribedSharePrcnt))" +
+                            // " FROM ReportInvestmentInfo R" +
+                            // " WHERE R.SocietyId = '" + societyId + "'" +
+                            // " AND R.MarketCode = '" + marketCode + "'" +
+                            // " AND R.DonationType = D.DonationTypeName" +
+                            // " AND CONVERT(NVARCHAR(6), TRY_CONVERT(DATE, R.FromDate, 103), 112) = CONVERT(NVARCHAR(6), IR.FromDate, 112)" +
+                            // " ) AS  PrescribedSharePrcnt" +
+                            // " ,(" +
+                            // " SELECT AVG(TRY_CONVERT(FLOAT, PrescribedSharePrcnt))" +
+                            // " FROM ReportInvestmentInfo R" +
+                            // " WHERE R.SocietyId = '" + societyId + "'" +
+                            // " AND R.DonationType = D.DonationTypeName" +
+                            // " AND CONVERT(NVARCHAR(6), TRY_CONVERT(DATE, R.FromDate, 103), 112) = CONVERT(NVARCHAR(6), IR.FromDate, 112)" +
+                            // " ) AS  PrescribedSharePrcntAll" +
+                            ",[dbo].[fnGetPrescribedSharePrcntSoc] ('" + societyId + "','" + marketCode + "',D.DonationTypeName,IR.FromDate) AS  PrescribedSharePrcnt" +
+                            ",[dbo].[fnGetPrescribedSharePrcntAllSoc] ('" + societyId + "',D.DonationTypeName,IR.FromDate) AS  PrescribedSharePrcntAll" +
+                            
+                            " FROM InvestmentRecComment IRC" +
+                            " INNER JOIN InvestmentSociety ID ON IRC.InvestmentInitId = ID.InvestmentInitId" +
+                            " INNER JOIN InvestmentRec IR ON IRC.InvestmentInitId = IR.InvestmentInitId" +
+                            " AND IRC.Priority = IR.Priority" +
+                            " INNER JOIN InvestmentInit II ON IRC.InvestmentInitId = II.Id" +
+                            " INNER JOIN Donation D ON II.DonationId = D.Id" +
+                            " WHERE IRC.RecStatus = 'Approved'" +
+                            " AND CONVERT(DATE, IR.FromDate) <= Cast('" + convertedDate + "' as date)" +
+                            " AND ID.SocietyId = " + societyId + "" +
+                            " AND II.MarketCode = '" + marketCode + "'" +
+                            " ORDER BY IR.FromDate DESC";
 
 
 
