@@ -1543,14 +1543,8 @@ namespace API.Controllers
                             " AND ID.SocietyId = " + societyId + "" +
                             " AND II.MarketCode = '" + marketCode + "'" +
                             " ORDER BY IR.FromDate DESC";
-
-
-
                 var results = _dbContext.LastFiveInvestmentInfo.FromSqlRaw(qry).ToList();
-
-
                 return results;
-
             }
             catch (System.Exception ex)
             {
