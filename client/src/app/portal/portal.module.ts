@@ -1,3 +1,4 @@
+import { ParamInvestSummaryComponent } from './../paramInvestmentSummary/paramInvestmentSummary.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
@@ -71,6 +72,7 @@ import { InvestmentRcvComponent } from '../investmentRcv/investmentRcv.component
     RegApprovalComponent,
     ReportInvestmentComponent,
     RptInvestSummaryComponent,
+    ParamInvestSummaryComponent,
     RptInvestmentDetailComponent,
     SbuWiseBudgetComponent,
     DocHonApprComponent,

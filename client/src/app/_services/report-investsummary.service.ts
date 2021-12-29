@@ -50,5 +50,26 @@ export class RptInvestSummaryService {
     );   
   }
 
+
+  GetParamInvestmentSummaryReport(model: any){ 
+    let params = new HttpParams();
+    
+    if (this.genParams.search) {
+      params = params.append('search', this.genParams.search);
+    }
+    params = params.append('sort', this.genParams.sort);
+    params = params.append('pageIndex', this.genParams.pageIndex.toString());
+    params = params.append('pageSize', this.genParams.pageSize.toString());
+
+    return this.http.post<IrptInvestSummaryPagination>(this.baseUrl + 'reportInvestment/GetParamInvestmentSummaryReport', model, { observe: 'response', params })
+    .pipe(
+      map(response => {
+        this.rptInvestSummary = [...this.rptInvestSummary, ...response.body.data]; 
+        this.rptInvestSummaryPagination = response.body;
+        return this.rptInvestSummaryPagination;
+      })
+    );   
+  }
+
 }
 

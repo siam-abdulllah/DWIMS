@@ -8,6 +8,8 @@ import { SubCampaign, ISubCampaign } from '../shared/models/subCampaign';
 import { Donation, IDonation } from '../shared/models/donation';
 import { Doctor, IDoctor } from '../shared/models/docotor';
 import { Institution, IInstitution } from '../shared/models/institution';
+import 'jspdf-autotable';
+import * as jsPDF from 'jspdf';
 //import { GenericParams } from '../shared/models/genericParams';
 import { Component, ElementRef, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
@@ -23,7 +25,6 @@ import { DatePipe } from '@angular/common';
 import { IBcdsInfo } from '../shared/models/bcdsInfo';
 import { ISocietyInfo } from '../shared/models/societyInfo';
 import { MarketGroupMst, IMarketGroupMst } from '../shared/models/marketGroupMst';
-import { MarketGroupDtl, IMarketGroupDtl } from '../shared/models/marketGroupDtl';
 import { AccountService } from '../account/account.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 
@@ -1300,6 +1301,24 @@ export class RptInvestmentDetailComponent implements OnInit {
     }
   }
   }
+
+
+  printPDF()
+  {
+    var data = document.getElementById('content');  //Id of the table
+
+      let pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF  
+      let position = 0;  
+      
+      pdf.addHTML(data, () => {
+      //pdf.save('web.pdf');
+      var blob = pdf.output("blob");
+      window.open(URL.createObjectURL(blob));
+      });
+
+
+  }
+
 
   editInvestmentTargetedProd(selectedRecord: IInvestmentTargetedProd) {
     this.investmentInitService.investmentTargetedProdFormData = Object.assign({}, selectedRecord);

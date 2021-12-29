@@ -1,3 +1,4 @@
+import { ParamInvestSummaryComponent } from './../paramInvestmentSummary/paramInvestmentSummary.component';
 import { PortalComponent } from './portal.component';
 import { MarketGroupComponent } from '../marketGroup/marketGroup.component';
 import { ApprAuthConfigComponent } from '../apprAuthConfig/apprAuthConfig.component';
@@ -44,6 +45,7 @@ const portalRoutes: Routes = [
         {path: 'sbu-wise-budget', component: SbuWiseBudgetComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'rptInvestment', component: ReportInvestmentComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'rptInvestmentSummary', component: RptInvestSummaryComponent},
+        {path: 'paramInvestmentSummary/:param', component: ParamInvestSummaryComponent},
         //{path: 'rptInvestmentDetail', component: RptInvestmentDetailComponent},
         {path: 'rptInvestmentDetail/:id', component: RptInvestmentDetailComponent},
         {path: 'cluster', component: ClusterInfoComponent, canActivate: [SuperAdminRoleGuard]},

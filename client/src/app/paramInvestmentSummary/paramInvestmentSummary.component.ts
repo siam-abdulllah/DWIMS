@@ -9,20 +9,20 @@ import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from "ngx-spinner";
 import { RptInvestSummaryService } from '../_services/report-investsummary.service';
-import { GenericParams } from './../shared/models/genericParams';
+import { GenericParams } from '../shared/models/genericParams';
 import { AccountService } from '../account/account.service';
 import { InvestmentInit } from '../shared/models/investmentRec';
 import { DatePipe } from '@angular/common';
 
 
 @Component({
-  selector: 'rptInvestmentSummary',
-  templateUrl: './rptInvestmentSummary.component.html',
+  selector: 'paramInvestmentSummary',
+  templateUrl: './paramInvestmentSummary.component.html',
   styles: [
   ]
 })
 
-export class RptInvestSummaryComponent implements OnInit {
+export class ParamInvestSummaryComponent implements OnInit {
   @ViewChild('search', { static: false }) searchTerm: ElementRef;
   @ViewChild('fromDate') fromDate: ElementRef;
   @ViewChild('toDate') toDate: ElementRef;
@@ -33,6 +33,7 @@ export class RptInvestSummaryComponent implements OnInit {
   searchDto: IReportSearchDto;
   numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
   totalCount = 0;
+  approveStatus : any;
   reports: IrptInvestSummary[] = [];
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date = new Date();
@@ -53,10 +54,12 @@ export class RptInvestSummaryComponent implements OnInit {
     private SpinnerService: NgxSpinnerService,private accountService: AccountService,) { }
 
   ngOnInit() {
+    debugger;
+    var url_string = window.location.href
+    var url = new URL(url_string);
+    var v=url.pathname.split("/");
 
-    // var url_string = window.location.href
-    // var url = new URL(url_string);
-    // var v=url.pathname.split("/");
+    this.approveStatus = v[3];
 
     this.resetForm();
     this.getEmployeeId();
@@ -67,27 +70,29 @@ export class RptInvestSummaryComponent implements OnInit {
       itemsPerPage: 10,
       totalItems:50,
       };
-      //this.GetData(v[3]);
+      this.GetData(v[3]);
   }
 
 
-  // GetData(param)
-  // {
+  GetData(param)
+  {
+    debugger;
+    this.date=new Date();
+    let latest_date =this.datepipe.transform(this.date, 'yyyy-MM-dd');
 
-  //   this.date=new Date();
-  //   let latest_date =this.datepipe.transform(this.date, 'yyyy-MM-dd');
+    this.reportService.rptInvestSummaryFormData.fromDate = new Date(new Date().getFullYear(), 0, 1);;
+    this.reportService.rptInvestSummaryFormData.toDate = this.date;
+    // if(param== "Approved")
+    // {
+    //   alert('Approved');
+    // }
+    // if(param== "Pending")
+    // {
+    //   alert('Pending');
+    // }
 
-  //   this.reportService.rptInvestSummaryFormData.fromDate = new Date(new Date().getFullYear(), 0, 1);;
-  //   this.reportService.rptInvestSummaryFormData.toDate = this.date;
-  //   if(param== "Approved")
-  //   {
-  //     alert('Approved');
-  //   }
-  //   if(param== "Pending")
-  //   {
-  //     alert('Pending');
-  //   }
-  // }
+    this.ViewData();
+  }
 
   getEmployeeId() {
     this.empId = this.accountService.getEmployeeId();
@@ -107,14 +112,15 @@ export class RptInvestSummaryComponent implements OnInit {
   }
 
   ViewData() {
-    const  searchDto: IReportSearchDto = {
+    const  searchDto: IParamReportSearchDto = {
       fromDate: this.reportService.rptInvestSummaryFormData.fromDate,
       toDate: this.reportService.rptInvestSummaryFormData.toDate,
       userRole:this.userRole,
-      empId:this.empId
+      empId:this.empId,
+      approveStatus:this.approveStatus
     };
 
-    this.reportService.GetInvestmentSummaryReport(searchDto).subscribe(response => {
+    this.reportService.GetParamInvestmentSummaryReport(searchDto).subscribe(response => {
       const params = this.reportService.getGenParams();
       this.reports = response.data;
       this.totalCount = response.count;
@@ -139,16 +145,7 @@ export class RptInvestSummaryComponent implements OnInit {
   }
 
   getSummaryDetail(selectedRecord: InvestmentInit){
-  debugger;
-    // this.router.navigate(
-    //   ['rptInvestmentDetail'],
-    //   { queryParams: { id: selectedRecord.id } }
-    // );
-    //this.router.navigate(['./rptInvestmentDetail'], {relativeTo: this.router});
-    //this.router.navigate( ['/','rptInvestmentDetail', selectedRecord.id]);
     this.router.navigate([]).then(result => {  window.open('/portal/rptInvestmentDetail/'+selectedRecord.id, '_blank'); });;
-    
-
   }
 
   resetSearch(){
@@ -178,4 +175,12 @@ interface IReportSearchDto {
   toDate: Date | undefined | null;
   userRole:string;
   empId:string;
+}
+
+interface IParamReportSearchDto {
+  fromDate: Date | undefined | null;
+  toDate: Date | undefined | null;
+  userRole:string;
+  empId:string;
+  approveStatus:string;
 }

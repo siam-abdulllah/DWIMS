@@ -248,6 +248,63 @@ namespace API.Controllers
         }
 
 
+      [HttpPost("GetParamInvestmentSummaryReport")]
+        public ActionResult<IReadOnlyList<RptInvestmentSummary>> GetParamInvestmentSummaryReport(ParamSearchDto dt, [FromQuery] ReportInvestmentInfoSpecParams rptParrams)
+        {
+
+            string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode=" + dt.EmpId;
+            var empData = _db.Employee.FromSqlRaw(empQry).ToList();
+            // string qry = "select CAST(ROW_NUMBER() OVER (ORDER BY c.SBU) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, SUM (e.ApprovedAmount) Expense, c.SBUName, c.SBU, c.Amount Budget,  c.DonationId, d.DonationTypeName " +
+            // " from SBUWiseBudget c, InvestmentInit b  inner join InvestmentDetailTracker e on e.InvestmentInitId = b.Id " +
+            // " left join Donation d on d.Id = b.DonationId "+
+            // " where b.SBU = c.SBU AND c.DonationId = e.DonationId AND e.PaidStatus = 'Paid' " +
+            // " AND  (CONVERT(date,c.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,c.ToDate)) "+
+            // " AND (CONVERT(date,e.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,e.ToDate)) ";
+
+            string qry = " select CAST(a.Id AS INT) as Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.ReferenceNo, d.DonationTypeName, a.DonationTo, b.ProposedAmount, b.FromDate, b.ToDate, dbo.fnGetInvestmentStatus(a.Id) InvStatus, e.EmployeeName,dbo.fnGetInvestmentApprovedBy(a.Id) ApprovedBy,e.MarketName, ISNULL(rcv.ReceiveStatus, 'Not Completed') ReceiveStatus, ISNULL(rcvBy.EmployeeName, 'N/A') ReceiveBy " +
+                " from InvestmentInit a " +
+                " left join InvestmentDetail b on a.Id = b.InvestmentInitId " +
+                " left join InvestmentRecv rcv on a.Id = rcv.InvestmentInitId " +
+                " inner join Donation d on d.Id = a.DonationId " +
+                " left join Employee e on e.Id = a.EmployeeId " +
+                " left join Employee rcvBy on rcvBy.Id = rcv.EmployeeId " +
+                " Where 1 = 1 AND dbo.fnGetInvestmentStatus(a.Id) = '"+ dt.ApproveStatus + "' " +
+                " AND(CONVERT(date, b.FromDate) >= CAST('" + dt.FromDate + "' as Date) AND CAST('" + dt.ToDate + "' as Date) >= CONVERT(date, b.ToDate)) ";
+            if (dt.UserRole != "Administrator")
+            {
+                qry = qry + " AND (" +
+                            " e.MarketGroupCode = COALESCE(NULLIF('" + empData[0].MarketGroupCode + "',''), 'All')" +
+                            " OR COALESCE(NULLIF('" + empData[0].MarketGroupCode + "',''), 'All') = 'All'" +
+                            " )" +
+                            " AND (" +
+                            " e.MarketCode = COALESCE(NULLIF('" + empData[0].MarketCode + "',''), 'All')" +
+                            " OR COALESCE(NULLIF('" + empData[0].MarketCode + "',''), 'All') = 'All'" +
+                            " )" +
+                            " AND (" +
+                            " e.TerritoryCode = COALESCE(NULLIF('" + empData[0].TerritoryCode + "',''), 'All')" +
+                            " OR COALESCE(NULLIF('" + empData[0].TerritoryCode + "',''), 'All') = 'All'" +
+                            " )" +
+                            " AND (" +
+                            " e.RegionCode = COALESCE(NULLIF('" + empData[0].RegionCode + "',''), 'All')" +
+                            " OR COALESCE(NULLIF('" + empData[0].RegionCode + "',''), 'All') = 'All'" +
+                            " )" +
+                            " AND (" +
+                            " e.ZoneCode = COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All')" +
+                            " OR COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All') = 'All'" +
+                            " )";
+            }
+
+
+
+            var results = _db.RptInvestmentSummary.FromSqlRaw(qry).ToList();
+
+            //var data = _mapper.Map<IReadOnlyList<RptInvestmentSummary>, IReadOnlyList<RptInvestmentSummaryDto>>(results);
+
+            return Ok(new Pagination<RptInvestmentSummary>(rptParrams.PageIndex, rptParrams.PageSize, results.Count, results));
+        }
+
+
+
 
         [HttpPost("GetDoctorLocationWiseInvestment")]
         public ActionResult<IReadOnlyList<RptDocLocWiseInvestment>> GetDoctorLocationWiseInvestment([FromQuery] ReportInvestmentInfoSpecParams rptParrams, ReportSearchDto search)
@@ -417,12 +474,6 @@ namespace API.Controllers
                " LEFT JOIN ApprovalAuthority c ON r.[Priority] = c.[Priority] " +
                " WHERE a.Id = " + investmentInitId + " AND a.SBU = r.SBU " +
                " ORDER BY [Priority], RecStatus DESC ";
-
-
-
-
-
-
 
 
 

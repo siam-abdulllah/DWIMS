@@ -16,7 +16,7 @@
         color: black;
     }
 </style>
-<section class="content">
+<section class="content" id="content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
@@ -32,10 +32,10 @@
                                 </div>
                                 <div class="col-sm-1">
                                     <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="investmentInitForm.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                </div>-->
+                                <div class="col-sm-2">
+                                    <button class="btn btn-info btn-lg btn-block" type="button" (click)="printPDF()"><i class="fa fa-search" ></i>Search</button>
                                 </div>
-                                <div class="col-sm-1">
-                                    <button class="btn btn-info btn-lg btn-block" type="button" (click)="getInvestmentInit()"><i class="fa fa-search" ></i>Search</button>
-                                </div> -->
                                 <div class="col-sm-2">
                                     <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetPage(investmentInitForm)"><i class="fa fa-window-close"></i>&nbsp;&nbsp;&nbsp;Close Report</button>
                                 </div>
@@ -864,56 +864,6 @@
         </div>
     </div>
 </section>
-<ng-template #investmentInitSearchModal>
-    <div class="modal-header" style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));color: black;">
-        <h4 class="modal-title pull-left">Investment Initialization</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="InvestmentInitSearchModalRef.hide()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body" style="padding: 20px 30px 20px 30px;">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="table-responsive" style="border: 1px solid #bed2c9; width: 100%;">
-                    <table class="table table-bordered table-responsive table-hover table-striped">
-                        <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));">
-                            <tr class="HeaderRow">
-                                <th scope="col" style="width: 7%">Action</th>
-                                <th scope="col" style="width: 0;display:none;">Id</th>
-                                <th scope="col" style="width: 9%">Reference No</th>
-                                <th scope="col" style="width: 8%">Propose For</th>
-                                <th scope="col" style="width: 8%">Donation Type</th>
-                                <th scope="col" style="width: 8%">Donation To</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let a of investmentInits">
-                                <td>
-                                    <button class="btn btn-sm btn-embossed btn-success" (click)="selectInvestmentInit(a)">Select</button>
-
-                                </td>
-                                <td style="display:none;">{{a.id}}</td>
-                                <td>{{a.referenceNo}}</td>
-                                <td>{{a.proposeFor}}</td>
-                                <td>{{a.donationId}}</td>
-                                <td>{{a.donationTo}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</ng-template>
-<ng-template #submissionConfirmModal style="bottom: -50px;">
-    <div class="modal-body text-center">
-        <div>
-            <h4>Do you want to submit ?</h4><small>(N.B. Submitted Proposal Unchangeable!)</small>
-        </div>
-        <button type="button" class="btn btn-success" (click)="confirmSubmit()">Yes</button>
-        <button type="button" class="btn btn-danger" (click)="declineSubmit()">No</button>
-    </div>
-</ng-template>
 <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
     <p style="color: black">Please Wait. </p>
 </ngx-spinner>
