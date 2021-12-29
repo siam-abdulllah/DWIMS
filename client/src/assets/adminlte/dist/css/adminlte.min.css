@@ -16380,7 +16380,7 @@ textarea.form-control.is-warning {
         position: fixed;
         top: 0;
         z-index: 1000;
-        width: 85%;
+        /* width: 85%;*/
         border-radius: 0 0 0.5em 0.5em;
     }
 }

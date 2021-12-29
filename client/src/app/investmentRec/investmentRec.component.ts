@@ -1,7 +1,4 @@
-import {
-  InvestmentRec, IInvestmentRec, InvestmentInit, IInvestmentInit,
-  InvestmentTargetedProd, IInvestmentTargetedProd, InvestmentTargetedGroup, IInvestmentTargetedGroup, IInvestmentRecComment, InvestmentRecComment
-} from '../shared/models/investmentRec';
+import {InvestmentRec, IInvestmentRec, InvestmentInit, IInvestmentInit,InvestmentTargetedProd, IInvestmentTargetedProd, InvestmentTargetedGroup, IInvestmentTargetedGroup, IInvestmentRecComment, InvestmentRecComment} from '../shared/models/investmentRec';
 import { InvestmentDoctor, IInvestmentDoctor, InvestmentInstitution, IInvestmentInstitution, InvestmentCampaign, IInvestmentCampaign } from '../shared/models/investmentRec';
 import { InvestmentBcds, IInvestmentBcds, InvestmentSociety, IInvestmentSociety } from '../shared/models/investmentRec';
 import { SubCampaign, ISubCampaign } from '../shared/models/subCampaign';
@@ -105,29 +102,26 @@ export class InvestmentRecComponent implements OnInit {
   openInvestmentRecSearchModal(template: TemplateRef<any>) {
     this.InvestmentRecSearchModalRef = this.modalService.show(template, this.config);
   }
-  selectInvestmentInit(selectedRecord: IInvestmentInit) {
+  async selectInvestmentInit(selectedRecord: IInvestmentInit) {
     this.investmentRecService.investmentRecFormData = Object.assign({}, selectedRecord);
     this.investmentRecService.investmentDetailFormData.investmentInitId = selectedRecord.id;
     this.investmentRecService.investmentRecCommentFormData.investmentInitId = selectedRecord.id;
     this.isDonationValid = true;
-    debugger;
     this.convertedDate = this.datePipe.transform(selectedRecord.setOn, 'ddMMyyyy');
     if (this.investmentRecService.investmentRecFormData.donationTo == "Doctor") {
-
-      this.getInvestmentDoctor();
+      await this.getInvestmentDoctor();
     }
     else if (this.investmentRecService.investmentRecFormData.donationTo == "Institution") {
-
-      this.getInvestmentInstitution();
+      await this.getInvestmentInstitution();
     }
     else if (this.investmentRecService.investmentRecFormData.donationTo == "Campaign") {
       this.getInvestmentCampaign();
     }
     else if (this.investmentRecService.investmentRecFormData.donationTo == "Bcds") {
-      this.getInvestmentBcds();
+      await this.getInvestmentBcds();
     }
     else if (this.investmentRecService.investmentRecFormData.donationTo == "Society") {
-      this.getInvestmentSociety();
+      await this.getInvestmentSociety();
     }
     this.getInvestmentDetails();
     this.getInvestmentTargetedProd();
@@ -142,50 +136,45 @@ export class InvestmentRecComponent implements OnInit {
     }
     this.InvestmentInitSearchModalRef.hide()
   }
-  selectInvestmentRec(selectedRecord: IInvestmentInit) {
+  async selectInvestmentRec(selectedRecord: IInvestmentInit) {
     this.investmentRecService.investmentRecFormData = Object.assign({}, selectedRecord);
     this.investmentRecService.investmentDetailFormData.investmentInitId = selectedRecord.id;
     this.investmentRecService.investmentRecCommentFormData.investmentInitId = selectedRecord.id;
-
-    debugger;
     this.convertedDate = this.datePipe.transform(selectedRecord.setOn, 'ddMMyyyy');
     this.isDonationValid = true;
     if (this.investmentRecService.investmentRecFormData.donationTo == "Doctor") {
-
-      this.getInvestmentDoctor();
+      await this.getInvestmentDoctor();
     }
     else if (this.investmentRecService.investmentRecFormData.donationTo == "Institution") {
-
-      this.getInvestmentInstitution();
+      await  this.getInvestmentInstitution();
     }
     else if (this.investmentRecService.investmentRecFormData.donationTo == "Campaign") {
-      this.getInvestmentCampaign();
+      await this.getInvestmentCampaign();
     }
     else if (this.investmentRecService.investmentRecFormData.donationTo == "Bcds") {
-      this.getInvestmentBcds();
+      await this.getInvestmentBcds();
     }
     else if (this.investmentRecService.investmentRecFormData.donationTo == "Society") {
-      this.getInvestmentSociety();
+      await this.getInvestmentSociety();
     }
     this.getInvestmentRecProducts();
     this.getInvestmentRecComment();
     this.getInvestmentTargetedGroup();
     if (this.sbu == this.investmentRecService.investmentRecFormData.sbu) {
-      this.getInvestmentRecDetails();
+      await this.getInvestmentRecDetails();
       this.isInvOther = false;
       this.isValid = true;
     }
     else {
-      this.getInvestmentDetails();
+      await this.getInvestmentDetails();
       this.isInvOther = true;
       this.isValid = false;
     }
     this.InvestmentRecSearchModalRef.hide()
   }
-  getLastFiveInvestment(marketCode: string, toDayDate: string) {
-    debugger;
+  async getLastFiveInvestment(marketCode: string, toDayDate: string) {
     if (this.investmentRecService.investmentRecFormData.donationTo == "Doctor") {
-      this.investmentRecService.getLastFiveInvestmentForDoc(this.investmentRecService.investmentRecFormData.donationId, this.investmentRecService.investmentDoctorFormData.doctorId, marketCode, toDayDate).then(
+      await this.investmentRecService.getLastFiveInvestmentForDoc(this.investmentRecService.investmentRecFormData.donationId, this.investmentRecService.investmentDoctorFormData.doctorId, marketCode, toDayDate).then(
         (response) => {
           this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
         },
@@ -195,7 +184,7 @@ export class InvestmentRecComponent implements OnInit {
       );
     }
     else if (this.investmentRecService.investmentRecFormData.donationTo == "Institution") {
-      this.investmentRecService.getLastFiveInvestmentForInstitute(this.investmentRecService.investmentRecFormData.donationId, this.investmentRecService.investmentInstitutionFormData.institutionId, marketCode, toDayDate).subscribe(
+      await this.investmentRecService.getLastFiveInvestmentForInstitute(this.investmentRecService.investmentRecFormData.donationId, this.investmentRecService.investmentInstitutionFormData.institutionId, marketCode, toDayDate).then(
         (response) => {
           this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
         },
@@ -205,7 +194,7 @@ export class InvestmentRecComponent implements OnInit {
       );
     }
     else if (this.investmentRecService.investmentRecFormData.donationTo == "Campaign") {
-      this.investmentRecService.getLastFiveInvestmentForCampaign(this.investmentRecService.investmentRecFormData.donationId, this.investmentRecService.investmentCampaignFormData.campaignMstId, marketCode, toDayDate).subscribe(
+      await this.investmentRecService.getLastFiveInvestmentForCampaign(this.investmentRecService.investmentRecFormData.donationId, this.investmentRecService.investmentCampaignFormData.campaignMstId, marketCode, toDayDate).then(
         (response) => {
           this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
         },
@@ -215,7 +204,7 @@ export class InvestmentRecComponent implements OnInit {
       );
     }
     else if (this.investmentRecService.investmentRecFormData.donationTo == "Bcds") {
-      this.investmentRecService.getLastFiveInvestmentForBcds(this.investmentRecService.investmentRecFormData.donationId, this.investmentRecService.investmentBcdsFormData.bcdsId, marketCode, toDayDate).subscribe(
+      await this.investmentRecService.getLastFiveInvestmentForBcds(this.investmentRecService.investmentRecFormData.donationId, this.investmentRecService.investmentBcdsFormData.bcdsId, marketCode, toDayDate).then(
         (response) => {
           this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
         },
@@ -225,7 +214,7 @@ export class InvestmentRecComponent implements OnInit {
       );
     }
     else if (this.investmentRecService.investmentRecFormData.donationTo == "Society") {
-      this.investmentRecService.getLastFiveInvestmentForSociety(this.investmentRecService.investmentRecFormData.donationId, this.investmentRecService.investmentSocietyFormData.societyId, marketCode, toDayDate).subscribe(
+      await this.investmentRecService.getLastFiveInvestmentForSociety(this.investmentRecService.investmentRecFormData.donationId, this.investmentRecService.investmentSocietyFormData.societyId, marketCode, toDayDate).then(
         (response) => {
           this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
         },
@@ -338,8 +327,8 @@ export class InvestmentRecComponent implements OnInit {
     });
 
   }
-  getInvestmentBcds() {
-    this.investmentRecService.getInvestmentBcds(this.investmentRecService.investmentRecFormData.id).subscribe(response => {
+  async getInvestmentBcds() {
+    await this.investmentRecService.getInvestmentBcds(this.investmentRecService.investmentRecFormData.id).then(response => {
       var data = response[0] as IInvestmentBcds;
       if (data !== undefined) {
         this.investmentRecService.investmentBcdsFormData = data;
@@ -352,8 +341,8 @@ export class InvestmentRecComponent implements OnInit {
       console.log(error);
     });
   }
-  getInvestmentSociety() {
-    this.investmentRecService.getInvestmentSociety(this.investmentRecService.investmentRecFormData.id).subscribe(response => {
+  async getInvestmentSociety() {
+    await this.investmentRecService.getInvestmentSociety(this.investmentRecService.investmentRecFormData.id).then(response => {
       var data = response[0] as IInvestmentSociety;
       if (data !== undefined) {
         this.investmentRecService.investmentSocietyFormData = data;
@@ -366,8 +355,8 @@ export class InvestmentRecComponent implements OnInit {
       console.log(error);
     });
   }
-  getInvestmentInstitution() {
-    this.investmentRecService.getInvestmentInstitutions(this.investmentRecService.investmentRecFormData.id).subscribe(response => {
+  async getInvestmentInstitution() {
+    await this.investmentRecService.getInvestmentInstitutions(this.investmentRecService.investmentRecFormData.id).then(response => {
       var data = response[0] as IInvestmentInstitution;
       if (data !== undefined) {
         this.investmentRecService.investmentInstitutionFormData = data;
@@ -381,8 +370,8 @@ export class InvestmentRecComponent implements OnInit {
       console.log(error);
     });
   }
-  getInvestmentDoctor() {
-    this.investmentRecService.getInvestmentDoctors(this.investmentRecService.investmentRecFormData.id).then(response => {
+  async getInvestmentDoctor() {
+    await this.investmentRecService.getInvestmentDoctors(this.investmentRecService.investmentRecFormData.id).then(response => {
       var data = response[0] as IInvestmentDoctor;
       if (data !== undefined) {
         this.investmentRecService.investmentDoctorFormData = data;
@@ -408,8 +397,8 @@ export class InvestmentRecComponent implements OnInit {
       console.log(error);
     });
   }
-  getInvestmentDetails() {
-    this.investmentRecService.getInvestmentDetails(this.investmentRecService.investmentRecFormData.id).subscribe(response => {
+  async getInvestmentDetails() {
+     await this.investmentRecService.getInvestmentDetails(this.investmentRecService.investmentRecFormData.id).then( async response => {
       var data = response[0] as IInvestmentRec;
       if (data !== undefined) {
         this.investmentRecService.investmentDetailFormData = data;
@@ -417,7 +406,7 @@ export class InvestmentRecComponent implements OnInit {
         this.investmentRecService.investmentDetailFormData.fromDate = new Date(data.fromDate);
         this.investmentRecService.investmentDetailFormData.toDate = new Date(data.toDate);
         //let convertedDate = this.datePipe.transform(data.fromDate, 'ddMMyyyy');
-        this.getLastFiveInvestment(this.investmentRecService.investmentRecFormData.marketCode, this.convertedDate);
+        await this.getLastFiveInvestment(this.investmentRecService.investmentRecFormData.marketCode, this.convertedDate);
       }
     }, error => {
       console.log(error);
@@ -433,8 +422,8 @@ export class InvestmentRecComponent implements OnInit {
       console.log(error);
     });
   }
-  getInvestmentRecDetails() {
-    this.investmentRecService.getInvestmentRecDetails(this.investmentRecService.investmentRecFormData.id, parseInt(this.empId)).subscribe(response => {
+  async getInvestmentRecDetails() {
+    this.investmentRecService.getInvestmentRecDetails(this.investmentRecService.investmentRecFormData.id, parseInt(this.empId)).subscribe(async response => {
       var data = response[0] as IInvestmentRec;
       if (data !== undefined) {
         this.investmentRecService.investmentDetailFormData = data;
@@ -442,7 +431,7 @@ export class InvestmentRecComponent implements OnInit {
         this.investmentRecService.investmentDetailFormData.fromDate = new Date(data.fromDate);
         this.investmentRecService.investmentDetailFormData.toDate = new Date(data.toDate);
         //let convertedDate = this.datePipe.transform(data.fromDate, 'ddMMyyyy');
-        this.getLastFiveInvestment(this.investmentRecService.investmentRecFormData.marketCode, this.convertedDate);
+        await this.getLastFiveInvestment(this.investmentRecService.investmentRecFormData.marketCode, this.convertedDate);
       } else {
         this.getInvestmentDetails();
       }

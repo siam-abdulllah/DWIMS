@@ -500,7 +500,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <table class="table  table-bordered" style="font-weight: bold;font-size: 12px;">
-                                                    <tr>
+                                                    <tr id="longHead">
                                                         <td>
                                                             Trns. Limit
                                                         </td>
@@ -508,7 +508,7 @@
                                                             {{budgetCeiling.amountPerTransacion}}
                                                         </td>
                                                         <td>
-                                                            Ceiling/month
+                                                            Ceiling/ month
                                                         </td>
                                                         <td>
                                                             {{budgetCeiling.amountPerMonth}}
@@ -544,6 +544,32 @@
                                                         <td style="color: green;">
                                                             {{budgetCeiling.sbuWiseRemaining}}
                                                         </td> -->
+                                                    </tr>
+                                                    <tr id="shortHead">
+                                                        <td>
+                                                            Trns. Limit
+                                                        </td>
+                                                        <td>
+                                                            {{budgetCeiling.amountPerTransacion}}
+                                                        </td>
+                                                        <td>
+                                                            CLG./ month
+                                                        </td>
+                                                        <td>
+                                                            {{budgetCeiling.amountPerMonth}}
+                                                        </td>
+                                                        <td>
+                                                            Curr. Spend
+                                                        </td>
+                                                        <td style="color: red;">
+                                                            {{budgetCeiling.monthlyExpense}}
+                                                        </td>
+                                                        <td>
+                                                            Rem. Amt.
+                                                        </td>
+                                                        <td style="color: green;">
+                                                            {{budgetCeiling.monthlyRemaining}}
+                                                        </td>
                                                     </tr>
                                                 </table>
                                             </div>

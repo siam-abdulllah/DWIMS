@@ -23,6 +23,7 @@ namespace API.Controllers
         private readonly IGenericRepository<InvestmentInit> _investmentInitRepo;
         private readonly IGenericRepository<InvestmentRec> _investmentRecRepo;
         private readonly IGenericRepository<InvestmentRecProducts> _investmentRecProductRepo;
+        private readonly IGenericRepository<InvestmentRecDepot> _investmentRecDepotRepo;
         private readonly IGenericRepository<InvestmentRecComment> _investmentRecCommentRepo;
         private readonly IGenericRepository<InvestmentApr> _investmentAprRepo;
         private readonly IGenericRepository<InvestmentAprComment> _investmentAprCommentRepo;
@@ -44,6 +45,7 @@ namespace API.Controllers
             IGenericRepository<InvestmentTargetedGroup> investmentTargetedGroupRepo,
             IGenericRepository<InvestmentInit> investmentInitRepo,
             IGenericRepository<InvestmentRecProducts> investmentRecProductRepo,
+            IGenericRepository<InvestmentRecDepot> investmentRecDepotRepo,
             IGenericRepository<InvestmentRecComment> investmentRecCommentRepo,
             IGenericRepository<InvestmentApr> investmentAprRepo,
             IGenericRepository<InvestmentAprComment> investmentAprCommentRepo,
@@ -60,6 +62,7 @@ namespace API.Controllers
             _investmentAprRepo = investmentAprRepo;
             _investmentInitRepo = investmentInitRepo;
             _investmentRecProductRepo = investmentRecProductRepo;
+            _investmentRecDepotRepo = investmentRecDepotRepo;
             _investmentRecCommentRepo = investmentRecCommentRepo;
             _investmentAprCommentRepo = investmentAprCommentRepo;
             _investmentAprProductRepo = investmentAprProductRepo;
@@ -193,26 +196,8 @@ namespace API.Controllers
                             _investmentRecRepo.Savechange();
                         }
                     }
-                    //var invApr = new InvestmentApr
-                    //{
-                    //    //ReferenceNo = investmentInitDto.ReferenceNo,
-                    //    InvestmentInitId = investmentAprDto.InvestmentInitId,
-                    //    ProposedAmount = investmentAprDto.ProposedAmount,
-                    //    Purpose = investmentAprDto.Purpose,
-                    //    CommitmentAllSBU = investmentAprDto.CommitmentAllSBU,
-                    //    CommitmentOwnSBU = investmentAprDto.CommitmentOwnSBU,
-                    //    FromDate = investmentAprDto.FromDate,
-                    //    ToDate = investmentAprDto.ToDate,
-                    //    TotalMonth = investmentAprDto.TotalMonth,
-                    //    PaymentMethod = investmentAprDto.PaymentMethod,
-                    //    ChequeTitle = investmentAprDto.ChequeTitle,
-                    //    EmployeeId = empId,
-                    //    SetOn = DateTimeOffset.Now
-                    //};
-                    //_investmentAprRepo.Add(invApr);
-                    //_investmentAprRepo.Savechange();
-                    //var specAppr = new ApprAuthConfigSpecification(empId, "A");
-                    //var apprAuthConfigAppr = await _apprAuthConfigRepo.GetEntityWithSpec(specAppr);
+                    var specAppr = new ApprAuthConfigSpecification(empId, "A");
+                    var apprAuthConfigAppr = await _apprAuthConfigRepo.GetEntityWithSpec(specAppr);
                     var invRecAppr = new InvestmentRec
                     {
                         //ReferenceNo = investmentInitDto.ReferenceNo,
@@ -227,8 +212,8 @@ namespace API.Controllers
                         PaymentMethod = investmentAprDto.PaymentMethod,
                         ChequeTitle = investmentAprDto.ChequeTitle,
                         EmployeeId = empId,
-                        // Priority = apprAuthConfigAppr.ApprovalAuthority.Priority,
-                        Priority = 3,
+                        Priority = apprAuthConfigAppr.ApprovalAuthority.Priority,
+                        //Priority = 3,
                         CompletionStatus = true,
                         SetOn = DateTimeOffset.Now
                     };
@@ -306,26 +291,6 @@ namespace API.Controllers
                         EmployeeId = investmentAprDto.EmployeeId,
                     };
                 }
-
-                //var invAprForRec = new InvestmentRec
-                //{
-                //    //ReferenceNo = investmentInitDto.ReferenceNo,
-                //    InvestmentInitId = investmentAprDto.InvestmentInitId,
-                //    ProposedAmount = investmentAprDto.ProposedAmount,
-                //    Purpose = investmentAprDto.Purpose,
-                //    CommitmentAllSBU = investmentAprDto.CommitmentAllSBU,
-                //    CommitmentOwnSBU = investmentAprDto.CommitmentOwnSBU,
-                //    FromDate = investmentAprDto.FromDate,
-                //    ToDate = investmentAprDto.ToDate,
-                //    TotalMonth = investmentAprDto.TotalMonth,
-                //    PaymentMethod = investmentAprDto.PaymentMethod,
-                //    ChequeTitle = investmentAprDto.ChequeTitle,
-                //    EmployeeId = empId,
-                //    SetOn = DateTimeOffset.Now
-                //};
-                //_investmentRecRepo.Add(invAprForRec);
-                //_investmentRecRepo.Savechange();
-
                 var spec = new ApprAuthConfigSpecification(empId, "A");
                 var apprAuthConfig = await _apprAuthConfigRepo.GetEntityWithSpec(spec);
                 var invRec = new InvestmentRec
@@ -343,7 +308,6 @@ namespace API.Controllers
                     ChequeTitle = investmentAprDto.ChequeTitle,
                     EmployeeId = empId,
                     Priority = apprAuthConfig.ApprovalAuthority.Priority,
-                    //Priority = 3,
                     CompletionStatus = true,
                     SetOn = DateTimeOffset.Now
                 };
@@ -372,8 +336,6 @@ namespace API.Controllers
                 throw ex;
             }
         }
-
-
 
         [HttpPost("InsertAprCom")]
         public async Task<ActionResult<InvestmentRecCommentDto>> InsertInvestmentAprComment(InvestmentRecCommentDto investmentRecDto)
@@ -684,6 +646,47 @@ namespace API.Controllers
             }
         }
 
+        [HttpPost("InsertAprDepot")]
+        public async Task<IActionResult> InsertInvestmentAprDepot(InvestmentRecDepot investmentRecDepot)
+        {
+            
+            try
+            {
+                    var alreadyExistSpec = new InvestmentRecDepotSpecification(investmentRecDepot.InvestmentInitId, investmentRecDepot.DepotCode);
+                    var alreadyExistInvestmentRecProductList = await _investmentRecDepotRepo.ListAsync(alreadyExistSpec);
+                    if (alreadyExistInvestmentRecProductList.Count > 0)
+                    {
+                        foreach (var v in alreadyExistInvestmentRecProductList)
+                        {
+                        _investmentRecDepotRepo.Delete(v);
+                        _investmentRecDepotRepo.Savechange();
+                        }
+                    }
+                    else
+                    {
+                        var invRecDepot = new InvestmentRecDepot
+                        {
+                            //ReferenceNo = investmentRecDto.ReferenceNo,
+                            InvestmentInitId = investmentRecDepot.InvestmentInitId,
+                            DepotCode = investmentRecDepot.DepotCode,
+                            DepotName = investmentRecDepot.DepotName,
+                            SetOn = DateTimeOffset.Now,
+                            ModifiedOn = DateTimeOffset.Now
+                        };
+                        _investmentRecDepotRepo.Add(invRecDepot);
+                    }
+               
+                _investmentRecProductRepo.Savechange();
+
+                return Ok("Succsessfuly Saved!!!");
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
         [HttpPost("removeInvestmentTargetedProd")]
         public async Task<IActionResult> RemoveInvestmentTargetedProd(InvestmentTargetedProd investmentTargetedProd)
         {
@@ -709,21 +712,9 @@ namespace API.Controllers
                 throw ex;
             }
         }
+        
         [HttpGet]
         [Route("investmentAprProducts/{investmentInitId}/{sbu}")]
-        //public async Task<IReadOnlyList<InvestmentRecProducts>> GetInvestmentAprProducts(int investmentInitId, string sbu)
-        //{
-        //    try
-        //    {
-        //        var spec = new InvestmentRecProductSpecification(investmentInitId, sbu);
-        //        var investmentTargetedProd = await _investmentRecProductRepo.ListAsync(spec);
-        //        return investmentTargetedProd;
-        //    }
-        //    catch (System.Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
         public async Task<IReadOnlyList<InvestmentRecProducts>> GetInvestmentRecProducts(int investmentInitId, string sbu)
         {
             try
@@ -741,19 +732,6 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("investmentAprDetails/{investmentInitId}/{empId}")]
-        //public async Task<IReadOnlyList<InvestmentRec>> GetInvestmentDetails(int investmentInitId,int empId)
-        //{
-        //    try
-        //    {
-        //        var spec = new InvestmentRecSpecification(investmentInitId, empId);
-        //        var investmentDetail = await _investmentRecRepo.ListAsync(spec);
-        //        return investmentDetail;
-        //    }
-        //    catch (System.Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
         public async Task<IReadOnlyList<InvestmentRec>> GetInvestmentDetails(int investmentInitId, int empId)
         {
             try
@@ -767,21 +745,9 @@ namespace API.Controllers
                 throw ex;
             }
         }
+        
         [HttpGet]
         [Route("getInvestmentAprComment/{investmentInitId}/{empId}")]
-        //public async Task<IReadOnlyList<InvestmentRecComment>> GetInvestmentAprComment(int investmentInitId, int empId)
-        //{
-        //    try
-        //    {
-        //        var spec = new InvestmentRecCommentSpecification(investmentInitId, empId);
-        //        var investmentDetail = await _investmentRecCommentRepo.ListAsync(spec);
-        //        return investmentDetail;
-        //    }
-        //    catch (System.Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
         public async Task<IReadOnlyList<InvestmentRecComment>> GetInvestmentRecComment(int investmentInitId, int empId)
         {
             try
@@ -795,21 +761,9 @@ namespace API.Controllers
                 throw ex;
             }
         }
+        
         [HttpGet]
         [Route("getInvestmentAprComments/{investmentInitId}")]
-        //public async Task<IReadOnlyList<InvestmentAprComment>> GetInvestmentAprComments(int investmentInitId)
-        //{
-        //    try
-        //    {
-        //        var spec = new InvestmentAprCommentSpecification(investmentInitId);
-        //        var investmentDetail = await _investmentAprCommentRepo.ListAsync(spec);
-        //        return investmentDetail;
-        //    }
-        //    catch (System.Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
         public async Task<IReadOnlyList<InvestmentRecComment>> GetInvestmentRecComments(int investmentInitId)
         {
             try

@@ -53,16 +53,16 @@ export class InvestmentAprService {
     return await  this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForDoc/' + donationId + '/' + docId + '/' +marketCode + '/' +toDayDate).toPromise();
   }
   getLastFiveInvestmentForInstitute(donationId:number,instituteId:number,marketCode: string, toDayDate: string) {
-    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForInstitute/' + donationId + '/' + instituteId + '/' +marketCode + '/' +toDayDate);
+    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForInstitute/' + donationId + '/' + instituteId + '/' +marketCode + '/' +toDayDate).toPromise();
   }
   getLastFiveInvestmentForCampaign(donationId:number,campaignId:number,marketCode: string, toDayDate: string) {
-    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForCampaign/' + donationId + '/' + campaignId + '/' +marketCode + '/' +toDayDate);
+    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForCampaign/' + donationId + '/' + campaignId + '/' +marketCode + '/' +toDayDate).toPromise();
   }
   getLastFiveInvestmentForBcds(donationId:number,bcdsId:number,marketCode: string, toDayDate: string) {
-    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForBcds/' + donationId + '/' + bcdsId + '/' +marketCode + '/' +toDayDate);
+    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForBcds/' + donationId + '/' + bcdsId + '/' +marketCode + '/' +toDayDate).toPromise();
   }
   getLastFiveInvestmentForSociety(donationId:number,societyId:number,marketCode: string, toDayDate: string) {
-    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForSociety/' + donationId + '/' + societyId + '/' +marketCode + '/' +toDayDate);
+    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForSociety/' + donationId + '/' + societyId + '/' +marketCode + '/' +toDayDate).toPromise();
   }
   getCampaignMsts(){    
     return this.http.get(this.baseUrl + 'campaign/campaignMstsForInvestment');
@@ -74,13 +74,13 @@ export class InvestmentAprService {
     return this.http.get(this.baseUrl + 'investmentApr/getInvestmentAprComment/'+investmentInitId+'/'+parseInt(empId));
   }
   getInvestmentDetails(investmentInitId:number){    
-    return this.http.get(this.baseUrl + 'investmentRec/investmentRecDetails/'+investmentInitId);
+    return this.http.get(this.baseUrl + 'investmentRec/investmentRecDetails/'+investmentInitId).toPromise();
   }
   getInvestmentTargetedProds(investmentInitId:number,sbu:string){    
     return this.http.get(this.baseUrl + 'investmentRec/investmentRecProducts/'+investmentInitId+'/'+sbu);
   }
   getInvestmentAprDetails(investmentInitId:number,empId:number){    
-    return this.http.get(this.baseUrl + 'investmentApr/investmentAprDetails/'+investmentInitId+'/'+empId);
+    return this.http.get(this.baseUrl + 'investmentApr/investmentAprDetails/'+investmentInitId+'/'+empId).toPromise();
   }
   getInvestmentAprProducts(investmentInitId:number,sbu:string){    
     return this.http.get(this.baseUrl + 'investmentApr/investmentAprProducts/'+investmentInitId+'/'+sbu);
@@ -89,7 +89,7 @@ export class InvestmentAprService {
     return this.http.get(this.baseUrl + 'InvestmentRec/investmentTargetedGroups/'+investmentInitId+'/'+empId);
   }
   getInvestmentInstitutions(investmentInitId:number){    
-    return this.http.get(this.baseUrl + 'investment/investmentInstitutions/'+investmentInitId);
+    return this.http.get(this.baseUrl + 'investment/investmentInstitutions/'+investmentInitId).toPromise();
   }
   getInvestmentCampaigns(investmentInitId:number){    
     return this.http.get(this.baseUrl + 'investment/investmentCampaigns/'+investmentInitId);
@@ -101,10 +101,10 @@ export class InvestmentAprService {
     return this.http.get(this.baseUrl + 'campaign/campaignDtlProductsForInvestment/'+dtlId);
   }
   getInvestmentBcds(investmentInitId:number){    
-    return this.http.get(this.baseUrl + 'investment/investmentBcds/'+investmentInitId);
+    return this.http.get(this.baseUrl + 'investment/investmentBcds/'+investmentInitId).toPromise();
   }
   getInvestmentSociety(investmentInitId:number){    
-    return this.http.get(this.baseUrl + 'investment/investmentSociety/'+investmentInitId);
+    return this.http.get(this.baseUrl + 'investment/investmentSociety/'+investmentInitId).toPromise();
   }
   
   getInvestmentInit(empId:number,sbu:string){    

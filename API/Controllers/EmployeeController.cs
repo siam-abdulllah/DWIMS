@@ -89,6 +89,31 @@ namespace API.Controllers
             {
                 throw ex;
             }
+        } 
+        [HttpGet("getDepot")]
+        public async Task<IReadOnlyList<DepotDto>> GetDepot()
+        {
+            try
+            {
+                var data = await _employeeRepo.ListAllAsync();
+                List<Employee> emp = data.GroupBy(p => p.DepotCode)
+                                 .Select(g => g.First())
+                                 .ToList();
+                var depot = (from r in emp
+                           orderby r.SBUName
+                           select new DepotDto
+                           {
+                               DepotCode = r.DepotCode,
+                               DepotName = r.DepotName
+                           }
+                              ).ToList();
+
+                return depot;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
         }
 
         // [HttpGet("employeeValidateById/{employeeId}")]

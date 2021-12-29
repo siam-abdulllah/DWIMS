@@ -22,6 +22,8 @@ namespace Core.Entities
         public string SBUName { get; set; }
         public string ZoneCode { get; set; }
         public string ZoneName { get; set; }
+        public string DepotCode { get; set; }
+        public string DepotName { get; set; }
         public string RegionCode { get; set; }
         public string RegionName { get; set; }
         public string TerritoryCode { get; set; }
