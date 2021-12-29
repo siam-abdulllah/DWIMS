@@ -28,6 +28,8 @@ import { AccountService } from '../account/account.service';
 import { IInvestmentDetailOld, ILastFiveInvestmentDetail } from '../shared/models/investment';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { IBudgetCeiling } from '../shared/models/budgetCeiling';
+import { IDepotInfo } from '../shared/models/depotInfo';
+import { IInvestmentRecDepot } from '../shared/models/InvestmentRecDepot';
 
 @Component({
   selector: 'app-investmentApr',
@@ -57,6 +59,7 @@ export class InvestmentAprComponent implements OnInit {
   searchText = '';
   configs: any;
   numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
+  depots: IDepotInfo[];
   bcds: IBcdsInfo[];
   society: ISocietyInfo[];
   markets: IMarket[];
@@ -76,6 +79,7 @@ export class InvestmentAprComponent implements OnInit {
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date = new Date();
   isAdmin: boolean = false;
+  isDepotRequire: boolean = false;
   empId: string;
   donationName: string;
   sbu: string;
@@ -105,6 +109,13 @@ export class InvestmentAprComponent implements OnInit {
   getDonation() {
     this.investmentAprService.getDonations().subscribe(response => {
       this.donations = response as IDonation[];
+    }, error => {
+      console.log(error);
+    });
+  }
+  getDepot() {
+    this.investmentAprService.getDepot().subscribe(response => {
+      this.depots = response as IDepotInfo[];
     }, error => {
       console.log(error);
     });
@@ -151,7 +162,13 @@ export class InvestmentAprComponent implements OnInit {
       this.isInvOther = true;
       this.isValid = false;
     }
-    
+    if(this.userRole=='RSM'||this.userRole=='Administrator')
+    {
+      if(this.investmentAprService.investmentDetailFormData.paymentMethod=='Cash')
+      {
+        this.getInvestmentRecDepot();
+      }
+    }
     this.InvestmentInitSearchModalRef.hide()
   }
   async selectInvestmentApr(selectedAprord: IInvestmentInit) {
@@ -190,7 +207,13 @@ export class InvestmentAprComponent implements OnInit {
       this.isInvOther = true;
       this.isValid = false;
     }
-   
+    if(this.userRole=='RSM'||this.userRole=='Administrator')
+    {
+      if(this.investmentAprService.investmentDetailFormData.paymentMethod=='Cash')
+      {
+        this.getInvestmentRecDepot();
+      }
+    }
     this.InvestmentAprSearchModalRef.hide()
   }
   async getLastFiveInvestment(marketCode: string, toDayDate: string) {
@@ -262,6 +285,7 @@ export class InvestmentAprComponent implements OnInit {
         this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
       }
       else {
+        debugger;
         this.toastr.warning('No Data Found');
       }
     }, error => {
@@ -286,6 +310,7 @@ export class InvestmentAprComponent implements OnInit {
         this.openInvestmentAprSearchModal(this.investmentAprSearchModal);
       }
       else {
+        debugger;
         this.toastr.warning('No Data Found');
       }
     }, error => {
@@ -333,9 +358,9 @@ export class InvestmentAprComponent implements OnInit {
           console.log(error);
         });
       }
-      else {
-        this.toastr.warning('No Data Found', 'Investment ');
-      }
+      // else {
+      //   this.toastr.warning('No Data Found', 'Investment ');
+      // }
     }, error => {
       console.log(error);
     });
@@ -351,9 +376,9 @@ export class InvestmentAprComponent implements OnInit {
         this.investmentAprService.investmentBcdsFormData.bcdsAddress = data.bcds.bcdsAddress;
         this.investmentAprService.investmentBcdsFormData.noOfMember = data.bcds.noOfMember;
       }
-      else {
-        this.toastr.warning('No Data Found', 'Investment ');
-      }
+      // else {
+      //   this.toastr.warning('No Data Found', 'Investment ');
+      // }
 
     }, error => {
       console.log(error);
@@ -369,9 +394,16 @@ export class InvestmentAprComponent implements OnInit {
         this.investmentAprService.investmentSocietyFormData.noOfMember = data.society.noOfMember;
         this.investmentAprService.investmentSocietyFormData.societyAddress = data.society.societyAddress;
       }
-      else {
-        this.toastr.warning('No Data Found', 'Investment ');
-      }
+      // else {
+      //   this.toastr.warning('No Data Found', 'Investment ');
+      // }
+    }, error => {
+      console.log(error);
+    });
+  }
+  async getInvestmentRecDepot() {
+    await this.investmentAprService.getInvestmentRecDepot(this.investmentAprService.investmentAprFormData.id).then(response => {
+      this.investmentAprService.investmentDepotFormData=response as IInvestmentRecDepot;
     }, error => {
       console.log(error);
     });
@@ -386,9 +418,9 @@ export class InvestmentAprComponent implements OnInit {
         this.investmentAprService.investmentInstitutionFormData.address = data.institutionInfo.address;
         this.investmentAprService.investmentInstitutionFormData.institutionType = data.institutionInfo.institutionType;
       }
-      else {
-        this.toastr.warning('No Data Found', 'Investment ');
-      }
+      // else {
+      //   this.toastr.warning('No Data Found', 'Investment ');
+      // }
 
     }, error => {
       console.log(error);
@@ -405,9 +437,9 @@ export class InvestmentAprComponent implements OnInit {
         this.investmentAprService.investmentDoctorFormData.institutionName = data.institutionInfo.institutionName;
         this.investmentAprService.investmentDoctorFormData.address = data.institutionInfo.address;
       }
-      else {
-        this.toastr.warning('No Data Found', 'Investment ');
-      }
+      // else {
+      //   this.toastr.warning('No Data Found', 'Investment ');
+      // }
     }, error => {
       console.log(error);
     });
@@ -419,9 +451,9 @@ export class InvestmentAprComponent implements OnInit {
         this.investmentAprService.investmentAprCommentFormData = data;
 
       }
-      else {
-        this.toastr.warning('No Data Found', 'Investment ');
-      }
+      // else {
+      //   this.toastr.warning('No Data Found', 'Investment ');
+      // }
 
     }, error => {
       console.log(error);
@@ -435,11 +467,19 @@ export class InvestmentAprComponent implements OnInit {
         this.investmentAprService.investmentDetailFormData.id = 0;
         this.investmentAprService.investmentDetailFormData.fromDate = new Date(data.fromDate);
         this.investmentAprService.investmentDetailFormData.toDate = new Date(data.toDate);
+        if(data.paymentMethod=='Cash')
+        {
+          this.isDepotRequire=true;
+        }
+        else{
+          this.isDepotRequire=false;
+        }
         //let convertedDate = this.datePipe.transform(data.fromDate, 'ddMMyyyy');
         this.getLastFiveInvestment(this.investmentAprService.investmentAprFormData.marketCode, this.convertedDate);
-      } else {
-        this.toastr.warning('No Data Found', 'Investment');
       }
+      // else {
+      //   this.toastr.warning('No Data Found', 'Investment');
+      // }
     }, error => {
       console.log(error);
     });
@@ -451,9 +491,9 @@ export class InvestmentAprComponent implements OnInit {
         this.investmentTargetedProds = data;
 
       }
-      else {
-        this.toastr.warning('No Data Found', 'Investment ');
-      }
+      // else {
+      //   this.toastr.warning('No Data Found', 'Investment ');
+      // }
 
     }, error => {
       console.log(error);
@@ -467,6 +507,13 @@ export class InvestmentAprComponent implements OnInit {
         this.investmentAprService.investmentDetailFormData.id = 0;
         this.investmentAprService.investmentDetailFormData.fromDate = new Date(data.fromDate);
         this.investmentAprService.investmentDetailFormData.toDate = new Date(data.toDate);
+        if(data.paymentMethod=='Cash')
+        {
+          this.isDepotRequire=true;
+        }
+        else{
+          this.isDepotRequire=false;
+        }
         //let convertedDate = this.datePipe.transform(data.fromDate, 'ddMMyyyy');
         this.getLastFiveInvestment(this.investmentAprService.investmentAprFormData.marketCode, this.convertedDate);
       } else {
@@ -482,9 +529,9 @@ export class InvestmentAprComponent implements OnInit {
       if (data !== undefined) {
         this.investmentTargetedProds = data;
       }
-      else {
-        this.toastr.warning('No Data Found', 'Investment ');
-      }
+      // else {
+      //   this.toastr.warning('No Data Found', 'Investment ');
+      // }
     }, error => {
       console.log(error);
     });
@@ -495,9 +542,9 @@ export class InvestmentAprComponent implements OnInit {
       if (data !== undefined) {
         this.investmentTargetedGroups = data;
       }
-      else {
-        this.toastr.warning('No Data Found', 'Investment ');
-      }
+      // else {
+      //   this.toastr.warning('No Data Found', 'Investment ');
+      // }
     }, error => {
       console.log(error);
     });
@@ -532,12 +579,21 @@ export class InvestmentAprComponent implements OnInit {
   getEmployeeId() {
     this.empId = this.accountService.getEmployeeId();
     this.userRole = this.accountService.getUserRole();
+    debugger;
     if(this.userRole=='Administrator')
     {
       this.isAdmin=true;
     }
     else{
       this.isAdmin=false;
+    }
+    if(this.userRole=='RSM' || this.userRole=='Administrator')
+    {
+      this.isDepotRequire=true;
+      this.getDepot();
+    }
+    else{
+      this.isDepotRequire=false;
     }
     this.investmentAprService.investmentAprCommentFormData.employeeId = parseInt(this.empId);
     this.getEmployeeSbu();
@@ -568,39 +624,6 @@ export class InvestmentAprComponent implements OnInit {
     });
   }
   insertInvestmentApr() {
-    this.investmentAprService.investmentAprCommentFormData.employeeId = parseInt(this.empId);
-    this.SpinnerService.show();
-    this.investmentAprService.insertInvestmentApr().subscribe(
-      res => {
-        this.investmentAprService.investmentAprCommentFormData = res as IInvestmentAprComment;
-        this.isValid = true;
-        this.insertInvestmentTargetedProd();
-        this.SpinnerService.hide();
-        if (this.sbu != this.investmentAprService.investmentAprFormData.sbu) 
-        { 
-        this.toastr.success('Save successfully', 'Investment')
-        }
-      },
-      err => { console.log(err); }
-    );
-  }
-  updateInvestmentApr() {
-    this.SpinnerService.show();
-    this.investmentAprService.updateInvestmentApr().subscribe(
-      res => {
-        this.isValid = true;
-        this.investmentAprService.investmentAprCommentFormData = res as IInvestmentAprComment;
-        this.insertInvestmentTargetedProd();
-        this.SpinnerService.hide();
-        if (this.sbu != this.investmentAprService.investmentAprFormData.sbu) 
-        { 
-        this.toastr.success('Save successfully', 'Investment')
-        }
-      },
-      err => { console.log(err); }
-    );
-  }
-  insertInvestmentDetails() {
     if (this.investmentAprService.investmentAprFormData.id == null || this.investmentAprService.investmentAprFormData.id == undefined || this.investmentAprService.investmentAprFormData.id == 0) {
       this.toastr.warning('Insert Investment Initialisation First', 'Investment ');
       return false;
@@ -633,6 +656,112 @@ export class InvestmentAprComponent implements OnInit {
       this.toastr.warning('Select Payment Method First', 'Investment ');
       return false;
     }
+    if(this.userRole=='RSM' || this.userRole=='Administrator')
+    {
+      if(this.investmentAprService.investmentDetailFormData.paymentMethod=='Cash')
+      {
+        if (this.investmentAprService.investmentDepotFormData.depotCode == null || this.investmentAprService.investmentDepotFormData.depotCode == undefined || this.investmentAprService.investmentDepotFormData.depotCode == "") 
+        {
+      this.toastr.warning('Select Depot First', 'Investment');
+      return false;
+        }
+      }
+    }
+    if(this.investmentAprService.investmentAprCommentFormData.recStatus=='Not Recommended')
+    {
+      if (this.investmentAprService.investmentAprCommentFormData.comments == null || this.investmentAprService.investmentAprCommentFormData.comments == undefined || this.investmentAprService.investmentAprCommentFormData.comments == "") 
+    {
+      
+        this.toastr.warning('Please Insert Comment For Not Recommendation', 'Investment');
+      return false;
+      }
+    }
+    this.investmentAprService.investmentAprCommentFormData.employeeId = parseInt(this.empId);
+    this.SpinnerService.show();
+    this.investmentAprService.insertInvestmentApr().subscribe(
+      res => {
+        this.investmentAprService.investmentAprCommentFormData = res as IInvestmentAprComment;
+        this.isValid = true;
+        this.insertInvestmentTargetedProd();
+        this.SpinnerService.hide();
+        if (this.sbu != this.investmentAprService.investmentAprFormData.sbu) 
+        { 
+        this.toastr.success('Save successfully', 'Investment')
+        }
+      },
+      err => { console.log(err); }
+    );
+  }
+  updateInvestmentApr() {
+    if (this.investmentAprService.investmentAprFormData.id == null || this.investmentAprService.investmentAprFormData.id == undefined || this.investmentAprService.investmentAprFormData.id == 0) {
+      this.toastr.warning('Insert Investment Initialisation First', 'Investment ');
+      return false;
+    }
+    if (this.investmentAprService.investmentDetailFormData.proposedAmount == null || this.investmentAprService.investmentDetailFormData.proposedAmount == undefined || this.investmentAprService.investmentDetailFormData.proposedAmount == "") {
+      this.toastr.warning('Enter Proposed Amount First', 'Investment ');
+      return false;
+    }
+    if (this.investmentAprService.investmentDetailFormData.purpose == null || this.investmentAprService.investmentDetailFormData.purpose == undefined || this.investmentAprService.investmentDetailFormData.purpose == "") {
+      this.toastr.warning('Enter Purpose First', 'Investment ');
+      return false;
+    }
+    if (this.investmentAprService.investmentDetailFormData.fromDate == null || this.investmentAprService.investmentDetailFormData.fromDate == undefined) {
+      this.toastr.warning('Select From Date  First', 'Investment ');
+      return false;
+    }
+    if (this.investmentAprService.investmentDetailFormData.toDate == null || this.investmentAprService.investmentDetailFormData.toDate == undefined) {
+      this.toastr.warning('Select To Date  First', 'Investment ');
+      return false;
+    }
+    if (this.investmentAprService.investmentDetailFormData.commitmentAllSBU == null || this.investmentAprService.investmentDetailFormData.commitmentAllSBU == undefined || this.investmentAprService.investmentDetailFormData.commitmentAllSBU == "") {
+      this.toastr.warning('Enter Commitment All SBU First', 'Investment ');
+      return false;
+    }
+    if (this.investmentAprService.investmentDetailFormData.commitmentOwnSBU == null || this.investmentAprService.investmentDetailFormData.commitmentOwnSBU == undefined || this.investmentAprService.investmentDetailFormData.commitmentOwnSBU == "") {
+      this.toastr.warning('Enter Commitment Own SBU First', 'Investment ');
+      return false;
+    }
+    if (this.investmentAprService.investmentDetailFormData.paymentMethod == null || this.investmentAprService.investmentDetailFormData.paymentMethod == undefined || this.investmentAprService.investmentDetailFormData.paymentMethod == "") {
+      this.toastr.warning('Select Payment Method First', 'Investment ');
+      return false;
+    }
+    if(this.userRole=='RSM' || this.userRole=='Administrator')
+    {
+      if(this.investmentAprService.investmentDetailFormData.paymentMethod=='Cash')
+      {
+        if (this.investmentAprService.investmentDepotFormData.depotCode == null || this.investmentAprService.investmentDepotFormData.depotCode == undefined || this.investmentAprService.investmentDepotFormData.depotCode == "") 
+        {
+      this.toastr.warning('Select Depot First', 'Investment');
+      return false;
+        }
+      }
+    }
+    if(this.investmentAprService.investmentAprCommentFormData.recStatus=='Not Recommended')
+    {
+      if (this.investmentAprService.investmentAprCommentFormData.comments == null || this.investmentAprService.investmentAprCommentFormData.comments == undefined || this.investmentAprService.investmentAprCommentFormData.comments == "") 
+    {
+      
+        this.toastr.warning('Please Insert Comment For Not Recommendation', 'Investment');
+      return false;
+      }
+    }
+    this.SpinnerService.show();
+    this.investmentAprService.updateInvestmentApr().subscribe(
+      res => {
+        this.isValid = true;
+        this.investmentAprService.investmentAprCommentFormData = res as IInvestmentAprComment;
+        this.insertInvestmentTargetedProd();
+        this.SpinnerService.hide();
+        if (this.sbu != this.investmentAprService.investmentAprFormData.sbu) 
+        { 
+        this.toastr.success('Save successfully', 'Investment')
+        }
+      },
+      err => { console.log(err); }
+    );
+  }
+  insertInvestmentDetails() {
+    
 
     this.investmentAprService.investmentDetailFormData.investmentInitId = this.investmentAprService.investmentAprFormData.id;
 
@@ -644,6 +773,7 @@ export class InvestmentAprComponent implements OnInit {
         this.investmentAprService.investmentDetailFormData.fromDate = new Date(data.fromDate);
         this.investmentAprService.investmentDetailFormData.toDate = new Date(data.toDate);
         this.isDonationValid = true;
+        this.insertInvestmentRecDepot();
         this.getLastFiveInvestment(this.investmentAprService.investmentAprFormData.marketCode, this.convertedDate);
         this.toastr.success('Save successfully', 'Investment');
         this.SpinnerService.hide();
@@ -656,6 +786,37 @@ export class InvestmentAprComponent implements OnInit {
     );
   }
 
+  insertInvestmentRecDepot() {
+    debugger;
+    if(this.userRole=='RSM' || this.userRole=='Administrator')
+    {
+      if(this.investmentAprService.investmentDetailFormData.paymentMethod=='Cash')
+      {
+        this.investmentAprService.investmentDepotFormData.investmentInitId = this.investmentAprService.investmentAprFormData.id;
+        for (let i = 0; i < this.depots.length; i++) {
+          if (this.depots[i].depotCode == this.investmentAprService.investmentDepotFormData.depotCode) {
+            this.investmentAprService.investmentDepotFormData.depotName=this.depots[i].depotName; 
+            this.investmentAprService.investmentDepotFormData.employeeId=parseInt(this.empId); 
+            break;
+          }
+        }
+        this.SpinnerService.show();
+        this.investmentAprService.insertInvestmentRecDepot().subscribe(
+          res => {
+           debugger;
+            this.investmentAprService.investmentDepotFormData=res as IInvestmentRecDepot;
+            this.SpinnerService.hide();
+            
+          },
+          err => {
+            console.log(err);
+            this.SpinnerService.hide();
+          }
+        );
+      }
+   
+    }
+  }
   insertInvestmentTargetedProd() {
     if (this.investmentAprService.investmentAprFormData.id == null || this.investmentAprService.investmentAprFormData.id == undefined || this.investmentAprService.investmentAprFormData.id == 0) {
       this.toastr.warning('Insert Investment Initialisation First', 'Investment Product');
@@ -780,7 +941,8 @@ export class InvestmentAprComponent implements OnInit {
     this.investmentTargetedGroups = [];
     this.investmentDetailsOld = [];
     this.lastFiveInvestmentDetail = [];
-    this.isAdmin = false;
+   // this.isAdmin = false;
+    this.isDepotRequire = false;
     this.isValid = false;
     this.isBudgetVisible = false;
     this.configs = {
@@ -796,7 +958,8 @@ export class InvestmentAprComponent implements OnInit {
     this.investmentTargetedGroups = [];
     this.investmentDetailsOld = [];
     this.lastFiveInvestmentDetail = [];
-    this.isAdmin = false;
+    //this.isAdmin = false;
+    this.isDepotRequire = false;
     this.isValid = false;
     this.isBudgetVisible = false;
     this.configs = {

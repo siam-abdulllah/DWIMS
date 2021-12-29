@@ -41,6 +41,11 @@ namespace Core.Specifications
         {
             //AddInclude(x => x.DepotInfo);
         }
+        public InvestmentRecDepotSpecification(int? id)
+            : base(x => x.InvestmentInitId == id )
+        {
+            //AddInclude(x => x.DepotInfo);
+        }
         //public InvestmentRecDepotSpecification(int id,int prodId,int empId)
         //    : base(x => x.InvestmentInitId == id && x.DepotId==prodId && x.EmployeeId==empId)
         //{

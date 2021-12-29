@@ -646,39 +646,54 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost("InsertAprDepot")]
-        public async Task<IActionResult> InsertInvestmentAprDepot(InvestmentRecDepot investmentRecDepot)
+        [HttpPost("insertInvestmentRecDepot")]
+        public async Task<ActionResult<InvestmentRecDepot>> InsertInvestmentRecDepot(InvestmentRecDepot investmentRecDepot)
         {
             
             try
             {
                     var alreadyExistSpec = new InvestmentRecDepotSpecification(investmentRecDepot.InvestmentInitId, investmentRecDepot.DepotCode);
-                    var alreadyExistInvestmentRecProductList = await _investmentRecDepotRepo.ListAsync(alreadyExistSpec);
-                    if (alreadyExistInvestmentRecProductList.Count > 0)
+                    var alreadyExistInvestmentRecDepotList = await _investmentRecDepotRepo.ListAsync(alreadyExistSpec);
+                    if (alreadyExistInvestmentRecDepotList.Count > 0)
                     {
-                        foreach (var v in alreadyExistInvestmentRecProductList)
+                        foreach (var v in alreadyExistInvestmentRecDepotList)
                         {
                         _investmentRecDepotRepo.Delete(v);
                         _investmentRecDepotRepo.Savechange();
                         }
                     }
-                    else
-                    {
+                    
                         var invRecDepot = new InvestmentRecDepot
                         {
                             //ReferenceNo = investmentRecDto.ReferenceNo,
                             InvestmentInitId = investmentRecDepot.InvestmentInitId,
                             DepotCode = investmentRecDepot.DepotCode,
                             DepotName = investmentRecDepot.DepotName,
+                            EmployeeId = investmentRecDepot.EmployeeId,
                             SetOn = DateTimeOffset.Now,
                             ModifiedOn = DateTimeOffset.Now
                         };
                         _investmentRecDepotRepo.Add(invRecDepot);
-                    }
-               
-                _investmentRecProductRepo.Savechange();
+                        _investmentRecProductRepo.Savechange();
 
-                return Ok("Succsessfuly Saved!!!");
+                return invRecDepot;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        [HttpGet("getInvestmentRecDepot/{initId}")]
+        public async Task<ActionResult<InvestmentRecDepot>> GetInvestmentRecDepot(int initId)
+        {
+            
+            try
+            {
+                var alreadyExistSpec = new InvestmentRecDepotSpecification(initId);
+                var alreadyExistInvestmentRecDepot = await _investmentRecDepotRepo.GetEntityWithSpec(alreadyExistSpec);
+                  
+                return alreadyExistInvestmentRecDepot;
             }
             catch (Exception ex)
             {

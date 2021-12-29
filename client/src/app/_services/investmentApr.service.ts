@@ -12,6 +12,7 @@ import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { GenericParams } from '../shared/models/genericParams';
 import { IInvestmentInitPagination, InvestmentInitPagination } from '../shared/models/investmentPagination';
+import { InvestmentRecDepot } from '../shared/models/InvestmentRecDepot';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,7 @@ export class InvestmentAprService {
   investmentAprPagination = new InvestmentAprPagination();
   investmentInits: IInvestmentInit[]=[];
   investmentInitPagination = new InvestmentInitPagination();
+  investmentDepotFormData: InvestmentRecDepot = new InvestmentRecDepot();
   investmentAprFormData: InvestmentInit = new InvestmentInit();
   investmentDetailFormData: InvestmentApr = new InvestmentApr();
   investmentAprCommentFormData: InvestmentAprComment = new InvestmentAprComment();
@@ -39,6 +41,9 @@ export class InvestmentAprService {
 
   getDonations() {
     return this.http.get(this.baseUrl + 'donation/donationsForInvestment');
+  }
+  getDepot() {
+    return this.http.get(this.baseUrl + 'employee/depotForInvestment');
   }
   getProduct(sbu:string){    
     return this.http.get(this.baseUrl + 'product/getProductForInvestment/'+sbu);
@@ -163,6 +168,16 @@ export class InvestmentAprService {
   insertInvestmentDetail(empId:number,sbu:string) {
     
     return this.http.post(this.baseUrl+ 'investmentApr/insertApr/'+empId+'/'+this.investmentAprCommentFormData.recStatus+'/'+sbu+'/'+this.investmentAprFormData.donationId, this.investmentDetailFormData);
+  
+  }
+  insertInvestmentRecDepot() {
+    
+    return this.http.post(this.baseUrl+ 'investmentApr/insertInvestmentRecDepot', this.investmentDepotFormData);
+  
+  }
+  getInvestmentRecDepot(initId:any) {
+    
+    return this.http.get(this.baseUrl+ 'investmentApr/getInvestmentRecDepot/'+initId).toPromise();
   
   }
   

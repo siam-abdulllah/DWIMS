@@ -90,14 +90,14 @@ namespace API.Controllers
                 throw ex;
             }
         } 
-        [HttpGet("getDepot")]
+        [HttpGet("depotForInvestment")]
         public async Task<IReadOnlyList<DepotDto>> GetDepot()
         {
             try
             {
                 var data = await _employeeRepo.ListAllAsync();
                 List<Employee> emp = data.GroupBy(p => p.DepotCode)
-                                 .Select(g => g.First())
+                                 .Select(g => g.First()).Where(x=>x.DepotCode!=null)
                                  .ToList();
                 var depot = (from r in emp
                            orderby r.SBUName
@@ -106,7 +106,7 @@ namespace API.Controllers
                                DepotCode = r.DepotCode,
                                DepotName = r.DepotName
                            }
-                              ).ToList();
+                              ).OrderBy(x=>x.DepotName).ToList();
 
                 return depot;
             }

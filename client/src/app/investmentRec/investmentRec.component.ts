@@ -565,6 +565,15 @@ export class InvestmentRecComponent implements OnInit {
       });
       return false;
     }
+    if(this.investmentRecService.investmentRecCommentFormData.recStatus=='Not Recommended')
+    {
+      if (this.investmentRecService.investmentRecCommentFormData.comments == null || this.investmentRecService.investmentRecCommentFormData.comments == undefined || this.investmentRecService.investmentRecCommentFormData.comments == "") 
+    {
+      
+        this.toastr.warning('Please Insert Comment For Not Recommendation', 'Investment');
+      return false;
+      }
+    }
     this.SpinnerService.show();
     this.investmentRecService.insertInvestmentRec().subscribe(
       res => {
@@ -627,6 +636,15 @@ export class InvestmentRecComponent implements OnInit {
       });
       return false;
     }
+    if(this.investmentRecService.investmentRecCommentFormData.recStatus=='Not Recommended')
+    {
+      if (this.investmentRecService.investmentRecCommentFormData.comments == null || this.investmentRecService.investmentRecCommentFormData.comments == undefined || this.investmentRecService.investmentRecCommentFormData.comments == "") 
+    {
+      
+        this.toastr.warning('Please Insert Comment For Not Recommendation', 'Investment');
+      return false;
+      }
+    }
     this.SpinnerService.show();
     this.investmentRecService.updateInvestmentRec().subscribe(
       res => {
@@ -646,12 +664,8 @@ export class InvestmentRecComponent implements OnInit {
     );
   }
   insertInvestmentDetails() {
-    if (this.investmentRecService.investmentRecFormData.id == null || this.investmentRecService.investmentRecFormData.id == undefined || this.investmentRecService.investmentRecFormData.id == 0) {
-      this.toastr.warning('Insert Investment Initialisation First', 'Investment ', {
-        positionClass: 'toast-top-right'
-      });
-      return false;
-    }
+    
+
     this.investmentRecService.investmentDetailFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
     this.investmentRecService.insertInvestmentDetail(parseInt(this.empId), this.sbu).subscribe(
       res => {
