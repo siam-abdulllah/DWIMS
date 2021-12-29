@@ -101,7 +101,7 @@ tr:hover {
 
 @media (min-width: 992px) {
     .small-box>.inner {
-        height: 80px !important;
+        height: 120px !important;
     }
 }
 

@@ -16365,24 +16365,24 @@ textarea.form-control.is-warning {
     z-index: 1; */
 }
 
-
 @media (min-width: 992px) {
-  .card-header.stick {
-    position: fixed;
-    top: 0;
-    z-index: 1000;
-    width: 79.8%;
-    border-radius: 0 0 0.5em 0.5em;
-  }
+    .card-header.stick {
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+        width: 79.8%;
+        border-radius: 0 0 0.5em 0.5em;
+    }
 }
+
 @media (max-width: 992px) {
-  .card-header.stick {
-    position: fixed;
-    top: 0;
-    z-index: 1000;
-    width: 85%;
-    border-radius: 0 0 0.5em 0.5em;
-  }
+    .card-header.stick {
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+        /* width: 85%;*/
+        border-radius: 0 0 0.5em 0.5em;
+    }
 }
 
 .card-primary:not(.card-outline)>.card-header a.active {
@@ -19690,7 +19690,8 @@ html.maximized-card {
 
 .small-box h3,
 .small-box p {
-    z-index: 5
+    z-index: 5;
+    padding-left: 15px;
 }
 
 .small-box .icon {
