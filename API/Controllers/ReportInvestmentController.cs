@@ -27,7 +27,7 @@ namespace API.Controllers
         private readonly IGenericRepository<ApprovalAuthority> _approvalAuthorityRepo;
         private readonly IMapper _mapper;
 
-        public ReportInvestmentController(IGenericRepository<ReportInvestmentInfo> investRepo, IGenericRepository<InvestmentTargetedGroup> investmentTargetedGroupRepo,IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<ApprovalAuthority> approvalAuthorityRepo,IGenericRepository<InvestmentRecComment> investmentRecCommentRepo,
+        public ReportInvestmentController(IGenericRepository<ReportInvestmentInfo> investRepo, IGenericRepository<InvestmentTargetedGroup> investmentTargetedGroupRepo, IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<ApprovalAuthority> approvalAuthorityRepo, IGenericRepository<InvestmentRecComment> investmentRecCommentRepo,
              IGenericRepository<ApprAuthConfig> apprAuthConfigRepo, IGenericRepository<ReportConfig> rptConfitRepo, IMapper mapper, StoreContext db)
         {
             _mapper = mapper;
@@ -131,25 +131,25 @@ namespace API.Controllers
         [HttpPost("GetSBUWiseExpSummaryReport")]
         public ActionResult<IReadOnlyList<RptSBUWiseExpSummart>> SBUWiseExpSummaryReport([FromQuery] ReportInvestmentInfoSpecParams rptParrams, ReportSearchDto search)
         //{ 
-            // string qry = "select CAST(ROW_NUMBER() OVER (ORDER BY c.SBU) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, SUM (e.ApprovedAmount) Expense, c.SBUName, c.SBU, c.Amount Budget,  c.DonationId, d.DonationTypeName " +
-            // " from SBUWiseBudget c, InvestmentInit b  inner join InvestmentDetailTracker e on e.InvestmentInitId = b.Id " +
-            // " left join Donation d on d.Id = b.DonationId "+
-            // " where b.SBU = c.SBU AND c.DonationId = e.DonationId AND e.PaidStatus = 'Paid' " +
-            // " AND  (CONVERT(date,c.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,c.ToDate)) "+
-            // " AND (CONVERT(date,e.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,e.ToDate)) ";
+        // string qry = "select CAST(ROW_NUMBER() OVER (ORDER BY c.SBU) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, SUM (e.ApprovedAmount) Expense, c.SBUName, c.SBU, c.Amount Budget,  c.DonationId, d.DonationTypeName " +
+        // " from SBUWiseBudget c, InvestmentInit b  inner join InvestmentDetailTracker e on e.InvestmentInitId = b.Id " +
+        // " left join Donation d on d.Id = b.DonationId "+
+        // " where b.SBU = c.SBU AND c.DonationId = e.DonationId AND e.PaidStatus = 'Paid' " +
+        // " AND  (CONVERT(date,c.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,c.ToDate)) "+
+        // " AND (CONVERT(date,e.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,e.ToDate)) ";
 
-            // string qry = " select CAST(ROW_NUMBER() OVER (ORDER BY a.SBU) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.SBU, a.SBUName, a.DonationId, d.DonationTypeName,  a.Amount Budget,  " +
-            //             " (select ISNULL(SUM(ApprovedAmount),0) from InvestmentDetailTracker e inner join InvestmentInit c on c.Id = e.InvestmentInitId  where e.PaidStatus = 'Paid' AND e.DonationId = a.DonationId AND c.SBU = a.SBU AND   " +
-            //             " (CONVERT(date,e.FromDate) >= CAST('" + search.FromDate + "' as Date) AND CAST('" + search.ToDate + "' as Date) >= CONVERT(date,e.ToDate))) Expense  " +
-            //             " from SBUWiseBudget a inner join Donation d on d.Id = a.DonationId AND " +
-            //             " (CONVERT(date,a.FromDate) >= CAST('" + search.FromDate + "' as Date) AND CAST('" + search.ToDate + "' as Date) >= CONVERT(date,a.ToDate)) ";
+        // string qry = " select CAST(ROW_NUMBER() OVER (ORDER BY a.SBU) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.SBU, a.SBUName, a.DonationId, d.DonationTypeName,  a.Amount Budget,  " +
+        //             " (select ISNULL(SUM(ApprovedAmount),0) from InvestmentDetailTracker e inner join InvestmentInit c on c.Id = e.InvestmentInitId  where e.PaidStatus = 'Paid' AND e.DonationId = a.DonationId AND c.SBU = a.SBU AND   " +
+        //             " (CONVERT(date,e.FromDate) >= CAST('" + search.FromDate + "' as Date) AND CAST('" + search.ToDate + "' as Date) >= CONVERT(date,e.ToDate))) Expense  " +
+        //             " from SBUWiseBudget a inner join Donation d on d.Id = a.DonationId AND " +
+        //             " (CONVERT(date,a.FromDate) >= CAST('" + search.FromDate + "' as Date) AND CAST('" + search.ToDate + "' as Date) >= CONVERT(date,a.ToDate)) ";
 
-        {      
-            string qry = " select CAST(ROW_NUMBER() OVER (ORDER BY a.SBU) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.SBU, a.SBUName, a.DonationId, d.DonationTypeName,  a.Amount Budget,  "+
-                        " (select ISNULL(SUM(ApprovedAmount),0) from InvestmentDetailTracker e inner join InvestmentInit c on c.Id = e.InvestmentInitId  where e.PaidStatus = 'Paid' AND e.DonationId = a.DonationId AND c.SBU = a.SBU AND   "+
-                        " (CONVERT(date,e.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,e.ToDate))) Expense  "+
-                        " from SBUWiseBudget a inner join Donation d on d.Id = a.DonationId AND "+
-                        " (CONVERT(date,a.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,a.ToDate)) ";
+        {
+            string qry = " select CAST(ROW_NUMBER() OVER (ORDER BY a.SBU) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.SBU, a.SBUName, a.DonationId, d.DonationTypeName,  a.Amount Budget,  " +
+                        " (select ISNULL(SUM(ApprovedAmount),0) from InvestmentDetailTracker e inner join InvestmentInit c on c.Id = e.InvestmentInitId  where e.PaidStatus = 'Paid' AND e.DonationId = a.DonationId AND c.SBU = a.SBU AND   " +
+                        " (CONVERT(date,e.FromDate) >= CAST('" + search.FromDate + "' as Date) AND CAST('" + search.ToDate + "' as Date) >= CONVERT(date,e.ToDate))) Expense  " +
+                        " from SBUWiseBudget a inner join Donation d on d.Id = a.DonationId AND " +
+                        " (CONVERT(date,a.FromDate) >= CAST('" + search.FromDate + "' as Date) AND CAST('" + search.ToDate + "' as Date) >= CONVERT(date,a.ToDate)) ";
 
             if (!string.IsNullOrEmpty(search.SBU))
             {
@@ -248,7 +248,7 @@ namespace API.Controllers
         }
 
 
-      [HttpPost("GetParamInvestmentSummaryReport")]
+        [HttpPost("GetParamInvestmentSummaryReport")]
         public ActionResult<IReadOnlyList<RptInvestmentSummary>> GetParamInvestmentSummaryReport(ParamSearchDto dt, [FromQuery] ReportInvestmentInfoSpecParams rptParrams)
         {
 
@@ -268,8 +268,12 @@ namespace API.Controllers
                 " inner join Donation d on d.Id = a.DonationId " +
                 " left join Employee e on e.Id = a.EmployeeId " +
                 " left join Employee rcvBy on rcvBy.Id = rcv.EmployeeId " +
-                " Where 1 = 1 AND dbo.fnGetInvestmentStatus(a.Id) = '"+ dt.ApproveStatus + "' AND a.Confirmation = 1 AND b.ProposedAmount is NOT NULL " +
-                " AND(CONVERT(date, b.FromDate) >= CAST('" + dt.FromDate + "' as Date) AND CAST('" + dt.ToDate + "' as Date) >= CONVERT(date, b.ToDate)) ";
+                " Where 1 = 1 AND dbo.fnGetInvestmentStatus(a.Id) = '" + dt.ApproveStatus + "' AND a.Confirmation = 1 AND b.ProposedAmount is NOT NULL";
+
+            if (dt.FromDate.Year > 1000 && dt.ToDate.Year > 1000)
+            {
+                qry = qry + " AND(CONVERT(date, b.FromDate) >= CAST('" + dt.FromDate + "' as Date) AND CAST('" + dt.ToDate + "' as Date) >= CONVERT(date, b.ToDate)) ";
+            }
             if (dt.UserRole != "Administrator")
             {
                 qry = qry + " AND (" +
@@ -419,14 +423,14 @@ namespace API.Controllers
             return Ok(new Pagination<ReportConfigDto>(rptParrams.PageIndex, rptParrams.PageSize, totalItems, data));
         }
 
-        
+
         [HttpGet("investmentInits/{id}")]
         public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetInvestmentInits(int id, [FromQuery] InvestmentInitSpecParams investmentInitParrams)
         {
             try
             {
 
-                
+
                 var spec = new InvestmentInitSpecification(id);
 
                 var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
@@ -438,7 +442,7 @@ namespace API.Controllers
                 var data = _mapper
                     .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(investmentInits);
                 return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, totalItems, data));
-            
+
             }
             catch (System.Exception e)
             {
@@ -446,34 +450,34 @@ namespace API.Controllers
             }
         }
 
-       [HttpGet]
+        [HttpGet]
         [Route("investmentTargetedGroups/{investmentInitId}")]
         public async Task<IReadOnlyList<InvestmentTargetGroupSQL>> GetInvestmentTargetedGroups(int investmentInitId)
         {
             try
             {
-               string qry = " SELECT  CAST(ROW_NUMBER() OVER (ORDER BY (SELECT 1)) AS INT) AS Id,  " +
-               " 1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.InvestmentInitId, a.SBU, a.SBUName,  " +
-               " a.EmployeeId EmpId, emp.EmployeeName, e.MarketCode, e.MarketName,'' MarketGroupName, a.[Priority], ISNULL(a.RecStatus, 'N/A') RecStatus,  " +
-               " ISNULL(c.ApprovalAuthorityName, 'N/A') ApprovalAuthorityName " +
-               " FROM InvestmentInit i " +
-               " LEFT JOIN InvestmentRecComment a ON a.InvestmentInitId = i.Id " +
-               " LEFT JOIN Employee emp ON emp.Id = a.EmployeeId " +
-               " LEFT JOIN InvestmentTargetedGroup e ON e.InvestmentInitId = i.Id " +
-               " LEFT JOIN ApprAuthConfig b ON b.EmployeeId = a.EmployeeId " +
-               " LEFT JOIN ApprovalAuthority c ON b.ApprovalAuthorityId = c.Id " +
-               " WHERE i.Id = " + investmentInitId + " AND b.[Status] = 'A' AND a.SBU = e.SBU   " +
-               " UNION " +
-               " SELECT CAST(ROW_NUMBER() OVER (ORDER BY (SELECT 1)) AS INT) AS Id, " +
-               " 1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, r.InvestmentInitId, a.SBU, a.SBUName,  " +
-               " r.EmployeeId EmpId, e.EmployeeName, a.MarketCode, a.MarketName,'' MarketGroupName, r.[Priority], ISNULL(r.RecStatus, 'N/A') RecStatus,  " +
-               " ISNULL(c.ApprovalAuthorityName, 'N/A') ApprovalAuthorityName " +
-               " FROM InvestmentInit a " +
-               " LEFT JOIN InvestmentRecComment r ON r.InvestmentInitId = a.Id " +
-               " LEFT JOIN Employee e ON e.Id = r.EmployeeId " +
-               " LEFT JOIN ApprovalAuthority c ON r.[Priority] = c.[Priority] " +
-               " WHERE a.Id = " + investmentInitId + " AND a.SBU = r.SBU " +
-               " ORDER BY [Priority], RecStatus DESC ";
+                string qry = " SELECT  CAST(ROW_NUMBER() OVER (ORDER BY (SELECT 1)) AS INT) AS Id,  " +
+                " 1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.InvestmentInitId, a.SBU, a.SBUName,  " +
+                " a.EmployeeId EmpId, emp.EmployeeName, e.MarketCode, e.MarketName,'' MarketGroupName, a.[Priority], ISNULL(a.RecStatus, 'N/A') RecStatus,  " +
+                " ISNULL(c.ApprovalAuthorityName, 'N/A') ApprovalAuthorityName " +
+                " FROM InvestmentInit i " +
+                " LEFT JOIN InvestmentRecComment a ON a.InvestmentInitId = i.Id " +
+                " LEFT JOIN Employee emp ON emp.Id = a.EmployeeId " +
+                " LEFT JOIN InvestmentTargetedGroup e ON e.InvestmentInitId = i.Id " +
+                " LEFT JOIN ApprAuthConfig b ON b.EmployeeId = a.EmployeeId " +
+                " LEFT JOIN ApprovalAuthority c ON b.ApprovalAuthorityId = c.Id " +
+                " WHERE i.Id = " + investmentInitId + " AND b.[Status] = 'A' AND a.SBU = e.SBU   " +
+                " UNION " +
+                " SELECT CAST(ROW_NUMBER() OVER (ORDER BY (SELECT 1)) AS INT) AS Id, " +
+                " 1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, r.InvestmentInitId, a.SBU, a.SBUName,  " +
+                " r.EmployeeId EmpId, e.EmployeeName, a.MarketCode, a.MarketName,'' MarketGroupName, r.[Priority], ISNULL(r.RecStatus, 'N/A') RecStatus,  " +
+                " ISNULL(c.ApprovalAuthorityName, 'N/A') ApprovalAuthorityName " +
+                " FROM InvestmentInit a " +
+                " LEFT JOIN InvestmentRecComment r ON r.InvestmentInitId = a.Id " +
+                " LEFT JOIN Employee e ON e.Id = r.EmployeeId " +
+                " LEFT JOIN ApprovalAuthority c ON r.[Priority] = c.[Priority] " +
+                " WHERE a.Id = " + investmentInitId + " AND a.SBU = r.SBU " +
+                " ORDER BY [Priority], RecStatus DESC ";
 
 
 

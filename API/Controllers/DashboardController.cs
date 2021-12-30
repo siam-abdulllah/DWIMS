@@ -55,7 +55,7 @@ namespace API.Controllers
                 " left join Employee rcvBy on rcvBy.Id = rcv.EmployeeId " +
                 " Where 1 = 1 AND dbo.fnGetInvestmentStatus(a.Id) = 'Approved' " +
                 //" AND(CONVERT(date, b.FromDate) >= CAST('" + fd + "' as Date) AND CAST('" + td + "' as Date) >= CONVERT(date, b.ToDate)) ";
-                " AND rcv.ReceiveStatus != 'Received' ";
+                " AND rcv.ReceiveStatus IS NULL ";
             if (role != "Administrator")
             {
                 qry = qry + " AND (" +

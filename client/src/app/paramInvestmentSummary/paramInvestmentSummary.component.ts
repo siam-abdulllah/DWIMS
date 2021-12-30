@@ -76,12 +76,11 @@ export class ParamInvestSummaryComponent implements OnInit {
 
   GetData(param)
   {
-    debugger;
-    this.date=new Date();
-    let latest_date =this.datepipe.transform(this.date, 'yyyy-MM-dd');
+    // this.date=new Date();
+    // let latest_date =this.datepipe.transform(this.date, 'yyyy-MM-dd');
 
-    this.reportService.rptInvestSummaryFormData.fromDate = new Date(new Date().getFullYear(), 0, 1);;
-    this.reportService.rptInvestSummaryFormData.toDate = this.date;
+    //this.reportService.rptInvestSummaryFormData.fromDate = new Date(new Date().getFullYear(), 0, 1);;
+    //this.reportService.rptInvestSummaryFormData.toDate = this.date;
     // if(param== "Approved")
     // {
     //   alert('Approved');
