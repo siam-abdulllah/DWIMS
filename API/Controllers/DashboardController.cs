@@ -54,7 +54,8 @@ namespace API.Controllers
                 " left join Employee e on e.Id = a.EmployeeId " +
                 " left join Employee rcvBy on rcvBy.Id = rcv.EmployeeId " +
                 " Where 1 = 1 AND dbo.fnGetInvestmentStatus(a.Id) = 'Approved' " +
-                " AND(CONVERT(date, b.FromDate) >= CAST('" + fd + "' as Date) AND CAST('" + td + "' as Date) >= CONVERT(date, b.ToDate)) ";
+                //" AND(CONVERT(date, b.FromDate) >= CAST('" + fd + "' as Date) AND CAST('" + td + "' as Date) >= CONVERT(date, b.ToDate)) ";
+                " AND rcv.ReceiveStatus != 'Received' ";
             if (role != "Administrator")
             {
                 qry = qry + " AND (" +
@@ -159,8 +160,8 @@ namespace API.Controllers
                 " inner join Donation d on d.Id = a.DonationId " +
                 " left join Employee e on e.Id = a.EmployeeId " +
                 " left join Employee rcvBy on rcvBy.Id = rcv.EmployeeId " +
-                " Where 1 = 1 AND dbo.fnGetInvestmentStatus(a.Id) = 'Pending' " +
-                " AND(CONVERT(date, b.FromDate) >= CAST('" + fd + "' as Date) AND CAST('" + td + "' as Date) >= CONVERT(date, b.ToDate)) ";
+                " Where 1 = 1 AND dbo.fnGetInvestmentStatus(a.Id) = 'Pending' AND a.Confirmation = 1 AND b.ProposedAmount is NOT NULL ";
+                //" AND(CONVERT(date, b.FromDate) >= CAST('" + fd + "' as Date) AND CAST('" + td + "' as Date) >= CONVERT(date, b.ToDate)) ";
             if (role != "Administrator")
             {
                 qry = qry + " AND (" +
@@ -183,6 +184,10 @@ namespace API.Controllers
                             " e.ZoneCode = COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All')" +
                             " OR COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All') = 'All'" +
                             " )";
+            }
+            else
+            {
+                return 0;
             }
 
             var results = _dbContext.RptInvestmentSummary.FromSqlRaw(qry).ToList();

@@ -268,7 +268,7 @@ namespace API.Controllers
                 " inner join Donation d on d.Id = a.DonationId " +
                 " left join Employee e on e.Id = a.EmployeeId " +
                 " left join Employee rcvBy on rcvBy.Id = rcv.EmployeeId " +
-                " Where 1 = 1 AND dbo.fnGetInvestmentStatus(a.Id) = '"+ dt.ApproveStatus + "' " +
+                " Where 1 = 1 AND dbo.fnGetInvestmentStatus(a.Id) = '"+ dt.ApproveStatus + "' AND a.Confirmation = 1 AND b.ProposedAmount is NOT NULL " +
                 " AND(CONVERT(date, b.FromDate) >= CAST('" + dt.FromDate + "' as Date) AND CAST('" + dt.ToDate + "' as Date) >= CONVERT(date, b.ToDate)) ";
             if (dt.UserRole != "Administrator")
             {
