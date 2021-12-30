@@ -31,7 +31,19 @@ export class TopnavComponent implements OnInit {
     );
 
   }
- 
+  checkPermission() {
+    // if(this.loginService.getUserRole()=="Importer")
+    // {
+    //   this.router.navigate(['/portal/editimporterinfo']);
+    // }
+    // else if(this.loginService.getUserRole()=="Admin" || "SA" || "Executive")
+    // {
+      this.router.navigate(['/portal/changePassword']);
+    // }
+    // else{
+    //   console.log("Other");
+    // }
+  }
   logout() {
     localStorage.removeItem('token');
     this.router.navigate(['/login']);

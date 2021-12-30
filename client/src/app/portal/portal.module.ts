@@ -37,6 +37,7 @@ import { SubMenuComponent } from '../subMenu/subMenu.component';
 import { MenuConfigComponent } from '../menuConfig/menuConfig.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { InvestmentRcvComponent } from '../investmentRcv/investmentRcv.component';
+import { ChangePasswordComponent } from '../changePassword/changePassword.component';
 @NgModule({
   imports: [
     
@@ -80,6 +81,7 @@ import { InvestmentRcvComponent } from '../investmentRcv/investmentRcv.component
     MenuHeadComponent,
     SubMenuComponent,
     MenuConfigComponent,
+    ChangePasswordComponent
   ],
   providers: [DatePipe]
 })

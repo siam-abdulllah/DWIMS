@@ -406,5 +406,35 @@ namespace API.Controllers
                 Email = user.Email
             };
         }
+
+        //[Authorize(Roles = "Importer")]
+        [HttpPost("VerifyCurrentPassword")]
+        public async Task<ActionResult<bool>> VerifyCurrentPassword(VerifyCrntPassDto verifyCrntPassDto)
+        {
+            var user = await _userManager.FindByNameAsync(verifyCrntPassDto.EmployeeSAPCode);
+            var result = await _userManager.CheckPasswordAsync(user, verifyCrntPassDto.CurrentPassword);
+            if (result) return true;
+            return false;
+        }
+        [HttpPost("ChangePassword")]
+        public async Task<ActionResult<bool>> ChangePassword(ChangePasswordDto changePasswordDto)
+        {
+            try
+            {
+                var user = await _userManager.FindByNameAsync(changePasswordDto.EmployeeSAPCode);
+
+                var userObj = await _userManager.ChangePasswordAsync(user, changePasswordDto.CurrentPassword, changePasswordDto.NewPassword);
+
+                if (userObj.Succeeded) return true;
+                return false;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
     }
 }

@@ -23,6 +23,7 @@ import { ClusterInfoComponent } from '../master/cluster-info/cluster-info.compon
 import { MenuHeadComponent } from '../menuHead/menuHead.component';
 import { SubMenuComponent } from '../subMenu/subMenu.component';
 import { MenuConfigComponent } from '../menuConfig/menuConfig.component';
+import { ChangePasswordComponent } from '../changePassword/changePassword.component';
 
 const portalRoutes: Routes = [
   {
@@ -52,6 +53,7 @@ const portalRoutes: Routes = [
         {path: 'menuHead', component: MenuHeadComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'subMenu', component: SubMenuComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'menuConfig', component: MenuConfigComponent},
+        {path: 'changePassword', component: ChangePasswordComponent},
         {path: '', component: PortalComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'master', loadChildren: () => import('../master/master.module')
        .then(mod => mod.MasterModule) , data: {breadcrumb: {skip: true}}}, 
