@@ -78,9 +78,9 @@ export class MarketGroupService {
  
 }
 
-insertMarketGroup() {
+insertMarketGroup(empId:number) {
   
-  return this.http.post(this.baseUrl+ 'marketGroup/insertMst', this.marketGroupFormData);
+  return this.http.post(this.baseUrl+ 'marketGroup/insertMst/'+empId, this.marketGroupFormData);
 
 }
 insertMarketGroupDtl(id:number,marketCode:string,marketName:string,sbu:string,sbuName:string) {
@@ -89,8 +89,8 @@ insertMarketGroupDtl(id:number,marketCode:string,marketName:string,sbu:string,sb
   return this.http.post(this.baseUrl+ 'marketGroup/insertDtl', Indata);
 
 }
- updateMarketGroup() {
-   return this.http.post(this.baseUrl+ 'marketGroup/updateMst',  this.marketGroupFormData);
+ updateMarketGroup(empId:number) {
+   return this.http.post(this.baseUrl+ 'marketGroup/updateMst/'+empId,  this.marketGroupFormData);
  }
  removeMarketGroups(selectedRecord: IMarketGroupDtl) {
    

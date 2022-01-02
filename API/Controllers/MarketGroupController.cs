@@ -19,22 +19,25 @@ namespace API.Controllers
     {
         private readonly IGenericRepository<MarketGroupMst> _marketGroupMstRepo;
         private readonly IGenericRepository<MarketGroupDtl> _marketGroupDtlRepo;
+        private readonly IGenericRepository<Employee> _employeeRepo;
         private readonly IMapper _mapper;
-        public MarketGroupController(IGenericRepository<MarketGroupMst> marketGroupMstRepo, IGenericRepository<MarketGroupDtl> marketGroupDtlRepo,
+        public MarketGroupController(IGenericRepository<MarketGroupMst> marketGroupMstRepo, IGenericRepository<MarketGroupDtl> marketGroupDtlRepo, IGenericRepository<Employee> employeeRepo,
         IMapper mapper)
         {
             _mapper = mapper;
             _marketGroupMstRepo = marketGroupMstRepo;
             _marketGroupDtlRepo = marketGroupDtlRepo;
+            _employeeRepo = employeeRepo;
         }
-        [HttpPost("insertMst")]
-        public ActionResult<MarketGroupMstDto> InsertMarketGroupMst(MarketGroupMstDto marketGroupMstDto)
+        [HttpPost("insertMst/{empId}")]
+        public async Task<ActionResult<MarketGroupMstDto>> InsertMarketGroupMst(int empId,MarketGroupMstDto marketGroupMstDto)
         {
-            
+            var employee = await _employeeRepo.GetByIdAsync(empId);
             var marketGroupMsts = new MarketGroupMst
             {
                 GroupName = marketGroupMstDto.GroupName,
-                EmployeeId = marketGroupMstDto.EmployeeId,
+                //EmployeeId = marketGroupMstDto.EmployeeId,
+                MarketCode = employee.MarketCode,
                 Status = marketGroupMstDto.Status,
                 SetOn = DateTimeOffset.Now
             };
@@ -45,7 +48,8 @@ namespace API.Controllers
             {
                 Id = marketGroupMsts.Id,
                 GroupName = marketGroupMsts.GroupName,
-                EmployeeId = marketGroupMsts.EmployeeId,
+                //EmployeeId = marketGroupMsts.EmployeeId,
+                MarketCode = marketGroupMsts.MarketCode,
                 Status = marketGroupMsts.Status
             };
         }
@@ -86,17 +90,21 @@ namespace API.Controllers
             }
         }
    
-        [HttpPost("updateMst")]
-        public ActionResult<MarketGroupMstDto> UpdateMarketGroupMst(MarketGroupMstDto marketGroupMstDto)
+        [HttpPost("updateMst/{empId}")]
+        public async Task<ActionResult<MarketGroupMstDto>> UpdateMarketGroupMst(int empId, MarketGroupMstDto marketGroupMstDto)
         {
-            
+
+            var employee = await _employeeRepo.GetByIdAsync(empId);
+            var mGMsts= await _marketGroupMstRepo.GetByIdAsync(marketGroupMstDto.Id);
             var marketGroupMsts = new MarketGroupMst
             {
                 Id = marketGroupMstDto.Id,
                 GroupName = marketGroupMstDto.GroupName,
-                EmployeeId = marketGroupMstDto.EmployeeId,
+                //EmployeeId = marketGroupMstDto.EmployeeId,
+                MarketCode = employee.MarketCode,
                 Status = marketGroupMstDto.Status,
-                ModifiedOn = DateTimeOffset.Now
+                ModifiedOn = DateTimeOffset.Now,
+                SetOn= mGMsts.SetOn
 
             };
             _marketGroupMstRepo.Update(marketGroupMsts);
@@ -106,14 +114,16 @@ namespace API.Controllers
             {
                 Id = marketGroupMstDto.Id,
                 GroupName = marketGroupMstDto.GroupName,
-                EmployeeId = marketGroupMsts.EmployeeId,
+                //EmployeeId = marketGroupMsts.EmployeeId,
+                MarketCode = employee.MarketCode,
                 Status = marketGroupMstDto.Status
             };
         }
      
         [HttpPost("updateDtl")]
-        public ActionResult<MarketGroupDtlDto> UpdateMarketGroupDtl(MarketGroupDtlDto marketGroupDtlDto)
+        public async Task<ActionResult<MarketGroupDtlDto>> UpdateMarketGroupDtl(MarketGroupDtlDto marketGroupDtlDto)
         {
+            var mGDtls = await _marketGroupDtlRepo.GetByIdAsync(marketGroupDtlDto.Id);
             var marketGroupDtls = new MarketGroupDtl
             {
                 Id = marketGroupDtlDto.Id,
@@ -123,7 +133,8 @@ namespace API.Controllers
                 SBUName = marketGroupDtlDto.SBUName,
                 MstId = marketGroupDtlDto.MstId,
                 Status = "Inactive",
-                ModifiedOn = DateTimeOffset.Now
+                ModifiedOn = DateTimeOffset.Now,
+                SetOn= mGDtls.SetOn
 
             };
             _marketGroupDtlRepo.Update(marketGroupDtls);
@@ -142,12 +153,14 @@ namespace API.Controllers
         }
 
         [HttpGet("marketGroupMsts/{empId}")]
-        public async Task<ActionResult<Pagination<MarketGroupMstDto>>> GetMarketGroupMsts(int empId,
+        public async Task<ActionResult<Pagination<MarketGroupMst>>> GetMarketGroupMsts(int empId,
           [FromQuery] MarketGroupMstSpecParams marketGroupMstParrams)
         {
             try
             {
-                var spec = new MarketGroupMstSpecification(empId);
+                var employee = await _employeeRepo.GetByIdAsync(empId);
+
+                var spec = new MarketGroupMstSpecification(employee.MarketCode);
 
                 var countSpec = new MarketGroupMstWithFiltersForCountSpecificication(marketGroupMstParrams);
 
@@ -155,10 +168,10 @@ namespace API.Controllers
 
                 var marketGroup = await _marketGroupMstRepo.ListAsync(spec);
 
-                var data = _mapper
-                    .Map<IReadOnlyList<MarketGroupMst>, IReadOnlyList<MarketGroupMstDto>>(marketGroup);
+                //var data = _mapper
+                   // .Map<IReadOnlyList<MarketGroupMst>, IReadOnlyList<MarketGroupMstDto>>(marketGroup);
 
-                return Ok(new Pagination<MarketGroupMstDto>(marketGroupMstParrams.PageIndex, marketGroupMstParrams.PageSize, totalItems, data));
+                return Ok(new Pagination<MarketGroupMst>(marketGroupMstParrams.PageIndex, marketGroupMstParrams.PageSize, totalItems, marketGroup));
             }
             catch (System.Exception e)
             {
@@ -193,9 +206,8 @@ namespace API.Controllers
         {
             try
             {
-                var spec = new MarketGroupMstSpecification(empId);
-
-
+                var employee = await _employeeRepo.GetByIdAsync(empId);
+                var spec = new MarketGroupMstSpecification(employee.MarketCode);
                 var marketGroup = await _marketGroupMstRepo.ListAsync(spec);
 
                 //var data = _mapper

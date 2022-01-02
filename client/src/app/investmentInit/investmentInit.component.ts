@@ -861,8 +861,8 @@ export class InvestmentInitComponent implements OnInit {
     this.investmentInitService.insertInvestmentInit().subscribe(
       res => {
         this.investmentInitService.investmentInitFormData = res as IInvestmentInit;
-        this.investmentInitService.investmentDoctorFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
-        this.investmentInitService.investmentInstitutionFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
+        //this.investmentInitService.investmentDoctorFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
+        //this.investmentInitService.investmentInstitutionFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
         this.isValid = true;
         this.toastr.success('Saved successfully', 'Investment')
       },
@@ -1241,6 +1241,7 @@ export class InvestmentInitComponent implements OnInit {
     }
     if (this.investmentTargetedGroups != null && this.investmentTargetedGroups.length > 0) {
       this.investmentInitService.investmentTargetedGroupFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
+      debugger;
       this.SpinnerService.show();
       this.investmentInitService.insertInvestmentTargetedGroup(this.investmentTargetedGroups).subscribe(
         res => {

@@ -37,7 +37,7 @@ namespace API.Controllers
                 DateTime fd = new DateTime(DateTime.Now.Year, 1, 1);
                 DateTime td = DateTime.Today;
 
-            string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode=" + empCode;
+            string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode='" + empCode+"'";
             var empData = _dbContext.Employee.FromSqlRaw(empQry).ToList();
             // string qry = "select CAST(ROW_NUMBER() OVER (ORDER BY c.SBU) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, SUM (e.ApprovedAmount) Expense, c.SBUName, c.SBU, c.Amount Budget,  c.DonationId, d.DonationTypeName " +
             // " from SBUWiseBudget c, InvestmentInit b  inner join InvestmentDetailTracker e on e.InvestmentInitId = b.Id " +
@@ -144,7 +144,7 @@ namespace API.Controllers
                 DateTime fd = new DateTime(DateTime.Now.Year, 1, 1);
                 DateTime td = DateTime.Today;
 
-            string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode=" + empCode;
+            string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode='" + empCode+"'";
             var empData = _dbContext.Employee.FromSqlRaw(empQry).ToList();
    
             string qry = " select CAST(a.Id AS INT) as Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.ReferenceNo, d.DonationTypeName, a.DonationTo, b.ProposedAmount, b.FromDate, b.ToDate, dbo.fnGetInvestmentStatus(a.Id) InvStatus, e.EmployeeName,dbo.fnGetInvestmentApprovedBy(a.Id) ApprovedBy,e.MarketName, ISNULL(rcv.ReceiveStatus, 'Not Completed') ReceiveStatus, ISNULL(rcvBy.EmployeeName, 'N/A') ReceiveBy " +

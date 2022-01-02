@@ -1921,10 +1921,10 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
 
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("int");
-
                     b.Property<string>("GroupName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MarketCode")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("ModifiedOn")
@@ -1937,8 +1937,6 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EmployeeId");
 
                     b.ToTable("MarketGroupMst");
                 });
@@ -3492,15 +3490,6 @@ namespace Infrastructure.Data.Migrations
                     b.HasOne("Core.Entities.MarketGroupMst", null)
                         .WithMany("MarketGroupDtls")
                         .HasForeignKey("MstId");
-                });
-
-            modelBuilder.Entity("Core.Entities.MarketGroupMst", b =>
-                {
-                    b.HasOne("Core.Entities.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Core.Entities.PostComments", b =>

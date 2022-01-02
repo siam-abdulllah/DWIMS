@@ -196,7 +196,7 @@ namespace API.Controllers
         public ActionResult<IReadOnlyList<RptInvestmentSummary>> GetInvestmentSummaryReport(SearchDto dt, [FromQuery] ReportInvestmentInfoSpecParams rptParrams)
         {
 
-            string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode=" + dt.EmpId;
+            string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode='"+dt.EmpId+"'";
             var empData = _db.Employee.FromSqlRaw(empQry).ToList();
             // string qry = "select CAST(ROW_NUMBER() OVER (ORDER BY c.SBU) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, SUM (e.ApprovedAmount) Expense, c.SBUName, c.SBU, c.Amount Budget,  c.DonationId, d.DonationTypeName " +
             // " from SBUWiseBudget c, InvestmentInit b  inner join InvestmentDetailTracker e on e.InvestmentInitId = b.Id " +
@@ -252,7 +252,7 @@ namespace API.Controllers
         public ActionResult<IReadOnlyList<RptInvestmentSummary>> GetParamInvestmentSummaryReport(ParamSearchDto dt, [FromQuery] ReportInvestmentInfoSpecParams rptParrams)
         {
 
-            string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode=" + dt.EmpId;
+            string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode='"+dt.EmpId+"'";
             var empData = _db.Employee.FromSqlRaw(empQry).ToList();
             // string qry = "select CAST(ROW_NUMBER() OVER (ORDER BY c.SBU) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, SUM (e.ApprovedAmount) Expense, c.SBUName, c.SBU, c.Amount Budget,  c.DonationId, d.DonationTypeName " +
             // " from SBUWiseBudget c, InvestmentInit b  inner join InvestmentDetailTracker e on e.InvestmentInitId = b.Id " +

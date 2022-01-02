@@ -10,7 +10,7 @@ namespace Core.Specifications
                (string.IsNullOrEmpty(parrams.Search) || x.GroupName.ToLower().Contains(parrams.Search))
            )
         {
-            AddInclude(x => x.Employee);
+            //AddInclude(x => x.Employee);
             AddOrderBy(x => x.SetOn);
             ApplyPaging(parrams.PageSize * (parrams.PageIndex - 1), parrams.PageSize);
 
@@ -31,8 +31,13 @@ namespace Core.Specifications
             // }
         }
 
-        public MarketGroupMstSpecification(int empId)
-            : base(x => x.EmployeeId == empId)
+        //public MarketGroupMstSpecification(int empId)
+        //    : base(x => x.EmployeeId == empId)
+        //{
+        //    AddInclude(x => x.MarketGroupDtls);
+        //} 
+        public MarketGroupMstSpecification(string marketCode)
+            : base(x => x.MarketCode == marketCode)
         {
             AddInclude(x => x.MarketGroupDtls);
         } 
