@@ -211,6 +211,7 @@ namespace API.Controllers
                 Remarks = sbuBdgt.Remarks,
             };
         }
+       
         [HttpPost("removeSBUWiseBudget")]
         public async Task<IActionResult> RemoveSBUWiseBudget(SBUWiseBudget sbuBdgt)
         {
@@ -235,6 +236,7 @@ namespace API.Controllers
                 throw ex;
             }
         } 
+      
         [HttpGet("getYearlyTotalAmount/{year}")]
         public async Task<ActionResult<YearlyBudget>> GetYearlyTotalAmount(string year)
         {
@@ -250,6 +252,7 @@ namespace API.Controllers
                 throw ex;
             }
         }  
+    
         [HttpGet("getYearlyTotalExpense/{year}")]
         public async Task<ActionResult<string>> GetYearlyTotalExpense(string year)
         {

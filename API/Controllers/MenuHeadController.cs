@@ -105,6 +105,7 @@ namespace API.Controllers
                 throw ex;
             }
         } 
+   
         [HttpGet("menuHeadsForSubMenu")]
         public async Task<IReadOnlyList<MenuHead>> GetMenuHeadsForSubMenu()
         {
@@ -120,6 +121,7 @@ namespace API.Controllers
                 throw ex;
             }
         } 
+    
         [HttpGet("menuHeadsForMenuConfig")]
         public async Task<IReadOnlyList<MenuHead>> GetMenuHeadsForMenuConfig()
         {

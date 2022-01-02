@@ -109,6 +109,7 @@ namespace API.Controllers
                 throw ex;
             }
         } 
+      
         [HttpGet("subMenusForMenuConfig/{menuHeadId}")]
         public async Task<IReadOnlyList<SubMenu>> GetsubMenusForMenuConfig(int menuHeadId)
         {

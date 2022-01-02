@@ -22,6 +22,7 @@ namespace API.Controllers
             _mapper = mapper;
             _donationRepo = donationRepo;
         }
+
         [HttpPost("insert")]
         public ActionResult<DonationToReturnDto> InsertDonation(DonationToReturnDto donationToReturnDto)
         {
@@ -57,6 +58,7 @@ namespace API.Controllers
                 Remarks = donationToReturnDto.Remarks
             };
         }
+     
         [HttpPost("update")]
         public async Task<ActionResult<DonationToReturnDto>> UpdateDonationAsync(DonationToReturnDto donationToReturnDto)
         {

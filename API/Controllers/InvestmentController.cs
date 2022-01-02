@@ -1249,6 +1249,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
+       
         [HttpGet]
         [Route("getLastFiveInvestmentForDoc/{donationId}/{docId}/{marketCode}/{date}")]
         public IReadOnlyList<LastFiveInvestmentInfo> GetLastFiveInvestmentForDoc(int donationId, int docId, string marketCode, string date)
@@ -1335,6 +1336,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
+     
         [HttpGet]
         [Route("getLastFiveInvestmentForInstitute/{donationId}/{instituteId}/{marketCode}/{date}")]
         public IReadOnlyList<LastFiveInvestmentInfo> GetLastFiveInvestmentForInstitute(int donationId, string instituteId, string marketCode, string date)
@@ -1408,6 +1410,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
+      
         [HttpGet]
         [Route("getLastFiveInvestmentForBcds/{donationId}/{bcdsId}/{marketCode}/{date}")]
         public IReadOnlyList<LastFiveInvestmentInfo> GetLastFiveInvestmentForBcds(int donationId, string bcdsId, string marketCode, string date)
@@ -1482,6 +1485,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
+    
         [HttpGet]
         [Route("getLastFiveInvestmentForSociety/{donationId}/{societyId}/{marketCode}/{date}")]
         public IReadOnlyList<LastFiveInvestmentInfo> GetLastFiveInvestmentForSociety(int donationId, string societyId, string marketCode, string date)

@@ -128,7 +128,8 @@ namespace API.Controllers
                 Status = doctorHonApprDto.Status,
             };
         }
-         [HttpPost("updateDocHonAppr")]
+      
+        [HttpPost("updateDocHonAppr")]
         public ActionResult<DoctorHonApprDto> UpdateDoctorHonAppr(DoctorHonApprDto doctorHonApprDto)
         {
             

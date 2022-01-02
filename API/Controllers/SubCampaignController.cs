@@ -58,6 +58,7 @@ namespace API.Controllers
                 Remarks = subCampaignToReturnDto.Remarks
             };
         }
+     
         [HttpPost("update")]
         public ActionResult<SubCampaignToReturnDto> UpdateSubCampaign(SubCampaignToReturnDto subCampaignToReturnDto)
         {

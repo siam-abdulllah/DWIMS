@@ -81,6 +81,7 @@ namespace API.Controllers
         {
             return await _userManager.FindByEmailAsync(email) != null;
         }
+
         [HttpGet("userNameexists")]
         public async Task<ActionResult<bool>> CheckUserNameExistsAsync([FromQuery] string userName)
         {
@@ -114,6 +115,7 @@ namespace API.Controllers
             data.Claims = await _userManager.GetClaimsAsync(user);
             return data;
         }
+
 
         [Authorize]
         [HttpPut("update-address")]
@@ -176,6 +178,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
+
         [HttpGet("menuConfigsForSecurity")]
         public List<MenuConfigDto> MenuConfigsForSecurity(string roleName)
         {
@@ -215,6 +218,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
+       
         [HttpGet("employeesForConfigByEmpId")]
         public List<ApprAuthConfigDto> EmployeesForConfigByEmpId(int empId)
         {
@@ -241,6 +245,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
+        
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>> Register(SetRegisterDto setRegDto)
         {
@@ -281,6 +286,42 @@ namespace API.Controllers
                 Token = "",//_tokenService.CreateToken(user),
                 Email = user.Email
             };
+        } 
+        [HttpPost("registerAll")]
+        public async Task<ActionResult<bool>> RegisterAll()
+        {
+           
+
+            var emps =  _db.Employee.ToList();
+            foreach (var e in emps)
+            {
+                if (CheckUserNameExistsAsync(e.EmployeeSAPCode).Result.Value)
+                {
+                    return new BadRequestObjectResult(new ApiValidationErrorResponse { Errors = new[] { "User Id is in use" } });
+                }
+
+                var user = new AppUser
+                {
+                    EmployeeId = e.Id,
+                    EmployeeSAPCode = e.EmployeeSAPCode,
+                    DisplayName = e.EmployeeName,
+                    Email = e.Email,
+                    UserName = e.EmployeeSAPCode,
+                    EmailConfirmed = true,
+                    PhoneNumber = e.Phone
+
+                };
+                var userObj = await _userManager.CreateAsync(user, "@Aa123");
+                if (!userObj.Succeeded) return BadRequest(new ApiResponse(400));
+
+
+             
+
+            }
+
+            return true;
+
+
         }
 
         [HttpPost("updateRegisterUser")]
@@ -416,6 +457,7 @@ namespace API.Controllers
             if (result) return true;
             return false;
         }
+        
         [HttpPost("ChangePassword")]
         public async Task<ActionResult<bool>> ChangePassword(ChangePasswordDto changePasswordDto)
         {

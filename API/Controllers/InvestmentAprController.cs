@@ -101,6 +101,7 @@ namespace API.Controllers
                 throw e;
             }
         }
+      
         [HttpGet("investmentApproved/{empId}/{sbu}/{userRole}")]
         public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetinvestmentApproved(int empId, string sbu,string userRole,
         [FromQuery] InvestmentInitSpecParams investmentInitParrams)
@@ -684,6 +685,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
+      
         [HttpGet("getInvestmentRecDepot/{initId}")]
         public async Task<ActionResult<InvestmentRecDepot>> GetInvestmentRecDepot(int initId)
         {

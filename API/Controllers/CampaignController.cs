@@ -49,6 +49,7 @@ namespace API.Controllers
                 BrandCode = campaignMsts.BrandCode
             };
         }
+       
         [HttpPost("insertDtl")]
         public ActionResult<CampaignDtlDto> InsertCampaignDtl(CampaignDtlDto campaignDtlDto)
         {
@@ -82,6 +83,7 @@ namespace API.Controllers
                 throw;
             }
         }
+     
         [HttpPost("insertDtlProduct")]
         public ActionResult<CampaignDtlProductDto> InsertCampaignDtlProduct(CampaignDtlProductDto campaignDtlProductDto)
         {
@@ -110,6 +112,7 @@ namespace API.Controllers
                 throw;
             }
         }
+      
         [HttpPost("updateMst")]
         public ActionResult<CampaignMstDto> UpdateCampaignMst(CampaignMstDto campaignMstDto)
         {
@@ -135,6 +138,7 @@ namespace API.Controllers
                 BrandCode = campaignMstDto.BrandCode
             };
         }
+     
         [HttpPost("updateDtl")]
         public ActionResult<CampaignDtlDto> UpdateCampaignDtl(CampaignDtlDto campaignDtlDto)
         {
@@ -162,6 +166,7 @@ namespace API.Controllers
                 SubCampEndDate = campaignDtlDto.SubCampEndDate,
             };
         }
+      
         [HttpPost("updateDtlProduct")]
         public ActionResult<CampaignDtlProductDto> UpdateCampaignDtlProduct(CampaignDtlProductDto campaignDtlProductDto)
         {
@@ -183,6 +188,7 @@ namespace API.Controllers
                 ProductId = campaignDtlProductDto.ProductId,
             };
         }
+     
         [HttpGet("campaignMsts")]
         public async Task<ActionResult<Pagination<CampaignMstDto>>> GetCampaignMsts(
           [FromQuery] CampaignMstSpecParams campaignMstParrams)
@@ -208,6 +214,7 @@ namespace API.Controllers
                 throw e;
             }
         }
+      
         [HttpGet("campaignDtls/{mstId}")]
         public async Task<ActionResult<Pagination<CampaignDtlDto>>> GetCampaignDtls(
         [FromQuery] CampaignDtlSpecParams campaignDtlParrams, int mstId)
@@ -233,6 +240,7 @@ namespace API.Controllers
                 throw;
             }
         }
+    
         [HttpGet("campaignDtlProducts/{dtlId}")]
         public async Task<ActionResult<Pagination<CampaignDtlProductDto>>> GetCampaignDtlProducts(
         [FromQuery] CampaignDtlProductSpecParams campaignDtlProductParrams, int dtlId)
@@ -258,6 +266,7 @@ namespace API.Controllers
                 throw ex;
             }
         } 
+      
         [HttpPost("removeDtlProduct")]
         public  void RemoveDtlProduct(CampaignDtlProduct campaignDtlProduct)
         {
@@ -297,6 +306,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
+     
         [HttpGet("campaignDtlsForInvestment/{mstId}")]
         public async Task<IReadOnlyList<CampaignDtlDto>> GetSubCampaignDtlsForInvestment(int mstId)
         {
@@ -314,7 +324,10 @@ namespace API.Controllers
             {
                 throw ex;
             }
-        } [HttpGet("campaignDtlProductsForInvestment/{dtlId}")]
+        } 
+        
+        [HttpGet("campaignDtlProductsForInvestment/{dtlId}")]
+        
         public async Task<IReadOnlyList<CampaignDtlProductDto>> GetSubCampaignDtlProductsForInvestment(int dtlId)
         {
             try

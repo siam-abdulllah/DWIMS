@@ -26,6 +26,7 @@ namespace API.Controllers
             _userRepo = userRepo;
             _userManager = userManager;
         }
+      
         [HttpGet("employeesForConfig")]
         public async Task<IReadOnlyList<Employee>> GetEmployeesForConfig()
         {
@@ -39,6 +40,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
+  
         [HttpGet("marketForGroup/{empId}")]
         public async Task<IReadOnlyList<MarketDto>> GetMarketForGroup(int empId)
         {
@@ -65,6 +67,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
+    
         [HttpGet("getSBU")]
         public async Task<IReadOnlyList<SBUDto>> GetSBU()
         {
@@ -90,6 +93,7 @@ namespace API.Controllers
                 throw ex;
             }
         } 
+    
         [HttpGet("depotForInvestment")]
         public async Task<IReadOnlyList<DepotDto>> GetDepot()
         {
@@ -163,6 +167,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
+    
         [HttpGet("getEmployeeSbuById/{employeeId}")]
         public async Task<ActionResult<Employee>> GetEmployeeSbuById(int employeeId)
         {
@@ -176,6 +181,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
+   
         [HttpGet("employeeForApproval")]
         public async Task<IReadOnlyList<RegApprovalDto>> GetEmployeeForApproval()
         {
@@ -215,6 +221,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
+    
         [HttpGet("employeeApproved")]
         public async Task<IReadOnlyList<RegApprovalDto>> GetEmployeeForApproved()
         {

@@ -102,6 +102,7 @@ namespace API.Controllers
                 throw e;
             }
         }
+   
         [HttpGet("investmentRecommended/{empId}/{sbu}/{userRole}")]
         public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetinvestmentRecommended(int empId, string sbu, string userRole,
           [FromQuery] InvestmentInitSpecParams investmentInitParrams)
@@ -590,6 +591,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
+    
         [HttpGet]
         [Route("getInvestmentRecComment/{investmentInitId}/{empId}")]
         public async Task<IReadOnlyList<InvestmentRecComment>> GetInvestmentRecComment(int investmentInitId, int empId)
@@ -605,6 +607,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
+  
         [HttpGet]
         [Route("getInvestmentRecComments/{investmentInitId}")]
         public async Task<IReadOnlyList<InvestmentRecComment>> GetInvestmentRecComments(int investmentInitId)

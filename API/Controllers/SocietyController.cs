@@ -44,6 +44,7 @@ namespace API.Controllers
             return Ok(new Pagination<SocietyDto>(societyParrams.PageIndex, societyParrams.PageSize, totalItems, data));
 
         }
+     
         [HttpGet("societyForInvestment")]
         // [Authorize(Roles = "Owner,Administrator")]
         // [Authorize(Policy = "DetailUserPolicy")]

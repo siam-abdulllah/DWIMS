@@ -125,6 +125,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
+     
         [HttpGet("menuConfigsForSecurity/{roleName}")]
         public async Task<IReadOnlyList<MenuConfigDto>> MenuConfigsForSecurity(string roleName)
         {
@@ -162,6 +163,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
+     
         [HttpGet("removeMenuConfig/{id}")]
         public async Task<IActionResult> RemoveMenuConfig(int id)
         {

@@ -47,6 +47,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
+       
         [HttpGet("getProduct")]
         public async Task<IReadOnlyList<ProductDto>> GetProduct()
         {
@@ -62,6 +63,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
+    
         [HttpGet("getProduct/{brandCode}/{sbu}")]
         public async Task<List<ProductDto>> GetProduct(string brandCode,string sbu)
         {
@@ -89,6 +91,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
+    
         [HttpGet("getProductForInvestment")]
         public async Task<IEnumerable<ProductDto>> GetProductForInvestment()
         {
@@ -105,6 +108,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
+      
         [HttpGet]
         [Route("getProductForInvestment/{sbu}")]
         public async Task<IEnumerable<ProductDto>> GetProductForInvestment(string sbu)

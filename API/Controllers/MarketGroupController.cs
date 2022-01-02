@@ -49,6 +49,7 @@ namespace API.Controllers
                 Status = marketGroupMsts.Status
             };
         }
+       
         [HttpPost("insertDtl")]
         public ActionResult<MarketGroupDtlDto> InsertMarketGroupDtl(MarketGroupDtlDto marketGroupDtlDto)
         {
@@ -84,6 +85,7 @@ namespace API.Controllers
                 throw;
             }
         }
+   
         [HttpPost("updateMst")]
         public ActionResult<MarketGroupMstDto> UpdateMarketGroupMst(MarketGroupMstDto marketGroupMstDto)
         {
@@ -108,6 +110,7 @@ namespace API.Controllers
                 Status = marketGroupMstDto.Status
             };
         }
+     
         [HttpPost("updateDtl")]
         public ActionResult<MarketGroupDtlDto> UpdateMarketGroupDtl(MarketGroupDtlDto marketGroupDtlDto)
         {
@@ -163,6 +166,7 @@ namespace API.Controllers
                 throw e;
             }
         }
+     
         [HttpGet("getMarketGroupMstsForInvestment")]
         public async Task<IReadOnlyList<MarketGroupMst>> GetMarketGroupMstsForInvestment()
         {
@@ -183,6 +187,7 @@ namespace API.Controllers
                 throw e;
             }
         }
+   
         [HttpGet("getMarketGroupMstsForInvestment/{empId}")]
         public async Task<IReadOnlyList<MarketGroupMst>> GetMarketGroupMstsForInvestment(int empId)
         {
@@ -203,6 +208,7 @@ namespace API.Controllers
                 throw e;
             }
         }
+    
         [HttpGet]
         [Route("marketGroupDtls/{mstId}")]
         public async Task<ActionResult<Pagination<MarketGroupDtlDto>>> GetMarketGroupDtls(

@@ -40,7 +40,7 @@ namespace API.Controllers
             IGenericRepository<ApprAuthConfig> apprAuthConfigRepo,
             IGenericRepository<SBUWiseBudget> sbuRepo,
             IGenericRepository<InvestmentTargetedGroup> investmentTargetedGroupRepo,
-            IGenericRepository<InvestmentInit> investmentInitRepo, 
+            IGenericRepository<InvestmentInit> investmentInitRepo,
             IGenericRepository<InvestmentRecProducts> investmentRecProductRepo,
             IGenericRepository<InvestmentRecComment> investmentRecCommentRepo,
             IGenericRepository<InvestmentRecv> investmentRecvRepo,
@@ -68,7 +68,7 @@ namespace API.Controllers
             _investmentDetailTrackerRepo = investmentDetailTrackerRepo;
             _donationRepo = donationRepo;
         }
-       
+
         [HttpGet("investmentInits/{empId}/{sbu}")]
         public ActionResult<Pagination<InvestmentInitDto>> GetInvestmentInits(int empId, string sbu,
           [FromQuery] InvestmentInitSpecParams investmentInitParrams)
@@ -93,6 +93,7 @@ namespace API.Controllers
                 throw e;
             }
         }
+
         [HttpGet("GetinvestmentReceived/{empId}/{sbu}")]
         public ActionResult<Pagination<InvestmentInitDto>> GetinvestmentApproved(int empId, string sbu,
           [FromQuery] InvestmentInitSpecParams investmentInitParrams)
@@ -116,8 +117,8 @@ namespace API.Controllers
             }
         }
 
-          [HttpPost("InsertRecv")]
-          public async Task<ActionResult<InvestmentRecvDto>> InsertInvestmentRecv(InvestmentRecvDto investmentRecvDto)
+        [HttpPost("InsertRecv")]
+        public async Task<ActionResult<InvestmentRecvDto>> InsertInvestmentRecv(InvestmentRecvDto investmentRecvDto)
         {
             try
             {
@@ -182,8 +183,8 @@ namespace API.Controllers
             }
         }
 
-   [HttpPost("UpdateRecv")]
-          public async Task<ActionResult<InvestmentRecvDto>> UpdateInvestmentRecv(InvestmentRecvDto investmentRecvDto)
+        [HttpPost("UpdateRecv")]
+        public async Task<ActionResult<InvestmentRecvDto>> UpdateInvestmentRecv(InvestmentRecvDto investmentRecvDto)
         {
             try
             {
@@ -250,11 +251,11 @@ namespace API.Controllers
 
 
 
-          [HttpPost("InsertRecvCom")]
-          public async Task<ActionResult<InvestmentRecCommentDto>> InsertInvestmentRecvComment(InvestmentRecCommentDto investmentRecDto)
+        [HttpPost("InsertRecvCom")]
+        public async Task<ActionResult<InvestmentRecCommentDto>> InsertInvestmentRecvComment(InvestmentRecCommentDto investmentRecDto)
         {
             //var empData = await _employeeRepo.GetByIdAsync(investmentRecvDto.EmployeeId);
-           // var investmentInits = await _investmentInitRepo.GetByIdAsync((int)investmentRecvDto.InvestmentInitId);
+            // var investmentInits = await _investmentInitRepo.GetByIdAsync((int)investmentRecvDto.InvestmentInitId);
 
             // if (investmentInits.SBU == empData.SBU)
             // {
@@ -605,6 +606,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
+       
         [HttpGet]
         [Route("getInvestmentRecvComment/{investmentInitId}")]
         public async Task<IReadOnlyList<InvestmentRecv>> GetInvestmentRecvComment(int investmentInitId)
@@ -621,19 +623,19 @@ namespace API.Controllers
             }
         }
 
-        public async Task<IReadOnlyList<InvestmentRecComment>> GetInvestmentRecComment(int investmentInitId, int empId)
-        {
-            try
-            {
-                var spec = new InvestmentRecCommentSpecification(investmentInitId, empId);
-                var investmentDetail = await _investmentRecCommentRepo.ListAsync(spec);
-                return investmentDetail;
-            }
-            catch (System.Exception ex)
-            {
-                throw ex;
-            }
-        }
+        //public async Task<IReadOnlyList<InvestmentRecComment>> GetInvestmentRecComment(int investmentInitId, int empId)
+        //{
+        //    try
+        //    {
+        //        var spec = new InvestmentRecCommentSpecification(investmentInitId, empId);
+        //        var investmentDetail = await _investmentRecCommentRepo.ListAsync(spec);
+        //        return investmentDetail;
+        //    }
+        //    catch (System.Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
         //[HttpGet]
         //[Route("getInvestmentRecvComments/{investmentInitId}")]
         //public async Task<IReadOnlyList<InvestmentRecvComment>> GetInvestmentRecvComments(int investmentInitId)

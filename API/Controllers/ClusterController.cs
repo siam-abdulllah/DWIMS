@@ -45,6 +45,7 @@ namespace API.Controllers
                 Status = clusterMstDto.Status,
             };
         }
+       
         [HttpPost("insertDtl")]
         public ActionResult<ClusterDtlDto> InsertClusterDtl(ClusterDtlDto clusterDtlDto)
         {
@@ -76,6 +77,7 @@ namespace API.Controllers
                 throw;
             }
         }
+    
         [HttpPost("updateMst")]
         public ActionResult<ClusterMstDto> UpdateClusterMst(ClusterMstDto clusterMstDto)
         {
@@ -99,6 +101,7 @@ namespace API.Controllers
                 Status = clusterMstDto.Status,
             };
         }
+    
         [HttpPost("updateDtl")]
         public ActionResult<ClusterDtlDto> UpdateClusterDtl(ClusterDtlDto clusterDtlDto)
         {
@@ -124,6 +127,7 @@ namespace API.Controllers
                 Status = clusterDtlDto.Status,
             };
         }
+     
         [HttpGet("clusterMsts")]
         public async Task<ActionResult<Pagination<ClusterMstDto>>> GetClusterMsts(
               [FromQuery] ClusterMstSpecParams clusterMstParrams)
@@ -149,6 +153,7 @@ namespace API.Controllers
                 throw e;
             }
         }
+     
         [HttpGet("clusterDtls/{mstId}")]
         public async Task<ActionResult<Pagination<ClusterDtlDto>>> GetClusterDtls(
         [FromQuery] ClusterDtlSpecParams clusterDtlParrams, int mstId)
