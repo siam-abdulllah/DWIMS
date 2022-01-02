@@ -762,21 +762,24 @@ namespace API.Controllers
         {
             try
             {
-                //var response = new HttpResponseMessage();
-                var alreadyExistSpec = new InvestmentTargetedGroupSpecification(investmentTargetedGroupDto[0].InvestmentInitId, investmentTargetedGroupDto[0].MarketGroupMstId);
-                var alreadyExistInvestmentTargetedGroupList = await _investmentTargetedGroupRepo.ListAsync(alreadyExistSpec);
-                if (alreadyExistInvestmentTargetedGroupList.Count > 0)
+                foreach (var a in investmentTargetedGroupDto)
                 {
-                    foreach (var v in alreadyExistInvestmentTargetedGroupList)
+                    //var response = new HttpResponseMessage();
+                    var alreadyExistSpec = new InvestmentTargetedGroupSpecification(a.InvestmentInitId, a.MarketCode);
+                    var alreadyExistInvestmentTargetedGroup = await _investmentTargetedGroupRepo.GetEntityWithSpec(alreadyExistSpec);
+                    if (alreadyExistInvestmentTargetedGroup!=null)
                     {
-                        if (v.CompletionStatus == true) return BadRequest(new ApiResponse(400, "Tagged Market Already Submitted Investment Initialization"));
-                        _investmentTargetedGroupRepo.Delete(v);
-                        _investmentTargetedGroupRepo.Savechange();
-                    }
+                        //foreach (var v in alreadyExistInvestmentTargetedGroupList)
+                        //{
+                            if (alreadyExistInvestmentTargetedGroup.CompletionStatus == true) return BadRequest(new ApiResponse(400, "Tagged Market Already Submitted Investment Initialization"));
+                            _investmentTargetedGroupRepo.Delete(alreadyExistInvestmentTargetedGroup);
 
-                    return Ok("Succsessfuly Deleted!!!");
+                        //}
+                        _investmentTargetedGroupRepo.Savechange();
+
+                    }
                 }
-                return NotFound();
+                return Ok("Succsessfuly Deleted!!!");
             }
             catch (System.Exception ex)
             {
@@ -1249,7 +1252,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
-       
+
         [HttpGet]
         [Route("getLastFiveInvestmentForDoc/{donationId}/{docId}/{marketCode}/{date}")]
         public IReadOnlyList<LastFiveInvestmentInfo> GetLastFiveInvestmentForDoc(int donationId, int docId, string marketCode, string date)
@@ -1336,7 +1339,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
-     
+
         [HttpGet]
         [Route("getLastFiveInvestmentForInstitute/{donationId}/{instituteId}/{marketCode}/{date}")]
         public IReadOnlyList<LastFiveInvestmentInfo> GetLastFiveInvestmentForInstitute(int donationId, string instituteId, string marketCode, string date)
@@ -1410,7 +1413,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
-      
+
         [HttpGet]
         [Route("getLastFiveInvestmentForBcds/{donationId}/{bcdsId}/{marketCode}/{date}")]
         public IReadOnlyList<LastFiveInvestmentInfo> GetLastFiveInvestmentForBcds(int donationId, string bcdsId, string marketCode, string date)
@@ -1460,7 +1463,7 @@ namespace API.Controllers
                             // " ) AS  PrescribedSharePrcntAll" +
                             ",[dbo].[fnGetPrescribedSharePrcntBcds] ('" + bcdsId + "','" + marketCode + "',D.DonationTypeName,IR.FromDate) AS  PrescribedSharePrcnt" +
                             ",[dbo].[fnGetPrescribedSharePrcntAllBcds] ('" + bcdsId + "',D.DonationTypeName,IR.FromDate) AS  PrescribedSharePrcntAll" +
-                            
+
                             " FROM InvestmentRecComment IRC" +
                             " INNER JOIN InvestmentBcds ID ON IRC.InvestmentInitId = ID.InvestmentInitId" +
                             " INNER JOIN InvestmentRec IR ON IRC.InvestmentInitId = IR.InvestmentInitId" +
@@ -1485,7 +1488,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
-    
+
         [HttpGet]
         [Route("getLastFiveInvestmentForSociety/{donationId}/{societyId}/{marketCode}/{date}")]
         public IReadOnlyList<LastFiveInvestmentInfo> GetLastFiveInvestmentForSociety(int donationId, string societyId, string marketCode, string date)
@@ -1535,7 +1538,7 @@ namespace API.Controllers
                             // " ) AS  PrescribedSharePrcntAll" +
                             ",[dbo].[fnGetPrescribedSharePrcntSoc] ('" + societyId + "','" + marketCode + "',D.DonationTypeName,IR.FromDate) AS  PrescribedSharePrcnt" +
                             ",[dbo].[fnGetPrescribedSharePrcntAllSoc] ('" + societyId + "',D.DonationTypeName,IR.FromDate) AS  PrescribedSharePrcntAll" +
-                            
+
                             " FROM InvestmentRecComment IRC" +
                             " INNER JOIN InvestmentSociety ID ON IRC.InvestmentInitId = ID.InvestmentInitId" +
                             " INNER JOIN InvestmentRec IR ON IRC.InvestmentInitId = IR.InvestmentInitId" +

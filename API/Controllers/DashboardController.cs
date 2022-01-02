@@ -37,6 +37,7 @@ namespace API.Controllers
                 DateTime fd = new DateTime(DateTime.Now.Year, 1, 1);
                 DateTime td = DateTime.Today;
 
+
             string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode= '" + empCode +"' ";
             var empData = _dbContext.Employee.FromSqlRaw(empQry).ToList();
     

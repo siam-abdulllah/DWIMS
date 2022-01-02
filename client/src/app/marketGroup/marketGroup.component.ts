@@ -52,7 +52,7 @@ export class MarketGroupComponent implements OnInit {
   getEmployeeId() {
     this.empId = this.accountService.getEmployeeId();
     this.getMarket(this.empId);
-    this.marketGroupService.marketGroupFormData.employeeId = parseInt(this.empId);
+    //this.marketGroupService.marketGroupFormData.employeeId = parseInt(this.empId);
 
     
   }
@@ -96,7 +96,7 @@ export class MarketGroupComponent implements OnInit {
   }
 
   insertMarketGroup(form: NgForm) {
-    this.marketGroupService.insertMarketGroup().subscribe(
+    this.marketGroupService.insertMarketGroup(parseInt(this.empId)).subscribe(
       res => {
         debugger;
         this.marketGroupService.marketGroupFormData=res as IMarketGroupMst;
@@ -107,7 +107,7 @@ export class MarketGroupComponent implements OnInit {
   }
 
   updateMarketGroup(form: NgForm) {
-    this.marketGroupService.updateMarketGroup().subscribe(
+    this.marketGroupService.updateMarketGroup(parseInt(this.empId)).subscribe(
       res => {
         debugger;
         this.marketGroupService.marketGroupFormData=res as IMarketGroupMst;
