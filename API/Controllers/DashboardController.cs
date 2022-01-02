@@ -37,16 +37,11 @@ namespace API.Controllers
                 DateTime fd = new DateTime(DateTime.Now.Year, 1, 1);
                 DateTime td = DateTime.Today;
 
-            string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode=" + empCode;
+            string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode= '" + empCode +"' ";
             var empData = _dbContext.Employee.FromSqlRaw(empQry).ToList();
-            // string qry = "select CAST(ROW_NUMBER() OVER (ORDER BY c.SBU) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, SUM (e.ApprovedAmount) Expense, c.SBUName, c.SBU, c.Amount Budget,  c.DonationId, d.DonationTypeName " +
-            // " from SBUWiseBudget c, InvestmentInit b  inner join InvestmentDetailTracker e on e.InvestmentInitId = b.Id " +
-            // " left join Donation d on d.Id = b.DonationId "+
-            // " where b.SBU = c.SBU AND c.DonationId = e.DonationId AND e.PaidStatus = 'Paid' " +
-            // " AND  (CONVERT(date,c.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,c.ToDate)) "+
-            // " AND (CONVERT(date,e.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,e.ToDate)) ";
-
-            string qry = " select CAST(a.Id AS INT) as Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.ReferenceNo, d.DonationTypeName, a.DonationTo, b.ProposedAmount, b.FromDate, b.ToDate, dbo.fnGetInvestmentStatus(a.Id) InvStatus, e.EmployeeName,dbo.fnGetInvestmentApprovedBy(a.Id) ApprovedBy,e.MarketName, ISNULL(rcv.ReceiveStatus, 'Not Completed') ReceiveStatus, ISNULL(rcvBy.EmployeeName, 'N/A') ReceiveBy " +
+    
+            //string qry = " select CAST(a.Id AS INT) as Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.ReferenceNo, d.DonationTypeName, a.DonationTo, b.ProposedAmount, b.FromDate, b.ToDate, dbo.fnGetInvestmentStatus(a.Id) InvStatus, e.EmployeeName,dbo.fnGetInvestmentApprovedBy(a.Id) ApprovedBy,e.MarketName, ISNULL(rcv.ReceiveStatus, 'Not Completed') ReceiveStatus, ISNULL(rcvBy.EmployeeName, 'N/A') ReceiveBy " +
+                string qry = " select COUNT(a.Id) " +
                 " from InvestmentInit a " +
                 " left join InvestmentDetail b on a.Id = b.InvestmentInitId " +
                 " left join InvestmentRecv rcv on a.Id = rcv.InvestmentInitId " +
@@ -80,8 +75,8 @@ namespace API.Controllers
                             " )";
             }
 
-            var results = _dbContext.RptInvestmentSummary.FromSqlRaw(qry).ToList();
-            return results.Count().ToString();
+            var results = _dbContext.CountInt.FromSqlRaw(qry);
+            return results.ToString();
 
             }
             catch (System.Exception e)
@@ -144,10 +139,11 @@ namespace API.Controllers
                 DateTime fd = new DateTime(DateTime.Now.Year, 1, 1);
                 DateTime td = DateTime.Today;
 
-            string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode=" + empCode;
+            string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode= '" + empCode +"' ";
             var empData = _dbContext.Employee.FromSqlRaw(empQry).ToList();
    
-            string qry = " select CAST(a.Id AS INT) as Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.ReferenceNo, d.DonationTypeName, a.DonationTo, b.ProposedAmount, b.FromDate, b.ToDate, dbo.fnGetInvestmentStatus(a.Id) InvStatus, e.EmployeeName,dbo.fnGetInvestmentApprovedBy(a.Id) ApprovedBy,e.MarketName, ISNULL(rcv.ReceiveStatus, 'Not Completed') ReceiveStatus, ISNULL(rcvBy.EmployeeName, 'N/A') ReceiveBy " +
+            //string qry = " select CAST(a.Id AS INT) as Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.ReferenceNo, d.DonationTypeName, a.DonationTo, b.ProposedAmount, b.FromDate, b.ToDate, dbo.fnGetInvestmentStatus(a.Id) InvStatus, e.EmployeeName,dbo.fnGetInvestmentApprovedBy(a.Id) ApprovedBy,e.MarketName, ISNULL(rcv.ReceiveStatus, 'Not Completed') ReceiveStatus, ISNULL(rcvBy.EmployeeName, 'N/A') ReceiveBy " +
+              string qry = " select COUNT(a.Id) " +
                 " from InvestmentInit a " +
                 " left join InvestmentDetail b on a.Id = b.InvestmentInitId " +
                 " left join InvestmentRecv rcv on a.Id = rcv.InvestmentInitId " +
@@ -181,8 +177,9 @@ namespace API.Controllers
             }
         
 
-            var results = _dbContext.RptInvestmentSummary.FromSqlRaw(qry).ToList();
-            return results.Count().ToString();
+            //var results = _dbContext.Set.FromSqlRaw(qry).ToList();
+            var results = _dbContext.CountInt.FromSqlRaw(qry);
+            return results.ToString();
 
             }
             catch (System.Exception e)
