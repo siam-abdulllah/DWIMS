@@ -79,6 +79,8 @@ namespace Infrastructure.Data
         public DbSet<LastFiveInvestmentInfo> LastFiveInvestmentInfo { get; set; }
         [NotMapped]
         public DbSet<InvestmentTargetGroupSQL> InvestmentTargetGroupSQL { get; set; }
+        [NotMapped]
+        public DbSet<CountInt> CountInt { get; set; }
         public DbSet<InvestmentRecDepot> InvestmentRecDepot { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
