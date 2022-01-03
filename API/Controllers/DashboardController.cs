@@ -22,11 +22,12 @@ namespace API.Controllers
     {
         private readonly IMapper _mapper;
         private readonly StoreContext _dbContext;
-
-        public DashboardController(IMapper mapper, StoreContext dbContext)
+        private readonly IGenericRepository<ApprAuthConfig> _apprAuthConfigRepo;
+        public DashboardController(IMapper mapper, StoreContext dbContext, IGenericRepository<ApprAuthConfig> apprAuthConfigRepo)
         {
             _dbContext = dbContext;
             _mapper = mapper;
+            _apprAuthConfigRepo = apprAuthConfigRepo;
         }
 
         [HttpGet("totalApproved/{role}/{empCode}")]
@@ -86,22 +87,32 @@ namespace API.Controllers
             }
         }
 
+        public async Task<ApprovalAuthority> GetApprAuth(int empId)
+        {
+                var specAppr = new ApprAuthConfigSpecification(Convert.ToInt32(empId), "A");
+                var appPriority = await _apprAuthConfigRepo.GetEntityWithSpec(specAppr);
+
+                return  appPriority.ApprovalAuthority;
+        }
+
 
         [HttpGet("myPendingCount/{role}/{empCode}")]
-        public object GetMyPending(string role, string empCode)
+        public async Task<object> GetMyPendingAsync(string role, string empCode)
         {
             try
             {
+                var appPriority = await GetApprAuth(Convert.ToInt32(empCode));
+
                 string qry = "";
 
-                if (role == "MPO")
+                if (appPriority.Priority == 1)
                 {
                     qry = " select CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count from InvestmentInit " +
                         " where Id in (select InvestmentInitId from InvestmentTargetedGroup " +
                         " where MarketCode in (select MarketCode from Employee " +
                         " where Id = "+ empCode +" ) and CompletionStatus = 0) and Confirmation = 1 ";
                 }
-                else if (role == "TM")
+                else if (appPriority.Priority == 2)
                 {
                     qry = " select CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count from InvestmentInit " +
                         " where Id in (select InvestmentInitId from InvestmentRecComment " +
@@ -109,7 +120,14 @@ namespace API.Controllers
                         " where Id = "+empCode+" ) and CompletionStatus = 0 and [Priority] = 2) and Confirmation = 1 ";
                 }
 
-                else if (role == "RSM")
+                else if (appPriority.Priority > 2)
+                {
+                    qry = " select CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count from InvestmentInit  " +
+                        " where Id in (select InvestmentInitId from InvestmentRecComment " +
+                        " where RegionCode in (select RegionCode from Employee " +
+                        " where Id = "+empCode+"  ) and CompletionStatus = 0 and [Priority] = 3) ";
+                }
+                else if (role == "GPM")
                 {
                     qry = " select CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count from InvestmentInit  " +
                         " where Id in (select InvestmentInitId from InvestmentRecComment " +
@@ -117,12 +135,12 @@ namespace API.Controllers
                         " where Id = "+empCode+"  ) and CompletionStatus = 0 and [Priority] = 3) ";
                 }
                 else
-            {
-                return 0;
-            }
+                {
+                    return 0;
+                }
    
                 var result = _dbContext.CountInt.FromSqlRaw(qry).ToList();
-                return results[0].Count.ToString();
+                return result[0].Count.ToString();
             }
             catch (System.Exception e)
             {
