@@ -10,7 +10,10 @@ namespace Core.Entities
         public string CampaignName { get; set; }
         public string SBU { get; set; }
         public string BrandCode { get; set; }
-        
+        public int? EmployeeId { get; set; }
+        [ForeignKey("EmployeeId")]
+        public Employee Employee { get; set; }
+
         [ForeignKey("MstId")]
         public virtual IEnumerable<CampaignDtl> CampaignDtls { get; set; }
         

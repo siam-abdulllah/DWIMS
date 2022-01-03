@@ -35,6 +35,7 @@ namespace API.Controllers
                 CampaignName = campaignMstDto.CampaignName,
                 SBU = campaignMstDto.SBU,
                 BrandCode = campaignMstDto.BrandCode,
+                EmployeeId = campaignMstDto.EmployeeId,
                 SetOn = DateTimeOffset.Now
             };
             _campaignMstRepo.Add(campaignMsts);
@@ -45,6 +46,7 @@ namespace API.Controllers
                 Id = campaignMsts.Id,
                 CampaignNo = campaignMsts.CampaignNo,
                 CampaignName = campaignMsts.CampaignName,
+                EmployeeId = campaignMsts.EmployeeId,
                 SBU = campaignMsts.SBU,
                 BrandCode = campaignMsts.BrandCode
             };
@@ -114,15 +116,18 @@ namespace API.Controllers
         }
       
         [HttpPost("updateMst")]
-        public ActionResult<CampaignMstDto> UpdateCampaignMst(CampaignMstDto campaignMstDto)
+        public async Task<ActionResult<CampaignMstDto>> UpdateCampaignMst(CampaignMstDto campaignMstDto)
         {
+            var campaignMst = await _campaignMstRepo.GetByIdAsync(campaignMstDto.Id);
             var campaignMsts = new CampaignMst
             {
                 Id = campaignMstDto.Id,
                 CampaignNo = campaignMstDto.CampaignNo,
                 CampaignName = campaignMstDto.CampaignName,
+                EmployeeId = campaignMstDto.EmployeeId,
                 SBU = campaignMstDto.SBU,
                 BrandCode = campaignMstDto.BrandCode,
+                SetOn = campaignMst.SetOn,
                 ModifiedOn = DateTimeOffset.Now
 
             };
@@ -134,14 +139,16 @@ namespace API.Controllers
                 Id = campaignMstDto.Id,
                 CampaignNo = campaignMstDto.CampaignNo,
                 CampaignName = campaignMstDto.CampaignName,
+                EmployeeId = campaignMstDto.EmployeeId,
                 SBU = campaignMstDto.SBU,
                 BrandCode = campaignMstDto.BrandCode
             };
         }
      
         [HttpPost("updateDtl")]
-        public ActionResult<CampaignDtlDto> UpdateCampaignDtl(CampaignDtlDto campaignDtlDto)
+        public async Task<ActionResult<CampaignDtlDto>> UpdateCampaignDtl(CampaignDtlDto campaignDtlDto)
         {
+            var campaignDtl = await _campaignDtlRepo.GetByIdAsync(campaignDtlDto.Id);
             var campaignDtls = new CampaignDtl
             {
                 Id = campaignDtlDto.Id,
@@ -150,6 +157,7 @@ namespace API.Controllers
                 Budget = campaignDtlDto.Budget,
                 SubCampStartDate = campaignDtlDto.SubCampStartDate,
                 SubCampEndDate = campaignDtlDto.SubCampEndDate,
+                SetOn = campaignDtl.SetOn,
                 ModifiedOn = DateTimeOffset.Now
 
             };
@@ -168,13 +176,15 @@ namespace API.Controllers
         }
       
         [HttpPost("updateDtlProduct")]
-        public ActionResult<CampaignDtlProductDto> UpdateCampaignDtlProduct(CampaignDtlProductDto campaignDtlProductDto)
+        public async Task<ActionResult<CampaignDtlProductDto>> UpdateCampaignDtlProduct(CampaignDtlProductDto campaignDtlProductDto)
         {
+            var campaignDtlProduct = await _campaignDtlProductRepo.GetByIdAsync(campaignDtlProductDto.Id);
             var campaignDtlProducts = new CampaignDtlProduct
             {
                 Id = campaignDtlProductDto.Id,
                 DtlId = campaignDtlProductDto.DtlId,
                 ProductId = campaignDtlProductDto.ProductId,
+                SetOn = campaignDtlProduct.SetOn,
                 ModifiedOn = DateTimeOffset.Now
 
             };
@@ -221,7 +231,7 @@ namespace API.Controllers
         {
             try
             {
-                var spec = new CampaignDtlSpecification(campaignDtlParrams,mstId);
+                var spec = new CampaignDtlSpecification(mstId);
 
                 var countSpec = new CampaignDtlWithFiltersForCountSpecificication(mstId);
 
@@ -247,7 +257,7 @@ namespace API.Controllers
         {
             try
             {
-                var spec = new CampaignDtlProductSpecification(campaignDtlProductParrams, dtlId);
+                var spec = new CampaignDtlProductSpecification(dtlId);
 
                 var countSpec = new CampaignDtlProductWithFiltersForCountSpecificication(dtlId);
 

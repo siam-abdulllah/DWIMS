@@ -80,6 +80,7 @@ export class InvestmentRcvComponent implements OnInit {
     class: 'modal-lg',
     ignoreBackdropClick: true
   };
+  userRole: any;
 
   constructor(private accountService: AccountService, public investmentRcvService: InvestmentRcvService, private router: Router,
     private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe, private SpinnerService: NgxSpinnerService) { }
@@ -512,6 +513,7 @@ export class InvestmentRcvComponent implements OnInit {
 
   getEmployeeId() {
     this.empId = this.accountService.getEmployeeId();
+    this.userRole = this.accountService.getUserRole();
     this.investmentRcvService.investmentRcvCommentFormData.employeeId = parseInt(this.empId);
     this.getEmployeeSbu();
   }

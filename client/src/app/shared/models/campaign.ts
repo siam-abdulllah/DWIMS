@@ -7,6 +7,7 @@ export interface ICampaignMst {
     sbu: string;
     brandCode: string;
     setOn: Date;
+    employeeId: string; 
 }
  
 export class CampaignMst implements ICampaignMst {
@@ -15,6 +16,7 @@ export class CampaignMst implements ICampaignMst {
     campaignName: string;
     sbu: string=null;
     brandCode: string=null;
+    employeeId: string=null;
     setOn: Date;
 }
 export interface ICampaignDtl {

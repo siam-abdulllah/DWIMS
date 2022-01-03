@@ -12,7 +12,7 @@
                                 <div class="col-sm-1">
                                     <button class="btn btn-success btn-block" type="submit" [disabled]="investmentRcvForm.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
                                 </div>
-                                <div class="col-sm-1">
+                                <div class="col-sm-1" *ngIf="userRole == 'Administrator'">
                                     <button class="btn btn-info btn-block" type="button" (click)="getInvestmentApproved()"><i class="fa fa-search" ></i>Search</button>
                                 </div>
                                 <div class="col-sm-1">

@@ -64,6 +64,27 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>GPM</label>
+                                        <span style="color:red;">*</span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <ng-select [virtualScroll]="true" [items]="employees" [searchFn]="customSearchFn" bindLabel="employeeName" bindValue="id" placeholder="Select" name="employeeId" #employeeId="ngModel" [(ngModel)]="masterService.campaignMstFormData.employeeId" required
+                                            [class.invalid]="employeeId.invalid && employeeId.touched">
+                                            <ng-template ng-label-tmp let-item="item">
+                                                <span [ngOptionHighlight]="search">{{ item.employeeSAPCode }} - {{ item.employeeName }}</span>
+                                            </ng-template>
+
+                                            <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                                                <span [ngOptionHighlight]="search">{{ item.employeeSAPCode }} - {{ item.employeeName }}</span>
+                                            </ng-template>
+                                        </ng-select>
+                                    </div>
+                                    <div class="col-md-3"></div>
+                                </div>
+                            </div>
 
                             <fieldset>
                                 <div class="form-group">
@@ -283,10 +304,20 @@
                                                         <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-5">
-                                                        <select class="form-control " id="productId" name="productId" #productId="ngModel" [(ngModel)]="masterService.campaignDtlProductFormData.productId" [class.invalid]="productId.invalid && productId.touched">
+                                                        <!-- <select class="form-control " id="productId" name="productId" #productId="ngModel" [(ngModel)]="masterService.campaignDtlProductFormData.productId" [class.invalid]="productId.invalid && productId.touched">
                                                         <option  [ngValue]="null">Select Product</option>
                                                         <option *ngFor="let product of products" [value]="product.id">{{product.productName}}</option>
-                                                    </select>
+                                                    </select> -->
+                                                        <ng-select [virtualScroll]="true" [items]="products" [searchFn]="customSearchFnProd" bindLabel="productName" bindValue="id" placeholder="Select" name="productId" #productId="ngModel" [(ngModel)]="masterService.campaignDtlProductFormData.productId" required
+                                                            [class.invalid]="productId.invalid && productId.touched">
+                                                            <ng-template ng-label-tmp let-item="item">
+                                                                <span [ngOptionHighlight]="search">{{ item.productCode }} - {{ item.productName }}</span>
+                                                            </ng-template>
+
+                                                            <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                                                                <span [ngOptionHighlight]="search">{{ item.productCode }} - {{ item.productName }}</span>
+                                                            </ng-template>
+                                                        </ng-select>
                                                     </div>
                                                     <div class="col-md-3">
                                                         <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="addProduct()"><i class="fa fa-check"></i> Select</button>

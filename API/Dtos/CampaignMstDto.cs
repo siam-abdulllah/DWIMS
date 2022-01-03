@@ -9,6 +9,7 @@ namespace API.Dtos
         public string CampaignName { get; set; }
         public string SBU { get; set; }
         public string BrandCode { get; set; }
+        public int? EmployeeId { get; set; }
 
     }
 }

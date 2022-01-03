@@ -84,7 +84,10 @@ export class MasterService {
     this.genParams = genParams;
   }
 
-
+  getEmployeesCampaign(){    
+    return this.http.get(this.baseUrl + 'employee/getEmployeesCampaign');
+   
+  }
   getSBU(){    
     return this.http.get(this.baseUrl + 'employee/getSBU');
   }
@@ -94,8 +97,11 @@ export class MasterService {
   getBrand(sbu:string){    
     return this.http.get(this.baseUrl + 'product/getBrand/'+sbu);
   }
-  getProduct(brandCode:string,sbu:string){    
-    return this.http.get(this.baseUrl + 'product/getProduct/'+brandCode+'/'+sbu);
+  // getProduct(brandCode:string,sbu:string){    
+  //   return this.http.get(this.baseUrl + 'product/getProduct/'+brandCode+'/'+sbu);
+  // }
+  getProduct(){    
+    return this.http.get(this.baseUrl + 'product/getProduct');
   }
   getSubCampaignForCamp(){    
     return this.http.get(this.baseUrl + 'subCampaign/subCampaignsForCamp');

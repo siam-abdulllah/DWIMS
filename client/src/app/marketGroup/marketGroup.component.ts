@@ -125,11 +125,11 @@ addMarket() {
   //var f = document.getElementById('marketCode');
   if(this.marketGroupService.marketGroupFormData.id===0 || this.marketGroupService.marketGroupFormData.id===undefined)
   {
-    alert("Please Insert Group first!")
+    this.toastr.warning("Please Insert Market Group first!")
     return false;
   }if(this.marketGroupService.marketGroupFormData.marketCode=="" || this.marketGroupService.marketGroupFormData.marketCode===undefined || this.marketGroupService.marketGroupFormData.marketCode===null)
   {
-    alert("Please  Select Market first!")
+    this.toastr.warning("Please  Select Market first!")
     return false;
   }
   var e = (document.getElementById("marketCode")) as HTMLSelectElement;
@@ -141,21 +141,27 @@ addMarket() {
     for (let i = 0; i < this.marketGroupDtls.length; i++) {
       if(this.marketGroupDtls[i].marketCode===selectedMarketCode)
       {
-      alert("market already exist in this Group!");
+        this.toastr.warning("Market already exist in this Group!");
       return false;
       }
     }
   }
+  let isMarketAvailable=false;
     for (let i = 0; i < this.markets.length; i++) {
     if(this.markets[i].marketCode===selectedMarketCode)
     {
       this.sbu=this.markets[i].sbu;
       this.sbuName=this.markets[i].sbuName;
       var selectedMarketName = this.markets[i].marketName;
+      isMarketAvailable=true;
       break;
     }
     }
-  
+  if(!isMarketAvailable)
+  {
+    this.toastr.warning("Market is not found!");
+    return false;
+  }
   this.marketGroupService.insertMarketGroupDtl(this.marketGroupService.marketGroupFormData.id,selectedMarketCode,selectedMarketName,this.sbu,this.sbuName).subscribe(response => {
    debugger;
    this.getMarketGroups();

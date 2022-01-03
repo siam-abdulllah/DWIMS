@@ -40,6 +40,19 @@ namespace API.Controllers
                 throw ex;
             }
         }
+        [HttpGet("getEmployeesCampaign")]
+        public async Task<IReadOnlyList<Employee>> GetgetEmployeesCampaign()
+        {
+            try
+            {
+                var employee = await _employeeRepo.ListAllAsync();
+                return employee;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
   
         [HttpGet("marketForGroup/{empId}")]
         public async Task<IReadOnlyList<MarketDto>> GetMarketForGroup(int empId)
@@ -78,6 +91,7 @@ namespace API.Controllers
                                  .Select(g => g.First())
                                  .ToList();
                 var sbu = (from r in emp
+                           where r.SBU !=null
                            orderby r.SBUName
                            select new SBUDto
                            {

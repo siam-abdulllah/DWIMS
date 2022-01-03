@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from "ngx-spinner";
+import { IEmployee } from 'src/app/shared/models/employee';
 @Component({
   selector: 'app-campaign',
   templateUrl: './campaign.component.html',
@@ -28,6 +29,7 @@ export class CampaignComponent implements OnInit {
   productSearchModalRef: BsModalRef;
   genParams: GenericParams;
   campaignMsts: ICampaignMst[];
+  employees: IEmployee[];
   searchText = '';
   configs: any;
   campaignDtls: ICampaignDtl[];
@@ -54,10 +56,30 @@ export class CampaignComponent implements OnInit {
     this.getSBU();
     //this.getBrand();
     this.getSubCampaign();
+    this.getEmployeesCampaign();
     //this.getProduct();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-blue' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
   }
+  getEmployeesCampaign(){
+    this.masterService.getEmployeesCampaign().subscribe(response => {
+      debugger;
+      this.employees = response as IEmployee[];
+    //   this.totalCount = response.count;
+     }, error => {
+        console.log(error);
+     });
+  }
+  customSearchFn(term: string, item: any) {
+    term = term.toLocaleLowerCase();
+    return item.employeeSAPCode.toLocaleLowerCase().indexOf(term) > -1 || 
+    item.employeeName.toLocaleLowerCase().indexOf(term) > -1;
+ }
+  customSearchFnProd(term: string, item: any) {
+    term = term.toLocaleLowerCase();
+    return item.productCode.toLocaleLowerCase().indexOf(term) > -1 || 
+    item.productName.toLocaleLowerCase().indexOf(term) > -1;
+ }
   getSBU() {
     this.masterService.getSBU().subscribe(response => {
       this.SBUs = response as ISBU[];
@@ -74,7 +96,8 @@ export class CampaignComponent implements OnInit {
   }
   getProduct() {
     this.SpinnerService.show();
-    this.masterService.getProduct(this.masterService.campaignMstFormData.brandCode, this.masterService.campaignMstFormData.sbu).subscribe(response => {
+    //this.masterService.getProduct(this.masterService.campaignMstFormData.brandCode, this.masterService.campaignMstFormData.sbu).subscribe(response => {
+    this.masterService.getProduct().subscribe(response => {
       debugger;
       this.products = response as IProduct[];
     }, error => {
@@ -102,6 +125,7 @@ export class CampaignComponent implements OnInit {
         totalItems: this.totalCount,
       };
 
+      debugger;
       if (this.campaignMsts.length > 0) {
         if (params.pageIndex == 1) {
           this.openCampaignMstSearchModal(this.campaignMstSearchModal);
@@ -386,7 +410,7 @@ export class CampaignComponent implements OnInit {
     this.campaignDtlProducts = [];
     this.configs = {
       currentPage: 1,
-      itemsPerPage: 10,
+      itemsPerPage: 20,
       totalItems: 50,
     };
   }
@@ -399,7 +423,7 @@ export class CampaignComponent implements OnInit {
     this.campaignDtlProducts = [];
     this.configs = {
       currentPage: 1,
-      itemsPerPage: 10,
+      itemsPerPage: 20,
       totalItems: 50,
     };
   }
