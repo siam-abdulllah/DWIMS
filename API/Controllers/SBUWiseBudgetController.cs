@@ -66,7 +66,7 @@ namespace API.Controllers
                     {
                         Id= alreadyExistYearlyBudget.Id,
                         Year = alreadyExistYearlyBudget.Year,
-                        Amount = Convert.ToInt32(amount),
+                        Amount = Convert.ToInt64(amount),
                         FromDate = alreadyExistYearlyBudget.FromDate,
                         ToDate = alreadyExistYearlyBudget.ToDate,
                         SetOn = alreadyExistYearlyBudget.SetOn,
@@ -80,7 +80,7 @@ namespace API.Controllers
                     var yearlyBUdget = new YearlyBudget
                     {
                         Year = year,
-                        Amount = Convert.ToInt32(amount),
+                        Amount = Convert.ToInt64(amount),
                         FromDate = new DateTime(Convert.ToInt16(year), 1, 1),
                         ToDate = new DateTime(Convert.ToInt16(year), 12, 31),
                         SetOn = DateTimeOffset.Now
@@ -131,10 +131,10 @@ namespace API.Controllers
                     Remarks = sbuBdgt.Remarks,
                 };
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
 
-                throw;
+                throw ex;
             }
         }
 

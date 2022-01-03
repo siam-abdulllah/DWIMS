@@ -12,7 +12,7 @@ namespace Core.Specifications
        )
         {
             AddInclude(x => x.Donation);
-            AddOrderBy(x => x.FromDate);
+            AddOrderByDescending(x => x.FromDate);
             ApplyPaging(sbuParrams.PageSize * (sbuParrams.PageIndex - 1), sbuParrams.PageSize);
         }
 
