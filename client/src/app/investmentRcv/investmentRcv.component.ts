@@ -53,6 +53,7 @@ export class InvestmentRcvComponent implements OnInit {
   isInvOther: boolean = false;
   isBudgetVisible: boolean = false;
   isDonationValid: boolean = false;
+  configs: any;
   numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
   bcds: IBcdsInfo[];
   society: ISocietyInfo[];
@@ -179,7 +180,7 @@ export class InvestmentRcvComponent implements OnInit {
       this.isValid = false;
     }
     //this.getBudget();
-    this.investmentRcvSearchModalRef.hide()
+    this.closeSearchModalInvestRcv()
   }
   getLastFiveInvestment(marketCode: string, toDayDate: string) {
     if (this.investmentRcvService.investmentRcvFormData.donationTo == "Doctor") {
@@ -242,12 +243,22 @@ export class InvestmentRcvComponent implements OnInit {
     });
   }
   getInvestmentInit() {
+    const params = this.investmentRcvService.getGenParams();
     this.SpinnerService.show();
     this.investmentRcvService.getInvestmentInit(parseInt(this.empId), this.sbu).subscribe(response => {
       this.SpinnerService.hide();
       this.investmentInits = response.data;
+      this.totalCount = response.count;
+      this.configs = {
+        currentPage: params.pageIndex,
+        itemsPerPage: params.pageSize,
+        totalItems: this.totalCount,
+      };
+    
       if (this.investmentInits.length > 0) {
-        this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
+        if (params.pageIndex == 1) {
+          this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
+        }
       }
       else {
         this.toastr.warning('No Data Found');
@@ -774,6 +785,11 @@ export class InvestmentRcvComponent implements OnInit {
     this.lastFiveInvestmentDetail = [];
     this.isValid = false;
     this.isBudgetVisible = false;
+    this.configs = {
+      currentPage: 1,
+      itemsPerPage: 20,
+      totalItems: 50,
+    };
   }
   resetForm() {
     this.investmentRcvService.investmentRcvFormData = new InvestmentInit();
@@ -784,7 +800,29 @@ export class InvestmentRcvComponent implements OnInit {
     this.lastFiveInvestmentDetail = [];
     this.isValid = false;
     this.isBudgetVisible = false;
+    this.configs = {
+      currentPage: 1,
+      itemsPerPage: 20,
+      totalItems: 50,
+    };
   }
+
+  onPageChanged(event: any) {
+    const params = this.investmentRcvService.getGenParams();
+    if (params.pageIndex !== event) {
+      params.pageIndex = event;
+      this.investmentRcvService.setGenParams(params);
+      this.getInvestmentInit();
+    }
+  }
+  
+  closeSearchModalInvestRcv()
+  {
+    const params = this.investmentRcvService.getGenParams();
+    params.pageIndex = 1;
+    this.investmentRcvSearchModalRef.hide()
+  }
+
 
   removeInvestmentTargetedProd(selectedAprord: IInvestmentTargetedProd) {
     if (this.investmentTargetedProds.find(x => x.productId == selectedAprord.productId)) {

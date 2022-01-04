@@ -872,7 +872,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let a of investmentInits">
+                            <tr *ngFor="let a of investmentInits | paginate: configs | filter: searchText">
                                 <td>
                                     <button class="btn btn-sm btn-embossed btn-success" (click)="selectInvestmentInit(a)">Select</button>
 
@@ -886,6 +886,7 @@
                             </tr>
                         </tbody>
                     </table>
+                    <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls>
                 </div>
             </div>
         </div>
@@ -894,7 +895,7 @@
 <ng-template #investmentRcvSearchModal>
     <div class="modal-header" style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc));color: black;">
         <h4 class="modal-title pull-left">Investment Receive</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="investmentRcvSearchModalRef.hide()">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="closeSearchModalInvestRcv()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>

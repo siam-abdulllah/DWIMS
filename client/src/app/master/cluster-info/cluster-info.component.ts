@@ -155,6 +155,14 @@ export class ClusterInfoComponent implements OnInit {
     });
   }
 
+  closeSearchModalClusterMst()
+  {
+    const params = this.masterService.getGenParams();
+    params.pageIndex = 1;
+    this.clusterMstSearchodalRef.hide()
+  }
+
+
   onPageChanged(event: any){
     const params = this.masterService.getGenParams();
     if (params.pageIndex !== event)
@@ -194,7 +202,7 @@ export class ClusterInfoComponent implements OnInit {
   selectClusterMst(selectedRecord: IClusterMstInfo) {
     this.masterService.clusterMstFormData = Object.assign({}, selectedRecord);
     this.getClusterDtlList();
-    this.clusterMstSearchodalRef.hide()
+    this.closeSearchModalClusterMst();
   }
   populateDtlsForm(selectedRecord: IClusterDtlInfo) {
     this.masterService.clusterDtlFormData = Object.assign({}, selectedRecord);

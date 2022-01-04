@@ -40,6 +40,14 @@ export class InvestmentRcvService {
   
   constructor(private http: HttpClient, private router: Router) { }
 
+  getGenParams(){
+    return this.genParams;
+  }
+   // tslint:disable-next-line: typedef
+   setGenParams(genParams: GenericParams) {
+    this.genParams = genParams;
+  }
+
   getDonations() {
     return this.http.get(this.baseUrl + 'donation/donationsForInvestment');
   }

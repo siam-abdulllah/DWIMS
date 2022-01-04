@@ -141,6 +141,14 @@ export class CampaignComponent implements OnInit {
   }
 
 
+  closeSearchModalCampaignMst()
+  {
+    const params = this.masterService.getGenParams();
+    params.pageIndex = 1;
+    this.campaignMstSearchodalRef.hide()
+  }
+
+
   openCampaignMstSearchModal(template: TemplateRef<any>) {
     this.campaignMstSearchodalRef = this.modalService.show(template, this.config);
   }
@@ -398,7 +406,7 @@ export class CampaignComponent implements OnInit {
     this.getBrand();
     this.getProduct();
     this.getCampaignDtl();
-    this.campaignMstSearchodalRef.hide()
+    this.closeSearchModalCampaignMst();
   }
   resetPage(form: NgForm) {
     form.form.reset();
