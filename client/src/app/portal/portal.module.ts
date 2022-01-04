@@ -17,6 +17,7 @@ import { RegApprovalComponent } from '../regApproval/regApproval.component';
 import { InvestmentInitComponent } from '../investmentInit/investmentInit.component';
 import { InvestmentRecComponent } from '../investmentRec/investmentRec.component';
 import { InvestmentAprComponent } from '../investmentApr/investmentApr.component';
+import { InvestmentAprNoSbuComponent } from './../investmentAprNoSbu/investmentAprNoSbu.component';
 import { ReportInvestmentComponent } from './../report-investment/report-investment.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -69,6 +70,7 @@ import { ChangePasswordComponent } from '../changePassword/changePassword.compon
     InvestmentInitComponent,
     InvestmentRecComponent,
     InvestmentAprComponent,
+    InvestmentAprNoSbuComponent,
     InvestmentRcvComponent,
     RegApprovalComponent,
     ReportInvestmentComponent,

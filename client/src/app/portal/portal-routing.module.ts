@@ -1,3 +1,4 @@
+
 import { ParamInvestSummaryComponent } from './../paramInvestmentSummary/paramInvestmentSummary.component';
 import { PortalComponent } from './portal.component';
 import { MarketGroupComponent } from '../marketGroup/marketGroup.component';
@@ -11,6 +12,7 @@ import { RegApprovalComponent } from '../regApproval/regApproval.component';
 import { InvestmentInitComponent } from '../investmentInit/investmentInit.component';
 import { InvestmentRecComponent } from '../investmentRec/investmentRec.component';
 import { InvestmentAprComponent } from '../investmentApr/investmentApr.component';
+import { InvestmentAprNoSbuComponent } from './../investmentAprNoSbu/investmentAprNoSbu.component';
 import { InvestmentRcvComponent } from '../investmentRcv/investmentRcv.component';
 import { SbuWiseBudgetComponent } from '../sbu-wise-budget/sbu-wise-budget.component';
 import { ReportInvestmentComponent } from './../report-investment/report-investment.component';
@@ -40,6 +42,7 @@ const portalRoutes: Routes = [
         {path: 'investmentInit', component: InvestmentInitComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'investmentRec', component: InvestmentRecComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'investmentApr', component: InvestmentAprComponent, canActivate: [SuperAdminRoleGuard]},
+        {path: 'investmentAprNoSbu', component: InvestmentAprNoSbuComponent},
         {path: 'investmentRcv', component: InvestmentRcvComponent},
         {path: 'marketGroup', component: MarketGroupComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'regApproval', component: RegApprovalComponent, canActivate: [SuperAdminRoleGuard]},
