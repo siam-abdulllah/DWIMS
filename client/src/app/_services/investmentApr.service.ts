@@ -166,9 +166,27 @@ export class InvestmentAprService {
     return this.http.post(this.baseUrl+ 'investmentApr/updateAprCom',  this.investmentAprCommentFormData);
   }
   insertInvestmentDetail(empId:number,sbu:string) {
+    if(this.investmentAprFormData.donationTo=='Campaign')
+    {
+      if(this.investmentAprCommentFormData.recStatus=='Approved')
+      {
+        return this.http.post(this.baseUrl+ 'investmentApr/insertAprForCampaign/'+empId+'/'+this.investmentAprCommentFormData.recStatus+'/'+sbu+'/'+this.investmentAprFormData.donationId, this.investmentDetailFormData);
+      }
+      // else{
+      //   return this.http.post(this.baseUrl+ 'investmentApr/InsertRec/'+empId+'/'+this.investmentAprCommentFormData.recStatus+'/'+sbu+'/'+this.investmentAprFormData.donationId, this.investmentDetailFormData);
+      // }
+    }
+    else{
+      if(this.investmentAprCommentFormData.recStatus=='Approved')
+      {
+        return this.http.post(this.baseUrl+ 'investmentApr/insertApr/'+empId+'/'+this.investmentAprCommentFormData.recStatus+'/'+sbu+'/'+this.investmentAprFormData.donationId, this.investmentDetailFormData);
+      }
+      else{
+        return this.http.post(this.baseUrl+ 'investmentApr/insertRec/'+empId+'/'+this.investmentAprCommentFormData.recStatus+'/'+sbu+'/'+this.investmentAprFormData.donationId, this.investmentDetailFormData);
+      }
+    }
     
-    return this.http.post(this.baseUrl+ 'investmentApr/insertApr/'+empId+'/'+this.investmentAprCommentFormData.recStatus+'/'+sbu+'/'+this.investmentAprFormData.donationId, this.investmentDetailFormData);
-  
+   
   }
   insertInvestmentRecDepot() {
     

@@ -478,5 +478,37 @@ namespace API.Controllers
             }
         }
 
+
+        [HttpPost("ChangePasswordAny")]
+        public async Task<ActionResult<bool>> ChangePasswordAny(string employeeSAPCode)
+        {
+            try
+            {
+                var user = await _userManager.FindByNameAsync(employeeSAPCode);
+
+                // var userObj = await _userManager.ChangePasswordAsync(user, changePasswordDto.CurrentPassword, changePasswordDto.NewPassword);
+                var userRemove = await _userManager.RemovePasswordAsync(user);
+                if (userRemove.Succeeded) { 
+                    var userObj = await _userManager.AddPasswordAsync(user, "@Aa123");
+                    if (userObj.Succeeded)
+                    {
+                        var userLockedOutDisable= await _userManager.SetLockoutEnabledAsync( user, false);
+                        if (userLockedOutDisable.Succeeded)
+                        {
+                            return true;
+                        }
+                    }
+                    
+                }
+                return false;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
     }
 }

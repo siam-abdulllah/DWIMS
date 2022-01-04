@@ -101,9 +101,9 @@ namespace API.Controllers
                 throw e;
             }
         }
-      
+
         [HttpGet("investmentApproved/{empId}/{sbu}/{userRole}")]
-        public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetinvestmentApproved(int empId, string sbu,string userRole,
+        public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetinvestmentApproved(int empId, string sbu, string userRole,
         [FromQuery] InvestmentInitSpecParams investmentInitParrams)
         {
             try
@@ -115,21 +115,21 @@ namespace API.Controllers
                     var investmentRecComments = await _investmentRecCommentRepo.ListAllAsync();
                     //var investmentAprComments = await _investmentAprCommentRepo.ListAllAsync();
                     var investmentInitFormRec = (from i in investmentInits
-                                                join rc in investmentRecComments on i.Id equals rc.InvestmentInitId
-                                                where rc.RecStatus == "Approved"
-                                                orderby i.ReferenceNo
-                                                select new InvestmentInitDto
-                                                {
-                                                    Id = i.Id,
-                                                    ReferenceNo = i.ReferenceNo,
-                                                    ProposeFor = i.ProposeFor,
-                                                    DonationId = i.DonationId,
-                                                    MarketCode = i.MarketCode,
-                                                    MarketName = i.MarketName,
-                                                    DonationTo = i.DonationTo,
-                                                    EmployeeId = i.EmployeeId,
-                                                    SetOn = i.SetOn
-                                                }
+                                                 join rc in investmentRecComments on i.Id equals rc.InvestmentInitId
+                                                 where rc.RecStatus == "Approved"
+                                                 orderby i.ReferenceNo
+                                                 select new InvestmentInitDto
+                                                 {
+                                                     Id = i.Id,
+                                                     ReferenceNo = i.ReferenceNo,
+                                                     ProposeFor = i.ProposeFor,
+                                                     DonationId = i.DonationId,
+                                                     MarketCode = i.MarketCode,
+                                                     MarketName = i.MarketName,
+                                                     DonationTo = i.DonationTo,
+                                                     EmployeeId = i.EmployeeId,
+                                                     SetOn = i.SetOn
+                                                 }
                                                     ).Distinct().OrderByDescending(x => x.SetOn).ToList();
                     //var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
                     //var totalItems = await _investmentInitRepo.CountAsync(countSpec);
@@ -159,14 +159,12 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost("InsertApr/{empID}/{aprStatus}/{sbu}/{donationId}")]
-        public async Task<ActionResult<InvestmentAprDto>> InsertInvestmentApr(int empId, string aprStatus, string sbu, int donationId, InvestmentAprDto investmentAprDto)
+        [HttpPost("insertAprForCampaign/{empID}/{aprStatus}/{sbu}/{donationId}")]
+        public async Task<ActionResult<InvestmentAprDto>> InsertInvestmentAprForCampaign(int empId, string aprStatus, string sbu, int donationId, InvestmentAprDto investmentAprDto)
         {
             try
             {
-                if (aprStatus == "Approved")
-                {
-                    List<SqlParameter> parms = new List<SqlParameter>
+                List<SqlParameter> parms = new List<SqlParameter>
                     {
                         new SqlParameter("@SBU", sbu),
                         new SqlParameter("@DID", donationId),
@@ -176,96 +174,70 @@ namespace API.Controllers
                         new SqlParameter("@ASTATUS", aprStatus),
                         new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
                     };
-                    // var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentCeilingCheck @SBU,@DID,@EID,@PRAMOUNT,@ASTATUS", parms.ToArray()).ToList();
-                    // var result = _dbContext.Database.ExecuteSqlRawAsync("EXECUTE SP_InvestmentCeilingCheck @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
-                    var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheck @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
-                    //var param=parms[6].Value;
-                    if (parms[6].Value.ToString() != "True")
-                    //if (result.Result == 0)
+                var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheckForCampaign @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
+                if (parms[6].Value.ToString() != "True")
+                {
+                    return BadRequest(new ApiResponse(400, parms[6].Value.ToString()));
+                }
+                var alreadyExistSpec = new InvestmentRecSpecification(investmentAprDto.InvestmentInitId, empId);
+                var alreadyExistInvestmentAprList = await _investmentRecRepo.ListAsync(alreadyExistSpec);
+                if (alreadyExistInvestmentAprList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentAprList)
                     {
-                        return BadRequest(new ApiResponse(400, parms[6].Value.ToString()));
+                        _investmentRecRepo.Delete(v);
+                        _investmentRecRepo.Savechange();
                     }
+                }
+                var specAppr = new ApprAuthConfigSpecification(empId, "A");
+                var apprAuthConfigAppr = await _apprAuthConfigRepo.GetEntityWithSpec(specAppr);
+                var invRecAppr = new InvestmentRec
+                {
+                    //ReferenceNo = investmentInitDto.ReferenceNo,
+                    InvestmentInitId = investmentAprDto.InvestmentInitId,
+                    ProposedAmount = investmentAprDto.ProposedAmount,
+                    Purpose = investmentAprDto.Purpose,
+                    CommitmentAllSBU = investmentAprDto.CommitmentAllSBU,
+                    CommitmentOwnSBU = investmentAprDto.CommitmentOwnSBU,
+                    FromDate = investmentAprDto.FromDate,
+                    ToDate = investmentAprDto.ToDate,
+                    TotalMonth = investmentAprDto.TotalMonth,
+                    PaymentMethod = investmentAprDto.PaymentMethod,
+                    ChequeTitle = investmentAprDto.ChequeTitle,
+                    EmployeeId = empId,
+                    Priority = apprAuthConfigAppr.ApprovalAuthority.Priority,
+                    //Priority = 3,
+                    CompletionStatus = true,
+                    SetOn = DateTimeOffset.Now
+                };
+                _investmentRecRepo.Add(invRecAppr);
+                _investmentRecRepo.Savechange();
 
-
-                    var alreadyExistSpec = new InvestmentRecSpecification(investmentAprDto.InvestmentInitId, empId);
-                    var alreadyExistInvestmentAprList = await _investmentRecRepo.ListAsync(alreadyExistSpec);
-                    if (alreadyExistInvestmentAprList.Count > 0)
+                var alreadyDetailTrackerExistSpec = new InvestmentDetailTrackerSpecification(investmentAprDto.InvestmentInitId);
+                var alreadyDetailTrackerExistInvestmentAprList = await _investmentDetailTrackerRepo.ListAsync(alreadyDetailTrackerExistSpec);
+                if (alreadyDetailTrackerExistInvestmentAprList.Count > 0)
+                {
+                    foreach (var v in alreadyDetailTrackerExistInvestmentAprList)
                     {
-                        foreach (var v in alreadyExistInvestmentAprList)
-                        {
-                            _investmentRecRepo.Delete(v);
-                            _investmentRecRepo.Savechange();
-                        }
-                    }
-                    var specAppr = new ApprAuthConfigSpecification(empId, "A");
-                    var apprAuthConfigAppr = await _apprAuthConfigRepo.GetEntityWithSpec(specAppr);
-                    var invRecAppr = new InvestmentRec
-                    {
-                        //ReferenceNo = investmentInitDto.ReferenceNo,
-                        InvestmentInitId = investmentAprDto.InvestmentInitId,
-                        ProposedAmount = investmentAprDto.ProposedAmount,
-                        Purpose = investmentAprDto.Purpose,
-                        CommitmentAllSBU = investmentAprDto.CommitmentAllSBU,
-                        CommitmentOwnSBU = investmentAprDto.CommitmentOwnSBU,
-                        FromDate = investmentAprDto.FromDate,
-                        ToDate = investmentAprDto.ToDate,
-                        TotalMonth = investmentAprDto.TotalMonth,
-                        PaymentMethod = investmentAprDto.PaymentMethod,
-                        ChequeTitle = investmentAprDto.ChequeTitle,
-                        EmployeeId = empId,
-                        Priority = apprAuthConfigAppr.ApprovalAuthority.Priority,
-                        //Priority = 3,
-                        CompletionStatus = true,
-                        SetOn = DateTimeOffset.Now
-                    };
-                    _investmentRecRepo.Add(invRecAppr);
-                    _investmentRecRepo.Savechange();
-
-                    var alreadyDetailTrackerExistSpec = new InvestmentDetailTrackerSpecification(investmentAprDto.InvestmentInitId);
-                    var alreadyDetailTrackerExistInvestmentAprList = await _investmentDetailTrackerRepo.ListAsync(alreadyDetailTrackerExistSpec);
-                    if (alreadyDetailTrackerExistInvestmentAprList.Count > 0)
-                    {
-                        foreach (var v in alreadyDetailTrackerExistInvestmentAprList)
-                        {
-                            _investmentDetailTrackerRepo.Delete(v);
-                            _investmentDetailTrackerRepo.Savechange();
-                        }
-                    }
-
-                    var donation = await _donationRepo.GetByIdAsync(donationId);
-                    if (donation.DonationTypeName == "Honorarium")
-                    {
-                        DateTimeOffset calcDate = investmentAprDto.FromDate;
-                        for (int i = 0; i < investmentAprDto.TotalMonth; i++)
-                        {
-                            calcDate = calcDate.AddMonths(i);
-                            var invDT = new InvestmentDetailTracker
-                            {
-                                InvestmentInitId = investmentAprDto.InvestmentInitId,
-                                DonationId = donationId,
-                                ApprovedAmount = investmentAprDto.ProposedAmount,
-                                Month = calcDate.Month,
-                                Year = calcDate.Year,
-                                FromDate = investmentAprDto.FromDate,
-                                ToDate = investmentAprDto.ToDate,
-                                PaidStatus = "Paid",
-                                EmployeeId = empId,
-                                SetOn = DateTimeOffset.Now
-                            };
-                            _investmentDetailTrackerRepo.Add(invDT);
-
-                        }
+                        _investmentDetailTrackerRepo.Delete(v);
                         _investmentDetailTrackerRepo.Savechange();
                     }
-                    else
+                }
+
+                var donation = await _donationRepo.GetByIdAsync(donationId);
+                if (donation.DonationTypeName == "Honorarium")
+                {
+                    DateTimeOffset calcDate = investmentAprDto.FromDate;
+                    for (int i = 0; i < investmentAprDto.TotalMonth; i++)
                     {
+                        calcDate = calcDate.AddMonths(i);
                         var invDT = new InvestmentDetailTracker
                         {
                             InvestmentInitId = investmentAprDto.InvestmentInitId,
                             DonationId = donationId,
                             ApprovedAmount = investmentAprDto.ProposedAmount,
-                            Month = 0,
-                            Year = 0,
+                            Month = calcDate.Month,
+                            Year = calcDate.Year,
                             FromDate = investmentAprDto.FromDate,
                             ToDate = investmentAprDto.ToDate,
                             PaidStatus = "Paid",
@@ -273,25 +245,190 @@ namespace API.Controllers
                             SetOn = DateTimeOffset.Now
                         };
                         _investmentDetailTrackerRepo.Add(invDT);
-                        _investmentDetailTrackerRepo.Savechange();
-                    }
 
-                    return new InvestmentAprDto
+                    }
+                    _investmentDetailTrackerRepo.Savechange();
+                }
+                else
+                {
+                    var invDT = new InvestmentDetailTracker
                     {
-                        Id = invRecAppr.Id,
                         InvestmentInitId = investmentAprDto.InvestmentInitId,
-                        ProposedAmount = investmentAprDto.ProposedAmount,
-                        Purpose = investmentAprDto.Purpose,
-                        CommitmentAllSBU = investmentAprDto.CommitmentAllSBU,
-                        CommitmentOwnSBU = investmentAprDto.CommitmentOwnSBU,
+                        DonationId = donationId,
+                        ApprovedAmount = investmentAprDto.ProposedAmount,
+                        Month = 0,
+                        Year = 0,
                         FromDate = investmentAprDto.FromDate,
                         ToDate = investmentAprDto.ToDate,
-                        TotalMonth = investmentAprDto.TotalMonth,
-                        PaymentMethod = investmentAprDto.PaymentMethod,
-                        ChequeTitle = investmentAprDto.ChequeTitle,
-                        EmployeeId = investmentAprDto.EmployeeId,
+                        PaidStatus = "Paid",
+                        EmployeeId = empId,
+                        SetOn = DateTimeOffset.Now
                     };
+                    _investmentDetailTrackerRepo.Add(invDT);
+                    _investmentDetailTrackerRepo.Savechange();
                 }
+
+                return new InvestmentAprDto
+                {
+                    Id = invRecAppr.Id,
+                    InvestmentInitId = investmentAprDto.InvestmentInitId,
+                    ProposedAmount = investmentAprDto.ProposedAmount,
+                    Purpose = investmentAprDto.Purpose,
+                    CommitmentAllSBU = investmentAprDto.CommitmentAllSBU,
+                    CommitmentOwnSBU = investmentAprDto.CommitmentOwnSBU,
+                    FromDate = investmentAprDto.FromDate,
+                    ToDate = investmentAprDto.ToDate,
+                    TotalMonth = investmentAprDto.TotalMonth,
+                    PaymentMethod = investmentAprDto.PaymentMethod,
+                    ChequeTitle = investmentAprDto.ChequeTitle,
+                    EmployeeId = investmentAprDto.EmployeeId,
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        [HttpPost("InsertApr/{empID}/{aprStatus}/{sbu}/{donationId}")]
+        public async Task<ActionResult<InvestmentAprDto>>InsertInvestmentApr(int empId, string aprStatus, string sbu, int donationId, InvestmentAprDto investmentAprDto)
+        {
+            try
+            {
+                List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                        new SqlParameter("@SBU", sbu),
+                        new SqlParameter("@DID", donationId),
+                        new SqlParameter("@EID", empId),
+                        new SqlParameter("@IID", investmentAprDto.InvestmentInitId),
+                        new SqlParameter("@PRAMOUNT", investmentAprDto.ProposedAmount),
+                        new SqlParameter("@ASTATUS", aprStatus),
+                        new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
+                    };
+                var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheck @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
+                if (parms[6].Value.ToString() != "True")
+                {
+                    return BadRequest(new ApiResponse(400, parms[6].Value.ToString()));
+                }
+                var alreadyExistSpec = new InvestmentRecSpecification(investmentAprDto.InvestmentInitId, empId);
+                var alreadyExistInvestmentAprList = await _investmentRecRepo.ListAsync(alreadyExistSpec);
+                if (alreadyExistInvestmentAprList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentAprList)
+                    {
+                        _investmentRecRepo.Delete(v);
+                        _investmentRecRepo.Savechange();
+                    }
+                }
+                var specAppr = new ApprAuthConfigSpecification(empId, "A");
+                var apprAuthConfigAppr = await _apprAuthConfigRepo.GetEntityWithSpec(specAppr);
+                var invRecAppr = new InvestmentRec
+                {
+                    //ReferenceNo = investmentInitDto.ReferenceNo,
+                    InvestmentInitId = investmentAprDto.InvestmentInitId,
+                    ProposedAmount = investmentAprDto.ProposedAmount,
+                    Purpose = investmentAprDto.Purpose,
+                    CommitmentAllSBU = investmentAprDto.CommitmentAllSBU,
+                    CommitmentOwnSBU = investmentAprDto.CommitmentOwnSBU,
+                    FromDate = investmentAprDto.FromDate,
+                    ToDate = investmentAprDto.ToDate,
+                    TotalMonth = investmentAprDto.TotalMonth,
+                    PaymentMethod = investmentAprDto.PaymentMethod,
+                    ChequeTitle = investmentAprDto.ChequeTitle,
+                    EmployeeId = empId,
+                    Priority = apprAuthConfigAppr.ApprovalAuthority.Priority,
+                    //Priority = 3,
+                    CompletionStatus = true,
+                    SetOn = DateTimeOffset.Now
+                };
+                _investmentRecRepo.Add(invRecAppr);
+                _investmentRecRepo.Savechange();
+
+                var alreadyDetailTrackerExistSpec = new InvestmentDetailTrackerSpecification(investmentAprDto.InvestmentInitId);
+                var alreadyDetailTrackerExistInvestmentAprList = await _investmentDetailTrackerRepo.ListAsync(alreadyDetailTrackerExistSpec);
+                if (alreadyDetailTrackerExistInvestmentAprList.Count > 0)
+                {
+                    foreach (var v in alreadyDetailTrackerExistInvestmentAprList)
+                    {
+                        _investmentDetailTrackerRepo.Delete(v);
+                        _investmentDetailTrackerRepo.Savechange();
+                    }
+                }
+
+                var donation = await _donationRepo.GetByIdAsync(donationId);
+                if (donation.DonationTypeName == "Honorarium")
+                {
+                    DateTimeOffset calcDate = investmentAprDto.FromDate;
+                    for (int i = 0; i < investmentAprDto.TotalMonth; i++)
+                    {
+                        calcDate = calcDate.AddMonths(i);
+                        var invDT = new InvestmentDetailTracker
+                        {
+                            InvestmentInitId = investmentAprDto.InvestmentInitId,
+                            DonationId = donationId,
+                            ApprovedAmount = investmentAprDto.ProposedAmount,
+                            Month = calcDate.Month,
+                            Year = calcDate.Year,
+                            FromDate = investmentAprDto.FromDate,
+                            ToDate = investmentAprDto.ToDate,
+                            PaidStatus = "Paid",
+                            EmployeeId = empId,
+                            SetOn = DateTimeOffset.Now
+                        };
+                        _investmentDetailTrackerRepo.Add(invDT);
+
+                    }
+                    _investmentDetailTrackerRepo.Savechange();
+                }
+                else
+                {
+                    var invDT = new InvestmentDetailTracker
+                    {
+                        InvestmentInitId = investmentAprDto.InvestmentInitId,
+                        DonationId = donationId,
+                        ApprovedAmount = investmentAprDto.ProposedAmount,
+                        Month = 0,
+                        Year = 0,
+                        FromDate = investmentAprDto.FromDate,
+                        ToDate = investmentAprDto.ToDate,
+                        PaidStatus = "Paid",
+                        EmployeeId = empId,
+                        SetOn = DateTimeOffset.Now
+                    };
+                    _investmentDetailTrackerRepo.Add(invDT);
+                    _investmentDetailTrackerRepo.Savechange();
+                }
+
+                return new InvestmentAprDto
+                {
+                    Id = invRecAppr.Id,
+                    InvestmentInitId = investmentAprDto.InvestmentInitId,
+                    ProposedAmount = investmentAprDto.ProposedAmount,
+                    Purpose = investmentAprDto.Purpose,
+                    CommitmentAllSBU = investmentAprDto.CommitmentAllSBU,
+                    CommitmentOwnSBU = investmentAprDto.CommitmentOwnSBU,
+                    FromDate = investmentAprDto.FromDate,
+                    ToDate = investmentAprDto.ToDate,
+                    TotalMonth = investmentAprDto.TotalMonth,
+                    PaymentMethod = investmentAprDto.PaymentMethod,
+                    ChequeTitle = investmentAprDto.ChequeTitle,
+                    EmployeeId = investmentAprDto.EmployeeId,
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+       
+        [HttpPost("InsertRec/{empID}/{aprStatus}/{sbu}/{donationId}")]
+        public async Task<ActionResult<InvestmentAprDto>> InsertInvestmentRec(int empId, string aprStatus, string sbu, int donationId, InvestmentAprDto investmentAprDto)
+        {
+            try
+            {
+
                 var spec = new ApprAuthConfigSpecification(empId, "A");
                 var apprAuthConfig = await _apprAuthConfigRepo.GetEntityWithSpec(spec);
                 var invRec = new InvestmentRec
@@ -606,7 +743,8 @@ namespace API.Controllers
                             _investmentRecProductRepo.Savechange();
                         }
                     }
-                    else {
+                    else
+                    {
                         var investmentRecProduct = new InvestmentRecProducts
                         {
                             //ReferenceNo = investmentRecDto.ReferenceNo,
@@ -650,32 +788,32 @@ namespace API.Controllers
         [HttpPost("insertInvestmentRecDepot")]
         public async Task<ActionResult<InvestmentRecDepot>> InsertInvestmentRecDepot(InvestmentRecDepot investmentRecDepot)
         {
-            
+
             try
             {
-                    var alreadyExistSpec = new InvestmentRecDepotSpecification(investmentRecDepot.InvestmentInitId, investmentRecDepot.DepotCode);
-                    var alreadyExistInvestmentRecDepotList = await _investmentRecDepotRepo.ListAsync(alreadyExistSpec);
-                    if (alreadyExistInvestmentRecDepotList.Count > 0)
+                var alreadyExistSpec = new InvestmentRecDepotSpecification(investmentRecDepot.InvestmentInitId, investmentRecDepot.DepotCode);
+                var alreadyExistInvestmentRecDepotList = await _investmentRecDepotRepo.ListAsync(alreadyExistSpec);
+                if (alreadyExistInvestmentRecDepotList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentRecDepotList)
                     {
-                        foreach (var v in alreadyExistInvestmentRecDepotList)
-                        {
                         _investmentRecDepotRepo.Delete(v);
                         _investmentRecDepotRepo.Savechange();
-                        }
                     }
-                    
-                        var invRecDepot = new InvestmentRecDepot
-                        {
-                            //ReferenceNo = investmentRecDto.ReferenceNo,
-                            InvestmentInitId = investmentRecDepot.InvestmentInitId,
-                            DepotCode = investmentRecDepot.DepotCode,
-                            DepotName = investmentRecDepot.DepotName,
-                            EmployeeId = investmentRecDepot.EmployeeId,
-                            SetOn = DateTimeOffset.Now,
-                            ModifiedOn = DateTimeOffset.Now
-                        };
-                        _investmentRecDepotRepo.Add(invRecDepot);
-                        _investmentRecProductRepo.Savechange();
+                }
+
+                var invRecDepot = new InvestmentRecDepot
+                {
+                    //ReferenceNo = investmentRecDto.ReferenceNo,
+                    InvestmentInitId = investmentRecDepot.InvestmentInitId,
+                    DepotCode = investmentRecDepot.DepotCode,
+                    DepotName = investmentRecDepot.DepotName,
+                    EmployeeId = investmentRecDepot.EmployeeId,
+                    SetOn = DateTimeOffset.Now,
+                    ModifiedOn = DateTimeOffset.Now
+                };
+                _investmentRecDepotRepo.Add(invRecDepot);
+                _investmentRecProductRepo.Savechange();
 
                 return invRecDepot;
             }
@@ -685,16 +823,16 @@ namespace API.Controllers
                 throw ex;
             }
         }
-      
+
         [HttpGet("getInvestmentRecDepot/{initId}")]
         public async Task<ActionResult<InvestmentRecDepot>> GetInvestmentRecDepot(int initId)
         {
-            
+
             try
             {
                 var alreadyExistSpec = new InvestmentRecDepotSpecification(initId);
                 var alreadyExistInvestmentRecDepot = await _investmentRecDepotRepo.GetEntityWithSpec(alreadyExistSpec);
-                  
+
                 return alreadyExistInvestmentRecDepot;
             }
             catch (Exception ex)
@@ -729,7 +867,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
-        
+
         [HttpGet]
         [Route("investmentAprProducts/{investmentInitId}/{sbu}")]
         public async Task<IReadOnlyList<InvestmentRecProducts>> GetInvestmentRecProducts(int investmentInitId, string sbu)
@@ -762,7 +900,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
-        
+
         [HttpGet]
         [Route("getInvestmentAprComment/{investmentInitId}/{empId}")]
         public async Task<IReadOnlyList<InvestmentRecComment>> GetInvestmentRecComment(int investmentInitId, int empId)
@@ -778,7 +916,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
-        
+
         [HttpGet]
         [Route("getInvestmentAprComments/{investmentInitId}")]
         public async Task<IReadOnlyList<InvestmentRecComment>> GetInvestmentRecComments(int investmentInitId)

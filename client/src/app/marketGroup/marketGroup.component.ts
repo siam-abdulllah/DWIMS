@@ -189,6 +189,7 @@ addMarket() {
   
   resetPage(form: NgForm) {
     form.reset();
+    this.marketGroupService.marketGroupFormData=new MarketGroupMst();
     this.marketGroupDtls=[];
   }
   resetForm() {

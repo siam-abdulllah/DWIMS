@@ -680,7 +680,7 @@ export class InvestmentInitComponent implements OnInit {
 
   getCampaignMst() {
     this.SpinnerService.show();
-    this.investmentInitService.getCampaignMsts().subscribe(response => {
+    this.investmentInitService.getCampaignMsts(parseInt(this.empId)).subscribe(response => {
       this.campaignMsts = response as ICampaignMst[];
       this.investmentInitService.getDoctors(this.investmentInitService.investmentInitFormData.marketCode).subscribe(response => {
         this.doctors = response as IDoctor[];

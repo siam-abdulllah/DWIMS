@@ -70,8 +70,8 @@ export class InvestmentInitService {
   getSociety() {
     return this.http.get(this.baseUrl + 'society/societyForInvestment');
   }
-  getCampaignMsts() {
-    return this.http.get(this.baseUrl + 'campaign/campaignMstsForInvestment');
+  getCampaignMsts(empId:number) {
+    return this.http.get(this.baseUrl + 'campaign/campaignMstsForInvestment/'+empId);
   }
   getCampaignDtls(mstId: number) {
     return this.http.get(this.baseUrl + 'campaign/campaignDtlsForInvestment/' + mstId);

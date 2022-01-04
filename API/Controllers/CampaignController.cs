@@ -17,14 +17,16 @@ namespace API.Controllers
         private readonly IGenericRepository<CampaignMst> _campaignMstRepo;
         private readonly IGenericRepository<CampaignDtl> _campaignDtlRepo;
         private readonly IGenericRepository<CampaignDtlProduct> _campaignDtlProductRepo;
+        private readonly IGenericRepository<Employee> _employeeRepo;
         private readonly IMapper _mapper;
         public CampaignController(IGenericRepository<CampaignMst> campaignMstRepo, IGenericRepository<CampaignDtlProduct> campaignDtlProductRepo, IGenericRepository<CampaignDtl> campaignDtlRepo,
-       IMapper mapper)
+       IGenericRepository<Employee> employeeRepo, IMapper mapper)
         {
             _mapper = mapper;
             _campaignMstRepo = campaignMstRepo;
             _campaignDtlRepo = campaignDtlRepo;
             _campaignDtlProductRepo = campaignDtlProductRepo;
+            _employeeRepo = employeeRepo;
         }
         [HttpPost("insertMst")]
         public ActionResult<CampaignMstDto> InsertCampaignMst(CampaignMstDto campaignMstDto)
@@ -292,16 +294,17 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("campaignMstsForInvestment")]
-        public async Task<IReadOnlyList<CampaignMstDto>> GetCampaignMstsForInvestment()
+        [HttpGet("campaignMstsForInvestment/{empId}")]
+        public async Task<IReadOnlyList<CampaignMstDto>> GetCampaignMstsForInvestment(int empId)
         {
             try
             {
+                var empData = await _employeeRepo.GetByIdAsync(empId);
                 var mstData = await _campaignMstRepo.ListAllAsync();
                 var dtlData = await _campaignDtlRepo.ListAllAsync();
                 var data = (from m in mstData
                               join d in dtlData on m.Id equals d.MstId
-                              where d.SubCampStartDate<=DateTime.Now && d.SubCampEndDate>=DateTime.Now
+                              where d.SubCampStartDate<=DateTime.Now && d.SubCampEndDate>=DateTime.Now && m.SBU==empData.SBU
                               orderby m.CampaignName
                               select new CampaignMstDto
                               {

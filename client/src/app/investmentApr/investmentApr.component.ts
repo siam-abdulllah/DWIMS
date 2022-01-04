@@ -45,7 +45,7 @@ export class InvestmentAprComponent implements OnInit {
   InvestmentInitSearchModalRef: BsModalRef;
   InvestmentAprSearchModalRef: BsModalRef;
   investmentDetailsOld: IInvestmentDetailOld[];
-  lastFiveInvestmentDetail:ILastFiveInvestmentDetail[];
+  lastFiveInvestmentDetail: ILastFiveInvestmentDetail[];
   investmentAprs: IInvestmentApr[];
   investmentInits: IInvestmentInit[];
   investmentTargetedProds: IInvestmentTargetedProd[];
@@ -105,7 +105,7 @@ export class InvestmentAprComponent implements OnInit {
     //this.insertInvestmentDetails();
     else
       this.updateInvestmentApr();
-  } 
+  }
   getDonation() {
     this.investmentAprService.getDonations().subscribe(response => {
       this.donations = response as IDonation[];
@@ -129,8 +129,8 @@ export class InvestmentAprComponent implements OnInit {
   async selectInvestmentInit(selectedAprord: IInvestmentInit) {
     this.resetForm();
     this.investmentAprService.investmentAprFormData = Object.assign({}, selectedAprord);
-    var selectedDonation= this.donations.filter(res=>res.id==selectedAprord.donationId).map(ele=>ele.donationTypeName);
-    this.donationName=selectedDonation[0];
+    var selectedDonation = this.donations.filter(res => res.id == selectedAprord.donationId).map(ele => ele.donationTypeName);
+    this.donationName = selectedDonation[0];
     this.investmentAprService.investmentDetailFormData.investmentInitId = selectedAprord.id;
     this.investmentAprService.investmentAprCommentFormData.investmentInitId = selectedAprord.id;
     this.isDonationValid = true;
@@ -153,19 +153,20 @@ export class InvestmentAprComponent implements OnInit {
     await this.getInvestmentDetails();
     this.getInvestmentTargetedProd();
     this.getInvestmentTargetedGroup();
-    if (this.sbu == this.investmentAprService.investmentAprFormData.sbu) {
+    if (this.sbu == this.investmentAprService.investmentAprFormData.sbu ) {
       this.isInvOther = false;
       this.isValid = true;
-      this.getBudget();
+      if(this.investmentAprService.investmentAprFormData.donationTo != 'Campaign')
+      {
+        this.getBudget();
+      }
     }
     else {
       this.isInvOther = true;
       this.isValid = false;
     }
-    if(this.userRole=='RSM'||this.userRole=='Administrator')
-    {
-      if(this.investmentAprService.investmentDetailFormData.paymentMethod=='Cash')
-      {
+    if (this.userRole == 'RSM' || this.userRole == 'Administrator') {
+      if (this.investmentAprService.investmentDetailFormData.paymentMethod == 'Cash') {
         this.getInvestmentRecDepot();
       }
     }
@@ -173,8 +174,8 @@ export class InvestmentAprComponent implements OnInit {
   }
   async selectInvestmentApr(selectedAprord: IInvestmentInit) {
     this.investmentAprService.investmentAprFormData = Object.assign({}, selectedAprord);
-    var selectedDonation= this.donations.filter(res=>res.id==selectedAprord.donationId).map(ele=>ele.donationTypeName);
-    this.donationName=selectedDonation[0];
+    var selectedDonation = this.donations.filter(res => res.id == selectedAprord.donationId).map(ele => ele.donationTypeName);
+    this.donationName = selectedDonation[0];
     this.investmentAprService.investmentDetailFormData.investmentInitId = selectedAprord.id;
     this.investmentAprService.investmentAprCommentFormData.investmentInitId = selectedAprord.id;
     this.isDonationValid = true;
@@ -207,10 +208,8 @@ export class InvestmentAprComponent implements OnInit {
       this.isInvOther = true;
       this.isValid = false;
     }
-    if(this.userRole=='RSM'||this.userRole=='Administrator')
-    {
-      if(this.investmentAprService.investmentDetailFormData.paymentMethod=='Cash')
-      {
+    if (this.userRole == 'RSM' || this.userRole == 'Administrator') {
+      if (this.investmentAprService.investmentDetailFormData.paymentMethod == 'Cash') {
         this.getInvestmentRecDepot();
       }
     }
@@ -296,7 +295,7 @@ export class InvestmentAprComponent implements OnInit {
   getInvestmentApproved() {
     const params = this.investmentAprService.getGenParams();
     this.SpinnerService.show();
-    this.investmentAprService.getInvestmentApproved(parseInt(this.empId), this.sbu,this.userRole).subscribe(response => {
+    this.investmentAprService.getInvestmentApproved(parseInt(this.empId), this.sbu, this.userRole).subscribe(response => {
       this.SpinnerService.hide();
       this.investmentInits = response.data;
       this.totalCount = response.count;
@@ -403,7 +402,7 @@ export class InvestmentAprComponent implements OnInit {
   }
   async getInvestmentRecDepot() {
     await this.investmentAprService.getInvestmentRecDepot(this.investmentAprService.investmentAprFormData.id).then(response => {
-      this.investmentAprService.investmentDepotFormData=response as IInvestmentRecDepot;
+      this.investmentAprService.investmentDepotFormData = response as IInvestmentRecDepot;
     }, error => {
       console.log(error);
     });
@@ -467,12 +466,11 @@ export class InvestmentAprComponent implements OnInit {
         this.investmentAprService.investmentDetailFormData.id = 0;
         this.investmentAprService.investmentDetailFormData.fromDate = new Date(data.fromDate);
         this.investmentAprService.investmentDetailFormData.toDate = new Date(data.toDate);
-        if(data.paymentMethod=='Cash')
-        {
-          this.isDepotRequire=true;
+        if (data.paymentMethod == 'Cash') {
+          this.isDepotRequire = true;
         }
-        else{
-          this.isDepotRequire=false;
+        else {
+          this.isDepotRequire = false;
         }
         //let convertedDate = this.datePipe.transform(data.fromDate, 'ddMMyyyy');
         this.getLastFiveInvestment(this.investmentAprService.investmentAprFormData.marketCode, this.convertedDate);
@@ -507,12 +505,11 @@ export class InvestmentAprComponent implements OnInit {
         this.investmentAprService.investmentDetailFormData.id = 0;
         this.investmentAprService.investmentDetailFormData.fromDate = new Date(data.fromDate);
         this.investmentAprService.investmentDetailFormData.toDate = new Date(data.toDate);
-        if(data.paymentMethod=='Cash')
-        {
-          this.isDepotRequire=true;
+        if (data.paymentMethod == 'Cash') {
+          this.isDepotRequire = true;
         }
-        else{
-          this.isDepotRequire=false;
+        else {
+          this.isDepotRequire = false;
         }
         //let convertedDate = this.datePipe.transform(data.fromDate, 'ddMMyyyy');
         this.getLastFiveInvestment(this.investmentAprService.investmentAprFormData.marketCode, this.convertedDate);
@@ -580,20 +577,18 @@ export class InvestmentAprComponent implements OnInit {
     this.empId = this.accountService.getEmployeeId();
     this.userRole = this.accountService.getUserRole();
     debugger;
-    if(this.userRole=='Administrator')
-    {
-      this.isAdmin=true;
+    if (this.userRole == 'Administrator') {
+      this.isAdmin = true;
     }
-    else{
-      this.isAdmin=false;
+    else {
+      this.isAdmin = false;
     }
-    if(this.userRole=='RSM' || this.userRole=='Administrator')
-    {
-      this.isDepotRequire=true;
+    if (this.userRole == 'RSM' || this.userRole == 'Administrator') {
+      this.isDepotRequire = true;
       this.getDepot();
     }
-    else{
-      this.isDepotRequire=false;
+    else {
+      this.isDepotRequire = false;
     }
     this.investmentAprService.investmentAprCommentFormData.employeeId = parseInt(this.empId);
     this.getEmployeeSbu();
@@ -656,24 +651,19 @@ export class InvestmentAprComponent implements OnInit {
       this.toastr.warning('Select Payment Method First', 'Investment ');
       return false;
     }
-    if(this.userRole=='RSM' || this.userRole=='Administrator')
-    {
-      if(this.investmentAprService.investmentDetailFormData.paymentMethod=='Cash')
-      {
-        if (this.investmentAprService.investmentDepotFormData.depotCode == null || this.investmentAprService.investmentDepotFormData.depotCode == undefined || this.investmentAprService.investmentDepotFormData.depotCode == "") 
-        {
-      this.toastr.warning('Select Depot First', 'Investment');
-      return false;
+    if (this.userRole == 'RSM' || this.userRole == 'Administrator') {
+      if (this.investmentAprService.investmentDetailFormData.paymentMethod == 'Cash') {
+        if (this.investmentAprService.investmentDepotFormData.depotCode == null || this.investmentAprService.investmentDepotFormData.depotCode == undefined || this.investmentAprService.investmentDepotFormData.depotCode == "") {
+          this.toastr.warning('Select Depot First', 'Investment');
+          return false;
         }
       }
     }
-    if(this.investmentAprService.investmentAprCommentFormData.recStatus=='Not Recommended')
-    {
-      if (this.investmentAprService.investmentAprCommentFormData.comments == null || this.investmentAprService.investmentAprCommentFormData.comments == undefined || this.investmentAprService.investmentAprCommentFormData.comments == "") 
-    {
-      
+    if (this.investmentAprService.investmentAprCommentFormData.recStatus == 'Not Recommended') {
+      if (this.investmentAprService.investmentAprCommentFormData.comments == null || this.investmentAprService.investmentAprCommentFormData.comments == undefined || this.investmentAprService.investmentAprCommentFormData.comments == "") {
+
         this.toastr.warning('Please Insert Comment For Not Recommendation', 'Investment');
-      return false;
+        return false;
       }
     }
     this.investmentAprService.investmentAprCommentFormData.employeeId = parseInt(this.empId);
@@ -684,9 +674,8 @@ export class InvestmentAprComponent implements OnInit {
         this.isValid = true;
         this.insertInvestmentTargetedProd();
         this.SpinnerService.hide();
-        if (this.sbu != this.investmentAprService.investmentAprFormData.sbu) 
-        { 
-        this.toastr.success('Save successfully', 'Investment')
+        if (this.sbu != this.investmentAprService.investmentAprFormData.sbu) {
+          this.toastr.success('Save successfully', 'Investment')
         }
       },
       err => { console.log(err); }
@@ -725,24 +714,19 @@ export class InvestmentAprComponent implements OnInit {
       this.toastr.warning('Select Payment Method First', 'Investment ');
       return false;
     }
-    if(this.userRole=='RSM' || this.userRole=='Administrator')
-    {
-      if(this.investmentAprService.investmentDetailFormData.paymentMethod=='Cash')
-      {
-        if (this.investmentAprService.investmentDepotFormData.depotCode == null || this.investmentAprService.investmentDepotFormData.depotCode == undefined || this.investmentAprService.investmentDepotFormData.depotCode == "") 
-        {
-      this.toastr.warning('Select Depot First', 'Investment');
-      return false;
+    if (this.userRole == 'RSM' || this.userRole == 'Administrator') {
+      if (this.investmentAprService.investmentDetailFormData.paymentMethod == 'Cash') {
+        if (this.investmentAprService.investmentDepotFormData.depotCode == null || this.investmentAprService.investmentDepotFormData.depotCode == undefined || this.investmentAprService.investmentDepotFormData.depotCode == "") {
+          this.toastr.warning('Select Depot First', 'Investment');
+          return false;
         }
       }
     }
-    if(this.investmentAprService.investmentAprCommentFormData.recStatus=='Not Recommended')
-    {
-      if (this.investmentAprService.investmentAprCommentFormData.comments == null || this.investmentAprService.investmentAprCommentFormData.comments == undefined || this.investmentAprService.investmentAprCommentFormData.comments == "") 
-    {
-      
+    if (this.investmentAprService.investmentAprCommentFormData.recStatus == 'Not Recommended') {
+      if (this.investmentAprService.investmentAprCommentFormData.comments == null || this.investmentAprService.investmentAprCommentFormData.comments == undefined || this.investmentAprService.investmentAprCommentFormData.comments == "") {
+
         this.toastr.warning('Please Insert Comment For Not Recommendation', 'Investment');
-      return false;
+        return false;
       }
     }
     this.SpinnerService.show();
@@ -752,16 +736,15 @@ export class InvestmentAprComponent implements OnInit {
         this.investmentAprService.investmentAprCommentFormData = res as IInvestmentAprComment;
         this.insertInvestmentTargetedProd();
         this.SpinnerService.hide();
-        if (this.sbu != this.investmentAprService.investmentAprFormData.sbu) 
-        { 
-        this.toastr.success('Save successfully', 'Investment')
+        if (this.sbu != this.investmentAprService.investmentAprFormData.sbu) {
+          this.toastr.success('Save successfully', 'Investment')
         }
       },
       err => { console.log(err); }
     );
   }
   insertInvestmentDetails() {
-    
+
 
     this.investmentAprService.investmentDetailFormData.investmentInitId = this.investmentAprService.investmentAprFormData.id;
 
@@ -787,26 +770,22 @@ export class InvestmentAprComponent implements OnInit {
   }
 
   insertInvestmentRecDepot() {
-    debugger;
-    if(this.userRole=='RSM' || this.userRole=='Administrator')
-    {
-      if(this.investmentAprService.investmentDetailFormData.paymentMethod=='Cash')
-      {
+    if (this.userRole == 'RSM' || this.userRole == 'Administrator') {
+      if (this.investmentAprService.investmentDetailFormData.paymentMethod == 'Cash') {
         this.investmentAprService.investmentDepotFormData.investmentInitId = this.investmentAprService.investmentAprFormData.id;
         for (let i = 0; i < this.depots.length; i++) {
           if (this.depots[i].depotCode == this.investmentAprService.investmentDepotFormData.depotCode) {
-            this.investmentAprService.investmentDepotFormData.depotName=this.depots[i].depotName; 
-            this.investmentAprService.investmentDepotFormData.employeeId=parseInt(this.empId); 
+            this.investmentAprService.investmentDepotFormData.depotName = this.depots[i].depotName;
+            this.investmentAprService.investmentDepotFormData.employeeId = parseInt(this.empId);
             break;
           }
         }
         this.SpinnerService.show();
         this.investmentAprService.insertInvestmentRecDepot().subscribe(
           res => {
-           debugger;
-            this.investmentAprService.investmentDepotFormData=res as IInvestmentRecDepot;
+            this.investmentAprService.investmentDepotFormData = res as IInvestmentRecDepot;
             this.SpinnerService.hide();
-            
+
           },
           err => {
             console.log(err);
@@ -814,7 +793,7 @@ export class InvestmentAprComponent implements OnInit {
           }
         );
       }
-   
+
     }
   }
   insertInvestmentTargetedProd() {
@@ -838,9 +817,8 @@ export class InvestmentAprComponent implements OnInit {
     this.SpinnerService.show();
     this.investmentAprService.insertInvestmentTargetedProd(this.investmentTargetedProds).subscribe(
       res => {
-        if (this.sbu == this.investmentAprService.investmentAprFormData.sbu) 
-        { 
-        this.insertInvestmentDetails();
+        if (this.sbu == this.investmentAprService.investmentAprFormData.sbu) {
+          this.insertInvestmentDetails();
         }
         this.getInvestmentTargetedProd();
         this.getInvestmentTargetedGroup();
@@ -873,7 +851,7 @@ export class InvestmentAprComponent implements OnInit {
       for (let i = 0; i < this.products.length; i++) {
         if (this.products[i].id == this.investmentAprService.investmentTargetedProdFormData.productId) {
           let data = new InvestmentTargetedProd();
-          
+
           data.sbu = this.sbu;
           data.employeeId = parseInt(this.empId);
           data.investmentInitId = this.investmentAprService.investmentAprFormData.id;
@@ -890,7 +868,7 @@ export class InvestmentAprComponent implements OnInit {
   //   this.investmentAprService.investmentTargetedProdFormData = Object.assign({}, selectedAprord);
   // }
   removeInvestmentTargetedProd(selectedAprord: IInvestmentTargetedProd) {
-    
+
     if (this.investmentAprService.investmentAprCommentFormData.id == null || this.investmentAprService.investmentAprCommentFormData.id == undefined || this.investmentAprService.investmentAprCommentFormData.id == 0) {
       var c = confirm("Are you sure you want to remove this product?");
       if (c == true) {
@@ -902,34 +880,34 @@ export class InvestmentAprComponent implements OnInit {
       }
     }
     else {
-    var c = confirm("Are you sure you want to delete that?");
-    if (c == true) {
-      // if (this.investmentAprService.investmentAprCommentFormData.id == null || this.investmentAprService.investmentAprCommentFormData.id == undefined || this.investmentAprService.investmentAprCommentFormData.id == 0) {
-      //   this.toastr.warning("Please Save Data First!") 
-      //   return false;
-      // }
-      if (selectedAprord.id == 0) {
+      var c = confirm("Are you sure you want to delete that?");
+      if (c == true) {
+        // if (this.investmentAprService.investmentAprCommentFormData.id == null || this.investmentAprService.investmentAprCommentFormData.id == undefined || this.investmentAprService.investmentAprCommentFormData.id == 0) {
+        //   this.toastr.warning("Please Save Data First!") 
+        //   return false;
+        // }
+        if (selectedAprord.id == 0) {
+          if (this.investmentTargetedProds.find(x => x.productId == selectedAprord.productId)) {
+            this.investmentTargetedProds.splice(this.investmentTargetedProds.findIndex(x => x.productId == selectedAprord.productId), 1);
+            this.toastr.success("Successfully Removed");
+            return false;
+          }
+        }
+        this.investmentAprService.investmentTargetedProdFormData = Object.assign({}, selectedAprord);
         if (this.investmentTargetedProds.find(x => x.productId == selectedAprord.productId)) {
           this.investmentTargetedProds.splice(this.investmentTargetedProds.findIndex(x => x.productId == selectedAprord.productId), 1);
-          this.toastr.success("Successfully Removed");
-          return false;
         }
+
+        this.investmentAprService.removeInvestmentTargetedProd().subscribe(
+          res => {
+            this.toastr.success(res);
+            this.investmentAprService.investmentTargetedProdFormData = new InvestmentTargetedProd();
+            this.getInvestmentTargetedProd();
+          },
+          err => { console.log(err); }
+        );
       }
-      this.investmentAprService.investmentTargetedProdFormData = Object.assign({}, selectedAprord);
-      if (this.investmentTargetedProds.find(x => x.productId == selectedAprord.productId)) {
-        this.investmentTargetedProds.splice(this.investmentTargetedProds.findIndex(x => x.productId == selectedAprord.productId), 1);
-      }
-      
-      this.investmentAprService.removeInvestmentTargetedProd().subscribe(
-        res => {
-          this.toastr.success(res);
-          this.investmentAprService.investmentTargetedProdFormData = new InvestmentTargetedProd();
-          this.getInvestmentTargetedProd();
-        },
-        err => { console.log(err); }
-      );
     }
-  }
   }
   populateForm() {
   }
@@ -941,7 +919,7 @@ export class InvestmentAprComponent implements OnInit {
     this.investmentTargetedGroups = [];
     this.investmentDetailsOld = [];
     this.lastFiveInvestmentDetail = [];
-   // this.isAdmin = false;
+    // this.isAdmin = false;
     this.isDepotRequire = false;
     this.isValid = false;
     this.isBudgetVisible = false;
@@ -969,7 +947,7 @@ export class InvestmentAprComponent implements OnInit {
     };
   }
 
-  
+
   onPageChanged(event: any) {
     const params = this.investmentAprService.getGenParams();
     if (params.pageIndex !== event) {
@@ -981,7 +959,7 @@ export class InvestmentAprComponent implements OnInit {
   getInvestmentApprovedPgChange() {
     const params = this.investmentAprService.getGenParams();
     this.SpinnerService.show();
-    this.investmentAprService.getInvestmentApproved(parseInt(this.empId), this.sbu,this.userRole).subscribe(response => {
+    this.investmentAprService.getInvestmentApproved(parseInt(this.empId), this.sbu, this.userRole).subscribe(response => {
       this.SpinnerService.hide();
       this.investmentInits = response.data;
       this.totalCount = response.count;
@@ -990,7 +968,7 @@ export class InvestmentAprComponent implements OnInit {
         itemsPerPage: params.pageSize,
         totalItems: this.totalCount,
       };
-    
+
     }, error => {
       this.SpinnerService.hide();
       console.log(error);

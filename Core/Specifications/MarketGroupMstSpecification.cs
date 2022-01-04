@@ -37,7 +37,7 @@ namespace Core.Specifications
         //    AddInclude(x => x.MarketGroupDtls);
         //} 
         public MarketGroupMstSpecification(string marketCode)
-            : base(x => x.MarketCode == marketCode)
+            : base(x => x.MarketCode == marketCode && x.Status == "Active")
         {
             AddInclude(x => x.MarketGroupDtls);
         } 
