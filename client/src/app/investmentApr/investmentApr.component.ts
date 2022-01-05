@@ -415,7 +415,7 @@ export class InvestmentAprComponent implements OnInit {
     });
   }
   async getInvestmentRecDepot() {
-    debugger
+    
     await this.investmentAprService.getInvestmentRecDepot(this.investmentAprService.investmentAprFormData.id).then(response => {
       if(response!=null){
       this.investmentAprService.investmentDepotFormData = response as IInvestmentRecDepot;
@@ -537,10 +537,10 @@ export class InvestmentAprComponent implements OnInit {
           if(this.userRole=='RSM')
           {
           this.isDepotRequire = true;
-           }
-           else{
+          }
+          else{
             this.isDepotRequire = false;
-           }
+          }
 
           //if(this.userRole=='GPM' || this.userRole=='RSM' || this.userRole=='Administrator')
           //{
@@ -846,6 +846,7 @@ export class InvestmentAprComponent implements OnInit {
     if (this.investmentTargetedProds !== undefined) {
       for (let i = 0; i < this.investmentTargetedProds.length; i++) {
         if (this.investmentTargetedProds[i].productInfo.id == this.investmentAprService.investmentTargetedProdFormData.productId) {
+          debugger;
           this.toastr.warning("Product already exist !");
           return false;
         }
@@ -900,6 +901,7 @@ export class InvestmentAprComponent implements OnInit {
           data.productId = this.investmentAprService.investmentTargetedProdFormData.productId;
           data.productInfo = this.products[i];
           this.investmentTargetedProds.push(data);
+          this.investmentAprService.investmentTargetedProdFormData= new InvestmentTargetedProd();
           return false;
         }
       }

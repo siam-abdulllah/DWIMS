@@ -849,11 +849,11 @@ namespace API.Controllers
                     var alreadyExistInvestmentRecProductList = await _investmentRecProductRepo.ListAsync(alreadyExistSpec);
                     if (alreadyExistInvestmentRecProductList.Count > 0)
                     {
-                        foreach (var v in alreadyExistInvestmentRecProductList)
-                        {
-                            _investmentRecProductRepo.Delete(v);
-                            _investmentRecProductRepo.Savechange();
-                        }
+                        //foreach (var v in alreadyExistInvestmentRecProductList)
+                        //{
+                        //    _investmentRecProductRepo.Delete(v);
+                        //    _investmentRecProductRepo.Savechange();
+                        //}
                     }
                     else
                     {
@@ -939,7 +939,6 @@ namespace API.Controllers
         [HttpGet("getInvestmentRecDepot/{initId}")]
         public async Task<ActionResult<InvestmentRecDepot>> GetInvestmentRecDepot(int initId)
         {
-
             try
             {
                 var alreadyExistSpec = new InvestmentRecDepotSpecification(initId);

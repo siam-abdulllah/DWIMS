@@ -126,7 +126,6 @@ namespace API.Controllers
                     //    " where TerritoryCode in (select TerritoryCode from Employee " +
                     //    " where Id = "+empCode+" ) and CompletionStatus = 0 and [Priority] = 2) and Confirmation = 1 ";
                 }
-
                 else if (role == "RSM")
                 {
                     string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode= '" + empCode + "' ";
@@ -195,7 +194,7 @@ namespace API.Controllers
                     string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode= '" + empCode + "' ";
                     var empData = _dbContext.Employee.FromSqlRaw(empQry).ToList();
                     qry = " select CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count from InvestmentInit  " +
-                          " where DonationTo <>'Campaign' AND Id in (select InvestmentInitId from InvestmentRecComment a " +
+                            " where DonationTo <>'Campaign' AND Id in (select InvestmentInitId from InvestmentRecComment a " +
                         //" where RegionCode in (select RegionCode from Employee " +
                         //" where Id = "+empCode+"  ) and CompletionStatus = 0 and [Priority] = 3) "
                             " where " +
@@ -223,6 +222,8 @@ namespace API.Controllers
                             " OR COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All') = 'All'" +
                             " ) AND " +
                             " 'Completed' = [dbo].[fnGetRecStatusByPriority](A.InvestmentInitId, "+appPriority.Priority+" - 1)" +
+                            " AND A.Priority=" + appPriority.Priority + " - 1" +
+                             " AND RecStatus <> 'Approved'" +
                             " )" +
                             " AND Id Not In" +
                             " ( select InvestmentInitId from InvestmentRecComment a " +
@@ -259,6 +260,14 @@ namespace API.Controllers
                         " where Id in (select InvestmentInitId from InvestmentRecComment " +
                         " where RegionCode in (select RegionCode from Employee " +
                         " where Id = "+empCode+"  ) and CompletionStatus = 0 and [Priority] = 3) ";
+                    List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                        new SqlParameter("@SBU", sbu),
+                        new SqlParameter("@EID", Convert.ToInt32(empCode)),
+                        new SqlParameter("@RSTATUS", "Recommended")
+                    };
+                    var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentAprSearchForGPM @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
+                    return results.Count();
                 }
                 else
                 {

@@ -827,7 +827,7 @@
                                                 <!-- <option *ngIf=" !isInvOther" value="Approved">Approved</option>
                                                 <option *ngIf="!isInvOther" value="Not Approved">Not Approved</option> -->
                                                 <option  value="Received">Received</option>
-                                                <option  value="Not Received">Not Received</option>
+                                                <option *ngIf="userRole == 'Administrator'" value="Not Received">Not Received</option>
                                                 </select>
                                         </div>
                                         <div class="col-md-2">

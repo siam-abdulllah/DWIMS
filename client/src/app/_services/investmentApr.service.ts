@@ -243,8 +243,8 @@ export class InvestmentAprService {
   }
   
   removeInvestmentTargetedProd() {
-    
-    return this.http.post(this.baseUrl+ 'investment/removeInvestmentTargetedProd', this.investmentTargetedProdFormData,
+    debugger;
+    return this.http.post(this.baseUrl+ 'investmentApr/removeInvestmentTargetedProd', this.investmentTargetedProdFormData,
     {responseType: 'text'});
 
   }

@@ -79,7 +79,7 @@ export class InvestmentAprNoSbuComponent implements OnInit {
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date = new Date();
   isAdmin: boolean = false;
-  isDepotRequire: boolean = false;
+  isDepotRequire: boolean = true;
   empId: string;
   donationName: string;
   sbu: string;
@@ -102,7 +102,6 @@ export class InvestmentAprNoSbuComponent implements OnInit {
   onSubmit(form: NgForm) {
     if (this.investmentAprService.investmentAprCommentFormData.id == null || this.investmentAprService.investmentAprCommentFormData.id == undefined || this.investmentAprService.investmentAprCommentFormData.id == 0)
       this.insertInvestmentApr();
-    //this.insertInvestmentDetails();
     else
       this.updateInvestmentApr();
   } 
@@ -151,24 +150,13 @@ export class InvestmentAprNoSbuComponent implements OnInit {
       await this.getInvestmentSociety();
     }
     await this.getInvestmentDetails();
-    this.getInvestmentTargetedProd();
-    this.getInvestmentTargetedGroup();
-    if (this.sbu == this.investmentAprService.investmentAprFormData.sbu) {
+    await this.getInvestmentTargetedProd();
+    await this.getInvestmentTargetedGroup();
+    //if (this.sbu == this.investmentAprService.investmentAprFormData.sbu) {
       this.isInvOther = false;
       this.isValid = true;
       this.getBudget();
-    }
-    else {
-      this.isInvOther = true;
-      this.isValid = false;
-    }
-    if(this.userRole=='RSM'||this.userRole=='Administrator')
-    {
-      if(this.investmentAprService.investmentDetailFormData.paymentMethod=='Cash')
-      {
-        this.getInvestmentRecDepot();
-      }
-    }
+      
     this.InvestmentInitSearchModalRef.hide()
   }
   async selectInvestmentApr(selectedAprord: IInvestmentInit) {
@@ -195,25 +183,14 @@ export class InvestmentAprNoSbuComponent implements OnInit {
       await this.getInvestmentSociety();
     }
     await this.getInvestmentAprDetails();
-    this.getInvestmentAprProducts();
-    this.getInvestmentAprComment();
-    this.getInvestmentTargetedGroup();
-    if (this.sbu == this.investmentAprService.investmentAprFormData.sbu) {
+    await  this.getInvestmentAprProducts();
+    await this.getInvestmentAprComment();
+    await this.getInvestmentTargetedGroup();
+    //if (this.sbu == this.investmentAprService.investmentAprFormData.sbu) {
       this.isInvOther = false;
       this.isValid = true;
       await this.getBudget();
-    }
-    else {
-      this.isInvOther = true;
-      this.isValid = false;
-    }
-    if(this.userRole=='RSM'||this.userRole=='Administrator')
-    {
-      if(this.investmentAprService.investmentDetailFormData.paymentMethod=='Cash')
-      {
-        this.getInvestmentRecDepot();
-      }
-    }
+     
     this.InvestmentAprSearchModalRef.hide()
   }
   async getLastFiveInvestment(marketCode: string, toDayDate: string) {
@@ -402,7 +379,9 @@ export class InvestmentAprNoSbuComponent implements OnInit {
     });
   }
   async getInvestmentRecDepot() {
+    debugger;
     await this.investmentAprService.getInvestmentRecDepot(this.investmentAprService.investmentAprFormData.id).then(response => {
+      debugger;
       this.investmentAprService.investmentDepotFormData=response as IInvestmentRecDepot;
     }, error => {
       console.log(error);
@@ -469,7 +448,8 @@ export class InvestmentAprNoSbuComponent implements OnInit {
         this.investmentAprService.investmentDetailFormData.toDate = new Date(data.toDate);
         if(data.paymentMethod=='Cash')
         {
-          this.isDepotRequire=true;
+           this.getInvestmentRecDepot();
+          this.isDepotRequire=false;
         }
         else{
           this.isDepotRequire=false;
@@ -507,9 +487,11 @@ export class InvestmentAprNoSbuComponent implements OnInit {
         this.investmentAprService.investmentDetailFormData.id = 0;
         this.investmentAprService.investmentDetailFormData.fromDate = new Date(data.fromDate);
         this.investmentAprService.investmentDetailFormData.toDate = new Date(data.toDate);
+        
         if(data.paymentMethod=='Cash')
         {
-          this.isDepotRequire=true;
+          this.getInvestmentRecDepot();
+          this.isDepotRequire=false;
         }
         else{
           this.isDepotRequire=false;
@@ -579,7 +561,6 @@ export class InvestmentAprNoSbuComponent implements OnInit {
   getEmployeeId() {
     this.empId = this.accountService.getEmployeeId();
     this.userRole = this.accountService.getUserRole();
-    debugger;
     if(this.userRole=='Administrator')
     {
       this.isAdmin=true;
@@ -587,14 +568,14 @@ export class InvestmentAprNoSbuComponent implements OnInit {
     else{
       this.isAdmin=false;
     }
-    if(this.userRole=='RSM' || this.userRole=='Administrator')
-    {
-      this.isDepotRequire=true;
+    //if(this.userRole=='RSM' || this.userRole=='Administrator')
+    //{
+     // this.isDepotRequire=true;
       this.getDepot();
-    }
-    else{
+    //}
+    //else{
       this.isDepotRequire=false;
-    }
+    //}
     this.investmentAprService.investmentAprCommentFormData.employeeId = parseInt(this.empId);
     this.getEmployeeSbu();
   }
@@ -981,7 +962,7 @@ export class InvestmentAprNoSbuComponent implements OnInit {
   getInvestmentApprovedPgChange() {
     const params = this.investmentAprService.getGenParams();
     this.SpinnerService.show();
-    this.investmentAprService.getInvestmentApproved(parseInt(this.empId), this.sbu,this.userRole).subscribe(response => {
+    this.investmentAprService.getInvestmentApproved(parseInt(this.empId), this.investmentAprService.investmentAprFormData.sbu ,this.userRole).subscribe(response => {
       this.SpinnerService.hide();
       this.investmentInits = response.data;
       this.totalCount = response.count;

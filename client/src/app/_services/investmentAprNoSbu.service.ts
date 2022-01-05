@@ -137,7 +137,7 @@ export class InvestmentAprNoSbuService {
   setGenParams(genParams: GenericParams) {
     this.genParams = genParams;
   }
-  getInvestmentApproved(empId:number,sbu:string,userRole:string){    
+  getInvestmentApproved(empId:number,sbu:string,userRole:string){ 
     let params = new HttpParams();
     if (this.genParams.search) {
       params = params.append('search', this.genParams.search);
@@ -158,26 +158,26 @@ export class InvestmentAprNoSbuService {
   }
   insertInvestmentApr() {
     
-    return this.http.post(this.baseUrl+ 'InvestmentAprNo/insertAprCom', this.investmentAprCommentFormData);
+    return this.http.post(this.baseUrl+ 'InvestmentAprNoSbu/insertAprCom', this.investmentAprCommentFormData);
 
   }
   
   updateInvestmentApr() {
-    return this.http.post(this.baseUrl+ 'InvestmentAprNo/updateAprCom',  this.investmentAprCommentFormData);
+    return this.http.post(this.baseUrl+ 'InvestmentAprNoSbu/updateAprCom',  this.investmentAprCommentFormData);
   }
   insertInvestmentDetail(empId:number,sbu:string) {
     
-    return this.http.post(this.baseUrl+ 'InvestmentAprNo/insertApr/'+empId+'/'+this.investmentAprCommentFormData.recStatus+'/'+sbu+'/'+this.investmentAprFormData.donationId, this.investmentDetailFormData);
+    return this.http.post(this.baseUrl+ 'InvestmentAprNoSbu/insertApr/'+empId+'/'+this.investmentAprCommentFormData.recStatus+'/'+sbu+'/'+this.investmentAprFormData.donationId, this.investmentDetailFormData);
   
   }
   insertInvestmentRecDepot() {
     
-    return this.http.post(this.baseUrl+ 'InvestmentAprNo/insertInvestmentRecDepot', this.investmentDepotFormData);
+    return this.http.post(this.baseUrl+ 'InvestmentAprNoSbu/insertInvestmentRecDepot', this.investmentDepotFormData);
   
   }
   getInvestmentRecDepot(initId:any) {
-    
-    return this.http.get(this.baseUrl+ 'InvestmentAprNo/getInvestmentRecDepot/'+initId).toPromise();
+    debugger;
+    return this.http.get(this.baseUrl+ 'InvestmentAprNoSbu/getInvestmentRecDepot/'+initId).toPromise();
   
   }
   
@@ -185,7 +185,7 @@ export class InvestmentAprNoSbuService {
   
   insertInvestmentTargetedProd(investmentTargetedProds:IInvestmentTargetedProd[]) {
     
-    return this.http.post(this.baseUrl+ 'InvestmentAprNo/insertAprProd', investmentTargetedProds,
+    return this.http.post(this.baseUrl+ 'InvestmentAprNoSbu/insertAprProd', investmentTargetedProds,
     {responseType: 'text'});
 
   }
