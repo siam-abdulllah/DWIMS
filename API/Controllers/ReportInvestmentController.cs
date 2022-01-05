@@ -479,11 +479,36 @@ namespace API.Controllers
                 " WHERE a.Id = " + investmentInitId + " AND a.SBU = r.SBU " +
                 " ORDER BY [Priority], RecStatus DESC ";
 
-
-
-
-
                 var results = _db.InvestmentTargetGroupSQL.FromSqlRaw(qry).ToList();
+
+                return results;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpGet]
+        [Route("rptInvestDepo/{investmentInitId}")]
+        public async Task<IReadOnlyList<RptDepotLetter>> ReportDepotLetter(int investmentInitId)
+        {
+            try
+            {
+                string qry = " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, e.Id as EmpId, e.DesignationName, e.MarketName, a.ReferenceNo, d.DonationTypeName, " +
+                    " doc.id as DocId, doc.DoctorName, doc.[Address], inDetail.ProposedAmount, depo.DepotName " +
+                    " from InvestmentInit a " +
+                    " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId " +
+                    " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId " +
+                    " left join Employee e on a.EmployeeId = e.Id " +
+                    " left join Donation d on a.DonationId = d.Id " +
+                    " inner join InvestmentDetail inDetail on a.id = inDetail.InvestmentInitId " +
+                    " inner join InvestmentDoctor inDc on a.Id = inDc.InvestmentInitId " +
+                    " left join DoctorInfo doc on inDc.DoctorId = doc.Id " +
+                    " where a.DonationTo = 'Doctor' and ir.RecStatus = 'Approved' " +
+                    " AND inDetail.PaymentMethod = 'Cash' AND ir.InvestmentInitId = " + investmentInitId +" ";
+
+                var results = _db.RptDepotLetter.FromSqlRaw(qry).ToList();
 
                 return results;
             }

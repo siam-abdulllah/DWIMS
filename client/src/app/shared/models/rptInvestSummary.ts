@@ -29,3 +29,36 @@ export class rptInvestSummary implements IrptInvestSummary {
     approvedBy: string;
     marketName: string;
 }
+
+
+export interface IrptDepotLetter {
+    id: number;
+    setOn: Date;
+    referenceNo: string;
+    donationTypeName: string;
+    doctorName: string;
+    proposedAmount: number;
+    address: string;
+    docId: number;
+    designationName: string;
+    employeeName: string;
+    empId: number;
+    depotName: string;
+    marketName: string;
+}
+
+export class rptDepotLetter implements IrptDepotLetter {
+    id: number;
+    referenceNo: string;
+    setOn: Date;
+    donationTypeName: string;
+    doctorName: string;
+    proposedAmount: number;
+    address: string;
+    docId: number;
+    designationName: string;
+    empId: number;
+    employeeName: string;
+    depotName: string;
+    marketName: string;
+}

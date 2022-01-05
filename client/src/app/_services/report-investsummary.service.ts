@@ -71,5 +71,9 @@ export class RptInvestSummaryService {
     );   
   }
 
+  getRptDepotLetter(initId:any) {
+    return this.http.get(this.baseUrl+ 'reportInvestment/rptInvestDepo/'+initId);
+  }
+
 }
 
