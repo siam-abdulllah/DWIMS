@@ -82,6 +82,8 @@ namespace Infrastructure.Data
         [NotMapped]
         public DbSet<CountInt> CountInt { get; set; }
         public DbSet<InvestmentRecDepot> InvestmentRecDepot { get; set; }
+        [NotMapped]
+        public DbSet<RptDepotLetter> RptDepotLetter { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
