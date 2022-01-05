@@ -1107,7 +1107,6 @@ G:\DIDS\DIDS_GIT\DWIMS\API\obj\Debug\netcoreapp3.1\staticwebassets\API.StaticWeb
 G:\DIDS\DIDS_GIT\DWIMS\API\obj\Debug\netcoreapp3.1\staticwebassets\API.StaticWebAssets.xml
 G:\DIDS\DIDS_GIT\DWIMS\API\obj\Debug\netcoreapp3.1\scopedcss\bundle\API.styles.css
 G:\DIDS\DIDS_GIT\DWIMS\API\obj\Debug\netcoreapp3.1\API.RazorTargetAssemblyInfo.cache
-G:\DIDS\DIDS_GIT\DWIMS\API\obj\Debug\netcoreapp3.1\API.csproj.CopyComplete
 G:\DIDS\DIDS_GIT\DWIMS\API\obj\Debug\netcoreapp3.1\API.dll
 G:\DIDS\DIDS_GIT\DWIMS\API\obj\Debug\netcoreapp3.1\API.pdb
 G:\DIDS\DIDS_GIT\DWIMS\API\obj\Debug\netcoreapp3.1\API.genruntimeconfig.cache

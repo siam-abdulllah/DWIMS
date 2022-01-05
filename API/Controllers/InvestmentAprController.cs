@@ -89,7 +89,56 @@ namespace API.Controllers
                         new SqlParameter("@EID", empId),
                         new SqlParameter("@RSTATUS", "Recommended")
                     };
-                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentAprSearch @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
+                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentAprSearchNotCamp @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
+                var data = _mapper
+                    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
+
+
+                return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, 50, data));
+            }
+            catch (System.Exception e)
+            {
+                throw e;
+            }
+        }
+        
+        [HttpGet("investmentInitsForRSM/{empId}/{sbu}")]
+        public ActionResult<Pagination<InvestmentInitDto>> GetInvestmentInitsForRSM(int empId, string sbu,
+         [FromQuery] InvestmentInitSpecParams investmentInitParrams)
+        {
+            try
+            {
+                List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                        new SqlParameter("@SBU", sbu),
+                        new SqlParameter("@EID", empId),
+                        new SqlParameter("@RSTATUS", "Recommended")
+                    };
+                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentAprSearchForRSM @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
+                var data = _mapper
+                    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
+
+
+                return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, 50, data));
+            }
+            catch (System.Exception e)
+            {
+                throw e;
+            }
+        }
+        [HttpGet("investmentInitsForGPM/{empId}/{sbu}")]
+        public ActionResult<Pagination<InvestmentInitDto>> GetInvestmentInitsForGPM(int empId, string sbu,
+         [FromQuery] InvestmentInitSpecParams investmentInitParrams)
+        {
+            try
+            {
+                List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                        new SqlParameter("@SBU", sbu),
+                        new SqlParameter("@EID", empId),
+                        new SqlParameter("@RSTATUS", "Recommended")
+                    };
+                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentAprSearchForGPM @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
                 var data = _mapper
                     .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
 
@@ -145,7 +194,7 @@ namespace API.Controllers
                         new SqlParameter("@RSTATUS", "Recommended"),
                         new SqlParameter("@ASTATUS", DBNull.Value)
                     };
-                    var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentApprpvedSearch @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
+                    var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentApprpvedSearchNotCamp @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
                     var data = _mapper
                         .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
                     var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
@@ -158,7 +207,62 @@ namespace API.Controllers
                 throw e;
             }
         }
+        [HttpGet("investmentApprovedForRSM/{empId}/{sbu}/{userRole}")]
+        public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetinvestmentApprovedForRSM(int empId, string sbu, string userRole,
+        [FromQuery] InvestmentInitSpecParams investmentInitParrams)
+        {
+            try
+            {
+               
+                    List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                        new SqlParameter("@SBU", sbu),
+                        new SqlParameter("@EID", empId),
+                        new SqlParameter("@RSTATUS", "Recommended"),
+                        new SqlParameter("@ASTATUS", DBNull.Value)
+                    };
+                    var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentApprpvedSearchForRSM @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
+                    var data = _mapper
+                        .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
+                    var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
+                    var totalItems = await _investmentInitRepo.CountAsync(countSpec);
+                    return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, results.Count(), data));
+                }
+            
+            catch (System.Exception e)
+            {
+                throw e;
+            }
+        }
+          [HttpGet("investmentApprovedForGPM/{empId}/{sbu}/{userRole}")]
+        public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetinvestmentApprovedForGPM(int empId, string sbu, string userRole,
+        [FromQuery] InvestmentInitSpecParams investmentInitParrams)
+        {
+            try
+            {
+               
+                    List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                        new SqlParameter("@SBU", sbu),
+                        new SqlParameter("@EID", empId),
+                        new SqlParameter("@RSTATUS", "Recommended"),
+                        new SqlParameter("@ASTATUS", DBNull.Value)
+                    };
+                    var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentApprpvedSearchForGPM @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
+                    var data = _mapper
+                        .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
+                    var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
+                    var totalItems = await _investmentInitRepo.CountAsync(countSpec);
+                    return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, results.Count(), data));
+                }
+            
+            catch (System.Exception e)
+            {
+                throw e;
+            }
+        }
 
+        
         [HttpPost("insertAprForCampaign/{empID}/{aprStatus}/{sbu}/{donationId}")]
         public async Task<ActionResult<InvestmentAprDto>> InsertInvestmentAprForCampaign(int empId, string aprStatus, string sbu, int donationId, InvestmentAprDto investmentAprDto)
         {
@@ -540,6 +644,10 @@ namespace API.Controllers
                 var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentRecDto.InvestmentInitId, apprAuthConfig.ApprovalAuthority.Priority, "true");
                 var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
                 isComplete = true;
+                if (investmentRecDto.RecStatus== "Not Approved")
+                {
+                    isComplete = false;
+                }
                 foreach (var v in investmentTargetedGroup)
                 {
                     isTrue = false;
@@ -636,6 +744,10 @@ namespace API.Controllers
                 var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentRecDto.InvestmentInitId, apprAuthConfig.ApprovalAuthority.Priority, "true");
                 var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
                 isComplete = true;
+                if (investmentRecDto.RecStatus == "Not Approved")
+                {
+                    isComplete = false;
+                }
                 foreach (var v in investmentTargetedGroup)
                 {
                     isTrue = false;
@@ -900,6 +1012,42 @@ namespace API.Controllers
                 throw ex;
             }
         }
+
+        [HttpGet]
+        [Route("investmentRecDetails/{investmentInitId}/{empId}")]
+        public async Task<IReadOnlyList<InvestmentRec>> GetInvestmentRecDetails(int investmentInitId, int empId)
+        {
+            try
+            {
+                var specAppr = new ApprAuthConfigSpecification(empId, "A");
+                var apprAuthConfigAppr = await _apprAuthConfigRepo.GetEntityWithSpec(specAppr);
+                var spec = new InvestmentRecSpecification(investmentInitId);
+                var investmentDetail = await _investmentRecRepo.ListAsync(spec);
+                return investmentDetail.Where(x => x.Priority == apprAuthConfigAppr.ApprovalAuthority.Priority - 1).ToList();
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpGet]
+        [Route("investmentRecDetailsForGPM/{investmentInitId}/{empId}")]
+        public async Task<IReadOnlyList<InvestmentRec>> GetInvestmentRecDetailsForGPM(int investmentInitId, int empId)
+        {
+            try
+            {
+                var specAppr = new ApprAuthConfigSpecification(empId, "A");
+                var apprAuthConfigAppr = await _apprAuthConfigRepo.GetEntityWithSpec(specAppr);
+                var spec = new InvestmentRecSpecification(investmentInitId);
+                var investmentDetail = await _investmentRecRepo.ListAsync(spec);
+                return investmentDetail.Where(x => x.Priority == 3).ToList();
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
 
         [HttpGet]
         [Route("getInvestmentAprComment/{investmentInitId}/{empId}")]

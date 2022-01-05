@@ -69,8 +69,8 @@ export class InvestmentAprService {
   getLastFiveInvestmentForSociety(donationId:number,societyId:number,marketCode: string, toDayDate: string) {
     return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForSociety/' + donationId + '/' + societyId + '/' +marketCode + '/' +toDayDate).toPromise();
   }
-  getCampaignMsts(){    
-    return this.http.get(this.baseUrl + 'campaign/campaignMstsForInvestment');
+  getCampaignMsts(empId:number){    
+    return this.http.get(this.baseUrl + 'campaign/campaignMstsForInvestment/'+empId);
   }
   async getInvestmentDoctors(investmentInitId:number){    
     return await  this.http.get(this.baseUrl + 'investment/investmentDoctors/'+investmentInitId).toPromise();
@@ -78,8 +78,14 @@ export class InvestmentAprService {
   getInvestmentAprComment(investmentInitId:number,empId:string){    
     return this.http.get(this.baseUrl + 'investmentApr/getInvestmentAprComment/'+investmentInitId+'/'+parseInt(empId));
   }
-  getInvestmentDetails(investmentInitId:number){    
-    return this.http.get(this.baseUrl + 'investmentRec/investmentRecDetails/'+investmentInitId).toPromise();
+  getInvestmentDetails(investmentInitId:number,empId:number,userRole:string){  
+    if(userRole=='GPM')  {
+      return this.http.get(this.baseUrl + 'investmentApr/investmentRecDetailsForGPM/'+investmentInitId+'/'+empId).toPromise();
+    }
+    else{
+      return this.http.get(this.baseUrl + 'investmentApr/investmentRecDetails/'+investmentInitId+'/'+empId).toPromise();
+    }
+    
   }
   getInvestmentTargetedProds(investmentInitId:number,sbu:string){    
     return this.http.get(this.baseUrl + 'investmentRec/investmentRecProducts/'+investmentInitId+'/'+sbu);
@@ -112,7 +118,14 @@ export class InvestmentAprService {
     return this.http.get(this.baseUrl + 'investment/investmentSociety/'+investmentInitId).toPromise();
   }
   
-  getInvestmentInit(empId:number,sbu:string){    
+  
+  getGenParams(){
+    return this.genParams;
+  }
+  setGenParams(genParams: GenericParams) {
+    this.genParams = genParams;
+  }
+  getInvestmentInit(empId:number,sbu:string,userRole:string){    
     let params = new HttpParams();
     if (this.genParams.search) {
       params = params.append('search', this.genParams.search);
@@ -120,7 +133,20 @@ export class InvestmentAprService {
     params = params.append('sort', this.genParams.sort);
     params = params.append('pageIndex', this.genParams.pageIndex.toString());
     params = params.append('pageSize', this.genParams.pageSize.toString());
-    return this.http.get<IInvestmentInitPagination>(this.baseUrl + 'investmentApr/investmentInits/'+empId+'/'+sbu, { observe: 'response', params })
+    var actionName='investmentInits';
+    if(userRole=='RSM')
+    {
+      actionName='investmentInitsForRSM';
+    }
+    else if(userRole=='GPM')
+    {
+      actionName='investmentInitsForGPM';
+    }
+    else
+    {
+      actionName='investmentInits';
+    }
+    return this.http.get<IInvestmentInitPagination>(this.baseUrl + 'investmentApr/'+actionName+'/'+empId+'/'+sbu, { observe: 'response', params })
     //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
     .pipe(
       map(response => {
@@ -131,12 +157,6 @@ export class InvestmentAprService {
     );
     
   }
-  getGenParams(){
-    return this.genParams;
-  }
-  setGenParams(genParams: GenericParams) {
-    this.genParams = genParams;
-  }
   getInvestmentApproved(empId:number,sbu:string,userRole:string){    
     let params = new HttpParams();
     if (this.genParams.search) {
@@ -145,7 +165,20 @@ export class InvestmentAprService {
     params = params.append('sort', this.genParams.sort);
     params = params.append('pageIndex', this.genParams.pageIndex.toString());
     params = params.append('pageSize', this.genParams.pageSize.toString());
-    return this.http.get<IInvestmentInitPagination>(this.baseUrl + 'investmentApr/investmentApproved/'+empId+'/'+sbu+'/'+userRole, { observe: 'response', params })
+    var actionName='investmentApproved';
+    if(userRole=='RSM')
+    {
+      actionName='investmentApprovedForRSM';
+    }
+    else if(userRole=='GPM')
+    {
+      actionName='investmentApprovedForGPM';
+    }
+    else
+    {
+      actionName='investmentApproved';
+    }
+    return this.http.get<IInvestmentInitPagination>(this.baseUrl + 'investmentApr/'+actionName+'/'+empId+'/'+sbu+'/'+userRole, { observe: 'response', params })
     //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
     .pipe(
       map(response => {
@@ -166,15 +199,16 @@ export class InvestmentAprService {
     return this.http.post(this.baseUrl+ 'investmentApr/updateAprCom',  this.investmentAprCommentFormData);
   }
   insertInvestmentDetail(empId:number,sbu:string) {
+    debugger;
     if(this.investmentAprFormData.donationTo=='Campaign')
     {
       if(this.investmentAprCommentFormData.recStatus=='Approved')
       {
         return this.http.post(this.baseUrl+ 'investmentApr/insertAprForCampaign/'+empId+'/'+this.investmentAprCommentFormData.recStatus+'/'+sbu+'/'+this.investmentAprFormData.donationId, this.investmentDetailFormData);
       }
-      // else{
-      //   return this.http.post(this.baseUrl+ 'investmentApr/InsertRec/'+empId+'/'+this.investmentAprCommentFormData.recStatus+'/'+sbu+'/'+this.investmentAprFormData.donationId, this.investmentDetailFormData);
-      // }
+      else{
+        return this.http.post(this.baseUrl+ 'investmentApr/insertRec/'+empId+'/'+this.investmentAprCommentFormData.recStatus+'/'+sbu+'/'+this.investmentAprFormData.donationId, this.investmentDetailFormData);
+      }
     }
     else{
       if(this.investmentAprCommentFormData.recStatus=='Approved')

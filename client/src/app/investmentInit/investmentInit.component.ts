@@ -214,7 +214,7 @@ export class InvestmentInitComponent implements OnInit {
         this.investmentInitService.investmentCampaignFormData.subCampEndDate = new DatePipe('en-US').transform(data.campaignDtl.subCampEndDate, 'dd/MM/yyyy');
 
         this.onChangeCampaignInCamp();
-        this.onChangeSubCampaignInCamp();
+        //this.onChangeSubCampaignInCamp();
       }
       else {
         this.toastr.warning('No Data Found', 'Investment');
@@ -527,6 +527,7 @@ export class InvestmentInitComponent implements OnInit {
 
     this.investmentInitService.getCampaignDtls(this.investmentInitService.investmentCampaignFormData.campaignMstId).subscribe(response => {
       this.campaignDtls = response as ICampaignDtl[];
+      this.onChangeSubCampaignInCamp();
     }, error => {
       console.log(error);
     });
@@ -1081,7 +1082,7 @@ export class InvestmentInitComponent implements OnInit {
         this.investmentInitService.investmentCampaignFormData = res as IInvestmentCampaign;
         this.investmentInitService.investmentCampaignFormData.campaignMstId = tempMstId;
         this.onChangeCampaignInCamp();
-        this.onChangeSubCampaignInCamp();
+        //this.onChangeSubCampaignInCamp();
         this.updateInvestmentInit();
 
         this.isDonationValid = true;
@@ -1311,6 +1312,10 @@ export class InvestmentInitComponent implements OnInit {
   removeInvestmentDoctor() {
     var c = confirm("Are you sure you want to delete that?");
     if (c == true) {
+      if (this.isSubmitted == true) {
+        this.toastr.warning('This Investment has already been submitted', 'Investment');
+        return false;
+      }
       this.SpinnerService.show();
       this.investmentInitService.removeInvestmentDoctor().subscribe(
         res => {
@@ -1329,6 +1334,10 @@ export class InvestmentInitComponent implements OnInit {
   removeInvestmentInstitution() {
     var c = confirm("Are you sure you want to delete that?");
     if (c == true) {
+      if (this.isSubmitted == true) {
+        this.toastr.warning('This Investment has already been submitted', 'Investment');
+        return false;
+      }
       this.SpinnerService.show();
       this.investmentInitService.removeInvestmentInstitution().subscribe(
         res => {
@@ -1347,6 +1356,10 @@ export class InvestmentInitComponent implements OnInit {
   removeInvestmentCampaign() {
     var c = confirm("Are you sure you want to delete that?");
     if (c == true) {
+      if (this.isSubmitted == true) {
+        this.toastr.warning('This Investment has already been submitted', 'Investment');
+        return false;
+      }
       this.SpinnerService.show();
       this.investmentInitService.removeInvestmentCampaign().subscribe(
         res => {
@@ -1365,6 +1378,10 @@ export class InvestmentInitComponent implements OnInit {
   removeInvestmentSociety() {
     var c = confirm("Are you sure you want to delete that?");
     if (c == true) {
+      if (this.isSubmitted == true) {
+        this.toastr.warning('This Investment has already been submitted', 'Investment');
+        return false;
+      }
       this.SpinnerService.show();
       this.investmentInitService.removeInvestmentSociety().subscribe(
         res => {
@@ -1383,6 +1400,10 @@ export class InvestmentInitComponent implements OnInit {
   removeInvestmentBcds() {
     var c = confirm("Are you sure you want to delete that?");
     if (c == true) {
+      if (this.isSubmitted == true) {
+        this.toastr.warning('This Investment has already been submitted', 'Investment');
+        return false;
+      }
       this.SpinnerService.show();
       this.investmentInitService.removeInvestmentBcds().subscribe(
         res => {
@@ -1429,6 +1450,10 @@ export class InvestmentInitComponent implements OnInit {
     if (this.investmentTargetedGroups != null && this.investmentTargetedGroups.length > 0) {
       var c = confirm("Are you sure you want to delete that?");
       if (c == true) {
+        if (this.isSubmitted == true) {
+          this.toastr.warning('This Investment has already been submitted', 'Investment');
+          return false;
+        }
         this.SpinnerService.show();
         this.investmentInitService.removeInvestmentTargetedGroup(this.investmentTargetedGroups).subscribe(
           res => {

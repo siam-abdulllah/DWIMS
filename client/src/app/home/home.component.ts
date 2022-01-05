@@ -1,3 +1,4 @@
+
 import { DashboardService } from './../_services/dashboard.service';
 import { AccountService } from '../account/account.service';
 import { IEmployeeInfo } from '../shared/models/employeeInfo';
@@ -59,10 +60,13 @@ export class HomeComponent implements OnInit {
   }
 
   getMyPending() {
-    this.dashboardService.getMyPending(this.userRole,this.empId).subscribe(response => {
+    this.dashboardService.getMyPending(this.sbu,this.userRole,this.empId).subscribe(response => {
       var data = response;
       this.myPending = data;
-      this.getAprPending();
+      if(this.userRole=='Administrator')
+      {
+        this.getAprPending();
+      }
     }, error => {
       console.log(error);
     });

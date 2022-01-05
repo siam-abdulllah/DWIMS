@@ -43,13 +43,14 @@
                                 <div class="inner">
                                     <!-- <a (click)="getApproveDetail()"> -->
                                     <h3 style="text-align: center; color: white;">{{totalApproved}}</h3>
-                                    </a>
+                                    <!-- </a> -->
                                     <p style="text-align: center; font-weight: bold;">Total Approved</p>
                                 </div>
-                                <!-- <a (click)="getApproveDetail()"> -->
-                                <div class="icon">
-                                    <i class="fa fa-folder"></i>
-                                </div>
+                                <!-- <a (click)="getApproveDetail()">-->
+                                <a>
+                                    <div class="icon">
+                                        <i class="fa fa-folder"></i>
+                                    </div>
                                 </a>
                                 <!-- <a (click)="getApproveDetail()" class="small-box-footer">Click for Details <i class="fas fa-arrow-circle-right"></i></a> -->
 
@@ -60,9 +61,9 @@
                             <!-- small box -->
                             <div class="small-box bg-danger">
                                 <div class="inner">
-                                    <a>
-                                        <h3 style="text-align: center; color: white;">{{myPending}}</h3>
-                                    </a>
+                                    <!-- <a> -->
+                                    <h3 style="text-align: center; color: white;">{{myPending}}</h3>
+                                    <!-- </a> -->
                                     <p style="text-align: center; font-weight: bold;">My Pending</p>
                                 </div>
                                 <a>
@@ -73,9 +74,9 @@
                                 <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
                             </div>
                         </div>
-                        <div class="col-lg-4 col-6" ngif*="userRole=='Administrator'">
+                        <div class="col-lg-4 col-6">
                             <!-- small box -->
-                            <div class="small-box bg-warning">
+                            <div class="small-box bg-warning" *ngif="userRole=='Administrator'">
                                 <div class="inner">
                                     <a (click)="getPendingDetail()">
                                         <h3 style="text-align: center; color: white;">{{aprPending}}</h3>

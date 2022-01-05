@@ -227,7 +227,7 @@ export class InvestmentRecComponent implements OnInit {
   }
 
   getCampaignMst() {
-    this.investmentRecService.getCampaignMsts().subscribe(response => {
+    this.investmentRecService.getCampaignMsts(parseInt(this.empId)).subscribe(response => {
       this.campaignMsts = response as ICampaignMst[];
     }, error => {
       console.log(error);
@@ -289,14 +289,16 @@ export class InvestmentRecComponent implements OnInit {
     this.investmentRecService.getInvestmentCampaigns(this.investmentRecService.investmentRecFormData.id).subscribe(response => {
       var data = response[0] as IInvestmentCampaign;
       if (data !== undefined) {
+        debugger;
         this.investmentRecService.investmentCampaignFormData = data;
         this.investmentRecService.investmentCampaignFormData.campaignMstId = data.campaignDtl.mstId;
-        this.investmentRecService.investmentCampaignFormData.subCampaignName = data.campaignDtl.subCampaignName;
+        //this.investmentRecService.investmentCampaignFormData.subCampaignName = data.campaignDtl.subCampaignName;
+       //this.investmentRecService.investmentCampaignFormData.subCampaignName = data.campaignDtl.subCampaignName;
         this.investmentRecService.investmentCampaignFormData.doctorName = data.doctorInfo.doctorName;
         this.investmentRecService.investmentCampaignFormData.institutionName = data.institutionInfo.institutionName;
         this.investmentRecService.investmentCampaignFormData.subCampStartDate = new DatePipe('en-US').transform(data.campaignDtl.subCampStartDate, 'dd/MM/yyyy');
         this.investmentRecService.investmentCampaignFormData.subCampEndDate = new DatePipe('en-US').transform(data.campaignDtl.subCampEndDate, 'dd/MM/yyyy')
-        this.investmentRecService.getCampaignMsts().subscribe(response => {
+        this.investmentRecService.getCampaignMsts(parseInt(this.empId)).subscribe(response => {
           this.campaignMsts = response as ICampaignMst[];
           for (let i = 0; i < this.campaignMsts.length; i++) {
             if (this.campaignMsts[i].id == this.investmentRecService.investmentCampaignFormData.campaignDtl.mstId) {

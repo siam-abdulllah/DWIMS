@@ -30,8 +30,8 @@ export class DashboardService {
     return this.http.get(this.baseUrl + 'dashboard/totalApproved/'+role+'/'+empCode);
   }
 
-  getMyPending(role: string, empCode: string){    
-    return this.http.get(this.baseUrl + 'dashboard/myPendingCount/'+role+'/'+empCode);
+  getMyPending(sbu:string,role: string, empCode: string){    
+    return this.http.get(this.baseUrl + 'dashboard/myPendingCount/'+sbu+'/'+role+'/'+empCode);
     //return this.http.get(this.baseUrl + 'dashboard/myPending/'+role+'/'+empCode);
   }
 

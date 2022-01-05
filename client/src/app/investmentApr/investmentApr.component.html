@@ -736,7 +736,7 @@
                                                         <label>Payment Method</label>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <select class="form-control" [disabled]="isInvOther && !isAdmin" name="paymentMethod" id="paymentMethod" #paymentMethod="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.paymentMethod">
+                                                        <select class="form-control" (change)="onPaymentMethod()" [disabled]="isInvOther && !isAdmin" name="paymentMethod" id="paymentMethod" #paymentMethod="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.paymentMethod">
                                                         
                                                             <option  [ngValue]="null">Select Payment Method</option>
                                                             <option value="Cash">Cash</option>
@@ -748,14 +748,14 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group" *ngIf="isDepotRequire">
+                                            <div class="form-group">
                                                 <div class="row">
                                                     <div class="col-md-2">
                                                         <label>Depot</label>
-                                                        <span style="color:red;">*</span>
+                                                        <span style="color:red;" *ngIf="isDepotRequire">*</span>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="depots" bindLabel="depotName" bindValue="depotCode" placeholder="Select Depot" name="depotCode" id="depotCode" #depotCode="ngModel" [(ngModel)]="investmentAprService.investmentDepotFormData.depotCode">
+                                                        <ng-select [virtualScroll]="true" [disabled]="(isInvOther && !isAdmin) || !isDepotRequire" [items]="depots" bindLabel="depotName" bindValue="depotCode" placeholder="Select Depot" name="depotCode" id="depotCode" #depotCode="ngModel" [(ngModel)]="investmentAprService.investmentDepotFormData.depotCode">
                                                         </ng-select>
                                                     </div>
                                                 </div>

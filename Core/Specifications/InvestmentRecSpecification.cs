@@ -39,7 +39,8 @@ namespace Core.Specifications
             : base(x => x.InvestmentInit.EmployeeId == empId)
         {
 
-        }public InvestmentRecSpecification(int id,int empId)
+        }
+        public InvestmentRecSpecification(int id,int empId)
             : base(x => x.InvestmentInitId == id &&  x.EmployeeId == empId)
         {
 

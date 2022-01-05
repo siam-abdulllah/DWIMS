@@ -275,10 +275,10 @@ namespace API.Controllers
                 var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(investmentTargetedGroupSpec);
                 var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentRecDto.InvestmentInitId, apprAuthConfig.ApprovalAuthority.Priority, "true");
                 var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
-                if (investmentRecDto.RecStatus == "Recommended")
-                {
+               // if (investmentRecDto.RecStatus == "Recommended" || investmentRecDto.RecStatus == "Not Recommended")
+                //{
                     isComplete = true;
-                }
+                //}
                 foreach (var v in investmentTargetedGroup)
                 {
                     isTrue = false;
@@ -599,8 +599,8 @@ namespace API.Controllers
             try
             {
                 var spec = new InvestmentRecCommentSpecification(investmentInitId, empId);
-                var investmentDetail = await _investmentRecCommentRepo.ListAsync(spec);
-                return investmentDetail;
+                var investmentCmnt = await _investmentRecCommentRepo.ListAsync(spec);
+                return investmentCmnt;
             }
             catch (System.Exception ex)
             {
