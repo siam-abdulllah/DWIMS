@@ -176,7 +176,6 @@ export class InvestmentInitComponent implements OnInit {
       };
       if (this.investmentInits.length > 0) {
           this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
-       
       }
       else {
         this.toastr.warning('No Data Found');
@@ -749,6 +748,7 @@ export class InvestmentInitComponent implements OnInit {
       this.markets = response as IMarket[];
       this.SpinnerService.hide();
     }, error => {
+      this.SpinnerService.hide();
       console.log(error);
     });
   }
@@ -756,7 +756,9 @@ export class InvestmentInitComponent implements OnInit {
     this.SpinnerService.show();
     this.investmentInitService.getProduct(this.sbu).subscribe(response => {
       this.products = response as IProduct[];
+      this.SpinnerService.hide();
     }, error => {
+      this.SpinnerService.hide();
       console.log(error);
     });
   }
@@ -769,7 +771,9 @@ export class InvestmentInitComponent implements OnInit {
     this.SpinnerService.show();
     this.investmentInitService.getMarketGroupMsts(this.empId).subscribe(response => {
       this.marketGroupMsts = response as IMarketGroupMst[];
+      this.SpinnerService.hide();
     }, error => {
+      this.SpinnerService.hide();
       console.log(error);
     });
   }

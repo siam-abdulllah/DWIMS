@@ -96,7 +96,6 @@ export class RptInvestSummaryComponent implements OnInit {
   getEmployeeId() {
     this.empId = this.accountService.getEmployeeId();
     this.userRole = this.accountService.getUserRole();
-
   }
   dateCompare() {
     if (this.reportService.rptInvestSummaryFormData.fromDate != null && this.reportService.rptInvestSummaryFormData.toDate != null) {

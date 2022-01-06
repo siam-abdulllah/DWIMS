@@ -58,9 +58,7 @@ export class ParamInvestSummaryComponent implements OnInit {
     var url_string = window.location.href
     var url = new URL(url_string);
     var v=url.pathname.split("/");
-
     this.approveStatus = v[3];
-
     this.resetForm();
     this.getEmployeeId();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-blue' }, { dateInputFormat: 'DD/MM/YYYY' });

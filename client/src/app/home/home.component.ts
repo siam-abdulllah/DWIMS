@@ -38,7 +38,7 @@ export class HomeComponent implements OnInit {
         this.sbu = response.sbu;
         this.marketCode = response.marketCode;
         this.getTotalApproved();
-       // this.getMyPending();
+      // this.getMyPending();
       },
       (error) => {
         console.log(error);
