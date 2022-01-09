@@ -1,5 +1,5 @@
-import { IReportConfig, IReportConfigPagination, ReportConfigPagination } from '../report-investment/report-investment.component';
 import { IRole, IRoleResponse } from '../shared/models/role';
+import { IrptDepotLetter, IDepotLetterPagination, DepotLetterPagination } from '../shared/models/rptInvestSummary';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
@@ -8,19 +8,18 @@ import { IUser, IUserResponse } from '../shared/models/user';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { GenericParams } from '../shared/models/genericParams';
-import { IPagination, Pagination } from '../shared/models/pagination';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class DepotPendingService {
-  reportConfig: IReportConfig[]=[];
+  rptDepotLetter: IrptDepotLetter[]=[];
+  pagination = new DepotLetterPagination();
 
   roles: IRole[] = [];
   baseUrl = environment.apiUrl;
   genParams = new GenericParams();
-  reportpagination = new ReportConfigPagination();
 
   constructor(private http: HttpClient, private router: Router) { }
   getGenParams(){
@@ -32,6 +31,31 @@ export class DepotPendingService {
     this.genParams = genParams;
   }
 
+  // getPendingReport(empId:number){    
+  //   let params = new HttpParams();
+  //   debugger;
+  //   if (this.genParams.search) {
+  //     params = params.append('search', this.genParams.search);
+  //   }
+  //   params = params.append('sort', this.genParams.sort);
+  //   params = params.append('pageIndex', this.genParams.pageIndex.toString());
+  //   params = params.append('pageSize', this.genParams.pageSize.toString());
+  //   return this.http.get<IDepotLetterPagination>(this.baseUrl + 'depotPrinting/pendingForPrint/'+ empId, { observe: 'response', params })
+  //   .pipe(
+  //     map(response => {
+  //       this.rptDepotLetter = [...this.rptDepotLetter, ...response.body.data]; 
+  //       this.pagination = response.body;
+  //       return this.pagination;
+  //     })
+  //   );
+  // }
 
+  getPendingReport(empId:number){    
+    return this.http.get(this.baseUrl + 'depotPrinting/pendingForPrint/'+ empId);
+  }
+
+  getRptDepotLetter(initId:any) {
+    return this.http.get(this.baseUrl+ 'reportInvestment/rptInvestDepo/'+initId);
+  }
 }
 

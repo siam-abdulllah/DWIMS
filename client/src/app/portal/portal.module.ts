@@ -32,6 +32,7 @@ import { DocHonApprComponent } from '../docHonAppr/docHonAppr.component';
 import { ClusterInfoComponent } from '../master/cluster-info/cluster-info.component';
 import { RptInvestSummaryComponent } from '../rptInvestmentSummary/rptInvestmentSummary.component';
 import { RptInvestmentDetailComponent } from '../RptInvestmentDetail/rptInvestmentDetail.component';
+import { PendingPrintDepotComponent } from '../pendingPrintDepot/pendingPrintDepot.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { MenuHeadComponent } from '../menuHead/menuHead.component';
 import { SubMenuComponent } from '../subMenu/subMenu.component';
@@ -77,6 +78,7 @@ import { ChangePasswordComponent } from '../changePassword/changePassword.compon
     RptInvestSummaryComponent,
     ParamInvestSummaryComponent,
     RptInvestmentDetailComponent,
+    PendingPrintDepotComponent,
     SbuWiseBudgetComponent,
     DocHonApprComponent,
     ClusterInfoComponent,

@@ -16,6 +16,7 @@ import { InvestmentAprNoSbuComponent } from './../investmentAprNoSbu/investmentA
 import { InvestmentRcvComponent } from '../investmentRcv/investmentRcv.component';
 import { SbuWiseBudgetComponent } from '../sbu-wise-budget/sbu-wise-budget.component';
 import { ReportInvestmentComponent } from './../report-investment/report-investment.component';
+import { PendingPrintDepotComponent } from '../pendingPrintDepot/pendingPrintDepot.component';
 import { NgModule } from '@angular/core';
 //import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
@@ -49,6 +50,7 @@ const portalRoutes: Routes = [
         {path: 'sbu-wise-budget', component: SbuWiseBudgetComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'rptInvestment', component: ReportInvestmentComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'rptInvestmentSummary', component: RptInvestSummaryComponent},
+        {path: 'pendingPrintDepot', component: PendingPrintDepotComponent},
         {path: 'paramInvestmentSummary/:param', component: ParamInvestSummaryComponent},
         //{path: 'rptInvestmentDetail', component: RptInvestmentDetailComponent},
         {path: 'rptInvestmentDetail/:id', component: RptInvestmentDetailComponent},

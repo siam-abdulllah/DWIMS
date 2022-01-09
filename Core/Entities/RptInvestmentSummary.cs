@@ -20,6 +20,19 @@ namespace Core.Entities
          public string MarketName { get; set; }
     }
 
+//a.id, a.SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, e.EmployeeName,  
+
+//e.Id as EmpId, e.DesignationName, e.MarketName, ,,  doc.id as DocId, , doc.[Address], , depo.DepotName
+
+//a.ReferenceNo
+//d.DonationTypeName
+//doc.DoctorName
+//inDetail.ProposedAmount
+//
+//
+//
+//
+//
     public class RptDepotLetter : BaseEntity
     {
         public string ReferenceNo { get; set; }

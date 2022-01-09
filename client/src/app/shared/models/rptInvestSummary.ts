@@ -30,7 +30,6 @@ export class rptInvestSummary implements IrptInvestSummary {
     marketName: string;
 }
 
-
 export interface IrptDepotLetter {
     id: number;
     setOn: Date;
@@ -61,4 +60,18 @@ export class rptDepotLetter implements IrptDepotLetter {
     employeeName: string;
     depotName: string;
     marketName: string;
+}
+
+export interface IDepotLetterPagination {
+    pageIndex: number;
+    pageSize: number;
+    count: number;
+    data: IrptDepotLetter[];
+}
+
+export class DepotLetterPagination implements IDepotLetterPagination {
+    pageIndex: number;
+    pageSize: number;
+    count: number;
+    data: IrptDepotLetter[] = [];
 }
