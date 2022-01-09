@@ -6,26 +6,26 @@ import 'jspdf-autotable';
 import * as jsPDF from 'jspdf';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
-import { IrptDepotLetter } from './../shared/models/rptInvestSummary';
+import { IrptDepotLetter } from '../shared/models/rptInvestSummary';
 import { ToastrService } from 'ngx-toastr';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from "ngx-spinner";
 import { RptInvestSummaryService } from '../_services/report-investsummary.service';
-import { GenericParams } from './../shared/models/genericParams';
+import { GenericParams } from '../shared/models/genericParams';
 import { AccountService } from '../account/account.service';
 import { InvestmentInit } from '../shared/models/investmentRec';
 import { DatePipe } from '@angular/common';
 
 
 @Component({
-  selector: 'rptInvestmentSummary',
-  templateUrl: './rptInvestmentSummary.component.html',
+  selector: 'pendingPrintDepot',
+  templateUrl: './pendingPrintDepot.component.html',
   styles: [
   ]
 })
 
-export class RptInvestSummaryComponent implements OnInit {
+export class PendingPrintDepotComponent implements OnInit {
   @ViewChild('search', { static: false }) searchTerm: ElementRef;
   @ViewChild('fromDate') fromDate: ElementRef;
   @ViewChild('toDate') toDate: ElementRef;
