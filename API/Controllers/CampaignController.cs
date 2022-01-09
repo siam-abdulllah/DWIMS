@@ -319,6 +319,23 @@ namespace API.Controllers
                 throw ex;
             }
         }
+     [HttpGet("campaignMstsForInvSummaryReport/{mstId}")]
+        public async Task<IReadOnlyList<CampaignMstDto>> GetCampaignMstsForInvSummaryReport(int mstId)
+        {
+            try
+            {
+                var spec = new CampaignMstSpecification(mstId);
+
+                var campaignMst = await _campaignMstRepo.ListAsync(spec);
+
+                var data = _mapper.Map<IReadOnlyList<CampaignMst>, IReadOnlyList<CampaignMstDto>>(campaignMst);
+                return data;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
      
         [HttpGet("campaignDtlsForInvestment/{mstId}")]
         public async Task<IReadOnlyList<CampaignDtlDto>> GetSubCampaignDtlsForInvestment(int mstId)

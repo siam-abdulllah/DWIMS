@@ -39,46 +39,39 @@ namespace API.Controllers
                 DateTime td = DateTime.Today;
 
 
-            string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode= '" + empCode +"' ";
-            var empData = _dbContext.Employee.FromSqlRaw(empQry).ToList();
-    
-            //string qry = " select CAST(a.Id AS INT) as Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.ReferenceNo, d.DonationTypeName, a.DonationTo, b.ProposedAmount, b.FromDate, b.ToDate, dbo.fnGetInvestmentStatus(a.Id) InvStatus, e.EmployeeName,dbo.fnGetInvestmentApprovedBy(a.Id) ApprovedBy,e.MarketName, ISNULL(rcv.ReceiveStatus, 'Not Completed') ReceiveStatus, ISNULL(rcvBy.EmployeeName, 'N/A') ReceiveBy " +
-                string qry = " select  CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(a.Id) Count" +
-                " from InvestmentInit a " +
-                " left join InvestmentDetail b on a.Id = b.InvestmentInitId " +
-                " left join InvestmentRecv rcv on a.Id = rcv.InvestmentInitId " +
-                " inner join Donation d on d.Id = a.DonationId " +
-                " left join Employee e on e.Id = a.EmployeeId " +
-                " left join Employee rcvBy on rcvBy.Id = rcv.EmployeeId " +
-                " Where 1 = 1 AND dbo.fnGetInvestmentStatus(a.Id) = 'Approved' " +
-                //" AND(CONVERT(date, b.FromDate) >= CAST('" + fd + "' as Date) AND CAST('" + td + "' as Date) >= CONVERT(date, b.ToDate)) ";
-                " AND rcv.ReceiveStatus IS NULL ";
-            if (role != "Administrator")
-            {
-                qry = qry + " AND a.SBU='" + empData[0].SBU + "' AND (" +
-                            " e.MarketGroupCode = COALESCE(NULLIF('" + empData[0].MarketGroupCode + "',''), 'All')" +
-                            " OR COALESCE(NULLIF('" + empData[0].MarketGroupCode + "',''), 'All') = 'All'" +
-                            " )" +
-                            " AND (" +
-                            " e.MarketCode = COALESCE(NULLIF('" + empData[0].MarketCode + "',''), 'All')" +
-                            " OR COALESCE(NULLIF('" + empData[0].MarketCode + "',''), 'All') = 'All'" +
-                            " )" +
-                            " AND (" +
-                            " e.TerritoryCode = COALESCE(NULLIF('" + empData[0].TerritoryCode + "',''), 'All')" +
-                            " OR COALESCE(NULLIF('" + empData[0].TerritoryCode + "',''), 'All') = 'All'" +
-                            " )" +
-                            " AND (" +
-                            " e.RegionCode = COALESCE(NULLIF('" + empData[0].RegionCode + "',''), 'All')" +
-                            " OR COALESCE(NULLIF('" + empData[0].RegionCode + "',''), 'All') = 'All'" +
-                            " )" +
-                            " AND (" +
-                            " e.ZoneCode = COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All')" +
-                            " OR COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All') = 'All'" +
-                            " )";
-            }
+                string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode= '" + empCode + "' ";
+                var empData = _dbContext.Employee.FromSqlRaw(empQry).ToList();
 
-            var results = _dbContext.CountInt.FromSqlRaw(qry).ToList();
-            return results[0].Count.ToString();
+                //string qry = " select CAST(a.Id AS INT) as Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.ReferenceNo, d.DonationTypeName, a.DonationTo, b.ProposedAmount, b.FromDate, b.ToDate, dbo.fnGetInvestmentStatus(a.Id) InvStatus, e.EmployeeName,dbo.fnGetInvestmentApprovedBy(a.Id) ApprovedBy,e.MarketName, ISNULL(rcv.ReceiveStatus, 'Not Completed') ReceiveStatus, ISNULL(rcvBy.EmployeeName, 'N/A') ReceiveBy " +
+                string qry = " SELECT CAST('1' AS INT) AS Id ,1 AS DataStatus , SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(a.Id) Count " +
+                    "  FROM InvestmentRecComment a LEFT JOIN InvestmentRecv rcv ON a.Id = rcv.InvestmentInitId " +
+                    " WHERE 1 = 1 AND a.RecStatus = 'Approved'  AND rcv.ReceiveStatus IS NULL ";
+                if (role != "Administrator")
+                {
+                    qry = qry + " AND a.SBU='" + empData[0].SBU + "' AND (" +
+                                " a.MarketGroupCode = COALESCE(NULLIF('" + empData[0].MarketGroupCode + "',''), 'All')" +
+                                " OR COALESCE(NULLIF('" + empData[0].MarketGroupCode + "',''), 'All') = 'All'" +
+                                " )" +
+                                " AND (" +
+                                " a.MarketCode = COALESCE(NULLIF('" + empData[0].MarketCode + "',''), 'All')" +
+                                " OR COALESCE(NULLIF('" + empData[0].MarketCode + "',''), 'All') = 'All'" +
+                                " )" +
+                                " AND (" +
+                                " a.TerritoryCode = COALESCE(NULLIF('" + empData[0].TerritoryCode + "',''), 'All')" +
+                                " OR COALESCE(NULLIF('" + empData[0].TerritoryCode + "',''), 'All') = 'All'" +
+                                " )" +
+                                " AND (" +
+                                " a.RegionCode = COALESCE(NULLIF('" + empData[0].RegionCode + "',''), 'All')" +
+                                " OR COALESCE(NULLIF('" + empData[0].RegionCode + "',''), 'All') = 'All'" +
+                                " )" +
+                                " AND (" +
+                                " a.ZoneCode = COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All')" +
+                                " OR COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All') = 'All'" +
+                                " )";
+                }
+
+                var results = _dbContext.CountInt.FromSqlRaw(qry).ToList();
+                return results[0].Count.ToString();
 
             }
             catch (System.Exception e)
@@ -89,15 +82,15 @@ namespace API.Controllers
         [HttpGet("GetApprAuth/{empId}")]
         public async Task<ApprovalAuthority> GetApprAuth(int empId)
         {
-                var specAppr = new ApprAuthConfigSpecification(Convert.ToInt32(empId), "A");
-                var appPriority = await _apprAuthConfigRepo.GetEntityWithSpec(specAppr);
+            var specAppr = new ApprAuthConfigSpecification(Convert.ToInt32(empId), "A");
+            var appPriority = await _apprAuthConfigRepo.GetEntityWithSpec(specAppr);
 
-                return  appPriority.ApprovalAuthority;
+            return appPriority.ApprovalAuthority;
         }
 
 
         [HttpGet("myPendingCount/{sbu}/{role}/{empCode}")]
-        public async Task<object> GetMyPendingAsync(string sbu,string role, string empCode)
+        public async Task<object> GetMyPendingAsync(string sbu, string role, string empCode)
         {
             try
             {
@@ -110,7 +103,7 @@ namespace API.Controllers
                     qry = " select CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count from InvestmentInit " +
                         " where Id in (select InvestmentInitId from InvestmentTargetedGroup " +
                         " where MarketCode in (select MarketCode from Employee " +
-                        " where Id = "+ empCode +" ) and CompletionStatus = 0) and Confirmation = 1 ";
+                        " where Id = " + empCode + " ) and CompletionStatus = 0) and Confirmation = 1 ";
                 }
                 else if (appPriority.Priority == 2)
                 {
@@ -132,8 +125,8 @@ namespace API.Controllers
                     var empData = _dbContext.Employee.FromSqlRaw(empQry).ToList();
                     qry = " select CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count from InvestmentInit  " +
                         " where Id in (select InvestmentInitId from InvestmentRecComment a " +
-                        //" where RegionCode in (select RegionCode from Employee " +
-                        //" where Id = "+empCode+"  ) and CompletionStatus = 0 and [Priority] = 3) "
+                            //" where RegionCode in (select RegionCode from Employee " +
+                            //" where Id = "+empCode+"  ) and CompletionStatus = 0 and [Priority] = 3) "
                             " where " +
                             " (a.SBU = COALESCE(NULLIF('" + empData[0].SBU + "',''), 'All')" +
                             " OR COALESCE(NULLIF('" + empData[0].SBU + "',''), 'All') = 'All'" +
@@ -158,7 +151,7 @@ namespace API.Controllers
                             " a.ZoneCode = COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All')" +
                             " OR COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All') = 'All'" +
                             " ) AND " +
-                            " 'Completed' = [dbo].[fnGetRecStatusByPriority](A.InvestmentInitId, "+appPriority.Priority+" - 1)" +
+                            " 'Completed' = [dbo].[fnGetRecStatusByPriority](A.InvestmentInitId, " + appPriority.Priority + " - 1)" +
                             " )" +
                             " AND Id Not In" +
                             " ( select InvestmentInitId from InvestmentRecComment a " +
@@ -195,8 +188,8 @@ namespace API.Controllers
                     var empData = _dbContext.Employee.FromSqlRaw(empQry).ToList();
                     qry = " select CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count from InvestmentInit  " +
                             " where DonationTo <>'Campaign' AND Id in (select InvestmentInitId from InvestmentRecComment a " +
-                        //" where RegionCode in (select RegionCode from Employee " +
-                        //" where Id = "+empCode+"  ) and CompletionStatus = 0 and [Priority] = 3) "
+                            //" where RegionCode in (select RegionCode from Employee " +
+                            //" where Id = "+empCode+"  ) and CompletionStatus = 0 and [Priority] = 3) "
                             " where " +
                             " (a.SBU = COALESCE(NULLIF('" + empData[0].SBU + "',''), 'All')" +
                             " OR COALESCE(NULLIF('" + empData[0].SBU + "',''), 'All') = 'All'" +
@@ -221,7 +214,7 @@ namespace API.Controllers
                             " a.ZoneCode = COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All')" +
                             " OR COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All') = 'All'" +
                             " ) AND " +
-                            " 'Completed' = [dbo].[fnGetRecStatusByPriority](A.InvestmentInitId, "+appPriority.Priority+" - 1)" +
+                            " 'Completed' = [dbo].[fnGetRecStatusByPriority](A.InvestmentInitId, " + appPriority.Priority + " - 1)" +
                             " AND A.Priority=" + appPriority.Priority + " - 1" +
                              " AND RecStatus <> 'Approved'" +
                             " )" +
@@ -259,7 +252,7 @@ namespace API.Controllers
                     qry = " select CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count from InvestmentInit  " +
                         " where Id in (select InvestmentInitId from InvestmentRecComment " +
                         " where RegionCode in (select RegionCode from Employee " +
-                        " where Id = "+empCode+"  ) and CompletionStatus = 0 and [Priority] = 3) ";
+                        " where Id = " + empCode + "  ) and CompletionStatus = 0 and [Priority] = 3) ";
                     List<SqlParameter> parms = new List<SqlParameter>
                     {
                         new SqlParameter("@SBU", sbu),
@@ -273,7 +266,7 @@ namespace API.Controllers
                 {
                     return 0;
                 }
-   
+
                 var result = _dbContext.CountInt.FromSqlRaw(qry).ToList();
                 return result[0].Count.ToString();
             }
@@ -285,7 +278,7 @@ namespace API.Controllers
         }
 
 
-         [HttpGet("approvalPending/{role}/{empCode}")]
+        [HttpGet("approvalPending/{role}/{empCode}")]
         public object GetApprovalPending(string role, string empCode)
         {
             try
@@ -293,47 +286,47 @@ namespace API.Controllers
                 DateTime fd = new DateTime(DateTime.Now.Year, 1, 1);
                 DateTime td = DateTime.Today;
 
-            string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode= '" + empCode +"' ";
-            var empData = _dbContext.Employee.FromSqlRaw(empQry).ToList();
-   
-            //string qry = " select CAST(a.Id AS INT) as Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.ReferenceNo, d.DonationTypeName, a.DonationTo, b.ProposedAmount, b.FromDate, b.ToDate, dbo.fnGetInvestmentStatus(a.Id) InvStatus, e.EmployeeName,dbo.fnGetInvestmentApprovedBy(a.Id) ApprovedBy,e.MarketName, ISNULL(rcv.ReceiveStatus, 'Not Completed') ReceiveStatus, ISNULL(rcvBy.EmployeeName, 'N/A') ReceiveBy " +
-              string qry = " select CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(a.Id) Count " +
-                " from InvestmentInit a " +
-                " left join InvestmentDetail b on a.Id = b.InvestmentInitId " +
-                " left join InvestmentRecv rcv on a.Id = rcv.InvestmentInitId " +
-                " inner join Donation d on d.Id = a.DonationId " +
-                " left join Employee e on e.Id = a.EmployeeId " +
-                " left join Employee rcvBy on rcvBy.Id = rcv.EmployeeId " +
-                " Where 1 = 1 AND dbo.fnGetInvestmentStatus(a.Id) = 'Pending' AND a.Confirmation = 1 AND b.ProposedAmount is NOT NULL";
-                //" AND(CONVERT(date, b.FromDate) >= CAST('" + fd + "' as Date) AND CAST('" + td + "' as Date) >= CONVERT(date, b.ToDate)) ";
-            if (role != "Administrator")
-            {
-                qry = qry + " AND a.SBU='" + empData[0].SBU + "' AND (" +
-                            " e.MarketGroupCode = COALESCE(NULLIF('" + empData[0].MarketGroupCode + "',''), 'All')" +
-                            " OR COALESCE(NULLIF('" + empData[0].MarketGroupCode + "',''), 'All') = 'All'" +
-                            " )" +
-                            " AND (" +
-                            " e.MarketCode = COALESCE(NULLIF('" + empData[0].MarketCode + "',''), 'All')" +
-                            " OR COALESCE(NULLIF('" + empData[0].MarketCode + "',''), 'All') = 'All'" +
-                            " )" +
-                            " AND (" +
-                            " e.TerritoryCode = COALESCE(NULLIF('" + empData[0].TerritoryCode + "',''), 'All')" +
-                            " OR COALESCE(NULLIF('" + empData[0].TerritoryCode + "',''), 'All') = 'All'" +
-                            " )" +
-                            " AND (" +
-                            " e.RegionCode = COALESCE(NULLIF('" + empData[0].RegionCode + "',''), 'All')" +
-                            " OR COALESCE(NULLIF('" + empData[0].RegionCode + "',''), 'All') = 'All'" +
-                            " )" +
-                            " AND (" +
-                            " e.ZoneCode = COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All')" +
-                            " OR COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All') = 'All'" +
-                            " )";
-            }
-        
+                string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode= '" + empCode + "' ";
+                var empData = _dbContext.Employee.FromSqlRaw(empQry).ToList();
 
-            //var results = _dbContext.Set.FromSqlRaw(qry).ToList();
-            var results = _dbContext.CountInt.FromSqlRaw(qry).ToList();
-            return results[0].Count.ToString();
+                //string qry = " select CAST(a.Id AS INT) as Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.ReferenceNo, d.DonationTypeName, a.DonationTo, b.ProposedAmount, b.FromDate, b.ToDate, dbo.fnGetInvestmentStatus(a.Id) InvStatus, e.EmployeeName,dbo.fnGetInvestmentApprovedBy(a.Id) ApprovedBy,e.MarketName, ISNULL(rcv.ReceiveStatus, 'Not Completed') ReceiveStatus, ISNULL(rcvBy.EmployeeName, 'N/A') ReceiveBy " +
+                string qry = " select CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(a.Id) Count " +
+                  " from InvestmentInit a " +
+                  " left join InvestmentDetail b on a.Id = b.InvestmentInitId " +
+                  " left join InvestmentRecv rcv on a.Id = rcv.InvestmentInitId " +
+                  " inner join Donation d on d.Id = a.DonationId " +
+                  " left join Employee e on e.Id = a.EmployeeId " +
+                  " left join Employee rcvBy on rcvBy.Id = rcv.EmployeeId " +
+                  " Where 1 = 1 AND dbo.fnGetInvestmentStatus(a.Id) = 'Pending' AND a.Confirmation = 1 AND b.ProposedAmount is NOT NULL";
+                //" AND(CONVERT(date, b.FromDate) >= CAST('" + fd + "' as Date) AND CAST('" + td + "' as Date) >= CONVERT(date, b.ToDate)) ";
+                if (role != "Administrator")
+                {
+                    qry = qry + " AND a.SBU='" + empData[0].SBU + "' AND (" +
+                                " e.MarketGroupCode = COALESCE(NULLIF('" + empData[0].MarketGroupCode + "',''), 'All')" +
+                                " OR COALESCE(NULLIF('" + empData[0].MarketGroupCode + "',''), 'All') = 'All'" +
+                                " )" +
+                                " AND (" +
+                                " e.MarketCode = COALESCE(NULLIF('" + empData[0].MarketCode + "',''), 'All')" +
+                                " OR COALESCE(NULLIF('" + empData[0].MarketCode + "',''), 'All') = 'All'" +
+                                " )" +
+                                " AND (" +
+                                " e.TerritoryCode = COALESCE(NULLIF('" + empData[0].TerritoryCode + "',''), 'All')" +
+                                " OR COALESCE(NULLIF('" + empData[0].TerritoryCode + "',''), 'All') = 'All'" +
+                                " )" +
+                                " AND (" +
+                                " e.RegionCode = COALESCE(NULLIF('" + empData[0].RegionCode + "',''), 'All')" +
+                                " OR COALESCE(NULLIF('" + empData[0].RegionCode + "',''), 'All') = 'All'" +
+                                " )" +
+                                " AND (" +
+                                " e.ZoneCode = COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All')" +
+                                " OR COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All') = 'All'" +
+                                " )";
+                }
+
+
+                //var results = _dbContext.Set.FromSqlRaw(qry).ToList();
+                var results = _dbContext.CountInt.FromSqlRaw(qry).ToList();
+                return results[0].Count.ToString();
 
             }
             catch (System.Exception e)

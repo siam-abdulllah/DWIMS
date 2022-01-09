@@ -364,7 +364,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <div class="form-group">
                                         <table class="table  table-bordered">
                                             <tr class="HeaderRow">
@@ -385,7 +385,7 @@
                                             </tr>
                                         </table>
                                     </div>
-                                </div>
+                                </div> -->
                             </fieldset>
                             <fieldset *ngIf="investmentInitService.investmentInitFormData.donationTo=='Bcds'">
                                 <div class="form-group">
@@ -505,7 +505,7 @@
                                     <div class="row">
                                         <!--<div class="col-md-6">
                                             <div class="form-group">
-                                                 <table class="table  table-bordered">
+                                                <table class="table  table-bordered">
                                                     <tr class="HeaderRow">
                                                         <td>Investment</td>
                                                         <td>Commitment-All</td>
@@ -840,7 +840,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <select class="form-control" id="receiveStatus" name="receiveStatus" #receiveStatus="ngModel" [(ngModel)]="investmentInitService.investmentRcvCommentFormData.receiveStatus" [class.invalid]="receiveStatus.invalid && receiveStatus.touched" required>  
-                                                <option  [ngValue]="null">Select Status</option>
+                                                <option  [ngValue]="null">Pending</option>
                                                 <!-- <option *ngIf=" !isInvOther" value="Approved">Approved</option>
                                                 <option *ngIf="!isInvOther" value="Not Approved">Not Approved</option> -->
                                                 <option  value="Received">Received</option>

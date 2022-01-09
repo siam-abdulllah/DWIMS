@@ -73,8 +73,8 @@ export class RptInvestmentDetailService {
   getSociety() {
     return this.http.get(this.baseUrl + 'society/societyForInvestment');
   }
-  getCampaignMsts() {
-    return this.http.get(this.baseUrl + 'campaign/campaignMstsForInvestment');
+  getCampaignMsts(mstId:number) {
+    return this.http.get(this.baseUrl + 'campaign/campaignMstsForInvSummaryReport/'+mstId);
   }
   getCampaignDtls(mstId: number) {
     return this.http.get(this.baseUrl + 'campaign/campaignDtlsForInvestment/' + mstId);
