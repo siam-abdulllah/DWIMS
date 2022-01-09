@@ -342,6 +342,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
+      
         [HttpPost("submitInvestment")]
         public async Task<ActionResult<InvestmentInitDto>> SubmitInvestmentInit(InvestmentInitDto investmentInitDto)
         {
@@ -395,6 +396,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
+      
         [HttpPost("updateInitOther/{empId}")]
         public async Task<ActionResult<InvestmentInitDto>> UpdateInvestmentInitOther(InvestmentInitDto investmentInitDto, int empId)
         {
@@ -746,6 +748,31 @@ namespace API.Controllers
                         _investmentTargetedProdRepo.Delete(v);
                         _investmentTargetedProdRepo.Savechange();
                     }
+
+                    return Ok("Succsessfuly Deleted!!!");
+                }
+                return NotFound();
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+         [HttpPost("removeInvestmentIndTargetedGroup")]
+        public async Task<IActionResult> RemoveInvestmentTargetedProd(InvestmentTargetedGroup investmentTargetedGroup)
+        {
+            try
+            {
+                //var response = new HttpResponseMessage();
+                var alreadyExistSpec = new InvestmentTargetedGroupSpecification(investmentTargetedGroup.InvestmentInitId, investmentTargetedGroup.MarketCode);
+                var alreadyExistInvestmentTargetedGroup = await _investmentTargetedGroupRepo.GetEntityWithSpec(alreadyExistSpec);
+                if (alreadyExistInvestmentTargetedGroup!=null)
+                {
+                    //foreach (var v in alreadyExistInvestmentTargetedGroupList)
+                    //{
+                        _investmentTargetedGroupRepo.Delete(alreadyExistInvestmentTargetedGroup);
+                        _investmentTargetedGroupRepo.Savechange();
+                    //}
 
                     return Ok("Succsessfuly Deleted!!!");
                 }

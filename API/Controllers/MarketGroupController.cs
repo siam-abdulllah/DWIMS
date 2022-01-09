@@ -160,7 +160,7 @@ namespace API.Controllers
             {
                 var employee = await _employeeRepo.GetByIdAsync(empId);
 
-                var spec = new MarketGroupMstSpecification(employee.MarketCode);
+                var spec = new MarketGroupMstSpecification(employee.MarketCode, "Master");
 
                 var countSpec = new MarketGroupMstWithFiltersForCountSpecificication(marketGroupMstParrams);
 
