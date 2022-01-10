@@ -145,7 +145,9 @@ namespace API.Controllers
         //             " (CONVERT(date,a.FromDate) >= CAST('" + search.FromDate + "' as Date) AND CAST('" + search.ToDate + "' as Date) >= CONVERT(date,a.ToDate)) ";
 
         {
-            string qry = " select CAST(ROW_NUMBER() OVER (ORDER BY a.SBU) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.SBU, a.SBUName, a.DonationId, d.DonationTypeName,  a.Amount Budget,  " +
+            string qry = " select CAST(ROW_NUMBER() OVER (ORDER BY a.SBU) AS INT)  AS Id ,1 AS DataStatus, " +
+                        " SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.SBU, a.SBUName, a.DonationId, " +
+                        " d.DonationTypeName,  a.Amount Budget,  " +
                         " (select ISNULL(SUM(ApprovedAmount),0) from InvestmentDetailTracker e inner join InvestmentInit c on c.Id = e.InvestmentInitId  where e.PaidStatus = 'Paid' AND e.DonationId = a.DonationId AND c.SBU = a.SBU AND   " +
                         " (CONVERT(date,e.FromDate) >= CAST('" + search.FromDate + "' as Date) AND CAST('" + search.ToDate + "' as Date) >= CONVERT(date,e.ToDate))) Expense  " +
                         " from SBUWiseBudget a inner join Donation d on d.Id = a.DonationId AND " +

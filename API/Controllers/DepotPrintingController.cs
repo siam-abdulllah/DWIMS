@@ -90,14 +90,27 @@ namespace API.Controllers
         {
             try
             {
-                string qry = " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, e.Id as EmpId, e.DesignationName, e.MarketName, a.ReferenceNo, d.DonationTypeName, " +
-                    " doc.id as DocId, doc.DoctorName, doc.[Address], inDetail.ProposedAmount, depo.DepotName " +
+                string qry = " Select  DISTINCT 1 AS Id, " +
+                    " 1 AS DataStatus," +
+                    " SYSDATETIMEOFFSET() AS SetOn, " +
+                    " SYSDATETIMEOFFSET() AS ModifiedOn, " +
+                    " '1' AS ReferenceNo," +
+                    " '1' AS DonationTypeName," +
+                    " '1' AS DoctorName, " +
+                    " 1 AS ProposedAmount," +
+                    " '1' AS Address," +
+                    " 1 AS  DocId," +
+                    " '1' AS EmployeeName," +
+                    " 1 AS  EmpId," +
+                    " '1' AS DesignationName," +
+                    " '1' AS MarketName,   " +
+                    " '1' AS DepotName " +
                     " from InvestmentInit a " +
                     " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId " +
                     " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId " +
                     " left join Employee e on a.EmployeeId = e.Id " +
                     " left join Donation d on a.DonationId = d.Id " +
-                    " inner join InvestmentDetail inDetail on a.id = inDetail.InvestmentInitId " +
+                    " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId " +
                     " inner join InvestmentDoctor inDc on a.Id = inDc.InvestmentInitId " +
                     " left join DoctorInfo doc on inDc.DoctorId = doc.Id " +
                     " where a.DonationTo = 'Doctor' and ir.RecStatus = 'Approved' " +
