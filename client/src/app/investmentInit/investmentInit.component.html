@@ -601,7 +601,6 @@
                             </fieldset>
                             <fieldset>
                                 <legend>Investment Details</legend>
-
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-6">
@@ -691,7 +690,6 @@
                                                     </div>
                                                     <div class="col-md-2">
                                                         <input class="form-control" name="totalMonth" id="totalMonth" #totalMonth="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.totalMonth" readonly>
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -868,6 +866,7 @@
                                             <td>Market Name</td>
                                             <td>SBU</td>
                                             <td>Status</td>
+                                            <td></td>
                                         </tr>
                                         <tr *ngFor="let a of investmentTargetedGroups">
 
@@ -886,6 +885,9 @@
                                             <td>
                                                 <span *ngIf="a.completionStatus===false || undefined || ''">Pending</span>
                                                 <span *ngIf="a.completionStatus===true || ''">Recommended</span>
+                                            </td>
+                                            <td>
+                                                <input type="button" *ngIf="sbu==investmentInitService.investmentInitFormData.sbu" (click)="removeInvestmentIndTargetedGroup(a)" value="Remove">
                                             </td>
                                             <!-- <td>
                                                 <input type="button" (click)="removeInvestmentTargetedProd(a)" value="Remove">

@@ -17,7 +17,11 @@ namespace Core.Specifications
         public EmployeeSpecification(int id)
             : base(x => x.Id == id)
         {
-            AddInclude(x => x.EmployeeName);
+            //AddInclude(x => x.EmployeeName);
+        } public EmployeeSpecification(string marketCode)
+            : base(x => x.MarketCode == marketCode)
+        {
+            
         }
     }
 }

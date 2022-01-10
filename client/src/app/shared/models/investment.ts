@@ -132,8 +132,8 @@ export class InvestmentTargetedProd implements IInvestmentTargetedProd {
     employeeId: number;
 }
 export interface IInvestmentTargetedGroup {
-    id: number;
     marketGroupMstId: number;
+    id: number;
     investmentInitId: number;
     completionStatus: boolean;
     marketCode: string;

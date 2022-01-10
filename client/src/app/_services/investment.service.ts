@@ -238,5 +238,11 @@ export class InvestmentInitService {
       { responseType: 'text' });
 
   }
+  removeInvestmentIndTargetedGroup(investmentTargetedGroup: InvestmentTargetedGroup) {
+    ;
+    return this.http.post(this.baseUrl + 'investment/removeInvestmentIndTargetedGroup', investmentTargetedGroup,
+      { responseType: 'text' });
+
+  }
 }
 

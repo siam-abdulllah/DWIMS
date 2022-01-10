@@ -24,6 +24,7 @@ import { MarketGroupMst, IMarketGroupMst } from '../shared/models/marketGroupMst
 import { MarketGroupDtl, IMarketGroupDtl } from '../shared/models/marketGroupDtl';
 import { AccountService } from '../account/account.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { BreadcrumbModule } from 'xng-breadcrumb';
 
 @Component({
   selector: 'app-investmentInit',
@@ -306,7 +307,6 @@ export class InvestmentInitComponent implements OnInit {
 
       var data = response as IInvestmentTargetedProd[];
       if (data !== undefined) {
-        debugger;
         this.investmentTargetedProds = data;
 
       }
@@ -846,6 +846,20 @@ export class InvestmentInitComponent implements OnInit {
       this.toastr.warning('Insert Investment Detail First', 'Investment Detail');
       return false;
     }
+    debugger;
+    if (this.investmentTargetedGroups.length>0) {
+        for (let a = 0; a < this.investmentTargetedGroups.length; a++) {
+          if(this.investmentTargetedGroups[a].id == null || this.investmentTargetedGroups[a].id == undefined || this.investmentTargetedGroups[a].id == 0){
+            this.toastr.warning('Insert Investment Targeted Group First');
+            return false;
+        }
+      }
+     
+    }
+    else{
+      this.toastr.warning('Insert Investment Targeted Group First');
+      return false;
+    }
     this.SpinnerService.show();
     this.investmentInitService.submitInvestment().subscribe(
       res => {
@@ -903,6 +917,7 @@ export class InvestmentInitComponent implements OnInit {
     );
   }
   insertInvestmentDetails() {
+    debugger;
     if (this.isSubmitted == true) {
       this.toastr.warning('This Investment has already been submitted', 'Investment');
       return false;
@@ -939,10 +954,7 @@ export class InvestmentInitComponent implements OnInit {
       this.toastr.warning('Select Payment Method First', 'Investment Detail');
       return false;
     }
-
-
     this.investmentInitService.investmentDetailFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
-
     if (this.investmentInitService.investmentDetailFormData.id == null || this.investmentInitService.investmentDetailFormData.id == undefined || this.investmentInitService.investmentDetailFormData.id == 0) {
       this.SpinnerService.show();
       this.investmentInitService.insertInvestmentDetail().subscribe(
@@ -1440,6 +1452,42 @@ export class InvestmentInitComponent implements OnInit {
           this.getInvestmentTargetedProd();
           this.SpinnerService.hide();
 
+          this.toastr.success(res);
+        },
+        err => {
+          this.SpinnerService.hide();
+          console.log(err);
+        }
+      );
+    }
+  }
+  removeInvestmentIndTargetedGroup(selectedRecord: IInvestmentTargetedGroup) {
+    if (this.isSubmitted == true && parseInt(this.empId) == this.investmentInitService.investmentInitFormData.employeeId) {
+      this.toastr.warning("Investment already submitted");
+      return false;
+    }
+    if (this.isSubmitted == true && parseInt(this.empId) == this.investmentInitService.investmentInitFormData.employeeId) {
+      this.toastr.warning("Investment already submitted");
+      return false;
+    }
+    var c = confirm("Are you sure you want to delete that?");
+    if (c == true) {
+      if(selectedRecord.id==0 || selectedRecord.id==undefined || selectedRecord.id==null)
+      {
+        this.investmentTargetedGroups.splice(this.investmentTargetedGroups.findIndex(x => x.marketCode == selectedRecord.marketCode), 1);
+        this.toastr.success("Successfully Removed. Please Save the data.");
+        return false;
+      
+      }
+      this.investmentInitService.investmentTargetedGroupFormData = Object.assign({}, selectedRecord);
+      this.SpinnerService.show();
+      debugger;
+      this.investmentInitService.removeInvestmentIndTargetedGroup(this.investmentInitService.investmentTargetedGroupFormData).subscribe(
+        res => {
+          //this.isDonationValid=false;
+          this.investmentInitService.investmentTargetedGroupFormData = new InvestmentTargetedGroup();
+          this.getInvestmentTargetedGroup();
+          this.SpinnerService.hide();
           this.toastr.success(res);
         },
         err => {
