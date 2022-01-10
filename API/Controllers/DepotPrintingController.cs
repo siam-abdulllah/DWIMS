@@ -20,8 +20,9 @@ namespace API.Controllers
         private readonly StoreContext _db;
         private readonly IMapper _mapper;
 
-        public DepotPrintingController(IMapper mapper)
+        public DepotPrintingController(IMapper mapper, StoreContext db)
         {
+            _db = db;
             _mapper = mapper;
         }
 
@@ -45,7 +46,6 @@ namespace API.Controllers
         //             " Order by  a.id DESC ";
 
         //         var results = _db.RptDepotLetter.FromSqlRaw(qry).ToList();
-
         //         return Ok(new Pagination<RptDepotLetter>(parrams.PageIndex, parrams.PageSize, 50, results));
         //     }
         //     catch (System.Exception ex)
@@ -94,17 +94,17 @@ namespace API.Controllers
                     " 1 AS DataStatus," +
                     " SYSDATETIMEOFFSET() AS SetOn, " +
                     " SYSDATETIMEOFFSET() AS ModifiedOn, " +
-                    " '1' AS ReferenceNo," +
-                    " '1' AS DonationTypeName," +
-                    " '1' AS DoctorName, " +
-                    " 1 AS ProposedAmount," +
-                    " '1' AS Address," +
-                    " 1 AS  DocId," +
-                    " '1' AS EmployeeName," +
-                    " 1 AS  EmpId," +
-                    " '1' AS DesignationName," +
-                    " '1' AS MarketName,   " +
-                    " '1' AS DepotName " +
+                    " a.ReferenceNo," +
+                    " d.DonationTypeName," +
+                    " doc.DoctorName, " +
+                    " inDetail.ProposedAmount," +
+                    " doc.Address," +
+                    " doc.id as DocId," +
+                    " e.EmployeeName," +
+                    " e.Id as EmpId," +
+                    " e.DesignationName," +
+                    " e.MarketName,   " +
+                    " depo.DepotName " +
                     " from InvestmentInit a " +
                     " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId " +
                     " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId " +
