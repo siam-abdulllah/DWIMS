@@ -649,5 +649,29 @@ namespace API.Controllers
             }
         }
 
+
+        [HttpGet]
+        [Route("getEmpMarket/{investmentInitId}")]
+        public async Task<object> GetEmpLocation(int investmentInitId)
+        {
+            try
+            {
+                string qry= " select a.Id, a.SetOn, a.ModifiedOn, a.DataStatus, b.MarketCode,  b.MarketName, a.TerritoryCode, a.TerritoryName, a.RegionCode, a.RegionName, a.ZoneCode, a.ZoneName, " +
+                    " dbo.fnGetEmpNamedesig(a.EmployeeId) EmployeeName, a.[Priority] " +
+                    " from InvestmentRecComment a " +
+                    " inner join InvestmentInit b on b.Id = a.InvestmentInitId " +
+                    " where InvestmentInitId = '"+ investmentInitId + "' and CompletionStatus = 1 " +
+                    " order by a.[Priority] desc ";
+
+
+                var spec = await _dbContext.EmployeeLocation.FromSqlRaw(qry).ToListAsync();               
+                return spec;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

@@ -84,6 +84,8 @@ namespace Infrastructure.Data
         public DbSet<InvestmentRecDepot> InvestmentRecDepot { get; set; }
         [NotMapped]
         public DbSet<RptDepotLetter> RptDepotLetter { get; set; }
+        [NotMapped]
+        public DbSet<EmployeeLocation> EmployeeLocation { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -178,7 +178,11 @@ export class InvestmentAprNoSbuService {
   getInvestmentRecDepot(initId:any) {
     debugger;
     return this.http.get(this.baseUrl+ 'InvestmentAprNoSbu/getInvestmentRecDepot/'+initId).toPromise();
-  
+  }
+
+  getEmpLoc(initId:any) {
+    debugger;
+    return this.http.get(this.baseUrl+ 'InvestmentAprNoSbu/getEmpMarket/'+initId);
   }
   
  

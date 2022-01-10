@@ -1,3 +1,4 @@
+import { IEmployeeLocation } from './../shared/models/empLocation';
 import {
   InvestmentApr, IInvestmentApr, InvestmentInit, IInvestmentInit,
   InvestmentTargetedProd, IInvestmentTargetedProd, InvestmentTargetedGroup, IInvestmentTargetedGroup, IInvestmentAprComment, InvestmentAprComment
@@ -7,6 +8,7 @@ import { InvestmentBcds, IInvestmentBcds, InvestmentSociety, IInvestmentSociety 
 import { SubCampaign, ISubCampaign } from '../shared/models/subCampaign';
 import { Donation, IDonation } from '../shared/models/donation';
 import { Doctor, IDoctor } from '../shared/models/docotor';
+import { EmployeeLocation } from '../shared/models/emplocation';
 import { Institution, IInstitution } from '../shared/models/institution';
 import { GenericParams } from '../shared/models/genericParams';
 import { Component, ElementRef, OnInit, ViewChild, TemplateRef } from '@angular/core';
@@ -48,6 +50,7 @@ export class InvestmentAprNoSbuComponent implements OnInit {
   lastFiveInvestmentDetail:ILastFiveInvestmentDetail[];
   investmentAprs: IInvestmentApr[];
   investmentInits: IInvestmentInit[];
+  empLocation: IEmployeeLocation[];
   investmentTargetedProds: IInvestmentTargetedProd[];
   investmentTargetedGroups: IInvestmentTargetedGroup[];
   investmentDetails: IInvestmentApr[];
@@ -150,6 +153,7 @@ export class InvestmentAprNoSbuComponent implements OnInit {
       await this.getInvestmentSociety();
     }
     await this.getInvestmentDetails();
+    await this.getEmployeeLocation();
     await this.getInvestmentTargetedProd();
     await this.getInvestmentTargetedGroup();
     //if (this.sbu == this.investmentAprService.investmentAprFormData.sbu) {
@@ -183,7 +187,8 @@ export class InvestmentAprNoSbuComponent implements OnInit {
       await this.getInvestmentSociety();
     }
     await this.getInvestmentAprDetails();
-    await  this.getInvestmentAprProducts();
+    await this.getInvestmentAprProducts();
+    await this.getEmployeeLocation();
     await this.getInvestmentAprComment();
     await this.getInvestmentTargetedGroup();
     //if (this.sbu == this.investmentAprService.investmentAprFormData.sbu) {
@@ -510,6 +515,19 @@ export class InvestmentAprNoSbuComponent implements OnInit {
       var data = response as IInvestmentTargetedProd[];
       if (data !== undefined) {
         this.investmentTargetedProds = data;
+      }
+      // else {
+      //   this.toastr.warning('No Data Found', 'Investment ');
+      // }
+    }, error => {
+      console.log(error);
+    });
+  }
+  getEmployeeLocation() {
+    this.investmentAprService.getEmpLoc(this.investmentAprService.investmentAprFormData.id).subscribe(response => {
+      var data = response as IEmployeeLocation[];
+      if (data !== undefined) {
+        this.empLocation = data;
       }
       // else {
       //   this.toastr.warning('No Data Found', 'Investment ');
