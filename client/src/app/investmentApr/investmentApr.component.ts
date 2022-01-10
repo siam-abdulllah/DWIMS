@@ -153,11 +153,10 @@ export class InvestmentAprComponent implements OnInit {
     await this.getInvestmentDetails();
     this.getInvestmentTargetedProd();
     this.getInvestmentTargetedGroup();
-    if (this.sbu == this.investmentAprService.investmentAprFormData.sbu ) {
+    if (this.sbu == this.investmentAprService.investmentAprFormData.sbu) {
       this.isInvOther = false;
       this.isValid = true;
-      if(this.investmentAprService.investmentAprFormData.donationTo != 'Campaign')
-      {
+      if (this.investmentAprService.investmentAprFormData.donationTo != 'Campaign') {
         this.getBudget();
       }
     }
@@ -172,14 +171,13 @@ export class InvestmentAprComponent implements OnInit {
     // }
     this.InvestmentInitSearchModalRef.hide()
   }
-  onPaymentMethod(){
+  onPaymentMethod() {
     if (this.userRole == 'RSM' || this.userRole == 'Administrator') {
-      if(this.investmentAprService.investmentDetailFormData.paymentMethod=='Cash')
-      {
-        this.isDepotRequire=true;
+      if (this.investmentAprService.investmentDetailFormData.paymentMethod == 'Cash') {
+        this.isDepotRequire = true;
       }
-      else{
-        this.isDepotRequire=false;
+      else {
+        this.isDepotRequire = false;
       }
     }
   }
@@ -213,9 +211,8 @@ export class InvestmentAprComponent implements OnInit {
     if (this.sbu == this.investmentAprService.investmentAprFormData.sbu) {
       this.isInvOther = false;
       this.isValid = true;
-      if(this.investmentAprService.investmentAprFormData.donationTo != 'Campaign')
-      {
-      await this.getBudget();
+      if (this.investmentAprService.investmentAprFormData.donationTo != 'Campaign') {
+        await this.getBudget();
       }
     }
     else {
@@ -223,9 +220,9 @@ export class InvestmentAprComponent implements OnInit {
       this.isValid = false;
     }
     //if (this.userRole == 'RSM' || this.userRole == 'Administrator') {
-      // if (this.investmentAprService.investmentDetailFormData.paymentMethod == 'Cash') {
-      //   this.getInvestmentRecDepot();
-      // }
+    // if (this.investmentAprService.investmentDetailFormData.paymentMethod == 'Cash') {
+    //   this.getInvestmentRecDepot();
+    // }
     //}
     this.InvestmentAprSearchModalRef.hide()
   }
@@ -291,7 +288,7 @@ export class InvestmentAprComponent implements OnInit {
   }
   getInvestmentInit() {
     this.SpinnerService.show();
-    this.investmentAprService.getInvestmentInit(parseInt(this.empId), this.sbu,this.userRole).subscribe(response => {
+    this.investmentAprService.getInvestmentInit(parseInt(this.empId), this.sbu, this.userRole).subscribe(response => {
       this.SpinnerService.hide();
       this.investmentInits = response.data;
       if (this.investmentInits.length > 0) {
@@ -415,11 +412,11 @@ export class InvestmentAprComponent implements OnInit {
     });
   }
   async getInvestmentRecDepot() {
-    
+
     await this.investmentAprService.getInvestmentRecDepot(this.investmentAprService.investmentAprFormData.id).then(response => {
-      if(response!=null){
-      this.investmentAprService.investmentDepotFormData = response as IInvestmentRecDepot;
-    }
+      if (response != null) {
+        this.investmentAprService.investmentDepotFormData = response as IInvestmentRecDepot;
+      }
     }, error => {
       console.log(error);
     });
@@ -476,7 +473,7 @@ export class InvestmentAprComponent implements OnInit {
     });
   }
   async getInvestmentDetails() {
-    await this.investmentAprService.getInvestmentDetails(this.investmentAprService.investmentAprFormData.id,parseInt(this.empId),this.userRole).then(response => {
+    await this.investmentAprService.getInvestmentDetails(this.investmentAprService.investmentAprFormData.id, parseInt(this.empId), this.userRole).then(response => {
       var data = response[0] as IInvestmentApr;
       if (data !== undefined) {
         this.investmentAprService.investmentDetailFormData = data;
@@ -484,16 +481,13 @@ export class InvestmentAprComponent implements OnInit {
         this.investmentAprService.investmentDetailFormData.fromDate = new Date(data.fromDate);
         this.investmentAprService.investmentDetailFormData.toDate = new Date(data.toDate);
         if (data.paymentMethod == 'Cash') {
-          if(this.userRole=='RSM')
-          {
-          this.isDepotRequire = true;
+          if (this.userRole == 'RSM') {
+            this.isDepotRequire = true;
           }
-          else
-          { 
+          else {
             this.isDepotRequire = false;
           }
-          if(this.userRole!='RSM')
-          {
+          if (this.userRole != 'RSM') {
             this.getInvestmentRecDepot();
           }
         }
@@ -534,17 +528,16 @@ export class InvestmentAprComponent implements OnInit {
         this.investmentAprService.investmentDetailFormData.fromDate = new Date(data.fromDate);
         this.investmentAprService.investmentDetailFormData.toDate = new Date(data.toDate);
         if (data.paymentMethod == 'Cash') {
-          if(this.userRole=='RSM')
-          {
-          this.isDepotRequire = true;
+          if (this.userRole == 'RSM') {
+            this.isDepotRequire = true;
           }
-          else{
+          else {
             this.isDepotRequire = false;
           }
 
           //if(this.userRole=='GPM' || this.userRole=='RSM' || this.userRole=='Administrator')
           //{
-            this.getInvestmentRecDepot();
+          this.getInvestmentRecDepot();
           //}
         }
         else {
@@ -692,12 +685,15 @@ export class InvestmentAprComponent implements OnInit {
     }
     if (this.userRole == 'RSM' || this.userRole == 'Administrator') {
       if (this.investmentAprService.investmentDetailFormData.paymentMethod == 'Cash') {
-        if(this.investmentAprService.investmentAprCommentFormData.recStatus!='Not Approved'){
-        if (this.investmentAprService.investmentDepotFormData.depotCode == null || this.investmentAprService.investmentDepotFormData.depotCode == undefined || this.investmentAprService.investmentDepotFormData.depotCode == "") {
-          this.toastr.warning('Select Depot First', 'Investment');
-          return false;
+        if (this.investmentAprService.investmentAprCommentFormData.recStatus != 'Not Approved') {
+          if (this.sbu == this.investmentAprService.investmentAprFormData.sbu && this.userRole != 'Administrator') {
+
+            if (this.investmentAprService.investmentDepotFormData.depotCode == null || this.investmentAprService.investmentDepotFormData.depotCode == undefined || this.investmentAprService.investmentDepotFormData.depotCode == "") {
+              this.toastr.warning('Select Depot First', 'Investment');
+              return false;
+            }
+          }
         }
-      }
       }
     }
     if (this.investmentAprService.investmentAprCommentFormData.recStatus == 'Not Recommended') {
@@ -901,7 +897,7 @@ export class InvestmentAprComponent implements OnInit {
           data.productId = this.investmentAprService.investmentTargetedProdFormData.productId;
           data.productInfo = this.products[i];
           this.investmentTargetedProds.push(data);
-          this.investmentAprService.investmentTargetedProdFormData= new InvestmentTargetedProd();
+          this.investmentAprService.investmentTargetedProdFormData = new InvestmentTargetedProd();
           return false;
         }
       }

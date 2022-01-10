@@ -426,6 +426,16 @@ namespace API.Controllers
                     MarketGroupMstId = investmentTargetedGroupData.MarketGroupMstId,
                     SBU = investmentTargetedGroupData.SBU,
                     SBUName = investmentTargetedGroupData.SBUName,
+                    MarketGroupCode = empData.MarketGroupCode,
+                    MarketGroupName = empData.MarketGroupName,
+                    RegionCode = empData.RegionCode,
+                    RegionName = empData.RegionName,
+                    ZoneCode = empData.ZoneCode,
+                    ZoneName = empData.ZoneName,
+                    TerritoryCode = empData.TerritoryCode,
+                    TerritoryName = empData.TerritoryName,
+                    DepotCode = empData.DepotCode,
+                    DepotName = empData.DepotName,
                     CompletionStatus = true,
                     SetOn = investmentTargetedGroupData.SetOn,
                     ModifiedOn = DateTimeOffset.Now
@@ -678,7 +688,8 @@ namespace API.Controllers
             try
             {
                 var alreadyExistSpec = new InvestmentTargetedGroupSpecification(investmentTargetedGroupDto[0].InvestmentInitId, investmentTargetedGroupDto[0].MarketGroupMstId);
-                var alreadyExistInvestmentTargetedGroupList = await _investmentTargetedGroupRepo.ListAsync(alreadyExistSpec);
+                var alreadyExistInvestmentTargetedGroupList = await _investmentTargetedGroupRepo.ListAsync(alreadyExistSpec); 
+                
                 if (alreadyExistInvestmentTargetedGroupList.Count > 0)
                 {
                     foreach (var v in alreadyExistInvestmentTargetedGroupList)
@@ -690,11 +701,26 @@ namespace API.Controllers
                 }
                 foreach (var v in investmentTargetedGroupDto)
                 {
+                    var alreadyEmpExistSpec = new EmployeeSpecification(v.MarketCode);
+                    var empData = await _employeeRepo.GetEntityWithSpec(alreadyEmpExistSpec);
+
                     var investmentTargetedGroup = new InvestmentTargetedGroup
                     {
                         InvestmentInitId = v.InvestmentInitId,
-                        MarketCode = v.MarketCode,
-                        MarketName = v.MarketName,
+                        MarketGroupCode = empData.MarketGroupCode,
+                        MarketGroupName = empData.MarketGroupName,
+                        MarketCode = empData.MarketCode,
+                        MarketName = empData.MarketName,
+                        RegionCode = empData.RegionCode,
+                        RegionName = empData.RegionName,
+                        ZoneCode = empData.ZoneCode,
+                        ZoneName = empData.ZoneName,
+                        TerritoryCode = empData.TerritoryCode,
+                        TerritoryName = empData.TerritoryName, 
+                        DepotCode = empData.DepotCode,
+                        DepotName = empData.DepotName,
+                        //SBUName = empData.SBUName,
+                        //SBU = empData.SBU,
                         MarketGroupMstId = v.MarketGroupMstId,
                         CompletionStatus = false,
                         SBU = v.SBU,
