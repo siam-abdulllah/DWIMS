@@ -656,13 +656,15 @@ namespace API.Controllers
         {
             try
             {
-                string qry= " select a.Id, a.SetOn, a.ModifiedOn, a.DataStatus, b.MarketCode,  b.MarketName, a.TerritoryCode, a.TerritoryName, a.RegionCode, a.RegionName, a.ZoneCode, a.ZoneName, " +
-                    " dbo.fnGetEmpNamedesig(a.EmployeeId) EmployeeName, a.[Priority] " +
-                    " from InvestmentRecComment a " +
-                    " inner join InvestmentInit b on b.Id = a.InvestmentInitId " +
-                    " where InvestmentInitId = '"+ investmentInitId + "' and CompletionStatus = 1 " +
-                    " order by a.[Priority] desc ";
-
+                string qry= " select CAST(a.Id AS INT) AS Id, a.SetOn, a.ModifiedOn, a.DataStatus, a.MarketCode,  a.MarketName, " +
+                " a.TerritoryCode, a.TerritoryName, a.RegionCode, a.RegionName, a.ZoneCode, a.ZoneName, dbo.fnGetEmpNamedesig(a.EmployeeId) EmployeeName, a.[Priority]  " +
+                " from InvestmentRecComment a inner join InvestmentInit b on b.Id = a.InvestmentInitId " +
+                " where InvestmentInitId = '"+ investmentInitId +"' and CompletionStatus = 1 " +
+                " UNION " +
+                " select CAST(a.Id AS INT) AS Id, a.SetOn, a.ModifiedOn, a.DataStatus, a.MarketCode,  a.MarketName,  " +
+                " a.TerritoryCode, a.TerritoryName, a.RegionCode, a.RegionName, a.ZoneCode, a.ZoneName, dbo.fnGetEmpNamedesig(a.EmployeeId) EmployeeName, '1' " +
+                " From InvestmentInit a where a.Id = '"+ investmentInitId +"' AND a.Confirmation = 1 " +
+                " order by a.[Priority] desc ";
 
                 var spec = await _dbContext.EmployeeLocation.FromSqlRaw(qry).ToListAsync();               
                 return spec;

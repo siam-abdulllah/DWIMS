@@ -1,7 +1,7 @@
 export interface IEmployeeLocation {
     id: number;
     employeeName: string;
-    priority: string;
+    priority: number;
     marketCode : string;
     marketName : string;
     territoryCode: string;
@@ -15,7 +15,7 @@ export interface IEmployeeLocation {
 export class EmployeeLocation implements IEmployeeLocation {
     id: number=0;
     employeeName: string;
-    priority: string;
+    priority: number;
     marketCode : string;
     marketName : string;
     territoryCode: string;

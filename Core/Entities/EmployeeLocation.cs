@@ -11,6 +11,6 @@
         public string ZoneCode { get; set; }
         public string ZoneName { get; set; }
         public string EmployeeName { get; set; }
-        public string Priority { get; set; }
+        public int Priority { get; set; }
     }
 }
