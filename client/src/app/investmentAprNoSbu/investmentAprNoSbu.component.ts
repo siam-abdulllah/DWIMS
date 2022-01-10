@@ -765,7 +765,7 @@ export class InvestmentAprNoSbuComponent implements OnInit {
     this.investmentAprService.investmentDetailFormData.investmentInitId = this.investmentAprService.investmentAprFormData.id;
 
     this.SpinnerService.show();
-    this.investmentAprService.insertInvestmentDetail(parseInt(this.empId), this.sbu).subscribe(
+    this.investmentAprService.insertInvestmentDetail(parseInt(this.empId), this.investmentAprService.investmentAprFormData.sbu).subscribe(
       res => {
         var data = res as IInvestmentApr;
         this.investmentAprService.investmentDetailFormData = data;
@@ -837,10 +837,10 @@ export class InvestmentAprNoSbuComponent implements OnInit {
     this.SpinnerService.show();
     this.investmentAprService.insertInvestmentTargetedProd(this.investmentTargetedProds).subscribe(
       res => {
-        if (this.sbu == this.investmentAprService.investmentAprFormData.sbu) 
-        { 
+        // if (this.sbu == this.investmentAprService.investmentAprFormData.sbu) 
+        // { 
         this.insertInvestmentDetails();
-        }
+        //}
         this.getInvestmentTargetedProd();
         this.getInvestmentTargetedGroup();
         this.isDonationValid = true;

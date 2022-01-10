@@ -282,6 +282,17 @@ namespace API.Controllers
                         EmployeeId = investmentAprDto.EmployeeId,
                     };
                 }
+               
+                var alreadyExistSpec = new InvestmentRecSpecification(investmentAprDto.InvestmentInitId, empId);
+                var alreadyExistInvestmentAprList = await _investmentRecRepo.ListAsync(alreadyExistSpec);
+                if (alreadyExistInvestmentAprList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentAprList)
+                    {
+                        _investmentRecRepo.Delete(v);
+                        _investmentRecRepo.Savechange();
+                    }
+                }
                 var spec = new ApprAuthConfigSpecification(empId, "A");
                 var apprAuthConfig = await _apprAuthConfigRepo.GetEntityWithSpec(spec);
                 var invRec = new InvestmentRec
