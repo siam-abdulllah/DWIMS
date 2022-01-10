@@ -667,7 +667,7 @@ namespace API.Controllers
                 " UNION " +
                 " select CAST(a.Id AS INT) AS Id, a.SetOn, a.ModifiedOn, a.DataStatus, a.MarketCode,  a.MarketName,  a.TerritoryCode, a.TerritoryName, a.RegionCode, a.RegionName, a.ZoneCode, a.ZoneName, dbo.fnGetEmpNamedesigByMarket(a.MarketCode) EmployeeName, '1' "+
                 " from InvestmentTargetedGroup a " +
-                " where a.Id = '"+ investmentInitId +"' "+
+                " where a.InvestmentInitId = '"+ investmentInitId +"' "+
                 " order by a.[Priority] desc ";
 
                 var spec = await _dbContext.EmployeeLocation.FromSqlRaw(qry).ToListAsync();               
