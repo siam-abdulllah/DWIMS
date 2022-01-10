@@ -30,48 +30,36 @@ export class rptInvestSummary implements IrptInvestSummary {
     marketName: string;
 }
 
-export interface IrptDepotLetter {
+export interface IrptDepotLetterSearch {
     id: number;
-    setOn: Date;
     referenceNo: string;
     donationTypeName: string;
     doctorName: string;
     proposedAmount: number;
-    address: string;
-    docId: number;
-    designationName: string;
     employeeName: string;
-    empId: number;
-    depotName: string;
     marketName: string;
 }
 
-export class rptDepotLetter implements IrptDepotLetter {
+export class rptDepotLetterSearch implements IrptDepotLetterSearch {
     id: number;
     referenceNo: string;
-    setOn: Date;
     donationTypeName: string;
     doctorName: string;
     proposedAmount: number;
-    address: string;
-    docId: number;
-    designationName: string;
-    empId: number;
     employeeName: string;
-    depotName: string;
     marketName: string;
 }
 
-export interface IDepotLetterPagination {
+export interface IDepotLetterSearchPagination {
     pageIndex: number;
     pageSize: number;
     count: number;
-    data: IrptDepotLetter[];
+    data: IrptDepotLetterSearch[];
 }
 
-export class DepotLetterPagination implements IDepotLetterPagination {
+export class DepotLetterSearchPagination implements IDepotLetterSearchPagination {
     pageIndex: number;
     pageSize: number;
     count: number;
-    data: IrptDepotLetter[] = [];
+    data: IrptDepotLetterSearch[] = [];
 }

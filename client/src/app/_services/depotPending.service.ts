@@ -1,5 +1,5 @@
 import { IRole, IRoleResponse } from '../shared/models/role';
-import { IrptDepotLetter, IDepotLetterPagination, DepotLetterPagination } from '../shared/models/rptInvestSummary';
+import { IrptDepotLetterSearch, rptDepotLetterSearch, DepotLetterSearchPagination } from '../shared/models/rptInvestSummary';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
@@ -14,8 +14,8 @@ import { GenericParams } from '../shared/models/genericParams';
   providedIn: 'root'
 })
 export class DepotPendingService {
-  rptDepotLetter: IrptDepotLetter[]=[];
-  pagination = new DepotLetterPagination();
+  rptDepotLetter: IrptDepotLetterSearch[]=[];
+  pagination = new DepotLetterSearchPagination();
 
   roles: IRole[] = [];
   baseUrl = environment.apiUrl;

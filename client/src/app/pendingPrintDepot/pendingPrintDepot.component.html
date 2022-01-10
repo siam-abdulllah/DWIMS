@@ -28,16 +28,9 @@
                                             <td>Proposed Amount</td>
                                             <td>Market</td>
                                             <td>Proposed By</td>
-                                            <td>Depot Name</td>
-                                            <td>Completed By</td>
-                                            <td>Receive Status</td>
-                                            <td>Received By</td>
                                             <td>Details</td>
                                         </tr>
-                                        <tr *ngFor="let a of rptDepotLetter | paginate: configs">
-                                            <td style="visibility: hidden;">
-                                                {{a.id}}
-                                            </td>
+                                        <tr *ngFor="let a of rptDepotLetter">
                                             <td>
                                                 {{a.referenceNo}}
                                             </td>
@@ -57,14 +50,10 @@
                                                 {{a.employeeName}}
                                             </td>
                                             <td>
-                                                {{a.depotName}}
-                                            </td>
-                                            <td>
                                                 <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="ViewReport(a)" style="width: 100px;"><i class="fa fa-eye"></i>View Detail</button>
                                             </td>
                                         </tr>
                                     </table>
-                                    <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls>
                                 </div>
                             </fieldset>
                         </div>

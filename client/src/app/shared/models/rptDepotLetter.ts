@@ -1,0 +1,31 @@
+export interface IrptDepotLetter {
+    id: number;
+    referenceNo: string;
+    setOn: Date;
+    donationTypeName: string;
+    doctorName: string;
+    proposedAmount: number;
+    address: string;
+    docId: number;
+    employeeName: string;
+    empId: number;
+    designationName: string;
+    marketName: string;
+    depotName: string;
+}
+
+export class rptDepotLetter implements IrptDepotLetter {
+    id: number;
+    referenceNo: string;
+    setOn: Date;
+    donationTypeName: string;
+    doctorName: string;
+    proposedAmount: number;
+    address: string;
+    docId: number;
+    employeeName: string;
+    empId: number;
+    designationName: string;
+    marketName: string;
+    depotName: string;
+}
