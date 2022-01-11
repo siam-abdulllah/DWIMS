@@ -152,7 +152,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost("InsertApr/{empID}/{aprStatus}/{sbu}/{donationId}")]
+        [HttpPost("InsertApr/{empID}/{aprStatus}/{sbu}/{donationId}")] 
         public async Task<ActionResult<InvestmentAprDto>> InsertInvestmentApr(int empId, string aprStatus, string sbu, int donationId, InvestmentAprDto investmentAprDto)
         {
             try
@@ -226,9 +226,10 @@ namespace API.Controllers
                     var donation = await _donationRepo.GetByIdAsync(donationId);
                     if (donation.DonationTypeName == "Honorarium")
                     {
-                        DateTimeOffset calcDate = investmentAprDto.FromDate;
+                        
                         for (int i = 0; i < investmentAprDto.TotalMonth; i++)
                         {
+                            DateTimeOffset calcDate = investmentAprDto.FromDate;
                             calcDate = calcDate.AddMonths(i);
                             var invDT = new InvestmentDetailTracker
                             {
@@ -668,15 +669,16 @@ namespace API.Controllers
             try
             {
                 string qry= " select CAST(a.EmployeeId AS INT) AS Id, a.SetOn, a.ModifiedOn, a.DataStatus, a.MarketCode,  a.MarketName, " +
-                " a.TerritoryCode, a.TerritoryName, a.RegionCode, a.RegionName, a.ZoneCode, a.ZoneName, dbo.fnGetEmpNamedesig(a.EmployeeId) EmployeeName, a.[Priority]  " +
+                " a.TerritoryCode, a.TerritoryName, a.RegionCode, a.RegionName, a.ZoneCode, a.ZoneName, dbo.fnGetEmpNamedesig(a.EmployeeId) EmployeeName, a.[Priority],a.RecStatus  " +
                 " from InvestmentRecComment a inner join InvestmentInit b on b.Id = a.InvestmentInitId " +
                 " where InvestmentInitId = '"+ investmentInitId +"' " +
                 " UNION " +
                 " select CAST(a.EmployeeId AS INT) AS Id, a.SetOn, a.ModifiedOn, a.DataStatus, a.MarketCode,  a.MarketName,  " +
-                " a.TerritoryCode, a.TerritoryName, a.RegionCode, a.RegionName, a.ZoneCode, a.ZoneName, dbo.fnGetEmpNamedesig(a.EmployeeId) EmployeeName, '1' " +
+                " a.TerritoryCode, a.TerritoryName, a.RegionCode, a.RegionName, a.ZoneCode, a.ZoneName, dbo.fnGetEmpNamedesig(a.EmployeeId) EmployeeName, '1','Inititator' " +
                 " From InvestmentInit a where a.Id = '"+ investmentInitId +"' AND a.Confirmation = 1 " +
                 " UNION " +
-                " select CAST(a.Id AS INT) AS Id, a.SetOn, a.ModifiedOn, a.DataStatus, a.MarketCode,  a.MarketName,  a.TerritoryCode, a.TerritoryName, a.RegionCode, a.RegionName, a.ZoneCode, a.ZoneName, dbo.fnGetEmpNamedesigByMarket(a.MarketCode) EmployeeName, '1' "+
+                " select CAST(a.Id AS INT) AS Id, a.SetOn, a.ModifiedOn, a.DataStatus, a.MarketCode,  a.MarketName,  a.TerritoryCode, a.TerritoryName, a.RegionCode, a.RegionName, a.ZoneCode, a.ZoneName, dbo.fnGetEmpNamedesigByMarket(a.MarketCode) EmployeeName, '1'," +
+                " RecStatus =CASE CompletionStatus WHEN 1 THEN 'Recommended' ELSE 'Not Recommended' END " +
                 " from InvestmentTargetedGroup a " +
                 " where a.InvestmentInitId = '"+ investmentInitId +"' "+
                 " order by a.[Priority] desc ";

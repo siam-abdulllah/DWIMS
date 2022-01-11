@@ -10,6 +10,7 @@ export interface IEmployeeLocation {
     regionName: string; 
     zoneCode: string; 
     zoneName: string; 
+    recStatus: string;
 }
  
 export class EmployeeLocation implements IEmployeeLocation {
@@ -24,5 +25,6 @@ export class EmployeeLocation implements IEmployeeLocation {
     regionName: string; 
     zoneCode: string; 
     zoneName: string; 
+    recStatus: string;
 }
 

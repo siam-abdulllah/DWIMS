@@ -152,8 +152,8 @@ namespace API.Controllers
                             " where a.DonationTo = 'Society' " +
                             " AND ir.RecStatus = 'Approved' " +
                             " AND inDetail.PaymentMethod = 'Cash') " +
-                            " x  WHERE X.ID not in (SELECT InvestmentInitId FROM DepotPrintTrack)  " +
-                            " AND X.DepotCode = ''";
+                            " x  WHERE X.ID not in (SELECT InvestmentInitId FROM DepotPrintTrack)  " ;
+                            //" AND X.DepotCode = ''";
                             //" AND X.ReferenceNo IN ('20220107058','20220107179','20220107229','20220107133')" ; 
 
                 var results = _db.RptDepotLetterSearch.FromSqlRaw(qry).ToList();

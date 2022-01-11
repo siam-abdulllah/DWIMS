@@ -1017,4 +1017,9 @@ export class InvestmentAprComponent implements OnInit {
   resetSearch() {
     this.searchText = '';
   }
+  getSummaryDetail(){
+    this.router.navigate([]).then(result => {  window.open('/portal/rptInvestmentDetail/'+this.investmentAprService.investmentAprFormData.id, '_blank'); });;
+      
+  
+    }
 }

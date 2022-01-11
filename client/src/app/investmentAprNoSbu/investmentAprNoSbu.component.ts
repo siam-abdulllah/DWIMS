@@ -332,8 +332,6 @@ export class InvestmentAprNoSbuComponent implements OnInit {
         }, error => {
           console.log(error);
         });
-
-
         this.investmentAprService.getCampaignDtlProducts(data.campaignDtl.id).subscribe(response => {
           this.campaignDtlProducts = response as ICampaignDtlProduct[];
         }, error => {
@@ -433,7 +431,6 @@ export class InvestmentAprNoSbuComponent implements OnInit {
       var data = response[0] as IInvestmentAprComment;
       if (data !== undefined) {
         this.investmentAprService.investmentAprCommentFormData = data;
-
       }
       // else {
       //   this.toastr.warning('No Data Found', 'Investment ');
@@ -453,7 +450,7 @@ export class InvestmentAprNoSbuComponent implements OnInit {
         this.investmentAprService.investmentDetailFormData.toDate = new Date(data.toDate);
         if(data.paymentMethod=='Cash')
         {
-           this.getInvestmentRecDepot();
+          this.getInvestmentRecDepot();
           this.isDepotRequire=false;
         }
         else{
@@ -549,7 +546,6 @@ export class InvestmentAprNoSbuComponent implements OnInit {
       console.log(error);
     });
   }
-
   changeDateInDetail() {
     if (this.investmentAprService.investmentDetailFormData.fromDate == null || this.investmentAprService.investmentDetailFormData.fromDate == undefined) {
       return false;
@@ -562,7 +558,6 @@ export class InvestmentAprNoSbuComponent implements OnInit {
     this.investmentAprService.investmentDetailFormData.totalMonth = dateTo.getMonth() - dateFrom.getMonth() + (12 * (dateTo.getFullYear() - dateFrom.getFullYear()));
     this.investmentAprService.investmentDetailFormData.totalMonth = this.investmentAprService.investmentDetailFormData.totalMonth + 1;
   }
-
   dateCompare(form: NgForm) {
     if (this.investmentAprService.investmentDetailFormData.fromDate != null && this.investmentAprService.investmentDetailFormData.toDate != null) {
       if (this.investmentAprService.investmentDetailFormData.toDate > this.investmentAprService.investmentDetailFormData.fromDate) {
@@ -574,8 +569,6 @@ export class InvestmentAprNoSbuComponent implements OnInit {
       }
     }
   }
-
-
   getEmployeeId() {
     this.empId = this.accountService.getEmployeeId();
     this.userRole = this.accountService.getUserRole();
@@ -683,10 +676,10 @@ export class InvestmentAprNoSbuComponent implements OnInit {
         this.isValid = true;
         this.insertInvestmentTargetedProd();
         this.SpinnerService.hide();
-        if (this.sbu != this.investmentAprService.investmentAprFormData.sbu) 
-        { 
-        this.toastr.success('Save successfully', 'Investment')
-        }
+        // if (this.sbu != this.investmentAprService.investmentAprFormData.sbu) 
+        // { 
+        // this.toastr.success('Save successfully', 'Investment')
+        // }
       },
       err => { console.log(err); }
     );
@@ -760,10 +753,7 @@ export class InvestmentAprNoSbuComponent implements OnInit {
     );
   }
   insertInvestmentDetails() {
-    
-
     this.investmentAprService.investmentDetailFormData.investmentInitId = this.investmentAprService.investmentAprFormData.id;
-
     this.SpinnerService.show();
     this.investmentAprService.insertInvestmentDetail(parseInt(this.empId), this.investmentAprService.investmentAprFormData.sbu).subscribe(
       res => {
@@ -772,7 +762,7 @@ export class InvestmentAprNoSbuComponent implements OnInit {
         this.investmentAprService.investmentDetailFormData.fromDate = new Date(data.fromDate);
         this.investmentAprService.investmentDetailFormData.toDate = new Date(data.toDate);
         this.isDonationValid = true;
-        this.insertInvestmentRecDepot();
+        //this.insertInvestmentRecDepot();
         this.getLastFiveInvestment(this.investmentAprService.investmentAprFormData.marketCode, this.convertedDate);
         this.toastr.success('Save successfully', 'Investment');
         this.SpinnerService.hide();
@@ -784,9 +774,7 @@ export class InvestmentAprNoSbuComponent implements OnInit {
       }
     );
   }
-
   insertInvestmentRecDepot() {
-    debugger;
     if(this.userRole=='RSM' || this.userRole=='Administrator')
     {
       if(this.investmentAprService.investmentDetailFormData.paymentMethod=='Cash')
@@ -967,8 +955,6 @@ export class InvestmentAprNoSbuComponent implements OnInit {
       totalItems: 50,
     };
   }
-
-  
   onPageChanged(event: any) {
     const params = this.investmentAprService.getGenParams();
     if (params.pageIndex !== event) {
@@ -989,7 +975,6 @@ export class InvestmentAprNoSbuComponent implements OnInit {
         itemsPerPage: params.pageSize,
         totalItems: this.totalCount,
       };
-    
     }, error => {
       this.SpinnerService.hide();
       console.log(error);

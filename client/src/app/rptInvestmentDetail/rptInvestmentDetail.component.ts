@@ -27,6 +27,7 @@ import { ISocietyInfo } from '../shared/models/societyInfo';
 import { MarketGroupMst, IMarketGroupMst } from '../shared/models/marketGroupMst';
 import { AccountService } from '../account/account.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { IEmployeeLocation } from '../shared/models/empLocation';
 
 @Component({
   selector: 'app-investmentDetail',
@@ -46,6 +47,7 @@ export class RptInvestmentDetailComponent implements OnInit {
   sbu: string;
   marketCode: string;
   id: string;
+  empLocation: IEmployeeLocation[];
   investmentInits: IInvestmentInit[];
   investmentTargetedProds: IInvestmentTargetedProd[];
   investmentTargetedGroups: IInvestmentTargetedGroup[];
@@ -105,21 +107,30 @@ export class RptInvestmentDetailComponent implements OnInit {
     this.bsConfig = Object.assign({}, { containerClass: 'theme-blue'  }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
   }
+
   openInvestmentInitSearchModal(template: TemplateRef<any>) {
     this.InvestmentInitSearchModalRef = this.modalService.show(template, this.config);
   }
-
+  getEmployeeLocation() {
+    this.investmentInitService.getEmpLoc(this.investmentInitService.investmentInitFormData.id).subscribe(response => {
+      var data = response as IEmployeeLocation[];
+      if (data !== undefined) {
+        this.empLocation = data;
+      }
+      // else {
+      //   this.toastr.warning('No Data Found', 'Investment ');
+      // }
+    }, error => {
+      console.log(error);
+    });
+  }
 
   GetData(id)
   {
-
     this.getInvestmentInit(id);
-
     this.investmentInitService.investmentInitFormData.id = id;
     this.investmentInitService.investmentRcvFormData.id = id;
     this.investmentInitService.investmentDetailFormData.investmentInitId= id;
-
-
     //this.investmentInitService.investmentInitFormData = Object.assign({}, selectedRecord);
     this.investmentInitService.investmentDoctorFormData.investmentInitId = id;
     this.investmentInitService.investmentInstitutionFormData.investmentInitId = id;
@@ -281,7 +292,7 @@ export class RptInvestmentDetailComponent implements OnInit {
     
         }
         this.getInvestmentDetails();
-      
+        this.getEmployeeLocation()
       
       }
       // else {

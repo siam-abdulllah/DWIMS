@@ -788,7 +788,7 @@
                                         </div> -->
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <table class="table  table-bordered">
                                         <tr class="HeaderRow">
                                             <td>Market Code</td>
@@ -814,9 +814,58 @@
                                             <td>
                                                 {{a.recStatus}}
                                             </td>
+                                        </tr>
+                                    </table>
+                                </div> -->
+                                <div class="form-group">
+                                    <table class="table  table-bordered">
+                                        <tr class="HeaderRow">
+                                            <td>Employee Name</td>
+                                            <!-- <td>Authority</td> -->
+                                            <td>Market Code</td>
+                                            <td>Market Name</td>
+                                            <td>Territory Code</td>
+                                            <td>Territory Name</td>
+                                            <td>Region Code</td>
+                                            <td>Region Name</td>
+                                            <td>Zone Code</td>
+                                            <td>Zone Name</td>
+                                            <td>Status</td>
+                                        </tr>
+                                        <tr *ngFor="let a of empLocation">
+                                            <td>
+                                                {{a.employeeName}}
+                                            </td>
                                             <!-- <td>
-                                                <input type="button" (click)="removeInvestmentTargetedProd(a)" value="Remove">
+                                                {{a.priority}}
                                             </td> -->
+                                            <td>
+                                                {{a.marketCode}}
+                                            </td>
+                                            <td>
+                                                {{a.marketName}}
+                                            </td>
+                                            <td>
+                                                {{a.territoryCode}}
+                                            </td>
+                                            <td>
+                                                {{a.territoryName}}
+                                            </td>
+                                            <td>
+                                                {{a.regionCode}}
+                                            </td>
+                                            <td>
+                                                {{a.regionName}}
+                                            </td>
+                                            <td>
+                                                {{a.zoneCode}}
+                                            </td>
+                                            <td>
+                                                {{a.zoneName}}
+                                            </td>
+                                            <td>
+                                                {{a.recStatus}}
+                                            </td>
                                         </tr>
                                     </table>
                                 </div>

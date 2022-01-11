@@ -34,10 +34,11 @@ export class RptInvestmentDetailService {
   investmentSocietyFormData: InvestmentSociety = new InvestmentSociety();
   baseUrl = environment.apiUrl;
   genParams = new GenericParams();
-
-
   constructor(private http: HttpClient, private router: Router) { }
-
+  getEmpLoc(initId:any) {
+    debugger;
+    return this.http.get(this.baseUrl+ 'InvestmentAprNoSbu/getEmpMarket/'+initId);
+  }
   getDonations() {
     return this.http.get(this.baseUrl + 'donation/donationsForInvestment');
   }
