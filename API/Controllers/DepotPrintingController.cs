@@ -91,7 +91,7 @@ namespace API.Controllers
             try
             {
                 string qry = "  SELECT * FROM  ( " + 
-                            " Select  DISTINCT a.Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn,  SYSDATETIMEOFFSET() AS ModifiedOn,  a.ReferenceNo, a.ProposeFor, a.DonationTo,  " + 
+                            " Select  DISTINCT a.Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn,  SYSDATETIMEOFFSET() AS ModifiedOn,  a.ReferenceNo, a.ProposeFor, a.DonationTo, depo.DepotCode, " + 
                             " d.DonationTypeName, doc.DoctorName,  inDetail.ProposedAmount, e.EmployeeName, e.MarketName   " + 
                             " from InvestmentInit a  " + 
                             " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " + 
@@ -101,7 +101,7 @@ namespace API.Controllers
                             " inner join InvestmentDoctor inDc on a.Id = inDc.InvestmentInitId  left join DoctorInfo doc on inDc.DoctorId = doc.Id " + 
                             " where a.DonationTo = 'Doctor' AND  ir.RecStatus = 'Approved' AND inDetail.PaymentMethod = 'Cash'  " + 
                             " UNION " + 
-                            " Select  DISTINCT a.Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn,  SYSDATETIMEOFFSET() AS ModifiedOn,  a.ReferenceNo, a.ProposeFor, a.DonationTo, " + 
+                            " Select  DISTINCT a.Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn,  SYSDATETIMEOFFSET() AS ModifiedOn,  a.ReferenceNo, a.ProposeFor, a.DonationTo, depo.DepotCode," + 
                             " d.DonationTypeName, doc.DoctorName,  inDetail.ProposedAmount, e.EmployeeName, e.MarketName " + 
                             " from InvestmentInit a " + 
                             " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId " + 
@@ -112,8 +112,48 @@ namespace API.Controllers
                             " left join DoctorInfo doc on IC.DoctorId = doc.Id   " +
                             " where a.DonationTo = 'Campaign' AND  " +
                             " ir.RecStatus = 'Approved'  AND  " +
-                            " inDetail.PaymentMethod = 'Cash') x " +
-                            " WHERE X.ID not in (SELECT InvestmentInitId FROM DepotPrintTrack) ";
+                            " inDetail.PaymentMethod = 'Cash'" +
+                            " UNION " + 
+                            " Select DISTINCT a.Id, 1 AS DataStatus,SYSDATETIMEOFFSET() AS SetOn,SYSDATETIMEOFFSET() AS ModifiedOn,a.ReferenceNo,  depo.DepotCode, " +
+                            " a.ProposeFor,a.DonationTo,d.DonationTypeName,doc.InstitutionName,inDetail.ProposedAmount,e.EmployeeName,e.MarketName  " +
+                            " from InvestmentInit a  " +
+                            " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " +
+                            " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId  " +
+                            " left join Employee e on a.EmployeeId = e.Id left join Donation d on a.DonationId = d.Id  " +
+                            " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId  " +
+                            " inner join InvestmentInstitution IC on a.Id = IC.InvestmentInitId  " +
+                            " left join InstitutionInfo doc on IC.InstitutionId = doc.Id  " +
+                            " where a.DonationTo = 'Institution'  " +
+                            " AND ir.RecStatus = 'Approved'  " +
+                            " AND inDetail.PaymentMethod = 'Cash' " +
+                            " UNION " + 
+                            " Select DISTINCT a.Id, 1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.ReferenceNo, a.ProposeFor, a.DonationTo, d.DonationTypeName, depo.DepotCode,  " +
+                            " doc.BcdsName, inDetail.ProposedAmount, e.EmployeeName, e.MarketName  " +
+                            " from InvestmentInit a  " +
+                            " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " +
+                            " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId  " +
+                            " left join Employee e on a.EmployeeId = e.Id left join Donation d on a.DonationId = d.Id  " +
+                            " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId  " +
+                            " inner join InvestmentBcds IC on a.Id = IC.InvestmentInitId  " +
+                            " left join Bcds doc on IC.BcdsId = doc.Id  " +
+                            " where a.DonationTo = 'Bcds'  " +
+                            " AND ir.RecStatus = 'Approved'  " +
+                            " AND inDetail.PaymentMethod = 'Cash' " +
+                            " UNION " + 
+                            " Select DISTINCT a.Id, 1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.ReferenceNo, a.ProposeFor, a.DonationTo, depo.DepotCode, " +
+                            " d.DonationTypeName, doc.SocietyName, inDetail.ProposedAmount, e.EmployeeName, e.MarketName   " +
+                            " from InvestmentInit a  " +
+                            " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " +
+                            " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId  " +
+                            " left join Employee e on a.EmployeeId = e.Id left join Donation d on a.DonationId = d.Id  " +
+                            " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId  " +
+                            " inner join InvestmentSociety IC on a.Id = IC.InvestmentInitId  " +
+                            " left join Society doc on IC.SocietyId = doc.Id  " +
+                            " where a.DonationTo = 'Society' " +
+                            " AND ir.RecStatus = 'Approved' " +
+                            " AND inDetail.PaymentMethod = 'Cash') " +
+                            " x  WHERE X.ID not in (SELECT InvestmentInitId FROM DepotPrintTrack)  " +
+                            " AND X.DepotCode = ''";
                             //" AND X.ReferenceNo IN ('20220107058','20220107179','20220107229','20220107133')" ; 
 
                 var results = _db.RptDepotLetterSearch.FromSqlRaw(qry).ToList();

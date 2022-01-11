@@ -8,6 +8,7 @@ namespace Core.Entities
         public string ReferenceNo { get; set; }
         public string DonationTypeName { get; set; }
         public string DoctorName { get; set; }
+        public string DonationTo { get; set; }
         public long ProposedAmount { get; set; }
         public string Address { get; set; }
         public int DocId { get; set; }
