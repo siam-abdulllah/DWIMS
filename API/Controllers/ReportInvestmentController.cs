@@ -507,7 +507,7 @@ namespace API.Controllers
                     " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId " +
                     " left join Employee e on a.EmployeeId = e.Id " +
                     " left join Donation d on a.DonationId = d.Id " +
-                    " inner join InvestmentDetail inDetail on a.id = inDetail.InvestmentInitId " +
+                    " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId " +
                     " inner join InvestmentDoctor inDc on a.Id = inDc.InvestmentInitId " +
                     " left join DoctorInfo doc on inDc.DoctorId = doc.Id " +
                     " where a.DonationTo = 'Doctor' and ir.RecStatus = 'Approved' " +

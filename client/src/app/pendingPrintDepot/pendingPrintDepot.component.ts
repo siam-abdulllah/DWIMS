@@ -4,7 +4,8 @@ import 'jspdf-autotable';
 import * as jsPDF from 'jspdf';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
-import { IrptDepotLetter, rptDepotLetter } from '../shared/models/rptInvestSummary';
+import { IrptDepotLetter } from '../shared/models/rptDepotLetter';
+import { IrptDepotLetterSearch, rptDepotLetterSearch } from '../shared/models/rptInvestSummary';
 import { ToastrService } from 'ngx-toastr';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -31,7 +32,7 @@ export class PendingPrintDepotComponent implements OnInit {
   configs: any;
   numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
   totalCount = 0;
-  // rptDepotLetter :IrptDepotLetter[] = [];
+   depotLetter :IrptDepotLetter[] = [];
   rptDepotLetter:any;
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date = new Date();
@@ -106,18 +107,18 @@ export class PendingPrintDepotComponent implements OnInit {
   }
 
 
-  ViewReport(selectedRecord: rptDepotLetter)
+  ViewReport(selectedRecord: IrptDepotLetterSearch)
   {
     this.pendingService.getRptDepotLetter(selectedRecord.id).subscribe(resp => {
       // this.reportInvestmentService.getInsSocietyBCDSWiseInvestment().subscribe(resp => {  
-      this.rptDepotLetter = resp as IrptDepotLetter[];
+      this.depotLetter = resp as IrptDepotLetter[];
       debugger;
       if (this.rptDepotLetter.length <= 0) {
         this.toastr.warning('No Data Found', 'Report');
       }
       else
       {
-        this.getReport(this.rptDepotLetter);
+        this.getReport(this.depotLetter);
       }   
     }, error => {
       console.log(error);
@@ -158,15 +159,17 @@ export class PendingPrintDepotComponent implements OnInit {
     pdf.text('Regarding Cash '+ r[0].donationTypeName, 110, 190);
 
     pdf.setFontType('normal');
-    pdf.text('In response to above letter reference, we are pleased to approve ' + (r[0].proposedAmount).toLocaleString() + '/-  ('+ this.transform(r[0].proposedAmount) +') only as cash '+ r[0].donationTypeName +' for Dr. '+ r[0].doctorName +',', 65, 240); 
-    pdf.text('GP ID. '+ r[0].docId +' '+ r[0].address +'.', 65, 260 );
+    pdf.text('In response to above letter reference, we are pleased to approve ' + r[0].donationTypeName + ' as cash for below Doctor.', 65, 240); 
+    pdf.text('Name: '+r[0].doctorName +', GP ID. '+ r[0].docId +' '+ r[0].address +'.', 65, 260 );
+    pdf.text('Amount: '+ (r[0].proposedAmount).toLocaleString() + '/-  ('+ this.transform(r[0].proposedAmount)+') only.', 65, 279 );
 
-    pdf.text('You are therefore advised to Collect the amount in cash from DIC, '+ r[0].depotName +' by showing this reference letter & Arrange to hand over the' , 65, 300)
-    pdf.text('money to the mentioned Doctor in prescence of RSD/DIC and respective Colleagues.' , 65, 320)
 
-    pdf.text('We hope and believe that you will be able to keep good relationship with the mentioned Doctor by using this opportunity.' , 65, 360)
+    pdf.text('You are therefore advised to Collect the amount in cash from DIC, '+ r[0].depotName +' by showing this reference letter & Arrange to hand over' , 65, 320)
+    pdf.text('the money to the mentioned Doctor in prescence of RSD/DIC and respective Colleagues.' , 65, 340)
 
-    pdf.text('With best wishes' , 85, 410)
+    pdf.text('We hope and believe that you will be able to keep good relationship with the mentioned Doctor by using this opportunity.' , 65, 380)
+
+    pdf.text('With best wishes' , 85, 430)
 
 
     var pageContent = function (data) {
@@ -190,7 +193,7 @@ export class PendingPrintDepotComponent implements OnInit {
 
     // pdf.save(title + '.pdf');
     pdf.setProperties({
-      title: "Donation_Confirmation_Letter.pdf"
+      title: "Donation_Confirmation_Letter_"+ r[0].referenceNo
     });
 
     var blob = pdf.output("blob");

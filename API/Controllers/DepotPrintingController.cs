@@ -86,11 +86,11 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("pendingForPrint/{empId}")]
-        public async Task<IReadOnlyList<RptDepotLetter>> ReportDepotLetter(int empId)
+        public async Task<IReadOnlyList<RptDepotLetterSearch>> ReportDepotLetter(int empId)
         {
             try
             {
-                string qry = " Select  DISTINCT 1 AS Id, " +
+                string qry = " Select  DISTINCT a.Id, " +
                     " 1 AS DataStatus," +
                     " SYSDATETIMEOFFSET() AS SetOn, " +
                     " SYSDATETIMEOFFSET() AS ModifiedOn, " +
@@ -98,13 +98,13 @@ namespace API.Controllers
                     " d.DonationTypeName," +
                     " doc.DoctorName, " +
                     " inDetail.ProposedAmount," +
-                    " doc.Address," +
-                    " doc.id as DocId," +
+                    //" doc.Address," +
+                    //" doc.id as DocId," +
                     " e.EmployeeName," +
-                    " e.Id as EmpId," +
-                    " e.DesignationName," +
-                    " e.MarketName,   " +
-                    " depo.DepotName " +
+                    //" e.Id as EmpId," +
+                    //" e.DesignationName," +
+                    " e.MarketName   " +
+                   // " depo.DepotName " +
                     " from InvestmentInit a " +
                     " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId " +
                     " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId " +
@@ -114,9 +114,9 @@ namespace API.Controllers
                     " inner join InvestmentDoctor inDc on a.Id = inDc.InvestmentInitId " +
                     " left join DoctorInfo doc on inDc.DoctorId = doc.Id " +
                     " where a.DonationTo = 'Doctor' and ir.RecStatus = 'Approved' " +
-                    " AND inDetail.PaymentMethod = 'Cash' "; // AND ir.InvestmentInitId = " + investmentInitId +" ";
+                    " AND inDetail.PaymentMethod = 'Cash' "; 
 
-                var results = _db.RptDepotLetter.FromSqlRaw(qry).ToList();
+                var results = _db.RptDepotLetterSearch.FromSqlRaw(qry).ToList();
 
                 return results;
             }

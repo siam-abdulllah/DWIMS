@@ -86,7 +86,9 @@ namespace Infrastructure.Data
         public DbSet<RptDepotLetter> RptDepotLetter { get; set; }
         [NotMapped]
         public DbSet<EmployeeLocation> EmployeeLocation { get; set; }
-
+        [NotMapped]
+        public DbSet<RptDepotLetterSearch> RptDepotLetterSearch { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
