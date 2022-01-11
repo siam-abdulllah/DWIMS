@@ -178,11 +178,11 @@ namespace API.Controllers
                     }
 
 
-                    var alreadyExistSpec = new InvestmentRecSpecification(investmentAprDto.InvestmentInitId, empId);
-                    var alreadyExistInvestmentAprList = await _investmentRecRepo.ListAsync(alreadyExistSpec);
-                    if (alreadyExistInvestmentAprList.Count > 0)
+                    var alreadyExistSpecs = new InvestmentRecSpecification(investmentAprDto.InvestmentInitId, empId);
+                    var alreadyExistInvestmentAprLists = await _investmentRecRepo.ListAsync(alreadyExistSpecs);
+                    if (alreadyExistInvestmentAprLists.Count > 0)
                     {
-                        foreach (var v in alreadyExistInvestmentAprList)
+                        foreach (var v in alreadyExistInvestmentAprLists)
                         {
                             _investmentRecRepo.Delete(v);
                             _investmentRecRepo.Savechange();
