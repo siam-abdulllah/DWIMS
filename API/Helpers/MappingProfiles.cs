@@ -50,6 +50,7 @@ namespace API.Helpers
             CreateMap<RptDocLocWiseInvestment, RptDocLocWiseInvestmentDto>().ReverseMap();
             CreateMap<RptDocCampWiseInvestment, RptDocCampWiseInvestmentDto>().ReverseMap();
             CreateMap<RptInvestmentSummary, RptInvestmentSummaryDto>().ReverseMap();
+            CreateMap<DepotPrintTrack, DepotPrintTrackDto>().ReverseMap();
         }
     }
 }

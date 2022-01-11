@@ -22,6 +22,7 @@ namespace Core.Entities
     {
         public string ReferenceNo { get; set; }
         public string DonationTypeName { get; set; }
+        public string ProposeFor { get; set; }
         public string DoctorName { get; set; }
         public long ProposedAmount { get; set; }
         public string MarketName { get; set; }

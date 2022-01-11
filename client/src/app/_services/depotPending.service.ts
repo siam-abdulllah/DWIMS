@@ -8,14 +8,19 @@ import { IUser, IUserResponse } from '../shared/models/user';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { GenericParams } from '../shared/models/genericParams';
+import { DepotPrintTrack } from '../shared/models/depotPrintTrack';
+
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class DepotPendingService {
+
+  depotPrintFormData: DepotPrintTrack = new DepotPrintTrack();
   rptDepotLetter: IrptDepotLetterSearch[]=[];
   pagination = new DepotLetterSearchPagination();
+ 
 
   roles: IRole[] = [];
   baseUrl = environment.apiUrl;
@@ -57,5 +62,11 @@ export class DepotPendingService {
   getRptDepotLetter(initId:any) {
     return this.http.get(this.baseUrl+ 'reportInvestment/rptInvestDepo/'+initId);
   }
+
+  insertTrackReport(depotPrintFormData: any) {
+    debugger;
+    return this.http.post(this.baseUrl+ 'depotPrintTrack/createTrackRecord', depotPrintFormData);
+  }
+  
 }
 

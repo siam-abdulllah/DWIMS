@@ -14,6 +14,7 @@ import { GenericParams } from '../shared/models/genericParams';
 import { AccountService } from '../account/account.service';
 import { DatePipe } from '@angular/common';
 import { DepotPendingService } from '../_services/depotPending.service';
+import { DepotPrintTrack,IDepotPrintTrack } from '../shared/models/depotPrintTrack';
 
 @Component({
   selector: 'pendingPrintDepot',
@@ -32,7 +33,8 @@ export class PendingPrintDepotComponent implements OnInit {
   configs: any;
   numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
   totalCount = 0;
-   depotLetter :IrptDepotLetter[] = [];
+  depotLetter :IrptDepotLetter[] = [];
+  printTrack :IDepotPrintTrack[] = [];
   rptDepotLetter:any;
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date = new Date();
@@ -112,13 +114,13 @@ export class PendingPrintDepotComponent implements OnInit {
     this.pendingService.getRptDepotLetter(selectedRecord.id).subscribe(resp => {
       // this.reportInvestmentService.getInsSocietyBCDSWiseInvestment().subscribe(resp => {  
       this.depotLetter = resp as IrptDepotLetter[];
-      debugger;
+ 
       if (this.rptDepotLetter.length <= 0) {
         this.toastr.warning('No Data Found', 'Report');
       }
       else
       {
-        this.getReport(this.depotLetter);
+        this.insertTracker(this.depotLetter);
       }   
     }, error => {
       console.log(error);
@@ -126,10 +128,26 @@ export class PendingPrintDepotComponent implements OnInit {
   }
 
 
+  insertTracker(r: IrptDepotLetter[]) {
+    this.pendingService.depotPrintFormData.investmentInitId = r[0].id;
+    this.pendingService.depotPrintFormData.depotName = r[0].depotName;
+    this.pendingService.depotPrintFormData.depotId = "";
+    this.pendingService.depotPrintFormData.employeeId = r[0].empId;
+    this.pendingService.depotPrintFormData.remarks = "";
+    this.pendingService.depotPrintFormData.printCount = 1;
+
+    this.pendingService.insertTrackReport(this.pendingService.depotPrintFormData).subscribe(
+      res => {
+        debugger;
+        this.toastr.success('Data Saved successfully', 'Report Tracker')
+        this.getReport(this.depotLetter);
+      },
+      err => { console.log(err); }
+    );
+  }
+
   getReport(r: IrptDepotLetter[]) {
     const totalPagesExp = "{total_pages_count_string}";
-    
-    
     const pdf = new jsPDF('l', 'pt', 'a4');
 
     var pageHeight = pdf.internal.pageSize.height || pdf.internal.pageSize.getHeight();

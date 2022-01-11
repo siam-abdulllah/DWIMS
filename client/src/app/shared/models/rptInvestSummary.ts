@@ -34,6 +34,7 @@ export interface IrptDepotLetterSearch {
     id: number;
     referenceNo: string;
     donationTypeName: string;
+    proposeFor: string;
     doctorName: string;
     proposedAmount: number;
     employeeName: string;
@@ -44,6 +45,7 @@ export class rptDepotLetterSearch implements IrptDepotLetterSearch {
     id: number;
     referenceNo: string;
     donationTypeName: string;
+    proposeFor: string;
     doctorName: string;
     proposedAmount: number;
     employeeName: string;

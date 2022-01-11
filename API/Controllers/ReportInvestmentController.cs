@@ -500,18 +500,30 @@ namespace API.Controllers
         {
             try
             {
-                string qry = " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, e.Id as EmpId, e.DesignationName, e.MarketName, a.ReferenceNo, d.DonationTypeName, " +
-                    " doc.id as DocId, doc.DoctorName, doc.[Address], inDetail.ProposedAmount, depo.DepotName " +
-                    " from InvestmentInit a " +
-                    " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId " +
-                    " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId " +
-                    " left join Employee e on a.EmployeeId = e.Id " +
-                    " left join Donation d on a.DonationId = d.Id " +
-                    " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId " +
-                    " inner join InvestmentDoctor inDc on a.Id = inDc.InvestmentInitId " +
-                    " left join DoctorInfo doc on inDc.DoctorId = doc.Id " +
-                    " where a.DonationTo = 'Doctor' and ir.RecStatus = 'Approved' " +
-                    " AND inDetail.PaymentMethod = 'Cash' AND ir.InvestmentInitId = " + investmentInitId +" ";
+                 string qry = "  SELECT * FROM  ( " + 
+                            " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, e.Id as EmpId, e.DesignationName, e.MarketName, a.ReferenceNo, d.DonationTypeName, " + 
+                            " doc.id as DocId, doc.DoctorName, doc.[Address], inDetail.ProposedAmount, depo.DepotName " +
+                            " from InvestmentInit a  " + 
+                            " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " + 
+                            " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId   " + 
+                            " left join Employee e on a.EmployeeId = e.Id  left join Donation d on a.DonationId = d.Id  " + 
+                            " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId   " + 
+                            " inner join InvestmentDoctor inDc on a.Id = inDc.InvestmentInitId  left join DoctorInfo doc on inDc.DoctorId = doc.Id " + 
+                            " where a.DonationTo = 'Doctor' AND  ir.RecStatus = 'Approved' AND inDetail.PaymentMethod = 'Cash'  " + 
+                            " UNION " + 
+                            " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, e.Id as EmpId, e.DesignationName, e.MarketName, a.ReferenceNo, d.DonationTypeName, " + 
+                            " doc.id as DocId, doc.DoctorName, doc.[Address], inDetail.ProposedAmount, depo.DepotName " +
+                            " from InvestmentInit a " + 
+                            " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId " + 
+                            " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId   " +
+                            " left join Employee e on a.EmployeeId = e.Id  left join Donation d on a.DonationId = d.Id  " +
+                            " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId   " +
+                            " inner join InvestmentCampaign IC on a.Id = IC.InvestmentInitId " +
+                            " left join DoctorInfo doc on IC.DoctorId = doc.Id   " +
+                            " where a.DonationTo = 'Campaign' AND  " +
+                            " ir.RecStatus = 'Approved'  AND  " +
+                            " inDetail.PaymentMethod = 'Cash' ) x " +
+                            " WHERE X.Id = " + investmentInitId +" ";
 
                 var results = _db.RptDepotLetter.FromSqlRaw(qry).ToList();
 

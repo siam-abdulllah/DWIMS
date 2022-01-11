@@ -1,0 +1,19 @@
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Core.Entities
+{
+    public class DepotPrintTrack : BaseEntity
+    {
+        public int? InvestmentInitId { get; set; }
+        [ForeignKey("InvestmentInitId")]
+        public InvestmentInit InvestmentInit { get; set; }
+        public string DepotId { get; set; }
+        public string DepotName { get; set; }
+        public string Remarks { get; set; }
+        public int? EmployeeId { get; set; }
+        public Employee Employee { get; set; }
+        public DateTimeOffset? LastPrintTime { get; set; }
+        public int PrintCount { get; set; }  
+    }
+}
