@@ -33,11 +33,25 @@ namespace API.Controllers
         [HttpPost("createTrackRecord")]
         public ActionResult<DepotPrintTrackDto> InsertDepoTracker(DepotPrintTrack trackDto)
         {
+            string dptCode = "";
+            string dptName = "";
+
             var check = (from t in _db.DepotPrintTrack
                          where t.InvestmentInitId == trackDto.InvestmentInitId
                          select t).FirstOrDefault();
 
             var depoCode = _db.InvestmentRecDepot.Where(x => x.DepotName == trackDto.DepotName).FirstOrDefault();
+
+            if(depoCode != null)
+            {
+                dptCode = depoCode.DepotCode;
+                dptName = depoCode.DepotName;
+            }
+            else
+            {
+                dptCode = "";
+                dptName = "";
+            }
 
             if (check != null)
             {
@@ -45,8 +59,8 @@ namespace API.Controllers
                 {
                     Id = check.Id,
                     InvestmentInitId = trackDto.InvestmentInitId,
-                    DepotId = depoCode.DepotCode,
-                    DepotName =  trackDto.DepotName,
+                    DepotId = dptCode,
+                    DepotName =  dptName,
                     Remarks = trackDto.Remarks,
                     SetOn = DateTimeOffset.Now,
                     EmployeeId = trackDto.EmployeeId,
@@ -74,8 +88,8 @@ namespace API.Controllers
                 var bcds = new DepotPrintTrack
                 {
                     InvestmentInitId = trackDto.InvestmentInitId,
-                    DepotId = depoCode.DepotCode,
-                    DepotName = depoCode.DepotName,
+                    DepotId = dptCode,
+                    DepotName =  dptName,
                     Remarks = trackDto.Remarks,
                     SetOn = DateTimeOffset.Now,
                     EmployeeId = trackDto.EmployeeId,
