@@ -74,7 +74,7 @@ export class PendingPrintDepotComponent implements OnInit {
   ViewData() {
 
     var empId = parseInt(this.empId);
-    this.pendingService.getPendingReport(empId).subscribe(response => {
+    this.pendingService.getPendingReport(empId,this.userRole).subscribe(response => {
       this.rptDepotLetter = response;
     }, error => {
       console.log(error);
