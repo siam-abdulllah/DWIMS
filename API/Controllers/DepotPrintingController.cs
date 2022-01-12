@@ -41,7 +41,8 @@ namespace API.Controllers
                             " left join Employee e on a.EmployeeId = e.Id  left join Donation d on a.DonationId = d.Id  " + 
                             " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId   " + 
                             " inner join InvestmentDoctor inDc on a.Id = inDc.InvestmentInitId  left join DoctorInfo doc on inDc.DoctorId = doc.Id " + 
-                            " where a.DonationTo = 'Doctor' AND  ir.RecStatus = 'Approved' AND inDetail.PaymentMethod = 'Cash'  " + 
+                            " where a.DonationTo = 'Doctor' AND  ir.RecStatus = 'Approved' AND inDetail.PaymentMethod = 'Cash' " + 
+                            " AND  ir.EmployeeId = inDetail.EmployeeId " +
                             " UNION " + 
                             " Select  DISTINCT a.Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn,  SYSDATETIMEOFFSET() AS ModifiedOn,  a.ReferenceNo, a.ProposeFor, a.DonationTo, depo.DepotCode," + 
                             " d.DonationTypeName, doc.DoctorName,  inDetail.ProposedAmount, e.EmployeeName, e.MarketName " + 
@@ -55,6 +56,7 @@ namespace API.Controllers
                             " where a.DonationTo = 'Campaign' AND  " +
                             " ir.RecStatus = 'Approved'  AND  " +
                             " inDetail.PaymentMethod = 'Cash'" +
+                            " AND  ir.EmployeeId = inDetail.EmployeeId " +
                             " UNION " + 
                             " Select DISTINCT a.Id, 1 AS DataStatus,SYSDATETIMEOFFSET() AS SetOn,SYSDATETIMEOFFSET() AS ModifiedOn,a.ReferenceNo,  depo.DepotCode, " +
                             " a.ProposeFor,a.DonationTo,d.DonationTypeName,doc.InstitutionName,inDetail.ProposedAmount,e.EmployeeName,e.MarketName  " +
@@ -68,6 +70,7 @@ namespace API.Controllers
                             " where a.DonationTo = 'Institution'  " +
                             " AND ir.RecStatus = 'Approved'  " +
                             " AND inDetail.PaymentMethod = 'Cash' " +
+                            " AND  ir.EmployeeId = inDetail.EmployeeId " +
                             " UNION " + 
                             " Select DISTINCT a.Id, 1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.ReferenceNo, a.ProposeFor, a.DonationTo, d.DonationTypeName, depo.DepotCode,  " +
                             " doc.BcdsName, inDetail.ProposedAmount, e.EmployeeName, e.MarketName  " +
@@ -81,6 +84,7 @@ namespace API.Controllers
                             " where a.DonationTo = 'Bcds'  " +
                             " AND ir.RecStatus = 'Approved'  " +
                             " AND inDetail.PaymentMethod = 'Cash' " +
+                            " AND  ir.EmployeeId = inDetail.EmployeeId " +
                             " UNION " + 
                             " Select DISTINCT a.Id, 1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.ReferenceNo, a.ProposeFor, a.DonationTo, depo.DepotCode, " +
                             " d.DonationTypeName, doc.SocietyName, inDetail.ProposedAmount, e.EmployeeName, e.MarketName   " +
@@ -93,6 +97,7 @@ namespace API.Controllers
                             " left join Society doc on IC.SocietyId = doc.Id  " +
                             " where a.DonationTo = 'Society' " +
                             " AND ir.RecStatus = 'Approved' " +
+                            " AND  ir.EmployeeId = inDetail.EmployeeId " +
                             " AND inDetail.PaymentMethod = 'Cash') " +
                             " x  WHERE X.ID not in (SELECT InvestmentInitId FROM DepotPrintTrack)  " ;
                             //" AND X.DepotCode = ''";
@@ -125,6 +130,7 @@ namespace API.Controllers
                             " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId   " +
                             " inner join InvestmentDoctor inDc on a.Id = inDc.InvestmentInitId  left join DoctorInfo doc on inDc.DoctorId = doc.Id " +
                             " where a.DonationTo = 'Doctor' AND  ir.RecStatus = 'Approved' AND inDetail.PaymentMethod = 'Cheque'  " +
+                            " AND  ir.EmployeeId = inDetail.EmployeeId " +
                             " UNION " +
                             " Select  DISTINCT a.Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn,  SYSDATETIMEOFFSET() AS ModifiedOn,  a.ReferenceNo, a.ProposeFor, a.DonationTo, depo.DepotCode," +
                             " d.DonationTypeName, doc.DoctorName,  inDetail.ProposedAmount, e.EmployeeName, e.MarketName " +
@@ -137,7 +143,8 @@ namespace API.Controllers
                             " left join DoctorInfo doc on IC.DoctorId = doc.Id   " +
                             " where a.DonationTo = 'Campaign' AND  " +
                             " ir.RecStatus = 'Approved'  AND  " +
-                            " inDetail.PaymentMethod = 'Cheque'" +
+                            " inDetail.PaymentMethod = 'Cheque' " +
+                            " AND  ir.EmployeeId = inDetail.EmployeeId " +
                             " UNION " +
                             " Select DISTINCT a.Id, 1 AS DataStatus,SYSDATETIMEOFFSET() AS SetOn,SYSDATETIMEOFFSET() AS ModifiedOn,a.ReferenceNo,  depo.DepotCode, " +
                             " a.ProposeFor,a.DonationTo,d.DonationTypeName,doc.InstitutionName,inDetail.ProposedAmount,e.EmployeeName,e.MarketName  " +
@@ -151,6 +158,7 @@ namespace API.Controllers
                             " where a.DonationTo = 'Institution'  " +
                             " AND ir.RecStatus = 'Approved'  " +
                             " AND inDetail.PaymentMethod = 'Cheque' " +
+                            " AND  ir.EmployeeId = inDetail.EmployeeId " +
                             " UNION " +
                             " Select DISTINCT a.Id, 1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.ReferenceNo, a.ProposeFor, a.DonationTo, d.DonationTypeName, depo.DepotCode,  " +
                             " doc.BcdsName, inDetail.ProposedAmount, e.EmployeeName, e.MarketName  " +
@@ -164,6 +172,7 @@ namespace API.Controllers
                             " where a.DonationTo = 'Bcds'  " +
                             " AND ir.RecStatus = 'Approved'  " +
                             " AND inDetail.PaymentMethod = 'Cheque' " +
+                            " AND  ir.EmployeeId = inDetail.EmployeeId " +
                             " UNION " +
                             " Select DISTINCT a.Id, 1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.ReferenceNo, a.ProposeFor, a.DonationTo, depo.DepotCode, " +
                             " d.DonationTypeName, doc.SocietyName, inDetail.ProposedAmount, e.EmployeeName, e.MarketName   " +
@@ -176,6 +185,7 @@ namespace API.Controllers
                             " left join Society doc on IC.SocietyId = doc.Id  " +
                             " where a.DonationTo = 'Society' " +
                             " AND ir.RecStatus = 'Approved' " +
+                            " AND  ir.EmployeeId = inDetail.EmployeeId " +
                             " AND inDetail.PaymentMethod = 'Cheque') " +
                             " x  WHERE X.ID not in (SELECT InvestmentInitId FROM DepotPrintTrack)  ";
                 //" AND X.DepotCode = ''";

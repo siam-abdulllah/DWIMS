@@ -40,12 +40,17 @@ export class DepotPendingService {
     return this.http.get(this.baseUrl + 'depotPrinting/pendingForPrint/'+ empId);
   }
 
+  getRptDepotLetter(initId:any) {
+    return this.http.get(this.baseUrl+ 'reportInvestment/rptInvestDepo/'+initId);
+  }
+
+
+  
   getPendingChequeReport(empId:number){    
     return this.http.get(this.baseUrl + 'depotPrinting/pendingChqForPrint/'+ empId);
   }
-
-  getRptDepotLetter(initId:any) {
-    return this.http.get(this.baseUrl+ 'reportInvestment/rptInvestDepo/'+initId);
+  rptChequePrint(initId:any) {
+    return this.http.get(this.baseUrl+ 'reportInvestment/rptChqPrint/'+initId);
   }
 
   insertTrackReport(depotPrintFormData: any) {
