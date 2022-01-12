@@ -562,8 +562,8 @@ namespace API.Controllers
                             " inner join InvestmentSociety IC on a.Id = IC.InvestmentInitId  " +
                             " left join Society doc on IC.SocietyId = doc.Id  " +
                             " where a.DonationTo = 'Society'  " +
-                            " AND ir.RecStatus = 'Approved' ) x  " +
                             " AND inDetail.PaymentMethod = 'Cash'  " +
+                            " AND ir.RecStatus = 'Approved' ) x  " +                           
                             "  WHERE X.Id = " + investmentInitId +" ";
 
                 var results = _db.RptDepotLetter.FromSqlRaw(qry).ToList();
