@@ -37,7 +37,9 @@ export class HomeComponent implements OnInit {
       (response) => {
         this.sbu = response.sbu;
         this.marketCode = response.marketCode;
-        this.getTotalApproved();
+        if(this.userRole!='DIC')
+        {this.getTotalApproved();}
+        
       // this.getMyPending();
       },
       (error) => {
