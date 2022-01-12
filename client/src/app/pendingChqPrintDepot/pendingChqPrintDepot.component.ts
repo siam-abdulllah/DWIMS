@@ -18,12 +18,12 @@ import { DepotPrintTrack,IDepotPrintTrack } from '../shared/models/depotPrintTra
 
 @Component({
   selector: 'pendingPrintDepot',
-  templateUrl: './pendingPrintDepot.component.html',
+  templateUrl: './pendingChqPrintDepot.component.html',
   styles: [
   ]
 })
 
-export class PendingPrintDepotComponent implements OnInit {
+export class PendingChqPrintDepotComponent implements OnInit {
   @ViewChild('search', { static: false }) searchTerm: ElementRef;
   @ViewChild('fromDate') fromDate: ElementRef;
   @ViewChild('toDate') toDate: ElementRef;
@@ -72,9 +72,8 @@ export class PendingPrintDepotComponent implements OnInit {
   }
 
   ViewData() {
-
     var empId = parseInt(this.empId);
-    this.pendingService.getPendingReport(empId).subscribe(response => {
+    this.pendingService.getPendingChequeReport(empId).subscribe(response => {
       this.rptDepotLetter = response;
     }, error => {
       console.log(error);
@@ -174,20 +173,20 @@ export class PendingPrintDepotComponent implements OnInit {
 
     pdf.text('Subject:', 65, 190);
     pdf.setFontType('bold');
-    pdf.text('Regarding Cash '+ r[0].donationTypeName, 110, 190);
+    pdf.text('Regarding Cheque '+ r[0].donationTypeName, 110, 190);
 
     pdf.setFontType('normal');
-    pdf.text('In response to above letter reference, we are pleased to approve ' + r[0].donationTypeName + ' as cash for below '+ r[0].donationTo+'.', 65, 240); 
+    pdf.text('In response to above letter reference, we are pleased to approve ' + r[0].donationTypeName + ' as cheque for below '+ r[0].donationTo+'.', 65, 240); 
     pdf.text('Name: '+r[0].doctorName +', GP ID. '+ r[0].docId +' '+ r[0].address +'.', 65, 260 );
     pdf.text('Amount: '+ (r[0].proposedAmount).toLocaleString() + '/-  ('+ this.transform(r[0].proposedAmount)+') only.', 65, 279 );
+    pdf.text('Cheque Title: '+ r[0].chequeTitle + '', 65, 298 );
 
+    pdf.text('You are therefore advised to Collect the amount in cheque from DIC, '+ r[0].depotName +' by showing this reference letter & Arrange to hand over' , 65, 340)
+    pdf.text('the money to the mentioned '+ r[0].donationTo+' in prescence of RSD/DIC and respective Colleagues.' , 65, 360)
 
-    pdf.text('You are therefore advised to Collect the amount in cash from DIC, '+ r[0].depotName +' by showing this reference letter & Arrange to hand over' , 65, 320)
-    pdf.text('the money to the mentioned '+ r[0].donationTo+' in prescence of RSD/DIC and respective Colleagues.' , 65, 340)
+    pdf.text('We hope and believe that you will be able to keep good relationship with the mentioned '+ r[0].donationTo+' by using this opportunity.' , 65, 400)
 
-    pdf.text('We hope and believe that you will be able to keep good relationship with the mentioned '+ r[0].donationTo+' by using this opportunity.' , 65, 380)
-
-    pdf.text('With best wishes' , 85, 430)
+    pdf.text('With best wishes' , 85, 450)
 
 
     var pageContent = function (data) {

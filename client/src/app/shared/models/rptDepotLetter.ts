@@ -13,6 +13,7 @@ export interface IrptDepotLetter {
     designationName: string;
     marketName: string;
     depotName: string;
+    chequeTitle: string;
 }
 
 export class rptDepotLetter implements IrptDepotLetter {
@@ -30,4 +31,5 @@ export class rptDepotLetter implements IrptDepotLetter {
     designationName: string;
     marketName: string;
     depotName: string;
+    chequeTitle: string;
 }

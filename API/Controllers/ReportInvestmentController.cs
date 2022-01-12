@@ -502,17 +502,18 @@ namespace API.Controllers
             {
                  string qry = " SELECT * FROM  ( " + 
                             " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Doctor' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, a.ReferenceNo, d.DonationTypeName, " + 
-                            " doc.id as DocId, doc.DoctorName, doc.[Address], inDetail.ProposedAmount, depo.DepotName " +
+                            " doc.id as DocId, doc.DoctorName, doc.[Address], inDetail.ProposedAmount, inDetail.ChequeTitle, depo.DepotName " +
                             " from InvestmentInit a  " + 
                             " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " + 
                             " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId   " + 
                             " left join Employee e on a.EmployeeId = e.Id  left join Donation d on a.DonationId = d.Id  " + 
                             " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId   " + 
                             " inner join InvestmentDoctor inDc on a.Id = inDc.InvestmentInitId  left join DoctorInfo doc on inDc.DoctorId = doc.Id " + 
-                            " where a.DonationTo = 'Doctor' AND  ir.RecStatus = 'Approved' AND inDetail.PaymentMethod = 'Cash'  " + 
+                            " where a.DonationTo = 'Doctor' AND  ir.RecStatus = 'Approved' " +
+                            //" AND inDetail.PaymentMethod = 'Cash'  " + 
                             " UNION " + 
                             " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Doctor' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, a.ReferenceNo, d.DonationTypeName, " + 
-                            " doc.id as DocId, doc.DoctorName, doc.[Address], inDetail.ProposedAmount, depo.DepotName " +
+                            " doc.id as DocId, doc.DoctorName, doc.[Address], inDetail.ProposedAmount,  inDetail.ChequeTitle, depo.DepotName " +
                             " from InvestmentInit a " + 
                             " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId " + 
                             " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId   " +
@@ -521,11 +522,11 @@ namespace API.Controllers
                             " inner join InvestmentCampaign IC on a.Id = IC.InvestmentInitId " +
                             " left join DoctorInfo doc on IC.DoctorId = doc.Id   " +
                             " where a.DonationTo = 'Campaign' AND  " +
-                            " ir.RecStatus = 'Approved'  AND  " +
-                            " inDetail.PaymentMethod = 'Cash' " +
+                            " ir.RecStatus = 'Approved' " +
+                            //" AND inDetail.PaymentMethod = 'Cash' " +
                             " UNION " + 
                             " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Institution' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, a.ReferenceNo, d.DonationTypeName,  " +
-                            " doc.id as DocId, doc.InstitutionName, doc.[Address], inDetail.ProposedAmount, depo.DepotName  " +
+                            " doc.id as DocId, doc.InstitutionName, doc.[Address], inDetail.ProposedAmount,  inDetail.ChequeTitle, depo.DepotName  " +
                             " from InvestmentInit a  " +
                             " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " +
                             " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId  " +
@@ -536,10 +537,10 @@ namespace API.Controllers
                             " left join InstitutionInfo doc on IC.InstitutionId = doc.Id  " +
                             " where a.DonationTo = 'Institution' " +
                             " AND ir.RecStatus = 'Approved'  " +
-                            " AND inDetail.PaymentMethod = 'Cash' " +
+                            //" AND inDetail.PaymentMethod = 'Cash' " +
                             " UNION " + 
                             " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Bcds' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, a.ReferenceNo, d.DonationTypeName,  " +
-                            " doc.id as DocId, doc.BcdsName, doc.BcdsAddress, inDetail.ProposedAmount, depo.DepotName  " +
+                            " doc.id as DocId, doc.BcdsName, doc.BcdsAddress, inDetail.ProposedAmount,  inDetail.ChequeTitle, depo.DepotName  " +
                             " from InvestmentInit a  " +
                             " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " +
                             " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId  " +
@@ -549,10 +550,10 @@ namespace API.Controllers
                             " left join Bcds doc on IC.BcdsId = doc.Id  " +
                             " where a.DonationTo = 'Bcds'  " +
                             " AND ir.RecStatus = 'Approved'  " +
-                            " AND inDetail.PaymentMethod = 'Cash' " +
+                            //" AND inDetail.PaymentMethod = 'Cash' " +
                             " UNION " + 
                             " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Society' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, a.ReferenceNo, d.DonationTypeName,  " +
-                            " doc.id as DocId, doc.SocietyName, doc.SocietyAddress, inDetail.ProposedAmount, depo.DepotName     " +
+                            " doc.id as DocId, doc.SocietyName, doc.SocietyAddress, inDetail.ProposedAmount,  inDetail.ChequeTitle, depo.DepotName     " +
                             " from InvestmentInit a  " +
                             " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId " +
                             " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId  " +
@@ -561,8 +562,8 @@ namespace API.Controllers
                             " inner join InvestmentSociety IC on a.Id = IC.InvestmentInitId  " +
                             " left join Society doc on IC.SocietyId = doc.Id  " +
                             " where a.DonationTo = 'Society'  " +
-                            " AND ir.RecStatus = 'Approved'  " +
-                            " AND inDetail.PaymentMethod = 'Cash' ) x " +
+                            " AND ir.RecStatus = 'Approved' ) x  " +
+                            // " AND inDetail.PaymentMethod = 'Cash'  " +
                             "  WHERE X.Id = " + investmentInitId +" ";
 
                 var results = _db.RptDepotLetter.FromSqlRaw(qry).ToList();

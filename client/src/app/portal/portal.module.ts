@@ -19,6 +19,7 @@ import { InvestmentRecComponent } from '../investmentRec/investmentRec.component
 import { InvestmentAprComponent } from '../investmentApr/investmentApr.component';
 import { InvestmentAprNoSbuComponent } from './../investmentAprNoSbu/investmentAprNoSbu.component';
 import { ReportInvestmentComponent } from './../report-investment/report-investment.component';
+import { PendingChqPrintDepotComponent } from '../pendingChqPrintDepot/pendingChqPrintDepot.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MasterModule } from '../master/master.module';
@@ -79,6 +80,7 @@ import { ChangePasswordComponent } from '../changePassword/changePassword.compon
     ParamInvestSummaryComponent,
     RptInvestmentDetailComponent,
     PendingPrintDepotComponent,
+    PendingChqPrintDepotComponent,
     SbuWiseBudgetComponent,
     DocHonApprComponent,
     ClusterInfoComponent,

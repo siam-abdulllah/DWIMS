@@ -36,27 +36,12 @@ export class DepotPendingService {
     this.genParams = genParams;
   }
 
-  // getPendingReport(empId:number){    
-  //   let params = new HttpParams();
-  //   debugger;
-  //   if (this.genParams.search) {
-  //     params = params.append('search', this.genParams.search);
-  //   }
-  //   params = params.append('sort', this.genParams.sort);
-  //   params = params.append('pageIndex', this.genParams.pageIndex.toString());
-  //   params = params.append('pageSize', this.genParams.pageSize.toString());
-  //   return this.http.get<IDepotLetterPagination>(this.baseUrl + 'depotPrinting/pendingForPrint/'+ empId, { observe: 'response', params })
-  //   .pipe(
-  //     map(response => {
-  //       this.rptDepotLetter = [...this.rptDepotLetter, ...response.body.data]; 
-  //       this.pagination = response.body;
-  //       return this.pagination;
-  //     })
-  //   );
-  // }
-
   getPendingReport(empId:number){    
     return this.http.get(this.baseUrl + 'depotPrinting/pendingForPrint/'+ empId);
+  }
+
+  getPendingChequeReport(empId:number){    
+    return this.http.get(this.baseUrl + 'depotPrinting/pendingChqForPrint/'+ empId);
   }
 
   getRptDepotLetter(initId:any) {

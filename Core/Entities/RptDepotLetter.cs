@@ -17,6 +17,7 @@ namespace Core.Entities
         public string DesignationName { get; set; }
         public string MarketName { get; set; }
         public string DepotName { get; set; }
+        public string ChequeTitle { get; set; }
     }
 
     public class RptDepotLetterSearch : BaseEntity
