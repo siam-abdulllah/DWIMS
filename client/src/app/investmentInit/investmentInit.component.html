@@ -941,7 +941,8 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let a of investmentInits | paginate: configs | filter: searchText">
+                                    <!-- <tr *ngFor="let a of investmentInits | paginate: configs | filter: searchText"> -->
+                                    <tr *ngFor="let a of investmentInits  | filter: searchText">
                                         <td>
                                             <button class="btn btn-sm btn-embossed btn-success" (click)="selectInvestmentInit(a)"><i class="fa fa-check" aria-hidden="true"></i>Select</button>
 
@@ -955,7 +956,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls>
+                            <!-- <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls> -->
                         </div>
                     </div>
                 </div>

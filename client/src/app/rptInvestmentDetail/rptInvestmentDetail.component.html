@@ -33,9 +33,9 @@
                                 <div class="col-sm-1">
                                     <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="investmentInitForm.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
                                 </div>-->
-                                <div class="col-sm-2">
+                                <!-- <div class="col-sm-2">
                                     <button class="btn btn-info btn-lg btn-block" type="button" (click)="printPDF()"><i class="fa fa-search" ></i>Search</button>
-                                </div>
+                                </div> -->
                                 <div class="col-sm-2">
                                     <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetPage(investmentInitForm)"><i class="fa fa-window-close"></i>&nbsp;&nbsp;&nbsp;Close Report</button>
                                 </div>
@@ -707,41 +707,16 @@
                                     </table>
                                 </div>
                             </fieldset>
-                            <fieldset disabled>
+                            <!-- <fieldset disabled>
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <h6 class=""><strong>Targeted Group</strong></h6>
                                         </div>
                                         <div class="col-sm-2"></div>
-                                        <!-- <div class="col-sm-2">
-                                            <button class="btn btn-success btn-lg btn-block" type="button"><i class="fa fa-save"></i>&nbsp; Save</button>
-                                        </div> -->
+                                       
                                     </div>
                                 </div>
-                                <!-- <div class="form-group">
-                                    <div class="row" *ngIf="!isInvOther">
-                                        <div class="col-md-2">
-                                            <label>Group</label>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <ng-select [virtualScroll]="true" [disabled]="isInvOther" [items]="marketGroupMsts" bindLabel="groupName" bindValue="id" placeholder="Market Group" id="marketGroupMstId" name="marketGroupMstId" #marketGroupMstId="ngModel" (change)="onChangeMarketGroupInTargetedGroup()"
-                                                [(ngModel)]="investmentInitService.investmentTargetedGroupFormData.marketGroupMstId" [class.invalid]="marketGroupMstId.invalid && marketGroupMstId.touched">
-                                            </ng-select> -->
-                                <!-- <select class="form-control" id="marketGroupMstId" name="marketGroupMstId" #marketGroupMstId="ngModel" (change)="onChangeMarketGroupInTargetedGroup()" [(ngModel)]="investmentInitService.investmentTargetedGroupFormData.marketGroupMstId" [class.invalid]="marketGroupMstId.invalid && marketGroupMstId.touched">                              
-                                                <option  [ngValue]="null">Select Market Group</option>
-                                                <option *ngFor="let a of marketGroupMsts" [value]="a.id">{{a.groupName}}</option>                                        
-                                    </select> -->
-                                <!-- </div>
-                                        <div class="col-md-3"></div>
-                                        <div class="col-md-2" *ngIf="isValid && !isInvOther">
-                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentTargetedGroup()"><i class="fa fa-save"></i>&nbsp; Save</button>
-                                        </div>
-                                        <div class="col-md-2" *ngIf="isValid && !isInvOther">
-                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentTargetedGroup()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
-                                        </div>
-                                    </div>
-                                </div> -->
                                 <div class="form-group">
                                     <table class="table  table-bordered">
                                         <tr class="HeaderRow">
@@ -769,13 +744,10 @@
                                                 <span *ngIf="a.completionStatus === false || undefined || ''">Pending</span>
                                                 <span *ngIf="a.completionStatus === true ''">Recommended</span>
                                             </td>
-                                            <!-- <td>
-                                                <input type="button" (click)="removeInvestmentTargetedProd(a)" value="Remove">
-                                            </td> -->
                                         </tr>
                                     </table>
                                 </div>
-                            </fieldset>
+                            </fieldset> -->
                             <fieldset disabled>
                                 <div class="form-group">
                                     <div class="row">

@@ -64,8 +64,8 @@ namespace API.Controllers
 
 
         [HttpGet("investmentInits/{empId}/{sbu}/{userRole}")]
-        public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetInvestmentInits(int empId, string sbu, string userRole,
-          [FromQuery] InvestmentInitSpecParams investmentInitParrams)
+        //public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetInvestmentInits(int empId, string sbu, string userRole,[FromQuery] InvestmentInitSpecParams investmentInitParrams)
+        public async Task<IReadOnlyList<InvestmentInit>> GetInvestmentInits(int empId, string sbu, string userRole,[FromQuery] InvestmentInitSpecParams investmentInitParrams)
         {
             try
             {
@@ -103,13 +103,14 @@ namespace API.Controllers
                 if (userRole == "Administrator")
                 {
 
-                    var spec = new InvestmentInitSpecification(investmentInitParrams);
+                    //var spec = new InvestmentInitSpecification(investmentInitParrams);
 
-                    var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
+                    //var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
 
-                    var totalItems = await _investmentInitRepo.CountAsync(countSpec);
+                   // var totalItems = await _investmentInitRepo.CountAsync(countSpec);
 
-                    var investmentInits = await _investmentInitRepo.ListAsync(spec);
+                   // var investmentInits = await _investmentInitRepo.ListAsync(spec);
+                    var investmentInits = await _investmentInitRepo.ListAllAsync();
 
                     //investmentRecCommentParrams.Search = sbu;
                     //var investmentRecCommentSpec = new InvestmentRecCommentSpecification(investmentRecCommentParrams);
@@ -131,9 +132,10 @@ namespace API.Controllers
                     //                EmployeeId = i.EmployeeId
                     //            }
                     //              ).Distinct().ToList();
-                    var data = _mapper
-                        .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(investmentInits);
-                    return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, totalItems, data));
+                    //var data = _mapper
+                    //    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(investmentInits);
+                    //return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, totalItems, data));
+                    return investmentInits;
                 }
 
                 else
@@ -147,11 +149,12 @@ namespace API.Controllers
                     var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentInitSearch @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
 
 
-                    var data = _mapper
-                        .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
+                    //var data = _mapper
+                    //    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
 
                     //  return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, totalItems, results));
-                    return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, 10, data));
+                    //return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, 10, data));
+                    return results;
                 }
             }
             catch (System.Exception e)

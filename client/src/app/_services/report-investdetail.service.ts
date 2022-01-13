@@ -90,7 +90,7 @@ export class RptInvestmentDetailService {
     return this.http.get(this.baseUrl + 'investment/investmentDoctors/'+investmentInitId);
   }
   getInvestmentTargetedProds(investmentInitId: number, sbu: string) {
-    return this.http.get(this.baseUrl + 'investment/investmentTargetedProds/' + investmentInitId + '/' + sbu);
+    return this.http.get(this.baseUrl + 'investmentRec/investmentRecProducts/' + investmentInitId + '/' + sbu);
   }
   getLastFiveInvestment(marketCode: string, toDayDate: string) {
     return this.http.get(this.baseUrl + 'investment/getLastFiveInvestment/' + marketCode + '/' + toDayDate);
@@ -111,7 +111,7 @@ export class RptInvestmentDetailService {
     return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForSociety/' + donationId + '/' + societyId + '/' +marketCode + '/' +toDayDate);
   }
   getInvestmentTargetedGroups(investmentInitId: number) {
-    return this.http.get(this.baseUrl + 'investment/investmentTargetedGroups/' + investmentInitId);
+    return this.http.get(this.baseUrl + 'InvestmentRec/investmentTargetedGroups/' + investmentInitId);
   }
 
   getInvestmentRcvComment(investmentInitId:number){    

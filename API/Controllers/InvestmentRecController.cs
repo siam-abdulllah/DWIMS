@@ -58,8 +58,8 @@ namespace API.Controllers
             _investmentTargetedGroupRepo = investmentTargetedGroupRepo;
         }
         [HttpGet("investmentInits/{empId}/{sbu}")]
-        public ActionResult<Pagination<InvestmentInitDto>> GetInvestmentInits(int empId, string sbu,
-          [FromQuery] InvestmentInitSpecParams investmentInitParrams)
+        //public ActionResult<Pagination<InvestmentInitDto>> GetInvestmentInits(int empId, string sbu,[FromQuery] InvestmentInitSpecParams investmentInitParrams)
+        public IReadOnlyList<InvestmentInit> GetInvestmentInits(int empId, string sbu,[FromQuery] InvestmentInitSpecParams investmentInitParrams)
         {
             try
             {
@@ -92,9 +92,10 @@ namespace API.Controllers
                         new SqlParameter("@EID", empId)
                     };
                 var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentRecSearch @SBU,@EID", parms.ToArray()).ToList();
-                var data = _mapper
-                    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
-                return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, 50, data));
+                //var data = _mapper
+                //    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
+                //return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, 50, data));
+                return results;
             }
             catch (System.Exception e)
             {

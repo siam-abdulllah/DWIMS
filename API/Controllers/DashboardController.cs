@@ -100,10 +100,10 @@ namespace API.Controllers
 
                 if (appPriority.Priority == 1)
                 {
-                    qry = " select CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count from InvestmentInit " +
-                        " where Id in (select InvestmentInitId from InvestmentTargetedGroup " +
-                        " where MarketCode in (select MarketCode from Employee " +
-                        " where Id = " + empCode + " ) and CompletionStatus = 0) and Confirmation = 1 ";
+                    qry = " select CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count from InvestmentInit I " +
+                        " where EXISTS ( (select InvestmentInitId from InvestmentTargetedGroup IT " +
+                        " where EXISTS ( (select MarketCode from Employee " +
+                        " where Id = " + empCode + " AND MarketCode=It.MarketCode ) and CompletionStatus = 0) and Confirmation = 1 AND IT.InvestmentInitId=I.Id ";
                 }
                 else if (appPriority.Priority == 2)
                 {

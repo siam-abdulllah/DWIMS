@@ -237,7 +237,7 @@ export class InvestmentRecComponent implements OnInit {
     this.SpinnerService.show();
     this.investmentRecService.getInvestmentInit(parseInt(this.empId), this.sbu).subscribe(response => {
       this.SpinnerService.hide();
-      this.investmentInits = response.data;
+      this.investmentInits = response as IInvestmentInit[];
 
       if (this.investmentInits.length > 0) {
         this.openInvestmentInitSearchModal(this.investmentInitSearchModal);

@@ -42,7 +42,7 @@ export class InvestmentInitComponent implements OnInit {
   convertedDate: string;
   empId: string;
   searchText = '';
-  configs: any;
+  //configs: any;
   degree: any;
   designation: any;
   docInstaddress: any;
@@ -168,13 +168,13 @@ export class InvestmentInitComponent implements OnInit {
     this.SpinnerService.show();
     this.investmentInitService.getInvestmentInit(parseInt(this.empId), this.sbu, this.userRole).subscribe(response => {
       this.SpinnerService.hide();
-      this.investmentInits = response.data;
-      this.totalCount = response.count;
-      this.configs = {
-        currentPage: params.pageIndex,
-        itemsPerPage: params.pageSize,
-        totalItems: this.totalCount,
-      };
+      this.investmentInits = response as IInvestmentInit[];
+      //this.totalCount = response.count;
+      // this.configs = {
+      //   currentPage: params.pageIndex,
+      //   itemsPerPage: params.pageSize,
+      //   totalItems: this.totalCount,
+      // };
       if (this.investmentInits.length > 0) {
           this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
       }
@@ -1302,11 +1302,11 @@ export class InvestmentInitComponent implements OnInit {
     this.investmentTargetedGroups = [];
     this.investmentTargetedProds = [];
     this.lastFiveInvestmentDetail = [];
-    this.configs = {
-      currentPage: 1,
-      itemsPerPage: 10,
-      totalItems: 50,
-    };
+    // this.configs = {
+    //   currentPage: 1,
+    //   itemsPerPage: 10,
+    //   totalItems: 50,
+    // };
   }
   resetPageLoad() {
     this.investmentInitService.investmentInitFormData = new InvestmentInit();
@@ -1319,11 +1319,11 @@ export class InvestmentInitComponent implements OnInit {
     this.investmentTargetedGroups = [];
     this.investmentTargetedProds = [];
     this.lastFiveInvestmentDetail = [];
-    this.configs = {
-      currentPage: 1,
-      itemsPerPage: 10,
-      totalItems: 50,
-    };
+    // this.configs = {
+    //   currentPage: 1,
+    //   itemsPerPage: 10,
+    //   totalItems: 50,
+    // };
   }
   removeInvestmentDoctor() {
     var c = confirm("Are you sure you want to delete that?");
@@ -1527,31 +1527,31 @@ export class InvestmentInitComponent implements OnInit {
       this.toastr.warning('No Market Group Found', 'Investment Group');
     }
   }
-  onPageChanged(event: any) {
-    const params = this.investmentInitService.getGenParams();
-    if (params.pageIndex !== event) {
-      params.pageIndex = event;
-      this.investmentInitService.setGenParams(params);
-      this.getInvestmentInitPgChange();
-    }
-  }
-  getInvestmentInitPgChange() {
-    const params = this.investmentInitService.getGenParams();
-    this.SpinnerService.show();
-    this.investmentInitService.getInvestmentInit(parseInt(this.empId), this.sbu, this.userRole).subscribe(response => {
-      this.SpinnerService.hide();
-      this.investmentInits = response.data;
-      this.totalCount = response.count;
-      this.configs = {
-        currentPage: params.pageIndex,
-        itemsPerPage: params.pageSize,
-        totalItems: this.totalCount,
-      };
-    }, error => {
-      this.SpinnerService.hide();
-      console.log(error);
-    });
-  }
+  // onPageChanged(event: any) {
+  //   const params = this.investmentInitService.getGenParams();
+  //   if (params.pageIndex !== event) {
+  //     params.pageIndex = event;
+  //     this.investmentInitService.setGenParams(params);
+  //     this.getInvestmentInitPgChange();
+  //   }
+  // }
+  // getInvestmentInitPgChange() {
+  //   const params = this.investmentInitService.getGenParams();
+  //   this.SpinnerService.show();
+  //   this.investmentInitService.getInvestmentInit(parseInt(this.empId), this.sbu, this.userRole).subscribe(response => {
+  //     this.SpinnerService.hide();
+  //     this.investmentInits = response.data;
+  //     this.totalCount = response.count;
+  //     this.configs = {
+  //       currentPage: params.pageIndex,
+  //       itemsPerPage: params.pageSize,
+  //       totalItems: this.totalCount,
+  //     };
+  //   }, error => {
+  //     this.SpinnerService.hide();
+  //     console.log(error);
+  //   });
+  // }
   resetSearch() {
     this.searchText = '';
   }

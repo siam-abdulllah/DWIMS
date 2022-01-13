@@ -131,23 +131,23 @@ export class InvestmentInitService {
     this.genParams = genParams;
   }
   getInvestmentInit(empId: number, sbu: string,userRole:string) {
-    let params = new HttpParams();
-    if (this.genParams.search) {
-      params = params.append('search', this.genParams.search);
-    }
-    params = params.append('sort', this.genParams.sort);
-    params = params.append('pageIndex', this.genParams.pageIndex.toString());
-    params = params.append('pageSize', this.genParams.pageSize.toString());
-    return this.http.get<IInvestmentInitPagination>(this.baseUrl + 'investment/investmentInits/' + empId + '/' + sbu+'/'+userRole, { observe: 'response', params })
-      //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
-      .pipe(
-        map(response => {
-          this.investmentInits = [...this.investmentInits, ...response.body.data];
-          this.investmentInitPagination = response.body;
-          return this.investmentInitPagination;
-        })
-      );
-
+    // let params = new HttpParams();
+    // if (this.genParams.search) {
+    //   params = params.append('search', this.genParams.search);
+    // }
+    // params = params.append('sort', this.genParams.sort);
+    // params = params.append('pageIndex', this.genParams.pageIndex.toString());
+    // params = params.append('pageSize', this.genParams.pageSize.toString());
+    // return this.http.get<IInvestmentInitPagination>(this.baseUrl + 'investment/investmentInits/' + empId + '/' + sbu+'/'+userRole, { observe: 'response', params })
+    //   //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
+    //   .pipe(
+    //     map(response => {
+    //       this.investmentInits = [...this.investmentInits, ...response.body.data];
+    //       this.investmentInitPagination = response.body;
+    //       return this.investmentInitPagination;
+    //     })
+    //   );
+    return this.http.get(this.baseUrl + 'investment/investmentInits/' + empId + '/' + sbu+'/'+userRole);
   }
   submitInvestment() {
     return this.http.post(this.baseUrl + 'investment/submitInvestment', this.investmentInitFormData);
