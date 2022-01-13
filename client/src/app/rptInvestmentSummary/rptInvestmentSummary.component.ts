@@ -32,10 +32,10 @@ export class RptInvestSummaryComponent implements OnInit {
   genParams: GenericParams;
   empId: string;
   searchText = '';
-  configs: any;
+  //configs: any;
   searchDto: IReportSearchDto;
   numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
-  totalCount = 0;
+  //totalCount = 0;
   reports: IrptInvestSummary[] = [];
   rptDepotLetter :IrptDepotLetterSearch[] = [];
   bsConfig: Partial<BsDatepickerConfig>;
@@ -66,15 +66,15 @@ export class RptInvestSummaryComponent implements OnInit {
     this.getEmployeeId();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-blue' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
-    this.configs = {
-      currentPage: 1,
-      itemsPerPage: 10,
-      totalItems:50,
-      };
+    // this.configs = {
+    //   currentPage: 1,
+    //   itemsPerPage: 10,
+    //   totalItems:50,
+    //   };
       //this.GetData(v[3]);
   }
 
-
+  
   // GetData(param)
   // {
 
@@ -118,14 +118,14 @@ export class RptInvestSummaryComponent implements OnInit {
     };
 
     this.reportService.GetInvestmentSummaryReport(searchDto).subscribe(response => {
-      const params = this.reportService.getGenParams();
+      //const params = this.reportService.getGenParams();
       this.reports = response.data;
-      this.totalCount = response.count;
-      this.configs = {
-        currentPage: params.pageIndex,
-        itemsPerPage: params.pageSize,
-        totalItems:this.totalCount,
-        };
+      //this.totalCount = response.count;
+      // this.configs = {
+      //   currentPage: params.pageIndex,
+      //   itemsPerPage: params.pageSize,
+      //   totalItems:this.totalCount,
+      //   };
     }, error => {
       console.log(error);
     });
@@ -160,19 +160,19 @@ export class RptInvestSummaryComponent implements OnInit {
 
   resetPage(form: NgForm) {
     form.form.reset();
-    this.configs = {
-      currentPage: 1,
-      itemsPerPage: 10,
-      totalItems:50,
-      };
+    // this.configs = {
+    //   currentPage: 1,
+    //   itemsPerPage: 10,
+    //   totalItems:50,
+    //   };
   }
 
   resetForm() {
-    this.configs = {
-      currentPage: 1,
-      itemsPerPage: 10,
-      totalItems:50,
-      };
+    // this.configs = {
+    //   currentPage: 1,
+    //   itemsPerPage: 10,
+    //   totalItems:50,
+    //   };
   }
 
 
