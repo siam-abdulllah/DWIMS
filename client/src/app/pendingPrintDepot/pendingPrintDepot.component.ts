@@ -64,7 +64,9 @@ export class PendingPrintDepotComponent implements OnInit {
       totalItems:50,
       };
   }
-
+  resetSearch(){
+    this.searchText = '';
+}
   getEmployeeId() {
     this.empId = this.accountService.getEmployeeId();
     this.userRole = this.accountService.getUserRole();

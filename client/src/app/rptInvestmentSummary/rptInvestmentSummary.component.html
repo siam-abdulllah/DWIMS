@@ -46,6 +46,18 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input name="filterText" class="form-control m-input Searchbox" type="text" [(ngModel)]="searchText" placeholder="Search..">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="btn btn-danger" type="button" (click)="resetSearch()"><i class="fa fa-undo"></i>&nbsp; Reset</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <table class="table  table-bordered">
                                         <tr class="HeaderRow">
                                             <td>Investment Ref No</td>
@@ -62,7 +74,8 @@
                                             <td>Received By</td>
                                             <td>Details</td>
                                         </tr>
-                                        <tr *ngFor="let a of reports | paginate: configs">
+                                        <!-- <tr *ngFor="let a of reports | paginate: configs"> -->
+                                        <tr *ngFor="let a of reports | filter: searchText ">
                                             <!-- <td>
                                                 {{a.id}}
                                             </td> -->
@@ -107,7 +120,7 @@
                                             </td>
                                         </tr>
                                     </table>
-                                    <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls>
+                                    <!-- <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls> -->
                                 </div>
                             </fieldset>
                         </div>
