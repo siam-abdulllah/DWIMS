@@ -100,15 +100,13 @@ namespace API.Controllers
                             " where a.DonationTo = 'Society' " +
                             " AND ir.RecStatus = 'Approved' " +
                             " AND  ir.EmployeeId = inDetail.EmployeeId " +
-                            " AND inDetail.PaymentMethod = 'Cash') X ";
-                            //" x  WHERE X.ID not in (SELECT InvestmentInitId FROM DepotPrintTrack)  " ;
+                            " AND inDetail.PaymentMethod = 'Cash') X " +
+                            " WHERE X.ID not in (SELECT InvestmentInitId FROM DepotPrintTrack) " ;
                             //" AND X.DepotCode = ''";
                             //" AND X.ReferenceNo IN ('20220107058','20220107179','20220107229','20220107133')" ;
                             if (userRole != "Administrator")
                             {
-                                qry = qry + "  WHERE X.ID not in (SELECT InvestmentInitId FROM DepotPrintTrack)  ";
                                 qry = qry + " AND X.DepotCode = '" + empData[0].DepotCode + "'";
-
                             }
 
                 var results = _db.RptDepotLetterSearch.FromSqlRaw(qry).ToList();
@@ -196,8 +194,6 @@ namespace API.Controllers
                             " AND  ir.EmployeeId = inDetail.EmployeeId " +
                             " AND inDetail.PaymentMethod = 'Cheque') " +
                             " x  WHERE X.ID not in (SELECT InvestmentInitId FROM DepotPrintTrack)  ";
-                //" AND X.DepotCode = ''";
-                //" AND X.ReferenceNo IN ('20220107058','20220107179','20220107229','20220107133')" ; 
 
                 var results = _db.RptDepotLetterSearch.FromSqlRaw(qry).ToList();
 
