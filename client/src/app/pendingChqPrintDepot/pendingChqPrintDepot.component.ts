@@ -119,7 +119,7 @@ export class PendingChqPrintDepotComponent implements OnInit {
       }
       else
       {
-        this.insertTracker(this.depotLetter);
+        //this.insertTracker(this.depotLetter);
       }   
     }, error => {
       console.log(error);
@@ -127,7 +127,7 @@ export class PendingChqPrintDepotComponent implements OnInit {
   }
 
 
-  insertTracker(r: IrptDepotLetter[]) {
+  //insertTracker(r: IrptDepotLetter[]) {
   //   this.pendingService.depotPrintFormData.investmentInitId = r[0].id;
   //   this.pendingService.depotPrintFormData.depotName = r[0].depotName;
   //   this.pendingService.depotPrintFormData.depotId = "";
