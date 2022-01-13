@@ -40,7 +40,7 @@ namespace API.Controllers
                          where t.InvestmentInitId == trackDto.InvestmentInitId
                          select t).FirstOrDefault();
 
-            var depoCode = _db.InvestmentRecDepot.Where(x => x.DepotName == trackDto.DepotName).FirstOrDefault();
+            var depoCode = _db.InvestmentRecDepot.Where(x => x.InvestmentInitId == trackDto.InvestmentInitId).FirstOrDefault();
 
             if(depoCode != null)
             {
@@ -59,6 +59,8 @@ namespace API.Controllers
                 {
                     Id = check.Id,
                     InvestmentInitId = trackDto.InvestmentInitId,
+                    PaymentRefNo = trackDto.PaymentRefNo,
+                    PaymentDate = trackDto.PaymentDate,
                     DepotId = dptCode,
                     DepotName =  dptName,
                     Remarks = trackDto.Remarks,
@@ -75,6 +77,8 @@ namespace API.Controllers
                 {
                     Id = bcds.Id,
                     InvestmentInitId = trackDto.InvestmentInitId,
+                    PaymentRefNo = trackDto.PaymentRefNo,
+                    PaymentDate = trackDto.PaymentDate,
                     DepotId = trackDto.DepotId,
                     DepotName = trackDto.DepotName,
                     Remarks = trackDto.Remarks,
@@ -88,6 +92,8 @@ namespace API.Controllers
                 var bcds = new DepotPrintTrack
                 {
                     InvestmentInitId = trackDto.InvestmentInitId,
+                    PaymentRefNo = trackDto.PaymentRefNo,
+                    PaymentDate = trackDto.PaymentDate,
                     DepotId = dptCode,
                     DepotName =  dptName,
                     Remarks = trackDto.Remarks,
@@ -104,6 +110,8 @@ namespace API.Controllers
                 {
                     Id = bcds.Id,
                     InvestmentInitId = trackDto.InvestmentInitId,
+                    PaymentRefNo = trackDto.PaymentRefNo,
+                    PaymentDate = trackDto.PaymentDate,
                     DepotId = trackDto.DepotId,
                     DepotName = trackDto.DepotName,
                     Remarks = trackDto.Remarks,

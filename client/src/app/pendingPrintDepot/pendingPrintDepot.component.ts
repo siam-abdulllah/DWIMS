@@ -123,6 +123,7 @@ export class PendingPrintDepotComponent implements OnInit {
       else
       {
         //this.insertTracker(this.depotLetter);
+        this.getReport(this.depotLetter);
       }   
     }, error => {
       console.log(error);

@@ -41,6 +41,8 @@ import { MenuConfigComponent } from '../menuConfig/menuConfig.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { InvestmentRcvComponent } from '../investmentRcv/investmentRcv.component';
 import { ChangePasswordComponent } from '../changePassword/changePassword.component';
+import { BillTrackComponent } from '../billTrack/billTrack.component';
+
 @NgModule({
   imports: [
     
@@ -81,6 +83,7 @@ import { ChangePasswordComponent } from '../changePassword/changePassword.compon
     RptInvestmentDetailComponent,
     PendingPrintDepotComponent,
     PendingChqPrintDepotComponent,
+    BillTrackComponent,
     SbuWiseBudgetComponent,
     DocHonApprComponent,
     ClusterInfoComponent,

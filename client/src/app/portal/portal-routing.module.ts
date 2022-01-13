@@ -17,6 +17,7 @@ import { InvestmentRcvComponent } from '../investmentRcv/investmentRcv.component
 import { SbuWiseBudgetComponent } from '../sbu-wise-budget/sbu-wise-budget.component';
 import { ReportInvestmentComponent } from './../report-investment/report-investment.component';
 import { PendingPrintDepotComponent } from '../pendingPrintDepot/pendingPrintDepot.component';
+import { BillTrackComponent } from '../billTrack/billTrack.component';
 import { NgModule } from '@angular/core';
 import { PendingChqPrintDepotComponent } from '../pendingChqPrintDepot/pendingChqPrintDepot.component';
 import { Routes, RouterModule } from '@angular/router';
@@ -52,6 +53,7 @@ const portalRoutes: Routes = [
         {path: 'rptInvestmentSummary', component: RptInvestSummaryComponent},
         {path: 'pendingPrintDepot', component: PendingPrintDepotComponent},
         {path: 'pendingChqPrintDepot', component: PendingChqPrintDepotComponent},
+        {path: 'billTrack', component: BillTrackComponent},
         {path: 'paramInvestmentSummary/:param', component: ParamInvestSummaryComponent},
         //{path: 'rptInvestmentDetail', component: RptInvestmentDetailComponent},
         {path: 'rptInvestmentDetail/:id', component: RptInvestmentDetailComponent},
