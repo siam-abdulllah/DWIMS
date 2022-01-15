@@ -31,7 +31,7 @@ import { IInvestmentDetailOld, ILastFiveInvestmentDetail } from '../shared/model
 import { NgxSpinnerService } from 'ngx-spinner';
 import { IBudgetCeiling } from '../shared/models/budgetCeiling';
 import { IDepotInfo } from '../shared/models/depotInfo';
-import { IInvestmentRecDepot } from '../shared/models/InvestmentRecDepot';
+import { IInvestmentRecDepot, InvestmentRecDepot } from '../shared/models/InvestmentRecDepot';
 
 @Component({
   selector: 'app-investmentAprNoSbu',
@@ -924,6 +924,15 @@ export class InvestmentAprNoSbuComponent implements OnInit {
     form.reset();
     this.investmentAprService.investmentAprFormData = new InvestmentInit();
     this.investmentAprService.investmentAprCommentFormData = new InvestmentAprComment();
+    this.investmentAprService.investmentDepotFormData = new InvestmentRecDepot();
+    this.investmentAprService.investmentDetailFormData = new InvestmentApr();
+    this.investmentAprService.investmentTargetedProdFormData = new InvestmentTargetedProd();
+    this.investmentAprService.investmentTargetedGroupFormData = new InvestmentTargetedGroup();
+    this.investmentAprService.investmentDoctorFormData = new InvestmentDoctor();
+    this.investmentAprService.investmentInstitutionFormData = new InvestmentInstitution();
+    this.investmentAprService.investmentCampaignFormData = new InvestmentCampaign();
+    this.investmentAprService.investmentBcdsFormData = new InvestmentBcds();
+    this.investmentAprService.investmentSocietyFormData = new InvestmentSociety();
     this.investmentTargetedProds = [];
     this.investmentTargetedGroups = [];
     this.investmentDetailsOld = [];
@@ -941,6 +950,15 @@ export class InvestmentAprNoSbuComponent implements OnInit {
   resetForm() {
     this.investmentAprService.investmentAprFormData = new InvestmentInit();
     this.investmentAprService.investmentAprCommentFormData = new InvestmentAprComment();
+    this.investmentAprService.investmentDepotFormData = new InvestmentRecDepot();
+    this.investmentAprService.investmentDetailFormData = new InvestmentApr();
+    this.investmentAprService.investmentTargetedProdFormData = new InvestmentTargetedProd();
+    this.investmentAprService.investmentTargetedGroupFormData = new InvestmentTargetedGroup();
+    this.investmentAprService.investmentDoctorFormData = new InvestmentDoctor();
+    this.investmentAprService.investmentInstitutionFormData = new InvestmentInstitution();
+    this.investmentAprService.investmentCampaignFormData = new InvestmentCampaign();
+    this.investmentAprService.investmentBcdsFormData = new InvestmentBcds();
+    this.investmentAprService.investmentSocietyFormData = new InvestmentSociety();
     this.investmentTargetedProds = [];
     this.investmentTargetedGroups = [];
     this.investmentDetailsOld = [];

@@ -710,6 +710,7 @@ export class InvestmentInitComponent implements OnInit {
       this.society = response as ISocietyInfo[];
       this.investmentInitService.getDoctors(this.investmentInitService.investmentInitFormData.marketCode).subscribe(response => {
         this.doctors = response as IDoctor[];
+        this.investmentInitService.investmentSocietyFormData.responsibleDoctorId=900000;
         if (this.investmentInitService.investmentInitFormData.id != null && this.investmentInitService.investmentInitFormData.id != undefined && this.investmentInitService.investmentInitFormData.id != 0) {
           this.getInvestmentSociety();
         }
@@ -729,6 +730,7 @@ export class InvestmentInitComponent implements OnInit {
       this.bcds = response as IBcdsInfo[];
       this.investmentInitService.getDoctors(this.investmentInitService.investmentInitFormData.marketCode).subscribe(response => {
         this.doctors = response as IDoctor[];
+        this.investmentInitService.investmentBcdsFormData.responsibleDoctorId=900000;
         if (this.investmentInitService.investmentInitFormData.id != null && this.investmentInitService.investmentInitFormData.id != undefined && this.investmentInitService.investmentInitFormData.id != 0) {
           this.getInvestmentBcds();
         }
@@ -871,7 +873,9 @@ export class InvestmentInitComponent implements OnInit {
         this.isInvOther = true;
         this.toastr.success('Submitted successfully', 'Investment')
       },
-      err => { console.log(err); }
+      err => { 
+        console.log(err); 
+      }
     );
   }
   insertInvestmentInit() {
@@ -1260,7 +1264,7 @@ export class InvestmentInitComponent implements OnInit {
       this.investmentInitService.investmentTargetedGroupFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
       debugger;
       this.SpinnerService.show();
-      this.investmentInitService.insertInvestmentTargetedGroup(this.investmentTargetedGroups).subscribe(
+      this.investmentInitService.insertInvestmentTargetedGroup(this.investmentTargetedGroups,this.investmentInitService.investmentInitFormData.id).subscribe(
         res => {
           this.investmentInitService.investmentTargetedProdFormData = new InvestmentTargetedProd();
           this.getInvestmentTargetedGroup();
@@ -1293,6 +1297,15 @@ export class InvestmentInitComponent implements OnInit {
   resetPage(form: NgForm) {
     form.reset();
     this.investmentInitService.investmentInitFormData = new InvestmentInit();
+    this.investmentInitService.investmentInitFormData = new InvestmentInit();
+    this.investmentInitService.investmentDetailFormData = new InvestmentDetail();
+    this.investmentInitService.investmentTargetedProdFormData = new InvestmentTargetedProd();
+    this.investmentInitService.investmentTargetedGroupFormData = new InvestmentTargetedGroup();
+    this.investmentInitService.investmentDoctorFormData = new InvestmentDoctor();
+    this.investmentInitService.investmentInstitutionFormData = new InvestmentInstitution();
+    this.investmentInitService.investmentCampaignFormData = new InvestmentCampaign();
+    this.investmentInitService.investmentBcdsFormData = new InvestmentBcds();
+    this.investmentInitService.investmentSocietyFormData = new InvestmentSociety();
     this.investmentInitService.investmentInitFormData.marketCode = this.marketCode;
     this.isValid = false;
     this.isAdmin = false;
@@ -1310,6 +1323,15 @@ export class InvestmentInitComponent implements OnInit {
   }
   resetPageLoad() {
     this.investmentInitService.investmentInitFormData = new InvestmentInit();
+    this.investmentInitService.investmentInitFormData = new InvestmentInit();
+    this.investmentInitService.investmentDetailFormData = new InvestmentDetail();
+    this.investmentInitService.investmentTargetedProdFormData = new InvestmentTargetedProd();
+    this.investmentInitService.investmentTargetedGroupFormData = new InvestmentTargetedGroup();
+    this.investmentInitService.investmentDoctorFormData = new InvestmentDoctor();
+    this.investmentInitService.investmentInstitutionFormData = new InvestmentInstitution();
+    this.investmentInitService.investmentCampaignFormData = new InvestmentCampaign();
+    this.investmentInitService.investmentBcdsFormData = new InvestmentBcds();
+    this.investmentInitService.investmentSocietyFormData = new InvestmentSociety();
     this.investmentInitService.investmentInitFormData.marketCode = this.marketCode;
     this.isAdmin = false;
     this.isValid = false;

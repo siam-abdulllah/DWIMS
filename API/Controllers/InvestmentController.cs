@@ -345,12 +345,94 @@ namespace API.Controllers
                 throw ex;
             }
         }
-      
-        [HttpPost("submitInvestment")]
+        
+        [HttpPost("IsInvestmentDetailExist")]
+        public async Task<InvestmentDetail> IsInvestmentDetailExist(int id)
+        {
+            var spec = new InvestmentDetailSpecification(id);
+            var investmentDetail= await _investmentDetailRepo.GetEntityWithSpec(spec);
+            return investmentDetail;
+        }
+        [HttpPost("IsInvestmentDoctorExist")]
+        public async Task<InvestmentDoctor> IsInvestmentDoctorExist(int id)
+        {
+            var spec = new InvestmentDoctorSpecification(id);
+            var investmentDoctor = await _investmentDoctorRepo.GetEntityWithSpec(spec);
+            return investmentDoctor;
+        } 
+        [HttpPost("IsInvestmentInstitutionExist")]
+        public async Task<InvestmentInstitution> IsInvestmentInstitutionExist(int id)
+        {
+            var spec = new InvestmentInstitutionSpecification(id);
+            var investmentInstitution = await _investmentInstitutionRepo.GetEntityWithSpec(spec);
+            return investmentInstitution;
+        } 
+        [HttpPost("IsInvestmentBcdsExist")]
+        public async Task<InvestmentBcds> IsInvestmentBcdsExist(int id)
+        {
+            var spec = new InvestmentBcdsSpecification(id);
+            var investmentBcds = await _investmentBcdsRepo.GetEntityWithSpec(spec);
+            return investmentBcds;
+        }
+        [HttpPost("IsInvestmentSocietyExist")]
+        public async Task<InvestmentSociety> IsInvestmentSocietyExist(int id)
+        {
+            var spec = new InvestmentSocietySpecification(id);
+            var investmentSociety = await _investmentSocietyRepo.GetEntityWithSpec(spec);
+            return investmentSociety;
+        }
+        [HttpPost("IsInvestmentCampaignExist")]
+        public async Task<InvestmentCampaign> IsInvestmentCampaignExist(int id)
+        {
+            var spec = new InvestmentCampaignSpecification(id);
+            var investmentCampaign = await _investmentCampaignRepo.GetEntityWithSpec(spec);
+            return investmentCampaign;
+        }
+        
+       [HttpPost("submitInvestment")]
         public async Task<ActionResult<InvestmentInitDto>> SubmitInvestmentInit(InvestmentInitDto investmentInitDto)
         {
             try
             {
+                if (await IsInvestmentDetailExist(investmentInitDto.Id)==null)
+                {
+                    return BadRequest(new ApiResponse(0,"Please Insert Detail Data first"));
+                }
+                if (investmentInitDto.DonationTo == "Doctor")
+                {
+                    if (await IsInvestmentDoctorExist(investmentInitDto.Id) == null)
+                    {
+                        return BadRequest(new ApiResponse(0, "Please Insert Doctor Data first"));
+                    }
+                }  
+                else if (investmentInitDto.DonationTo == "Institution")
+                {
+                    if (await IsInvestmentInstitutionExist(investmentInitDto.Id) == null)
+                    {
+                        return BadRequest(new ApiResponse(0, "Please Insert Institution Data first"));
+                    }
+                }
+                else if (investmentInitDto.DonationTo == "Bcds")
+                {
+                    if (await IsInvestmentBcdsExist(investmentInitDto.Id) == null)
+                    {
+                        return BadRequest(new ApiResponse(0, "Please Insert Bcds Data first"));
+                    }
+                }
+                else if (investmentInitDto.DonationTo == "Society")
+                {
+                    if (await IsInvestmentSocietyExist(investmentInitDto.Id) == null)
+                    {
+                        return BadRequest(new ApiResponse(0, "Please Insert Society Data first"));
+                    }
+                }
+                else if (investmentInitDto.DonationTo == "Campaign")
+                {
+                    if (await IsInvestmentCampaignExist(investmentInitDto.Id) == null)
+                    {
+                        return BadRequest(new ApiResponse(0, "Please Insert Campaign Data first"));
+                    }
+                }
                 var empData = await _employeeRepo.GetByIdAsync(investmentInitDto.EmployeeId);
                 var existedInvestmentInit = await _investmentInitRepo.GetByIdAsync(investmentInitDto.Id);
                 var investmentInit = new InvestmentInit
@@ -685,12 +767,12 @@ namespace API.Controllers
         #endregion
 
         #region investmentTargetedGroup
-        [HttpPost("insertInvestmentTargetedGroup")]
-        public async Task<ActionResult> InsertInvestmentTargetedGroup(List<InvestmentTargetedGroupDto> investmentTargetedGroupDto)
+        [HttpPost("insertInvestmentTargetedGroup/{initId}")]
+        public async Task<ActionResult> InsertInvestmentTargetedGroup(List<InvestmentTargetedGroupDto> investmentTargetedGroupDto,int initId)
         {
             try
             {
-                var alreadyExistSpec = new InvestmentTargetedGroupSpecification(investmentTargetedGroupDto[0].InvestmentInitId, investmentTargetedGroupDto[0].MarketGroupMstId);
+                var alreadyExistSpec = new InvestmentTargetedGroupSpecification(initId, investmentTargetedGroupDto[0].MarketGroupMstId);
                 var alreadyExistInvestmentTargetedGroupList = await _investmentTargetedGroupRepo.ListAsync(alreadyExistSpec); 
                 
                 if (alreadyExistInvestmentTargetedGroupList.Count > 0)
@@ -709,7 +791,7 @@ namespace API.Controllers
 
                     var investmentTargetedGroup = new InvestmentTargetedGroup
                     {
-                        InvestmentInitId = v.InvestmentInitId,
+                        InvestmentInitId = initId,
                         MarketGroupCode = empData.MarketGroupCode,
                         MarketGroupName = empData.MarketGroupName,
                         MarketCode = empData.MarketCode,

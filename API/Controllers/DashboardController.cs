@@ -100,10 +100,22 @@ namespace API.Controllers
 
                 if (appPriority.Priority == 1)
                 {
-                    qry = " select CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count from InvestmentInit I " +
-                        " where EXISTS ( (select InvestmentInitId from InvestmentTargetedGroup IT " +
-                        " where EXISTS ( (select MarketCode from Employee " +
-                        " where Id = " + empCode + " AND MarketCode=It.MarketCode ) and CompletionStatus = 0) and Confirmation = 1 AND IT.InvestmentInitId=I.Id ";
+                    //qry = " select CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count from InvestmentInit I " +
+                    //    " where EXISTS ( (select InvestmentInitId from InvestmentTargetedGroup IT " +
+                    //    " where EXISTS ( (select MarketCode from Employee " +
+                    //    " where Id = " + empCode + " AND MarketCode=It.MarketCode ) and CompletionStatus = 0) and Confirmation = 1 AND IT.InvestmentInitId=I.Id ";
+                    qry = " SELECT CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count" +
+                        " FROM InvestmentInit I" +
+                        " WHERE EXISTS (" +
+                        "			SELECT InvestmentInitId" +
+                        "			FROM InvestmentTargetedGroup IT" +
+                        "			WHERE EXISTS (SELECT MarketCode FROM Employee WHERE Id = " + empCode + "  AND MarketCode=IT.MarketCode)" +
+                        "					AND " +
+                        "					IT.CompletionStatus = 0" +
+                        "				    AND IT.InvestmentInitId = I.Id" +
+                        "		)" +
+                        "		AND I.Confirmation = 1";
+                    
                 }
                 else if (appPriority.Priority == 2)
                 {

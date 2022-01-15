@@ -14,6 +14,6 @@ export class MarketGroupMst implements IMarketGroupMst {
     marketCode: string;
     groupName: string;
     //employeeId: number; 
-    status: string=null; 
+    status: string="Inactive"; 
     marketGroupDtls:IMarketGroupDtl[];
 }

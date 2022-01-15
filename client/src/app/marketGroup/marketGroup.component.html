@@ -38,7 +38,7 @@
                                     </div>
                                     <div class="col-md-2">
 
-                                        <select name="" id="" class="form-control" name="status" #status="ngModel" [(ngModel)]="marketGroupService.marketGroupFormData.status" required [class.invalid]="status.invalid && status.touched">
+                                        <select id="status" class="form-control" name="status" (change)="checkFiveMarket($event)" #status="ngModel" [(ngModel)]="marketGroupService.marketGroupFormData.status" required [class.invalid]="status.invalid && status.touched">
                                                 <option [ngValue]="null">Select Status</option>
                                                   <option value="Active">Active</option>
                                                 <option value="Inactive">Inactive</option>

@@ -794,6 +794,16 @@ export class InvestmentRcvComponent implements OnInit {
   resetForm() {
     this.investmentRcvService.investmentRcvFormData = new InvestmentInit();
     this.investmentRcvService.investmentRcvCommentFormData = new InvestmentRcvComment();
+    this.investmentRcvService.investmentRcvFormData = new InvestmentInit();
+    this.investmentRcvService.investmentDetailFormData = new InvestmentRcv();
+    this.investmentRcvService.investmentRcvCommentFormData = new InvestmentRcvComment();
+    this.investmentRcvService.investmentTargetedProdFormData = new InvestmentTargetedProd();
+    this.investmentRcvService.investmentTargetedGroupFormData = new InvestmentTargetedGroup();
+    this.investmentRcvService.investmentDoctorFormData = new InvestmentDoctor();
+    this.investmentRcvService.investmentInstitutionFormData = new InvestmentInstitution();
+    this.investmentRcvService.investmentCampaignFormData = new InvestmentCampaign();
+    this.investmentRcvService.investmentBcdsFormData = new InvestmentBcds();
+    this.investmentRcvService.investmentSocietyFormData = new InvestmentSociety();
     this.investmentTargetedProds = [];
     this.investmentTargetedGroups = [];
     this.investmentDetailsOld = [];
