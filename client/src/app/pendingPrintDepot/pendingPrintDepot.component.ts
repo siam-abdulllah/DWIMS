@@ -186,7 +186,7 @@ export class PendingPrintDepotComponent implements OnInit {
 
 
     pdf.text('You are therefore advised to Collect the amount in cash from DIC, '+ r[0].depotName +' by showing this reference letter & Arrange to hand over' , 65, 320)
-    pdf.text('the money to the mentioned '+ r[0].donationTo+' in prescence of RSD/DIC and respective Colleagues.' , 65, 340)
+    pdf.text('the money to the mentioned '+ r[0].donationTo+' in prescence of RSM/DIC and respective Colleagues.' , 65, 340)
 
     pdf.text('We hope and believe that you will be able to keep good relationship with the mentioned '+ r[0].donationTo+' by using this opportunity.' , 65, 380)
 

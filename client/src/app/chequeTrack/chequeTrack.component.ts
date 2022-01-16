@@ -18,9 +18,9 @@ import { DepotPrintTrack,IDepotPrintTrack } from '../shared/models/depotPrintTra
 
 @Component({
   selector: 'app-bcds-info',
-  templateUrl: './billTrack.component.html',
+  templateUrl: './chequeTrack.component.html',
 })
-export class BillTrackComponent implements OnInit {
+export class ChequeTrackComponent implements OnInit {
 
   @ViewChild('search', {static: false}) searchTerm: ElementRef;
   @ViewChild('pendingListModal', { static: false }) pendingListModal: TemplateRef<any>;
@@ -49,6 +49,8 @@ export class BillTrackComponent implements OnInit {
       employeeName: new FormControl(''),
       doctorName: new FormControl(''),
       marketName: new FormControl(''),
+      chequeNo: new FormControl(''),
+      bankName: new FormControl(''),
       donationTypeName: new FormControl(''),
       proposedAmount: new FormControl(''),
       id: new FormControl(''),
@@ -60,7 +62,7 @@ export class BillTrackComponent implements OnInit {
   getPendingList() {
     this.SpinnerService.show();
     var empId = parseInt(this.empId);
-    this.pendingService.getPendingReport(empId,this.userRole).subscribe(response => {
+    this.pendingService.getPendingChequeReport(empId).subscribe(response => {
       this.SpinnerService.hide();
       this.rptDepotLetter = response;
       if (this.rptDepotLetter.length > 0) {
@@ -95,8 +97,8 @@ export class BillTrackComponent implements OnInit {
     this.pendingService.depotPrintFormData.employeeId = parseInt(this.empId);
     this.pendingService.depotPrintFormData.remarks = "";
     this.pendingService.depotPrintFormData.printCount = 1;
-    this.pendingService.depotPrintFormData.chequeNo = "";
-    this.pendingService.depotPrintFormData.bankName = "";
+    this.pendingService.depotPrintFormData.chequeNo = this.billTrackForm.value.chequeNo;
+    this.pendingService.depotPrintFormData.bankName = this.billTrackForm.value.bankName;
 
     this.pendingService.insertTrackReport(this.pendingService.depotPrintFormData).subscribe(
       res => {
@@ -125,9 +127,6 @@ export class BillTrackComponent implements OnInit {
     this.pendingListModalRef.hide();
   }
 
-
-
-
   resetSearch(){
     this.searchText = '';
 }
@@ -137,13 +136,6 @@ openPendingListModal(template: TemplateRef<any>) {
 }
 
   reset() {
-    // this.searchText = '';
-    // form.reset();
-    // this.config = {
-    //   currentPage: 1,
-    //   itemsPerPage: 10,
-    //   totalItems:50,
-    //   };
 
   this.billTrackForm.setValue({
       referenceNo: "",
@@ -155,6 +147,8 @@ openPendingListModal(template: TemplateRef<any>) {
       donationTypeName: "",
       proposedAmount: "",
       id: "",
+      chequeNo: "",
+      bankName: "",
       investmentInitId: "",
     });
   }

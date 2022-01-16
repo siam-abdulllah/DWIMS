@@ -8,7 +8,9 @@ export interface IDepotPrintTrack {
     remarks: string;
     employeeId: number;
     lastPrintTime : Date;
-    printCount : number
+    printCount : number;
+    chequeNo: string;
+    bankName: string;
 }
 
 export class DepotPrintTrack implements IDepotPrintTrack {
@@ -22,4 +24,6 @@ export class DepotPrintTrack implements IDepotPrintTrack {
     employeeId: number;
     lastPrintTime : Date = new Date();
     printCount : number;
+    chequeNo: string;
+    bankName: string;
 }
