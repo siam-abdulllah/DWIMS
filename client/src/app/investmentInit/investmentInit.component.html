@@ -600,6 +600,57 @@
                                 </div>
                             </fieldset>
                             <fieldset>
+                                <div class="form-group">
+                                    <legend>Medicine Products</legend>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Product</label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <ng-select [virtualScroll]="true" [items]="products" bindLabel="productName" bindValue="id" placeholder="Select Product" id="productId" name="productId" #productId="ngModel" [(ngModel)]="investmentInitService.investmentMedicineProdFormData.productId"
+                                                [class.invalid]="productId.invalid && productId.touched">
+                                            </ng-select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Quantity</label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input class="form-control" [disabled]="isInvOther && !isAdmin" placeholder="Box Quantity" name="boxQuantity" id="boxQuantity" #boxQuantity="ngModel" [(ngModel)]="investmentInitService.investmentMedicineProdFormData.boxQuantity" [pattern]="numberPattern">
+                                            <div class="invalid-feedback" *ngIf="boxQuantity.errors?.pattern">Only numeric value</div>
+                                        </div>
+                                        <div class="col-md-2" *ngIf="isValid">
+                                            <button class="btn btn-primary btn-lg btn-block" type="button" (click)="insertInvestmentMedicineProd()"><i class="fa fa-plus"></i>&nbsp; Add</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <table class="table table-bordered">
+                                        <tr class="HeaderRow">
+                                            <td>Product Name</td>
+                                            <td>Box Quantity</td>
+                                            <td>TP Vat</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr *ngFor="let a of investmentMedicineProds">
+                                            <td>
+                                                {{a.productInfo.productName}}
+                                            </td>
+                                            <td>
+                                                {{a.productInfo.boxQuantity}}
+                                            </td>
+                                            <td>
+                                                {{a.productInfo.tpVat}}
+                                            </td>
+                                            <td>
+                                                <input type="button" *ngIf="sbu==a.sbu" (click)="removeInvestmentMedicineProd(a)" value="Remove">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </fieldset>
+                            <fieldset>
                                 <legend>Investment Details</legend>
                                 <div class="form-group">
                                     <div class="row">
@@ -844,7 +895,7 @@
                                                 [(ngModel)]="investmentInitService.investmentTargetedGroupFormData.marketGroupMstId" [class.invalid]="marketGroupMstId.invalid && marketGroupMstId.touched">
                                             </ng-select>
                                             <!-- <select class="form-control" id="marketGroupMstId" name="marketGroupMstId" #marketGroupMstId="ngModel" (change)="onChangeMarketGroupInTargetedGroup()" [(ngModel)]="investmentInitService.investmentTargetedGroupFormData.marketGroupMstId
-                                       " [class.invalid]="marketGroupMstId.invalid && marketGroupMstId.touched">                              
+                                        " [class.invalid]="marketGroupMstId.invalid && marketGroupMstId.touched">                              
                                                 <option  [ngValue]="null">Select Market Group</option>
                                                 <option *ngFor="let a of marketGroupMsts" [value]="a.id">{{a.groupName}}</option>                                        
                                     </select> -->

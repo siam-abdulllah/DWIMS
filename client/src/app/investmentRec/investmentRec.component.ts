@@ -567,12 +567,12 @@ export class InvestmentRecComponent implements OnInit {
       });
       return false;
     }
-    if(this.investmentRecService.investmentRecCommentFormData.recStatus=='Not Recommended')
+    if(this.investmentRecService.investmentRecCommentFormData.recStatus=='Not Recommended' || this.investmentRecService.investmentRecCommentFormData.recStatus=='Cancelled')
     {
       if (this.investmentRecService.investmentRecCommentFormData.comments == null || this.investmentRecService.investmentRecCommentFormData.comments == undefined || this.investmentRecService.investmentRecCommentFormData.comments == "") 
     {
       
-        this.toastr.warning('Please Insert Comment For Not Recommendation', 'Investment');
+        this.toastr.warning('Please Insert Comment For Not Recommendation / Cancellation', 'Investment');
       return false;
       }
     }

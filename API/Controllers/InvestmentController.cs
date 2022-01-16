@@ -473,7 +473,6 @@ namespace API.Controllers
                     EmployeeId = investmentInit.EmployeeId,
                     MarketCode = empData.MarketCode
                 };
-
             }
             catch (Exception ex)
             {
@@ -926,12 +925,46 @@ namespace API.Controllers
         }
 
         #endregion
+
         #region investmentDoctor
-        [HttpPost("insertInvestmentDoctor")]
-        public async Task<InvestmentDoctorDto> InsertInvestmentDoctor(InvestmentDoctorDto investmentDoctorDto)
+        [HttpPost("IsDoctorInvestmentApprovalPending")]
+        public async Task<int> IsDoctorInvestmentApprovalPending(int initId,int doctorId)
+        {
+            var iInit = await _investmentInitRepo.GetByIdAsync(initId);
+            string qry = " SELECT CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count " +
+                " FROM InvestmentDoctor d " +
+                " JOIN InvestmentInit i ON d.InvestmentInitId = i.Id " +
+                " WHERE " +
+                // " EXISTS ( " +
+                // " SELECT InvestmentInitId " +
+                // " FROM InvestmentTargetedGroup IT " +
+                // " WHERE IT.InvestmentInitId = I.Id " +
+                // " AND " +
+                " NOT EXISTS ( " +
+                " SELECT InvestmentInitId " +
+                " FROM InvestmentRecComment ir " +
+                " WHERE ir.InvestmentInitId = I.Id " +
+                " AND (ir.RecStatus = 'Approved' OR ir.RecStatus = 'Not Approved' OR ir.RecStatus = 'Cancelled')" +
+                " ) " +
+                //" )" +
+                " AND i.MarketCode = '"+ iInit .MarketCode+ "' " +
+                " AND i.DonationId = '" + iInit.DonationId + "' " +
+                " AND d.DoctorId = " + doctorId + "";
+            var result = _dbContext.CountInt.FromSqlRaw(qry).ToList();
+            return result[0].Count;
+        }
+
+
+            [HttpPost("insertInvestmentDoctor")]
+        public async Task<ActionResult<InvestmentDoctorDto>> InsertInvestmentDoctor(InvestmentDoctorDto investmentDoctorDto)
         {
             try
             {
+                //int a = await IsDoctorInvestmentApprovalPending(investmentDoctorDto.InvestmentInitId, investmentDoctorDto.DoctorId);
+                if (await IsDoctorInvestmentApprovalPending(investmentDoctorDto.InvestmentInitId, investmentDoctorDto.DoctorId) > 0)
+                {
+                    return BadRequest(new ApiResponse(0, "Investment Approval is Pending for this Doctor!"));
+                }
                 var alreadyExistSpec = new InvestmentDoctorSpecification(investmentDoctorDto.InvestmentInitId);
                 var alreadyExistInvestmentDoctorList = await _investmentDoctorRepo.ListAsync(alreadyExistSpec);
                 if (alreadyExistInvestmentDoctorList.Count > 0)
@@ -1019,11 +1052,45 @@ namespace API.Controllers
         #endregion
 
         #region investmentInstitution
+
+        [HttpPost("IsInstitutionInvestmentApprovalPending")]
+        public async Task<int> IsInstitutionInvestmentApprovalPending(int initId, int institutionId)
+        {
+            var iInit = await _investmentInitRepo.GetByIdAsync(initId);
+            string qry = " SELECT CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count " +
+                " FROM InvestmentInstitution d " +
+                " JOIN InvestmentInit i ON d.InvestmentInitId = i.Id " +
+                " WHERE " +
+                //" EXISTS ( " +
+                //" SELECT InvestmentInitId " +
+                //" FROM InvestmentTargetedGroup IT " +
+                //" WHERE I.Id = I.Id " +
+                " AND " +
+                " NOT EXISTS ( " +
+                " SELECT InvestmentInitId " +
+                " FROM InvestmentRecComment ir " +
+                " WHERE ir.InvestmentInitId = I.Id " +
+                " AND (ir.RecStatus = 'Approved' OR ir.RecStatus = 'Not Approved' OR ir.RecStatus = 'Cancelled')" +
+                " ) " +
+                //" )" +
+                " AND i.MarketCode = '" + iInit.MarketCode + "' " +
+                " AND i.DonationId = '" + iInit.DonationId + "' " +
+                " AND d.InstitutionId = " + institutionId + "";
+            var result = _dbContext.CountInt.FromSqlRaw(qry).ToList();
+            return result[0].Count;
+        }
+
+
+
         [HttpPost("insertInvestmentInstitution")]
-        public ActionResult<InvestmentInstitutionDto> InsertInvestmentInstitution(InvestmentInstitutionDto investmentInstitutionDto)
+        public async Task<ActionResult<InvestmentInstitutionDto>> InsertInvestmentInstitution(InvestmentInstitutionDto investmentInstitutionDto)
         {
             try
             {
+                if (await IsInstitutionInvestmentApprovalPending(investmentInstitutionDto.InvestmentInitId, investmentInstitutionDto.InstitutionId) > 0)
+                {
+                    return BadRequest(new ApiResponse(0, "Investment Approval is Pending for this Institution!"));
+                }
                 var investmentInstitution = new InvestmentInstitution
                 {
                     //ReferenceNo = investmentInstitutionDto.ReferenceNo,
@@ -1099,11 +1166,44 @@ namespace API.Controllers
         #endregion
 
         #region investmentCampaign
+
+        [HttpPost("IsCampaignInvestmentApprovalPending")]
+        public async Task<int> IsCampaignInvestmentApprovalPending(int initId, int campaignDtlId)
+        {
+            var iInit = await _investmentInitRepo.GetByIdAsync(initId);
+            string qry = " SELECT CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count " +
+                " FROM InvestmentCampaign d " +
+                " JOIN InvestmentInit i ON d.InvestmentInitId = i.Id " +
+                " WHERE " +
+                //" EXISTS ( " +
+                //" SELECT InvestmentInitId " +
+                //" FROM InvestmentTargetedGroup IT " +
+                //" WHERE I.Id = I.Id " +
+                //" AND " +
+                " NOT EXISTS ( " +
+                " SELECT InvestmentInitId " +
+                " FROM InvestmentRecComment ir " +
+                " WHERE ir.InvestmentInitId = I.Id " +
+                " AND (ir.RecStatus = 'Approved' OR ir.RecStatus = 'Not Approved' OR ir.RecStatus = 'Cancelled')" +
+                " ) " +
+                //" )" +
+                " AND i.MarketCode = '" + iInit.MarketCode + "' " +
+                " AND i.DonationId = '" + iInit.DonationId + "' " +
+                " AND d.CampaignDtlId = " + campaignDtlId + "";
+            var result = _dbContext.CountInt.FromSqlRaw(qry).ToList();
+            return result[0].Count;
+        }
+
+
         [HttpPost("insertInvestmentCampaign")]
-        public async Task<InvestmentCampaignDto> InsertInvestmentCampaign(InvestmentCampaignDto investmentCampaignDto)
+        public async Task<ActionResult<InvestmentCampaignDto>> InsertInvestmentCampaign(InvestmentCampaignDto investmentCampaignDto)
         {
             try
             {
+                if (await IsCampaignInvestmentApprovalPending(investmentCampaignDto.InvestmentInitId, investmentCampaignDto.CampaignDtlId) > 0)
+                {
+                    return BadRequest(new ApiResponse(0, "Investment Approval is Pending for this Campaign!"));
+                }
                 var alreadyExistSpec = new InvestmentCampaignSpecification(investmentCampaignDto.InvestmentInitId);
                 var alreadyExistInvestmentCampaignList = await _investmentCampaignRepo.ListAsync(alreadyExistSpec);
                 if (alreadyExistInvestmentCampaignList.Count > 0)
@@ -1187,11 +1287,43 @@ namespace API.Controllers
         #endregion
 
         #region investmentBcds
+
+        [HttpPost("IsBcdsInvestmentApprovalPending")]
+        public async Task<int> IsBcdsInvestmentApprovalPending(int initId, int bcdsId)
+        {
+            var iInit = await _investmentInitRepo.GetByIdAsync(initId);
+            string qry = " SELECT CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count " +
+                " FROM InvestmentBcds d " +
+                " JOIN InvestmentInit i ON d.InvestmentInitId = i.Id " +
+                " WHERE " +
+                //" EXISTS ( " +
+                //" SELECT InvestmentInitId " +
+                //" FROM InvestmentTargetedGroup IT " +
+                //" WHERE I.Id = I.Id " +
+                //" AND " +
+                " NOT EXISTS ( " +
+                " SELECT InvestmentInitId " +
+                " FROM InvestmentRecComment ir " +
+                " WHERE ir.InvestmentInitId = I.Id " +
+                " AND (ir.RecStatus = 'Approved' OR ir.RecStatus = 'Not Approved' OR ir.RecStatus = 'Cancelled')" +
+                " ) " +
+                //" )" +
+                " AND i.MarketCode = '" + iInit.MarketCode + "' " +
+                " AND i.DonationId = '" + iInit.DonationId + "' " +
+                " AND d.BcdsId = " + bcdsId + "";
+            var result = _dbContext.CountInt.FromSqlRaw(qry).ToList();
+            return result[0].Count;
+        }
+
         [HttpPost("insertInvestmentBcds")]
-        public async Task<InvestmentBcdsDto> InsertInvestmentBcds(InvestmentBcdsDto investmentBcdsDto)
+        public async Task<ActionResult<InvestmentBcdsDto>> InsertInvestmentBcds(InvestmentBcdsDto investmentBcdsDto)
         {
             try
             {
+                if (await IsBcdsInvestmentApprovalPending(investmentBcdsDto.InvestmentInitId, investmentBcdsDto.BcdsId) > 0)
+                {
+                    return BadRequest(new ApiResponse(0, "Investment Approval is Pending for this Bcds!"));
+                }
                 var alreadyExistSpec = new InvestmentBcdsSpecification(investmentBcdsDto.InvestmentInitId);
                 var alreadyExistInvestmentBcdsList = await _investmentBcdsRepo.ListAsync(alreadyExistSpec);
                 if (alreadyExistInvestmentBcdsList.Count > 0)
@@ -1273,11 +1405,42 @@ namespace API.Controllers
         #endregion
 
         #region investmentSociety
-        [HttpPost("insertInvestmentSociety")]
-        public async Task<InvestmentSocietyDto> InsertInvestmentSociety(InvestmentSocietyDto investmentSocietyDto)
+
+        [HttpPost("IsSocietyInvestmentApprovalPending")]
+        public async Task<int> IsSocietyInvestmentApprovalPending(int initId, int societyId)
+        {
+            var iInit = await _investmentInitRepo.GetByIdAsync(initId);
+            string qry = " SELECT CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count " +
+                " FROM InvestmentSociety d " +
+                " JOIN InvestmentInit i ON d.InvestmentInitId = i.Id " +
+                " WHERE " +
+                //" EXISTS ( " +
+                //" SELECT InvestmentInitId " +
+                //" FROM InvestmentTargetedGroup IT " +
+                //" WHERE IT.InvestmentInitId = I.Id " +
+                //" AND " +
+                " NOT EXISTS ( " +
+                " SELECT InvestmentInitId " +
+                " FROM InvestmentRecComment ir " +
+                " WHERE ir.InvestmentInitId = I.Id " +
+                " AND (ir.RecStatus = 'Approved' OR ir.RecStatus = 'Not Approved' OR ir.RecStatus = 'Cancelled')" +
+                " ) " +
+                //" )" +
+                " AND i.MarketCode = '" + iInit.MarketCode + "' " +
+                " AND i.DonationId = '" + iInit.DonationId + "' " +
+                " AND d.SocietyId = " + societyId + "";
+            var result = _dbContext.CountInt.FromSqlRaw(qry).ToList();
+            return result[0].Count;
+        }
+            [HttpPost("insertInvestmentSociety")]
+        public async Task<ActionResult<InvestmentSocietyDto>> InsertInvestmentSociety(InvestmentSocietyDto investmentSocietyDto)
         {
             try
             {
+                if (await IsSocietyInvestmentApprovalPending(investmentSocietyDto.InvestmentInitId, investmentSocietyDto.SocietyId) > 0)
+                {
+                    return BadRequest(new ApiResponse(0, "Investment Approval is Pending for this Society!"));
+                }
                 var alreadyExistSpec = new InvestmentSocietySpecification(investmentSocietyDto.InvestmentInitId);
                 var alreadyExistInvestmentSocietyList = await _investmentSocietyRepo.ListAsync(alreadyExistSpec);
                 if (alreadyExistInvestmentSocietyList.Count > 0)

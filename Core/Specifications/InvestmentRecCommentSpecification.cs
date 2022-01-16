@@ -40,7 +40,8 @@ namespace Core.Specifications
             : base(x => x.InvestmentInitId == id && x.EmployeeId==empId)
         {
 
-        }public InvestmentRecCommentSpecification(int id,int priority,string completionStatus)
+        }
+        public InvestmentRecCommentSpecification(int id,int priority,string completionStatus)
             : base(x => x.InvestmentInitId == id && x.Priority== priority)
         {
 

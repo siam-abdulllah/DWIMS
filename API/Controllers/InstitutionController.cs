@@ -32,19 +32,28 @@ namespace API.Controllers
         {
             try
             {
-              //  var institutions = await _institutionRepo.ListAllAsync();
+                //  var institutions = await _institutionRepo.ListAllAsync();
                 var institutions = (from d in _dbContext.InstitutionInfo
-                               join dm in _dbContext.InstitutionMarket on d.Id equals dm.InstitutionCode
-                               where dm.MarketCode == marketCode
-                               orderby d.InstitutionName
-                               select new InstitutionInfo
-                               {
-                                   InstitutionName = d.InstitutionName,
-                                   InstitutionCode = d.InstitutionCode,
-                                   InstitutionType = d.InstitutionType,
-                                   Address = d.Address,
-                                   Id = d.Id
-                               }
+                                    join dm in _dbContext.InstitutionMarket on d.Id equals dm.InstitutionCode
+                                    where dm.MarketCode == marketCode
+                                    orderby d.InstitutionName
+                                    select new InstitutionInfo
+                                    {
+                                        InstitutionName = d.InstitutionName,
+                                        InstitutionCode = d.InstitutionCode,
+                                        InstitutionType = d.InstitutionType,
+                                        Address = d.Address,
+                                        Id = d.Id
+                                    }).Union(from d in _dbContext.InstitutionInfo
+                                             where d.Id == 99999
+                                             select new InstitutionInfo
+                                             {
+                                                 InstitutionName = d.InstitutionName,
+                                                 InstitutionCode = d.InstitutionCode,
+                                                 InstitutionType = d.InstitutionType,
+                                                 Address = d.Address,
+                                                 Id = d.Id
+                                             }
                              ).Distinct().ToList();
                 return institutions;
             }

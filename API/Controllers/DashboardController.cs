@@ -135,8 +135,8 @@ namespace API.Controllers
                 {
                     string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode= '" + empCode + "' ";
                     var empData = _dbContext.Employee.FromSqlRaw(empQry).ToList();
-                    qry = " select CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count from InvestmentInit  " +
-                        " where Id in (select InvestmentInitId from InvestmentRecComment a " +
+                    qry = " select CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count from InvestmentInit I  " +
+                        " where  Exists (select InvestmentInitId from InvestmentRecComment a " +
                             //" where RegionCode in (select RegionCode from Employee " +
                             //" where Id = "+empCode+"  ) and CompletionStatus = 0 and [Priority] = 3) "
                             " where " +
@@ -163,9 +163,12 @@ namespace API.Controllers
                             " a.ZoneCode = COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All')" +
                             " OR COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All') = 'All'" +
                             " ) AND " +
-                            " 'Completed' = [dbo].[fnGetRecStatusByPriority](A.InvestmentInitId, " + appPriority.Priority + " - 1)" +
+                            //" 'Completed' = [dbo].[fnGetRecStatusByPriority](A.InvestmentInitId, " + appPriority.Priority + " - 1)" +
+                            " EXISTS (SELECT InvestmentInitId FROM [InvestmentRecComment] a WHERE a.[InvestmentInitId] = I.Id AND a.CompletionStatus = '1'" +
+				            " AND a.Priority = " + appPriority.Priority + " - 1 AND a.RecStatus<>'Cancelled' )" +
+                            " AND a.InvestmentInitId=I.Id" +
                             " )" +
-                            " AND Id Not In" +
+                            " AND  Not Exists" +
                             " ( select InvestmentInitId from InvestmentRecComment a " +
                             " where " +
                             " (a.SBU = COALESCE(NULLIF('" + empData[0].SBU + "',''), 'All')" +
@@ -191,15 +194,15 @@ namespace API.Controllers
                             " a.ZoneCode = COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All')" +
                             " OR COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All') = 'All'" +
                             " ) AND " +
-                            " A.Priority = " + appPriority.Priority + ")" +
+                            " A.Priority = " + appPriority.Priority + " AND A.InvestmentInitId=I.Id )" +
                             " ";
                 }
                 else if (appPriority.Priority > 3)
                 {
                     string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode= '" + empCode + "' ";
                     var empData = _dbContext.Employee.FromSqlRaw(empQry).ToList();
-                    qry = " select CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count from InvestmentInit  " +
-                            " where DonationTo <>'Campaign' AND Id in (select InvestmentInitId from InvestmentRecComment a " +
+                    qry = " select CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count from InvestmentInit I  " +
+                            " where DonationTo <>'Campaign' AND  EXISTS (select InvestmentInitId from InvestmentRecComment a " +
                             //" where RegionCode in (select RegionCode from Employee " +
                             //" where Id = "+empCode+"  ) and CompletionStatus = 0 and [Priority] = 3) "
                             " where " +
@@ -225,12 +228,14 @@ namespace API.Controllers
                             " AND (" +
                             " a.ZoneCode = COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All')" +
                             " OR COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All') = 'All'" +
-                            " ) AND " +
-                            " 'Completed' = [dbo].[fnGetRecStatusByPriority](A.InvestmentInitId, " + appPriority.Priority + " - 1)" +
+                            " )  " +
+                            //" 'Completed' = [dbo].[fnGetRecStatusByPriority](A.InvestmentInitId, " + appPriority.Priority + " - 1)" +
+                            " AND EXISTS ( SELECT InvestmentInitId  FROM [InvestmentRecComment] a WHERE a.[InvestmentInitId] = I.Id AND a.CompletionStatus = '1'" +
+                            " AND a.Priority = " + appPriority.Priority + " - 1)" +
                             " AND A.Priority=" + appPriority.Priority + " - 1" +
-                             " AND RecStatus <> 'Approved'" +
+                             " AND RecStatus <> 'Approved' AND A.InvestmentInitId = Id " +
                             " )" +
-                            " AND Id Not In" +
+                            " AND  Not EXISTS" +
                             " ( select InvestmentInitId from InvestmentRecComment a " +
                             " where " +
                             " (a.SBU = COALESCE(NULLIF('" + empData[0].SBU + "',''), 'All')" +
@@ -256,15 +261,15 @@ namespace API.Controllers
                             " a.ZoneCode = COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All')" +
                             " OR COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All') = 'All'" +
                             " ) AND " +
-                            " A.Priority = " + appPriority.Priority + ")" +
+                            " A.Priority = " + appPriority.Priority + " AND A.InvestmentInitId = Id )" +
                             " ";
                 }
                 else if (role == "GPM")
                 {
-                    qry = " select CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count from InvestmentInit  " +
-                        " where Id in (select InvestmentInitId from InvestmentRecComment " +
-                        " where RegionCode in (select RegionCode from Employee " +
-                        " where Id = " + empCode + "  ) and CompletionStatus = 0 and [Priority] = 3) ";
+                    // qry = " select CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count from InvestmentInit  " +
+                    //     " where Id in (select InvestmentInitId from InvestmentRecComment " +
+                    //     " where RegionCode in (select RegionCode from Employee " +
+                    //     " where Id = " + empCode + "  ) and CompletionStatus = 0 and [Priority] = 3) ";
                     List<SqlParameter> parms = new List<SqlParameter>
                     {
                         new SqlParameter("@SBU", sbu),

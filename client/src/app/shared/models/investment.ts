@@ -114,6 +114,25 @@ export class LastFiveInvestmentDetail implements ILastFiveInvestmentDetail {
     investmentAmount: string;
     donationShortName: string;
 }
+export interface IInvestmentMedicineProd {
+    id: number;
+    investmentInitId: number;
+    productId: number;
+    productInfo:IProduct;
+    boxQuantity:number;
+    TpVat: number;
+    employeeId: number;
+}
+ 
+export class InvestmentMedicineProd implements IInvestmentMedicineProd {
+    id: number=0;
+    investmentInitId: number;
+    productId: number;
+    productInfo:IProduct;
+    boxQuantity:number;
+    TpVat: number;
+    employeeId: number;
+}
 export interface IInvestmentTargetedProd {
     id: number;
     investmentInitId: number;

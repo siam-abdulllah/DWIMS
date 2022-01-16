@@ -1,5 +1,5 @@
 
-import { InvestmentInit, IInvestmentInit, InvestmentDetail, IInvestmentDetail, InvestmentTargetedProd, IInvestmentTargetedProd, InvestmentTargetedGroup, IInvestmentTargetedGroup, IInvestmentDetailOld, ILastFiveInvestmentDetail } from '../shared/models/investment';
+import { InvestmentInit, IInvestmentInit, InvestmentDetail, IInvestmentDetail, InvestmentTargetedProd, IInvestmentTargetedProd, InvestmentTargetedGroup, IInvestmentTargetedGroup, IInvestmentDetailOld, ILastFiveInvestmentDetail, IInvestmentMedicineProd, InvestmentMedicineProd } from '../shared/models/investment';
 import { InvestmentDoctor, IInvestmentDoctor, InvestmentInstitution, IInvestmentInstitution, InvestmentCampaign, IInvestmentCampaign } from '../shared/models/investment';
 import { InvestmentBcds, IInvestmentBcds, InvestmentSociety, IInvestmentSociety } from '../shared/models/investment';
 import { SubCampaign, ISubCampaign } from '../shared/models/subCampaign';
@@ -25,6 +25,7 @@ import { MarketGroupDtl, IMarketGroupDtl } from '../shared/models/marketGroupDtl
 import { AccountService } from '../account/account.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { BreadcrumbModule } from 'xng-breadcrumb';
+import { IMedicineProduct } from '../shared/models/medicineProduct';
 
 @Component({
   selector: 'app-investmentInit',
@@ -51,6 +52,7 @@ export class InvestmentInitComponent implements OnInit {
   sbu: string;
   marketCode: string;
   investmentInits: IInvestmentInit[];
+  investmentMedicineProds: IInvestmentMedicineProd[];
   investmentTargetedProds: IInvestmentTargetedProd[];
   investmentTargetedGroups: IInvestmentTargetedGroup[];
   investmentDetailsOld: IInvestmentDetailOld[];
@@ -67,6 +69,7 @@ export class InvestmentInitComponent implements OnInit {
   society: ISocietyInfo[];
   markets: IMarket[];
   products: IProduct[];
+  medicineProducts: IMedicineProduct[];
   campaignDtlproducts: IProduct[];
   subCampaigns: ISubCampaign[];
   doctors: IDoctor[];
@@ -300,6 +303,23 @@ export class InvestmentInitComponent implements OnInit {
 
     }, error => {
       console.log(error);
+    });
+  }
+  getInvestmentMedicineProd() {
+    this.investmentInitService.getInvestmentMedicineProds(this.investmentInitService.investmentInitFormData.id, this.sbu).subscribe(response => {
+
+      var data = response as IInvestmentMedicineProd[];
+      if (data !== undefined) {
+        this.investmentMedicineProds = data;
+
+      }
+      else {
+        //this.toastr.warning('No Data Found', 'Investment');
+      }
+
+    }, error => {
+      console.log(error);
+
     });
   }
   getInvestmentTargetedProd() {
@@ -764,6 +784,16 @@ export class InvestmentInitComponent implements OnInit {
       console.log(error);
     });
   }
+  getMedicineProds() {
+    this.SpinnerService.show();
+    this.investmentInitService.getMedicineProduct().subscribe(response => {
+      this.medicineProducts = response as IMedicineProduct[];
+      this.SpinnerService.hide();
+    }, error => {
+      this.SpinnerService.hide();
+      console.log(error);
+    });
+  }
   customSearchFnProd(term: string, item: any) {
     term = term.toLocaleLowerCase();
     return item.productCode.toLocaleLowerCase().indexOf(term) > -1 ||
@@ -1183,8 +1213,65 @@ export class InvestmentInitComponent implements OnInit {
       err => { console.log(err); }
     );
   }
-  insertInvestmentTargetedProd() {
+  insertInvestmentMedicineProd() {
+    if (this.investmentInitService.investmentInitFormData.id == null || this.investmentInitService.investmentInitFormData.id == undefined || this.investmentInitService.investmentInitFormData.id == 0) {
+      this.toastr.warning('Insert Investment Initialisation First!');
+      return false;
+    }
 
+    if (this.investmentInitService.investmentMedicineProdFormData.productId == null || this.investmentInitService.investmentMedicineProdFormData.productId == undefined || this.investmentInitService.investmentMedicineProdFormData.productId == 0) {
+      this.toastr.warning('Select Product First');
+      return false;
+    }
+    if (this.investmentMedicineProds !== undefined) {
+      for (let i = 0; i < this.investmentMedicineProds.length; i++) {
+        if (this.investmentMedicineProds[i].productInfo.id === this.investmentInitService.investmentMedicineProdFormData.productId) {
+          this.toastr.warning("Product already exist!");
+          return false;
+        }
+      }
+    }
+    this.investmentInitService.investmentMedicineProdFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
+    this.investmentInitService.investmentMedicineProdFormData.employeeId = parseInt(this.empId);
+    for (let i = 0; i < this.medicineProducts.length; i++) {
+      if (this.investmentInitService.investmentMedicineProdFormData.productId == this.medicineProducts[i].id) {
+        
+      }
+    }
+    if (this.isSubmitted == true && parseInt(this.empId) == this.investmentInitService.investmentInitFormData.employeeId) {
+      this.toastr.warning("Investment already submitted");
+      return false;
+    }
+    else {
+      if (this.investmentInitService.investmentMedicineProdFormData.id == null || this.investmentInitService.investmentMedicineProdFormData.id == undefined || this.investmentInitService.investmentMedicineProdFormData.id == 0) {
+        this.SpinnerService.show();
+        this.investmentInitService.insertInvestmentMedicineProd().subscribe(
+          res => {
+            this.investmentInitService.investmentMedicineProdFormData = new InvestmentMedicineProd();
+
+            this.getInvestmentMedicineProd();
+
+            this.isDonationValid = true;
+            this.toastr.success('Save successfully', 'Investment  Product');
+          },
+          err => { console.log(err); }
+        );
+      }
+      else {
+        this.SpinnerService.show();
+        this.investmentInitService.updateInvestmentTargetedProd().subscribe(
+          res => {
+            this.investmentInitService.investmentTargetedProdFormData = new InvestmentTargetedProd();
+            this.getInvestmentMedicineProd();
+            this.isDonationValid = true;
+            this.toastr.success('Update successfully',);
+          },
+          err => { console.log(err); }
+        );
+      }
+    }
+  }
+  insertInvestmentTargetedProd() {
     if (this.investmentInitService.investmentInitFormData.id == null || this.investmentInitService.investmentInitFormData.id == undefined || this.investmentInitService.investmentInitFormData.id == 0) {
       this.toastr.warning('Insert Investment Initialisation First', 'Investment Product');
       return false;
@@ -1203,19 +1290,12 @@ export class InvestmentInitComponent implements OnInit {
       }
     }
     this.investmentInitService.investmentTargetedProdFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
-    //for(var i=0;i<this.products.length; i++)
-    //{
-    // if(this.products[i].id==this.investmentInitService.investmentTargetedProdFormData.productId)
-    // {
     this.investmentInitService.investmentTargetedProdFormData.employeeId = parseInt(this.empId);
     for (let i = 0; i < this.products.length; i++) {
       if (this.investmentInitService.investmentTargetedProdFormData.productId == this.products[i].id) {
         this.investmentInitService.investmentTargetedProdFormData.sbu = this.products[i].sbu;
       }
     }
-
-    // }
-    //}
     if (this.isSubmitted == true && parseInt(this.empId) == this.investmentInitService.investmentInitFormData.employeeId) {
       this.toastr.warning("Investment already submitted");
       return false;
@@ -1250,7 +1330,6 @@ export class InvestmentInitComponent implements OnInit {
     }
   }
   insertInvestmentTargetedGroup() {
-
     if (this.investmentInitService.investmentInitFormData.id == null || this.investmentInitService.investmentInitFormData.id == undefined || this.investmentInitService.investmentInitFormData.id == 0) {
       this.toastr.warning('Insert Investment Initialisation First', 'Investment Group');
       return false;
@@ -1448,6 +1527,32 @@ export class InvestmentInitComponent implements OnInit {
           this.isDonationValid = false;
           this.investmentInitService.investmentBcdsFormData = new InvestmentBcds();
           this.SpinnerService.hide();
+          this.toastr.success(res);
+        },
+        err => {
+          this.SpinnerService.hide();
+          console.log(err);
+        }
+      );
+    }
+  }
+  removeInvestmentMedicineProd(selectedRecord: IInvestmentMedicineProd) {
+    if (this.isSubmitted == true && parseInt(this.empId) == this.investmentInitService.investmentInitFormData.employeeId) {
+      this.toastr.warning("Investment already submitted");
+      return false;
+    }
+    var c = confirm("Are you sure you want to delete that?");
+    if (c == true) {
+      this.investmentInitService.investmentMedicineProdFormData = Object.assign({}, selectedRecord);
+      this.SpinnerService.show();
+      debugger;
+      this.investmentInitService.removeInvestmentMedicineProd().subscribe(
+        res => {
+          //this.isDonationValid=false;
+          this.investmentInitService.investmentMedicineProdFormData = new InvestmentMedicineProd();
+          this.getInvestmentMedicineProd();
+          this.SpinnerService.hide();
+
           this.toastr.success(res);
         },
         err => {

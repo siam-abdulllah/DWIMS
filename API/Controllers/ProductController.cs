@@ -14,12 +14,14 @@ namespace API.Controllers
     public class ProductController : BaseApiController
     {
         private readonly IGenericRepository<ProductInfo> _productRepo;
+        private readonly IGenericRepository<MedicineProduct> _medicineProductRepo;
         private readonly IMapper _mapper;
-        public ProductController(IGenericRepository<ProductInfo> productRepo,
+        public ProductController(IGenericRepository<ProductInfo> productRepo, IGenericRepository<MedicineProduct> medicineProductRepo,
         IMapper mapper)
         {
             _mapper = mapper;
             _productRepo = productRepo;
+            _medicineProductRepo = medicineProductRepo;
         }
 
         [HttpGet("getBrand/{sbu}")]
@@ -92,6 +94,20 @@ namespace API.Controllers
             }
         }
     
+        [HttpGet("getMedicineProductForInvestment")]
+        public async Task<IEnumerable<MedicineProduct>> GetMedicineProductForInvestment()
+        {
+            try
+            {
+                var products = await _medicineProductRepo.ListAllAsync();
+                return products.OrderBy(x => x.ProductName);
+
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
         [HttpGet("getProductForInvestment")]
         public async Task<IEnumerable<ProductDto>> GetProductForInvestment()
         {

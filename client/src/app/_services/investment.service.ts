@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import {
   InvestmentInit, IInvestmentInit, InvestmentDetail, IInvestmentDetail,
-  InvestmentTargetedProd, IInvestmentTargetedProd, InvestmentTargetedGroup, IInvestmentTargetedGroup
+  InvestmentTargetedProd, IInvestmentTargetedProd, InvestmentTargetedGroup, IInvestmentTargetedGroup, InvestmentMedicineProd
 } from '../shared/models/investment';
 import { InvestmentDoctor, IInvestmentDoctor, InvestmentInstitution, IInvestmentInstitution, InvestmentCampaign, IInvestmentCampaign } from '../shared/models/investment';
 import { InvestmentBcds, IInvestmentBcds, InvestmentSociety, IInvestmentSociety } from '../shared/models/investment';
@@ -22,6 +22,7 @@ export class InvestmentInitService {
   investmentInitPagination = new InvestmentInitPagination();
   investmentInitFormData: InvestmentInit = new InvestmentInit();
   investmentDetailFormData: InvestmentDetail = new InvestmentDetail();
+  investmentMedicineProdFormData: InvestmentMedicineProd = new InvestmentMedicineProd();
   investmentTargetedProdFormData: InvestmentTargetedProd = new InvestmentTargetedProd();
   investmentTargetedGroupFormData: InvestmentTargetedGroup = new InvestmentTargetedGroup();
   investmentDoctorFormData: InvestmentDoctor = new InvestmentDoctor();
@@ -42,12 +43,16 @@ export class InvestmentInitService {
     return this.http.get(this.baseUrl + 'employee/marketForInvestment');
   }
   getProduct(sbu: string) {
-    if (sbu == 'All') {
+    if (sbu == null) {
       return this.http.get(this.baseUrl + 'product/getProductForInvestment');
     }
     else {
       return this.http.get(this.baseUrl + 'product/getProductForInvestment/' + sbu);
     }
+  }
+  getMedicineProduct() {
+   
+      return this.http.get(this.baseUrl + 'product/getMedicineProductForInvestment');
   }
   getMarketGroupMsts(empId: string) {
     return this.http.get(this.baseUrl + 'marketGroup/getMarketGroupMstsForInvestment/' + empId);
@@ -84,6 +89,9 @@ export class InvestmentInitService {
   }
   getInvestmentDoctors(investmentInitId: number) {
     return this.http.get(this.baseUrl + 'investment/investmentDoctors/' + investmentInitId);
+  }
+  getInvestmentMedicineProds(investmentInitId: number, sbu: string) {
+    return this.http.get(this.baseUrl + 'investment/investmentMedicineProds/' + investmentInitId + '/' + sbu);
   }
   getInvestmentTargetedProds(investmentInitId: number, sbu: string) {
     return this.http.get(this.baseUrl + 'investment/investmentTargetedProds/' + investmentInitId + '/' + sbu);
@@ -193,6 +201,10 @@ export class InvestmentInitService {
     return this.http.post(this.baseUrl + 'investment/insertInvestmentTargetedProd', this.investmentTargetedProdFormData);
 
   }
+  insertInvestmentMedicineProd() {
+    return this.http.post(this.baseUrl + 'investment/insertInvestmentMedicineProd', this.investmentTargetedProdFormData);
+
+  }
   updateInvestmentTargetedProd() {
     return this.http.post(this.baseUrl + 'investment/updateInvestmentTargetedProd', this.investmentTargetedProdFormData);
 
@@ -224,6 +236,11 @@ export class InvestmentInitService {
   }
   removeInvestmentSociety() {
     return this.http.post(this.baseUrl + 'investment/removeInvestmentSociety', this.investmentSocietyFormData,
+      { responseType: 'text' });
+
+  }
+  removeInvestmentMedicineProd() {
+    return this.http.post(this.baseUrl + 'investment/removeInvestmentMedicineProd', this.investmentTargetedProdFormData,
       { responseType: 'text' });
 
   }
