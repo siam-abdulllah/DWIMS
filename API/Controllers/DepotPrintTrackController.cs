@@ -67,6 +67,8 @@ namespace API.Controllers
                     SetOn = DateTimeOffset.Now,
                     EmployeeId = trackDto.EmployeeId,
                     LastPrintTime = DateTimeOffset.Now,
+                    BankName = trackDto.BankName,
+                    ChequeNo = trackDto.ChequeNo,
                     PrintCount = check.PrintCount + 1,
                 };
 
@@ -84,6 +86,8 @@ namespace API.Controllers
                     Remarks = trackDto.Remarks,
                     EmployeeId = trackDto.EmployeeId,
                     LastPrintTime = DateTimeOffset.Now,
+                    BankName = trackDto.BankName,
+                    ChequeNo = trackDto.ChequeNo,
                     PrintCount = 1,
                 };
             }
@@ -100,6 +104,8 @@ namespace API.Controllers
                     SetOn = DateTimeOffset.Now,
                     EmployeeId = trackDto.EmployeeId,
                     LastPrintTime = DateTimeOffset.Now,
+                    BankName = trackDto.BankName,
+                    ChequeNo = trackDto.ChequeNo,
                     PrintCount = 1,
                 };
 
@@ -117,6 +123,8 @@ namespace API.Controllers
                     Remarks = trackDto.Remarks,
                     EmployeeId = trackDto.EmployeeId,
                     LastPrintTime = DateTimeOffset.Now,
+                    BankName = trackDto.BankName,
+                    ChequeNo = trackDto.ChequeNo,
                     PrintCount = 1,
                 };
             }

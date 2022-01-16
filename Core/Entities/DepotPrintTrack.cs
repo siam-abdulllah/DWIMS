@@ -17,5 +17,7 @@ namespace Core.Entities
         public Employee Employee { get; set; }
         public DateTimeOffset? LastPrintTime { get; set; }
         public int PrintCount { get; set; }  
+        public string ChequeNo { get; set; }
+        public string BankName { get; set; }
     }
 }

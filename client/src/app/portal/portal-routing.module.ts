@@ -18,6 +18,7 @@ import { SbuWiseBudgetComponent } from '../sbu-wise-budget/sbu-wise-budget.compo
 import { ReportInvestmentComponent } from './../report-investment/report-investment.component';
 import { PendingPrintDepotComponent } from '../pendingPrintDepot/pendingPrintDepot.component';
 import { BillTrackComponent } from '../billTrack/billTrack.component';
+import { ChequeTrackComponent } from './../chequeTrack/chequeTrack.component'; 
 import { NgModule } from '@angular/core';
 import { PendingChqPrintDepotComponent } from '../pendingChqPrintDepot/pendingChqPrintDepot.component';
 import { Routes, RouterModule } from '@angular/router';
@@ -54,6 +55,7 @@ const portalRoutes: Routes = [
         {path: 'pendingPrintDepot', component: PendingPrintDepotComponent},
         {path: 'pendingChqPrintDepot', component: PendingChqPrintDepotComponent},
         {path: 'billTrack', component: BillTrackComponent},
+        {path: 'chequeTrack', component: ChequeTrackComponent},
         {path: 'paramInvestmentSummary/:param', component: ParamInvestSummaryComponent},
         //{path: 'rptInvestmentDetail', component: RptInvestmentDetailComponent},
         {path: 'rptInvestmentDetail/:id', component: RptInvestmentDetailComponent},
