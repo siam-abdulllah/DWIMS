@@ -261,13 +261,13 @@ export class InvestmentAprNoSbuComponent implements OnInit {
     }
 
   }
-  getCampaignMst() {
-    this.investmentAprService.getCampaignMsts().subscribe(response => {
-      this.campaignMsts = response as ICampaignMst[];
-    }, error => {
-      console.log(error);
-    });
-  }
+  // getCampaignMst() {
+  //   this.investmentAprService.getCampaignMsts().subscribe(response => {
+  //     this.campaignMsts = response as ICampaignMst[];
+  //   }, error => {
+  //     console.log(error);
+  //   });
+  // }
   getInvestmentInit() {
     this.SpinnerService.show();
     this.investmentAprService.getInvestmentInit(parseInt(this.empId), this.sbu).subscribe(response => {
@@ -322,7 +322,7 @@ export class InvestmentAprNoSbuComponent implements OnInit {
         this.investmentAprService.investmentCampaignFormData.institutionName = data.institutionInfo.institutionName;
         this.investmentAprService.investmentCampaignFormData.subCampStartDate = new DatePipe('en-US').transform(data.campaignDtl.subCampStartDate, 'dd/MM/yyyy');
         this.investmentAprService.investmentCampaignFormData.subCampEndDate = new DatePipe('en-US').transform(data.campaignDtl.subCampEndDate, 'dd/MM/yyyy')
-        this.investmentAprService.getCampaignMsts().subscribe(response => {
+        this.investmentAprService.getCampaignMsts(this.investmentAprService.investmentAprFormData.employeeId).subscribe(response => {
           this.campaignMsts = response as ICampaignMst[];
           for (let i = 0; i < this.campaignMsts.length; i++) {
             if (this.campaignMsts[i].id == this.investmentAprService.investmentCampaignFormData.campaignDtl.mstId) {

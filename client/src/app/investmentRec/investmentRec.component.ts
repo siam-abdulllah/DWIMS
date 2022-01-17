@@ -303,7 +303,7 @@ export class InvestmentRecComponent implements OnInit {
         this.investmentRecService.investmentCampaignFormData.institutionName = data.institutionInfo.institutionName;
         this.investmentRecService.investmentCampaignFormData.subCampStartDate = new DatePipe('en-US').transform(data.campaignDtl.subCampStartDate, 'dd/MM/yyyy');
         this.investmentRecService.investmentCampaignFormData.subCampEndDate = new DatePipe('en-US').transform(data.campaignDtl.subCampEndDate, 'dd/MM/yyyy')
-        this.investmentRecService.getCampaignMsts(parseInt(this.empId)).subscribe(response => {
+        this.investmentRecService.getCampaignMsts(this.investmentRecService.investmentRecFormData.employeeId).subscribe(response => {
           this.campaignMsts = response as ICampaignMst[];
           for (let i = 0; i < this.campaignMsts.length; i++) {
             if (this.campaignMsts[i].id == this.investmentRecService.investmentCampaignFormData.campaignDtl.mstId) {

@@ -74,8 +74,8 @@ export class InvestmentAprNoSbuService {
   getLastFiveInvestmentForSociety(donationId:number,societyId:number,marketCode: string, toDayDate: string) {
     return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForSociety/' + donationId + '/' + societyId + '/' +marketCode + '/' +toDayDate).toPromise();
   }
-  getCampaignMsts(){    
-    return this.http.get(this.baseUrl + 'campaign/campaignMstsForInvestment');
+  getCampaignMsts(empId:number){    
+    return this.http.get(this.baseUrl + 'campaign/campaignMstsForInvestment/'+empId);
   }
   async getInvestmentDoctors(investmentInitId:number){    
     return await  this.http.get(this.baseUrl + 'investment/investmentDoctors/'+investmentInitId).toPromise();

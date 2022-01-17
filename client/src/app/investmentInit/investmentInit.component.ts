@@ -133,7 +133,7 @@ export class InvestmentInitComponent implements OnInit {
       //this.getInvestmentInstitution();
     }
     else if (this.investmentInitService.investmentInitFormData.donationTo == "Campaign") {
-      this.getCampaignMst();
+      this.getCampaignMst(this.investmentInitService.investmentInitFormData.employeeId);
       //this.getDoctor();
       //this.getInstitution();
       //this.getInvestmentCampaign();
@@ -216,7 +216,7 @@ export class InvestmentInitComponent implements OnInit {
       var data = response[0] as IInvestmentCampaign;
       if (data !== undefined) {
         this.investmentInitService.investmentCampaignFormData = data;
-
+debugger;
         this.investmentInitService.investmentCampaignFormData.campaignMstId = data.campaignDtl.mstId;
         this.investmentInitService.investmentCampaignFormData.subCampStartDate = new DatePipe('en-US').transform(data.campaignDtl.subCampStartDate, 'dd/MM/yyyy');
         this.investmentInitService.investmentCampaignFormData.subCampEndDate = new DatePipe('en-US').transform(data.campaignDtl.subCampEndDate, 'dd/MM/yyyy');
@@ -662,7 +662,7 @@ export class InvestmentInitComponent implements OnInit {
     else if (this.investmentInitService.investmentInitFormData.donationTo == "Campaign") {
       if (this.investmentInitService.investmentCampaignFormData.id == null || this.investmentInitService.investmentCampaignFormData.id == undefined || this.investmentInitService.investmentCampaignFormData.id == 0) {
         this.investmentInitService.investmentCampaignFormData = new InvestmentCampaign();
-        this.getCampaignMst();
+        this.getCampaignMst(parseInt(this.empId));
         this.getDoctor();
         this.getInstitution();
       }
@@ -872,10 +872,11 @@ export class InvestmentInitComponent implements OnInit {
     return item.institutionCode.toLocaleLowerCase().indexOf(term) > -1 ||
       item.institutionName.toLocaleLowerCase().indexOf(term) > -1;
   }
-  getCampaignMst() {
+  getCampaignMst(empId:number) {
     this.SpinnerService.show();
-    this.investmentInitService.getCampaignMsts(parseInt(this.empId)).subscribe(response => {
+    this.investmentInitService.getCampaignMsts(empId).subscribe(response => {
       this.campaignMsts = response as ICampaignMst[];
+      debugger;
       this.investmentInitService.getDoctors(this.investmentInitService.investmentInitFormData.marketCode).subscribe(response => {
         this.doctors = response as IDoctor[];
         this.investmentInitService.getInstitutions(this.investmentInitService.investmentInitFormData.marketCode).subscribe(response => {

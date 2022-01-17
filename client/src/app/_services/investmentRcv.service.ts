@@ -75,8 +75,8 @@ export class InvestmentRcvService {
   getLastFiveInvestmentForSociety(donationId:number,societyId:number,marketCode: string, toDayDate: string) {
     return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForSociety/' + donationId + '/' + societyId + '/' +marketCode + '/' +toDayDate);
   }
-  getCampaignMsts(){    
-    return this.http.get(this.baseUrl + 'campaign/campaignMstsForInvestment');
+  getCampaignMsts(empId:number){    
+    return this.http.get(this.baseUrl + 'campaign/campaignMstsForInvestment/'+empId);
   }
   getInvestmentDoctors(investmentInitId:number){    
     return this.http.get(this.baseUrl + 'investment/investmentDoctors/'+investmentInitId);
