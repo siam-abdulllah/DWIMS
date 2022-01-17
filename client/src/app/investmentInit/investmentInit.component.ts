@@ -310,10 +310,8 @@ export class InvestmentInitComponent implements OnInit {
     });
   }
   // #region Medicine Prod 
-
   getInvestmentMedicineProd() {
     this.investmentInitService.getInvestmentMedicineProds(this.investmentInitService.investmentInitFormData.id, this.sbu).subscribe(response => {
-
       var data = response as IInvestmentMedicineProd[];
       debugger;
       if (data !== undefined && data.length>0) {
@@ -327,12 +325,9 @@ export class InvestmentInitComponent implements OnInit {
       else {
         this.investmentInitService.investmentDetailFormData.proposedAmount='';
         this.investmentMedicineProds =[];
-        //this.toastr.warning('No Data Found', 'Investment');
       }
-
     }, error => {
       console.log(error);
-
     });
   }
   insertInvestmentMedicineProd() {

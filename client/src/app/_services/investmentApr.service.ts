@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { GenericParams } from '../shared/models/genericParams';
 import { IInvestmentInitPagination, InvestmentInitPagination } from '../shared/models/investmentPagination';
 import { InvestmentRecDepot } from '../shared/models/InvestmentRecDepot';
+import { InvestmentMedicineProd } from '../shared/models/investment';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,7 @@ export class InvestmentAprService {
   investmentAprFormData: InvestmentInit = new InvestmentInit();
   investmentDetailFormData: InvestmentApr = new InvestmentApr();
   investmentAprCommentFormData: InvestmentAprComment = new InvestmentAprComment();
+  investmentMedicineProdFormData: InvestmentMedicineProd = new InvestmentMedicineProd();
   investmentTargetedProdFormData: InvestmentTargetedProd = new InvestmentTargetedProd();
   investmentTargetedGroupFormData: InvestmentTargetedGroup = new InvestmentTargetedGroup();
   investmentDoctorFormData: InvestmentDoctor = new InvestmentDoctor();
@@ -47,6 +49,9 @@ export class InvestmentAprService {
   }
   getProduct(sbu:string){    
     return this.http.get(this.baseUrl + 'product/getProductForInvestment/'+sbu);
+  }
+  getMedicineProduct() {
+    return this.http.get(this.baseUrl + 'product/getMedicineProductForInvestment');
   }
   getBudget(sbu:string,empID:number,donationId:number){    
     return this.http.get(this.baseUrl + 'approvalCeiling/getBudgetCeiling/'+empID+'/'+sbu+'/'+donationId);
@@ -190,9 +195,7 @@ export class InvestmentAprService {
     
   }
   insertInvestmentApr() {
-    
     return this.http.post(this.baseUrl+ 'investmentApr/insertAprCom', this.investmentAprCommentFormData);
-
   }
   
   updateInvestmentApr() {
@@ -228,26 +231,29 @@ export class InvestmentAprService {
   
   }
   getInvestmentRecDepot(initId:any) {
-    
     return this.http.get(this.baseUrl+ 'investmentApr/getInvestmentRecDepot/'+initId).toPromise();
-  
   }
   
- 
   
   insertInvestmentTargetedProd(investmentTargetedProds:IInvestmentTargetedProd[]) {
-    
     return this.http.post(this.baseUrl+ 'investmentApr/insertAprProd', investmentTargetedProds,
     {responseType: 'text'});
-
   }
   
   removeInvestmentTargetedProd() {
     debugger;
     return this.http.post(this.baseUrl+ 'investmentApr/removeInvestmentTargetedProd', this.investmentTargetedProdFormData,
     {responseType: 'text'});
-
   }
-  
+  getInvestmentMedicineProds(investmentInitId: number, sbu: string) {
+    return this.http.get(this.baseUrl + 'investment/investmentMedicineProds/' + investmentInitId + '/' + sbu);
+  }
+  insertInvestmentMedicineProd() {
+    return this.http.post(this.baseUrl + 'investment/insertInvestmentMedicineProd', this.investmentMedicineProdFormData);
+  }
+  removeInvestmentMedicineProd() {
+    return this.http.post(this.baseUrl + 'investment/removeInvestmentMedicineProd', this.investmentMedicineProdFormData,
+      { responseType: 'text' });
+  }
 }
 

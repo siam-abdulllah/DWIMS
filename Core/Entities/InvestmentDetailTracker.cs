@@ -19,7 +19,7 @@ namespace Core.Entities
         public int Year { get; set; }
         public DateTimeOffset FromDate { get; set; }
         public DateTimeOffset ToDate { get; set; }
-        public long ApprovedAmount { get; set; }
+        public double ApprovedAmount { get; set; }
         public string PaidStatus { get; set; }
     }
 }

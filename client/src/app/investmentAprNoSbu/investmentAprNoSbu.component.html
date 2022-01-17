@@ -454,10 +454,6 @@
                                         <div class="col-md-3">
                                             <input class="form-control" id="responsibleDoctorNameSoc" name="responsibleDoctorNameSoc" #responsibleDoctorNameSoc="ngModel" [(ngModel)]="investmentAprService.investmentSocietyFormData.responsibleDoctorName" readonly>
 
-                                            <!-- <select class="form-control " name="responsibleDoctorId" id="responsibleDoctorId" #responsibleDoctorId="ngModel" [(ngModel)]="investmentAprService.investmentInstitutionFormData.responsibleDoctorId">
-                                                <option  [ngValue]="null">Select Doctor</option>
-                                                <option *ngFor="let a of doctors" [value]="a.id">{{a.doctorName}}</option>
-                                            </select> -->
                                         </div>
                                     </div>
                                 </div>
@@ -478,6 +474,57 @@
                                     </div>
                                 </div>
                             </fieldset>
+                            <fieldset *ngIf="investmentAprService.investmentAprFormData.donationId==4">
+                                <div class="form-group">
+                                    <legend>Medicine Products</legend>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Product</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <ng-select [virtualScroll]="true" [items]="medicineProducts" bindLabel="productName" bindValue="id" placeholder="Select Product" id="productId" name="productId" #productId="ngModel" [(ngModel)]="investmentAprService.investmentMedicineProdFormData.productId"
+                                                [class.invalid]="productId.invalid && productId.touched">
+                                            </ng-select>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <label>Quantity</label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input class="form-control" placeholder="Box Quantity" name="boxQuantity" id="boxQuantity" #boxQuantity="ngModel" [(ngModel)]="investmentAprService.investmentMedicineProdFormData.boxQuantity" [pattern]="numberPattern">
+                                            <div class="invalid-feedback" *ngIf="boxQuantity.errors?.pattern">Only numeric value</div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button class="btn btn-primary btn-lg btn-block" type="button" (click)="insertInvestmentMedicineProd()"><i class="fa fa-plus"></i>&nbsp; Add</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <table class="table table-bordered">
+                                        <tr class="HeaderRow">
+                                            <td>Product Name</td>
+                                            <td>Box Quantity</td>
+                                            <td>TP Vat</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr *ngFor="let a of investmentMedicineProds">
+                                            <td>
+                                                {{a.medicineProduct.productName}}
+                                            </td>
+                                            <td>
+                                                {{a.boxQuantity}}
+                                            </td>
+                                            <td>
+                                                {{a.tpVat}}
+                                            </td>
+                                            <td>
+                                                <input type="button" (click)="removeInvestmentMedicineProd(a)" value="Remove">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </fieldset>
                             <fieldset>
                                 <div class="form-group">
                                     <div class="row">
@@ -486,12 +533,6 @@
                                             <h6> </h6>
                                         </div>
                                         <div class="col-sm-2"></div>
-                                        <!-- <div class="col-sm-2" *ngIf="isValid">
-                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="updateInvestmentDetails()"><i class="fa fa-save"></i>&nbsp; Update</button>
-                                        </div> -->
-                                        <!-- <div class="col-sm-2" *ngIf="isValid">
-                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentBcds()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
-                                        </div> -->
 
                                     </div>
                                 </div>
@@ -526,24 +567,6 @@
                                                             {{budgetCeiling.monthlyRemaining}}
                                                         </td>
 
-                                                        <!--   <td>
-                                                            SBU Budget
-                                                        </td>
-                                                        <td>
-                                                            {{budgetCeiling.sbuWiseBudget}}
-                                                        </td>
-                                                        <td>
-                                                            SBU Exp.
-                                                        </td>
-                                                        <td style="color: red;">
-                                                            {{budgetCeiling.sbuWiseExpense}}
-                                                        </td>
-                                                        <td>
-                                                            SBU Rem.
-                                                        </td>
-                                                        <td style="color: green;">
-                                                            {{budgetCeiling.sbuWiseRemaining}}
-                                                        </td> -->
                                                     </tr>
                                                     <tr id="shortHead">
                                                         <td>
@@ -574,42 +597,6 @@
                                                 </table>
                                             </div>
                                         </div>
-                                        <!-- <div class="col-md-1">
-                                            <label>Transaction Limit</label>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <input class="form-control" id="referenceNo" name="referenceNo" #referenceNo="ngModel" [(ngModel)]="investmentAprService.investmentAprFormData.referenceNo" readonly required>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <label>Ceiling Per month</label>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <input class="form-control" id="proposeFor" name="proposeFor" #proposeFor="ngModel" [(ngModel)]="investmentAprService.investmentAprFormData.proposeFor" readonly>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <label>Remaining Balance</label>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <input class="form-control" id="donationId" name="donationId" #donationId="ngModel" [(ngModel)]="investmentAprService.investmentAprFormData.donationId" readonly>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <label>SBU Budget</label>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <input class="form-control" id="donationTo" name="donationTo" #donationTo="ngModel" [(ngModel)]="investmentAprService.investmentAprFormData.donationTo" readonly>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <label>SBU Expense</label>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <input class="form-control" id="donationTo" name="donationTo" #donationTo="ngModel" [(ngModel)]="investmentAprService.investmentAprFormData.donationTo" readonly>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <label>SBU Expense</label>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <input class="form-control" id="donationTo" name="donationTo" #donationTo="ngModel" [(ngModel)]="investmentAprService.investmentAprFormData.donationTo" readonly>
-                                        </div> -->
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -664,7 +651,8 @@
                                                         <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" required name="proposedAmount" placeholder="Amount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.proposedAmount" [pattern]="numberPattern">
+                                                        <input class="form-control" [disabled]="(isInvOther && !isAdmin) || investmentAprService.investmentAprFormData.donationId == 4" required name="proposedAmount" placeholder="Amount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.proposedAmount"
+                                                            [pattern]="numberPattern">
                                                         <div class="invalid-feedback" *ngIf="proposedAmount.errors?.pattern">Only numeric value</div>
                                                     </div>
                                                 </div>
@@ -791,10 +779,12 @@
                                             <label>Product</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <select class="form-control " id="productId" name="productId" #productId="ngModel" [(ngModel)]="investmentAprService.investmentTargetedProdFormData.productId" [class.invalid]="productId.invalid && productId.touched">
+                                            <!-- <select class="form-control " id="productId" name="productId" #productId="ngModel" [(ngModel)]="investmentAprService.investmentTargetedProdFormData.productId" [class.invalid]="productId.invalid && productId.touched">
                                                 <option  [ngValue]="null">Select Product</option>
                                                 <option *ngFor="let product of products" [value]="product.id">{{product.productName}}</option>
-                                            </select>
+                                            </select> -->
+                                            <ng-select [virtualScroll]="true" [items]="products" bindLabel="productName" bindValue="id" placeholder="Select Product" id="productId" name="productId" #productId="ngModel" [(ngModel)]="investmentAprService.investmentTargetedProdFormData.productId" [class.invalid]="productId.invalid && productId.touched">
+                                            </ng-select>
                                         </div>
                                         <div class="col-md-3"></div>
                                         <div class="col-md-2" *ngIf="isValid">

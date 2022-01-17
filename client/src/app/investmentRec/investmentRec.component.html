@@ -543,7 +543,8 @@
                                                 {{a.boxQuantity}}
                                             </td>
                                             <td>
-                                                {{a.tpVat | number : '1.2-2' }}
+                                                <!-- {{a.tpVat | number : '1.2-2' }} -->
+                                                {{a.tpVat }}
                                             </td>
                                             <td>
                                                 <input type="button" *ngIf="sbu==investmentRecService.investmentRecFormData.sbu" (click)="removeInvestmentMedicineProd(a)" value="Remove">
@@ -621,7 +622,8 @@
                                                         <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" required placeholder="Amount" name="proposedAmount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.proposedAmount" [pattern]="numberPattern">
+                                                        <input class="form-control" [disabled]="(isInvOther && !isAdmin) || investmentRecService.investmentRecFormData.donationId == 4" required placeholder="Amount" name="proposedAmount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentRecService.investmentDetailFormData.proposedAmount"
+                                                            [pattern]="numberPattern">
                                                         <div class="invalid-feedback" *ngIf="proposedAmount.errors?.pattern">Only numeric value</div>
                                                     </div>
                                                 </div>

@@ -115,7 +115,7 @@ namespace API.Controllers
                         "				    AND IT.InvestmentInitId = I.Id" +
                         "		)" +
                         "		AND I.Confirmation = 1";
-                    
+
                 }
                 else if (appPriority.Priority == 2)
                 {
@@ -165,7 +165,7 @@ namespace API.Controllers
                             " ) AND " +
                             //" 'Completed' = [dbo].[fnGetRecStatusByPriority](A.InvestmentInitId, " + appPriority.Priority + " - 1)" +
                             " EXISTS (SELECT InvestmentInitId FROM [InvestmentRecComment] a WHERE a.[InvestmentInitId] = I.Id AND a.CompletionStatus = '1'" +
-				            " AND a.Priority = " + appPriority.Priority + " - 1 AND a.RecStatus<>'Cancelled' )" +
+                            " AND a.Priority = " + appPriority.Priority + " - 1 AND a.RecStatus<>'Cancelled' )" +
                             " AND a.InvestmentInitId=I.Id" +
                             " )" +
                             " AND  Not Exists" +
@@ -199,70 +199,92 @@ namespace API.Controllers
                 }
                 else if (appPriority.Priority > 3)
                 {
-                    string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode= '" + empCode + "' ";
-                    var empData = _dbContext.Employee.FromSqlRaw(empQry).ToList();
-                    qry = " select CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count from InvestmentInit I  " +
-                            " where DonationTo <>'Campaign' AND  EXISTS (select InvestmentInitId from InvestmentRecComment a " +
-                            //" where RegionCode in (select RegionCode from Employee " +
-                            //" where Id = "+empCode+"  ) and CompletionStatus = 0 and [Priority] = 3) "
-                            " where " +
-                            " (a.SBU = COALESCE(NULLIF('" + empData[0].SBU + "',''), 'All')" +
-                            " OR COALESCE(NULLIF('" + empData[0].SBU + "',''), 'All') = 'All'" +
-                            " )" +
-                            " AND (" +
-                            " a.MarketGroupCode = COALESCE(NULLIF('" + empData[0].MarketGroupCode + "',''), 'All')" +
-                            " OR COALESCE(NULLIF('" + empData[0].MarketGroupCode + "',''), 'All') = 'All'" +
-                            " )" +
-                            " AND (" +
-                            " a.MarketCode = COALESCE(NULLIF('" + empData[0].MarketCode + "',''), 'All')" +
-                            " OR COALESCE(NULLIF('" + empData[0].MarketCode + "',''), 'All') = 'All'" +
-                            " )" +
-                            " AND (" +
-                            " a.TerritoryCode = COALESCE(NULLIF('" + empData[0].TerritoryCode + "',''), 'All')" +
-                            " OR COALESCE(NULLIF('" + empData[0].TerritoryCode + "',''), 'All') = 'All'" +
-                            " )" +
-                            " AND (" +
-                            " a.RegionCode = COALESCE(NULLIF('" + empData[0].RegionCode + "',''), 'All')" +
-                            " OR COALESCE(NULLIF('" + empData[0].RegionCode + "',''), 'All') = 'All'" +
-                            " )" +
-                            " AND (" +
-                            " a.ZoneCode = COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All')" +
-                            " OR COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All') = 'All'" +
-                            " )  " +
-                            //" 'Completed' = [dbo].[fnGetRecStatusByPriority](A.InvestmentInitId, " + appPriority.Priority + " - 1)" +
-                            " AND EXISTS ( SELECT InvestmentInitId  FROM [InvestmentRecComment] a WHERE a.[InvestmentInitId] = I.Id AND a.CompletionStatus = '1'" +
-                            " AND a.Priority = " + appPriority.Priority + " - 1)" +
-                            " AND A.Priority=" + appPriority.Priority + " - 1" +
-                             " AND RecStatus <> 'Approved' AND A.InvestmentInitId = Id " +
-                            " )" +
-                            " AND  Not EXISTS" +
-                            " ( select InvestmentInitId from InvestmentRecComment a " +
-                            " where " +
-                            " (a.SBU = COALESCE(NULLIF('" + empData[0].SBU + "',''), 'All')" +
-                            " OR COALESCE(NULLIF('" + empData[0].SBU + "',''), 'All') = 'All'" +
-                            " )" +
-                            " AND (" +
-                            " a.MarketGroupCode = COALESCE(NULLIF('" + empData[0].MarketGroupCode + "',''), 'All')" +
-                            " OR COALESCE(NULLIF('" + empData[0].MarketGroupCode + "',''), 'All') = 'All'" +
-                            " )" +
-                            " AND (" +
-                            " a.MarketCode = COALESCE(NULLIF('" + empData[0].MarketCode + "',''), 'All')" +
-                            " OR COALESCE(NULLIF('" + empData[0].MarketCode + "',''), 'All') = 'All'" +
-                            " )" +
-                            " AND (" +
-                            " a.TerritoryCode = COALESCE(NULLIF('" + empData[0].TerritoryCode + "',''), 'All')" +
-                            " OR COALESCE(NULLIF('" + empData[0].TerritoryCode + "',''), 'All') = 'All'" +
-                            " )" +
-                            " AND (" +
-                            " a.RegionCode = COALESCE(NULLIF('" + empData[0].RegionCode + "',''), 'All')" +
-                            " OR COALESCE(NULLIF('" + empData[0].RegionCode + "',''), 'All') = 'All'" +
-                            " )" +
-                            " AND (" +
-                            " a.ZoneCode = COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All')" +
-                            " OR COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All') = 'All'" +
-                            " ) AND " +
-                            " A.Priority = " + appPriority.Priority + " AND A.InvestmentInitId = Id )" +
-                            " ";
+                    // string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode= '" + empCode + "' ";
+                    // var empData = _dbContext.Employee.FromSqlRaw(empQry).ToList();
+                    // qry = " select CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count from InvestmentInit I  " +
+                    //         " where DonationTo <>'Campaign' AND  EXISTS (select InvestmentInitId from InvestmentRecComment a " +
+                    //         //" where RegionCode in (select RegionCode from Employee " +
+                    //         //" where Id = "+empCode+"  ) and CompletionStatus = 0 and [Priority] = 3) "
+                    //         " where " +
+                    //         " (a.SBU = COALESCE(NULLIF('" + empData[0].SBU + "',''), 'All')" +
+                    //         " OR COALESCE(NULLIF('" + empData[0].SBU + "',''), 'All') = 'All'" +
+                    //         " )" +
+                    //         " AND (" +
+                    //         " a.MarketGroupCode = COALESCE(NULLIF('" + empData[0].MarketGroupCode + "',''), 'All')" +
+                    //         " OR COALESCE(NULLIF('" + empData[0].MarketGroupCode + "',''), 'All') = 'All'" +
+                    //         " )" +
+                    //         " AND (" +
+                    //         " a.MarketCode = COALESCE(NULLIF('" + empData[0].MarketCode + "',''), 'All')" +
+                    //         " OR COALESCE(NULLIF('" + empData[0].MarketCode + "',''), 'All') = 'All'" +
+                    //         " )" +
+                    //         " AND (" +
+                    //         " a.TerritoryCode = COALESCE(NULLIF('" + empData[0].TerritoryCode + "',''), 'All')" +
+                    //         " OR COALESCE(NULLIF('" + empData[0].TerritoryCode + "',''), 'All') = 'All'" +
+                    //         " )" +
+                    //         " AND (" +
+                    //         " a.RegionCode = COALESCE(NULLIF('" + empData[0].RegionCode + "',''), 'All')" +
+                    //         " OR COALESCE(NULLIF('" + empData[0].RegionCode + "',''), 'All') = 'All'" +
+                    //         " )" +
+                    //         " AND (" +
+                    //         " a.ZoneCode = COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All')" +
+                    //         " OR COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All') = 'All'" +
+                    //         " )  " +
+                    //         //" 'Completed' = [dbo].[fnGetRecStatusByPriority](A.InvestmentInitId, " + appPriority.Priority + " - 1)" +
+                    //         " AND EXISTS ( SELECT InvestmentInitId  FROM [InvestmentRecComment] a WHERE a.[InvestmentInitId] = I.Id AND a.CompletionStatus = '1'" +
+                    //         " AND a.Priority = " + appPriority.Priority + " - 1)" +
+                    //         " AND A.Priority=" + appPriority.Priority + " - 1" +
+                    //          " AND RecStatus <> 'Approved' AND A.InvestmentInitId = Id " +
+                    //         " )" +
+                    //         " AND  Not EXISTS" +
+                    //         " ( select InvestmentInitId from InvestmentRecComment a " +
+                    //         " where " +
+                    //         " (a.SBU = COALESCE(NULLIF('" + empData[0].SBU + "',''), 'All')" +
+                    //         " OR COALESCE(NULLIF('" + empData[0].SBU + "',''), 'All') = 'All'" +
+                    //         " )" +
+                    //         " AND (" +
+                    //         " a.MarketGroupCode = COALESCE(NULLIF('" + empData[0].MarketGroupCode + "',''), 'All')" +
+                    //         " OR COALESCE(NULLIF('" + empData[0].MarketGroupCode + "',''), 'All') = 'All'" +
+                    //         " )" +
+                    //         " AND (" +
+                    //         " a.MarketCode = COALESCE(NULLIF('" + empData[0].MarketCode + "',''), 'All')" +
+                    //         " OR COALESCE(NULLIF('" + empData[0].MarketCode + "',''), 'All') = 'All'" +
+                    //         " )" +
+                    //         " AND (" +
+                    //         " a.TerritoryCode = COALESCE(NULLIF('" + empData[0].TerritoryCode + "',''), 'All')" +
+                    //         " OR COALESCE(NULLIF('" + empData[0].TerritoryCode + "',''), 'All') = 'All'" +
+                    //         " )" +
+                    //         " AND (" +
+                    //         " a.RegionCode = COALESCE(NULLIF('" + empData[0].RegionCode + "',''), 'All')" +
+                    //         " OR COALESCE(NULLIF('" + empData[0].RegionCode + "',''), 'All') = 'All'" +
+                    //         " )" +
+                    //         " AND (" +
+                    //         " a.ZoneCode = COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All')" +
+                    //         " OR COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All') = 'All'" +
+                    //         " ) AND " +
+                    //         " A.Priority = " + appPriority.Priority + " AND A.InvestmentInitId = Id )" +
+                    //         " ";
+                    if (sbu == "null")
+                    {
+                        List<SqlParameter> parmsNoSBU = new List<SqlParameter>
+                    {
+                        new SqlParameter("@EID", Convert.ToInt32(empCode)),
+                    };
+                        var resultsNoSBU = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentAprSearchNoSbu @EID", parmsNoSBU.ToArray()).ToList();
+                        return resultsNoSBU.Count();
+                    }
+                    else
+                    {
+
+
+                        List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                        new SqlParameter("@SBU", sbu),
+                        new SqlParameter("@EID", Convert.ToInt32(empCode)),
+                        new SqlParameter("@RSTATUS", "Recommended")
+                    };
+                        var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentAprSearchNotCamp @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
+                        return results.Count();
+                    }
                 }
                 else if (role == "GPM")
                 {

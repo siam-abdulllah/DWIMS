@@ -51,7 +51,6 @@ export class InvestmentInitService {
     }
   }
   getMedicineProduct() {
-   
       return this.http.get(this.baseUrl + 'product/getMedicineProductForInvestment');
   }
   getMarketGroupMsts(empId: string) {
@@ -203,7 +202,6 @@ export class InvestmentInitService {
   }
   insertInvestmentMedicineProd() {
     return this.http.post(this.baseUrl + 'investment/insertInvestmentMedicineProd', this.investmentMedicineProdFormData);
-
   }
   updateInvestmentTargetedProd() {
     return this.http.post(this.baseUrl + 'investment/updateInvestmentTargetedProd', this.investmentTargetedProdFormData);
@@ -242,7 +240,6 @@ export class InvestmentInitService {
   removeInvestmentMedicineProd() {
     return this.http.post(this.baseUrl + 'investment/removeInvestmentMedicineProd', this.investmentMedicineProdFormData,
       { responseType: 'text' });
-
   }
   removeInvestmentTargetedProd() {
     return this.http.post(this.baseUrl + 'investment/removeInvestmentTargetedProd', this.investmentTargetedProdFormData,

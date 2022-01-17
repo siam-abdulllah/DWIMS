@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { GenericParams } from '../shared/models/genericParams';
 import { IInvestmentInitPagination, InvestmentInitPagination } from '../shared/models/investmentPagination';
 import { InvestmentRecDepot } from '../shared/models/InvestmentRecDepot';
+import { InvestmentMedicineProd } from '../shared/models/investment';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,7 @@ export class InvestmentAprNoSbuService {
   investmentAprFormData: InvestmentInit = new InvestmentInit();
   investmentDetailFormData: InvestmentApr = new InvestmentApr();
   investmentAprCommentFormData: InvestmentAprComment = new InvestmentAprComment();
+  investmentMedicineProdFormData: InvestmentMedicineProd = new InvestmentMedicineProd();
   investmentTargetedProdFormData: InvestmentTargetedProd = new InvestmentTargetedProd();
   investmentTargetedGroupFormData: InvestmentTargetedGroup = new InvestmentTargetedGroup();
   investmentDoctorFormData: InvestmentDoctor = new InvestmentDoctor();
@@ -47,6 +49,9 @@ export class InvestmentAprNoSbuService {
   }
   getProduct(sbu:string){    
     return this.http.get(this.baseUrl + 'product/getProductForInvestment/'+sbu);
+  }
+  getMedicineProduct() {
+    return this.http.get(this.baseUrl + 'product/getMedicineProductForInvestment');
   }
   getBudget(sbu:string,empID:number,donationId:number){    
     return this.http.get(this.baseUrl + 'approvalCeiling/getBudgetCeiling/'+empID+'/'+sbu+'/'+donationId);
@@ -200,6 +205,15 @@ export class InvestmentAprNoSbuService {
     {responseType: 'text'});
 
   }
-  
+  getInvestmentMedicineProds(investmentInitId: number, sbu: string) {
+    return this.http.get(this.baseUrl + 'investment/investmentMedicineProds/' + investmentInitId + '/' + sbu);
+  }
+  insertInvestmentMedicineProd() {
+    return this.http.post(this.baseUrl + 'investment/insertInvestmentMedicineProd', this.investmentMedicineProdFormData);
+  }
+  removeInvestmentMedicineProd() {
+    return this.http.post(this.baseUrl + 'investment/removeInvestmentMedicineProd', this.investmentMedicineProdFormData,
+      { responseType: 'text' });
+  }
 }
 

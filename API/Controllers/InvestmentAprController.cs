@@ -395,7 +395,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost("InsertApr/{empID}/{aprStatus}/{sbu}/{donationId}")]
+        [HttpPost("insertApr/{empID}/{aprStatus}/{sbu}/{donationId}")]
         public async Task<ActionResult<InvestmentAprDto>>InsertInvestmentApr(int empId, string aprStatus, string sbu, int donationId, InvestmentAprDto investmentAprDto)
         {
             try
@@ -528,7 +528,7 @@ namespace API.Controllers
             }
         }
        
-        [HttpPost("InsertRec/{empID}/{aprStatus}/{sbu}/{donationId}")]
+        [HttpPost("insertRec/{empID}/{aprStatus}/{sbu}/{donationId}")]
         public async Task<ActionResult<InvestmentAprDto>> InsertInvestmentRec(int empId, string aprStatus, string sbu, int donationId, InvestmentAprDto investmentAprDto)
         {
             try
@@ -589,7 +589,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost("InsertAprCom")]
+        [HttpPost("insertAprCom")]
         public async Task<ActionResult<InvestmentRecCommentDto>> InsertInvestmentAprComment(InvestmentRecCommentDto investmentRecDto)
         {
             //var empData = await _employeeRepo.GetByIdAsync(investmentAprDto.EmployeeId);
@@ -711,7 +711,7 @@ namespace API.Controllers
             };
         }
 
-        [HttpPost("UpdateAprCom")]
+        [HttpPost("updateAprCom")]
         public async Task<ActionResult<InvestmentRecCommentDto>> UpdateInvestmentAprComment(InvestmentRecCommentDto investmentRecDto)
         {
             // var user =  _approvalAuthorityRepo.GetByIdAsync(ApprovalAuthorityToReturnDto.Id);
@@ -808,7 +808,7 @@ namespace API.Controllers
             };
         }
 
-        [HttpPost("InsertAprProd")]
+        [HttpPost("insertAprProd")]
         public async Task<IActionResult> InsertInvestmentApromendationProduct(List<InvestmentRecProductsDto> investmentRecProductDto)
         {
             //try

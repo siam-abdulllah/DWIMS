@@ -51,16 +51,10 @@
                                     <div class="col-md-2">
                                         <input class="form-control" id="proposeFor" name="proposeFor" #proposeFor="ngModel" [(ngModel)]="investmentAprService.investmentAprFormData.proposeFor" readonly>
                                     </div>
-                                    <!-- </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row"> -->
                                     <div class="col-md-1">
                                         <label>Donation Type</label>
                                     </div>
-                                    <div class="col-md-2">
-                                        <!-- <input class="form-control" id="donationId" name="donationId" #donationId="ngModel" [(ngModel)]="investmentAprService.investmentAprFormData.donationId" readonly> -->
-                                        <select class="form-control" [disabled]=true id="donationId" name="donationId" #donationId="ngModel" [(ngModel)]="investmentAprService.investmentAprFormData.donationId">
+                                    <div class="col-md-2"> <select class="form-control" [disabled]=true id="donationId" name="donationId" #donationId="ngModel" [(ngModel)]="investmentAprService.investmentAprFormData.donationId">
                                                 <option  [ngValue]="null">Select Donation Type</option>
                                                 <option *ngFor="let a of donations" [value]="a.id">{{a.donationTypeName}}</option>
                                             </select>
@@ -76,8 +70,6 @@
                             </div>
 
                             <fieldset *ngIf="investmentAprService.investmentAprFormData.donationTo=='Doctor'">
-                                <!-- <legend>Doctor Profile</legend> -->
-
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-sm-6">
@@ -93,11 +85,6 @@
                                         <div class="col-md-3">
                                             <input class="form-control" id="id" name="id" #id="ngModel" [(ngModel)]="investmentAprService.investmentDoctorFormData.id" readonly style="display: none;">
                                             <input class="form-control" name="doctorName" readonly id="doctorName" #doctorId="ngModel" [(ngModel)]="investmentAprService.investmentDoctorFormData.doctorName">
-
-                                            <!-- <select class="form-control " (change)="onChangeDoctorInDoc()" name="doctorName" id="doctorName" name="doctorName" #doctorName="ngModel" [(ngModel)]="investmentAprService.investmentDoctorFormData.doctorName">
-                                                <option  [ngValue]="null">Select Doctor</option>
-                                                <option *ngFor="let a of doctors" [value]="a.id">{{a.doctorName}}</option>
-                                            </select> -->
                                         </div>
                                         <div class="col-md-2">
                                             <label>Doctor Id</label>
@@ -130,23 +117,12 @@
                                         </div>
                                         <div class="col-md-3">
                                             <input class="form-control" name="designation" readonly id="institutionId" name="institutionId" #institutionId="ngModel" [(ngModel)]="investmentAprService.investmentDoctorFormData.institutionId">
-
-                                            <!-- <select class="form-control " (change)="onChangeInstitutionInDoc()" id="institutionId" name="institutionId" #institutionId="ngModel" [(ngModel)]="investmentAprService.investmentDoctorFormData.institutionId">
-                                                <option  [ngValue]="null">Select Institution</option>
-                                                <option *ngFor="let a of institutions" [value]="a.id">{{a.institutionName}}</option>
-                                            </select> -->
                                         </div>
                                         <div class="col-md-2">
                                             <label>Doctor Category</label>
                                         </div>
                                         <div class="col-md-3">
                                             <input class="form-control" name="doctorCategory" id="doctorCategory" #doctorCategory="ngModel" [(ngModel)]="investmentAprService.investmentDoctorFormData.doctorCategory" readonly>
-
-                                            <!-- <select class="form-control " name="doctorCategory" id="doctorCategory" #donationId="ngModel" [(ngModel)]="investmentAprService.investmentDoctorFormData.doctorCategory">
-                                            <option  [ngValue]="null">Select Doctor Category</option>
-                                            <option value="Regular">Regular</option>
-                                                <option value="Migratory">Mirgratory</option>
-                                            </select> -->
                                         </div>
                                     </div>
                                 </div>
@@ -163,13 +139,6 @@
                                         </div>
                                         <div class="col-md-3">
                                             <input class="form-control" readonly name="doctorType" id="doctorType" #doctorType="ngModel" [(ngModel)]="investmentAprService.investmentDoctorFormData.doctorType">
-
-                                            <!-- <select class="form-control " name="doctorType" id="doctorType" #doctorType="ngModel" [(ngModel)]="investmentAprService.investmentDoctorFormData.doctorType">
-                                            <option  [ngValue]="null">Select Doctor Type</option>
-                                                 <option value="A">A</option>
-                                                <option value="B">B</option>
-                                                <option value="C">C</option>
-                                            </select> -->
                                         </div>
                                     </div>
                                 </div>
@@ -196,13 +165,6 @@
                                         <div class="col-sm-6">
                                             <h6 class=" "><strong>Institution Profile</strong></h6>
                                         </div>
-                                        <!-- <div class="col-sm-2"></div>
-                                        <div class="col-sm-2" *ngIf="isValid">
-                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentInstitution()"><i class="fa fa-save"></i>&nbsp; Save</button>
-                                        </div>
-                                        <div class="col-sm-2" *ngIf="isValid">
-                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentInstitution()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
-                                        </div> -->
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -218,11 +180,6 @@
                                         </div>
                                         <div class="col-md-3">
                                             <input class="form-control" id="responsibleDoctorName" name="responsibleDoctorName" #responsibleDoctorName="ngModel" [(ngModel)]="investmentAprService.investmentInstitutionFormData.responsibleDoctorName" readonly>
-
-                                            <!-- <select class="form-control " name="responsibleDoctorId" id="responsibleDoctorId" #responsibleDoctorId="ngModel" [(ngModel)]="investmentAprService.investmentInstitutionFormData.responsibleDoctorId">
-                                                <option  [ngValue]="null">Select Doctor</option>
-                                                <option *ngFor="let a of doctors" [value]="a.id">{{a.doctorName}}</option>
-                                            </select> -->
                                         </div>
                                     </div>
                                 </div>
@@ -266,14 +223,6 @@
                                         <div class="col-sm-6">
                                             <h6 class=" "><strong>Campaign Info</strong></h6>
                                         </div>
-                                        <!-- <div class="col-sm-2"></div>
-                                        <div class="col-sm-2" *ngIf="isValid">
-                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentCampaign()"><i class="fa fa-save"></i>&nbsp; Save</button>
-                                        </div>
-                                        <div class="col-sm-2" *ngIf="isValid">
-                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentCampaign()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
-                                        </div> -->
-
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -283,22 +232,12 @@
                                         </div>
                                         <div class="col-md-3">
                                             <input class="form-control" name="campaignName" id="campaignName" #campaignName="ngModel" [(ngModel)]="investmentAprService.investmentCampaignFormData.campaignName" readonly>
-
-                                            <!-- <select class="form-control " (change)="onChangeCampaignInCamp()" name="campaignMstId" id="campaignMstId" #campaignMstId="ngModel" [(ngModel)]="investmentAprService.investmentCampaignFormData.campaignMstId">
-                                                <option  [ngValue]="null">Select Campaign</option>
-                                                <option *ngFor="let a of campaignMsts" [value]="a.id">{{a.campaignName}}</option>
-                                            </select> -->
                                         </div>
                                         <div class="col-md-2">
                                             <label>Sub-Campaign Name</label>
                                         </div>
                                         <div class="col-md-3">
                                             <input class="form-control" name="subCampaignName" id="subCampaignName" #subCampaignName="ngModel" [(ngModel)]="investmentAprService.investmentCampaignFormData.subCampaignName" readonly>
-
-                                            <!-- <select class="form-control " (change)="onChangeSubCampaignInCamp()" name="campaignDtlId" id="campaignDtlId" #campaignDtlId="ngModel" [(ngModel)]="investmentAprService.investmentCampaignFormData.campaignDtlId">
-                                                    <option  [ngValue]="null">Select Sub-Campaign</option>
-                                                    <option *ngFor="let a of campaignDtls" [value]="a.id">{{a.subCampaign.subCampaignName}}</option>
-                                                </select> -->
                                         </div>
                                     </div>
                                 </div>
@@ -325,21 +264,12 @@
                                         </div>
                                         <div class="col-md-3">
                                             <input class="form-control" name="doctorName" id="doctorName" #doctorName="ngModel" [(ngModel)]="investmentAprService.investmentCampaignFormData.doctorName" readonly>
-
-                                            <!-- <select class="form-control " name="doctorId" id="doctorId" #doctorId="ngModel" [(ngModel)]="investmentAprService.investmentCampaignFormData.doctorId">
-                                                <option  [ngValue]="null">Select Doctor</option>
-                                                <option *ngFor="let a of doctors" [value]="a.id">{{a.doctorName}}</option>
-                                            </select> -->
                                         </div>
                                         <div class="col-md-2">
                                             <label>Institution Id</label>
                                         </div>
                                         <div class="col-md-3">
                                             <input class="form-control" name="institutionName" id="institutionName" #institutionName="ngModel" [(ngModel)]="investmentAprService.investmentCampaignFormData.institutionName" readonly>
-                                            <!-- <select class="form-control " (change)="onChangeInstitutionInInst()" name="institutionId" id="institutionId" #institutionId="ngModel" [(ngModel)]="investmentAprService.investmentCampaignFormData.institutionId">
-                                                <option  [ngValue]="null">Select Institution</option>
-                                                <option *ngFor="let a of institutions" [value]="a.id">{{a.institutionName}}</option>
-                                            </select> -->
                                         </div>
                                     </div>
                                 </div>
@@ -372,13 +302,6 @@
                                         <div class="col-sm-6">
                                             <h6 class=" "><strong>BCDS</strong></h6>
                                         </div>
-                                        <!-- <div class="col-sm-2"></div>
-                                        <div class="col-sm-2" *ngIf="isValid">
-                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentBcds()"><i class="fa fa-save"></i>&nbsp; Save</button>
-                                        </div>
-                                        <div class="col-sm-2" *ngIf="isValid">
-                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentBcds()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
-                                        </div> -->
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -388,22 +311,12 @@
                                         </div>
                                         <div class="col-md-3">
                                             <input class="form-control" name="bcdsName" id="bcdsName" #bcdsName="ngModel" [(ngModel)]="investmentAprService.investmentBcdsFormData.bcdsName" readonly>
-
-                                            <!-- <select class="form-control " (change)="onChangeBcdsInBcds()" name="bcdsId" id="bcdsId" #bcdsId="ngModel" [(ngModel)]="investmentAprService.investmentBcdsFormData.bcdsId">
-                                                <option  [ngValue]="null">Select Bcds</option>
-                                                <option *ngFor="let a of bcds" [value]="a.id">{{a.bcdsName}}</option>
-                                            </select> -->
                                         </div>
                                         <div class="col-md-2">
                                             <label>Responsible Doctor</label>
                                         </div>
                                         <div class="col-md-3">
                                             <input class="form-control" id="responsibleDoctorNameBcds" name="responsibleDoctorNameBcds" #responsibleDoctorNameBcds="ngModel" [(ngModel)]="investmentAprService.investmentBcdsFormData.responsibleDoctorName" readonly>
-
-                                            <!-- <select class="form-control " name="responsibleDoctorId" id="responsibleDoctorId" #responsibleDoctorId="ngModel" [(ngModel)]="investmentAprService.investmentInstitutionFormData.responsibleDoctorId">
-                                                <option  [ngValue]="null">Select Doctor</option>
-                                                <option *ngFor="let a of doctors" [value]="a.id">{{a.doctorName}}</option>
-                                            </select> -->
                                         </div>
                                     </div>
                                 </div>
@@ -430,13 +343,6 @@
                                         <div class="col-sm-6">
                                             <h6 class=" "><strong>Society</strong></h6>
                                         </div>
-                                        <!-- <div class="col-sm-2"></div>
-                                        <div class="col-sm-2" *ngIf="isValid">
-                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentSociety()"><i class="fa fa-save"></i>&nbsp; Save</button>
-                                        </div>
-                                        <div class="col-sm-2" *ngIf="isValid">
-                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentSociety()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
-                                        </div> -->
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -452,11 +358,6 @@
                                         </div>
                                         <div class="col-md-3">
                                             <input class="form-control" id="responsibleDoctorNameSoc" name="responsibleDoctorNameSoc" #responsibleDoctorNameSoc="ngModel" [(ngModel)]="investmentAprService.investmentSocietyFormData.responsibleDoctorName" readonly>
-
-                                            <!-- <select class="form-control " name="responsibleDoctorId" id="responsibleDoctorId" #responsibleDoctorId="ngModel" [(ngModel)]="investmentAprService.investmentInstitutionFormData.responsibleDoctorId">
-                                                <option  [ngValue]="null">Select Doctor</option>
-                                                <option *ngFor="let a of doctors" [value]="a.id">{{a.doctorName}}</option>
-                                            </select> -->
                                         </div>
                                     </div>
                                 </div>
@@ -477,6 +378,57 @@
                                     </div>
                                 </div>
                             </fieldset>
+                            <fieldset *ngIf="investmentAprService.investmentAprFormData.donationId==4">
+                                <div class="form-group">
+                                    <legend>Medicine Products</legend>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Product</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <ng-select [virtualScroll]="true" [items]="medicineProducts" bindLabel="productName" bindValue="id" placeholder="Select Product" id="productId" name="productId" #productId="ngModel" [(ngModel)]="investmentAprService.investmentMedicineProdFormData.productId"
+                                                [class.invalid]="productId.invalid && productId.touched">
+                                            </ng-select>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <label>Quantity</label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input class="form-control" [disabled]="isInvOther && !isAdmin" placeholder="Box Quantity" name="boxQuantity" id="boxQuantity" #boxQuantity="ngModel" [(ngModel)]="investmentAprService.investmentMedicineProdFormData.boxQuantity" [pattern]="numberPattern">
+                                            <div class="invalid-feedback" *ngIf="boxQuantity.errors?.pattern">Only numeric value</div>
+                                        </div>
+                                        <div class="col-md-2" *ngIf="isValid && !isInvOther ">
+                                            <button class="btn btn-primary btn-lg btn-block" type="button" (click)="insertInvestmentMedicineProd()"><i class="fa fa-plus"></i>&nbsp; Add</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <table class="table table-bordered">
+                                        <tr class="HeaderRow">
+                                            <td>Product Name</td>
+                                            <td>Box Quantity</td>
+                                            <td>TP Vat</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr *ngFor="let a of investmentMedicineProds">
+                                            <td>
+                                                {{a.medicineProduct.productName}}
+                                            </td>
+                                            <td>
+                                                {{a.boxQuantity}}
+                                            </td>
+                                            <td>
+                                                {{a.tpVat}}
+                                            </td>
+                                            <td>
+                                                <input type="button" *ngIf="sbu==this.investmentAprService.investmentAprFormData.sbu" (click)="removeInvestmentMedicineProd(a)" value="Remove">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </fieldset>
                             <fieldset>
                                 <div class="form-group">
                                     <div class="row">
@@ -485,13 +437,6 @@
                                             <h6> </h6>
                                         </div>
                                         <div class="col-sm-2"></div>
-                                        <!-- <div class="col-sm-2" *ngIf="isValid">
-                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="updateInvestmentDetails()"><i class="fa fa-save"></i>&nbsp; Update</button>
-                                        </div> -->
-                                        <!-- <div class="col-sm-2" *ngIf="isValid">
-                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentBcds()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
-                                        </div> -->
-
                                     </div>
                                 </div>
                                 <div class="form-group" *ngIf="isBudgetVisible">
@@ -525,24 +470,6 @@
                                                             {{budgetCeiling.monthlyRemaining}}
                                                         </td>
 
-                                                        <!--   <td>
-                                                            SBU Budget
-                                                        </td>
-                                                        <td>
-                                                            {{budgetCeiling.sbuWiseBudget}}
-                                                        </td>
-                                                        <td>
-                                                            SBU Exp.
-                                                        </td>
-                                                        <td style="color: red;">
-                                                            {{budgetCeiling.sbuWiseExpense}}
-                                                        </td>
-                                                        <td>
-                                                            SBU Rem.
-                                                        </td>
-                                                        <td style="color: green;">
-                                                            {{budgetCeiling.sbuWiseRemaining}}
-                                                        </td> -->
                                                     </tr>
                                                     <tr id="shortHead">
                                                         <td>
@@ -573,42 +500,6 @@
                                                 </table>
                                             </div>
                                         </div>
-                                        <!-- <div class="col-md-1">
-                                            <label>Transaction Limit</label>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <input class="form-control" id="referenceNo" name="referenceNo" #referenceNo="ngModel" [(ngModel)]="investmentAprService.investmentAprFormData.referenceNo" readonly required>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <label>Ceiling Per month</label>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <input class="form-control" id="proposeFor" name="proposeFor" #proposeFor="ngModel" [(ngModel)]="investmentAprService.investmentAprFormData.proposeFor" readonly>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <label>Remaining Balance</label>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <input class="form-control" id="donationId" name="donationId" #donationId="ngModel" [(ngModel)]="investmentAprService.investmentAprFormData.donationId" readonly>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <label>SBU Budget</label>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <input class="form-control" id="donationTo" name="donationTo" #donationTo="ngModel" [(ngModel)]="investmentAprService.investmentAprFormData.donationTo" readonly>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <label>SBU Expense</label>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <input class="form-control" id="donationTo" name="donationTo" #donationTo="ngModel" [(ngModel)]="investmentAprService.investmentAprFormData.donationTo" readonly>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <label>SBU Expense</label>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <input class="form-control" id="donationTo" name="donationTo" #donationTo="ngModel" [(ngModel)]="investmentAprService.investmentAprFormData.donationTo" readonly>
-                                        </div> -->
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -663,7 +554,8 @@
                                                         <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" required name="proposedAmount" placeholder="Amount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.proposedAmount" [pattern]="numberPattern">
+                                                        <input class="form-control" [disabled]="(isInvOther && !isAdmin) || investmentAprService.investmentAprFormData.donationId==4" required name="proposedAmount" placeholder="Amount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.proposedAmount"
+                                                            [pattern]="numberPattern">
                                                         <div class="invalid-feedback" *ngIf="proposedAmount.errors?.pattern">Only numeric value</div>
                                                     </div>
                                                 </div>
@@ -790,13 +682,15 @@
                                             <label>Product</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <select class="form-control " id="productId" name="productId" #productId="ngModel" [(ngModel)]="investmentAprService.investmentTargetedProdFormData.productId" [class.invalid]="productId.invalid && productId.touched">
+                                            <!-- <select class="form-control " id="productId" name="productId" #productId="ngModel" [(ngModel)]="investmentAprService.investmentTargetedProdFormData.productId" [class.invalid]="productId.invalid && productId.touched">
                                                 <option  [ngValue]="null">Select Product</option>
                                                 <option *ngFor="let product of products" [value]="product.id">{{product.productName}}</option>
-                                            </select>
+                                            </select> -->
+                                            <ng-select [virtualScroll]="true" [items]="products" bindLabel="productName" bindValue="id" placeholder="Select Product" id="productId" name="productId" #productId="ngModel" [(ngModel)]="investmentAprService.investmentTargetedProdFormData.productId" [class.invalid]="productId.invalid && productId.touched">
+                                            </ng-select>
                                         </div>
                                         <div class="col-md-3"></div>
-                                        <div class="col-md-2" *ngIf="isValid">
+                                        <div class="col-md-2">
                                             <button class="btn btn-primary btn-lg btn-block" type="button" (click)="addInvestmentTargetedProd()"><i class="fa fa-plus"></i>&nbsp; Add</button>
 
                                         </div>
@@ -805,25 +699,17 @@
                                 <div class="form-group">
                                     <table class="table  table-bordered">
                                         <tr class="HeaderRow">
-                                            <!-- <td>Product Code</td> -->
                                             <td>Product Name</td>
                                             <td>SBU</td>
-                                            <!-- <td></td> -->
                                             <td></td>
                                         </tr>
                                         <tr *ngFor="let a of investmentTargetedProds">
-                                            <!-- <td>
-                                                {{a.productInfo.productCode}}
-                                            </td> -->
                                             <td>
                                                 {{a.productInfo.productName}}
                                             </td>
                                             <td>
                                                 {{a.productInfo.sbuName}}
                                             </td>
-                                            <!-- <td>
-                                                <input type="button" *ngIf="sbu==a.sbu" (click)="editInvestmentTargetedProd(a)" value="Edit">
-                                            </td> -->
                                             <td>
                                                 <input type="button" *ngIf="sbu==a.sbu" (click)="removeInvestmentTargetedProd(a)" value="Remove">
                                             </td>
@@ -839,25 +725,17 @@
                                         </div>
                                         <div class="col-sm-2"></div>
                                         <div class="col-sm-4"> <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="getSummaryDetail()" style="width: 100px;"><i class="fa fa-eye"></i>View Detail</button></div>
-                                        <!-- <div class="col-sm-2">
-                                            <button class="btn btn-success btn-lg btn-block" type="button"><i class="fa fa-save"></i>&nbsp; Save</button>
-                                        </div> -->
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <table class="table  table-bordered">
                                         <tr class="HeaderRow">
-                                            <!-- <td>Market Group Name</td> -->
                                             <td>Market Code</td>
                                             <td>Market Name</td>
                                             <td>Authority</td>
                                             <td>Status</td>
                                         </tr>
                                         <tr *ngFor="let a of investmentTargetedGroups">
-
-                                            <!-- <td>
-                                                {{a.marketGroupMst.groupName}}
-                                            </td> -->
                                             <td>
                                                 {{a.marketCode}}
                                             </td>
@@ -870,9 +748,6 @@
                                             <td>
                                                 {{a.recStatus}}
                                             </td>
-                                            <!-- <td>
-                                                <input type="button" (click)="removeInvestmentTargetedProd(a)" value="Remove">
-                                            </td> -->
                                         </tr>
                                     </table>
                                 </div>
@@ -884,9 +759,6 @@
                                             <h6 class=" "><strong>Approval</strong></h6>
                                         </div>
                                         <div class="col-sm-2"></div>
-                                        <!-- <div class="col-sm-2">
-                                            <button class="btn btn-success btn-lg btn-block" type="button"><i class="fa fa-save"></i>&nbsp; Save</button>
-                                        </div> -->
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -954,7 +826,6 @@
                                         <th scope="col" style="width: 9%">Reference No</th>
                                         <th scope="col" style="width: 8%">Propose For</th>
                                         <th scope="col" style="width: 8%">Market Name</th>
-                                        <!-- <th scope="col" style="width: 8%">Donation Type</th> -->
                                         <th scope="col" style="width: 8%">Donation To</th>
                                     </tr>
                                 </thead>
@@ -968,7 +839,6 @@
                                         <td>{{a.referenceNo}}</td>
                                         <td>{{a.proposeFor}}</td>
                                         <td>{{a.marketName}}</td>
-                                        <!-- <td>{{a.donationId}}</td> -->
                                         <td>{{a.donationTo}}</td>
                                     </tr>
                                 </tbody>
@@ -1013,7 +883,6 @@
                                         <th scope="col" style="width: 9%">Reference No</th>
                                         <th scope="col" style="width: 8%">Propose For</th>
                                         <th scope="col" style="width: 8%">Market Name</th>
-                                        <!-- <th scope="col" style="width: 8%">Donation Type</th> -->
                                         <th scope="col" style="width: 8%">Donation To</th>
                                     </tr>
                                 </thead>
@@ -1027,7 +896,6 @@
                                         <td>{{a.referenceNo}}</td>
                                         <td>{{a.proposeFor}}</td>
                                         <td>{{a.marketName}}</td>
-                                        <!-- <td>{{a.donationId}}</td> -->
                                         <td>{{a.donationTo}}</td>
                                     </tr>
                                 </tbody>
