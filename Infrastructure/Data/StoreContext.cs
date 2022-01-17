@@ -89,6 +89,8 @@ namespace Infrastructure.Data
         [NotMapped]
         public DbSet<RptDepotLetterSearch> RptDepotLetterSearch { get; set; }
         public DbSet<DepotPrintTrack> DepotPrintTrack { get; set; }
+        public DbSet<InvestmentMedicineProd> InvestmentMedicineProd { get; set; }
+        public DbSet<MedicineProduct> MedicineProduct { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

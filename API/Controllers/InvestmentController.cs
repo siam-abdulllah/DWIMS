@@ -21,6 +21,8 @@ namespace API.Controllers
     {
         private readonly IGenericRepository<InvestmentInit> _investmentInitRepo;
         private readonly IGenericRepository<InvestmentDetail> _investmentDetailRepo;
+        private readonly IGenericRepository<InvestmentMedicineProd> _investmentMedicineProdRepo;
+        private readonly IGenericRepository<MedicineProduct> _medicineProductRepo;
         private readonly IGenericRepository<InvestmentTargetedProd> _investmentTargetedProdRepo;
         private readonly IGenericRepository<InvestmentTargetedGroup> _investmentTargetedGroupRepo;
         private readonly IGenericRepository<InvestmentDoctor> _investmentDoctorRepo;
@@ -37,6 +39,7 @@ namespace API.Controllers
 
 
         public InvestmentController(IGenericRepository<InvestmentTargetedGroup> investmentTargetedGroupRepo, IGenericRepository<InvestmentTargetedProd> investmentTargetedProdRepo,
+            IGenericRepository<InvestmentMedicineProd> investmentMedicineProdRepo,IGenericRepository<MedicineProduct> medicineProductRepo,
             IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<InvestmentDetail> investmentDetailRepo, IGenericRepository<InvestmentDoctor> investmentDoctorRepo,
             IGenericRepository<InvestmentSociety> investmentSocietyRepo, IGenericRepository<InvestmentBcds> investmentBcdsRepo,
             IGenericRepository<InvestmentCampaign> investmentCampaignRepo, IGenericRepository<InvestmentInstitution> investmentInstitutionRepo,
@@ -47,6 +50,7 @@ namespace API.Controllers
             _mapper = mapper;
             _investmentInitRepo = investmentInitRepo;
             _investmentDetailRepo = investmentDetailRepo;
+            _investmentMedicineProdRepo = investmentMedicineProdRepo;
             _investmentTargetedProdRepo = investmentTargetedProdRepo;
             _investmentTargetedGroupRepo = investmentTargetedGroupRepo;
             _investmentDoctorRepo = investmentDoctorRepo;
@@ -59,6 +63,7 @@ namespace API.Controllers
             _investmentRecCommentRepo = investmentRecCommentRepo;
             _dbContext = dbContext;
             _donationRepo = donationRepo;
+            _medicineProductRepo = medicineProductRepo;
         }
         #region investmentInit
 
@@ -650,6 +655,112 @@ namespace API.Controllers
         }
         #endregion
 
+        #region investmentMedicineProd
+        [HttpPost("insertInvestmentMedicineProd")]
+        public async Task<ActionResult<InvestmentMedicineProd>> InsertInvestmentMedicineProd(InvestmentMedicineProd investmentMedicineProd)
+        {
+            try
+            {
+
+                var medicineProd = await _medicineProductRepo.GetByIdAsync(investmentMedicineProd.ProductId);
+                var iMedicineProd = new InvestmentMedicineProd
+                {
+                    //ReferenceNo = investmentMedicineProdDto.ReferenceNo,
+                    InvestmentInitId = investmentMedicineProd.InvestmentInitId,
+                    ProductId = investmentMedicineProd.ProductId,
+                    EmployeeId = investmentMedicineProd.EmployeeId,
+                    BoxQuantity = investmentMedicineProd.BoxQuantity,
+                    TpVat = medicineProd.UnitTp+ medicineProd.UnitVat,
+                    SetOn = DateTimeOffset.Now,
+                    //ModifiedOn = DateTimeOffset.Now
+                };
+                _investmentMedicineProdRepo.Add(iMedicineProd);
+                _investmentMedicineProdRepo.Savechange();
+
+                return new InvestmentMedicineProd
+                {
+                    Id = investmentMedicineProd.Id,
+                    ProductId = investmentMedicineProd.ProductId,
+                    EmployeeId = investmentMedicineProd.EmployeeId,
+                    BoxQuantity = investmentMedicineProd.BoxQuantity,
+                    TpVat = medicineProd.UnitTp + medicineProd.UnitVat
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        //[HttpPost("updateInvestmentMedicineProd")]
+        //public ActionResult<InvestmentMedicineProdDto> UpdateInvestmentMedicineProd(InvestmentMedicineProdDto investmentMedicineProdDto)
+        //{
+        //    try
+        //    {
+        //        var investmentMedicineProd = new InvestmentMedicineProd
+        //        {
+        //            Id = investmentMedicineProdDto.Id,
+        //            InvestmentInitId = investmentMedicineProdDto.InvestmentInitId,
+        //            ProductId = investmentMedicineProdDto.ProductId,
+        //            SBU = investmentMedicineProdDto.SBU,
+        //            EmployeeId = investmentMedicineProdDto.EmployeeId,
+        //            //SetOn = DateTimeOffset.Now,
+        //            ModifiedOn = DateTimeOffset.Now
+        //        };
+        //        _investmentMedicineProdRepo.Update(investmentMedicineProd);
+        //        _investmentMedicineProdRepo.Savechange();
+
+        //        return new InvestmentMedicineProdDto
+        //        {
+        //            Id = investmentMedicineProd.Id,
+        //            InvestmentInitId = investmentMedicineProdDto.InvestmentInitId,
+        //            ProductId = investmentMedicineProdDto.ProductId,
+        //            SBU = investmentMedicineProdDto.SBU,
+        //            EmployeeId = investmentMedicineProdDto.EmployeeId,
+        //        };
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
+
+        [HttpGet]
+        [Route("investmentMedicineProds/{investmentInitId}/{sbu}")]
+        public async Task<IReadOnlyList<InvestmentMedicineProd>> GetInvestmentMedicineProds(int investmentInitId)
+        {
+            try
+            {
+                ///var spec = new InvestmentMedicineProdSpecification(investmentInitId,sbu);
+                var spec = new InvestmentMedicineProdSpecification(investmentInitId);
+                var investmentMedicineProd = await _investmentMedicineProdRepo.ListAsync(spec);
+                return investmentMedicineProd;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        // [HttpGet]
+        // [Route("investmentMedicineProds/{investmentInitId}")]
+        // public async Task<IReadOnlyList<InvestmentMedicineProd>> GetInvestmentMedicineProds(int investmentInitId)
+        // {
+        //     try
+        //     {
+        //         var spec = new InvestmentMedicineProdSpecification(investmentInitId);
+        //         var investmentMedicineProd = await _investmentMedicineProdRepo.ListAsync(spec);
+        //         return investmentMedicineProd;
+        //     }
+        //     catch (System.Exception ex)
+        //     {
+        //         throw ex;
+        //     }
+        // }
+
+
+        #endregion  
         #region investmentTargetedProd
         [HttpPost("insertInvestmentTargetedProd")]
         public ActionResult<InvestmentTargetedProdDto> InsertInvestmentTargetedProd(InvestmentTargetedProdDto investmentTargetedProdDto)

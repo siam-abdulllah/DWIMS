@@ -599,7 +599,7 @@
                                     </div>
                                 </div>
                             </fieldset>
-                            <fieldset>
+                            <fieldset *ngIf="investmentInitService.investmentInitFormData.donationId==4">
                                 <div class="form-group">
                                     <legend>Medicine Products</legend>
                                 </div>
@@ -608,12 +608,12 @@
                                         <div class="col-md-2">
                                             <label>Product</label>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-3">
                                             <ng-select [virtualScroll]="true" [items]="products" bindLabel="productName" bindValue="id" placeholder="Select Product" id="productId" name="productId" #productId="ngModel" [(ngModel)]="investmentInitService.investmentMedicineProdFormData.productId"
                                                 [class.invalid]="productId.invalid && productId.touched">
                                             </ng-select>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-1">
                                             <label>Quantity</label>
                                         </div>
                                         <div class="col-md-2">
@@ -651,7 +651,10 @@
                                 </div>
                             </fieldset>
                             <fieldset>
-                                <legend>Investment Details</legend>
+                                <div class="form-group">
+                                    <legend>Investment Details</legend>
+                                </div>
+                                <!-- <legend>Investment Details</legend> -->
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-6">
@@ -704,7 +707,8 @@
                                                         <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" placeholder="Amount" name="proposedAmount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.proposedAmount" [pattern]="numberPattern">
+                                                        <input class="form-control" [disabled]="(isInvOther && !isAdmin) || investmentInitService.investmentInitFormData.donationId==4" placeholder="Amount" name="proposedAmount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.proposedAmount"
+                                                            [pattern]="numberPattern">
                                                         <div class="invalid-feedback" *ngIf="proposedAmount.errors?.pattern">Only numeric value</div>
                                                     </div>
                                                 </div>

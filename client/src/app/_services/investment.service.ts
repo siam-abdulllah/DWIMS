@@ -202,7 +202,7 @@ export class InvestmentInitService {
 
   }
   insertInvestmentMedicineProd() {
-    return this.http.post(this.baseUrl + 'investment/insertInvestmentMedicineProd', this.investmentTargetedProdFormData);
+    return this.http.post(this.baseUrl + 'investment/insertInvestmentMedicineProd', this.investmentMedicineProdFormData);
 
   }
   updateInvestmentTargetedProd() {
