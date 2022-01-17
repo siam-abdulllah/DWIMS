@@ -14,7 +14,7 @@ namespace Core.Entities
         public DateTimeOffset FromDate { get; set; }
         public DateTimeOffset ToDate { get; set; }
         public int TotalMonth { get; set; }
-        public long ProposedAmount { get; set; }
+        public double ProposedAmount { get; set; }
         public string Purpose { get; set; }
         public int InvestmentInitId { get; set; }
         [ForeignKey("InvestmentInitId")]

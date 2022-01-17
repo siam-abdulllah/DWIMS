@@ -1,6 +1,7 @@
 import { ICampaignDtl } from "./campaign";
 import { IDonation } from "./donation";
 import { IMarketGroupMst } from "./marketGroupMst";
+import { IMedicineProduct } from "./medicineProduct";
 import { IProduct } from "./product";
 
 export interface IInvestmentInit {
@@ -118,9 +119,9 @@ export interface IInvestmentMedicineProd {
     id: number;
     investmentInitId: number;
     productId: number;
-    productInfo:IProduct;
+    medicineProduct:IMedicineProduct;
     boxQuantity:number;
-    TpVat: number;
+    tpVat: number;
     employeeId: number;
 }
  
@@ -128,9 +129,9 @@ export class InvestmentMedicineProd implements IInvestmentMedicineProd {
     id: number=0;
     investmentInitId: number;
     productId: number;
-    productInfo:IProduct;
+    medicineProduct:IMedicineProduct;
     boxQuantity:number;
-    TpVat: number;
+    tpVat: number;
     employeeId: number;
 }
 export interface IInvestmentTargetedProd {

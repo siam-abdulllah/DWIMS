@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20220117043118_InitialCreate_1712022_2")]
+    [Migration("20220117062620_InitialCreate_1712022_2")]
     partial class InitialCreate_1712022_2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1202,8 +1202,8 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("PaymentMethod")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("ProposedAmount")
-                        .HasColumnType("bigint");
+                    b.Property<double>("ProposedAmount")
+                        .HasColumnType("float");
 
                     b.Property<string>("Purpose")
                         .HasColumnType("nvarchar(max)");
@@ -1532,8 +1532,8 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("Priority")
                         .HasColumnType("int");
 
-                    b.Property<long>("ProposedAmount")
-                        .HasColumnType("bigint");
+                    b.Property<double>("ProposedAmount")
+                        .HasColumnType("float");
 
                     b.Property<string>("Purpose")
                         .HasColumnType("nvarchar(max)");

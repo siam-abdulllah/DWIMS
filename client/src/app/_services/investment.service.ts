@@ -240,7 +240,7 @@ export class InvestmentInitService {
 
   }
   removeInvestmentMedicineProd() {
-    return this.http.post(this.baseUrl + 'investment/removeInvestmentMedicineProd', this.investmentTargetedProdFormData,
+    return this.http.post(this.baseUrl + 'investment/removeInvestmentMedicineProd', this.investmentMedicineProdFormData,
       { responseType: 'text' });
 
   }

@@ -1200,8 +1200,8 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("PaymentMethod")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("ProposedAmount")
-                        .HasColumnType("bigint");
+                    b.Property<double>("ProposedAmount")
+                        .HasColumnType("float");
 
                     b.Property<string>("Purpose")
                         .HasColumnType("nvarchar(max)");
@@ -1530,8 +1530,8 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("Priority")
                         .HasColumnType("int");
 
-                    b.Property<long>("ProposedAmount")
-                        .HasColumnType("bigint");
+                    b.Property<double>("ProposedAmount")
+                        .HasColumnType("float");
 
                     b.Property<string>("Purpose")
                         .HasColumnType("nvarchar(max)");

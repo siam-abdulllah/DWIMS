@@ -609,7 +609,7 @@
                                             <label>Product</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <ng-select [virtualScroll]="true" [items]="products" bindLabel="productName" bindValue="id" placeholder="Select Product" id="productId" name="productId" #productId="ngModel" [(ngModel)]="investmentInitService.investmentMedicineProdFormData.productId"
+                                            <ng-select [virtualScroll]="true" [items]="medicineProducts" bindLabel="productName" bindValue="id" placeholder="Select Product" id="productId" name="productId" #productId="ngModel" [(ngModel)]="investmentInitService.investmentMedicineProdFormData.productId"
                                                 [class.invalid]="productId.invalid && productId.touched">
                                             </ng-select>
                                         </div>
@@ -620,7 +620,7 @@
                                             <input class="form-control" [disabled]="isInvOther && !isAdmin" placeholder="Box Quantity" name="boxQuantity" id="boxQuantity" #boxQuantity="ngModel" [(ngModel)]="investmentInitService.investmentMedicineProdFormData.boxQuantity" [pattern]="numberPattern">
                                             <div class="invalid-feedback" *ngIf="boxQuantity.errors?.pattern">Only numeric value</div>
                                         </div>
-                                        <div class="col-md-2" *ngIf="isValid">
+                                        <div class="col-md-2" *ngIf="isValid && !isInvOther ">
                                             <button class="btn btn-primary btn-lg btn-block" type="button" (click)="insertInvestmentMedicineProd()"><i class="fa fa-plus"></i>&nbsp; Add</button>
                                         </div>
                                     </div>
@@ -635,16 +635,16 @@
                                         </tr>
                                         <tr *ngFor="let a of investmentMedicineProds">
                                             <td>
-                                                {{a.productInfo.productName}}
+                                                {{a.medicineProduct.productName}}
                                             </td>
                                             <td>
-                                                {{a.productInfo.boxQuantity}}
+                                                {{a.boxQuantity}}
                                             </td>
                                             <td>
-                                                {{a.productInfo.tpVat}}
+                                                {{a.tpVat}}
                                             </td>
                                             <td>
-                                                <input type="button" *ngIf="sbu==a.sbu" (click)="removeInvestmentMedicineProd(a)" value="Remove">
+                                                <input type="button" *ngIf="sbu==this.investmentInitService.investmentInitFormData.sbu" (click)="removeInvestmentMedicineProd(a)" value="Remove">
                                             </td>
                                         </tr>
                                     </table>

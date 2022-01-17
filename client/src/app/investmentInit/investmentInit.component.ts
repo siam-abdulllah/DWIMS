@@ -117,6 +117,11 @@ export class InvestmentInitComponent implements OnInit {
     this.investmentInitService.investmentDetailFormData.investmentInitId = selectedRecord.id;
     this.convertedDate = this.datePipe.transform(selectedRecord.setOn, 'ddMMyyyy');
     this.isDonationValid = true;
+    if (this.investmentInitService.investmentInitFormData.donationId == 4) {
+      this.getInvestmentMedicineProd();
+      //this.getInstitution();
+      //this.getInvestmentDoctor();
+    }
     if (this.investmentInitService.investmentInitFormData.donationTo == "Doctor") {
       this.getDoctor();
       //this.getInstitution();
@@ -310,15 +315,18 @@ export class InvestmentInitComponent implements OnInit {
     this.investmentInitService.getInvestmentMedicineProds(this.investmentInitService.investmentInitFormData.id, this.sbu).subscribe(response => {
 
       var data = response as IInvestmentMedicineProd[];
-      if (data !== undefined) {
+      debugger;
+      if (data !== undefined && data.length>0) {
         this.investmentMedicineProds = data;
         let sum=0;
         for (let i = 0; i < this.investmentMedicineProds.length; i++) {
-          sum=sum+this.investmentMedicineProds[i].TpVat;
+          sum=sum+this.investmentMedicineProds[i].tpVat;
         }
         this.investmentInitService.investmentDetailFormData.proposedAmount=sum.toString();
       }
       else {
+        this.investmentInitService.investmentDetailFormData.proposedAmount='';
+        this.investmentMedicineProds =[];
         //this.toastr.warning('No Data Found', 'Investment');
       }
 
@@ -337,20 +345,18 @@ export class InvestmentInitComponent implements OnInit {
       this.toastr.warning('Select Product First');
       return false;
     }
+    if (this.investmentInitService.investmentMedicineProdFormData.boxQuantity == null || this.investmentInitService.investmentMedicineProdFormData.boxQuantity == undefined || this.investmentInitService.investmentMedicineProdFormData.boxQuantity == 0) {
+      this.toastr.warning('Insert Box Quantity First');
+      return false;
+    }
     if (this.investmentMedicineProds !== undefined) {
       for (let i = 0; i < this.investmentMedicineProds.length; i++) {
-        if (this.investmentMedicineProds[i].productInfo.id === this.investmentInitService.investmentMedicineProdFormData.productId) {
+        if (this.investmentMedicineProds[i].medicineProduct.id === this.investmentInitService.investmentMedicineProdFormData.productId) {
           this.toastr.warning("Product already exist!");
           return false;
         }
       }
     }
-    
-    // for (let i = 0; i < this.medicineProducts.length; i++) {
-    //   if (this.investmentInitService.investmentMedicineProdFormData.productId == this.medicineProducts[i].id) {
-        
-    //   }
-    // }
     if (this.isSubmitted == true && parseInt(this.empId) == this.investmentInitService.investmentInitFormData.employeeId) {
       this.toastr.warning("Investment already submitted");
       return false;
@@ -397,6 +403,7 @@ export class InvestmentInitComponent implements OnInit {
     }
   }
   // #endregion Medicine Prod
+
 // #region Targeted Prod 
   getInvestmentTargetedProd() {
     this.investmentInitService.getInvestmentTargetedProds(this.investmentInitService.investmentInitFormData.id, this.sbu).subscribe(response => {
@@ -604,6 +611,7 @@ export class InvestmentInitComponent implements OnInit {
         this.investmentInitService.investmentInitFormData.marketCode = response.marketCode;
         this.marketCode = response.marketCode;
         this.getProduct();
+        this.getMedicineProds();
         //this.getLastFiveInvestment(this.investmentInitService.investmentInitFormData.marketCode, this.todayDate);
       },
       (error) => {

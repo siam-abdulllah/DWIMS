@@ -670,7 +670,7 @@ namespace API.Controllers
                     ProductId = investmentMedicineProd.ProductId,
                     EmployeeId = investmentMedicineProd.EmployeeId,
                     BoxQuantity = investmentMedicineProd.BoxQuantity,
-                    TpVat = medicineProd.UnitTp+ medicineProd.UnitVat,
+                    TpVat = (medicineProd.UnitTp+ medicineProd.UnitVat)* investmentMedicineProd.BoxQuantity,
                     SetOn = DateTimeOffset.Now,
                     //ModifiedOn = DateTimeOffset.Now
                 };
@@ -693,39 +693,6 @@ namespace API.Controllers
             }
         }
 
-        //[HttpPost("updateInvestmentMedicineProd")]
-        //public ActionResult<InvestmentMedicineProdDto> UpdateInvestmentMedicineProd(InvestmentMedicineProdDto investmentMedicineProdDto)
-        //{
-        //    try
-        //    {
-        //        var investmentMedicineProd = new InvestmentMedicineProd
-        //        {
-        //            Id = investmentMedicineProdDto.Id,
-        //            InvestmentInitId = investmentMedicineProdDto.InvestmentInitId,
-        //            ProductId = investmentMedicineProdDto.ProductId,
-        //            SBU = investmentMedicineProdDto.SBU,
-        //            EmployeeId = investmentMedicineProdDto.EmployeeId,
-        //            //SetOn = DateTimeOffset.Now,
-        //            ModifiedOn = DateTimeOffset.Now
-        //        };
-        //        _investmentMedicineProdRepo.Update(investmentMedicineProd);
-        //        _investmentMedicineProdRepo.Savechange();
-
-        //        return new InvestmentMedicineProdDto
-        //        {
-        //            Id = investmentMedicineProd.Id,
-        //            InvestmentInitId = investmentMedicineProdDto.InvestmentInitId,
-        //            ProductId = investmentMedicineProdDto.ProductId,
-        //            SBU = investmentMedicineProdDto.SBU,
-        //            EmployeeId = investmentMedicineProdDto.EmployeeId,
-        //        };
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
-
         [HttpGet]
         [Route("investmentMedicineProds/{investmentInitId}/{sbu}")]
         public async Task<IReadOnlyList<InvestmentMedicineProd>> GetInvestmentMedicineProds(int investmentInitId)
@@ -743,21 +710,31 @@ namespace API.Controllers
             }
         }
 
-        // [HttpGet]
-        // [Route("investmentMedicineProds/{investmentInitId}")]
-        // public async Task<IReadOnlyList<InvestmentMedicineProd>> GetInvestmentMedicineProds(int investmentInitId)
-        // {
-        //     try
-        //     {
-        //         var spec = new InvestmentMedicineProdSpecification(investmentInitId);
-        //         var investmentMedicineProd = await _investmentMedicineProdRepo.ListAsync(spec);
-        //         return investmentMedicineProd;
-        //     }
-        //     catch (System.Exception ex)
-        //     {
-        //         throw ex;
-        //     }
-        // }
+        [HttpPost("removeInvestmentMedicineProd")]
+        public async Task<IActionResult> RemoveInvestmentMedicineProd(InvestmentMedicineProd investmentMedicineProd)
+        {
+            try
+            {
+                //var response = new HttpResponseMessage();
+                var alreadyExistSpec = new InvestmentMedicineProdSpecification(investmentMedicineProd.InvestmentInitId, investmentMedicineProd.ProductId);
+                var alreadyExistInvestmentMedicineProdList = await _investmentMedicineProdRepo.ListAsync(alreadyExistSpec);
+                if (alreadyExistInvestmentMedicineProdList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentMedicineProdList)
+                    {
+                        _investmentMedicineProdRepo.Delete(v);
+                        _investmentMedicineProdRepo.Savechange();
+                    }
+
+                    return Ok("Succsessfuly Deleted!!!");
+                }
+                return NotFound();
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
 
 
         #endregion  
@@ -856,6 +833,33 @@ namespace API.Controllers
                 throw ex;
             }
         }
+        
+        [HttpPost("removeInvestmentTargetedProd")]
+        public async Task<IActionResult> RemoveInvestmentTargetedProd(InvestmentTargetedProd investmentTargetedProd)
+        {
+            try
+            {
+                //var response = new HttpResponseMessage();
+                var alreadyExistSpec = new InvestmentTargetedProdSpecification(investmentTargetedProd.InvestmentInitId, investmentTargetedProd.ProductId);
+                var alreadyExistInvestmentTargetedProdList = await _investmentTargetedProdRepo.ListAsync(alreadyExistSpec);
+                if (alreadyExistInvestmentTargetedProdList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentTargetedProdList)
+                    {
+                        _investmentTargetedProdRepo.Delete(v);
+                        _investmentTargetedProdRepo.Savechange();
+                    }
+
+                    return Ok("Succsessfuly Deleted!!!");
+                }
+                return NotFound();
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
 
         // [HttpGet]
         // [Route("investmentTargetedProds/{investmentInitId}")]
@@ -954,33 +958,9 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost("removeInvestmentTargetedProd")]
-        public async Task<IActionResult> RemoveInvestmentTargetedProd(InvestmentTargetedProd investmentTargetedProd)
-        {
-            try
-            {
-                //var response = new HttpResponseMessage();
-                var alreadyExistSpec = new InvestmentTargetedProdSpecification(investmentTargetedProd.InvestmentInitId, investmentTargetedProd.ProductId);
-                var alreadyExistInvestmentTargetedProdList = await _investmentTargetedProdRepo.ListAsync(alreadyExistSpec);
-                if (alreadyExistInvestmentTargetedProdList.Count > 0)
-                {
-                    foreach (var v in alreadyExistInvestmentTargetedProdList)
-                    {
-                        _investmentTargetedProdRepo.Delete(v);
-                        _investmentTargetedProdRepo.Savechange();
-                    }
-
-                    return Ok("Succsessfuly Deleted!!!");
-                }
-                return NotFound();
-            }
-            catch (System.Exception ex)
-            {
-                throw ex;
-            }
-        }
-         [HttpPost("removeInvestmentIndTargetedGroup")]
-        public async Task<IActionResult> RemoveInvestmentTargetedProd(InvestmentTargetedGroup investmentTargetedGroup)
+       
+        [HttpPost("removeInvestmentIndTargetedGroup")]
+        public async Task<IActionResult> RemoveInvestmentIndTargetedGroup(InvestmentTargetedGroup investmentTargetedGroup)
         {
             try
             {

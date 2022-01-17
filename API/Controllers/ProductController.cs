@@ -49,7 +49,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
-       
+
         [HttpGet("getProduct")]
         public async Task<IReadOnlyList<ProductDto>> GetProduct()
         {
@@ -65,9 +65,9 @@ namespace API.Controllers
                 throw ex;
             }
         }
-    
+
         [HttpGet("getProduct/{brandCode}/{sbu}")]
-        public async Task<List<ProductDto>> GetProduct(string brandCode,string sbu)
+        public async Task<List<ProductDto>> GetProduct(string brandCode, string sbu)
         {
             try
             {
@@ -76,8 +76,8 @@ namespace API.Controllers
                                  .Select(g => g.First())
                                  .ToList();
                 var products = (from r in productList
-                                //where r.Status == "Active" && r.BrandCode == brandCode
-                                //orderby r.BrandName
+                                    //where r.Status == "Active" && r.BrandCode == brandCode
+                                    //orderby r.BrandName
                                 select new ProductDto
                                 {
                                     Id = r.Id,
@@ -93,14 +93,30 @@ namespace API.Controllers
                 throw ex;
             }
         }
-    
+
         [HttpGet("getMedicineProductForInvestment")]
         public async Task<IEnumerable<MedicineProduct>> GetMedicineProductForInvestment()
         {
             try
             {
                 var products = await _medicineProductRepo.ListAllAsync();
-                return products.OrderBy(x => x.ProductName);
+                var medProds = (from r in products
+                                where r.Status == "A"
+                                orderby r.ProductName
+                                select new MedicineProduct
+                                {
+                                    Id = r.Id,
+                                    ProductCode = r.ProductCode,
+                                    ProductName = r.ProductName,
+                                    UnitTp = r.UnitTp,
+                                    UnitVat = r.UnitVat,
+                                    Status = r.Status,
+                                    SorgaCode = r.SorgaCode,
+                                    PackSize = r.PackSize
+                                }
+                              ).Distinct().ToList();
+                //return products.Where(x=>x.Status=="A").OrderBy(x => x.ProductName);
+                return medProds;
 
             }
             catch (System.Exception ex)
@@ -124,7 +140,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
-      
+
         [HttpGet]
         [Route("getProductForInvestment/{sbu}")]
         public async Task<IEnumerable<ProductDto>> GetProductForInvestment(string sbu)
