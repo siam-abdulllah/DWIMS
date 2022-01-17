@@ -1,3 +1,4 @@
+import { InvestmentMedicineProd } from './../shared/models/investmentRec';
 import { InvestmentRecPagination, IInvestmentRecPagination } from '../shared/models/investmentRecPagination';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
@@ -26,6 +27,7 @@ export class InvestmentRecService {
   investmentRecCommentFormData: InvestmentRecComment = new InvestmentRecComment();
   investmentTargetedProdFormData: InvestmentTargetedProd = new InvestmentTargetedProd();
   investmentTargetedGroupFormData: InvestmentTargetedGroup = new InvestmentTargetedGroup();
+  investmentMedicineProdFormData: InvestmentMedicineProd = new InvestmentMedicineProd();
   investmentDoctorFormData: InvestmentDoctor = new InvestmentDoctor();
   investmentInstitutionFormData: InvestmentInstitution = new InvestmentInstitution();
   investmentCampaignFormData: InvestmentCampaign = new InvestmentCampaign();
@@ -45,6 +47,9 @@ export class InvestmentRecService {
   getDonations() {
     return this.http.get(this.baseUrl + 'donation/donationsForInvestment');
   }
+  getMedicineProduct() {
+    return this.http.get(this.baseUrl + 'product/getMedicineProductForInvestment');
+}
   getLastFiveInvestment(marketCode:string,toDayDate:string){    
     return this.http.get(this.baseUrl + 'investment/getLastFiveInvestment/'+marketCode+'/'+toDayDate).toPromise();
   }
@@ -77,6 +82,9 @@ export class InvestmentRecService {
   }
   getInvestmentDetails(investmentInitId:number){    
     return this.http.get(this.baseUrl + 'investment/investmentDetails/'+investmentInitId).toPromise();
+  }
+  getInvestmentMedicineProds(investmentInitId: number, sbu: string) {
+    return this.http.get(this.baseUrl + 'investment/investmentMedicineProds/' + investmentInitId + '/' + sbu);
   }
   getInvestmentTargetedProds(investmentInitId:number,sbu:string){    
     return this.http.get(this.baseUrl + 'investment/investmentTargetedProds/'+investmentInitId+'/'+sbu);
@@ -164,6 +172,11 @@ export class InvestmentRecService {
   
   }
   
+
+
+  insertInvestmentMedicineProd() {
+    return this.http.post(this.baseUrl + 'investmentRec/insertInvestmentMedicineProd', this.investmentMedicineProdFormData);
+  }
  
   
   insertInvestmentTargetedProd(investmentTargetedProds:IInvestmentTargetedProd[]) {
@@ -177,6 +190,13 @@ export class InvestmentRecService {
     debugger;
     return this.http.post(this.baseUrl+ 'investmentRec/removeInvestmentTargetedProd', this.investmentTargetedProdFormData,
     {responseType: 'text'});
+
+  }
+
+
+  removeInvestmentMedicineProd() {
+    return this.http.post(this.baseUrl + 'investmentRec/removeInvestmentMedicineProd', this.investmentMedicineProdFormData,
+      { responseType: 'text' });
 
   }
   

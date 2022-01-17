@@ -25,8 +25,10 @@ namespace API.Controllers
         private readonly IGenericRepository<InvestmentRecComment> _investmentRecCommentRepo;
         private readonly IGenericRepository<InvestmentRecProducts> _investmentRecProductRepo;
         private readonly IGenericRepository<InvestmentAprComment> _investmentAprCommentRepo;
+        private readonly IGenericRepository<MedicineProduct> _medicineProductRepo;
         private readonly IGenericRepository<Employee> _employeeRepo;
         private readonly IGenericRepository<ReportInvestmentInfo> _reportInvestmentInfoRepo;
+        private readonly IGenericRepository<InvestmentMedicineProd> _investmentMedicineProdRepo;
         private readonly IGenericRepository<ApprAuthConfig> _apprAuthConfigRepo;
         private readonly IGenericRepository<ApprovalAuthority> _approvalAuthorityRepo;
         private readonly IGenericRepository<ApprovalCeiling> _approvalCeilingRepo;
@@ -37,8 +39,8 @@ namespace API.Controllers
 
         public InvestmentRecController(IGenericRepository<InvestmentTargetedGroup> investmentTargetedGroupRepo, IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<InvestmentRec> investmentRecRepo, IGenericRepository<InvestmentRecComment> investmentRecCommentRepo, IGenericRepository<InvestmentRecProducts> investmentRecProductRepo,
         IGenericRepository<InvestmentAprComment> investmentAprCommentRepo, IGenericRepository<Employee> employeeRepo,
-        IGenericRepository<ReportInvestmentInfo> reportInvestmentInfoRepo,
-        IGenericRepository<ApprAuthConfig> apprAuthConfigRepo,
+        IGenericRepository<ReportInvestmentInfo> reportInvestmentInfoRepo, IGenericRepository<InvestmentMedicineProd> investmentMedicineProdRepo,
+        IGenericRepository<ApprAuthConfig> apprAuthConfigRepo, IGenericRepository<MedicineProduct> medicineProductRepo,
         IGenericRepository<ApprovalCeiling> approvalCeilingRepo, IGenericRepository<ApprovalAuthority> approvalAuthorityRepo,
         IGenericRepository<SBUWiseBudget> sbuRepo, StoreContext dbContext, IMapper mapper)
         {
@@ -56,6 +58,8 @@ namespace API.Controllers
             _sbuRepo = sbuRepo;
             _dbContext = dbContext;
             _investmentTargetedGroupRepo = investmentTargetedGroupRepo;
+            _medicineProductRepo = medicineProductRepo;
+            _investmentMedicineProdRepo = investmentMedicineProdRepo;
         }
         [HttpGet("investmentInits/{empId}/{sbu}")]
         //public ActionResult<Pagination<InvestmentInitDto>> GetInvestmentInits(int empId, string sbu,[FromQuery] InvestmentInitSpecParams investmentInitParrams)
@@ -635,6 +639,90 @@ namespace API.Controllers
                 throw ex;
             }
         }
+
+        #region investmentMedicineProd
+        [HttpPost("insertInvestmentMedicineProd")]
+        public async Task<ActionResult<InvestmentMedicineProd>> InsertInvestmentMedicineProd(InvestmentMedicineProd investmentMedicineProd)
+        {
+            try
+            {
+
+                var medicineProd = await _medicineProductRepo.GetByIdAsync(investmentMedicineProd.ProductId);
+                var iMedicineProd = new InvestmentMedicineProd
+                {
+                    //ReferenceNo = investmentMedicineProdDto.ReferenceNo,
+                    InvestmentInitId = investmentMedicineProd.InvestmentInitId,
+                    ProductId = investmentMedicineProd.ProductId,
+                    EmployeeId = investmentMedicineProd.EmployeeId,
+                    BoxQuantity = investmentMedicineProd.BoxQuantity,
+                    TpVat = medicineProd.UnitTp + medicineProd.UnitVat,
+                    SetOn = DateTimeOffset.Now,
+                    //ModifiedOn = DateTimeOffset.Now
+                };
+                _investmentMedicineProdRepo.Add(iMedicineProd);
+                _investmentMedicineProdRepo.Savechange();
+
+                return new InvestmentMedicineProd
+                {
+                    Id = investmentMedicineProd.Id,
+                    ProductId = investmentMedicineProd.ProductId,
+                    EmployeeId = investmentMedicineProd.EmployeeId,
+                    BoxQuantity = investmentMedicineProd.BoxQuantity,
+                    TpVat = medicineProd.UnitTp + medicineProd.UnitVat
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        [HttpGet]
+        [Route("investmentMedicineProds/{investmentInitId}/{sbu}")]
+        public async Task<IReadOnlyList<InvestmentMedicineProd>> GetInvestmentMedicineProds(int investmentInitId)
+        {
+            try
+            {
+                ///var spec = new InvestmentMedicineProdSpecification(investmentInitId,sbu);
+                var spec = new InvestmentMedicineProdSpecification(investmentInitId);
+                var investmentMedicineProd = await _investmentMedicineProdRepo.ListAsync(spec);
+                return investmentMedicineProd;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+        [HttpPost("removeInvestmentMedicineProd")]
+        public async Task<IActionResult> RemoveInvestmentMedicineProd(InvestmentMedicineProd investmentMedicineProd)
+        {
+            try
+            {
+                //var response = new HttpResponseMessage();
+                var alreadyExistSpec = new InvestmentMedicineProdSpecification(investmentMedicineProd.InvestmentInitId, investmentMedicineProd.ProductId);
+                var alreadyExistInvestmentMedicineProdList = await _investmentMedicineProdRepo.ListAsync(alreadyExistSpec);
+                if (alreadyExistInvestmentMedicineProdList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentMedicineProdList)
+                    {
+                        _investmentMedicineProdRepo.Delete(v);
+                        _investmentMedicineProdRepo.Savechange();
+                    }
+
+                    return Ok("Succsessfuly Deleted!!!");
+                }
+                return NotFound();
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion  
 
         [HttpGet]
         [Route("getLastFiveInvestment/{marketCode}/{date}")]

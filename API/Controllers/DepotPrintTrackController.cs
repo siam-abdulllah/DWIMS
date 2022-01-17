@@ -20,7 +20,6 @@ namespace API.Controllers
         private readonly IGenericRepository<DepotPrintTrack> _trackRepo;
         private readonly IMapper _mapper;
         private readonly StoreContext _db;
-        private int count = 0;
 
         public DepotPrintTrackController(IGenericRepository<DepotPrintTrack> trackRepo,
        IMapper mapper, StoreContext db)

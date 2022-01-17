@@ -238,6 +238,26 @@ export interface IInvestmentBcds {
     doctorInfo:IDoctor;
     
 }
+
+export interface IInvestmentMedicineProd {
+    id: number;
+    investmentInitId: number;
+    productId: number;
+    productInfo:IProduct;
+    boxQuantity:number;
+    tpVat: number;
+    employeeId: number;
+}
+ 
+export class InvestmentMedicineProd implements IInvestmentMedicineProd {
+    id: number=0;
+    investmentInitId: number;
+    productId: number;
+    productInfo:IProduct;
+    boxQuantity:number;
+    tpVat: number;
+    employeeId: number;
+}
  
 export class InvestmentBcds implements IInvestmentBcds {
     id: number=0;
