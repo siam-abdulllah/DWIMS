@@ -159,7 +159,9 @@ export class InvestmentAprComponent implements OnInit {
       this.getInvestmentMedicineProd();
    }
     this.getInvestmentTargetedProd();
+    if (this.userRole != 'GPM') {
     this.getInvestmentTargetedGroup();
+  }
     if (this.sbu == this.investmentAprService.investmentAprFormData.sbu) {
       this.isInvOther = false;
       this.isValid = true;
@@ -218,7 +220,9 @@ export class InvestmentAprComponent implements OnInit {
    }
     this.getInvestmentAprProducts();
     this.getInvestmentAprComment();
-    this.getInvestmentTargetedGroup();
+    if (this.userRole != 'GPM') {
+      this.getInvestmentTargetedGroup();
+    }
     if (this.sbu == this.investmentAprService.investmentAprFormData.sbu) {
       this.isInvOther = false;
       this.isValid = true;

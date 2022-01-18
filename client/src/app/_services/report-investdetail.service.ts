@@ -133,8 +133,8 @@ export class RptInvestmentDetailService {
   getInvestmentSociety(investmentInitId: number) {
     return this.http.get(this.baseUrl + 'investment/investmentSociety/' + investmentInitId);
   }
-  getInvestmentDetails(investmentInitId: number) {
-    return this.http.get(this.baseUrl + 'investment/investmentDetails/' + investmentInitId);
+  getInvestmentDetails(investmentInitId: number,empId:number,userRole:string) {
+    return this.http.get(this.baseUrl + 'reportInvestment/investmentDetails/'  + investmentInitId+'/'+ empId+'/'+userRole);
   }
   getInvestmentInit(id: number) {
     let params = new HttpParams();
@@ -144,7 +144,7 @@ export class RptInvestmentDetailService {
     params = params.append('sort', this.genParams.sort);
     params = params.append('pageIndex', this.genParams.pageIndex.toString());
     params = params.append('pageSize', this.genParams.pageSize.toString());
-    return this.http.get<IInvestmentInitPagination>(this.baseUrl + 'ReportInvestment/investmentInits/' + id,  { observe: 'response', params })
+    return this.http.get<IInvestmentInitPagination>(this.baseUrl + 'reportInvestment/investmentInits/' + id,  { observe: 'response', params })
       //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
       .pipe(
         map(response => {

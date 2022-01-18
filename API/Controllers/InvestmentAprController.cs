@@ -150,6 +150,30 @@ namespace API.Controllers
                 throw e;
             }
         }
+        [HttpGet("investmentInitsForSM/{empId}/{sbu}")]
+        public ActionResult<Pagination<InvestmentInitDto>> GetInvestmentInitsForSM(int empId, string sbu,
+         [FromQuery] InvestmentInitSpecParams investmentInitParrams)
+        {
+            try
+            {
+                List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                        new SqlParameter("@SBU", sbu),
+                        new SqlParameter("@EID", empId),
+                        new SqlParameter("@RSTATUS", "Recommended")
+                    };
+                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentAprSearchForMngr @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
+                var data = _mapper
+                    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
+
+
+                return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, 50, data));
+            }
+            catch (System.Exception e)
+            {
+                throw e;
+            }
+        }
 
         [HttpGet("investmentApproved/{empId}/{sbu}/{userRole}")]
         public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetinvestmentApproved(int empId, string sbu, string userRole,
@@ -1033,6 +1057,30 @@ namespace API.Controllers
                 var spec = new InvestmentRecSpecification(investmentInitId);
                 var investmentDetail = await _investmentRecRepo.ListAsync(spec);
                 return investmentDetail.Where(x => x.Priority == apprAuthConfigAppr.ApprovalAuthority.Priority - 1).ToList();
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpGet]
+        [Route("investmentRecDetailsForM/{investmentInitId}/{empId}")]
+        public async Task<IReadOnlyList<InvestmentRec>> investmentRecDetailsForM(int investmentInitId, int empId)
+        {
+            try
+            {
+                //var specAppr = new ApprAuthConfigSpecification(empId, "A");
+                //var apprAuthConfigAppr = await _apprAuthConfigRepo.GetEntityWithSpec(specAppr);
+                var initData = await _investmentInitRepo.GetByIdAsync(investmentInitId);
+                var spec = new InvestmentRecSpecification(investmentInitId);
+                var investmentDetail = await _investmentRecRepo.ListAsync(spec);
+                string qry = "SELECT CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,  MAX(A.Priority) Count FROM ApprAuthConfig AC INNER JOIN ApprovalAuthority A ON AC.ApprovalAuthorityId = A.Id " +
+                    " INNER JOIN Employee E ON Ac.EmployeeId = E.Id WHERE( E.ZoneCode = '"+ initData.ZoneCode+ "' )";
+                var result = _dbContext.CountInt.FromSqlRaw(qry).ToList();
+                //return result[0].Count.ToString();
+                
+                //return investmentDetail.Where(x => x.Priority == apprAuthConfigAppr.ApprovalAuthority.Priority - 1).ToList();
+                return investmentDetail.Where(x => x.Priority == result[0].Count).ToList();
             }
             catch (System.Exception ex)
             {

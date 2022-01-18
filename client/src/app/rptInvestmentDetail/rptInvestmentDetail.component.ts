@@ -320,7 +320,7 @@ export class RptInvestmentDetailComponent implements OnInit {
     });
   }
   getInvestmentDetails() {
-    this.investmentInitService.getInvestmentDetails(this.investmentInitService.investmentDetailFormData.investmentInitId).subscribe(response => {
+    this.investmentInitService.getInvestmentDetails(this.investmentInitService.investmentDetailFormData.investmentInitId,parseInt(this.empId),this.userRole).subscribe(response => {
       var data = response[0] as IInvestmentDetail;
       if (data !== undefined) {
         this.investmentInitService.investmentDetailFormData = data;

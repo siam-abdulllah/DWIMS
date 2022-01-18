@@ -26,9 +26,11 @@ namespace API.Controllers
         private readonly IGenericRepository<ApprAuthConfig> _apprAuthConfigRepo;
         private readonly IGenericRepository<ApprovalAuthority> _approvalAuthorityRepo;
         private readonly IMapper _mapper;
+        private readonly IGenericRepository<InvestmentRec> _investmentRecRepo;
 
         public ReportInvestmentController(IGenericRepository<ReportInvestmentInfo> investRepo, IGenericRepository<InvestmentTargetedGroup> investmentTargetedGroupRepo, IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<ApprovalAuthority> approvalAuthorityRepo, IGenericRepository<InvestmentRecComment> investmentRecCommentRepo,
-             IGenericRepository<ApprAuthConfig> apprAuthConfigRepo, IGenericRepository<ReportConfig> rptConfitRepo, IMapper mapper, StoreContext db)
+             IGenericRepository<ApprAuthConfig> apprAuthConfigRepo, IGenericRepository<ReportConfig> rptConfitRepo, IMapper mapper,
+            IGenericRepository<InvestmentRec> investmentRecRepo, StoreContext db)
         {
             _mapper = mapper;
             _investRepo = investRepo;
@@ -39,6 +41,7 @@ namespace API.Controllers
             _apprAuthConfigRepo = apprAuthConfigRepo;
             _approvalAuthorityRepo = approvalAuthorityRepo;
             _db = db;
+            _investmentRecRepo = investmentRecRepo;
         }
 
         [HttpPost("GetInsSocietyBCDSWiseInvestment")]
@@ -218,7 +221,7 @@ namespace API.Controllers
                 " left join Employee e on e.Id = a.EmployeeId " +
                 " left join Employee rcvBy on rcvBy.Id = rcv.EmployeeId " +
                 " Where 1 = 1 " +
-                " AND(CONVERT(date, b.FromDate) >= CAST('" + dt.FromDate + "' as Date) AND CAST('" + dt.ToDate + "' as Date) >= CONVERT(date, b.ToDate)) ";
+                " AND(CONVERT(date, a.SetOn) >= CAST('" + dt.FromDate + "' as Date) AND CAST('" + dt.ToDate + "' as Date) >= CONVERT(date, a.SetOn)) ";
             if (dt.UserRole != "Administrator")
             {
                 qry = qry + " AND (" +
@@ -666,5 +669,42 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("investmentDetails/{investmentInitId}/{empId}/{userRole}")]
+        public async Task<IReadOnlyList<InvestmentRec>> investmentRecDetails(int investmentInitId,int empId,string userRole)
+        {
+            try
+            {
+                if (userRole == "M") {
+                    var initData = await _investmentInitRepo.GetByIdAsync(investmentInitId);
+                    var spec = new InvestmentRecSpecification(investmentInitId);
+                    var investmentDetail = await _investmentRecRepo.ListAsync(spec);
+                    string qry = "SELECT CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,  MAX(A.Priority) Count FROM ApprAuthConfig AC INNER JOIN ApprovalAuthority A ON AC.ApprovalAuthorityId = A.Id " +
+                        " INNER JOIN Employee E ON Ac.EmployeeId = E.Id WHERE( E.ZoneCode = '" + initData.ZoneCode + "' )";
+                    var result = _db.CountInt.FromSqlRaw(qry).ToList();
+                    return investmentDetail.Where(x => x.Priority == result[0].Count).ToList();
+                }
+                else if (userRole == "GPM") {
+                    var specAppr = new ApprAuthConfigSpecification(empId, "A");
+                    var apprAuthConfigAppr = await _apprAuthConfigRepo.GetEntityWithSpec(specAppr);
+                    var spec = new InvestmentRecSpecification(investmentInitId);
+                    var investmentDetail = await _investmentRecRepo.ListAsync(spec);
+                    return investmentDetail.Where(x => x.Priority == 3).ToList();
+                }
+                else { 
+                var specAppr = new ApprAuthConfigSpecification(empId, "A");
+                var apprAuthConfigAppr = await _apprAuthConfigRepo.GetEntityWithSpec(specAppr);
+                var spec = new InvestmentRecSpecification(investmentInitId);
+                var investmentDetail = await _investmentRecRepo.ListAsync(spec);
+                return investmentDetail.Where(x => x.Priority == apprAuthConfigAppr.ApprovalAuthority.Priority - 1).ToList();
+                }
+
+
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

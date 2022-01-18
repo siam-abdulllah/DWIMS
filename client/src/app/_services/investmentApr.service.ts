@@ -87,6 +87,9 @@ export class InvestmentAprService {
     if(userRole=='GPM')  {
       return this.http.get(this.baseUrl + 'investmentApr/investmentRecDetailsForGPM/'+investmentInitId+'/'+empId).toPromise();
     }
+    if(userRole=='M')  {
+      return this.http.get(this.baseUrl + 'investmentApr/investmentRecDetailsForM/'+investmentInitId+'/'+empId).toPromise();
+    }
     else{
       return this.http.get(this.baseUrl + 'investmentApr/investmentRecDetails/'+investmentInitId+'/'+empId).toPromise();
     }
@@ -139,6 +142,7 @@ export class InvestmentAprService {
     params = params.append('pageIndex', this.genParams.pageIndex.toString());
     params = params.append('pageSize', this.genParams.pageSize.toString());
     var actionName='investmentInits';
+    debugger;
     if(userRole=='RSM')
     {
       actionName='investmentInitsForRSM';
@@ -146,6 +150,10 @@ export class InvestmentAprService {
     else if(userRole=='GPM')
     {
       actionName='investmentInitsForGPM';
+    }
+    else if(userRole=='M')
+    {
+      actionName='investmentInitsForSM';
     }
     else
     {

@@ -272,10 +272,19 @@ namespace API.Controllers
                         var resultsNoSBU = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentAprSearchNoSbu @EID", parmsNoSBU.ToArray()).ToList();
                         return resultsNoSBU.Count();
                     }
+                    else if (appPriority.Priority == 5)
+                    {
+                        List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                        new SqlParameter("@SBU", sbu),
+                        new SqlParameter("@EID", Convert.ToInt32(empCode)),
+                        new SqlParameter("@RSTATUS", "Recommended")
+                    };
+                    var resultsForMngr = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentAprSearchForMngr @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
+                    return resultsForMngr.Count();
+                    }
                     else
                     {
-
-
                         List<SqlParameter> parms = new List<SqlParameter>
                     {
                         new SqlParameter("@SBU", sbu),

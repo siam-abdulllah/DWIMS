@@ -1383,6 +1383,7 @@ namespace API.Controllers
         public async Task<int> IsBcdsInvestmentApprovalPending(int initId, int bcdsId)
         {
             var iInit = await _investmentInitRepo.GetByIdAsync(initId);
+            
             string qry = " SELECT CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count " +
                 " FROM InvestmentBcds d " +
                 " JOIN InvestmentInit i ON d.InvestmentInitId = i.Id " +
