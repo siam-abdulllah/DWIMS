@@ -96,8 +96,8 @@ export class MarketGroupComponent implements OnInit {
       this.marketGroupDtls = response.data;
       //this.checkFiveMarket();
       if (this.marketGroupService.marketGroupFormData.status == "Active") {
-        if (this.marketGroupDtls.length != 5) {
-          this.toastr.warning("Five market must be added in Market Group");
+        if (this.marketGroupDtls.length != 4) {
+          this.toastr.warning("Four market must be added in Market Group");
               this.marketGroupService.marketGroupFormData.status = "Inactive";
               if (this.marketGroupService.marketGroupFormData.id != 0){
               this.marketGroupService.updateMarketGroup(parseInt(this.empId)).subscribe(
@@ -216,7 +216,7 @@ export class MarketGroupComponent implements OnInit {
   checkFiveMarket(event) {
     debugger;
     if (this.marketGroupService.marketGroupFormData.status == "Active") {
-      if (this.marketGroupDtls.length == 5) {
+      if (this.marketGroupDtls.length == 4) {
         // for (let i = 0; i < this.marketGroupDtls.length; i++) {
         //   if (this.empSbu == this.marketGroupDtls[i].sbu) {
         //     this.toastr.warning("Own SBU cannot be added in Market Group");
