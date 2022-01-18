@@ -320,7 +320,8 @@ debugger;
         for (let i = 0; i < this.investmentMedicineProds.length; i++) {
           sum=sum+this.investmentMedicineProds[i].tpVat;
         }
-        this.investmentInitService.investmentDetailFormData.proposedAmount=sum.toString();
+        //this.investmentInitService.investmentDetailFormData.proposedAmount=sum.toString();
+        this.investmentInitService.investmentDetailFormData.proposedAmount=((Math.round(sum * 100) / 100).toFixed(2));
       }
       else {
         this.investmentInitService.investmentDetailFormData.proposedAmount='';

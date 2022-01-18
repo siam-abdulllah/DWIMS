@@ -87,6 +87,19 @@ export class BillTrackComponent implements OnInit {
   }
 
   insertTracker() {
+
+    if(this.billTrackForm.value.referenceNo == "" || this.billTrackForm.value.referenceNo == null )
+    {
+      this.toastr.error('Select a proposal First');
+      return;
+    }
+
+    if(this.billTrackForm.value.paymentRefNo == "" || this.billTrackForm.value.paymentRefNo == null || this.billTrackForm.value.paymentDate == "" || this.billTrackForm.value.paymentDate == null )
+    {
+      this.toastr.error('Enter Payment Reference No & Date');
+      return;
+    }
+
     this.pendingService.depotPrintFormData.investmentInitId = this.billTrackForm.value.investmentInitId;
     this.pendingService.depotPrintFormData.paymentRefNo = this.billTrackForm.value.paymentRefNo;
     this.pendingService.depotPrintFormData.paymentDate = this.billTrackForm.value.paymentDate;
@@ -155,6 +168,7 @@ openPendingListModal(template: TemplateRef<any>) {
       donationTypeName: "",
       proposedAmount: "",
       id: "",
+      searchText: "",
       investmentInitId: "",
     });
   }

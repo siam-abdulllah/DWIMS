@@ -89,6 +89,25 @@ export class ChequeTrackComponent implements OnInit {
   }
 
   insertTracker() {
+
+    if(this.billTrackForm.value.referenceNo == "" || this.billTrackForm.value.referenceNo == null )
+    {
+      this.toastr.error('Select a proposal First');
+      return;
+    }
+
+    if(this.billTrackForm.value.paymentRefNo == "" || this.billTrackForm.value.paymentRefNo == null || this.billTrackForm.value.paymentDate == "" || this.billTrackForm.value.paymentDate == null )
+    {
+      this.toastr.error('Enter Payment Reference No & Date');
+      return;
+    }
+
+    if(this.billTrackForm.value.chequeNo == "" || this.billTrackForm.value.chequeNo == null || this.billTrackForm.value.bankName == "" || this.billTrackForm.value.bankName == null )
+    {
+      this.toastr.error('Enter Cheque No & Bank Name');
+      return;
+    }
+
     this.pendingService.depotPrintFormData.investmentInitId = this.billTrackForm.value.investmentInitId;
     this.pendingService.depotPrintFormData.paymentRefNo = this.billTrackForm.value.paymentRefNo;
     this.pendingService.depotPrintFormData.paymentDate = this.billTrackForm.value.paymentDate;
@@ -149,6 +168,7 @@ openPendingListModal(template: TemplateRef<any>) {
       id: "",
       chequeNo: "",
       bankName: "",
+      searchText: "",
       investmentInitId: "",
     });
   }

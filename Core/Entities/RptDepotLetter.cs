@@ -9,7 +9,7 @@ namespace Core.Entities
         public string DonationTypeName { get; set; }
         public string DoctorName { get; set; }
         public string DonationTo { get; set; }
-        public long ProposedAmount { get; set; }
+        public double ProposedAmount { get; set; }
         public string Address { get; set; }
         public int DocId { get; set; }
         public string EmployeeName { get; set; }
@@ -26,7 +26,7 @@ namespace Core.Entities
         public string DonationTypeName { get; set; }
         public string ProposeFor { get; set; }
         public string DoctorName { get; set; }
-        public long ProposedAmount { get; set; }
+        public double ProposedAmount { get; set; }
         public string MarketName { get; set; }
         public string EmployeeName { get; set; }
     }

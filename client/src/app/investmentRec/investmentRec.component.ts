@@ -129,7 +129,9 @@ export class InvestmentRecComponent implements OnInit {
     }
     this.getInvestmentDetails();
     this.getInvestmentTargetedProd();
-    this.getInvestmentMedicineProd();
+    if (this.investmentRecService.investmentRecFormData.donationId == 4) {
+      this.getInvestmentMedicineProd();
+   }
     this.getInvestmentTargetedGroup();
     if (this.sbu == this.investmentRecService.investmentRecFormData.sbu) {
       this.isInvOther = false;
@@ -164,6 +166,9 @@ export class InvestmentRecComponent implements OnInit {
     }
     this.getInvestmentRecProducts();
     this.getInvestmentRecComment();
+    if (this.investmentRecService.investmentRecFormData.donationId == 4) {
+      this.getInvestmentMedicineProd();
+   }
     this.getInvestmentTargetedGroup();
     if (this.sbu == this.investmentRecService.investmentRecFormData.sbu) {
       await this.getInvestmentRecDetails();
