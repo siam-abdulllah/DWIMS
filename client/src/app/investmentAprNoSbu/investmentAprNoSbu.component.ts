@@ -451,7 +451,7 @@ export class InvestmentAprNoSbuComponent implements OnInit {
     });
   }
   async getInvestmentDetails() {
-    await this.investmentAprService.getInvestmentDetails(this.investmentAprService.investmentAprFormData.id).then(response => {
+    await this.investmentAprService.getInvestmentDetails(this.investmentAprService.investmentAprFormData.id,parseInt(this.empId)).then(response => {
       var data = response[0] as IInvestmentApr;
       if (data !== undefined) {
         this.investmentAprService.investmentDetailFormData = data;
@@ -536,9 +536,6 @@ export class InvestmentAprNoSbuComponent implements OnInit {
       if (data !== undefined) {
         this.empLocation = data;
       }
-      // else {
-      //   this.toastr.warning('No Data Found', 'Investment ');
-      // }
     }, error => {
       console.log(error);
     });
@@ -589,14 +586,8 @@ export class InvestmentAprNoSbuComponent implements OnInit {
     else{
       this.isAdmin=false;
     }
-    //if(this.userRole=='RSM' || this.userRole=='Administrator')
-    //{
-     // this.isDepotRequire=true;
-      this.getDepot();
-    //}
-    //else{
-      this.isDepotRequire=false;
-    //}
+    this.getDepot();
+    this.isDepotRequire=false;
     this.investmentAprService.investmentAprCommentFormData.employeeId = parseInt(this.empId);
     this.getEmployeeSbu();
   }

@@ -83,14 +83,17 @@ export class InvestmentAprNoSbuService {
   getInvestmentAprComment(investmentInitId:number,empId:string){    
     return this.http.get(this.baseUrl + 'InvestmentAprNoSbu/getInvestmentAprComment/'+investmentInitId+'/'+parseInt(empId));
   }
-  getInvestmentDetails(investmentInitId:number){    
-    return this.http.get(this.baseUrl + 'investmentRec/investmentRecDetails/'+investmentInitId).toPromise();
-  }
+  // getInvestmentDetails(investmentInitId:number){    
+  //   return this.http.get(this.baseUrl + 'investmentRec/investmentRecDetails/'+investmentInitId).toPromise();
+  // }
   getInvestmentTargetedProds(investmentInitId:number,sbu:string){    
     return this.http.get(this.baseUrl + 'investmentRec/investmentRecProducts/'+investmentInitId+'/'+sbu);
   }
   getInvestmentAprDetails(investmentInitId:number,empId:number){    
     return this.http.get(this.baseUrl + 'InvestmentAprNoSbu/investmentAprDetails/'+investmentInitId+'/'+empId).toPromise();
+  }
+  getInvestmentDetails(investmentInitId:number,empId:number){    
+    return this.http.get(this.baseUrl + 'InvestmentAprNoSbu/investmentRecDetails/'+investmentInitId+'/'+empId).toPromise();
   }
   getInvestmentAprProducts(investmentInitId:number,sbu:string){    
     return this.http.get(this.baseUrl + 'InvestmentAprNoSbu/investmentAprProducts/'+investmentInitId+'/'+sbu);

@@ -921,7 +921,7 @@
                                             <td>Market Name</td>
                                             <td>SBU</td>
                                             <td>Status</td>
-                                            <td></td>
+                                            <!-- <td></td> -->
                                         </tr>
                                         <tr *ngFor="let a of investmentTargetedGroups">
 
@@ -941,9 +941,9 @@
                                                 <span *ngIf="a.completionStatus===false || undefined || ''">Pending</span>
                                                 <span *ngIf="a.completionStatus===true || ''">Recommended</span>
                                             </td>
-                                            <td>
+                                            <!-- <td>
                                                 <input type="button" *ngIf="sbu==investmentInitService.investmentInitFormData.sbu" (click)="removeInvestmentIndTargetedGroup(a)" value="Remove">
-                                            </td>
+                                            </td> -->
                                             <!-- <td>
                                                 <input type="button" (click)="removeInvestmentTargetedProd(a)" value="Remove">
                                             </td> -->

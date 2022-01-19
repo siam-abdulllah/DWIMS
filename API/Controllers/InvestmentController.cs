@@ -65,6 +65,7 @@ namespace API.Controllers
             _donationRepo = donationRepo;
             _medicineProductRepo = medicineProductRepo;
         }
+        
         #region investmentInit
 
 
@@ -392,6 +393,12 @@ namespace API.Controllers
             var spec = new InvestmentCampaignSpecification(id);
             var investmentCampaign = await _investmentCampaignRepo.GetEntityWithSpec(spec);
             return investmentCampaign;
+        }[HttpPost("IsInvestmentTargetedGroupValid")]
+        public async Task<int> IsInvestmentTargetedGroupValid(int id)
+        {
+            var spec = new InvestmentTargetedGroupSpecification(id);
+            var investmentCampaign = await _investmentTargetedGroupRepo.ListAsync(spec);
+            return investmentCampaign.Count;
         }
         
        [HttpPost("submitInvestment")]
@@ -437,6 +444,10 @@ namespace API.Controllers
                     {
                         return BadRequest(new ApiResponse(0, "Please Insert Campaign Data first"));
                     }
+                }
+                if (await IsInvestmentTargetedGroupValid(investmentInitDto.Id) < 4)
+                {
+                    return BadRequest(new ApiResponse(0, "Insufficient Targeted Market"));
                 }
                 var empData = await _employeeRepo.GetByIdAsync(investmentInitDto.EmployeeId);
                 var existedInvestmentInit = await _investmentInitRepo.GetByIdAsync(investmentInitDto.Id);
@@ -545,6 +556,7 @@ namespace API.Controllers
             }
         }
         #endregion
+
         #region investmentDetail
 
         [HttpPost("insertDetail")]
@@ -738,6 +750,7 @@ namespace API.Controllers
 
 
         #endregion  
+
         #region investmentTargetedProd
         [HttpPost("insertInvestmentTargetedProd")]
         public ActionResult<InvestmentTargetedProdDto> InsertInvestmentTargetedProd(InvestmentTargetedProdDto investmentTargetedProdDto)

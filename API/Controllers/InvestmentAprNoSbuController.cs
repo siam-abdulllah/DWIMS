@@ -692,5 +692,22 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("investmentRecDetails/{investmentInitId}/{empId}")]
+        public async Task<IReadOnlyList<InvestmentRec>> GetInvestmentRecDetails(int investmentInitId, int empId)
+        {
+            try
+            {
+                var specAppr = new ApprAuthConfigSpecification(empId, "A");
+                var apprAuthConfigAppr = await _apprAuthConfigRepo.GetEntityWithSpec(specAppr);
+                var spec = new InvestmentRecSpecification(investmentInitId);
+                var investmentDetail = await _investmentRecRepo.ListAsync(spec);
+                return investmentDetail.Where(x => x.Priority == apprAuthConfigAppr.ApprovalAuthority.Priority - 1).ToList();
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

@@ -618,9 +618,9 @@ export class InvestmentRecComponent implements OnInit {
     this.investmentRecService.insertInvestmentRec().subscribe(
       res => {
         this.investmentRecService.investmentRecCommentFormData = res as IInvestmentRecComment;
-        this.isValid = true;
         if (this.sbu == this.investmentRecService.investmentRecFormData.sbu) {
           this.insertInvestmentDetails();
+          this.isValid = true;
         }
         this.insertInvestmentTargetedProd();
         this.getInvestmentTargetedGroup();
@@ -689,9 +689,10 @@ export class InvestmentRecComponent implements OnInit {
     this.investmentRecService.updateInvestmentRec().subscribe(
       res => {
         //
-        this.isValid = true;
+        
         this.investmentRecService.investmentRecCommentFormData = res as IInvestmentRecComment;
         if (this.sbu == this.investmentRecService.investmentRecFormData.sbu) { this.insertInvestmentDetails(); }
+        this.isValid = true;
         this.insertInvestmentTargetedProd();
         this.getInvestmentTargetedGroup();
         this.SpinnerService.hide();
