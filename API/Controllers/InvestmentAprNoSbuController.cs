@@ -358,21 +358,21 @@ namespace API.Controllers
             {
                 isComplete = false;
             }
-            foreach (var v in investmentTargetedGroup)
-            {
-                isTrue = false;
-                foreach (var i in investmentRecComments)
-                {
-                    if (v.InvestmentInitId == i.InvestmentInitId && v.SBU == i.SBU)
-                    {
-                        isTrue = true;
-                    }
-                }
-                if (!isTrue)
-                {
-                    return BadRequest(new ApiResponse(400, "Other recommendation has not completed yet"));
-                }
-            }
+            // foreach (var v in investmentTargetedGroup)
+            // {
+            //     isTrue = false;
+            //     foreach (var i in investmentRecComments)
+            //     {
+            //         if (v.InvestmentInitId == i.InvestmentInitId && v.SBU == i.SBU)
+            //         {
+            //             isTrue = true;
+            //         }
+            //     }
+            //     if (!isTrue)
+            //     {
+            //         return BadRequest(new ApiResponse(400, "Other recommendation has not completed yet"));
+            //     }
+            // }
             var invRec = new InvestmentRecComment
             {
                 InvestmentInitId = investmentRecDto.InvestmentInitId,
@@ -426,18 +426,18 @@ namespace API.Controllers
             {
                 isComplete = false;
             }
-            foreach (var v in investmentTargetedGroup)
-            {
-                isTrue = false;
-                foreach (var i in investmentRecComments)
-                {
-                    if (v.InvestmentInitId == i.InvestmentInitId && v.SBU == i.SBU)
-                    {
-                        isTrue = true;
-                    }
-                }
-                if (!isTrue) { return BadRequest(new ApiResponse(400, "Other recommendation not completed yet")); }
-            }
+            // foreach (var v in investmentTargetedGroup)
+            // {
+            //     isTrue = false;
+            //     foreach (var i in investmentRecComments)
+            //     {
+            //         if (v.InvestmentInitId == i.InvestmentInitId && v.SBU == i.SBU)
+            //         {
+            //             isTrue = true;
+            //         }
+            //     }
+            //     if (!isTrue) { return BadRequest(new ApiResponse(400, "Other recommendation not completed yet")); }
+            // }
 
 
             var invRec = new InvestmentRecComment
