@@ -9,9 +9,9 @@ namespace Core.Entities
         public string ReferenceNo { get; set; }
         public string DonationTypeName { get; set; }
         public string DonationTo { get; set; }
-        public double ProposedAmount { get; set; }
-        public DateTimeOffset FromDate { get; set; }
-        public DateTimeOffset ToDate { get; set; }
+        public double? ProposedAmount { get; set; }
+        public DateTimeOffset? FromDate { get; set; }
+        public DateTimeOffset? ToDate { get; set; }
         public string InvStatus { get; set; }
         public string EmployeeName { get; set; }      
         public string ReceiveStatus { get; set; }

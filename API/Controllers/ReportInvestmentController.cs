@@ -211,37 +211,37 @@ namespace API.Controllers
             // " AND (CONVERT(date,e.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,e.ToDate)) ";
 
             string qry = " select CAST(a.Id AS INT) as Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn," +
-                " a.ReferenceNo, d.DonationTypeName, a.DonationTo, b.ProposedAmount, b.FromDate, b.ToDate, dbo.fnGetInvestmentStatus(a.Id) InvStatus," +
-                " e.EmployeeName,dbo.fnGetInvestmentApprovedBy(a.Id) ApprovedBy,e.MarketName, ISNULL(rcv.ReceiveStatus, 'Not Completed') ReceiveStatus," +
-                " ISNULL(rcvBy.EmployeeName, 'N/A') ReceiveBy " +
+                " a.ReferenceNo, d.DonationTypeName, a.DonationTo, b.ProposedAmount, b.FromDate, b.ToDate, ISNULL(dbo.fnGetInvestmentStatus(a.Id), 'pending') InvStatus," +
+                " dbo.fnGetEmpNamedesig(a.EmployeeId) EmployeeName,ISNULL(dbo.fnGetInvestmentApprovedBy(a.Id), 'N/A') ApprovedBy,a.MarketName, ISNULL(rcv.ReceiveStatus, 'Not Completed') ReceiveStatus," +
+                " ISNULL(dbo.fnGetEmpNamedesig(rcv.EmployeeId), 'N/A') ReceiveBy " +
                 " from InvestmentInit a " +
                 " left join InvestmentDetail b on a.Id = b.InvestmentInitId " +
                 " left join InvestmentRecv rcv on a.Id = rcv.InvestmentInitId " +
                 " inner join Donation d on d.Id = a.DonationId " +
-                " left join Employee e on e.Id = a.EmployeeId " +
-                " left join Employee rcvBy on rcvBy.Id = rcv.EmployeeId " +
+                //" left join Employee e on e.Id = a.EmployeeId " +
+                //" left join Employee rcvBy on rcvBy.Id = rcv.EmployeeId " +
                 " Where 1 = 1 " +
                 " AND(CONVERT(date, a.SetOn) >= CAST('" + dt.FromDate + "' as Date) AND CAST('" + dt.ToDate + "' as Date) >= CONVERT(date, a.SetOn)) ";
             if (dt.UserRole != "Administrator")
             {
                 qry = qry + " AND (" +
-                            " e.MarketGroupCode = COALESCE(NULLIF('" + empData[0].MarketGroupCode + "',''), 'All')" +
+                            " a.MarketGroupCode = COALESCE(NULLIF('" + empData[0].MarketGroupCode + "',''), 'All')" +
                             " OR COALESCE(NULLIF('" + empData[0].MarketGroupCode + "',''), 'All') = 'All'" +
                             " )" +
                             " AND (" +
-                            " e.MarketCode = COALESCE(NULLIF('" + empData[0].MarketCode + "',''), 'All')" +
+                            " a.MarketCode = COALESCE(NULLIF('" + empData[0].MarketCode + "',''), 'All')" +
                             " OR COALESCE(NULLIF('" + empData[0].MarketCode + "',''), 'All') = 'All'" +
                             " )" +
                             " AND (" +
-                            " e.TerritoryCode = COALESCE(NULLIF('" + empData[0].TerritoryCode + "',''), 'All')" +
+                            " a.TerritoryCode = COALESCE(NULLIF('" + empData[0].TerritoryCode + "',''), 'All')" +
                             " OR COALESCE(NULLIF('" + empData[0].TerritoryCode + "',''), 'All') = 'All'" +
                             " )" +
                             " AND (" +
-                            " e.RegionCode = COALESCE(NULLIF('" + empData[0].RegionCode + "',''), 'All')" +
+                            " a.RegionCode = COALESCE(NULLIF('" + empData[0].RegionCode + "',''), 'All')" +
                             " OR COALESCE(NULLIF('" + empData[0].RegionCode + "',''), 'All') = 'All'" +
                             " )" +
                             " AND (" +
-                            " e.ZoneCode = COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All')" +
+                            " a.ZoneCode = COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All')" +
                             " OR COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All') = 'All'" +
                             " )";
             }
