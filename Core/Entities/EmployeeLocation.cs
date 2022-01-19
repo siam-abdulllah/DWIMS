@@ -12,6 +12,7 @@
         public string ZoneName { get; set; }
         public string EmployeeName { get; set; }
         public string RecStatus { get; set; }
+        public string Comments { get; set; }
         public int Priority { get; set; }
     }
 }
