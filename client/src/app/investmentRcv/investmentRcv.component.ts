@@ -776,6 +776,7 @@ export class InvestmentRcvComponent implements OnInit {
   populateForm() {
   }
   resetPage(form: NgForm) {
+    window.location.reload();
     form.reset();
     this.investmentRcvService.investmentRcvFormData = new InvestmentInit();
     this.investmentRcvService.investmentRcvCommentFormData = new InvestmentRcvComment();

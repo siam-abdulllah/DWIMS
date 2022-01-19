@@ -1191,7 +1191,10 @@ debugger;
           this.isDonationValid = true;
           this.toastr.success('Save successfully', 'Investment Detail');
         },
-        err => { console.log(err); }
+        err => { 
+         // this.toastr.warning(err.error.message);
+          console.log(err); 
+        }
       );
     }
 
@@ -1488,6 +1491,7 @@ debugger;
     //this.investmentInitService.campaignFormData = Object.assign({}, selectedRecord);
   }
   resetPage(form: NgForm) {
+    window.location.reload();
     form.reset();
     this.investmentInitService.investmentInitFormData = new InvestmentInit();
     this.investmentInitService.investmentInitFormData = new InvestmentInit();
@@ -1516,6 +1520,7 @@ debugger;
     // };
   }
   resetPageLoad() {
+    //window.location.reload();
     this.investmentInitService.investmentInitFormData = new InvestmentInit();
     this.investmentInitService.investmentInitFormData = new InvestmentInit();
     this.investmentInitService.investmentDetailFormData = new InvestmentDetail();

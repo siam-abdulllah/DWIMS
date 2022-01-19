@@ -34,6 +34,9 @@ namespace Core.Specifications
         public MarketGroupDtlSpecification(int id)
             : base(x => x.MstId == id && x.Status== "Active")
         {
+        } public MarketGroupDtlSpecification(int? id)
+            : base(x => x.MstId == id && x.Status== "Active")
+        {
         }
         public MarketGroupDtlSpecification(int mstId,string marketCode,string status)
             : base(x => x.MstId == mstId &&  x.MarketCode == marketCode && x.Status==status)

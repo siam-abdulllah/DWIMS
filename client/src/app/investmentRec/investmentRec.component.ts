@@ -883,6 +883,7 @@ export class InvestmentRecComponent implements OnInit {
     //this.investmentRecService.campaignFormData = Object.assign({}, selectedRecord);
   }
   resetPage(form: NgForm) {
+    window.location.reload();
     form.reset();
     this.investmentRecService.investmentRecFormData = new InvestmentInit();
     this.investmentRecService.investmentRecCommentFormData = new InvestmentRecComment();

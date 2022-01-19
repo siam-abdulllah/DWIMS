@@ -969,6 +969,7 @@ export class InvestmentAprComponent implements OnInit {
   populateForm() {
   }
   resetPage(form: NgForm) {
+    window.location.reload();
     form.reset();
     this.investmentAprService.investmentAprFormData = new InvestmentInit();
     this.investmentAprService.investmentAprCommentFormData = new InvestmentAprComment();

@@ -36,6 +36,7 @@ namespace API.Controllers
         private readonly IGenericRepository<InvestmentRecComment> _investmentRecCommentRepo;
         private readonly IMapper _mapper;
         private readonly StoreContext _dbContext;
+        private readonly IGenericRepository<MarketGroupDtl> _marketGroupDtlRepo;
 
 
         public InvestmentController(IGenericRepository<InvestmentTargetedGroup> investmentTargetedGroupRepo, IGenericRepository<InvestmentTargetedProd> investmentTargetedProdRepo,
@@ -45,7 +46,7 @@ namespace API.Controllers
             IGenericRepository<InvestmentCampaign> investmentCampaignRepo, IGenericRepository<InvestmentInstitution> investmentInstitutionRepo,
             IGenericRepository<Employee> employeeRepo, IGenericRepository<ReportInvestmentInfo> reportInvestmentInfoRepo,
             IGenericRepository<InvestmentRecComment> investmentRecCommentRepo, StoreContext dbContext, IGenericRepository<Donation> donationRepo,
-            IMapper mapper)
+            IMapper mapper, IGenericRepository<MarketGroupDtl> marketGroupDtlRepo)
         {
             _mapper = mapper;
             _investmentInitRepo = investmentInitRepo;
@@ -64,6 +65,7 @@ namespace API.Controllers
             _dbContext = dbContext;
             _donationRepo = donationRepo;
             _medicineProductRepo = medicineProductRepo;
+            _marketGroupDtlRepo = marketGroupDtlRepo;
         }
         
         #region investmentInit
@@ -609,7 +611,14 @@ namespace API.Controllers
             try
             {
 
-                var existedInvestmentDetail = await _investmentInitRepo.GetByIdAsync(investmentDetailDto.Id);
+                //var existedInvestmentDetail = await _investmentInitRepo.GetByIdAsync(investmentDetailDto.Id);
+                var spec = new InvestmentDetailSpecification(investmentDetailDto.InvestmentInitId);
+                var existedInvestmentDetail = await _investmentDetailRepo.GetEntityWithSpec(spec);
+                if (existedInvestmentDetail == null)
+                {
+                    return BadRequest(new ApiResponse(0, "Duplicate data found.Please Reload your page"));
+                }
+
                 var investmentDetail = new InvestmentDetail
                 {
                     Id = investmentDetailDto.Id,
@@ -911,7 +920,9 @@ namespace API.Controllers
                         _investmentTargetedGroupRepo.Savechange();
                     }
                 }
-                foreach (var v in investmentTargetedGroupDto)
+                var spec = new MarketGroupDtlSpecification(investmentTargetedGroupDto[0].MarketGroupMstId);
+                var marketGroup = await _marketGroupDtlRepo.ListAsync(spec);
+                foreach (var v in marketGroup)
                 {
                     var alreadyEmpExistSpec = new EmployeeSpecification(v.MarketCode);
                     var empData = await _employeeRepo.GetEntityWithSpec(alreadyEmpExistSpec);
@@ -933,7 +944,7 @@ namespace API.Controllers
                         DepotName = empData.DepotName,
                         //SBUName = empData.SBUName,
                         //SBU = empData.SBU,
-                        MarketGroupMstId = v.MarketGroupMstId,
+                        MarketGroupMstId = v.MstId,
                         CompletionStatus = false,
                         SBU = v.SBU,
                         SBUName = v.SBUName,
