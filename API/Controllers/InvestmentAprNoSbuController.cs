@@ -669,15 +669,15 @@ namespace API.Controllers
             try
             {
                 string qry= " select CAST(a.EmployeeId AS INT) AS Id, a.SetOn, a.ModifiedOn, a.DataStatus, a.MarketCode,  a.MarketName, " +
-                " a.TerritoryCode, a.TerritoryName, a.RegionCode, a.RegionName, a.ZoneCode, a.ZoneName, dbo.fnGetEmpNamedesig(a.EmployeeId) EmployeeName, a.[Priority],a.RecStatus  " +
+                " a.TerritoryCode, a.TerritoryName, a.RegionCode, a.RegionName, a.ZoneCode, a.ZoneName, dbo.fnGetEmpNamedesig(a.EmployeeId) EmployeeName, a.[Priority],a.RecStatus, a.Comments " +
                 " from InvestmentRecComment a inner join InvestmentInit b on b.Id = a.InvestmentInitId " +
                 " where InvestmentInitId = '"+ investmentInitId +"' " +
                 " UNION " +
                 " select CAST(a.EmployeeId AS INT) AS Id, a.SetOn, a.ModifiedOn, a.DataStatus, a.MarketCode,  a.MarketName,  " +
-                " a.TerritoryCode, a.TerritoryName, a.RegionCode, a.RegionName, a.ZoneCode, a.ZoneName, dbo.fnGetEmpNamedesig(a.EmployeeId) EmployeeName, '1','Inititator' " +
+                " a.TerritoryCode, a.TerritoryName, a.RegionCode, a.RegionName, a.ZoneCode, a.ZoneName, dbo.fnGetEmpNamedesig(a.EmployeeId) EmployeeName, '1','Inititator', '' Comments " +
                 " From InvestmentInit a where a.Id = '"+ investmentInitId +"' AND a.Confirmation = 1 " +
                 " UNION " +
-                " select CAST(a.Id AS INT) AS Id, a.SetOn, a.ModifiedOn, a.DataStatus, a.MarketCode,  a.MarketName,  a.TerritoryCode, a.TerritoryName, a.RegionCode, a.RegionName, a.ZoneCode, a.ZoneName, dbo.fnGetEmpNamedesigByMarket(a.MarketCode) EmployeeName, '1'," +
+                " select CAST(a.Id AS INT) AS Id, a.SetOn, a.ModifiedOn, a.DataStatus, a.MarketCode,  a.MarketName,  a.TerritoryCode, a.TerritoryName, a.RegionCode, a.RegionName, a.ZoneCode, a.ZoneName, dbo.fnGetEmpNamedesigByMarket(a.MarketCode) EmployeeName, '1', '' Comments," +
                 " RecStatus =CASE CompletionStatus WHEN 1 THEN 'Recommended' ELSE 'Not Recommended' END " +
                 " from InvestmentTargetedGroup a " +
                 " where a.InvestmentInitId = '"+ investmentInitId +"' "+

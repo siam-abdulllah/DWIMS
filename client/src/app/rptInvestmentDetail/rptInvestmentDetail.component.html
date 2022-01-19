@@ -803,6 +803,7 @@
                                             <td>Zone Code</td>
                                             <td>Zone Name</td>
                                             <td>Status</td>
+                                            <td>Comments</td>
                                         </tr>
                                         <tr *ngFor="let a of empLocation">
                                             <td>
@@ -837,6 +838,9 @@
                                             </td>
                                             <td>
                                                 {{a.recStatus}}
+                                            </td>
+                                            <td>
+                                                {{a.comments}}
                                             </td>
                                         </tr>
                                     </table>

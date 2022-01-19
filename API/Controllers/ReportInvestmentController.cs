@@ -514,6 +514,7 @@ namespace API.Controllers
                             " inner join InvestmentDoctor inDc on a.Id = inDc.InvestmentInitId  left join DoctorInfo doc on inDc.DoctorId = doc.Id " + 
                             " where a.DonationTo = 'Doctor' AND  ir.RecStatus = 'Approved' " +
                             " AND inDetail.PaymentMethod = 'Cash'  " + 
+                            " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                             " UNION " + 
                             " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Doctor' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, a.ReferenceNo, d.DonationTypeName, " + 
                             " doc.id as DocId, doc.DoctorName, doc.[Address], inDetail.ProposedAmount,  inDetail.ChequeTitle, depo.DepotName " +
@@ -527,6 +528,7 @@ namespace API.Controllers
                             " where a.DonationTo = 'Campaign' AND  " +
                             " ir.RecStatus = 'Approved' " +
                             " AND inDetail.PaymentMethod = 'Cash' " +
+                            " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                             " UNION " + 
                             " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Institution' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, a.ReferenceNo, d.DonationTypeName,  " +
                             " doc.id as DocId, doc.InstitutionName, doc.[Address], inDetail.ProposedAmount,  inDetail.ChequeTitle, depo.DepotName  " +
@@ -541,6 +543,7 @@ namespace API.Controllers
                             " where a.DonationTo = 'Institution' " +
                             " AND ir.RecStatus = 'Approved'  " +
                             " AND inDetail.PaymentMethod = 'Cash' " +
+                            " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                             " UNION " + 
                             " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Bcds' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, a.ReferenceNo, d.DonationTypeName,  " +
                             " doc.id as DocId, doc.BcdsName, doc.BcdsAddress, inDetail.ProposedAmount,  inDetail.ChequeTitle, depo.DepotName  " +
@@ -554,6 +557,7 @@ namespace API.Controllers
                             " where a.DonationTo = 'Bcds'  " +
                             " AND ir.RecStatus = 'Approved'  " +
                             " AND inDetail.PaymentMethod = 'Cash' " +
+                            " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                             " UNION " + 
                             " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Society' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, a.ReferenceNo, d.DonationTypeName,  " +
                             " doc.id as DocId, doc.SocietyName, doc.SocietyAddress, inDetail.ProposedAmount,  inDetail.ChequeTitle, depo.DepotName     " +
@@ -566,6 +570,7 @@ namespace API.Controllers
                             " left join Society doc on IC.SocietyId = doc.Id  " +
                             " where a.DonationTo = 'Society'  " +
                             " AND inDetail.PaymentMethod = 'Cash'  " +
+                            " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                             " AND ir.RecStatus = 'Approved' ) x  " +                           
                             "  WHERE X.Id = " + investmentInitId +" ";
 
@@ -599,6 +604,7 @@ namespace API.Controllers
                            " inner join InvestmentDoctor inDc on a.Id = inDc.InvestmentInitId  left join DoctorInfo doc on inDc.DoctorId = doc.Id " +
                            " where a.DonationTo = 'Doctor' AND  ir.RecStatus = 'Approved' " +
                            " AND  ir.EmployeeId = inDetail.EmployeeId " +
+                           " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                            //" AND inDetail.PaymentMethod = 'Cash'  " + 
                            " UNION " +
                            " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Doctor' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, a.ReferenceNo, d.DonationTypeName, " +
@@ -613,6 +619,7 @@ namespace API.Controllers
                            " where a.DonationTo = 'Campaign' AND  " +
                            " ir.RecStatus = 'Approved' " +
                            " AND  ir.EmployeeId = inDetail.EmployeeId " +
+                           " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                            //" AND inDetail.PaymentMethod = 'Cash' " +
                            " UNION " +
                            " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Institution' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, a.ReferenceNo, d.DonationTypeName,  " +
@@ -628,6 +635,7 @@ namespace API.Controllers
                            " where a.DonationTo = 'Institution' " +
                            " AND ir.RecStatus = 'Approved'  " +
                            " AND  ir.EmployeeId = inDetail.EmployeeId " +
+                           " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                            //" AND inDetail.PaymentMethod = 'Cash' " +
                            " UNION " +
                            " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Bcds' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, a.ReferenceNo, d.DonationTypeName,  " +
@@ -642,6 +650,7 @@ namespace API.Controllers
                            " where a.DonationTo = 'Bcds'  " +
                            " AND ir.RecStatus = 'Approved'  " +
                            " AND  ir.EmployeeId = inDetail.EmployeeId " +
+                           " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                            //" AND inDetail.PaymentMethod = 'Cash' " +
                            " UNION " +
                            " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Society' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, a.ReferenceNo, d.DonationTypeName,  " +
@@ -655,6 +664,7 @@ namespace API.Controllers
                            " left join Society doc on IC.SocietyId = doc.Id  " +
                            " where a.DonationTo = 'Society'  " +
                            " AND  ir.EmployeeId = inDetail.EmployeeId " +
+                           " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                            " AND ir.RecStatus = 'Approved' ) x  " +
                            // " AND inDetail.PaymentMethod = 'Cash'  " +
                            "  WHERE X.Id = " + investmentInitId + " ";
