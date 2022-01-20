@@ -91,6 +91,7 @@ namespace Infrastructure.Data
         public DbSet<DepotPrintTrack> DepotPrintTrack { get; set; }
         public DbSet<InvestmentMedicineProd> InvestmentMedicineProd { get; set; }
         public DbSet<MedicineProduct> MedicineProduct { get; set; }
+        public DbSet<MedicineDispatch> MedicineDispatch { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -39,6 +39,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { MenuHeadComponent } from '../menuHead/menuHead.component';
 import { SubMenuComponent } from '../subMenu/subMenu.component';
 import { MenuConfigComponent } from '../menuConfig/menuConfig.component';
+import { MedDispatchComponent } from './../medDispatch/medDispatch.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { InvestmentRcvComponent } from '../investmentRcv/investmentRcv.component';
 import { ChangePasswordComponent } from '../changePassword/changePassword.component';
@@ -83,6 +84,7 @@ import { BillTrackComponent } from '../billTrack/billTrack.component';
     RptInvestSummaryComponent,
     ParamInvestSummaryComponent,
     RptInvestmentDetailComponent,
+    MedDispatchComponent,
     PendingPrintDepotComponent,
     PendingChqPrintDepotComponent,
     BillTrackComponent,
