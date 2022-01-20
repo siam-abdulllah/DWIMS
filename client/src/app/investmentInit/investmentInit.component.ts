@@ -243,7 +243,6 @@ debugger;
       }
     }
   }
-
   getInvestmentBcds() {
     this.investmentInitService.getInvestmentBcds(this.investmentInitService.investmentBcdsFormData.investmentInitId).subscribe(response => {
       var data = response[0] as IInvestmentBcds;
@@ -462,42 +461,42 @@ debugger;
       console.log(error);
     });
   }
-  removeInvestmentIndTargetedGroup(selectedRecord: IInvestmentTargetedGroup) {
-    if (this.isSubmitted == true && parseInt(this.empId) == this.investmentInitService.investmentInitFormData.employeeId) {
-      this.toastr.warning("Investment already submitted");
-      return false;
-    }
-    if (this.isSubmitted == true && parseInt(this.empId) == this.investmentInitService.investmentInitFormData.employeeId) {
-      this.toastr.warning("Investment already submitted");
-      return false;
-    }
-    var c = confirm("Are you sure you want to delete that?");
-    if (c == true) {
-      if(selectedRecord.id==0 || selectedRecord.id==undefined || selectedRecord.id==null)
-      {
-        this.investmentTargetedGroups.splice(this.investmentTargetedGroups.findIndex(x => x.marketCode == selectedRecord.marketCode), 1);
-        this.toastr.success("Successfully Removed. Please Save the data.");
-        return false;
+  // removeInvestmentIndTargetedGroup(selectedRecord: IInvestmentTargetedGroup) {
+  //   if (this.isSubmitted == true && parseInt(this.empId) == this.investmentInitService.investmentInitFormData.employeeId) {
+  //     this.toastr.warning("Investment already submitted");
+  //     return false;
+  //   }
+  //   if (this.isSubmitted == true && parseInt(this.empId) == this.investmentInitService.investmentInitFormData.employeeId) {
+  //     this.toastr.warning("Investment already submitted");
+  //     return false;
+  //   }
+  //   var c = confirm("Are you sure you want to delete that?");
+  //   if (c == true) {
+  //     if(selectedRecord.id==0 || selectedRecord.id==undefined || selectedRecord.id==null)
+  //     {
+  //       this.investmentTargetedGroups.splice(this.investmentTargetedGroups.findIndex(x => x.marketCode == selectedRecord.marketCode), 1);
+  //       this.toastr.success("Successfully Removed. Please Save the data.");
+  //       return false;
       
-      }
-      this.investmentInitService.investmentTargetedGroupFormData = Object.assign({}, selectedRecord);
-      this.SpinnerService.show();
-      debugger;
-      this.investmentInitService.removeInvestmentIndTargetedGroup(this.investmentInitService.investmentTargetedGroupFormData).subscribe(
-        res => {
-          //this.isDonationValid=false;
-          this.investmentInitService.investmentTargetedGroupFormData = new InvestmentTargetedGroup();
-          this.getInvestmentTargetedGroup();
-          this.SpinnerService.hide();
-          this.toastr.success(res);
-        },
-        err => {
-          this.SpinnerService.hide();
-          console.log(err);
-        }
-      );
-    }
-  }
+  //     }
+  //     this.investmentInitService.investmentTargetedGroupFormData = Object.assign({}, selectedRecord);
+  //     this.SpinnerService.show();
+  //     debugger;
+  //     this.investmentInitService.removeInvestmentIndTargetedGroup(this.investmentInitService.investmentTargetedGroupFormData).subscribe(
+  //       res => {
+  //         //this.isDonationValid=false;
+  //         this.investmentInitService.investmentTargetedGroupFormData = new InvestmentTargetedGroup();
+  //         this.getInvestmentTargetedGroup();
+  //         this.SpinnerService.hide();
+  //         this.toastr.success(res);
+  //       },
+  //       err => {
+  //         this.SpinnerService.hide();
+  //         console.log(err);
+  //       }
+  //     );
+  //   }
+  // }
   removeInvestmentTargetedGroup() {
     //this.investmentInitService.investmentTargetedProdFormData = Object.assign({}, selectedRecord);
     if (this.investmentTargetedGroups != null && this.investmentTargetedGroups.length > 0) {
@@ -1061,7 +1060,6 @@ debugger;
             return false;
         }
       }
-     
     }
     else{
       this.toastr.warning('Insert Investment Targeted Group First');
@@ -1071,8 +1069,8 @@ debugger;
     this.investmentInitService.submitInvestment().subscribe(
       res => {
         this.investmentInitService.investmentInitFormData = res as IInvestmentInit;
-        this.investmentInitService.investmentDoctorFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
-        this.investmentInitService.investmentInstitutionFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
+        //this.investmentInitService.investmentDoctorFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
+        //this.investmentInitService.investmentInstitutionFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
         this.isValid = true;
         this.isSubmitted = true;
         this.isInvOther = true;
@@ -1269,7 +1267,9 @@ debugger;
         this.getLastFiveInvestment(this.investmentInitService.investmentInitFormData.marketCode, this.todayDate);
         this.toastr.success('Save successfully', 'Investment Institution');
       },
-      err => { console.log(err); }
+      err => { 
+        debugger;
+        console.log(err); }
     );
   }
   insertInvestmentCampaign() {

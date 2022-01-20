@@ -480,6 +480,11 @@ namespace API.Controllers
                 };
                 _investmentInitRepo.Update(investmentInit);
                 _investmentInitRepo.Savechange();
+                List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                        new SqlParameter("@IID", investmentInitDto.Id),
+                    };
+                var results = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentTargetedGoupInsert @IID", parms.ToArray());
 
                 return new InvestmentInitDto
                 {
@@ -543,8 +548,13 @@ namespace API.Controllers
                     ModifiedOn = DateTimeOffset.Now
                 };
                 _investmentTargetedGroupRepo.Update(investmentTargetedGroup);
-                //}
                 _investmentTargetedGroupRepo.Savechange();
+
+                List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                        new SqlParameter("@IID", investmentInitDto.Id),
+                    };
+                var results = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentTargetedGoupInsert @IID", parms.ToArray());
                 return new InvestmentInitDto
                 {
 
@@ -983,31 +993,31 @@ namespace API.Controllers
         }
 
        
-        [HttpPost("removeInvestmentIndTargetedGroup")]
-        public async Task<IActionResult> RemoveInvestmentIndTargetedGroup(InvestmentTargetedGroup investmentTargetedGroup)
-        {
-            try
-            {
-                //var response = new HttpResponseMessage();
-                var alreadyExistSpec = new InvestmentTargetedGroupSpecification(investmentTargetedGroup.InvestmentInitId, investmentTargetedGroup.MarketCode);
-                var alreadyExistInvestmentTargetedGroup = await _investmentTargetedGroupRepo.GetEntityWithSpec(alreadyExistSpec);
-                if (alreadyExistInvestmentTargetedGroup!=null)
-                {
-                    //foreach (var v in alreadyExistInvestmentTargetedGroupList)
-                    //{
-                        _investmentTargetedGroupRepo.Delete(alreadyExistInvestmentTargetedGroup);
-                        _investmentTargetedGroupRepo.Savechange();
-                    //}
+        //[HttpPost("removeInvestmentIndTargetedGroup")]
+        //public async Task<IActionResult> RemoveInvestmentIndTargetedGroup(InvestmentTargetedGroup investmentTargetedGroup)
+        //{
+        //    try
+        //    {
+        //        //var response = new HttpResponseMessage();
+        //        var alreadyExistSpec = new InvestmentTargetedGroupSpecification(investmentTargetedGroup.InvestmentInitId, investmentTargetedGroup.MarketCode);
+        //        var alreadyExistInvestmentTargetedGroup = await _investmentTargetedGroupRepo.GetEntityWithSpec(alreadyExistSpec);
+        //        if (alreadyExistInvestmentTargetedGroup!=null)
+        //        {
+        //            //foreach (var v in alreadyExistInvestmentTargetedGroupList)
+        //            //{
+        //                _investmentTargetedGroupRepo.Delete(alreadyExistInvestmentTargetedGroup);
+        //                _investmentTargetedGroupRepo.Savechange();
+        //            //}
 
-                    return Ok("Succsessfuly Deleted!!!");
-                }
-                return NotFound();
-            }
-            catch (System.Exception ex)
-            {
-                throw ex;
-            }
-        }
+        //            return Ok("Succsessfuly Deleted!!!");
+        //        }
+        //        return NotFound();
+        //    }
+        //    catch (System.Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
 
         [HttpPost("removeInvestmentTargetedGroup")]
         public async Task<ActionResult> RemoveInvestmentTargetedGroup(List<InvestmentTargetedGroupDto> investmentTargetedGroupDto)
@@ -1180,7 +1190,7 @@ namespace API.Controllers
                 //" SELECT InvestmentInitId " +
                 //" FROM InvestmentTargetedGroup IT " +
                 //" WHERE I.Id = I.Id " +
-                " AND " +
+                //" AND " +
                 " NOT EXISTS ( " +
                 " SELECT InvestmentInitId " +
                 " FROM InvestmentRecComment ir " +
