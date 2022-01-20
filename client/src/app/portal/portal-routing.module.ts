@@ -1,4 +1,3 @@
-
 import { ParamInvestSummaryComponent } from './../paramInvestmentSummary/paramInvestmentSummary.component';
 import { PortalComponent } from './portal.component';
 import { MarketGroupComponent } from '../marketGroup/marketGroup.component';
@@ -18,6 +17,7 @@ import { SbuWiseBudgetComponent } from '../sbu-wise-budget/sbu-wise-budget.compo
 import { ReportInvestmentComponent } from './../report-investment/report-investment.component';
 import { PendingPrintDepotComponent } from '../pendingPrintDepot/pendingPrintDepot.component';
 import { BillTrackComponent } from '../billTrack/billTrack.component';
+import { MedDispatchComponent } from './../medDispatch/medDispatch.component';
 import { ChequeTrackComponent } from './../chequeTrack/chequeTrack.component'; 
 import { NgModule } from '@angular/core';
 import { PendingChqPrintDepotComponent } from '../pendingChqPrintDepot/pendingChqPrintDepot.component';
@@ -56,6 +56,7 @@ const portalRoutes: Routes = [
         {path: 'pendingChqPrintDepot', component: PendingChqPrintDepotComponent},
         {path: 'billTrack', component: BillTrackComponent},
         {path: 'chequeTrack', component: ChequeTrackComponent},
+        {path: 'medDispatch', component: MedDispatchComponent},
         {path: 'paramInvestmentSummary/:param', component: ParamInvestSummaryComponent},
         //{path: 'rptInvestmentDetail', component: RptInvestmentDetailComponent},
         {path: 'rptInvestmentDetail/:id', component: RptInvestmentDetailComponent},
