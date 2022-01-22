@@ -207,8 +207,9 @@ export class InvestmentInitService {
     return this.http.post(this.baseUrl + 'investment/updateInvestmentTargetedProd', this.investmentTargetedProdFormData);
 
   }
-  insertInvestmentTargetedGroup(investmentTargetedGroups: IInvestmentTargetedGroup[],initId:number) {
-    return this.http.post(this.baseUrl + 'investment/insertInvestmentTargetedGroup/'+initId, investmentTargetedGroups,
+  //insertInvestmentTargetedGroup(investmentTargetedGroups: IInvestmentTargetedGroup[],initId:number) {
+  insertInvestmentTargetedGroup(mktGrpMstId:number,initId:number) {
+    return this.http.get(this.baseUrl + 'investment/insertInvestmentTargetedGroup/'+initId+'/'+mktGrpMstId,
       { responseType: 'text' });
 
   }

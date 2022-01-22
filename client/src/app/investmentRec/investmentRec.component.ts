@@ -106,6 +106,7 @@ export class InvestmentRecComponent implements OnInit {
     this.InvestmentRecSearchModalRef = this.modalService.show(template, this.config);
   }
   async selectInvestmentInit(selectedRecord: IInvestmentInit) {
+    this.resetForm();
     this.investmentRecService.investmentRecFormData = Object.assign({}, selectedRecord);
     this.investmentRecService.investmentDetailFormData.investmentInitId = selectedRecord.id;
     this.investmentRecService.investmentRecCommentFormData.investmentInitId = selectedRecord.id;

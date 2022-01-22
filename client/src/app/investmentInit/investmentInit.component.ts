@@ -108,6 +108,7 @@ export class InvestmentInitComponent implements OnInit {
     this.InvestmentInitSearchModalRef = this.modalService.show(template, this.config);
   }
   selectInvestmentInit(selectedRecord: IInvestmentInit) {
+    this.resetPageLoad();
     this.investmentInitService.investmentInitFormData = Object.assign({}, selectedRecord);
     this.investmentInitService.investmentDoctorFormData.investmentInitId = selectedRecord.id;
     this.investmentInitService.investmentInstitutionFormData.investmentInitId = selectedRecord.id;
@@ -786,6 +787,7 @@ debugger;
       }
     }
     else {
+      this.investmentInitService.investmentTargetedGroupFormData.marketGroupMstId=0;
       this.toastr.warning('Already Market Group Exist', 'Investment', {
         positionClass: 'toast-top-right'
       });
@@ -1447,6 +1449,7 @@ debugger;
     }
   }
   insertInvestmentTargetedGroup() {
+    debugger;
     if (this.investmentInitService.investmentInitFormData.id == null || this.investmentInitService.investmentInitFormData.id == undefined || this.investmentInitService.investmentInitFormData.id == 0) {
       this.toastr.warning('Insert Investment Initialisation First', 'Investment Group');
       return false;
@@ -1460,7 +1463,8 @@ debugger;
       this.investmentInitService.investmentTargetedGroupFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
       debugger;
       this.SpinnerService.show();
-      this.investmentInitService.insertInvestmentTargetedGroup(this.investmentTargetedGroups,this.investmentInitService.investmentInitFormData.id).subscribe(
+      //this.investmentInitService.insertInvestmentTargetedGroup(this.investmentTargetedGroups,this.investmentInitService.investmentInitFormData.id).subscribe(
+      this.investmentInitService.insertInvestmentTargetedGroup(this.investmentInitService.investmentTargetedGroupFormData.marketGroupMstId,this.investmentInitService.investmentInitFormData.id).subscribe(
         res => {
           this.investmentInitService.investmentTargetedProdFormData = new InvestmentTargetedProd();
           this.getInvestmentTargetedGroup();
