@@ -105,7 +105,7 @@ namespace API.Controllers
             _dispRepo.Add(bcds);
             _dispRepo.Savechange();
 
-            var t = _db.CountInt.FromSqlRaw("EXECUTE [dbo].[SP_UpdateApprovedAmount] {0},{1}", trackDto.InvestmentInitId, trackDto.DispatchAmt);
+            var t = _db.Database.ExecuteSqlRaw("EXECUTE [dbo].[SP_UpdateApprovedAmount] {0},{1}", trackDto.DispatchAmt, trackDto.InvestmentInitId);
 
             return new MedicineDispatchDto
             {

@@ -52,8 +52,8 @@ export class MedDispatchComponent implements OnInit {
       doctorName: new FormControl(''),
       marketName: new FormControl(''),
       donationTypeName: new FormControl(''),
-      proposedAmount: new FormControl(''),
-      dispatchAmount: new FormControl(''),
+      proposeAmt: new FormControl(''),
+      dispatchAmt: new FormControl(''),
       id: new FormControl(''),
       investmentInitId: new FormControl(''),
       searchText: new FormControl(''),
@@ -91,13 +91,13 @@ export class MedDispatchComponent implements OnInit {
         }
 
         this.medDispatchForm.patchValue({
-          dispatchAmount: sum.toString(),
+          dispatchAmt: sum.toString(),
         });
 
       }
       else {
         this.medDispatchForm.patchValue({
-          dispatchAmount: '0',
+          dispatchAmt: '0',
         });
         this.investmentMedicineProds =[];
       }
@@ -131,7 +131,7 @@ export class MedDispatchComponent implements OnInit {
       return;
     }
 
-    if(this.medDispatchForm.value.dispatchAmount == "" || this.medDispatchForm.value.dispatchAmount == null || this.medDispatchForm.value.remarks == "" || this.medDispatchForm.value.remarks == null )
+    if(this.medDispatchForm.value.dispatchAmt == "" || this.medDispatchForm.value.dispatchAmt == null || this.medDispatchForm.value.remarks == "" || this.medDispatchForm.value.remarks == null )
     {
       this.toastr.error('Enter Payment Dispatch Amount & Remarks');
       return;
@@ -144,8 +144,8 @@ export class MedDispatchComponent implements OnInit {
     this.pendingService.medDispatchFormData.depotCode = "";
     this.pendingService.medDispatchFormData.employeeId = parseInt(this.empId);
     this.pendingService.medDispatchFormData.remarks = this.medDispatchForm.value.remarks;
-    this.pendingService.medDispatchFormData.dispatchAmount = this.medDispatchForm.value.dispatchAmount;
-    this.pendingService.medDispatchFormData.proposedAmount = this.medDispatchForm.value.proposedAmount;
+    this.pendingService.medDispatchFormData.dispatchAmt = this.medDispatchForm.value.dispatchAmt;
+    this.pendingService.medDispatchFormData.proposeAmt = this.medDispatchForm.value.proposeAmt;
 
 
     this.pendingService.insertDispatch(this.pendingService.medDispatchFormData).subscribe(
@@ -167,7 +167,7 @@ export class MedDispatchComponent implements OnInit {
       doctorName:  selectedRecord.doctorName,
       donationTypeName: selectedRecord.donationTypeName,
       marketName:  selectedRecord.marketName,
-      proposedAmount:  selectedRecord.proposedAmount,
+      proposeAmt:  selectedRecord.proposedAmount,
       investmentInitId:  selectedRecord.id,
       // formControlName2: myValue2 (can be omitted)
     });
@@ -225,8 +225,8 @@ openPendingListModal(template: TemplateRef<any>) {
       doctorName: "",
       marketName: "",
       donationTypeName: "",
-      proposedAmount: "",
-      dispatchAmount: "",
+      proposeAmt: "",
+      dispatchAmt: "",
       remarks: "",
       id: "",
       searchText: "",
