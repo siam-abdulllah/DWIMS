@@ -31,23 +31,32 @@ namespace API.Controllers
         }
 
         [HttpGet("totalApproved/{role}/{empCode}")]
-        public object GetTotalApproved(string role, string empCode)
+        public async Task<object> GetTotalApproved(string role, string empCode)
         {
             try
             {
-                DateTime fd = new DateTime(DateTime.Now.Year, 1, 1);
-                DateTime td = DateTime.Today;
+                //DateTime fd = new DateTime(DateTime.Now.Year, 1, 1);
+                //DateTime td = DateTime.Today;
 
 
-                string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode= '" + empCode + "' ";
-                var empData = _dbContext.Employee.FromSqlRaw(empQry).ToList();
 
+                string qry = "";
+                var appPriority = await GetApprAuth(Convert.ToInt32(empCode));
                 //string qry = " select CAST(a.Id AS INT) as Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.ReferenceNo, d.DonationTypeName, a.DonationTo, b.ProposedAmount, b.FromDate, b.ToDate, dbo.fnGetInvestmentStatus(a.Id) InvStatus, e.EmployeeName,dbo.fnGetInvestmentApprovedBy(a.Id) ApprovedBy,e.MarketName, ISNULL(rcv.ReceiveStatus, 'Not Completed') ReceiveStatus, ISNULL(rcvBy.EmployeeName, 'N/A') ReceiveBy " +
-                string qry = " SELECT CAST('1' AS INT) AS Id ,1 AS DataStatus , SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(a.Id) Count " +
-                    "  FROM InvestmentRecComment a LEFT JOIN InvestmentRecv rcv ON a.Id = rcv.InvestmentInitId " +
-                    " WHERE 1 = 1 AND a.RecStatus = 'Approved'  AND rcv.ReceiveStatus IS NULL ";
-                if (role != "Administrator")
+
+                if (role == "Administrator")
                 {
+                     qry = " SELECT CAST('1' AS INT) AS Id ,1 AS DataStatus , SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(a.Id) Count " +
+                   "  FROM InvestmentRecComment a LEFT JOIN InvestmentRecv rcv ON a.Id = rcv.InvestmentInitId " +
+                   " WHERE  a.RecStatus = 'Approved'  AND rcv.ReceiveStatus IS NULL ";
+                }
+                else if (appPriority.Priority == 1 || appPriority.Priority == 2)
+                {
+                    string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode= '" + empCode + "' ";
+                    var empData = _dbContext.Employee.FromSqlRaw(empQry).ToList();
+                     qry = " SELECT CAST('1' AS INT) AS Id ,1 AS DataStatus , SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(a.Id) Count " +
+                    "  FROM InvestmentRecComment a LEFT JOIN InvestmentRecv rcv ON a.Id = rcv.InvestmentInitId " +
+                    " WHERE  a.RecStatus = 'Approved'  AND rcv.ReceiveStatus IS NULL ";
                     qry = qry + " AND a.SBU='" + empData[0].SBU + "' AND (" +
                                 " a.MarketGroupCode = COALESCE(NULLIF('" + empData[0].MarketGroupCode + "',''), 'All')" +
                                 " OR COALESCE(NULLIF('" + empData[0].MarketGroupCode + "',''), 'All') = 'All'" +
@@ -69,6 +78,12 @@ namespace API.Controllers
                                 " OR COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All') = 'All'" +
                                 " )";
                 }
+                else {
+                     qry = "SELECT CAST('1' AS INT) AS Id ,1 AS DataStatus , SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(Id) Count " +
+                        " FROM[DIDS].[dbo].[InvestmentRecComment]" +
+                        " WHere RecStatus = 'Approved' AND CompletionStatus = 1 AND EmployeeId="+empCode;
+                }
+                   
 
                 var results = _dbContext.CountInt.FromSqlRaw(qry).ToList();
                 return results[0].Count.ToString();

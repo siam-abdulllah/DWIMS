@@ -1332,7 +1332,7 @@ namespace API.Controllers
                 //" )" +
                 " AND i.MarketCode = '" + iInit.MarketCode + "' " +
                 " AND i.DonationId = '" + iInit.DonationId + "' " +
-                " AND i.DoctorId = " + doctorId + " " +
+                " AND d.DoctorId = " + doctorId + " " +
                 " AND d.CampaignDtlId = " + campaignDtlId + "";
             var result = _dbContext.CountInt.FromSqlRaw(qry).ToList();
             return result[0].Count;
