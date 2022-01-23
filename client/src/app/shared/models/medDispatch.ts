@@ -7,8 +7,8 @@ export interface IMedicineDispatch {
     depotName: string;
     remarks: string;
     employeeId: number;
-    dispatchAmount : number;
-    proposedAmount : number;
+    dispatchAmt : number;
+    proposeAmt : number;
 }
 
 export class MedicineDispatch implements IMedicineDispatch {
@@ -20,6 +20,6 @@ export class MedicineDispatch implements IMedicineDispatch {
     depotName: string;
     remarks: string;
     employeeId: number;
-    dispatchAmount : number;
-    proposedAmount : number;
+    dispatchAmt : number;
+    proposeAmt : number;
 }

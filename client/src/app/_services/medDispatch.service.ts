@@ -58,6 +58,4 @@ export class MedDispatchService {
   getInvestmentMedicineProds(investmentInitId: number) {
     return this.http.get(this.baseUrl + 'medDispatch/getMedicineProds/' + investmentInitId );
   }
-  
 }
-
