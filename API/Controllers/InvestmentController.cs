@@ -11,6 +11,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -240,28 +241,29 @@ namespace API.Controllers
         {
             try
             {
-                var data = await _investmentInitRepo.ListAllAsync();
-                var referenceNo = "";
-                if (data.Count > 0)
-                {
-                    var investmentInitLastId = (from r in data
-                                                orderby r.Id
-                                                select new InvestmentInitDto
-                                                {
-                                                    Id = r.Id,
-                                                }
-                                     ).Last();
-                    referenceNo = DateTimeOffset.Now.ToString("yyyyMM") + (investmentInitLastId.Id + 1).ToString("00000");
-                }
-                else
-                {
-                    referenceNo = DateTimeOffset.Now.ToString("yyyyMM") + (0 + 1).ToString("00000");
-                }
+                //var data = await _investmentInitRepo.ListAllAsync();
+                //var referenceNo = "";
+                //if (data.Count > 0)
+                //{
+                //    var investmentInitLastId = (from r in data
+                //                                orderby r.Id
+                //                                select new InvestmentInitDto
+                //                                {
+                //                                    Id = r.Id,
+                //                                }
+                //                     ).Last();
+                //    referenceNo = DateTimeOffset.Now.ToString("yyyyMM") + (investmentInitLastId.Id + 1).ToString("00000");
+                //}
+                //else
+                //{
+                //    referenceNo = DateTimeOffset.Now.ToString("yyyyMM") + (0 + 1).ToString("00000");
+                //}
                 var empData = await _employeeRepo.GetByIdAsync(investmentInitDto.EmployeeId);
                 var investmentInit = new InvestmentInit
                 {
                     //ReferenceNo = investmentInitDto.ReferenceNo,
-                    ReferenceNo = referenceNo,
+                    //ReferenceNo = referenceNo,
+                    ReferenceNo = null,
                     ProposeFor = investmentInitDto.ProposeFor,
                     DonationTo = investmentInitDto.DonationTo,
                     DonationId = investmentInitDto.DonationId,
@@ -283,11 +285,17 @@ namespace API.Controllers
                 };
                 _investmentInitRepo.Add(investmentInit);
                 _investmentInitRepo.Savechange();
-
+                List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                        
+                        new SqlParameter("@IID", investmentInit.Id),
+                        new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
+                    };
+                var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentRefNoInsert @IID,@r out", parms.ToArray());
                 return new InvestmentInitDto
                 {
                     Id = investmentInit.Id,
-                    ReferenceNo = investmentInit.ReferenceNo,
+                    ReferenceNo = parms[1].Value.ToString(),
                     ProposeFor = investmentInit.ProposeFor,
                     DonationTo = investmentInit.DonationTo,
                     DonationId = investmentInit.DonationId,
@@ -1303,7 +1311,7 @@ namespace API.Controllers
         #region investmentCampaign
 
         [HttpPost("IsCampaignInvestmentApprovalPending")]
-        public async Task<int> IsCampaignInvestmentApprovalPending(int initId, int campaignDtlId)
+        public async Task<int> IsCampaignInvestmentApprovalPending(int initId, int campaignDtlId,int doctorId)
         {
             var iInit = await _investmentInitRepo.GetByIdAsync(initId);
             string qry = " SELECT CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count " +
@@ -1324,6 +1332,7 @@ namespace API.Controllers
                 //" )" +
                 " AND i.MarketCode = '" + iInit.MarketCode + "' " +
                 " AND i.DonationId = '" + iInit.DonationId + "' " +
+                " AND i.DoctorId = " + doctorId + " " +
                 " AND d.CampaignDtlId = " + campaignDtlId + "";
             var result = _dbContext.CountInt.FromSqlRaw(qry).ToList();
             return result[0].Count;
@@ -1335,7 +1344,7 @@ namespace API.Controllers
         {
             try
             {
-                if (await IsCampaignInvestmentApprovalPending(investmentCampaignDto.InvestmentInitId, investmentCampaignDto.CampaignDtlId) > 0)
+                if (await IsCampaignInvestmentApprovalPending(investmentCampaignDto.InvestmentInitId, investmentCampaignDto.CampaignDtlId,investmentCampaignDto.DoctorId) > 0)
                 {
                     return BadRequest(new ApiResponse(0, "Investment Approval is Pending for this Campaign!"));
                 }

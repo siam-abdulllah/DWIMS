@@ -191,6 +191,7 @@ export class InvestmentAprComponent implements OnInit {
     }
   }
   async selectInvestmentApr(selectedAprord: IInvestmentInit) {
+    this.resetForm();
     this.investmentAprService.investmentAprFormData = Object.assign({}, selectedAprord);
     var selectedDonation = this.donations.filter(res => res.id == selectedAprord.donationId).map(ele => ele.donationTypeName);
     this.donationName = selectedDonation[0];

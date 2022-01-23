@@ -36,6 +36,7 @@ export class HomeComponent implements OnInit {
     this.accountService.getEmployeeSbu(this.empId).subscribe(
       (response) => {
         this.sbu = response.sbu;
+        debugger;
         this.marketCode = response.marketCode;
         if(this.userRole!='DIC')
         {this.getTotalApproved();}
