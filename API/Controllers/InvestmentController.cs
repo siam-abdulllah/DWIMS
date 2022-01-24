@@ -1740,7 +1740,9 @@ namespace API.Controllers
                 //        new SqlParameter("@FDATE", convertedDate)
                 //    };
                 //var results = _dbContext.LastFiveInvestmentInfo.FromSqlRaw<LastFiveInvestmentInfo>("EXECUTE SP_LastFiveInvestmentForDocSearch @DOCID,@MCODE,@FDATE", parms.ToArray()).ToList();
-                string qry = " SELECT TOP (5) CAST(ROW_NUMBER() OVER (ORDER BY ProposedAmount) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,DonationShortName" +
+                string qry = "SELECT TOP (5) CAST(ROW_NUMBER() OVER (ORDER BY InvestmentAmount) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,DonationShortName" +
+                    " ,InvestmentAmount,ComtSharePrcntAll,ComtSharePrcnt,PrescribedSharePrcnt,PrescribedSharePrcntAll,FromDate FROM (" +
+                    " SELECT DonationShortName" +
                             ",ProposedAmount AS InvestmentAmount" +
                             ",CommitmentAllSBU AS  ComtSharePrcntAll" +
                             ",CommitmentOwnSBU AS  ComtSharePrcnt" +
@@ -1761,6 +1763,7 @@ namespace API.Controllers
                             // " ) AS  PrescribedSharePrcntAll" +
                             ",[dbo].[fnGetPrescribedSharePrcntDoc] ('" + docId + "','" + marketCode + "',D.DonationTypeName,IR.FromDate) AS  PrescribedSharePrcnt" +
                             ",[dbo].[fnGetPrescribedSharePrcntAllDoc] ('" + docId + "',D.DonationTypeName,IR.FromDate) AS  PrescribedSharePrcntAll" +
+                            ",IR.FromDate" +
                             " FROM InvestmentRecComment IRC" +
                             " INNER JOIN InvestmentDoctor ID ON IRC.InvestmentInitId = ID.InvestmentInitId" +
                             " INNER JOIN InvestmentRec IR ON IRC.InvestmentInitId = IR.InvestmentInitId" +
@@ -1771,7 +1774,20 @@ namespace API.Controllers
                             " AND CONVERT(DATE, IR.FromDate) <= Cast('" + convertedDate + "' as date)" +
                             " AND ID.DoctorId = " + docId + "" +
                             " AND II.MarketCode = '" + marketCode + "'" +
-                            " ORDER BY IR.FromDate DESC";
+                            " UNION ALL" +
+                            " SELECT DonationShortName" +
+                            ",InvestmentAmount " +
+                            ",ComtSharePrcntAll " +
+                            ",ComtSharePrcnt " +
+                            ",[dbo].[fnGetPrescribedSharePrcntDoc] ('" + docId + "','" + marketCode + "',DonationTypeName,FromDate) AS  PrescribedSharePrcnt" +
+                            ",[dbo].[fnGetPrescribedSharePrcntAllDoc] ('" + docId + "',DonationTypeName,FromDate) AS  PrescribedSharePrcntAll" +
+                            ",FromDate" +
+                            " FROM InvestmentOldData" +
+                            " WHERE " +
+                            "  CONVERT(DATE, FromDate) <= Cast('" + convertedDate + "' as date)" +
+                            " AND DoctorId = " + docId + "" +
+                            " AND MarketCode = '" + marketCode + "') AS A " +
+                            " ORDER BY FromDate DESC";
 
 
 
@@ -1814,7 +1830,9 @@ namespace API.Controllers
 
                 //return data;
                 var convertedDate = DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture);
-                string qry = " SELECT TOP (5) CAST(ROW_NUMBER() OVER (ORDER BY ProposedAmount) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,DonationShortName" +
+                string qry = "SELECT TOP (5) CAST(ROW_NUMBER() OVER (ORDER BY InvestmentAmount) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,DonationShortName" +
+                    " ,InvestmentAmount,ComtSharePrcntAll,ComtSharePrcnt,PrescribedSharePrcnt,PrescribedSharePrcntAll,FromDate FROM (" +
+                    " SELECT DonationShortName" +
                             ",ProposedAmount AS InvestmentAmount" +
                             ",CommitmentAllSBU AS  ComtSharePrcntAll" +
                             ",CommitmentOwnSBU AS  ComtSharePrcnt" +
@@ -1835,6 +1853,7 @@ namespace API.Controllers
                             // " ) AS  PrescribedSharePrcntAll" +
                             ",[dbo].[fnGetPrescribedSharePrcntIns] ('" + instituteId + "','" + marketCode + "',D.DonationTypeName,IR.FromDate) AS  PrescribedSharePrcnt" +
                             ",[dbo].[fnGetPrescribedSharePrcntAllIns] ('" + instituteId + "',D.DonationTypeName,IR.FromDate) AS  PrescribedSharePrcntAll" +
+                            ",IR.FromDate" +
                             " FROM InvestmentRecComment IRC" +
                             " INNER JOIN InvestmentInstitution ID ON IRC.InvestmentInitId = ID.InvestmentInitId" +
                             " INNER JOIN InvestmentRec IR ON IRC.InvestmentInitId = IR.InvestmentInitId" +
@@ -1845,7 +1864,20 @@ namespace API.Controllers
                             " AND CONVERT(DATE, IR.FromDate) <= Cast('" + convertedDate + "' as date)" +
                             " AND ID.InstitutionId = " + instituteId + "" +
                             " AND II.MarketCode = '" + marketCode + "'" +
-                            " ORDER BY IR.FromDate DESC";
+                            " UNION ALL" +
+                            " SELECT DonationShortName" +
+                            ",InvestmentAmount " +
+                            ",ComtSharePrcntAll " +
+                            ",ComtSharePrcnt " +
+                            ",[dbo].[fnGetPrescribedSharePrcntIns] ('" + instituteId + "','" + marketCode + "',DonationTypeName,FromDate) AS  PrescribedSharePrcnt" +
+                            ",[dbo].[fnGetPrescribedSharePrcntAllIns] ('" + instituteId + "',DonationTypeName,FromDate) AS  PrescribedSharePrcntAll" +
+                            ",FromDate" +
+                            " FROM InvestmentOldData" +
+                            " WHERE " +
+                            "  CONVERT(DATE, FromDate) <= Cast('" + convertedDate + "' as date)" +
+                            " AND InstitutionId = " + instituteId + "" +
+                            " AND MarketCode = '" + marketCode + "') AS A" +
+                            " ORDER BY FromDate DESC";
 
 
 
@@ -1888,7 +1920,9 @@ namespace API.Controllers
 
                 //return data;
                 var convertedDate = DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture);
-                string qry = " SELECT TOP (5) CAST(ROW_NUMBER() OVER (ORDER BY ProposedAmount) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,DonationShortName" +
+                string qry = "SELECT TOP (5) CAST(ROW_NUMBER() OVER (ORDER BY InvestmentAmount) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,DonationShortName" +
+                    " ,InvestmentAmount,ComtSharePrcntAll,ComtSharePrcnt,PrescribedSharePrcnt,PrescribedSharePrcntAll,FromDate FROM (" +
+                    " SELECT DonationShortName" +
                             ",ProposedAmount AS InvestmentAmount" +
                             ",CommitmentAllSBU AS  ComtSharePrcntAll" +
                             ",CommitmentOwnSBU AS  ComtSharePrcnt" +
@@ -1909,7 +1943,7 @@ namespace API.Controllers
                             // " ) AS  PrescribedSharePrcntAll" +
                             ",[dbo].[fnGetPrescribedSharePrcntBcds] ('" + bcdsId + "','" + marketCode + "',D.DonationTypeName,IR.FromDate) AS  PrescribedSharePrcnt" +
                             ",[dbo].[fnGetPrescribedSharePrcntAllBcds] ('" + bcdsId + "',D.DonationTypeName,IR.FromDate) AS  PrescribedSharePrcntAll" +
-
+                            ",IR.FromDate" +
                             " FROM InvestmentRecComment IRC" +
                             " INNER JOIN InvestmentBcds ID ON IRC.InvestmentInitId = ID.InvestmentInitId" +
                             " INNER JOIN InvestmentRec IR ON IRC.InvestmentInitId = IR.InvestmentInitId" +
@@ -1920,7 +1954,20 @@ namespace API.Controllers
                             " AND CONVERT(DATE, IR.FromDate) <= Cast('" + convertedDate + "' as date)" +
                             " AND ID.BcdsId = " + bcdsId + "" +
                             " AND II.MarketCode = '" + marketCode + "'" +
-                            " ORDER BY IR.FromDate DESC";
+                            " UNION ALL" +
+                            " SELECT DonationShortName" +
+                            ",InvestmentAmount " +
+                            ",ComtSharePrcntAll " +
+                            ",ComtSharePrcnt " +
+                            ",[dbo].[fnGetPrescribedSharePrcntBcds] ('" + bcdsId + "','" + marketCode + "',DonationTypeName,FromDate) AS  PrescribedSharePrcnt" +
+                            ",[dbo].[fnGetPrescribedSharePrcntAllBcds] ('" + bcdsId + "',DonationTypeName,FromDate) AS  PrescribedSharePrcntAll" +
+                            ",FromDate" +
+                            " FROM InvestmentOldData" +
+                            " WHERE " +
+                            "  CONVERT(DATE, FromDate) <= Cast('" + convertedDate + "' as date)" +
+                            " AND BcdsId = " + bcdsId + "" +
+                            " AND MarketCode = '" + marketCode + "') AS A" +
+                            " ORDER BY FromDate DESC";
 
 
 
@@ -1963,7 +2010,9 @@ namespace API.Controllers
 
                 //return data;
                 var convertedDate = DateTime.ParseExact(date, "ddMMyyyy", CultureInfo.InvariantCulture);
-                string qry = " SELECT TOP (5) CAST(ROW_NUMBER() OVER (ORDER BY ProposedAmount) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,DonationShortName" +
+                string qry = "SELECT TOP (5) CAST(ROW_NUMBER() OVER (ORDER BY InvestmentAmount) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,DonationShortName" +
+                    " ,InvestmentAmount,ComtSharePrcntAll,ComtSharePrcnt,PrescribedSharePrcnt,PrescribedSharePrcntAll,FromDate FROM (" +
+                    " SELECT DonationShortName" +
                             ",ProposedAmount AS InvestmentAmount" +
                             ",CommitmentAllSBU AS  ComtSharePrcntAll" +
                             ",CommitmentOwnSBU AS  ComtSharePrcnt" +
@@ -1984,7 +2033,7 @@ namespace API.Controllers
                             // " ) AS  PrescribedSharePrcntAll" +
                             ",[dbo].[fnGetPrescribedSharePrcntSoc] ('" + societyId + "','" + marketCode + "',D.DonationTypeName,IR.FromDate) AS  PrescribedSharePrcnt" +
                             ",[dbo].[fnGetPrescribedSharePrcntAllSoc] ('" + societyId + "',D.DonationTypeName,IR.FromDate) AS  PrescribedSharePrcntAll" +
-
+                            ",IR.FromDate" +
                             " FROM InvestmentRecComment IRC" +
                             " INNER JOIN InvestmentSociety ID ON IRC.InvestmentInitId = ID.InvestmentInitId" +
                             " INNER JOIN InvestmentRec IR ON IRC.InvestmentInitId = IR.InvestmentInitId" +
@@ -1995,7 +2044,20 @@ namespace API.Controllers
                             " AND CONVERT(DATE, IR.FromDate) <= Cast('" + convertedDate + "' as date)" +
                             " AND ID.SocietyId = " + societyId + "" +
                             " AND II.MarketCode = '" + marketCode + "'" +
-                            " ORDER BY IR.FromDate DESC";
+                            " UNION ALL" +
+                            " SELECT DonationShortName" +
+                            ",InvestmentAmount " +
+                            ",ComtSharePrcntAll " +
+                            ",ComtSharePrcnt " +
+                            ",[dbo].[fnGetPrescribedSharePrcntSoc] ('" + societyId + "','" + marketCode + "',DonationTypeName,FromDate) AS  PrescribedSharePrcnt" +
+                            ",[dbo].[fnGetPrescribedSharePrcntAllSoc] ('" + societyId + "',DonationTypeName,FromDate) AS  PrescribedSharePrcntAll" +
+                            ",FromDate" +
+                            " FROM InvestmentOldData" +
+                            " WHERE " +
+                            "  CONVERT(DATE, FromDate) <= Cast('" + convertedDate + "' as date)" +
+                            " AND SocietyId = " + societyId + "" +
+                            " AND MarketCode = '" + marketCode + "') AS A" +
+                            " ORDER BY FromDate DESC";
                 var results = _dbContext.LastFiveInvestmentInfo.FromSqlRaw(qry).ToList();
                 return results;
             }

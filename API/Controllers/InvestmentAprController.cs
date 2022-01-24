@@ -101,7 +101,7 @@ namespace API.Controllers
                 throw e;
             }
         }
-        
+
         [HttpGet("investmentInitsForRSM/{empId}/{sbu}")]
         public ActionResult<Pagination<InvestmentInitDto>> GetInvestmentInitsForRSM(int empId, string sbu,
          [FromQuery] InvestmentInitSpecParams investmentInitParrams)
@@ -237,56 +237,56 @@ namespace API.Controllers
         {
             try
             {
-               
-                    List<SqlParameter> parms = new List<SqlParameter>
+
+                List<SqlParameter> parms = new List<SqlParameter>
                     {
                         new SqlParameter("@SBU", sbu),
                         new SqlParameter("@EID", empId),
                         new SqlParameter("@RSTATUS", "Recommended"),
                         new SqlParameter("@ASTATUS", DBNull.Value)
                     };
-                    var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentApprpvedSearchForRSM @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
-                    var data = _mapper
-                        .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
-                    var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
-                    var totalItems = await _investmentInitRepo.CountAsync(countSpec);
-                    return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, results.Count(), data));
-                }
-            
+                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentApprpvedSearchForRSM @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
+                var data = _mapper
+                    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
+                var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
+                var totalItems = await _investmentInitRepo.CountAsync(countSpec);
+                return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, results.Count(), data));
+            }
+
             catch (System.Exception e)
             {
                 throw e;
             }
         }
-          [HttpGet("investmentApprovedForGPM/{empId}/{sbu}/{userRole}")]
+        [HttpGet("investmentApprovedForGPM/{empId}/{sbu}/{userRole}")]
         public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetinvestmentApprovedForGPM(int empId, string sbu, string userRole,
-        [FromQuery] InvestmentInitSpecParams investmentInitParrams)
+      [FromQuery] InvestmentInitSpecParams investmentInitParrams)
         {
             try
             {
-               
-                    List<SqlParameter> parms = new List<SqlParameter>
+
+                List<SqlParameter> parms = new List<SqlParameter>
                     {
                         new SqlParameter("@SBU", sbu),
                         new SqlParameter("@EID", empId),
                         new SqlParameter("@RSTATUS", "Recommended"),
                         new SqlParameter("@ASTATUS", DBNull.Value)
                     };
-                    var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentApprpvedSearchForGPM @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
-                    var data = _mapper
-                        .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
-                    var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
-                    var totalItems = await _investmentInitRepo.CountAsync(countSpec);
-                    return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, results.Count(), data));
-                }
-            
+                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentApprpvedSearchForGPM @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
+                var data = _mapper
+                    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
+                var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
+                var totalItems = await _investmentInitRepo.CountAsync(countSpec);
+                return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, results.Count(), data));
+            }
+
             catch (System.Exception e)
             {
                 throw e;
             }
         }
 
-        
+
         [HttpPost("insertAprForCampaign/{empID}/{aprStatus}/{sbu}/{donationId}")]
         public async Task<ActionResult<InvestmentAprDto>> InsertInvestmentAprForCampaign(int empId, string aprStatus, string sbu, int donationId, InvestmentAprDto investmentAprDto)
         {
@@ -420,7 +420,7 @@ namespace API.Controllers
         }
 
         [HttpPost("insertApr/{empID}/{aprStatus}/{sbu}/{donationId}")]
-        public async Task<ActionResult<InvestmentAprDto>>InsertInvestmentApr(int empId, string aprStatus, string sbu, int donationId, InvestmentAprDto investmentAprDto)
+        public async Task<ActionResult<InvestmentAprDto>> InsertInvestmentApr(int empId, string aprStatus, string sbu, int donationId, InvestmentAprDto investmentAprDto)
         {
             try
             {
@@ -487,7 +487,7 @@ namespace API.Controllers
                 var donation = await _donationRepo.GetByIdAsync(donationId);
                 if (donation.DonationTypeName == "Honorarium")
                 {
-                    
+
                     for (int i = 0; i < investmentAprDto.TotalMonth; i++)
                     {
                         DateTimeOffset calcDate = investmentAprDto.FromDate;
@@ -551,7 +551,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
-       
+
         [HttpPost("insertRec/{empID}/{aprStatus}/{sbu}/{donationId}")]
         public async Task<ActionResult<InvestmentAprDto>> InsertInvestmentRec(int empId, string aprStatus, string sbu, int donationId, InvestmentAprDto investmentAprDto)
         {
@@ -678,7 +678,7 @@ namespace API.Controllers
                 var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentRecDto.InvestmentInitId, apprAuthConfig.ApprovalAuthority.Priority, "true");
                 var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
                 isComplete = true;
-                if (investmentRecDto.RecStatus== "Not Approved")
+                if (investmentRecDto.RecStatus == "Not Approved")
                 {
                     isComplete = false;
                 }
@@ -697,6 +697,56 @@ namespace API.Controllers
                         return BadRequest(new ApiResponse(400, "Other recommendation has not completed yet"));
                     }
                 }
+            }
+
+            var invRec = new InvestmentRecComment
+            {
+                InvestmentInitId = investmentRecDto.InvestmentInitId,
+                EmployeeId = investmentRecDto.EmployeeId,
+                Comments = investmentRecDto.Comments,
+                RecStatus = investmentRecDto.RecStatus,
+                MarketGroupCode = empData.MarketGroupCode,
+                MarketGroupName = empData.MarketGroupName,
+                MarketCode = empData.MarketCode,
+                MarketName = empData.MarketName,
+                RegionCode = empData.RegionCode,
+                RegionName = empData.RegionName,
+                ZoneCode = empData.ZoneCode,
+                ZoneName = empData.ZoneName,
+                TerritoryCode = empData.TerritoryCode,
+                TerritoryName = empData.TerritoryName,
+                SBUName = empData.SBUName,
+                SBU = empData.SBU,
+                Priority = apprAuthConfig.ApprovalAuthority.Priority,
+                CompletionStatus = isComplete,
+                SetOn = DateTimeOffset.Now
+            };
+            _investmentRecCommentRepo.Add(invRec);
+            _investmentRecCommentRepo.Savechange();
+
+
+            return new InvestmentRecCommentDto
+            {
+                Id = invRec.Id,
+                InvestmentInitId = investmentRecDto.InvestmentInitId,
+                EmployeeId = investmentRecDto.EmployeeId,
+                Comments = investmentRecDto.Comments,
+                RecStatus = investmentRecDto.RecStatus,
+            };
+        }
+        [HttpPost("insertAprComForGPM")]
+        public async Task<ActionResult<InvestmentRecCommentDto>> InsertInvestmentAprCommentForGPM(InvestmentRecCommentDto investmentRecDto)
+        {
+
+            var isComplete = false;
+            //var investmentInits = await _investmentInitRepo.GetByIdAsync((int)investmentRecDto.InvestmentInitId);
+            var empData = await _employeeRepo.GetByIdAsync(investmentRecDto.EmployeeId);
+            var spec = new ApprAuthConfigSpecification(investmentRecDto.EmployeeId, "A");
+            var apprAuthConfig = await _apprAuthConfigRepo.GetEntityWithSpec(spec);
+            isComplete = true;
+            if (investmentRecDto.RecStatus == "Not Approved")
+            {
+                isComplete = false;
             }
 
             var invRec = new InvestmentRecComment
@@ -796,6 +846,55 @@ namespace API.Controllers
                 }
             }
 
+            var invRec = new InvestmentRecComment
+            {
+                Id = investmentRecDto.Id,
+                InvestmentInitId = investmentRecDto.InvestmentInitId,
+                EmployeeId = investmentRecDto.EmployeeId,
+                Comments = investmentRecDto.Comments,
+                RecStatus = investmentRecDto.RecStatus,
+                MarketGroupCode = empData.MarketGroupCode,
+                MarketGroupName = empData.MarketGroupName,
+                MarketCode = empData.MarketCode,
+                MarketName = empData.MarketName,
+                RegionCode = empData.RegionCode,
+                RegionName = empData.RegionName,
+                ZoneCode = empData.ZoneCode,
+                ZoneName = empData.ZoneName,
+                TerritoryCode = empData.TerritoryCode,
+                TerritoryName = empData.TerritoryName,
+                SBUName = empData.SBUName,
+                SBU = empData.SBU,
+                Priority = apprAuthConfig.ApprovalAuthority.Priority,
+                CompletionStatus = isComplete,
+                ModifiedOn = DateTimeOffset.Now,
+            };
+            _investmentRecCommentRepo.Update(invRec);
+            _investmentRecCommentRepo.Savechange();
+
+            return new InvestmentRecCommentDto
+            {
+                Id = investmentRecDto.Id,
+                EmployeeId = investmentRecDto.EmployeeId,
+                Comments = investmentRecDto.Comments,
+                RecStatus = investmentRecDto.RecStatus,
+                InvestmentInitId = investmentRecDto.InvestmentInitId,
+            };
+        }
+
+        [HttpPost("updateAprComForGPM")]
+        public async Task<ActionResult<InvestmentRecCommentDto>> UpdateInvestmentAprCommentForGPM(InvestmentRecCommentDto investmentRecDto)
+        {
+
+
+            var empData = await _employeeRepo.GetByIdAsync(investmentRecDto.EmployeeId);
+            var spec = new ApprAuthConfigSpecification(investmentRecDto.EmployeeId, "A");
+            var apprAuthConfig = await _apprAuthConfigRepo.GetEntityWithSpec(spec);
+            var isComplete = true;
+            if (investmentRecDto.RecStatus == "Not Approved")
+            {
+                isComplete = false;
+            }
             var invRec = new InvestmentRecComment
             {
                 Id = investmentRecDto.Id,
@@ -1075,10 +1174,10 @@ namespace API.Controllers
                 var spec = new InvestmentRecSpecification(investmentInitId);
                 var investmentDetail = await _investmentRecRepo.ListAsync(spec);
                 string qry = "SELECT CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,  MAX(A.Priority) Count FROM ApprAuthConfig AC INNER JOIN ApprovalAuthority A ON AC.ApprovalAuthorityId = A.Id " +
-                    " INNER JOIN Employee E ON Ac.EmployeeId = E.Id WHERE( E.ZoneCode = '"+ initData.ZoneCode+ "' )";
+                    " INNER JOIN Employee E ON Ac.EmployeeId = E.Id WHERE( E.ZoneCode = '" + initData.ZoneCode + "' )";
                 var result = _dbContext.CountInt.FromSqlRaw(qry).ToList();
                 //return result[0].Count.ToString();
-                
+
                 //return investmentDetail.Where(x => x.Priority == apprAuthConfigAppr.ApprovalAuthority.Priority - 1).ToList();
                 return investmentDetail.Where(x => x.Priority == result[0].Count).ToList();
             }

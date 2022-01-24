@@ -729,7 +729,7 @@ export class InvestmentAprComponent implements OnInit {
     }
     this.investmentAprService.investmentAprCommentFormData.employeeId = parseInt(this.empId);
     this.SpinnerService.show();
-    this.investmentAprService.insertInvestmentApr().subscribe(
+    this.investmentAprService.insertInvestmentApr(this.userRole).subscribe(
       res => {
         debugger;
         this.investmentAprService.investmentAprCommentFormData = res as IInvestmentAprComment;
@@ -794,7 +794,7 @@ export class InvestmentAprComponent implements OnInit {
       }
     }
     this.SpinnerService.show();
-    this.investmentAprService.updateInvestmentApr().subscribe(
+    this.investmentAprService.updateInvestmentApr(this.userRole).subscribe(
       res => {
         this.isValid = true;
         this.investmentAprService.investmentAprCommentFormData = res as IInvestmentAprComment;
@@ -883,7 +883,9 @@ export class InvestmentAprComponent implements OnInit {
           this.insertInvestmentDetails();
         }
         this.getInvestmentTargetedProd();
+        if(this.userRole!='GPM'){
         this.getInvestmentTargetedGroup();
+      }
         this.isDonationValid = true;
         this.SpinnerService.hide();
         // if (this.sbu != this.investmentAprService.investmentAprFormData.sbu) 

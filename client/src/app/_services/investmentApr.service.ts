@@ -202,12 +202,22 @@ export class InvestmentAprService {
     );
     
   }
-  insertInvestmentApr() {
-    return this.http.post(this.baseUrl+ 'investmentApr/insertAprCom', this.investmentAprCommentFormData);
+  insertInvestmentApr(userRole:string) {
+    var actionName='insertAprCom';
+    if(userRole=='GPM')
+    {
+      actionName='insertAprComForGPM';
+    }
+    return this.http.post(this.baseUrl+ 'investmentApr/'+actionName, this.investmentAprCommentFormData);
   }
   
-  updateInvestmentApr() {
-    return this.http.post(this.baseUrl+ 'investmentApr/updateAprCom',  this.investmentAprCommentFormData);
+  updateInvestmentApr(userRole:string) {
+    var actionName='updateAprCom';
+    if(userRole=='GPM')
+    {
+      actionName='updateAprComForGPM';
+    }
+    return this.http.post(this.baseUrl+ 'investmentApr/'+actionName,  this.investmentAprCommentFormData);
   }
   insertInvestmentDetail(empId:number,sbu:string) {
     debugger;

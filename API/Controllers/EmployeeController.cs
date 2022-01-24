@@ -62,7 +62,7 @@ namespace API.Controllers
                 var data = await _employeeRepo.ListAllAsync();
                 //var market = data.GroupBy(p => p.MarketCode).Select(g => g.First()).ToList();
                 var market = (from r in data
-                              where r.MarketCode != null && r.Id != empId && r.MarketCode!=""
+                              where r.MarketCode != null && r.Id != empId && r.MarketCode!="" && r.DataStatus==1
                               orderby r.MarketName
                               select new MarketDto
                               {
