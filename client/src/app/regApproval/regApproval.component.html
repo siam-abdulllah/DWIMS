@@ -173,36 +173,52 @@
     <div class="modal-body" style="padding: 20px 30px 20px 30px;">
         <div class="row">
             <div class="col-md-12">
-                <div class="table-responsive" style="border: 1px solid #bed2c9; width: 100%;">
-                    <table class="table table-bordered table-responsive table-hover table-striped">
-                        <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc));">
-                            <tr class="HeaderRow">
-                                <th scope="col" style="width: 7%">Action</th>
-                                <th scope="col" style="width: 4;">Employee Id</th>
-                                <th scope="col" style="width: 9%">Employee Name</th>
-                                <th scope="col" style="width: 8%">Department Name</th>
-                                <th scope="col" style="width: 8%">Designation Name</th>
-                                <th scope="col" style="width: 8%">Phone</th>
-                                <th scope="col" style="width: 8%">Email</th>
-                                <th scope="col" style="width: 8%">Approved Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let a of regApprovals">
-                                <td>
-                                    <button class="btn btn-sm btn-embossed btn-success" (click)="selectRegApproval(a)"><i class="fa fa-check"></i>&nbsp; Select</button>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-2">
+                        </div>
+                        <div class="col-md-6">
+                            <input name="filterText" class="form-control m-input Searchbox" type="text" [(ngModel)]="searchText" placeholder="Search..">
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-danger" type="button" (click)="resetSearch()"><i class="fa fa-undo"></i>&nbsp; Reset</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive" style="border: 1px solid #bed2c9; width: 100%;">
+                            <table class="table table-bordered table-responsive table-hover table-striped">
+                                <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #289e68), color-stop(1, #f9fafc));">
+                                    <tr class="HeaderRow">
+                                        <th scope="col" style="width: 7%">Action</th>
+                                        <th scope="col" style="width: 4;">Employee Id</th>
+                                        <th scope="col" style="width: 9%">Employee Name</th>
+                                        <th scope="col" style="width: 8%">Department Name</th>
+                                        <th scope="col" style="width: 8%">Designation Name</th>
+                                        <th scope="col" style="width: 8%">Phone</th>
+                                        <th scope="col" style="width: 8%">Email</th>
+                                        <th scope="col" style="width: 8%">Approved Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let a of regApprovals | filter: searchText">
+                                        <td>
+                                            <button class="btn btn-sm btn-embossed btn-success" (click)="selectRegApproval(a)"><i class="fa fa-check"></i>&nbsp; Select</button>
 
-                                </td>
-                                <td>{{a.employeeId}}</td>
-                                <td>{{a.employeeName}}</td>
-                                <td>{{a.departmentName}}</td>
-                                <td>{{a.designationName}}</td>
-                                <td>{{a.phone}}</td>
-                                <td>{{a.email}}</td>
-                                <td>{{a.approvalStatus}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                        </td>
+                                        <td>{{a.employeeId}}</td>
+                                        <td>{{a.employeeName}}</td>
+                                        <td>{{a.departmentName}}</td>
+                                        <td>{{a.designationName}}</td>
+                                        <td>{{a.phone}}</td>
+                                        <td>{{a.email}}</td>
+                                        <td>{{a.approvalStatus}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

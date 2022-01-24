@@ -92,6 +92,7 @@ namespace Infrastructure.Data
         public DbSet<InvestmentMedicineProd> InvestmentMedicineProd { get; set; }
         public DbSet<MedicineProduct> MedicineProduct { get; set; }
         public DbSet<MedicineDispatch> MedicineDispatch { get; set; }
+        public DbSet<EmployeePosting> EmployeePosting { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

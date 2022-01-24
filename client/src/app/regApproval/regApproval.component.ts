@@ -22,6 +22,7 @@ export class RegApprovalComponent implements OnInit {
   @ViewChild('search', {static: false}) searchTerm: ElementRef;
   @ViewChild('regApprovalSearchModal', { static: false }) regApprovalSearchModal: TemplateRef<any>;
   RegApprovalSearchModalRef: BsModalRef;
+  searchText = '';
   roleList = [];
   errors: string[];
   regApprovals: IRegApproval[];
@@ -42,7 +43,9 @@ export class RegApprovalComponent implements OnInit {
       private modalService: BsModalService,
       private SpinnerService: NgxSpinnerService
     ) { }
-
+    resetSearch() {
+      this.searchText = '';
+    }
   ngOnInit() {
     this.resetPage();
     this.getRoles();
