@@ -12,8 +12,9 @@ namespace Core.Specifications
         {
             
             AddInclude(x => x.Employee);
+            AddInclude(x => x.Donation);
             AddOrderByDescending(x => x.SetOn);
-            ApplyPaging(parrams.PageSize * (parrams.PageIndex - 1), parrams.PageSize);
+            //ApplyPaging(parrams.PageSize * (parrams.PageIndex - 1), parrams.PageSize);
 
             // if (!string.IsNullOrEmpty(postParrams.Sort))
             // {

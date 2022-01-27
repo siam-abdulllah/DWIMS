@@ -78,7 +78,7 @@ export class InvestmentAprComponent implements OnInit {
   campaignDtlProducts: ICampaignDtlProduct[];
   marketGroupMsts: IMarketGroupMst[];
   donationToVal: string;
-  totalCount = 0;
+ //totalCount = 0;
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date = new Date();
   isAdmin: boolean = false;
@@ -306,7 +306,7 @@ export class InvestmentAprComponent implements OnInit {
     this.SpinnerService.show();
     this.investmentAprService.getInvestmentInit(parseInt(this.empId), this.sbu, this.userRole).subscribe(response => {
       this.SpinnerService.hide();
-      this.investmentInits = response.data;
+      this.investmentInits = response as IInvestmentInit[];
       if (this.investmentInits.length > 0) {
         this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
       }
@@ -324,14 +324,14 @@ export class InvestmentAprComponent implements OnInit {
     this.SpinnerService.show();
     this.investmentAprService.getInvestmentApproved(parseInt(this.empId), this.sbu, this.userRole).subscribe(response => {
       this.SpinnerService.hide();
-      this.investmentInits = response.data;
-      this.totalCount = response.count;
-      debugger;
-      this.configs = {
-        currentPage: params.pageIndex,
-        itemsPerPage: params.pageSize,
-        totalItems: this.totalCount,
-      };
+      this.investmentInits = response as IInvestmentInit[];
+      // this.totalCount = response.count;
+      // debugger;
+      // this.configs = {
+      //   currentPage: params.pageIndex,
+      //   itemsPerPage: params.pageSize,
+      //   totalItems: this.totalCount,
+      // };
       if (this.investmentInits.length > 0) {
         this.openInvestmentAprSearchModal(this.investmentAprSearchModal);
       }
@@ -1103,32 +1103,32 @@ removeInvestmentMedicineProd(selectedRecord: IInvestmentMedicineProd) {
 }
 // #endregion Medicine Prod
 
-  onPageChanged(event: any) {
-    const params = this.investmentAprService.getGenParams();
-    if (params.pageIndex !== event) {
-      params.pageIndex = event;
-      this.investmentAprService.setGenParams(params);
-      this.getInvestmentApprovedPgChange();
-    }
-  }
-  getInvestmentApprovedPgChange() {
-    const params = this.investmentAprService.getGenParams();
-    this.SpinnerService.show();
-    this.investmentAprService.getInvestmentApproved(parseInt(this.empId), this.sbu, this.userRole).subscribe(response => {
-      this.SpinnerService.hide();
-      this.investmentInits = response.data;
-      this.totalCount = response.count;
-      this.configs = {
-        currentPage: params.pageIndex,
-        itemsPerPage: params.pageSize,
-        totalItems: this.totalCount,
-      };
+  // onPageChanged(event: any) {
+  //   const params = this.investmentAprService.getGenParams();
+  //   if (params.pageIndex !== event) {
+  //     params.pageIndex = event;
+  //     this.investmentAprService.setGenParams(params);
+  //     this.getInvestmentApprovedPgChange();
+  //   }
+  // }
+  // getInvestmentApprovedPgChange() {
+  //   const params = this.investmentAprService.getGenParams();
+  //   this.SpinnerService.show();
+  //   this.investmentAprService.getInvestmentApproved(parseInt(this.empId), this.sbu, this.userRole).subscribe(response => {
+  //     this.SpinnerService.hide();
+  //     this.investmentInits = response.data;
+  //     this.totalCount = response.count;
+  //     this.configs = {
+  //       currentPage: params.pageIndex,
+  //       itemsPerPage: params.pageSize,
+  //       totalItems: this.totalCount,
+  //     };
 
-    }, error => {
-      this.SpinnerService.hide();
-      console.log(error);
-    });
-  }
+  //   }, error => {
+  //     this.SpinnerService.hide();
+  //     console.log(error);
+  //   });
+  // }
   resetSearch() {
     this.searchText = '';
   }

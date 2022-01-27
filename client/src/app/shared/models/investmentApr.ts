@@ -2,6 +2,7 @@ import { IBcdsInfo } from "./bcdsInfo";
 import { ICampaignDtl, ICampaignMst } from "./campaign";
 import { IDoctor } from "./docotor";
 import { IDonation } from "./donation";
+import { IEmployee } from "./employee";
 import { IInstitution } from "./institution";
 import { IMarketGroupMst } from "./marketGroupMst";
 import { IProduct } from "./product";
@@ -17,6 +18,7 @@ export interface IInvestmentInit {
     marketCode: string;
     sbu: string;
     employeeId: number;
+    employee: IEmployee;
     setOn: Date;
 }
  
@@ -30,6 +32,7 @@ export class InvestmentInit implements IInvestmentInit {
     marketCode: string;
     sbu: string;
     employeeId: number;
+    employee: IEmployee;
     setOn: Date;
 }
 

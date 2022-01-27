@@ -49,7 +49,7 @@ export class InvestmentRecComponent implements OnInit {
   investmentDoctors: IInvestmentDoctor[];
   searchText = '';
   convertedDate: string;
-  configs: any;
+  //configs: any;
   isValid: boolean = false;
   isInvOther: boolean = false;
   isDonationValid: boolean = false;
@@ -68,7 +68,7 @@ export class InvestmentRecComponent implements OnInit {
   campaignDtlProducts: ICampaignDtlProduct[];
   marketGroupMsts: IMarketGroupMst[];
   donationToVal: string;
-  totalCount = 0;
+  //totalCount = 0;
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date = new Date();
   isAdmin: boolean = false;
@@ -266,13 +266,13 @@ export class InvestmentRecComponent implements OnInit {
     this.SpinnerService.show();
     this.investmentRecService.getInvestmentRecommended(parseInt(this.empId), this.sbu, this.userRole).subscribe(response => {
       this.SpinnerService.hide();
-      this.investmentInits = response.data;
-      this.totalCount = response.count;
-      this.configs = {
-        currentPage: params.pageIndex,
-        itemsPerPage: params.pageSize,
-        totalItems: this.totalCount,
-      };
+      this.investmentInits = response as IInvestmentInit[];
+      // this.totalCount = response.count;
+      // this.configs = {
+      //   currentPage: params.pageIndex,
+      //   itemsPerPage: params.pageSize,
+      //   totalItems: this.totalCount,
+      // };
       if (this.investmentInits.length > 0) {
         this.openInvestmentRecSearchModal(this.investmentRecSearchModal);
       }
@@ -503,9 +503,6 @@ export class InvestmentRecComponent implements OnInit {
       console.log(error);
     });
   }
-
-
-
   changeDateInDetail() {
     if (this.investmentRecService.investmentDetailFormData.fromDate == null || this.investmentRecService.investmentDetailFormData.fromDate == undefined) {
 
@@ -519,7 +516,6 @@ export class InvestmentRecComponent implements OnInit {
     this.investmentRecService.investmentDetailFormData.totalMonth = dateTo.getMonth() - dateFrom.getMonth() + (12 * (dateTo.getFullYear() - dateFrom.getFullYear()));
     this.investmentRecService.investmentDetailFormData.totalMonth = this.investmentRecService.investmentDetailFormData.totalMonth + 1;
   }
-
   getProduct() {
     this.investmentRecService.getProduct(this.sbu).subscribe(response => {
       this.products = response as IProduct[];
@@ -691,9 +687,10 @@ export class InvestmentRecComponent implements OnInit {
     this.investmentRecService.updateInvestmentRec().subscribe(
       res => {
         //
-        
         this.investmentRecService.investmentRecCommentFormData = res as IInvestmentRecComment;
-        if (this.sbu == this.investmentRecService.investmentRecFormData.sbu) { this.insertInvestmentDetails(); }
+        if (this.sbu == this.investmentRecService.investmentRecFormData.sbu) { 
+          this.insertInvestmentDetails(); 
+        }
         this.isValid = true;
         this.insertInvestmentTargetedProd();
         this.getInvestmentTargetedGroup();
@@ -707,8 +704,6 @@ export class InvestmentRecComponent implements OnInit {
     );
   }
   insertInvestmentDetails() {
-    
-
     this.investmentRecService.investmentDetailFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
     this.investmentRecService.insertInvestmentDetail(parseInt(this.empId), this.sbu).subscribe(
       res => {
@@ -906,11 +901,11 @@ export class InvestmentRecComponent implements OnInit {
     this.isAdmin = false;
     this.isValid = false;
     this.isInvOther = false;
-    this.configs = {
-      currentPage: 1,
-      itemsPerPage: 10,
-      totalItems: 50,
-    };
+    // this.configs = {
+    //   currentPage: 1,
+    //   itemsPerPage: 10,
+    //   totalItems: 50,
+    // };
   }
   resetForm() {
     this.investmentRecService.investmentRecFormData = new InvestmentInit();
@@ -932,39 +927,39 @@ export class InvestmentRecComponent implements OnInit {
     this.isAdmin = false;
     this.isValid = false;
     this.isInvOther = false;
-    this.configs = {
-      currentPage: 1,
-      itemsPerPage: 10,
-      totalItems: 50,
-    };
+    // this.configs = {
+    //   currentPage: 1,
+    //   itemsPerPage: 10,
+    //   totalItems: 50,
+    // };
   }
 
 
-  onPageChanged(event: any) {
-    const params = this.investmentRecService.getGenParams();
-    if (params.pageIndex !== event) {
-      params.pageIndex = event;
-      this.investmentRecService.setGenParams(params);
-      this.getInvestmentRecommendedPgChange();
-    }
-  }
-  getInvestmentRecommendedPgChange() {
-    const params = this.investmentRecService.getGenParams();
-    this.SpinnerService.show();
-    this.investmentRecService.getInvestmentRecommended(parseInt(this.empId), this.sbu, this.userRole).subscribe(response => {
-      this.SpinnerService.hide();
-      this.investmentInits = response.data;
-      this.totalCount = response.count;
-      this.configs = {
-        currentPage: params.pageIndex,
-        itemsPerPage: params.pageSize,
-        totalItems: this.totalCount,
-      };
-    }, error => {
-      this.SpinnerService.hide();
-      console.log(error);
-    });
-  }
+  // onPageChanged(event: any) {
+  //   const params = this.investmentRecService.getGenParams();
+  //   if (params.pageIndex !== event) {
+  //     params.pageIndex = event;
+  //     this.investmentRecService.setGenParams(params);
+  //     this.getInvestmentRecommendedPgChange();
+  //   }
+  // }
+  // getInvestmentRecommendedPgChange() {
+  //   const params = this.investmentRecService.getGenParams();
+  //   this.SpinnerService.show();
+  //   this.investmentRecService.getInvestmentRecommended(parseInt(this.empId), this.sbu, this.userRole).subscribe(response => {
+  //     this.SpinnerService.hide();
+  //     this.investmentInits = response.data;
+  //     this.totalCount = response.count;
+  //     this.configs = {
+  //       currentPage: params.pageIndex,
+  //       itemsPerPage: params.pageSize,
+  //       totalItems: this.totalCount,
+  //     };
+  //   }, error => {
+  //     this.SpinnerService.hide();
+  //     console.log(error);
+  //   });
+  // }
   resetSearch() {
     this.searchText = '';
   }

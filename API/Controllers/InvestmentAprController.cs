@@ -78,7 +78,7 @@ namespace API.Controllers
             _donationRepo = donationRepo;
         }
         [HttpGet("investmentInits/{empId}/{sbu}")]
-        public ActionResult<Pagination<InvestmentInitDto>> GetInvestmentInits(int empId, string sbu,
+        public ActionResult<IReadOnlyList<InvestmentInit>> GetInvestmentInits(int empId, string sbu,
           [FromQuery] InvestmentInitSpecParams investmentInitParrams)
         {
             try
@@ -90,11 +90,44 @@ namespace API.Controllers
                         new SqlParameter("@RSTATUS", "Recommended")
                     };
                 var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentAprSearchNotCamp @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
-                var data = _mapper
-                    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
+                //var data = _mapper
+                //    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
 
-
-                return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, 50, data));
+                var data = (from r in results
+                            join d in _dbContext.Donation on r.DonationId equals d.Id
+                            join e in _dbContext.Employee on r.EmployeeId equals e.Id
+                            orderby r.SetOn
+                            select new InvestmentInit
+                            {
+                                Id = r.Id,
+                                DataStatus = r.DataStatus,
+                                SetOn = r.SetOn,
+                                ModifiedOn = r.ModifiedOn,
+                                ReferenceNo = r.ReferenceNo,
+                                ProposeFor = r.ProposeFor,
+                                DonationId = r.DonationId,
+                                DonationTo = r.DonationTo,
+                                EmployeeId = r.EmployeeId,
+                                MarketGroupCode = r.MarketGroupCode,
+                                MarketGroupName = r.MarketGroupName,
+                                MarketCode = r.MarketCode,
+                                MarketName = r.MarketName,
+                                RegionCode = r.RegionCode,
+                                RegionName = r.RegionName,
+                                ZoneCode = r.ZoneCode,
+                                ZoneName = r.ZoneName,
+                                TerritoryCode = r.TerritoryCode,
+                                TerritoryName = r.TerritoryName,
+                                SBU = r.SBU,
+                                SBUName = r.SBUName,
+                                Confirmation = r.Confirmation,
+                                SubmissionDate = r.SubmissionDate,
+                                Donation = d,
+                                Employee = e
+                            }
+                            ).Distinct().ToList();
+                return data;
+                //return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, 50, data));
             }
             catch (System.Exception e)
             {
@@ -103,7 +136,7 @@ namespace API.Controllers
         }
 
         [HttpGet("investmentInitsForRSM/{empId}/{sbu}")]
-        public ActionResult<Pagination<InvestmentInitDto>> GetInvestmentInitsForRSM(int empId, string sbu,
+        public ActionResult<IReadOnlyList<InvestmentInit>> GetInvestmentInitsForRSM(int empId, string sbu,
          [FromQuery] InvestmentInitSpecParams investmentInitParrams)
         {
             try
@@ -115,11 +148,44 @@ namespace API.Controllers
                         new SqlParameter("@RSTATUS", "Recommended")
                     };
                 var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentAprSearchForRSM @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
-                var data = _mapper
-                    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
+                //var data = _mapper
+                //    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
+                var data = (from r in results
+                            join d in _dbContext.Donation on r.DonationId equals d.Id
+                            join e in _dbContext.Employee on r.EmployeeId equals e.Id
+                            orderby r.SetOn
+                            select new InvestmentInit
+                            {
+                                Id = r.Id,
+                                DataStatus = r.DataStatus,
+                                SetOn = r.SetOn,
+                                ModifiedOn = r.ModifiedOn,
+                                ReferenceNo = r.ReferenceNo,
+                                ProposeFor = r.ProposeFor,
+                                DonationId = r.DonationId,
+                                DonationTo = r.DonationTo,
+                                EmployeeId = r.EmployeeId,
+                                MarketGroupCode = r.MarketGroupCode,
+                                MarketGroupName = r.MarketGroupName,
+                                MarketCode = r.MarketCode,
+                                MarketName = r.MarketName,
+                                RegionCode = r.RegionCode,
+                                RegionName = r.RegionName,
+                                ZoneCode = r.ZoneCode,
+                                ZoneName = r.ZoneName,
+                                TerritoryCode = r.TerritoryCode,
+                                TerritoryName = r.TerritoryName,
+                                SBU = r.SBU,
+                                SBUName = r.SBUName,
+                                Confirmation = r.Confirmation,
+                                SubmissionDate = r.SubmissionDate,
+                                Donation = d,
+                                Employee = e
+                            }
+                            ).Distinct().ToList();
+                return data;
 
-
-                return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, 50, data));
+                //return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, 50, data));
             }
             catch (System.Exception e)
             {
@@ -127,7 +193,7 @@ namespace API.Controllers
             }
         }
         [HttpGet("investmentInitsForGPM/{empId}/{sbu}")]
-        public ActionResult<Pagination<InvestmentInitDto>> GetInvestmentInitsForGPM(int empId, string sbu,
+        public ActionResult<IReadOnlyList<InvestmentInit>> GetInvestmentInitsForGPM(int empId, string sbu,
          [FromQuery] InvestmentInitSpecParams investmentInitParrams)
         {
             try
@@ -139,11 +205,44 @@ namespace API.Controllers
                         new SqlParameter("@RSTATUS", "Recommended")
                     };
                 var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentAprSearchForGPM @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
-                var data = _mapper
-                    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
+                //var data = _mapper
+                //    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
+                var data = (from r in results
+                            join d in _dbContext.Donation on r.DonationId equals d.Id
+                            join e in _dbContext.Employee on r.EmployeeId equals e.Id
+                            orderby r.SetOn
+                            select new InvestmentInit
+                            {
+                                Id = r.Id,
+                                DataStatus = r.DataStatus,
+                                SetOn = r.SetOn,
+                                ModifiedOn = r.ModifiedOn,
+                                ReferenceNo = r.ReferenceNo,
+                                ProposeFor = r.ProposeFor,
+                                DonationId = r.DonationId,
+                                DonationTo = r.DonationTo,
+                                EmployeeId = r.EmployeeId,
+                                MarketGroupCode = r.MarketGroupCode,
+                                MarketGroupName = r.MarketGroupName,
+                                MarketCode = r.MarketCode,
+                                MarketName = r.MarketName,
+                                RegionCode = r.RegionCode,
+                                RegionName = r.RegionName,
+                                ZoneCode = r.ZoneCode,
+                                ZoneName = r.ZoneName,
+                                TerritoryCode = r.TerritoryCode,
+                                TerritoryName = r.TerritoryName,
+                                SBU = r.SBU,
+                                SBUName = r.SBUName,
+                                Confirmation = r.Confirmation,
+                                SubmissionDate = r.SubmissionDate,
+                                Donation = d,
+                                Employee = e
+                            }
+                          ).Distinct().ToList();
+                return data;
 
-
-                return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, 50, data));
+                //return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, 50, data));
             }
             catch (System.Exception e)
             {
@@ -151,7 +250,7 @@ namespace API.Controllers
             }
         }
         [HttpGet("investmentInitsForSM/{empId}/{sbu}")]
-        public ActionResult<Pagination<InvestmentInitDto>> GetInvestmentInitsForSM(int empId, string sbu,
+        public ActionResult<IReadOnlyList<InvestmentInit>> GetInvestmentInitsForSM(int empId, string sbu,
          [FromQuery] InvestmentInitSpecParams investmentInitParrams)
         {
             try
@@ -163,11 +262,44 @@ namespace API.Controllers
                         new SqlParameter("@RSTATUS", "Recommended")
                     };
                 var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentAprSearchForMngr @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
-                var data = _mapper
-                    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
+                //var data = _mapper
+                //    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
+                var data = (from r in results
+                            join d in _dbContext.Donation on r.DonationId equals d.Id
+                            join e in _dbContext.Employee on r.EmployeeId equals e.Id
+                            orderby r.SetOn
+                            select new InvestmentInit
+                            {
+                                Id = r.Id,
+                                DataStatus = r.DataStatus,
+                                SetOn = r.SetOn,
+                                ModifiedOn = r.ModifiedOn,
+                                ReferenceNo = r.ReferenceNo,
+                                ProposeFor = r.ProposeFor,
+                                DonationId = r.DonationId,
+                                DonationTo = r.DonationTo,
+                                EmployeeId = r.EmployeeId,
+                                MarketGroupCode = r.MarketGroupCode,
+                                MarketGroupName = r.MarketGroupName,
+                                MarketCode = r.MarketCode,
+                                MarketName = r.MarketName,
+                                RegionCode = r.RegionCode,
+                                RegionName = r.RegionName,
+                                ZoneCode = r.ZoneCode,
+                                ZoneName = r.ZoneName,
+                                TerritoryCode = r.TerritoryCode,
+                                TerritoryName = r.TerritoryName,
+                                SBU = r.SBU,
+                                SBUName = r.SBUName,
+                                Confirmation = r.Confirmation,
+                                SubmissionDate = r.SubmissionDate,
+                                Donation = d,
+                                Employee = e
+                            }
+                          ).Distinct().ToList();
+                return data;
 
-
-                return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, 50, data));
+                //return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, 50, data));
             }
             catch (System.Exception e)
             {
@@ -176,7 +308,7 @@ namespace API.Controllers
         }
 
         [HttpGet("investmentApproved/{empId}/{sbu}/{userRole}")]
-        public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetinvestmentApproved(int empId, string sbu, string userRole,
+        public async Task<ActionResult<IReadOnlyList<InvestmentInit>>> GetinvestmentApproved(int empId, string sbu, string userRole,
         [FromQuery] InvestmentInitSpecParams investmentInitParrams)
         {
             try
@@ -187,26 +319,45 @@ namespace API.Controllers
                     var investmentInits = await _investmentInitRepo.ListAllAsync();
                     var investmentRecComments = await _investmentRecCommentRepo.ListAllAsync();
                     //var investmentAprComments = await _investmentAprCommentRepo.ListAllAsync();
-                    var investmentInitFormRec = (from i in investmentInits
-                                                 join rc in investmentRecComments on i.Id equals rc.InvestmentInitId
+                    var investmentInitFormRec = (from r in investmentInits
+                                                 join rc in investmentRecComments on r.Id equals rc.InvestmentInitId
+                                                 join d in _dbContext.Donation on r.DonationId equals d.Id
+                                                 join e in _dbContext.Employee on r.EmployeeId equals e.Id
                                                  where rc.RecStatus == "Approved"
-                                                 orderby i.ReferenceNo
-                                                 select new InvestmentInitDto
+                                                 orderby r.ReferenceNo
+                                                 select new InvestmentInit
                                                  {
-                                                     Id = i.Id,
-                                                     ReferenceNo = i.ReferenceNo,
-                                                     ProposeFor = i.ProposeFor,
-                                                     DonationId = i.DonationId,
-                                                     MarketCode = i.MarketCode,
-                                                     MarketName = i.MarketName,
-                                                     DonationTo = i.DonationTo,
-                                                     EmployeeId = i.EmployeeId,
-                                                     SetOn = i.SetOn
+                                                     Id = r.Id,
+                                                     DataStatus = r.DataStatus,
+                                                     SetOn = r.SetOn,
+                                                     ModifiedOn = r.ModifiedOn,
+                                                     ReferenceNo = r.ReferenceNo,
+                                                     ProposeFor = r.ProposeFor,
+                                                     DonationId = r.DonationId,
+                                                     DonationTo = r.DonationTo,
+                                                     EmployeeId = r.EmployeeId,
+                                                     MarketGroupCode = r.MarketGroupCode,
+                                                     MarketGroupName = r.MarketGroupName,
+                                                     MarketCode = r.MarketCode,
+                                                     MarketName = r.MarketName,
+                                                     RegionCode = r.RegionCode,
+                                                     RegionName = r.RegionName,
+                                                     ZoneCode = r.ZoneCode,
+                                                     ZoneName = r.ZoneName,
+                                                     TerritoryCode = r.TerritoryCode,
+                                                     TerritoryName = r.TerritoryName,
+                                                     SBU = r.SBU,
+                                                     SBUName = r.SBUName,
+                                                     Confirmation = r.Confirmation,
+                                                     SubmissionDate = r.SubmissionDate,
+                                                     Donation = d,
+                                                     Employee = e
                                                  }
                                                     ).Distinct().OrderByDescending(x => x.SetOn).ToList();
                     //var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
                     //var totalItems = await _investmentInitRepo.CountAsync(countSpec);
-                    return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, investmentInitFormRec.Count(), investmentInitFormRec));
+                    //return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, investmentInitFormRec.Count(), investmentInitFormRec));
+                    return investmentInitFormRec;
                 }
 
                 else
@@ -219,11 +370,46 @@ namespace API.Controllers
                         new SqlParameter("@ASTATUS", DBNull.Value)
                     };
                     var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentApprpvedSearchNotCamp @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
-                    var data = _mapper
-                        .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
-                    var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
-                    var totalItems = await _investmentInitRepo.CountAsync(countSpec);
-                    return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, results.Count(), data));
+                    //var data = _mapper
+                    //    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
+                    //var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
+                    //var totalItems = await _investmentInitRepo.CountAsync(countSpec);
+
+                    var data = (from r in results
+                                join d in _dbContext.Donation on r.DonationId equals d.Id
+                                join e in _dbContext.Employee on r.EmployeeId equals e.Id
+                                orderby r.SetOn
+                                select new InvestmentInit
+                                {
+                                    Id = r.Id,
+                                    DataStatus = r.DataStatus,
+                                    SetOn = r.SetOn,
+                                    ModifiedOn = r.ModifiedOn,
+                                    ReferenceNo = r.ReferenceNo,
+                                    ProposeFor = r.ProposeFor,
+                                    DonationId = r.DonationId,
+                                    DonationTo = r.DonationTo,
+                                    EmployeeId = r.EmployeeId,
+                                    MarketGroupCode = r.MarketGroupCode,
+                                    MarketGroupName = r.MarketGroupName,
+                                    MarketCode = r.MarketCode,
+                                    MarketName = r.MarketName,
+                                    RegionCode = r.RegionCode,
+                                    RegionName = r.RegionName,
+                                    ZoneCode = r.ZoneCode,
+                                    ZoneName = r.ZoneName,
+                                    TerritoryCode = r.TerritoryCode,
+                                    TerritoryName = r.TerritoryName,
+                                    SBU = r.SBU,
+                                    SBUName = r.SBUName,
+                                    Confirmation = r.Confirmation,
+                                    SubmissionDate = r.SubmissionDate,
+                                    Donation = d,
+                                    Employee = e
+                                }
+                          ).Distinct().ToList();
+                    return data;
+                    //return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, results.Count(), data));
                 }
             }
             catch (System.Exception e)
@@ -232,7 +418,7 @@ namespace API.Controllers
             }
         }
         [HttpGet("investmentApprovedForRSM/{empId}/{sbu}/{userRole}")]
-        public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetinvestmentApprovedForRSM(int empId, string sbu, string userRole,
+        public ActionResult<IReadOnlyList<InvestmentInit>> GetinvestmentApprovedForRSM(int empId, string sbu, string userRole,
         [FromQuery] InvestmentInitSpecParams investmentInitParrams)
         {
             try
@@ -246,11 +432,46 @@ namespace API.Controllers
                         new SqlParameter("@ASTATUS", DBNull.Value)
                     };
                 var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentApprpvedSearchForRSM @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
-                var data = _mapper
-                    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
-                var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
-                var totalItems = await _investmentInitRepo.CountAsync(countSpec);
-                return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, results.Count(), data));
+                //var data = _mapper
+                //    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
+                //var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
+                //var totalItems = await _investmentInitRepo.CountAsync(countSpec);
+
+                var data = (from r in results
+                            join d in _dbContext.Donation on r.DonationId equals d.Id
+                            join e in _dbContext.Employee on r.EmployeeId equals e.Id
+                            orderby r.SetOn
+                            select new InvestmentInit
+                            {
+                                Id = r.Id,
+                                DataStatus = r.DataStatus,
+                                SetOn = r.SetOn,
+                                ModifiedOn = r.ModifiedOn,
+                                ReferenceNo = r.ReferenceNo,
+                                ProposeFor = r.ProposeFor,
+                                DonationId = r.DonationId,
+                                DonationTo = r.DonationTo,
+                                EmployeeId = r.EmployeeId,
+                                MarketGroupCode = r.MarketGroupCode,
+                                MarketGroupName = r.MarketGroupName,
+                                MarketCode = r.MarketCode,
+                                MarketName = r.MarketName,
+                                RegionCode = r.RegionCode,
+                                RegionName = r.RegionName,
+                                ZoneCode = r.ZoneCode,
+                                ZoneName = r.ZoneName,
+                                TerritoryCode = r.TerritoryCode,
+                                TerritoryName = r.TerritoryName,
+                                SBU = r.SBU,
+                                SBUName = r.SBUName,
+                                Confirmation = r.Confirmation,
+                                SubmissionDate = r.SubmissionDate,
+                                Donation = d,
+                                Employee = e
+                            }
+                          ).Distinct().ToList();
+                return data;
+                //return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, results.Count(), data));
             }
 
             catch (System.Exception e)
@@ -259,7 +480,7 @@ namespace API.Controllers
             }
         }
         [HttpGet("investmentApprovedForGPM/{empId}/{sbu}/{userRole}")]
-        public async Task<ActionResult<Pagination<InvestmentInitDto>>> GetinvestmentApprovedForGPM(int empId, string sbu, string userRole,
+        public  ActionResult<IReadOnlyList<InvestmentInit>> GetinvestmentApprovedForGPM(int empId, string sbu, string userRole,
       [FromQuery] InvestmentInitSpecParams investmentInitParrams)
         {
             try
@@ -273,11 +494,45 @@ namespace API.Controllers
                         new SqlParameter("@ASTATUS", DBNull.Value)
                     };
                 var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentApprpvedSearchForGPM @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
-                var data = _mapper
-                    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
-                var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
-                var totalItems = await _investmentInitRepo.CountAsync(countSpec);
-                return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, results.Count(), data));
+                //var data = _mapper
+                //    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
+                //var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
+                //var totalItems = await _investmentInitRepo.CountAsync(countSpec);
+                var data = (from r in results
+                            join d in _dbContext.Donation on r.DonationId equals d.Id
+                            join e in _dbContext.Employee on r.EmployeeId equals e.Id
+                            orderby r.SetOn
+                            select new InvestmentInit
+                            {
+                                Id = r.Id,
+                                DataStatus = r.DataStatus,
+                                SetOn = r.SetOn,
+                                ModifiedOn = r.ModifiedOn,
+                                ReferenceNo = r.ReferenceNo,
+                                ProposeFor = r.ProposeFor,
+                                DonationId = r.DonationId,
+                                DonationTo = r.DonationTo,
+                                EmployeeId = r.EmployeeId,
+                                MarketGroupCode = r.MarketGroupCode,
+                                MarketGroupName = r.MarketGroupName,
+                                MarketCode = r.MarketCode,
+                                MarketName = r.MarketName,
+                                RegionCode = r.RegionCode,
+                                RegionName = r.RegionName,
+                                ZoneCode = r.ZoneCode,
+                                ZoneName = r.ZoneName,
+                                TerritoryCode = r.TerritoryCode,
+                                TerritoryName = r.TerritoryName,
+                                SBU = r.SBU,
+                                SBUName = r.SBUName,
+                                Confirmation = r.Confirmation,
+                                SubmissionDate = r.SubmissionDate,
+                                Donation = d,
+                                Employee = e
+                            }
+                          ).Distinct().ToList();
+                return data;
+                //return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, results.Count(), data));
             }
 
             catch (System.Exception e)

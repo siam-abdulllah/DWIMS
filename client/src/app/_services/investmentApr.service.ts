@@ -134,15 +134,15 @@ export class InvestmentAprService {
     this.genParams = genParams;
   }
   getInvestmentInit(empId:number,sbu:string,userRole:string){    
-    let params = new HttpParams();
-    if (this.genParams.search) {
-      params = params.append('search', this.genParams.search);
-    }
-    params = params.append('sort', this.genParams.sort);
-    params = params.append('pageIndex', this.genParams.pageIndex.toString());
-    params = params.append('pageSize', this.genParams.pageSize.toString());
-    var actionName='investmentInits';
-    debugger;
+    // let params = new HttpParams();
+    // if (this.genParams.search) {
+    //   params = params.append('search', this.genParams.search);
+    // }
+    // params = params.append('sort', this.genParams.sort);
+    // params = params.append('pageIndex', this.genParams.pageIndex.toString());
+    // params = params.append('pageSize', this.genParams.pageSize.toString());
+     var actionName='investmentInits';
+    // debugger;
     if(userRole=='RSM')
     {
       actionName='investmentInitsForRSM';
@@ -159,25 +159,27 @@ export class InvestmentAprService {
     {
       actionName='investmentInits';
     }
-    return this.http.get<IInvestmentInitPagination>(this.baseUrl + 'investmentApr/'+actionName+'/'+empId+'/'+sbu, { observe: 'response', params })
-    //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
-    .pipe(
-      map(response => {
-        this.investmentInits = [...this.investmentInits, ...response.body.data]; 
-        this.investmentInitPagination = response.body;
-        return this.investmentInitPagination;
-      })
-    );
+    return this.http.get(this.baseUrl + 'investmentApr/'+actionName+'/'+empId+'/'+sbu);
+
+    // return this.http.get<IInvestmentInitPagination>(this.baseUrl + 'investmentApr/'+actionName+'/'+empId+'/'+sbu, { observe: 'response', params })
+    // //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
+    // .pipe(
+    //   map(response => {
+    //     this.investmentInits = [...this.investmentInits, ...response.body.data]; 
+    //     this.investmentInitPagination = response.body;
+    //     return this.investmentInitPagination;
+    //   })
+    // );
     
   }
   getInvestmentApproved(empId:number,sbu:string,userRole:string){    
-    let params = new HttpParams();
-    if (this.genParams.search) {
-      params = params.append('search', this.genParams.search);
-    }
-    params = params.append('sort', this.genParams.sort);
-    params = params.append('pageIndex', this.genParams.pageIndex.toString());
-    params = params.append('pageSize', this.genParams.pageSize.toString());
+    // let params = new HttpParams();
+    // if (this.genParams.search) {
+    //   params = params.append('search', this.genParams.search);
+    // }
+    // params = params.append('sort', this.genParams.sort);
+    // params = params.append('pageIndex', this.genParams.pageIndex.toString());
+    // params = params.append('pageSize', this.genParams.pageSize.toString());
     var actionName='investmentApproved';
     if(userRole=='RSM')
     {
@@ -191,15 +193,17 @@ export class InvestmentAprService {
     {
       actionName='investmentApproved';
     }
-    return this.http.get<IInvestmentInitPagination>(this.baseUrl + 'investmentApr/'+actionName+'/'+empId+'/'+sbu+'/'+userRole, { observe: 'response', params })
-    //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
-    .pipe(
-      map(response => {
-        this.investmentInits = [...this.investmentInits, ...response.body.data]; 
-        this.investmentInitPagination = response.body;
-        return this.investmentInitPagination;
-      })
-    );
+    return this.http.get(this.baseUrl + 'investmentApr/'+actionName+'/'+empId+'/'+sbu+'/'+userRole);
+
+    // return this.http.get<IInvestmentInitPagination>(this.baseUrl + 'investmentApr/'+actionName+'/'+empId+'/'+sbu+'/'+userRole, { observe: 'response', params })
+    // //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
+    // .pipe(
+    //   map(response => {
+    //     this.investmentInits = [...this.investmentInits, ...response.body.data]; 
+    //     this.investmentInitPagination = response.body;
+    //     return this.investmentInitPagination;
+    //   })
+    // );
     
   }
   insertInvestmentApr(userRole:string) {
