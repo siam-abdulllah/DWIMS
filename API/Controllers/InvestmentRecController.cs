@@ -190,7 +190,8 @@ namespace API.Controllers
                                                  }
                                   ).Distinct().OrderByDescending(x => x.SetOn).ToList();
 
-                    return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, investmentInitFormRec.Count(), investmentInitFormRec));
+                    //return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, investmentInitFormRec.Count(), investmentInitFormRec));
+                    return investmentInitFormRec;
                 }
 
                 else

@@ -174,16 +174,28 @@ export class InvestmentAprNoSbuService {
   updateInvestmentApr() {
     return this.http.post(this.baseUrl+ 'InvestmentAprNoSbu/updateAprCom',  this.investmentAprCommentFormData);
   }
+  insertInvestAprNoSBU(empId:number,sbu:string,investmentTargetedProds:IInvestmentTargetedProd[]) {
+    var investmentRecComment=this.investmentAprCommentFormData;
+    var investmentApr=this.investmentDetailFormData;
+    var investmentRecProducts=investmentTargetedProds;
+    var investmentNoSBUAprInsertDto={investmentRecComment,investmentApr,investmentRecProducts}
+   const headers = new HttpHeaders().set('Content-Type','application/json');
+    return this.http.post(this.baseUrl+ 'InvestmentAprNoSbu/insertInvestAprNoSBU/'+empId+'/'+this.investmentAprCommentFormData.recStatus+'/'+sbu+'/'+this.investmentAprFormData.donationId, investmentNoSBUAprInsertDto,{headers:headers});
+  }
+  updateInvestAprNoSBU(empId:number,sbu:string,investmentTargetedProds:IInvestmentTargetedProd[]) {
+    var investmentRecComment=this.investmentAprCommentFormData;
+    var investmentApr=this.investmentDetailFormData;
+    var investmentRecProducts=investmentTargetedProds;
+    var investmentNoSBUAprInsertDto={investmentRecComment,investmentApr,investmentRecProducts}
+   const headers = new HttpHeaders().set('Content-Type','application/json');
+    return this.http.post(this.baseUrl+ 'InvestmentAprNoSbu/updateInvestAprNoSBU/'+empId+'/'+this.investmentAprCommentFormData.recStatus+'/'+sbu+'/'+this.investmentAprFormData.donationId, investmentNoSBUAprInsertDto,{headers:headers});
+  }
   insertInvestmentDetail(empId:number,sbu:string) {
     
     return this.http.post(this.baseUrl+ 'InvestmentAprNoSbu/insertApr/'+empId+'/'+this.investmentAprCommentFormData.recStatus+'/'+sbu+'/'+this.investmentAprFormData.donationId, this.investmentDetailFormData);
   
   }
-  insertInvestmentRecDepot() {
-    
-    return this.http.post(this.baseUrl+ 'InvestmentAprNoSbu/insertInvestmentRecDepot', this.investmentDepotFormData);
   
-  }
   getInvestmentRecDepot(initId:any) {
     debugger;
     return this.http.get(this.baseUrl+ 'InvestmentAprNoSbu/getInvestmentRecDepot/'+initId).toPromise();
