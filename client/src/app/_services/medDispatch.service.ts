@@ -46,7 +46,7 @@ export class MedDispatchService {
     return this.http.post(this.baseUrl+ 'medDispatch/createDispatch', medDispatchFormData);
   }
 
-  insertMedicineDetail(medDispDtl: any) {
+  insertMedicineDetail(medDispDtl:MedicineDispatchDtl[]) {
     debugger;
     return this.http.post(this.baseUrl+ 'medDispatch/insertMedicineDetail', medDispDtl);
   }

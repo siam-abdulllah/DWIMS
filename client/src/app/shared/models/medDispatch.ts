@@ -27,6 +27,8 @@ export class MedicineDispatch implements IMedicineDispatch {
 export interface IMedicineDispatchDtl {
     id: number;
     productId: number;
+    productName: string;
+    investmentInitId: number;
     employeeId: number;
     tpVat : number;
     boxQuantity : number;
@@ -37,6 +39,8 @@ export interface IMedicineDispatchDtl {
 export class MedicineDispatchDtl implements IMedicineDispatchDtl {
     id: number = 0;
     productId: number;
+    investmentInitId: number;
+    productName: string;
     employeeId: number;
     tpVat : number;
     boxQuantity : number;

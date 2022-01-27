@@ -16,6 +16,7 @@ import { DatePipe } from '@angular/common';
 import { MedDispatchService } from '../_services/medDispatch.service';
 import { DepotPrintTrack,IDepotPrintTrack } from '../shared/models/depotPrintTrack';
 import { IInvestmentMedicineProd, InvestmentMedicineProd } from '../shared/models/investment';
+import { IMedicineDispatchDtl, MedicineDispatchDtl } from '../shared/models/medDispatch';
 
 @Component({
   selector: 'app-bcds-info',
@@ -34,7 +35,9 @@ export class MedDispatchComponent implements OnInit {
   numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
   depotLetter :IrptDepotLetter[] = [];
   printTrack :IDepotPrintTrack[] = [];
-  investmentMedicineProds: IInvestmentMedicineProd[];
+  isValid: boolean = true;
+  valShow: boolean = true;
+  investmentMedicineProds: MedicineDispatchDtl[];
   rptDepotLetter:any;
   searchText = '';
   config: any;
@@ -59,6 +62,14 @@ export class MedDispatchComponent implements OnInit {
       investmentInitId: new FormControl(''),
       searchText: new FormControl(''),
       remarks: new FormControl(''),
+
+
+      productName: new FormControl(''),
+      productId: new FormControl(''),
+      originVal:  new FormControl(''),
+      originQty:new FormControl(''),
+      dispVal:  new FormControl(''),
+      dispQty:  new FormControl(''),
     });
   }
 
@@ -80,15 +91,17 @@ export class MedDispatchComponent implements OnInit {
     });
   }
 
+
+  
+
   getInvestmentMedicineProd() {
     this.pendingService.getInvestmentMedicineProds(this.medDispatchForm.value.investmentInitId).subscribe(response => {
-      var data = response as IInvestmentMedicineProd[];
-      debugger;
+      var data = response as IMedicineDispatchDtl[];
       if (data !== undefined && data.length>0) {
         this.investmentMedicineProds = data;
         let sum=0;
         for (let i = 0; i < this.investmentMedicineProds.length; i++) {
-          sum=sum+this.investmentMedicineProds[i].tpVat;
+          sum=sum+this.investmentMedicineProds[i].dispatchTpVat;
         }
 
         this.medDispatchForm.patchValue({
@@ -151,7 +164,9 @@ export class MedDispatchComponent implements OnInit {
 
     this.pendingService.insertDispatch(this.pendingService.medDispatchFormData).subscribe(
       res => {
-        this.toastr.success('Data Saved successfully', 'Report Tracker')
+        this.SaveMedicineDetail();
+        this.toastr.success('Data Saved successfully', 'Medicine Dispatch') 
+        this.isValid = false;
       },
       err => { console.log(err); }
     );
@@ -160,19 +175,30 @@ export class MedDispatchComponent implements OnInit {
 
   SaveMedicineDetail()
   {
-
-    for(let c in this.investmentMedicineProds)
-    {
-
-      this.pendingService.insertDispatch(c).subscribe(
+      this.pendingService.insertMedicineDetail(this.investmentMedicineProds).subscribe(
         res => {
           //this.toastr.success('Data Saved successfully', 'Report Tracker')
         },
         err => { console.log(err); }
       );
-      
-    }
-    
+  }
+
+  modifyData(selectedRecord: IMedicineDispatchDtl)
+  {
+    this.valShow = false;
+
+    this.medDispatchForm.patchValue({
+      productName: selectedRecord.productName,
+      productId: selectedRecord.productId,
+      originVal:  selectedRecord.tpVat,
+      originQty: selectedRecord.boxQuantity,
+      dispVal:  selectedRecord.dispatchTpVat,
+      dispQty:  selectedRecord.dispatchQuantity,
+      // formControlName2: myValue2 (can be omitted)
+    });
+
+    const index = this.investmentMedicineProds.indexOf(selectedRecord);
+    this.investmentMedicineProds.splice(index, 1);
   }
 
   ViewData(selectedRecord: IrptDepotLetterSearch)
@@ -187,12 +213,61 @@ export class MedDispatchComponent implements OnInit {
       investmentInitId:  selectedRecord.id,
       // formControlName2: myValue2 (can be omitted)
     });
+    this.isValid = true;
     this.getInvestmentMedicineProd();
     this.pendingListModalRef.hide();
   }
 
 
-  removeInvestmentMedicineProd(selectedRecord: IInvestmentMedicineProd) {
+updateData()
+{
+  debugger;
+  if(this.medDispatchForm.value.dispQty == null || this.medDispatchForm.value.dispQty == 0)
+  {
+    this.toastr.warning('Invalid Quantity', 'Medicine Dispatch');
+    return;
+  }
+  if(this.medDispatchForm.value.dispQty > this.medDispatchForm.value.originQty)
+  {
+    this.toastr.warning('Dispatch Quantity Can not be greater than Initial Quantity', 'Medicine Dispatch');
+    return;
+  }
+
+  this.medDispatchForm.value.dispatchTpVat = (this.medDispatchForm.value.originVal / this.medDispatchForm.value.originQty * this.medDispatchForm.value.dispQty);
+
+  let data = new MedicineDispatchDtl();
+  data.id = 0;
+  data.investmentInitId = this.medDispatchForm.value.investmentInitId;
+  data.employeeId = parseInt(this.empId);
+  data.productId = this.medDispatchForm.value.productId;
+  data.productName = this.medDispatchForm.value.productName;
+  data.boxQuantity = this.medDispatchForm.value.originQty;
+  data.tpVat = this.medDispatchForm.value.originVal;
+  data.dispatchQuantity = this.medDispatchForm.value.dispQty;
+  data.dispatchTpVat = (this.medDispatchForm.value.originVal / this.medDispatchForm.value.originQty * this.medDispatchForm.value.dispQty);
+  this.investmentMedicineProds.push(data);
+
+  
+  if ( this.investmentMedicineProds.length>0) {
+    let sum=0;
+    for (let i = 0; i < this.investmentMedicineProds.length; i++) {
+      sum=sum+this.investmentMedicineProds[i].dispatchTpVat;
+    }
+    this.medDispatchForm.patchValue({
+      dispatchAmt: sum.toString(),
+    });
+  }
+  else {
+    this.medDispatchForm.patchValue({
+      dispatchAmt: '0',
+    });
+    this.investmentMedicineProds =[];
+  }
+
+  this.valShow = true;
+}
+
+  removeInvestmentMedicineProd(selectedRecord: IMedicineDispatchDtl) {
     var c = confirm("Are you sure you want to delete that?");
     if (c == true) {
         const index = this.investmentMedicineProds.indexOf(selectedRecord);
@@ -201,7 +276,7 @@ export class MedDispatchComponent implements OnInit {
         if ( this.investmentMedicineProds.length>0) {
           let sum=0;
           for (let i = 0; i < this.investmentMedicineProds.length; i++) {
-            sum=sum+this.investmentMedicineProds[i].tpVat;
+            sum=sum+this.investmentMedicineProds[i].dispatchTpVat;
           }
   
           this.medDispatchForm.patchValue({
@@ -229,8 +304,9 @@ openPendingListModal(template: TemplateRef<any>) {
   reset() {
 
     this.investmentMedicineProds =[];
-
-  this.medDispatchForm.setValue({
+    this.isValid = true;
+    this.valShow = true;
+    this.medDispatchForm.setValue({
       referenceNo: "",
       issueReference: "",
       issueDate: "",
@@ -244,6 +320,14 @@ openPendingListModal(template: TemplateRef<any>) {
       id: "",
       searchText: "",
       investmentInitId: "",
+
+      
+      productName:"",
+      productId:"",
+      originVal:  "",
+      originQty:"",
+      dispVal:  "",
+      dispQty: "",
     });
   }
 
@@ -287,7 +371,6 @@ openPendingListModal(template: TemplateRef<any>) {
     pdf.text('Date: ' + pDate, 680, 120);
     pdf.text('To: '+ r[0].employeeName + ' (Id:' +r[0].empId+ ') '+ r[0].designationName + ' ' + r[0].marketName  , 65, 140);
     pdf.text('Ref.: ' + r[0].referenceNo, 680, 140);
-
     pdf.setLineWidth(0.5);    
     pdf.line(65, 150, 790, 150);  
 
@@ -299,23 +382,19 @@ openPendingListModal(template: TemplateRef<any>) {
     pdf.text('In response to above letter reference, we are pleased to approve ' + r[0].donationTypeName + ' as cash for below '+ r[0].donationTo+'.', 65, 220); 
     pdf.text('Name: '+r[0].doctorName +', GP ID. '+ r[0].docId +' '+ r[0].address +'.', 65, 240 );
     pdf.text('Amount: '+ (r[0].proposedAmount).toLocaleString() + '/-  ('+ this.transform(r[0].proposedAmount)+') only.', 65, 259 );
-
-
     pdf.text('You are therefore advised to Collect the amount in cash from DIC, '+ r[0].depotName +' by showing this reference letter & Arrange to hand over' , 65, 300)
     pdf.text('the money to the mentioned '+ r[0].donationTo+' in prescence of RSM/DIC and respective Colleagues.' , 65, 320)
-
     let row: any[] = [];
     let rowD: any[] = [];
     let col = ['Medicine Name', 'Quantity [Box]', 'Amount']; // initialization for headers
-  
     let slNO = 0;
   
     debugger;
     for (const a of this.investmentMedicineProds) {
       //row.push('Product');
-      row.push(a.medicineProduct.productName);
-      row.push(a.boxQuantity);
-      row.push((a.tpVat).toLocaleString());
+      row.push(a.productName);
+      row.push(a.dispatchQuantity);
+      row.push((a.dispatchTpVat).toLocaleString());
       rowD.push(row);
       row = [];
     }
@@ -370,7 +449,6 @@ openPendingListModal(template: TemplateRef<any>) {
     window.open(URL.createObjectURL(blob));
     //this.loading = false;
   }
-
 
 
   transform(value: any): any {

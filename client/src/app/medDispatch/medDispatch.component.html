@@ -8,17 +8,17 @@
                     <div class="card card-primary">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-sm-10">
+                                <div class="col-sm-9">
                                     <h3 class="card-title">Donated Medicine Dispatch</h3>
                                 </div>
                                 <div class="col-sm-1">
                                     <button class="btn btn-success btn-block" (click)="insertTracker()" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Save</button>
                                 </div>
                                 <div class="col-sm-1 ">
-                                    <button class="btn btn-danger btn-block " (click)="reset()" type="button "><i class="fa fa-undo "></i>&nbsp; Reset</button>
+                                    <button class="btn btn-danger btn-block" (click)="reset()" type="button "><i class="fa fa-undo "></i>&nbsp; Reset</button>
                                 </div>
                                 <div class="col-sm-1 ">
-                                    <button class="btn btn-danger btn-block " (click)="ViewReport()" type="button "><i class="fa fa-save "></i>&nbsp; View</button>
+                                    <button class="btn btn-info btn-block" (click)="ViewReport()" [hidden]="isValid" type="button "><i class="fa fa-save "></i>&nbsp; View</button>
                                 </div>
                             </div>
                         </div>
@@ -120,9 +120,61 @@
                                 </div>
                             </div>
 
+                            <div [hidden]="valShow" style="background-color: cadetblue;">
+                                <br/>
+                                <div class="form-group ">
+                                    <div class="row ">
+                                        <input type="hidden" name="productId" id="productId" formControlName="productId" />
+                                        <div class="col-md-2 ">
+                                            <label>Product Name</label>
+                                        </div>
+                                        <div class="col-md-4 ">
+                                            <input class="form-control" id="productName" formControlName="productName" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group ">
+                                    <div class="row ">
+                                        <div class="col-md-2 ">
+                                            <label>Initial Amount</label>
+                                        </div>
+                                        <div class="col-md-4 ">
+                                            <input class="form-control" id="originVal" placeholder="Amount" formControlName="originVal" readonly>
+                                        </div>
+                                        <div class="col-md-2 ">
+                                            <label>Initial Qty</label>
+                                        </div>
+                                        <div class="col-md-4 ">
+                                            <input class="form-control" id="originQty" formControlName="originQty" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="row ">
+                                        <div class="col-md-2 ">
+                                            <label>Dispatch Amount</label>
+                                        </div>
+                                        <div class="col-md-4 ">
+                                            <input class="form-control" id="dispVal" placeholder="Amount" formControlName="dispVal" readonly>
+                                        </div>
+                                        <div class="col-md-2 ">
+                                            <label>Dispatch Qty</label>
+                                        </div>
+                                        <div class="col-md-4 ">
+                                            <input class="form-control" id="dispQty" formControlName="dispQty">
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary btn-lg btn-block" (click)="updateData()" type="button"><i class="fa fa-plus"></i>&nbsp; Update</button>
+                                <br/>
+                                <br/>
+                            </div>
+
                             <div class="form-group">
                                 <table class="table table-bordered">
                                     <tr class="HeaderRow">
+                                        <td style="display: none;">Product ID</td>
                                         <td>Product Name</td>
                                         <td>Invoice Qty</td>
                                         <td>Invoice TP Vat</td>
@@ -132,8 +184,11 @@
                                         <td>Remove</td>
                                     </tr>
                                     <tr *ngFor="let a of investmentMedicineProds">
+                                        <td style="display: none;">
+                                            {{a.productId}}
+                                        </td>
                                         <td>
-                                            {{a.medicineProduct.productName}}
+                                            {{a.productName}}
                                         </td>
                                         <td>
                                             {{a.boxQuantity}}
@@ -142,13 +197,13 @@
                                             {{a.tpVat}}
                                         </td>
                                         <td>
-                                            {{a.boxQuantity}}
+                                            {{a.dispatchQuantity}}
                                         </td>
                                         <td>
-                                            {{a.tpVat}}
+                                            {{a.dispatchTpVat}}
                                         </td>
                                         <td>
-                                            <input type="button" value="Modify">
+                                            <input type="button" value="Modify" (click)="modifyData(a)">
                                         </td>
                                         <td>
                                             <input type="button" (click)="removeInvestmentMedicineProd(a)" value="Remove">
@@ -161,11 +216,14 @@
                         </div>
                         <!-- /.card -->
                     </div>
+
                 </form>
             </div>
             <!-- /.row -->
         </div>
     </div>
+
+
     <!-- /.container-fluid -->
 </section>
 
@@ -232,4 +290,6 @@
             </div>
         </div>
     </div>
+
+
 </ng-template>

@@ -35,14 +35,13 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("getMedicineProds/{investmentInitId}")]
-        public async Task<IReadOnlyList<InvestmentMedicineProd>> GetInvestmentMedicineProds(int investmentInitId)
+        public  List<MedicineDispatchDtl> GetInvestmentMedicineProds(int investmentInitId)
         {
             try
             {
-                ///var spec = new InvestmentMedicineProdSpecification(investmentInitId,sbu);
-                var spec = new InvestmentMedicineProdSpecification(investmentInitId);
-                var investmentMedicineProd = await _investmentMedicineProdRepo.ListAsync(spec);
-                return investmentMedicineProd;
+                var t = _db.MedicineDispatchDtl.FromSqlRaw("select CAST(ROW_NUMBER() OVER (ORDER BY (SELECT 1)) AS INT) AS Id,  " +
+                " 1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.InvestmentInitId, a.ProductId, b.ProductName,a.EmployeeId, a.BoxQuantity, a.TpVat, a.BoxQuantity 'DispatchQuantity', a.TpVat 'DispatchTpVat' from[dbo].[InvestmentMedicineProd] a left join MedicineProduct b on a.ProductId = b.Id where a.InvestmentInitId='"+ investmentInitId + "' ").ToList();
+                return t;
             }
             catch (System.Exception ex)
             {
@@ -126,33 +125,34 @@ namespace API.Controllers
 
 
         [HttpPost("insertMedicineDetail")]
-        public ActionResult<MedicineDispatchDtlDto> InsertMedDtl(MedicineDispatchDtl trackDto)
+        public async Task<IActionResult> InsertMedDtl(List<MedicineDispatchDtl> dt)
         {
-            var bcds = new MedicineDispatchDtl
+            try
             {
-                InvestmentInitId = trackDto.InvestmentInitId,
-                ProductId = trackDto.ProductId,
-                BoxQuantity = trackDto.BoxQuantity,
-                TpVat = trackDto.TpVat,
-                DispatchQuantity = trackDto.DispatchQuantity,
-                DispatchTpVat = trackDto.DispatchTpVat,      
-                SetOn = DateTimeOffset.Now,
-                EmployeeId = trackDto.EmployeeId,
-            };
+                foreach(var trackDto in dt)
+                {
+                    var bcds = new MedicineDispatchDtl
+                    {
+                        InvestmentInitId = trackDto.InvestmentInitId,
+                        ProductName = trackDto.ProductName,
+                        ProductId = trackDto.ProductId,
+                        BoxQuantity = trackDto.BoxQuantity,
+                        TpVat = trackDto.TpVat,
+                        DispatchQuantity = trackDto.DispatchQuantity,
+                        DispatchTpVat = trackDto.DispatchTpVat,      
+                        SetOn = DateTimeOffset.Now,
+                        EmployeeId = trackDto.EmployeeId,
+                    };
 
-            _dispdtlRepo.Add(bcds);
-            _dispdtlRepo.Savechange();
-
-            return new MedicineDispatchDtlDto
+                    _dispdtlRepo.Add(bcds);           
+                }
+                _dispdtlRepo.Savechange();
+                return Ok("Succsessfuly Saved!!!");
+             }
+            catch (Exception ex)
             {
-                Id = bcds.Id,
-                InvestmentInitId = trackDto.InvestmentInitId,
-                ProductId = trackDto.ProductId,
-                BoxQuantity = trackDto.BoxQuantity,
-                TpVat = trackDto.TpVat,
-                DispatchQuantity = trackDto.DispatchQuantity,
-                DispatchTpVat = trackDto.DispatchTpVat,
-            };
+                throw ex;
+            }
         }
 
         [HttpGet]
