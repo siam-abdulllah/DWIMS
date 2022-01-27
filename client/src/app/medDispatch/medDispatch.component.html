@@ -12,7 +12,7 @@
                                     <h3 class="card-title">Donated Medicine Dispatch</h3>
                                 </div>
                                 <div class="col-sm-1">
-                                    <button class="btn btn-success btn-block" (click)="insertTracker()" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Save</button>
+                                    <button class="btn btn-success btn-block" (click)="insertTracker()" [hidden]="isHide" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Save</button>
                                 </div>
                                 <div class="col-sm-1 ">
                                     <button class="btn btn-danger btn-block" (click)="reset()" type="button "><i class="fa fa-undo "></i>&nbsp; Reset</button>

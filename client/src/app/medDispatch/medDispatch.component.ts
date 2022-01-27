@@ -37,6 +37,7 @@ export class MedDispatchComponent implements OnInit {
   printTrack :IDepotPrintTrack[] = [];
   isValid: boolean = true;
   valShow: boolean = true;
+  isHide: boolean = false;
   investmentMedicineProds: MedicineDispatchDtl[];
   rptDepotLetter:any;
   searchText = '';
@@ -91,9 +92,6 @@ export class MedDispatchComponent implements OnInit {
     });
   }
 
-
-  
-
   getInvestmentMedicineProd() {
     this.pendingService.getInvestmentMedicineProds(this.medDispatchForm.value.investmentInitId).subscribe(response => {
       var data = response as IMedicineDispatchDtl[];
@@ -105,7 +103,7 @@ export class MedDispatchComponent implements OnInit {
         }
 
         this.medDispatchForm.patchValue({
-          dispatchAmt: sum.toString(),
+          dispatchAmt: sum.toLocaleString(),
         });
 
       }
@@ -186,7 +184,7 @@ export class MedDispatchComponent implements OnInit {
   modifyData(selectedRecord: IMedicineDispatchDtl)
   {
     this.valShow = false;
-
+    this.isHide = true;
     this.medDispatchForm.patchValue({
       productName: selectedRecord.productName,
       productId: selectedRecord.productId,
@@ -214,6 +212,8 @@ export class MedDispatchComponent implements OnInit {
       // formControlName2: myValue2 (can be omitted)
     });
     this.isValid = true;
+    this.isHide = false;
+    
     this.getInvestmentMedicineProd();
     this.pendingListModalRef.hide();
   }
@@ -254,7 +254,7 @@ updateData()
       sum=sum+this.investmentMedicineProds[i].dispatchTpVat;
     }
     this.medDispatchForm.patchValue({
-      dispatchAmt: sum.toString(),
+      dispatchAmt: sum.toLocaleString(),
     });
   }
   else {
@@ -265,6 +265,7 @@ updateData()
   }
 
   this.valShow = true;
+  this.isHide = false;
 }
 
   removeInvestmentMedicineProd(selectedRecord: IMedicineDispatchDtl) {
@@ -280,7 +281,7 @@ updateData()
           }
   
           this.medDispatchForm.patchValue({
-            dispatchAmt: sum.toString(),
+            dispatchAmt: sum.toLocaleString(),
           });
   
         }
@@ -306,6 +307,7 @@ openPendingListModal(template: TemplateRef<any>) {
     this.investmentMedicineProds =[];
     this.isValid = true;
     this.valShow = true;
+    this.isHide = false;
     this.medDispatchForm.setValue({
       referenceNo: "",
       issueReference: "",
@@ -320,7 +322,6 @@ openPendingListModal(template: TemplateRef<any>) {
       id: "",
       searchText: "",
       investmentInitId: "",
-
       
       productName:"",
       productId:"",
