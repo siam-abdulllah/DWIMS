@@ -1203,8 +1203,6 @@ namespace API.Controllers
                 throw ex;
             }
         }
-
-
         [HttpGet]
         [Route("getInvestmentAprComment/{investmentInitId}/{empId}")]
         public async Task<IReadOnlyList<InvestmentRecComment>> GetInvestmentRecComment(int investmentInitId, int empId)
@@ -1220,7 +1218,6 @@ namespace API.Controllers
                 throw ex;
             }
         }
-
         [HttpGet]
         [Route("getInvestmentAprComments/{investmentInitId}")]
         public async Task<IReadOnlyList<InvestmentRecComment>> GetInvestmentRecComments(int investmentInitId)

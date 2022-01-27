@@ -156,7 +156,10 @@ namespace API.Controllers
                         new SqlParameter("@RSTATUS", "Recommended")
                     };
                     var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentInitSearch @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
+                    //var res = await _dbContext.InvestmentInit.FromSqlInterpolated($"SP_InvestmentInitSearch {sbu}, {empId}, {"Recommended"}").Include(b => b.Employee).Include(x => x.Donation).ToListAsync();
 
+                    //var blogs = _dbContext.InvestmentInit.FromSqlInterpolated($"SELECT * FROM SP_InvestmentInitSearch({sbu},{empId},{"Recommended"})").Include(b => b.Employee).ToList();
+                    //results.Include(x => x.Employee).Include(x => x.Donation).ToList();
 
                     //var data = _mapper
                     //    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
