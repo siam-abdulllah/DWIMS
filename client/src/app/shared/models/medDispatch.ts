@@ -23,3 +23,23 @@ export class MedicineDispatch implements IMedicineDispatch {
     dispatchAmt : number;
     proposeAmt : number;
 }
+
+export interface IMedicineDispatchDtl {
+    id: number;
+    productId: number;
+    employeeId: number;
+    tpVat : number;
+    boxQuantity : number;
+    dispatchQuantity : number;
+    dispatchTpVat : number;
+}
+
+export class MedicineDispatchDtl implements IMedicineDispatchDtl {
+    id: number = 0;
+    productId: number;
+    employeeId: number;
+    tpVat : number;
+    boxQuantity : number;
+    dispatchQuantity : number;
+    dispatchTpVat : number;
+}

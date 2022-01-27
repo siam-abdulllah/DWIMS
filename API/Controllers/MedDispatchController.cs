@@ -22,13 +22,15 @@ namespace API.Controllers
         private readonly IMapper _mapper;
         private readonly IGenericRepository<InvestmentMedicineProd> _investmentMedicineProdRepo;
         private readonly IGenericRepository<MedicineDispatch> _dispRepo;
+        private readonly IGenericRepository<MedicineDispatchDtl> _dispdtlRepo;
 
-        public MedDispatchController(IMapper mapper, StoreContext db, IGenericRepository<InvestmentMedicineProd> investmentMedicineProdRepo, IGenericRepository<MedicineDispatch> dispRepo)
+        public MedDispatchController(IMapper mapper, StoreContext db, IGenericRepository<InvestmentMedicineProd> investmentMedicineProdRepo, IGenericRepository<MedicineDispatch> dispRepo, IGenericRepository<MedicineDispatchDtl> dispdtlRepo)
         {
             _db = db;
             _mapper = mapper;
             _investmentMedicineProdRepo = investmentMedicineProdRepo;
             _dispRepo = dispRepo;
+            _dispdtlRepo = dispdtlRepo;
         }
 
         [HttpGet]
@@ -119,6 +121,37 @@ namespace API.Controllers
                 ProposeAmt = trackDto.ProposeAmt,
                 DispatchAmt = trackDto.DispatchAmt,
                 EmployeeId = trackDto.EmployeeId,           
+            };
+        }
+
+
+        [HttpPost("insertMedicineDetail")]
+        public ActionResult<MedicineDispatchDtlDto> InsertMedDtl(MedicineDispatchDtl trackDto)
+        {
+            var bcds = new MedicineDispatchDtl
+            {
+                InvestmentInitId = trackDto.InvestmentInitId,
+                ProductId = trackDto.ProductId,
+                BoxQuantity = trackDto.BoxQuantity,
+                TpVat = trackDto.TpVat,
+                DispatchQuantity = trackDto.DispatchQuantity,
+                DispatchTpVat = trackDto.DispatchTpVat,      
+                SetOn = DateTimeOffset.Now,
+                EmployeeId = trackDto.EmployeeId,
+            };
+
+            _dispdtlRepo.Add(bcds);
+            _dispdtlRepo.Savechange();
+
+            return new MedicineDispatchDtlDto
+            {
+                Id = bcds.Id,
+                InvestmentInitId = trackDto.InvestmentInitId,
+                ProductId = trackDto.ProductId,
+                BoxQuantity = trackDto.BoxQuantity,
+                TpVat = trackDto.TpVat,
+                DispatchQuantity = trackDto.DispatchQuantity,
+                DispatchTpVat = trackDto.DispatchTpVat,
             };
         }
 

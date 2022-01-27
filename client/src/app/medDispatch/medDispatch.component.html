@@ -17,6 +17,9 @@
                                 <div class="col-sm-1 ">
                                     <button class="btn btn-danger btn-block " (click)="reset()" type="button "><i class="fa fa-undo "></i>&nbsp; Reset</button>
                                 </div>
+                                <div class="col-sm-1 ">
+                                    <button class="btn btn-danger btn-block " (click)="ViewReport()" type="button "><i class="fa fa-save "></i>&nbsp; View</button>
+                                </div>
                             </div>
                         </div>
                         <!-- /.card-header -->
@@ -121,9 +124,12 @@
                                 <table class="table table-bordered">
                                     <tr class="HeaderRow">
                                         <td>Product Name</td>
-                                        <td>Box Quantity</td>
-                                        <td>TP Vat</td>
-                                        <td></td>
+                                        <td>Invoice Qty</td>
+                                        <td>Invoice TP Vat</td>
+                                        <td>Dispatch Qty</td>
+                                        <td>Dispatch TP Vat</td>
+                                        <td>Edit</td>
+                                        <td>Remove</td>
                                     </tr>
                                     <tr *ngFor="let a of investmentMedicineProds">
                                         <td>
@@ -134,6 +140,15 @@
                                         </td>
                                         <td>
                                             {{a.tpVat}}
+                                        </td>
+                                        <td>
+                                            {{a.boxQuantity}}
+                                        </td>
+                                        <td>
+                                            {{a.tpVat}}
+                                        </td>
+                                        <td>
+                                            <input type="button" value="Modify">
                                         </td>
                                         <td>
                                             <input type="button" (click)="removeInvestmentMedicineProd(a)" value="Remove">

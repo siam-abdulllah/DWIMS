@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { GenericParams } from '../shared/models/genericParams';
 import { InvestmentMedicineProd } from '../shared/models/investmentRec';
-import { MedicineDispatch } from '../shared/models/medDispatch';
+import { MedicineDispatch, MedicineDispatchDtl} from '../shared/models/medDispatch';
 
 
 
@@ -21,6 +21,7 @@ export class MedDispatchService {
   medDispatchFormData: MedicineDispatch = new MedicineDispatch();
   investmentMedicineProdFormData: InvestmentMedicineProd = new InvestmentMedicineProd();
   rptDepotLetter: IrptDepotLetterSearch[]=[];
+  medDispDtl: MedicineDispatchDtl = new MedicineDispatchDtl();
   pagination = new DepotLetterSearchPagination();
  
 
@@ -45,15 +46,23 @@ export class MedDispatchService {
     return this.http.post(this.baseUrl+ 'medDispatch/createDispatch', medDispatchFormData);
   }
 
+  insertMedicineDetail(medDispDtl: any) {
+    debugger;
+    return this.http.post(this.baseUrl+ 'medDispatch/insertMedicineDetail', medDispDtl);
+  }
+
+  getRptDepotLetter(initId:any) {
+    return this.http.get(this.baseUrl+ 'reportInvestment/rptInvestDepo/'+initId);
+  }
 
   getPendingDispatch(empId:number,userRole:string){    
     return this.http.get(this.baseUrl + 'medDispatch/pendingDispatch/'+ empId+'/'+userRole);
   }
 
-  removeInvestmentMedicineProd() {
-    return this.http.post(this.baseUrl + 'medDispatch/removeInvestmentMedicineProd', this.investmentMedicineProdFormData,
-      { responseType: 'text' });
-  }
+  // removeInvestmentMedicineProd() {
+  //   return this.http.post(this.baseUrl + 'medDispatch/removeInvestmentMedicineProd', this.investmentMedicineProdFormData,
+  //     { responseType: 'text' });
+  // }
 
   getInvestmentMedicineProds(investmentInitId: number) {
     return this.http.get(this.baseUrl + 'medDispatch/getMedicineProds/' + investmentInitId );
