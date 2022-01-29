@@ -76,6 +76,7 @@ namespace API.Controllers
             _investmentDetailTrackerRepo = investmentDetailTrackerRepo;
             _donationRepo = donationRepo;
         }
+       
         [HttpGet("investmentInits/{empId}/{sbu}")]
         public ActionResult<IReadOnlyList<InvestmentInit>> GetInvestmentInits(int empId, string sbu,
         [FromQuery] InvestmentInitSpecParams investmentInitParrams)
@@ -386,16 +387,11 @@ namespace API.Controllers
                 //---------------------------------------------------------------------------------------------------------------------
 
                 var isComplete = false;
-                //var investmentInitSpec = new InvestmentInitSpecification((int)investmentRecDto.InvestmentInitId);
                 var investmentInits = await _investmentInitRepo.GetByIdAsync((int)investmentNoSBUAprInsertDto.InvestmentRecComment.InvestmentInitId);
-                var empData = await _employeeRepo.GetByIdAsync(investmentNoSBUAprInsertDto.InvestmentRecComment.EmployeeId);
-                //var specApprAuth = new ApprAuthConfigSpecification(investmentNoSBUAprInsertDto.InvestmentRecComment.EmployeeId, "A");
-                //var apprAuthConfig = await _apprAuthConfigRepo.GetEntityWithSpec(specApprAuth);
-                //bool isTrue = false;
-                var investmentTargetedGroupSpec = new InvestmentTargetedGroupSpecification((int)investmentNoSBUAprInsertDto.InvestmentRecComment.InvestmentInitId);
-                var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(investmentTargetedGroupSpec);
-                var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentNoSBUAprInsertDto.InvestmentRecComment.InvestmentInitId, apprAuthConfig.ApprovalAuthority.Priority, "true");
-                var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
+                var empData = await _employeeRepo.GetByIdAsync(empId);
+               
+                //var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentNoSBUAprInsertDto.InvestmentRecComment.InvestmentInitId, apprAuthConfig.ApprovalAuthority.Priority, "true");
+                //var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
                 isComplete = true;
                 if (investmentNoSBUAprInsertDto.InvestmentRecComment.RecStatus == "Not Approved")
                 {
@@ -404,7 +400,7 @@ namespace API.Controllers
                 var invRecCmnt = new InvestmentRecComment
                 {
                     InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentRecComment.InvestmentInitId,
-                    EmployeeId = investmentNoSBUAprInsertDto.InvestmentRecComment.EmployeeId,
+                    EmployeeId = empId,
                     Comments = investmentNoSBUAprInsertDto.InvestmentRecComment.Comments,
                     RecStatus = investmentNoSBUAprInsertDto.InvestmentRecComment.RecStatus,
                     MarketGroupCode = empData.MarketGroupCode,
@@ -432,11 +428,11 @@ namespace API.Controllers
                     var alreadyExistInvestmentRecProductList = await _investmentRecProductRepo.ListAsync(alreadyExistSpec);
                     if (alreadyExistInvestmentRecProductList.Count > 0)
                     {
-                        foreach (var v in alreadyExistInvestmentRecProductList)
-                        {
-                            _investmentRecProductRepo.Delete(v);
-                            _investmentRecProductRepo.Savechange();
-                        }
+                        //foreach (var v in alreadyExistInvestmentRecProductList)
+                        //{
+                        //    _investmentRecProductRepo.Delete(v);
+                        //    _investmentRecProductRepo.Savechange();
+                        //}
                     }
                     else
                     {
@@ -459,7 +455,7 @@ namespace API.Controllers
                 {
                     Id = invRecCmnt.Id,
                     InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentRecComment.InvestmentInitId,
-                    EmployeeId = investmentNoSBUAprInsertDto.InvestmentRecComment.EmployeeId,
+                    EmployeeId = empId,
                     Comments = investmentNoSBUAprInsertDto.InvestmentRecComment.Comments,
                     RecStatus = investmentNoSBUAprInsertDto.InvestmentRecComment.RecStatus,
                 };
@@ -579,6 +575,16 @@ namespace API.Controllers
                 }
                 else
                 {
+                    var alreadyDetailTrackerExistSpec = new InvestmentDetailTrackerSpecification((int)investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId);
+                    var alreadyDetailTrackerExistInvestmentAprList = await _investmentDetailTrackerRepo.ListAsync(alreadyDetailTrackerExistSpec);
+                    if (alreadyDetailTrackerExistInvestmentAprList.Count > 0)
+                    {
+                        foreach (var v in alreadyDetailTrackerExistInvestmentAprList)
+                        {
+                            _investmentDetailTrackerRepo.Delete(v);
+                            _investmentDetailTrackerRepo.Savechange();
+                        }
+                    }
                     var alreadyExistSpec = new InvestmentRecSpecification((int)investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId, empId);
                     var alreadyExistInvestmentAprList = await _investmentRecRepo.ListAsync(alreadyExistSpec);
                     if (alreadyExistInvestmentAprList.Count > 0)
@@ -682,7 +688,7 @@ namespace API.Controllers
                 {
                     Id = invRecCmnt.Id,
                     InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentRecComment.InvestmentInitId,
-                    EmployeeId = investmentNoSBUAprInsertDto.InvestmentRecComment.EmployeeId,
+                    EmployeeId = empId,
                     Comments = investmentNoSBUAprInsertDto.InvestmentRecComment.Comments,
                     RecStatus = investmentNoSBUAprInsertDto.InvestmentRecComment.RecStatus,
                 };

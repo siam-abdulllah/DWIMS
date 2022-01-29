@@ -112,14 +112,14 @@ namespace API.Controllers
                 if (userRole == "Administrator")
                 {
 
-                    var spec = new InvestmentInitSpecification(investmentInitParrams);
+                    //var spec = new InvestmentInitSpecification(investmentInitParrams);
 
                     //var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
 
                     // var totalItems = await _investmentInitRepo.CountAsync(countSpec);
 
-                     var investmentInits = await _investmentInitRepo.ListAsync(spec);
-                    //var investmentInits = await _investmentInitRepo.ListAllAsync();
+                    // var investmentInits = await _investmentInitRepo.ListAsync(spec);
+                    var investmentInits = await _investmentInitRepo.ListAllAsync();
 
                     //investmentRecCommentParrams.Search = sbu;
                     //var investmentRecCommentSpec = new InvestmentRecCommentSpecification(investmentRecCommentParrams);
@@ -156,50 +156,14 @@ namespace API.Controllers
                         new SqlParameter("@RSTATUS", "Recommended")
                     };
                     var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentInitSearch @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
-                    var investmentInits = (from r in results
-                                  join d in _dbContext.Donation on r.DonationId equals d.Id
-                                  join e in _dbContext.Employee on r.EmployeeId equals e.Id
-                                  orderby r.SetOn
-                                  select new InvestmentInit
-                                  {
-                                      Id = r.Id,
-                                      DataStatus = r.DataStatus,
-                                      SetOn = r.SetOn,
-                                      ModifiedOn = r.ModifiedOn,
-                                      ReferenceNo = r.ReferenceNo,
-                                      ProposeFor = r.ProposeFor,
-                                      DonationId = r.DonationId,
-                                      DonationTo = r.DonationTo,
-                                      EmployeeId = r.EmployeeId,
-                                      MarketGroupCode = r.MarketGroupCode,
-                                      MarketGroupName = r.MarketGroupName,
-                                      MarketCode = r.MarketCode,
-                                      MarketName = r.MarketName,
-                                      RegionCode = r.RegionCode,
-                                      RegionName = r.RegionName,
-                                      ZoneCode = r.ZoneCode,
-                                      ZoneName = r.ZoneName,
-                                      TerritoryCode = r.TerritoryCode,
-                                      TerritoryName = r.TerritoryName,
-                                      SBU = r.SBU,
-                                      SBUName = r.SBUName,
-                                      Confirmation = r.Confirmation,
-                                      SubmissionDate = r.SubmissionDate,
-                                      Donation=d,
-                                      Employee=e
-                                  }
-                            ).Distinct().ToList();
-                    //var res = await _dbContext.InvestmentInit.FromSqlInterpolated($"SP_InvestmentInitSearch {sbu}, {empId}, {"Recommended"}").Include(b => b.Employee).Include(x => x.Donation).ToListAsync();
 
-                    //var blogs = _dbContext.InvestmentInit.FromSqlInterpolated($"SELECT * FROM SP_InvestmentInitSearch({sbu},{empId},{"Recommended"})").Include(b => b.Employee).ToList();
-                    //results.Include(x => x.Employee).Include(x => x.Donation).ToList();
 
                     //var data = _mapper
                     //    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
 
                     //  return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, totalItems, results));
                     //return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, 10, data));
-                    return investmentInits;
+                    return results;
                 }
             }
             catch (System.Exception e)
@@ -2007,9 +1971,9 @@ namespace API.Controllers
 
 
 
+                 
+
                 var results = _dbContext.LastFiveInvestmentInfo.FromSqlRaw(qry).ToList();
-
-
                 return results;
             }
             catch (System.Exception ex)

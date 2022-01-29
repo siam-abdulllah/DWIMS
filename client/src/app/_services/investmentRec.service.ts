@@ -158,6 +158,37 @@ export class InvestmentRecService {
     // );
     
   }
+  insertRecommendForOwnSBU(empId:number,sbu:string,investmentTargetedProds:IInvestmentTargetedProd[]) {
+    var investmentRecComment=this.investmentRecCommentFormData;
+    var investmentRec=this.investmentDetailFormData;
+    var investmentRecProducts=investmentTargetedProds;
+    var investmentRecOwnSBUInsertDto={investmentRecComment,investmentRec,investmentRecProducts}
+    const headers = new HttpHeaders().set('Content-Type','application/json');
+    return this.http.post(this.baseUrl+ 'investmentRec/insertRecommendForOwnSBU/'+empId+'/'+sbu, investmentRecOwnSBUInsertDto,{headers:headers});
+  }
+  insertRecommendForOtherSBU(empId:number,sbu:string,investmentTargetedProds:IInvestmentTargetedProd[]) {
+    var investmentRecComment=this.investmentRecCommentFormData;
+    var investmentRecProducts=investmentTargetedProds;
+    var investmentRecOtherSBUInsertDto={investmentRecComment,investmentRecProducts}
+    const headers = new HttpHeaders().set('Content-Type','application/json');
+    return this.http.post(this.baseUrl+ 'investmentRec/insertRecommendForOtherSBU/'+empId+'/'+sbu, investmentRecOtherSBUInsertDto,{headers:headers});
+  }
+  updateRecommendForOwnSBU(empId:number,sbu:string,investmentTargetedProds:IInvestmentTargetedProd[]) {
+    var investmentRecComment=this.investmentRecCommentFormData;
+    var investmentRec=this.investmentDetailFormData;
+    var investmentRecProducts=investmentTargetedProds;
+    var investmentRecOwnSBUInsertDto={investmentRecComment,investmentRec,investmentRecProducts}
+    const headers = new HttpHeaders().set('Content-Type','application/json');
+    return this.http.post(this.baseUrl+ 'investmentRec/updateRecommendForOwnSBU/'+empId+'/'+sbu, investmentRecOwnSBUInsertDto,{headers:headers});
+  }
+  updateRecommendForOtherSBU(empId:number,sbu:string,investmentTargetedProds:IInvestmentTargetedProd[]) {
+    var investmentRecComment=this.investmentRecCommentFormData;
+    var investmentRecProducts=investmentTargetedProds;
+    var investmentRecOtherSBUInsertDto={investmentRecComment,investmentRecProducts}
+    const headers = new HttpHeaders().set('Content-Type','application/json');
+    return this.http.post(this.baseUrl+ 'investmentRec/updateRecommendForOtherSBU/'+empId+'/'+sbu, investmentRecOtherSBUInsertDto,{headers:headers});
+  }
+
   insertInvestmentRec() {
     
     return this.http.post(this.baseUrl+ 'investmentRec/insertRecCom', this.investmentRecCommentFormData);

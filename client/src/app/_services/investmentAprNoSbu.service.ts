@@ -81,7 +81,7 @@ export class InvestmentAprNoSbuService {
     return await  this.http.get(this.baseUrl + 'investment/investmentDoctors/'+investmentInitId).toPromise();
   }
   getInvestmentAprComment(investmentInitId:number,empId:string){    
-    return this.http.get(this.baseUrl + 'InvestmentAprNoSbu/getInvestmentAprComment/'+investmentInitId+'/'+parseInt(empId));
+    return this.http.get(this.baseUrl + 'investmentAprNoSbu/getInvestmentAprComment/'+investmentInitId+'/'+parseInt(empId));
   }
   // getInvestmentDetails(investmentInitId:number){    
   //   return this.http.get(this.baseUrl + 'investmentRec/investmentRecDetails/'+investmentInitId).toPromise();
@@ -90,13 +90,13 @@ export class InvestmentAprNoSbuService {
     return this.http.get(this.baseUrl + 'investmentRec/investmentRecProducts/'+investmentInitId+'/'+sbu);
   }
   getInvestmentAprDetails(investmentInitId:number,empId:number){    
-    return this.http.get(this.baseUrl + 'InvestmentAprNoSbu/investmentAprDetails/'+investmentInitId+'/'+empId).toPromise();
+    return this.http.get(this.baseUrl + 'investmentAprNoSbu/investmentAprDetails/'+investmentInitId+'/'+empId).toPromise();
   }
   getInvestmentDetails(investmentInitId:number,empId:number){    
-    return this.http.get(this.baseUrl + 'InvestmentAprNoSbu/investmentRecDetails/'+investmentInitId+'/'+empId).toPromise();
+    return this.http.get(this.baseUrl + 'investmentAprNoSbu/investmentRecDetails/'+investmentInitId+'/'+empId).toPromise();
   }
   getInvestmentAprProducts(investmentInitId:number,sbu:string){    
-    return this.http.get(this.baseUrl + 'InvestmentAprNoSbu/investmentAprProducts/'+investmentInitId+'/'+sbu);
+    return this.http.get(this.baseUrl + 'investmentAprNoSbu/investmentAprProducts/'+investmentInitId+'/'+sbu);
   }
   getInvestmentTargetedGroups(investmentInitId:number,empId:number){    
     return this.http.get(this.baseUrl + 'InvestmentRec/investmentTargetedGroups/'+investmentInitId+'/'+empId);
@@ -128,7 +128,7 @@ export class InvestmentAprNoSbuService {
     // params = params.append('sort', this.genParams.sort);
     // params = params.append('pageIndex', this.genParams.pageIndex.toString());
     // params = params.append('pageSize', this.genParams.pageSize.toString());
-    // return this.http.get<IInvestmentInitPagination>(this.baseUrl + 'InvestmentAprNoSbu/investmentInits/'+empId+'/'+sbu, { observe: 'response', params })
+    // return this.http.get<IInvestmentInitPagination>(this.baseUrl + 'investmentAprNoSbu/investmentInits/'+empId+'/'+sbu, { observe: 'response', params })
     // //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
     // .pipe(
     //   map(response => {
@@ -137,7 +137,7 @@ export class InvestmentAprNoSbuService {
     //     return this.investmentInitPagination;
     //   })
     // );
-    return this.http.get(this.baseUrl + 'InvestmentAprNoSbu/investmentInits/'+empId+'/'+sbu);
+    return this.http.get(this.baseUrl + 'investmentAprNoSbu/investmentInits/'+empId+'/'+sbu);
 
   }
   getGenParams(){
@@ -154,7 +154,7 @@ export class InvestmentAprNoSbuService {
     // params = params.append('sort', this.genParams.sort);
     // params = params.append('pageIndex', this.genParams.pageIndex.toString());
     // params = params.append('pageSize', this.genParams.pageSize.toString());
-    // return this.http.get<IInvestmentInitPagination>(this.baseUrl + 'InvestmentAprNoSbu/investmentApproved/'+empId+'/'+sbu+'/'+userRole, { observe: 'response', params })
+    // return this.http.get<IInvestmentInitPagination>(this.baseUrl + 'investmentAprNoSbu/investmentApproved/'+empId+'/'+sbu+'/'+userRole, { observe: 'response', params })
     // //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
     // .pipe(
     //   map(response => {
@@ -163,16 +163,16 @@ export class InvestmentAprNoSbuService {
     //     return this.investmentInitPagination;
     //   })
     // );
-    return this.http.get(this.baseUrl + 'InvestmentAprNoSbu/investmentApproved/'+empId+'/'+sbu+'/'+userRole);
+    return this.http.get(this.baseUrl + 'investmentAprNoSbu/investmentApproved/'+empId+'/'+sbu+'/'+userRole);
   }
   insertInvestmentApr() {
     
-    return this.http.post(this.baseUrl+ 'InvestmentAprNoSbu/insertAprCom', this.investmentAprCommentFormData);
+    return this.http.post(this.baseUrl+ 'investmentAprNoSbu/insertAprCom', this.investmentAprCommentFormData);
 
   }
   
   updateInvestmentApr() {
-    return this.http.post(this.baseUrl+ 'InvestmentAprNoSbu/updateAprCom',  this.investmentAprCommentFormData);
+    return this.http.post(this.baseUrl+ 'investmentAprNoSbu/updateAprCom',  this.investmentAprCommentFormData);
   }
   insertInvestAprNoSBU(empId:number,sbu:string,investmentTargetedProds:IInvestmentTargetedProd[]) {
     var investmentRecComment=this.investmentAprCommentFormData;
@@ -180,7 +180,7 @@ export class InvestmentAprNoSbuService {
     var investmentRecProducts=investmentTargetedProds;
     var investmentNoSBUAprInsertDto={investmentRecComment,investmentApr,investmentRecProducts}
    const headers = new HttpHeaders().set('Content-Type','application/json');
-    return this.http.post(this.baseUrl+ 'InvestmentAprNoSbu/insertInvestAprNoSBU/'+empId+'/'+this.investmentAprCommentFormData.recStatus+'/'+sbu+'/'+this.investmentAprFormData.donationId, investmentNoSBUAprInsertDto,{headers:headers});
+    return this.http.post(this.baseUrl+ 'investmentAprNoSbu/insertInvestAprNoSBU/'+empId+'/'+this.investmentAprCommentFormData.recStatus+'/'+sbu+'/'+this.investmentAprFormData.donationId, investmentNoSBUAprInsertDto,{headers:headers});
   }
   updateInvestAprNoSBU(empId:number,sbu:string,investmentTargetedProds:IInvestmentTargetedProd[]) {
     var investmentRecComment=this.investmentAprCommentFormData;
@@ -188,29 +188,29 @@ export class InvestmentAprNoSbuService {
     var investmentRecProducts=investmentTargetedProds;
     var investmentNoSBUAprInsertDto={investmentRecComment,investmentApr,investmentRecProducts}
    const headers = new HttpHeaders().set('Content-Type','application/json');
-    return this.http.post(this.baseUrl+ 'InvestmentAprNoSbu/updateInvestAprNoSBU/'+empId+'/'+this.investmentAprCommentFormData.recStatus+'/'+sbu+'/'+this.investmentAprFormData.donationId, investmentNoSBUAprInsertDto,{headers:headers});
+    return this.http.post(this.baseUrl+ 'investmentAprNoSbu/updateInvestAprNoSBU/'+empId+'/'+this.investmentAprCommentFormData.recStatus+'/'+sbu+'/'+this.investmentAprFormData.donationId, investmentNoSBUAprInsertDto,{headers:headers});
   }
   insertInvestmentDetail(empId:number,sbu:string) {
     
-    return this.http.post(this.baseUrl+ 'InvestmentAprNoSbu/insertApr/'+empId+'/'+this.investmentAprCommentFormData.recStatus+'/'+sbu+'/'+this.investmentAprFormData.donationId, this.investmentDetailFormData);
+    return this.http.post(this.baseUrl+ 'investmentAprNoSbu/insertApr/'+empId+'/'+this.investmentAprCommentFormData.recStatus+'/'+sbu+'/'+this.investmentAprFormData.donationId, this.investmentDetailFormData);
   
   }
   
   getInvestmentRecDepot(initId:any) {
     debugger;
-    return this.http.get(this.baseUrl+ 'InvestmentAprNoSbu/getInvestmentRecDepot/'+initId).toPromise();
+    return this.http.get(this.baseUrl+ 'investmentAprNoSbu/getInvestmentRecDepot/'+initId).toPromise();
   }
 
   getEmpLoc(initId:any) {
     debugger;
-    return this.http.get(this.baseUrl+ 'InvestmentAprNoSbu/getEmpMarket/'+initId);
+    return this.http.get(this.baseUrl+ 'investmentAprNoSbu/getEmpMarket/'+initId);
   }
   
  
   
   insertInvestmentTargetedProd(investmentTargetedProds:IInvestmentTargetedProd[]) {
     
-    return this.http.post(this.baseUrl+ 'InvestmentAprNoSbu/insertAprProd', investmentTargetedProds,
+    return this.http.post(this.baseUrl+ 'investmentAprNoSbu/insertAprProd', investmentTargetedProds,
     {responseType: 'text'});
 
   }
