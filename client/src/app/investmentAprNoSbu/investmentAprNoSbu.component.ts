@@ -867,12 +867,6 @@ export class InvestmentAprNoSbuComponent implements OnInit {
     //     this.SpinnerService.hide();
     //   }
     // );
-
-
-
-
-
-
   }
   insertInvestmentDetails() {
     this.investmentAprService.investmentDetailFormData.investmentInitId = this.investmentAprService.investmentAprFormData.id;

@@ -96,7 +96,7 @@ namespace API.Controllers
                 var data = (from r in results
                             join d in _dbContext.Donation on r.DonationId equals d.Id
                             join e in _dbContext.Employee on r.EmployeeId equals e.Id
-                            orderby r.SetOn
+                            orderby r.SetOn descending
                             select new InvestmentInit
                             {
                                 Id = r.Id,
@@ -153,7 +153,7 @@ namespace API.Controllers
                 var data = (from r in results
                             join d in _dbContext.Donation on r.DonationId equals d.Id
                             join e in _dbContext.Employee on r.EmployeeId equals e.Id
-                            orderby r.SetOn
+                            orderby r.SetOn descending
                             select new InvestmentInit
                             {
                                 Id = r.Id,
@@ -210,7 +210,7 @@ namespace API.Controllers
                 var data = (from r in results
                             join d in _dbContext.Donation on r.DonationId equals d.Id
                             join e in _dbContext.Employee on r.EmployeeId equals e.Id
-                            orderby r.SetOn
+                            orderby r.SetOn descending
                             select new InvestmentInit
                             {
                                 Id = r.Id,
@@ -267,7 +267,7 @@ namespace API.Controllers
                 var data = (from r in results
                             join d in _dbContext.Donation on r.DonationId equals d.Id
                             join e in _dbContext.Employee on r.EmployeeId equals e.Id
-                            orderby r.SetOn
+                            orderby r.SetOn descending
                             select new InvestmentInit
                             {
                                 Id = r.Id,
@@ -324,7 +324,7 @@ namespace API.Controllers
                                                  join d in _dbContext.Donation on r.DonationId equals d.Id
                                                  join e in _dbContext.Employee on r.EmployeeId equals e.Id
                                                  where rc.RecStatus == "Approved"
-                                                 orderby r.ReferenceNo
+                                                 orderby r.SetOn descending
                                                  select new InvestmentInit
                                                  {
                                                      Id = r.Id,
@@ -378,7 +378,7 @@ namespace API.Controllers
                     var data = (from r in results
                                 join d in _dbContext.Donation on r.DonationId equals d.Id
                                 join e in _dbContext.Employee on r.EmployeeId equals e.Id
-                                orderby r.SetOn
+                                orderby r.SetOn descending
                                 select new InvestmentInit
                                 {
                                     Id = r.Id,
@@ -440,7 +440,7 @@ namespace API.Controllers
                 var data = (from r in results
                             join d in _dbContext.Donation on r.DonationId equals d.Id
                             join e in _dbContext.Employee on r.EmployeeId equals e.Id
-                            orderby r.SetOn
+                            orderby r.SetOn descending
                             select new InvestmentInit
                             {
                                 Id = r.Id,
@@ -501,7 +501,7 @@ namespace API.Controllers
                 var data = (from r in results
                             join d in _dbContext.Donation on r.DonationId equals d.Id
                             join e in _dbContext.Employee on r.EmployeeId equals e.Id
-                            orderby r.SetOn
+                            orderby r.SetOn descending
                             select new InvestmentInit
                             {
                                 Id = r.Id,
@@ -1100,7 +1100,7 @@ namespace API.Controllers
                     if (!isTrue) { return BadRequest(new ApiResponse(400, "Other recommendation not completed yet")); }
                 }
             }
-
+            var existsInvestmentRecs = await _investmentRecCommentRepo.GetByIdAsync(investmentRecDto.Id);
             var invRec = new InvestmentRecComment
             {
                 Id = investmentRecDto.Id,
@@ -1122,6 +1122,7 @@ namespace API.Controllers
                 SBU = empData.SBU,
                 Priority = apprAuthConfig.ApprovalAuthority.Priority,
                 CompletionStatus = isComplete,
+                SetOn= existsInvestmentRecs.SetOn,
                 ModifiedOn = DateTimeOffset.Now,
             };
             _investmentRecCommentRepo.Update(invRec);
@@ -1150,6 +1151,7 @@ namespace API.Controllers
             {
                 isComplete = false;
             }
+            var existsInvestmentRecs = await _investmentRecCommentRepo.GetByIdAsync(investmentRecDto.Id);
             var invRec = new InvestmentRecComment
             {
                 Id = investmentRecDto.Id,
@@ -1171,6 +1173,7 @@ namespace API.Controllers
                 SBU = empData.SBU,
                 Priority = apprAuthConfig.ApprovalAuthority.Priority,
                 CompletionStatus = isComplete,
+                SetOn= existsInvestmentRecs.SetOn,
                 ModifiedOn = DateTimeOffset.Now,
             };
             _investmentRecCommentRepo.Update(invRec);

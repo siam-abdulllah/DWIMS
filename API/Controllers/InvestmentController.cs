@@ -119,8 +119,40 @@ namespace API.Controllers
                     // var totalItems = await _investmentInitRepo.CountAsync(countSpec);
 
                     // var investmentInits = await _investmentInitRepo.ListAsync(spec);
-                    var investmentInits = await _investmentInitRepo.ListAllAsync();
-
+                    var results = await _investmentInitRepo.ListAllAsync();
+                    var data = (from r in results
+                                join d in _dbContext.Donation on r.DonationId equals d.Id
+                                join e in _dbContext.Employee on r.EmployeeId equals e.Id
+                                orderby r.SetOn descending
+                                select new InvestmentInit
+                                {
+                                    Id = r.Id,
+                                    DataStatus = r.DataStatus,
+                                    SetOn = r.SetOn,
+                                    ModifiedOn = r.ModifiedOn,
+                                    ReferenceNo = r.ReferenceNo,
+                                    ProposeFor = r.ProposeFor,
+                                    DonationId = r.DonationId,
+                                    DonationTo = r.DonationTo,
+                                    EmployeeId = r.EmployeeId,
+                                    MarketGroupCode = r.MarketGroupCode,
+                                    MarketGroupName = r.MarketGroupName,
+                                    MarketCode = r.MarketCode,
+                                    MarketName = r.MarketName,
+                                    RegionCode = r.RegionCode,
+                                    RegionName = r.RegionName,
+                                    ZoneCode = r.ZoneCode,
+                                    ZoneName = r.ZoneName,
+                                    TerritoryCode = r.TerritoryCode,
+                                    TerritoryName = r.TerritoryName,
+                                    SBU = r.SBU,
+                                    SBUName = r.SBUName,
+                                    Confirmation = r.Confirmation,
+                                    SubmissionDate = r.SubmissionDate,
+                                    Donation = d,
+                                    Employee = e
+                                }
+                            ).Distinct().ToList();
                     //investmentRecCommentParrams.Search = sbu;
                     //var investmentRecCommentSpec = new InvestmentRecCommentSpecification(investmentRecCommentParrams);
                     //var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
@@ -144,7 +176,7 @@ namespace API.Controllers
                     //var data = _mapper
                     //    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(investmentInits);
                     //return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, totalItems, data));
-                    return investmentInits;
+                    return data;
                 }
 
                 else
@@ -156,14 +188,46 @@ namespace API.Controllers
                         new SqlParameter("@RSTATUS", "Recommended")
                     };
                     var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentInitSearch @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
-
+                    var data = (from r in results
+                                join d in _dbContext.Donation on r.DonationId equals d.Id
+                                join e in _dbContext.Employee on r.EmployeeId equals e.Id
+                                orderby r.SetOn descending
+                                select new InvestmentInit
+                                {
+                                    Id = r.Id,
+                                    DataStatus = r.DataStatus,
+                                    SetOn = r.SetOn,
+                                    ModifiedOn = r.ModifiedOn,
+                                    ReferenceNo = r.ReferenceNo,
+                                    ProposeFor = r.ProposeFor,
+                                    DonationId = r.DonationId,
+                                    DonationTo = r.DonationTo,
+                                    EmployeeId = r.EmployeeId,
+                                    MarketGroupCode = r.MarketGroupCode,
+                                    MarketGroupName = r.MarketGroupName,
+                                    MarketCode = r.MarketCode,
+                                    MarketName = r.MarketName,
+                                    RegionCode = r.RegionCode,
+                                    RegionName = r.RegionName,
+                                    ZoneCode = r.ZoneCode,
+                                    ZoneName = r.ZoneName,
+                                    TerritoryCode = r.TerritoryCode,
+                                    TerritoryName = r.TerritoryName,
+                                    SBU = r.SBU,
+                                    SBUName = r.SBUName,
+                                    Confirmation = r.Confirmation,
+                                    SubmissionDate = r.SubmissionDate,
+                                    Donation = d,
+                                    Employee = e
+                                }
+                            ).Distinct().ToList();
 
                     //var data = _mapper
                     //    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
 
                     //  return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, totalItems, results));
                     //return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, 10, data));
-                    return results;
+                    return data;
                 }
             }
             catch (System.Exception e)

@@ -896,7 +896,8 @@
                                         <th scope="col" style="width: 0;display:none;">Id</th>
                                         <th scope="col" style="width: 9%">Reference No</th>
                                         <th scope="col" style="width: 8%">Propose For</th>
-                                        <th scope="col" style="width: 8%">Market Name</th>
+                                        <th scope="col" style="width: 8%">Inv. Type</th>
+                                        <th scope="col" style="width: 8%">Market</th>
                                         <!-- <th scope="col" style="width: 8%">Donation Type</th> -->
                                         <th scope="col" style="width: 8%">Donation To</th>
                                     </tr>
@@ -910,6 +911,7 @@
                                         <td style="display:none;">{{a.id}}</td>
                                         <td>{{a.referenceNo}}</td>
                                         <td>{{a.proposeFor}}</td>
+                                        <td>{{a.donation.donationTypeName}}</td>
                                         <td>{{a.marketName}}</td>
                                         <!-- <td>{{a.donationId}}</td> -->
                                         <td>{{a.donationTo}}</td>
@@ -956,8 +958,9 @@
                                         <th scope="col" style="width: 7%">Action</th>
                                         <th scope="col" style="width: 0;display:none;">Id</th>
                                         <th scope="col" style="width: 9%">Reference No</th>
-                                        <th scope="col" style="width: 8%">Market Name</th>
                                         <th scope="col" style="width: 8%">Propose For</th>
+                                        <th scope="col" style="width: 8%">Inv. Type</th>
+                                        <th scope="col" style="width: 8%">Market</th>
                                         <!-- <th scope="col" style="width: 8%">Donation Type</th> -->
                                         <th scope="col" style="width: 8%">Donation To</th>
                                     </tr>
@@ -970,8 +973,9 @@
                                         </td>
                                         <td style="display:none;">{{a.id}}</td>
                                         <td>{{a.referenceNo}}</td>
-                                        <td>{{a.marketName}}</td>
                                         <td>{{a.proposeFor}}</td>
+                                        <td>{{a.donation.donationTypeName}}</td>
+                                        <td>{{a.marketName}}</td>
                                         <!-- <td>{{a.donationId}}</td> -->
                                         <td>{{a.donationTo}}</td>
                                     </tr>

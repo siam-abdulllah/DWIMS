@@ -237,7 +237,6 @@ export class InvestmentRecComponent implements OnInit {
     }
 
   }
-
   getCampaignMst() {
     this.investmentRecService.getCampaignMsts(parseInt(this.empId)).subscribe(response => {
       this.campaignMsts = response as ICampaignMst[];
@@ -284,7 +283,6 @@ export class InvestmentRecComponent implements OnInit {
       console.log(error);
     });
   }
-
   dateCompare(form: NgForm) {
     if (this.investmentRecService.investmentDetailFormData.fromDate != null && this.investmentRecService.investmentDetailFormData.toDate != null) {
       if (this.investmentRecService.investmentDetailFormData.toDate > this.investmentRecService.investmentDetailFormData.fromDate) {
@@ -296,7 +294,6 @@ export class InvestmentRecComponent implements OnInit {
       }
     }
   }
-
   getInvestmentCampaign() {
     this.investmentRecService.getInvestmentCampaigns(this.investmentRecService.investmentRecFormData.id).subscribe(response => {
       var data = response[0] as IInvestmentCampaign;
@@ -428,7 +425,6 @@ export class InvestmentRecComponent implements OnInit {
   }
   getInvestmentMedicineProd() {
     this.investmentRecService.getInvestmentMedicineProds(this.investmentRecService.investmentRecFormData.id, this.sbu).subscribe(response => {
-
       var data = response as IInvestmentMedicineProd[];
       if (data !== undefined) {
         this.investmentMedicineProd = data;
@@ -479,7 +475,6 @@ export class InvestmentRecComponent implements OnInit {
   }
   getInvestmentRecProducts() {
     this.investmentRecService.getInvestmentRecProducts(this.investmentRecService.investmentRecFormData.id, this.sbu).subscribe(response => {
-
       var data = response as IInvestmentTargetedProd[];
       if (data !== undefined) {
         this.investmentTargetedProds = data;
@@ -543,12 +538,6 @@ export class InvestmentRecComponent implements OnInit {
     );
   }
   onSubmit(form: NgForm) {
-    if (this.investmentRecService.investmentTargetedProdFormData.productId != null && this.investmentRecService.investmentTargetedProdFormData.productId != undefined && this.investmentRecService.investmentTargetedProdFormData.productId != 0) {
-      this.toastr.warning('Please Add the Selected Product First', 'Investment ', {
-        positionClass: 'toast-top-right'
-      });
-      return false;
-    }
     if (this.investmentRecService.investmentRecCommentFormData.id == null || this.investmentRecService.investmentRecCommentFormData.id == undefined || this.investmentRecService.investmentRecCommentFormData.id == 0)
       this.insertInvestmentRec();
     else
@@ -604,6 +593,10 @@ export class InvestmentRecComponent implements OnInit {
         return false;
       }
     }
+    if (this.investmentRecService.investmentTargetedProdFormData.productId != null && this.investmentRecService.investmentTargetedProdFormData.productId != undefined && this.investmentRecService.investmentTargetedProdFormData.productId != 0) {
+      this.toastr.warning('Please Add the Selected Product First', 'Investment ');
+      return false;
+    }
     this.SpinnerService.show();
     if (this.sbu == this.investmentRecService.investmentRecFormData.sbu) {
       this.investmentRecService.investmentDetailFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
@@ -614,7 +607,7 @@ export class InvestmentRecComponent implements OnInit {
           this.isValid = true;
           this.getInvestmentTargetedGroup();
           this.SpinnerService.hide();
-          this.toastr.info('Updated successfully', 'Investment ')
+          this.toastr.info('Save successfully')
           
         },
         err => { 
@@ -633,7 +626,7 @@ export class InvestmentRecComponent implements OnInit {
           this.isValid = true;
           this.getInvestmentTargetedGroup();
           this.SpinnerService.hide();
-          this.toastr.info('Updated successfully', 'Investment ')
+          this.toastr.info('Save successfully')
           
         },
         err => { 
@@ -702,6 +695,10 @@ export class InvestmentRecComponent implements OnInit {
         this.toastr.warning('Please Insert Comment For Not Recommendation', 'Investment');
         return false;
       }
+    }
+    if (this.investmentRecService.investmentTargetedProdFormData.productId != null && this.investmentRecService.investmentTargetedProdFormData.productId != undefined && this.investmentRecService.investmentTargetedProdFormData.productId != 0) {
+      this.toastr.warning('Please Add the Selected Product First', 'Investment ');
+      return false;
     }
     this.SpinnerService.show();
     if (this.sbu == this.investmentRecService.investmentRecFormData.sbu) {
@@ -840,13 +837,11 @@ export class InvestmentRecComponent implements OnInit {
     this.investmentRecService.insertInvestmentTargetedProd(this.investmentTargetedProds).subscribe(
       res => {
         this.getInvestmentRecProducts();
-
         this.isDonationValid = true;
         //this.toastr.success('Targeted Product Save successfully', 'Investment Targeted Product');
       },
       err => { console.log(err); }
     );
-
   }
   addInvestmentTargetedProd() {
     if (this.investmentRecService.investmentTargetedProdFormData.productId == null || this.investmentRecService.investmentTargetedProdFormData.productId == undefined || this.investmentRecService.investmentTargetedProdFormData.productId == 0) {
