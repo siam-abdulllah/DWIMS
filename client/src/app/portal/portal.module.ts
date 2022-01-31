@@ -34,6 +34,7 @@ import { ClusterInfoComponent } from '../master/cluster-info/cluster-info.compon
 import { RptInvestSummaryComponent } from '../rptInvestmentSummary/rptInvestmentSummary.component';
 import { RptInvestmentDetailComponent } from '../RptInvestmentDetail/rptInvestmentDetail.component';
 import { PendingPrintDepotComponent } from '../pendingPrintDepot/pendingPrintDepot.component';
+import { PendingMedDispatchComponent } from './../PendingMedDispatch/pendingMedDispatch.component';
 import { ChequeTrackComponent } from './../chequeTrack/chequeTrack.component'; 
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { MenuHeadComponent } from '../menuHead/menuHead.component';
@@ -87,6 +88,7 @@ import { BillTrackComponent } from '../billTrack/billTrack.component';
     MedDispatchComponent,
     PendingPrintDepotComponent,
     PendingChqPrintDepotComponent,
+    PendingMedDispatchComponent,
     BillTrackComponent,
     SbuWiseBudgetComponent,
     DocHonApprComponent,

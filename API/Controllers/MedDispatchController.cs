@@ -158,7 +158,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("pendingDispatch/{empId}/{userRole}")]
-        public async Task<IReadOnlyList<RptDepotLetterSearch>> PendingForDispatch(int empId, string userRole)
+        public async Task<IReadOnlyList<MedDispSearch>> PendingForDispatch(int empId, string userRole)
         {
             try
             {
@@ -166,23 +166,25 @@ namespace API.Controllers
                 var empData = _db.Employee.FromSqlRaw(empQry).ToList();
                 string qry = "  SELECT * FROM  ( " +
                             " Select  DISTINCT a.Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn,  SYSDATETIMEOFFSET() AS ModifiedOn,  a.ReferenceNo, a.ProposeFor, a.DonationTo, depo.DepotCode, " +
-                            " d.DonationTypeName, doc.DoctorName,  inDetail.ProposedAmount, e.EmployeeName, e.MarketName   " +
+                            " d.DonationTypeName, doc.DoctorName,  inDetail.ProposedAmount, e.EmployeeName, e.MarketName, ir.SetOn 'ApprovedDate', aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy' " +
                             " from InvestmentInit a  " +
                             " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " +
                             " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId   " +
                             " left join Employee e on a.EmployeeId = e.Id  left join Donation d on a.DonationId = d.Id  " +
-                            " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId   " +
+                            " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
+                            " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId " +
                             " inner join InvestmentDoctor inDc on a.Id = inDc.InvestmentInitId  left join DoctorInfo doc on inDc.DoctorId = doc.Id " +
                             " where a.DonationTo = 'Doctor' AND  ir.RecStatus = 'Approved' AND inDetail.PaymentMethod = 'Cash' AND a.DonationId = 4 " +
                             " AND  ir.EmployeeId = inDetail.EmployeeId " +
                             " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                             " UNION " +
                             " Select  DISTINCT a.Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn,  SYSDATETIMEOFFSET() AS ModifiedOn,  a.ReferenceNo, a.ProposeFor, a.DonationTo, depo.DepotCode," +
-                            " d.DonationTypeName, doc.DoctorName,  inDetail.ProposedAmount, e.EmployeeName, e.MarketName " +
+                            " d.DonationTypeName, doc.DoctorName,  inDetail.ProposedAmount, e.EmployeeName, e.MarketName, ir.SetOn 'ApprovedDate', aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy' " +
                             " from InvestmentInit a " +
                             " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId " +
                             " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId   " +
                             " left join Employee e on a.EmployeeId = e.Id  left join Donation d on a.DonationId = d.Id  " +
+                            " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
                             " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId   " +
                             " inner join InvestmentCampaign IC on a.Id = IC.InvestmentInitId " +
                             " left join DoctorInfo doc on IC.DoctorId = doc.Id   " +
@@ -193,11 +195,12 @@ namespace API.Controllers
                             " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                             " UNION " +
                             " Select DISTINCT a.Id, 1 AS DataStatus,SYSDATETIMEOFFSET() AS SetOn,SYSDATETIMEOFFSET() AS ModifiedOn,a.ReferenceNo,  depo.DepotCode, " +
-                            " a.ProposeFor,a.DonationTo,d.DonationTypeName,doc.InstitutionName,inDetail.ProposedAmount,e.EmployeeName,e.MarketName  " +
+                            " a.ProposeFor,a.DonationTo,d.DonationTypeName,doc.InstitutionName,inDetail.ProposedAmount,e.EmployeeName,e.MarketName, ir.SetOn 'ApprovedDate', aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy' " +
                             " from InvestmentInit a  " +
                             " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " +
                             " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId  " +
                             " left join Employee e on a.EmployeeId = e.Id left join Donation d on a.DonationId = d.Id  " +
+                            " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
                             " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId  " +
                             " inner join InvestmentInstitution IC on a.Id = IC.InvestmentInitId  " +
                             " left join InstitutionInfo doc on IC.InstitutionId = doc.Id  " +
@@ -208,11 +211,12 @@ namespace API.Controllers
                             " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                             " UNION " +
                             " Select DISTINCT a.Id, 1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.ReferenceNo, a.ProposeFor, a.DonationTo, d.DonationTypeName, depo.DepotCode,  " +
-                            " doc.BcdsName, inDetail.ProposedAmount, e.EmployeeName, e.MarketName  " +
+                            " doc.BcdsName, inDetail.ProposedAmount, e.EmployeeName, e.MarketName, ir.SetOn 'ApprovedDate', aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy' " +
                             " from InvestmentInit a  " +
                             " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " +
                             " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId  " +
                             " left join Employee e on a.EmployeeId = e.Id left join Donation d on a.DonationId = d.Id  " +
+                            " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
                             " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId  " +
                             " inner join InvestmentBcds IC on a.Id = IC.InvestmentInitId  " +
                             " left join Bcds doc on IC.BcdsId = doc.Id  " +
@@ -223,11 +227,12 @@ namespace API.Controllers
                             " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                             " UNION " +
                             " Select DISTINCT a.Id, 1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.ReferenceNo, a.ProposeFor, a.DonationTo, depo.DepotCode, " +
-                            " d.DonationTypeName, doc.SocietyName, inDetail.ProposedAmount, e.EmployeeName, e.MarketName   " +
+                            " d.DonationTypeName, doc.SocietyName, inDetail.ProposedAmount, e.EmployeeName, e.MarketName, ir.SetOn 'ApprovedDate', aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy' " +
                             " from InvestmentInit a  " +
                             " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " +
                             " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId  " +
                             " left join Employee e on a.EmployeeId = e.Id left join Donation d on a.DonationId = d.Id  " +
+                            " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
                             " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId  " +
                             " inner join InvestmentSociety IC on a.Id = IC.InvestmentInitId  " +
                             " left join Society doc on IC.SocietyId = doc.Id  " +
@@ -244,7 +249,9 @@ namespace API.Controllers
                     qry = qry + " AND X.DepotCode = '" + empData[0].DepotCode + "'";
                 }
 
-                var results = _db.RptDepotLetterSearch.FromSqlRaw(qry).ToList();
+                qry = qry + " ORDER BY X.ApprovedDate ";
+
+                var results = _db.MedDispSearch.FromSqlRaw(qry).ToList();
 
                 return results;
             }
