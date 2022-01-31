@@ -143,7 +143,7 @@ namespace API.Controllers
 
         // string qry = " select CAST(ROW_NUMBER() OVER (ORDER BY a.SBU) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.SBU, a.SBUName, a.DonationId, d.DonationTypeName,  a.Amount Budget,  " +
         //             " (select ISNULL(SUM(ApprovedAmount),0) from InvestmentDetailTracker e inner join InvestmentInit c on c.Id = e.InvestmentInitId  where e.PaidStatus = 'Paid' AND e.DonationId = a.DonationId AND c.SBU = a.SBU AND   " +
-        //             " (CONVERT(date,e.FromDate) >= CAST('" + search.FromDate + "' as Date) AND CAST('" + search.ToDate + "' as Date) >= CONVERT(date,e.ToDate))) Expense  " +
+        //             " (CONVERT(date,e.FromDate) >= CAST('" + seGetInvestmentSummaryReportarch.FromDate + "' as Date) AND CAST('" + search.ToDate + "' as Date) >= CONVERT(date,e.ToDate))) Expense  " +
         //             " from SBUWiseBudget a inner join Donation d on d.Id = a.DonationId AND " +
         //             " (CONVERT(date,a.FromDate) >= CAST('" + search.FromDate + "' as Date) AND CAST('" + search.ToDate + "' as Date) >= CONVERT(date,a.ToDate)) ";
 
@@ -211,10 +211,13 @@ namespace API.Controllers
             // " AND (CONVERT(date,e.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,e.ToDate)) ";
 
             string qry = " select CAST(a.Id AS INT) as Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn," +
-                " a.ReferenceNo, d.DonationTypeName, a.DonationTo, b.ProposedAmount, b.FromDate, b.ToDate, ISNULL(dbo.fnGetInvestmentStatus(a.Id), 'pending') InvStatus," +
-                " dbo.fnGetEmpNamedesig(a.EmployeeId) EmployeeName,ISNULL(dbo.fnGetInvestmentApprovedBy(a.Id), 'N/A') ApprovedBy,a.MarketName, ISNULL(rcv.ReceiveStatus, 'Not Completed') ReceiveStatus," +
-                " ISNULL(dbo.fnGetEmpNamedesig(rcv.EmployeeId), 'N/A') ReceiveBy " +
-                " from InvestmentInit a " +
+                " a.ReferenceNo, d.DonationTypeName, a.DonationTo, b.ProposedAmount, b.FromDate, b.ToDate, ' ' InvStatus, (select  count(*) from [InvestmentTargetedGroup] t where t.[InvestmentInitId] = a.Id and t.CompletionStatus = 0) InvStatusCount," +
+                " E.EmployeeName," +
+                " ISNULL ((select C.EmployeeName from InvestmentRecComment b join Employee c on c.Id=b.EmployeeId where b.InvestmentInitId = a.Id and b.Id = (select max(id) from InvestmentRecComment where InvestmentInitId = b.InvestmentInitId)), 'N/A') ApprovedBy," +
+                " a.MarketName, " +
+                " ISNULL(rcv.ReceiveStatus, 'Not Completed') ReceiveStatus," +
+                " ISNULL((select a.EmployeeName + ', ' + a.DesignationName from [Employee] a where a.Id = rcv.EmployeeId), 'N/A') ReceiveBy " +
+                " from InvestmentInit a INNER JOIN Employee E ON A.EmployeeId = E.Id" +
                 " left join InvestmentDetail b on a.Id = b.InvestmentInitId " +
                 " left join InvestmentRecv rcv on a.Id = rcv.InvestmentInitId " +
                 " inner join Donation d on d.Id = a.DonationId " +

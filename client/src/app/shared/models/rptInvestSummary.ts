@@ -7,6 +7,7 @@ export interface IrptInvestSummary {
     fromDate: Date;
     toDate: Date;
     invStatus: string;
+    invCount: number;
     employeeName: string;
     receiveStatus: string;
     receiveBy: string;
@@ -23,6 +24,7 @@ export class rptInvestSummary implements IrptInvestSummary {
     fromDate: Date;
     toDate: Date;
     invStatus: string;
+    invCount: number;
     employeeName: string;
     receiveStatus: string;
     receiveBy: string;
