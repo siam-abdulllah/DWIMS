@@ -1,3 +1,4 @@
+import { IMedDispSearch } from './../shared/models/medDispatch';
 import { Component, ElementRef, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { environment } from '../../environments/environment';
 import 'jspdf-autotable';
@@ -16,13 +17,15 @@ import { DatePipe } from '@angular/common';
 import { MedDispatchService } from '../_services/medDispatch.service';
 import { DepotPrintTrack,IDepotPrintTrack } from '../shared/models/depotPrintTrack';
 import { IInvestmentMedicineProd, InvestmentMedicineProd } from '../shared/models/investment';
-import { IMedicineDispatchDtl, MedicineDispatchDtl, IMedDispSearch } from '../shared/models/medDispatch';
+import { IMedicineDispatchDtl, MedicineDispatchDtl } from '../shared/models/medDispatch';
+import { IDepotInfo } from '../shared/models/depotInfo';
+import { IDonation } from '../shared/models/donation';
 
 @Component({
   selector: 'app-bcds-info',
-  templateUrl: './medDispatch.component.html',
+  templateUrl: './rptMedDispatch.component.html',
 })
-export class MedDispatchComponent implements OnInit {
+export class RptMedDispatchComponent implements OnInit {
 
   @ViewChild('search', {static: false}) searchTerm: ElementRef;
   @ViewChild('pendingListModal', { static: false }) pendingListModal: TemplateRef<any>;
@@ -31,13 +34,12 @@ export class MedDispatchComponent implements OnInit {
   bsValue: Date = new Date();
   medDispatchForm: FormGroup;
   empId: string;
+  depots: IDepotInfo[];
+  donations: IDonation[];
   genParams: GenericParams;
   numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
   depotLetter :IrptDepotLetter[] = [];
   printTrack :IDepotPrintTrack[] = [];
-  isValid: boolean = true;
-  valShow: boolean = true;
-  isHide: boolean = false;
   investmentMedicineProds: MedicineDispatchDtl[];
   rptDepotLetter:any;
   searchText = '';
@@ -48,73 +50,76 @@ export class MedDispatchComponent implements OnInit {
      private router: Router, private toastr: ToastrService, private datePipe: DatePipe,) {
    }
 
+   getDepot() {
+    this.pendingService.getDepot().subscribe(response => {
+      this.depots = response as IDepotInfo[];
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  getDonation() {
+    this.pendingService.getDonations().subscribe(response => {
+      this.donations = response as IDonation[];
+    }, error => {
+      console.log(error);
+    });
+  }
+
    createMedDispatchForm() {
     this.medDispatchForm = new FormGroup({
-      referenceNo: new FormControl('', [Validators.required]),
-      issueReference: new FormControl('', [Validators.required]),
-      issueDate: new FormControl('', [Validators.required]),
-      employeeName: new FormControl(''),
-      doctorName: new FormControl(''),
-      marketName: new FormControl(''),
-      donationTypeName: new FormControl(''),
-      proposeAmt: new FormControl(''),
-      dispatchAmt: new FormControl(''),
-      id: new FormControl(''),
-      investmentInitId: new FormControl(''),
-      searchText: new FormControl(''),
-      remarks: new FormControl(''),
-      approvedBy: new FormControl(''),
-      approvedDate: new FormControl(''),
-
-
-      productName: new FormControl(''),
-      productId: new FormControl(''),
-      originVal:  new FormControl(''),
-      originQty:new FormControl(''),
-      dispVal:  new FormControl(''),
-      dispQty:  new FormControl(''),
+      fromDate: new FormControl('', [Validators.required]),
+      toDate: new FormControl('', [Validators.required]),
+      depotCode: new FormControl('', [Validators.required]),
+      donationId: new FormControl(''),
+      disStatus: new FormControl(''),
     });
   }
 
   getPendingDispatch() {
+
+    const rptMedDispSearchDto: IRptMedDispSearchDto = {
+      fromDate: this.medDispatchForm.value.fromDate,
+      toDate: this.medDispatchForm.value.toDate,
+      depotCode: this.medDispatchForm.value.depotCode,
+      donationId: this.medDispatchForm.value.donationId,
+      disStatus: this.medDispatchForm.value.disStatus,
+    };
+
     this.SpinnerService.show();
-    var empId = parseInt(this.empId);
-    this.pendingService.getPendingDispatch(empId,this.userRole).subscribe(response => {
+    //var empId = parseInt(this.empId);
+    this.pendingService.getRptMedDis(rptMedDispSearchDto).subscribe(response => {
       this.SpinnerService.hide();
       this.rptDepotLetter = response;
-      if (this.rptDepotLetter.length > 0) {
-        this.openPendingListModal(this.pendingListModal);
-      }
-      else {
-        this.toastr.warning('No Data Found');
-      }
     }, error => {
       this.SpinnerService.hide();
       console.log(error);
     });
   }
 
-  getInvestmentMedicineProd() {
-    this.pendingService.getInvestmentMedicineProds(this.medDispatchForm.value.investmentInitId).subscribe(response => {
+  getInvestmentMedicineProd(initId: number) {
+    this.pendingService.getInvestmentMedicineProds(initId).subscribe(response => {
       var data = response as IMedicineDispatchDtl[];
       if (data !== undefined && data.length>0) {
         this.investmentMedicineProds = data;
-        let sum=0;
-        for (let i = 0; i < this.investmentMedicineProds.length; i++) {
-          sum=sum+this.investmentMedicineProds[i].dispatchTpVat;
-        }
-
-        this.medDispatchForm.patchValue({
-          dispatchAmt: sum.toLocaleString(),
-        });
-
+        let row: any[] = [];
+        let rowD: any[] = [];
+        let col = ['Medicine Name', 'Quantity [Box]', 'Amount'];
+        for (const a of this.investmentMedicineProds) {
+          //row.push('Product');
+          row.push(a.productName);
+          row.push(a.dispatchQuantity);
+          row.push((a.dispatchTpVat).toLocaleString());
+          rowD.push(row);
+          row = [];
+        }        
+        this.getReport(col, rowD, this.depotLetter);
       }
       else {
-        this.medDispatchForm.patchValue({
-          dispatchAmt: '0',
-        });
         this.investmentMedicineProds =[];
       }
+
+      
     }, error => {
       console.log(error);
     });
@@ -124,6 +129,8 @@ export class MedDispatchComponent implements OnInit {
     this.resetPage();
     this.getEmployeeId();
     this.createMedDispatchForm();
+    this.getDepot();
+    this.getDonation();
   }
 
   getEmployeeId() {
@@ -131,243 +138,42 @@ export class MedDispatchComponent implements OnInit {
     this.userRole = this.accountService.getUserRole();
   }
 
-  insertTracker() {
-
-    if(this.medDispatchForm.value.referenceNo == "" || this.medDispatchForm.value.referenceNo == null )
-    {
-      this.toastr.error('Select a proposal First');
-      return;
-    }
-
-    if(this.medDispatchForm.value.issueReference == "" || this.medDispatchForm.value.issueReference == null || this.medDispatchForm.value.issueDate == "" || this.medDispatchForm.value.issueDate == null )
-    {
-      this.toastr.error('Enter Payment Reference No & Date');
-      return;
-    }
-
-    if(this.medDispatchForm.value.dispatchAmt == "" || this.medDispatchForm.value.dispatchAmt == null)
-    {
-      this.toastr.error('Enter Payment Dispatch Amount & Remarks');
-      return;
-    }
-
-    this.pendingService.medDispatchFormData.investmentInitId = this.medDispatchForm.value.investmentInitId;
-    this.pendingService.medDispatchFormData.issueReference = this.medDispatchForm.value.issueReference;
-    this.pendingService.medDispatchFormData.issueDate = this.medDispatchForm.value.issueDate;
-    this.pendingService.medDispatchFormData.depotName = "";
-    this.pendingService.medDispatchFormData.depotCode = "";
-    this.pendingService.medDispatchFormData.employeeId = parseInt(this.empId);
-    this.pendingService.medDispatchFormData.remarks = this.medDispatchForm.value.remarks;
-    this.pendingService.medDispatchFormData.dispatchAmt = this.medDispatchForm.value.dispatchAmt;
-    this.pendingService.medDispatchFormData.proposeAmt = this.medDispatchForm.value.proposeAmt;
-
-
-    this.pendingService.insertDispatch(this.pendingService.medDispatchFormData).subscribe(
-      res => {
-        this.SaveMedicineDetail();
-        this.toastr.success('Data Saved successfully', 'Medicine Dispatch') 
-        this.isValid = false;
-      },
-      err => { console.log(err); }
-    );
-  }
-
-
-  SaveMedicineDetail()
-  {
-      this.pendingService.insertMedicineDetail(this.investmentMedicineProds).subscribe(
-        res => {
-          //this.toastr.success('Data Saved successfully', 'Report Tracker')
-        },
-        err => { console.log(err); }
-      );
-  }
-
-  modifyData(selectedRecord: IMedicineDispatchDtl)
-  {
-    this.valShow = false;
-    this.isHide = true;
-    this.medDispatchForm.patchValue({
-      productName: selectedRecord.productName,
-      productId: selectedRecord.productId,
-      originVal:  selectedRecord.tpVat,
-      originQty: selectedRecord.boxQuantity,
-      dispVal:  selectedRecord.dispatchTpVat,
-      dispQty:  selectedRecord.dispatchQuantity,
-      // formControlName2: myValue2 (can be omitted)
-    });
-
-    const index = this.investmentMedicineProds.indexOf(selectedRecord);
-    this.investmentMedicineProds.splice(index, 1);
-  }
-
-  private formatDate(date) {
-    const d = new Date(date);
-    let month = '' + (d.getMonth() + 1);
-    let day = '' + d.getDate();
-    const year = d.getFullYear();
-    if (month.length < 2) month = '0' + month;
-    if (day.length < 2) day = '0' + day;
-    return [day, month, year ].join('-');
-  }
-
-  ViewData(selectedRecord: IMedDispSearch)
-  {
-    this.medDispatchForm.patchValue({
-      referenceNo: selectedRecord.referenceNo,
-      employeeName: selectedRecord.employeeName,
-      doctorName:  selectedRecord.doctorName,
-      donationTypeName: selectedRecord.donationTypeName,
-      marketName:  selectedRecord.marketName,
-      proposeAmt:  selectedRecord.proposedAmount,
-      investmentInitId:  selectedRecord.id,
-      approvedBy:  selectedRecord.approvedBy,
-      approvedDate:  this.formatDate(selectedRecord.approvedDate),
-      // formControlName2: myValue2 (can be omitted)
-    });
-    this.isValid = true;
-    this.isHide = false;
-    
-    this.getInvestmentMedicineProd();
-    this.pendingListModalRef.hide();
-  }
-
-
-updateData()
-{
-  debugger;
-  if(this.medDispatchForm.value.dispQty == null || this.medDispatchForm.value.dispQty == 0)
-  {
-    this.toastr.warning('Invalid Quantity', 'Medicine Dispatch');
-    return;
-  }
-  if(this.medDispatchForm.value.dispQty > this.medDispatchForm.value.originQty)
-  {
-    this.toastr.warning('Dispatch Quantity Can not be greater than Initial Quantity', 'Medicine Dispatch');
-    return;
-  }
-
-  this.medDispatchForm.value.dispatchTpVat = (this.medDispatchForm.value.originVal / this.medDispatchForm.value.originQty * this.medDispatchForm.value.dispQty);
-
-  let data = new MedicineDispatchDtl();
-  data.id = 0;
-  data.investmentInitId = this.medDispatchForm.value.investmentInitId;
-  data.employeeId = parseInt(this.empId);
-  data.productId = this.medDispatchForm.value.productId;
-  data.productName = this.medDispatchForm.value.productName;
-  data.boxQuantity = this.medDispatchForm.value.originQty;
-  data.tpVat = this.medDispatchForm.value.originVal;
-  data.dispatchQuantity = this.medDispatchForm.value.dispQty;
-  data.dispatchTpVat = (this.medDispatchForm.value.originVal / this.medDispatchForm.value.originQty * this.medDispatchForm.value.dispQty);
-  this.investmentMedicineProds.push(data);
-
-  
-  if ( this.investmentMedicineProds.length>0) {
-    let sum=0;
-    for (let i = 0; i < this.investmentMedicineProds.length; i++) {
-      sum=sum+this.investmentMedicineProds[i].dispatchTpVat;
-    }
-    this.medDispatchForm.patchValue({
-      dispatchAmt: sum.toLocaleString(),
-    });
-  }
-  else {
-    this.medDispatchForm.patchValue({
-      dispatchAmt: '0',
-    });
-    this.investmentMedicineProds =[];
-  }
-
-  this.valShow = true;
-  this.isHide = false;
-}
-
-  removeInvestmentMedicineProd(selectedRecord: IMedicineDispatchDtl) {
-    var c = confirm("Are you sure you want to delete that?");
-    if (c == true) {
-        const index = this.investmentMedicineProds.indexOf(selectedRecord);
-        this.investmentMedicineProds.splice(index, 1);
-
-        if ( this.investmentMedicineProds.length>0) {
-          let sum=0;
-          for (let i = 0; i < this.investmentMedicineProds.length; i++) {
-            sum=sum+this.investmentMedicineProds[i].dispatchTpVat;
-          }
-  
-          this.medDispatchForm.patchValue({
-            dispatchAmt: sum.toLocaleString(),
-          });
-  
-        }
-        else {
-          this.medDispatchForm.patchValue({
-            dispatchAmt: '0',
-          });
-          this.investmentMedicineProds =[];
-        }
-    }
-  }
-
   resetSearch(){
     this.searchText = '';
 }
 
-openPendingListModal(template: TemplateRef<any>) {
-  this.pendingListModalRef = this.modalService.show(template, this.config);
-}
 
   reset() {
 
     this.investmentMedicineProds =[];
-    this.isValid = true;
-    this.valShow = true;
-    this.isHide = false;
     this.medDispatchForm.setValue({
-      referenceNo: "",
-      issueReference: "",
-      issueDate: "",
-      employeeName: "",
-      doctorName: "",
-      marketName: "",
-      donationTypeName: "",
-      proposeAmt: "",
-      dispatchAmt: "",
-      remarks: "",
-      id: "",
-      searchText: "",
-      investmentInitId: "",
-      approvedBy: "",
-      approvedDate: "",
-      
-      productName:"",
-      productId:"",
-      originVal:  "",
-      originQty:"",
-      dispVal:  "",
-      dispQty: "",
+      fromDate: "",
+      toDate: "",
+      depotCode: "",
+      donationId: "",
+      disStatus: "",
     });
   }
 
-  ViewReport()
+  ViewReport(selectedRecord: IrptDepotLetterSearch)
   {
-    this.pendingService.getRptDepotLetter(this.medDispatchForm.value.investmentInitId).subscribe(resp => {
+    this.pendingService.getRptDepotLetter(selectedRecord.id).subscribe(resp => {
       // this.reportInvestmentService.getInsSocietyBCDSWiseInvestment().subscribe(resp => {  
       this.depotLetter = resp as IrptDepotLetter[];
- 
       if (this.rptDepotLetter.length <= 0) {
         this.toastr.warning('No Data Found', 'Report');
       }
       else
       {
-        //this.insertTracker(this.depotLetter);
-        this.getReport(this.depotLetter, this.medDispatchForm.value.approvedBy);
+        //this.getReport(this.depotLetter);
+        this.getInvestmentMedicineProd(selectedRecord.id);
       }   
     }, error => {
       console.log(error);
     });
   }
 
-  getReport(r: IrptDepotLetter[], aprby: any) {
+  getReport(col: any[], rowD: any[], r: IrptDepotLetter[]) {
     const totalPagesExp = "{total_pages_count_string}";
     const pdf = new jsPDF('l', 'pt', [842, 595]);
 
@@ -386,9 +192,8 @@ openPendingListModal(template: TemplateRef<any>) {
     pdf.text('Place: Dhaka', 680, 100);
       const pDate = this.datePipe.transform(r[0].setOn, "dd/MM/yyyy");
     pdf.text('Date: ' + pDate, 680, 120);
-    pdf.text('To: '+ r[0].employeeName + ' (Id:' +r[0].empId+ ') '+ r[0].designationName + ' ' + r[0].marketName  , 65, 120);
+    pdf.text('To: '+ r[0].employeeName + ' (Id:' +r[0].empId+ ') '+ r[0].designationName + ' ' + r[0].marketName  , 65, 140);
     pdf.text('Ref.: ' + r[0].referenceNo, 680, 140);
-    pdf.text('Approved By: '+ aprby,  65, 140);
     pdf.setLineWidth(0.5);    
     pdf.line(65, 150, 790, 150);  
 
@@ -402,20 +207,8 @@ openPendingListModal(template: TemplateRef<any>) {
     pdf.text('Amount: '+ (r[0].proposedAmount).toLocaleString() + '/-  ('+ this.transform(r[0].proposedAmount)+') only.', 65, 259 );
     pdf.text('You are therefore advised to Collect the amount in cash from DIC, '+ r[0].depotName +' by showing this reference letter & Arrange to hand over' , 65, 300)
     pdf.text('the money to the mentioned '+ r[0].donationTo+' in prescence of RSM/DIC and respective Colleagues.' , 65, 320)
-    let row: any[] = [];
-    let rowD: any[] = [];
-    let col = ['Medicine Name', 'Quantity [Box]', 'Amount']; // initialization for headers
+ // initialization for headers
     let slNO = 0;
-  
-    debugger;
-    for (const a of this.investmentMedicineProds) {
-      //row.push('Product');
-      row.push(a.productName);
-      row.push(a.dispatchQuantity);
-      row.push((a.dispatchTpVat).toLocaleString());
-      rowD.push(row);
-      row = [];
-    }
 
     pdf.autoTable(col, rowD,
       {
@@ -556,4 +349,13 @@ openPendingListModal(template: TemplateRef<any>) {
   resetPage() {
 
   }
+}
+
+
+interface IRptMedDispSearchDto {
+  fromDate: Date | undefined | null;
+  toDate: Date | undefined | null;
+  disStatus: string;
+  donationId: string;
+  depotCode: string;
 }

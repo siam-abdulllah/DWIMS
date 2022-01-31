@@ -18,4 +18,15 @@ namespace API.Dtos
         public string DepotName { get; set; }
         public string Remarks { get; set; }
     }
+
+
+    public class RptMedicineDispatchSearchDto
+    {
+        public DateTimeOffset FromDate { get; set; }
+        public DateTimeOffset ToDate { get; set; }
+        public string DepotCode { get; set; }
+        public string DonationId { get; set; }
+        public string DisStatus { get; set; }
+
+    }
 }

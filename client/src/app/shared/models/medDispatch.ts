@@ -47,3 +47,31 @@ export class MedicineDispatchDtl implements IMedicineDispatchDtl {
     dispatchQuantity : number;
     dispatchTpVat : number;
 }
+
+
+export interface IMedDispSearch {
+    id: number;
+    referenceNo: string;
+    donationTypeName: string;
+    proposeFor: string;
+    doctorName: string;
+    proposedAmount: number;
+    employeeName: string;
+    marketName: string;
+    approvedBy: string;
+    approvedDate: Date;
+}
+
+export class MedDispSearch implements IMedDispSearch {
+    id: number;
+    referenceNo: string;
+    donationTypeName: string;
+    proposeFor: string;
+    doctorName: string;
+    proposedAmount: number;
+    employeeName: string;
+    marketName: string;
+    approvedBy: string;
+    approvedDate: Date;
+}
+

@@ -59,11 +59,21 @@ export class MedDispatchService {
     return this.http.get(this.baseUrl + 'medDispatch/pendingDispatch/'+ empId+'/'+userRole);
   }
 
+  getRptMedDis(model: any){    
+    return this.http.post(this.baseUrl + 'medDispatch/medDispReport/', model);
+  }
+
   // removeInvestmentMedicineProd() {
   //   return this.http.post(this.baseUrl + 'medDispatch/removeInvestmentMedicineProd', this.investmentMedicineProdFormData,
   //     { responseType: 'text' });
   // }
 
+  getDonations() {
+    return this.http.get(this.baseUrl + 'donation/donationsForInvestment');
+  }
+  getDepot() {
+    return this.http.get(this.baseUrl + 'employee/depotForInvestment');
+  }
   getInvestmentMedicineProds(investmentInitId: number) {
     return this.http.get(this.baseUrl + 'medDispatch/getMedicineProds/' + investmentInitId );
   }

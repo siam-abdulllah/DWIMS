@@ -85,6 +85,23 @@
                             <div class="form-group ">
                                 <div class="row ">
                                     <div class="col-md-2 ">
+                                        <label>Approved By</label>
+                                    </div>
+                                    <div class="col-md-4 ">
+                                        <input class="form-control" id="approvedBy" formControlName="approvedBy" readonly>
+                                    </div>
+                                    <div class="col-md-2 ">
+                                        <label>Approved Date</label>
+                                    </div>
+                                    <div class="col-md-4 ">
+                                        <input class="form-control" id="approvedDate" formControlName="approvedDate" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group ">
+                                <div class="row ">
+                                    <div class="col-md-2 ">
                                         <label>Payment Ref. No</label>
                                         <span style="color:red; ">*</span>
                                     </div>
@@ -112,10 +129,9 @@
                                     </div>
                                     <div class="col-md-2 ">
                                         <label>Remarks</label>
-                                        <span style="color:red; ">*</span>
                                     </div>
                                     <div class="col-md-4 ">
-                                        <input class="form-control" id="remarks" formControlName="remarks" required>
+                                        <input class="form-control" id="remarks" formControlName="remarks">
                                     </div>
                                 </div>
                             </div>
@@ -250,10 +266,12 @@
                                 <td>Reference No</td>
                                 <td>Donation Type</td>
                                 <td style="width: 0;display:none; ">Proposed For</td>
-                                <td>Doctor Name</td>
-                                <td>Proposed Amount</td>
+                                <td>Doctor</td>
+                                <td>Prop.Amt</td>
                                 <td>Market</td>
                                 <td>Proposed By</td>
+                                <td>Apr By</td>
+                                <td>Apr Date</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -275,13 +293,19 @@
                                     {{a.doctorName}}
                                 </td>
                                 <td>
-                                    {{a.proposedAmount}}
+                                    {{a.proposedAmount | number:'2.1-2'}}
                                 </td>
                                 <td>
                                     {{a.marketName}}
                                 </td>
                                 <td>
                                     {{a.employeeName}}
+                                </td>
+                                <td>
+                                    {{a.approvedBy}}
+                                </td>
+                                <td>
+                                    {{a.approvedDate | date:'dd/MM/yyyy'}}
                                 </td>
                             </tr>
                         </tbody>

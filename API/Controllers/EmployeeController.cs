@@ -124,7 +124,7 @@ namespace API.Controllers
                                DepotCode = r.DepotCode,
                                DepotName = r.DepotName
                            }
-                              ).OrderBy(x=>x.DepotName).ToList();
+                              ).OrderBy(x=>x.DepotName).Distinct().ToList();
 
                 return depot;
             }

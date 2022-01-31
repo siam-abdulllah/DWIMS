@@ -30,4 +30,32 @@ namespace Core.Entities
         public string MarketName { get; set; }
         public string EmployeeName { get; set; }
     }
+
+    public class MedDispSearch : BaseEntity
+    {
+        public string ReferenceNo { get; set; }
+        public string DonationTypeName { get; set; }
+        public string ProposeFor { get; set; }
+        public string DoctorName { get; set; }
+        public double ProposedAmount { get; set; }
+        public string MarketName { get; set; }
+        public string EmployeeName { get; set; }
+        public string ApprovedBy { get; set; }
+        public DateTimeOffset ApprovedDate { get; set; }
+    }
+
+
+    public class RptMedDisp : BaseEntity
+    {
+        public string ReferenceNo { get; set; }
+        public string DonationTypeName { get; set; }
+        public string EmployeeName { get; set; }
+        public string ApprovedBy { get; set; }
+        public DateTimeOffset ApprovedDate { get; set; }
+        public string MarketName { get; set; }
+        public string PaymentRefNo { get; set; }
+        public DateTimeOffset? PaymentDate { get; set; }
+        public double? DispatchAmt { get; set; }
+        public string Remarks { get; set; }
+    }
 }

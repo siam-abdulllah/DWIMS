@@ -1,0 +1,155 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <!-- form start -->
+                <form [formGroup]="medDispatchForm">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h3 class="card-title">Pending Medicine Dispatch</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body ">
+                            <table class="table  table-bordered">
+                                <tr class="HeaderRow ">
+                                    <td style="width: 0;display:none; ">Id</td>
+                                    <td>Reference No</td>
+                                    <td>Donation Type</td>
+                                    <td style="width: 0;display:none; ">Proposed For</td>
+                                    <td>Doctor</td>
+                                    <td>Prop.Amt</td>
+                                    <td>Market</td>
+                                    <td>Proposed By</td>
+                                    <td>Apr By</td>
+                                    <td>Apr Date</td>
+                                    <td></td>
+                                </tr>
+                                <tr *ngFor="let a of rptDepotLetter | filter: searchText ">
+                                    <td style="display:none; ">{{a.id}}</td>
+                                    <td>
+                                        {{a.referenceNo}}
+                                    </td>
+                                    <td>
+                                        {{a.donationTypeName}}
+                                    </td>
+                                    <td style="width: 0;display:none; ">
+                                        {{a.proposeFor}}
+                                    </td>
+                                    <td>
+                                        {{a.doctorName}}
+                                    </td>
+                                    <td>
+                                        {{a.proposedAmount | number:'2.1-2'}}
+                                    </td>
+                                    <td>
+                                        {{a.marketName}}
+                                    </td>
+                                    <td>
+                                        {{a.employeeName}}
+                                    </td>
+                                    <td>
+                                        {{a.approvedBy}}
+                                    </td>
+                                    <td>
+                                        {{a.approvedDate | date:'dd/MM/yyyy'}}
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="ViewReport(a)" style="width: 100px;"><i class="fa fa-eye"></i>View</button>
+                                    </td>
+                                </tr>
+                            </table>
+                            <!-- <div class="card-footer ">
+                          </div> -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+
+                </form>
+            </div>
+            <!-- /.row -->
+        </div>
+    </div>
+
+
+    <!-- /.container-fluid -->
+</section>
+
+
+<ng-template #pendingListModal>
+    <div class="modal-header " style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));color: black; ">
+        <h4 class="modal-title pull-left ">Bill Payment</h4>
+        <button type="button " class="close pull-right " aria-label="Close " (click)="pendingListModalRef.hide() ">
+        <span aria-hidden="true ">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body " style="padding: 20px 30px 20px 30px; ">
+        <div class="row ">
+            <div class="col-md-12 ">
+                <div class="table-responsive " style="border: 1px solid #bed2c9; width: 100%; ">
+                    <div class="col-md-12">
+                        <input name="filterText" class="form-control m-input Searchbox" type="text" id="searchText" [(ngModel)]="searchText" name="searchText" placeholder="Search..">
+                    </div>
+                    <table class="table table-bordered table-responsive table-hover table-striped ">
+                        <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc)); ">
+                            <tr class="HeaderRow ">
+                                <td>Select</td>
+                                <td style="width: 0;display:none; ">Id</td>
+                                <td>Reference No</td>
+                                <td>Donation Type</td>
+                                <td style="width: 0;display:none; ">Proposed For</td>
+                                <td>Doctor</td>
+                                <td>Prop.Amt</td>
+                                <td>Market</td>
+                                <td>Proposed By</td>
+                                <td>Apr By</td>
+                                <td>Apr Date</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let a of rptDepotLetter | filter: searchText ">
+                                <td>
+                                    <button class="btn btn-sm btn-embossed btn-success " type="button " (click)="ViewData(a) " style="width: 70px; "><i class="fa fa-eye "></i>Select</button>
+                                </td>
+                                <td style="display:none; ">{{a.id}}</td>
+                                <td>
+                                    {{a.referenceNo}}
+                                </td>
+                                <td>
+                                    {{a.donationTypeName}}
+                                </td>
+                                <td style="width: 0;display:none; ">
+                                    {{a.proposeFor}}
+                                </td>
+                                <td>
+                                    {{a.doctorName}}
+                                </td>
+                                <td>
+                                    {{a.proposedAmount}}
+                                </td>
+                                <td>
+                                    {{a.marketName}}
+                                </td>
+                                <td>
+                                    {{a.employeeName}}
+                                </td>
+                                <td>
+                                    {{a.approvedBy}}
+                                </td>
+                                <td>
+                                    {{a.approvedDate | date:'dd/MM/yyyy'}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</ng-template>
