@@ -96,6 +96,8 @@ namespace Infrastructure.Data
         public DbSet<MedicineDispatchDtl> MedicineDispatchDtl { get; set; }
         [NotMapped]
         public DbSet<MedDispSearch> MedDispSearch { get; set; }
+        [NotMapped]
+        public DbSet<RptMedDisp> RptMedDisp { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

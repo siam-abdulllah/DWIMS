@@ -1,3 +1,4 @@
+import { IMedDispSearch } from './../shared/models/medDispatch';
 import { Component, ElementRef, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { environment } from '../../environments/environment';
 import 'jspdf-autotable';
@@ -17,12 +18,14 @@ import { MedDispatchService } from '../_services/medDispatch.service';
 import { DepotPrintTrack,IDepotPrintTrack } from '../shared/models/depotPrintTrack';
 import { IInvestmentMedicineProd, InvestmentMedicineProd } from '../shared/models/investment';
 import { IMedicineDispatchDtl, MedicineDispatchDtl } from '../shared/models/medDispatch';
+import { IDepotInfo } from '../shared/models/depotInfo';
+import { IDonation } from '../shared/models/donation';
 
 @Component({
   selector: 'app-bcds-info',
-  templateUrl: './pendingMedDispatch.component.html',
+  templateUrl: './rptMedDispatch.component.html',
 })
-export class PendingMedDispatchComponent implements OnInit {
+export class RptMedDispatchComponent implements OnInit {
 
   @ViewChild('search', {static: false}) searchTerm: ElementRef;
   @ViewChild('pendingListModal', { static: false }) pendingListModal: TemplateRef<any>;
@@ -31,6 +34,8 @@ export class PendingMedDispatchComponent implements OnInit {
   bsValue: Date = new Date();
   medDispatchForm: FormGroup;
   empId: string;
+  depots: IDepotInfo[];
+  donations: IDonation[];
   genParams: GenericParams;
   numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
   depotLetter :IrptDepotLetter[] = [];
@@ -45,36 +50,45 @@ export class PendingMedDispatchComponent implements OnInit {
      private router: Router, private toastr: ToastrService, private datePipe: DatePipe,) {
    }
 
+   getDepot() {
+    this.pendingService.getDepot().subscribe(response => {
+      this.depots = response as IDepotInfo[];
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  getDonation() {
+    this.pendingService.getDonations().subscribe(response => {
+      this.donations = response as IDonation[];
+    }, error => {
+      console.log(error);
+    });
+  }
+
    createMedDispatchForm() {
     this.medDispatchForm = new FormGroup({
-      referenceNo: new FormControl('', [Validators.required]),
-      issueReference: new FormControl('', [Validators.required]),
-      issueDate: new FormControl('', [Validators.required]),
-      employeeName: new FormControl(''),
-      doctorName: new FormControl(''),
-      marketName: new FormControl(''),
-      donationTypeName: new FormControl(''),
-      proposeAmt: new FormControl(''),
-      dispatchAmt: new FormControl(''),
-      id: new FormControl(''),
-      investmentInitId: new FormControl(''),
-      searchText: new FormControl(''),
-      remarks: new FormControl(''),
-
-
-      productName: new FormControl(''),
-      productId: new FormControl(''),
-      originVal:  new FormControl(''),
-      originQty:new FormControl(''),
-      dispVal:  new FormControl(''),
-      dispQty:  new FormControl(''),
+      fromDate: new FormControl('', [Validators.required]),
+      toDate: new FormControl('', [Validators.required]),
+      depotCode: new FormControl('', [Validators.required]),
+      donationId: new FormControl(''),
+      disStatus: new FormControl(''),
     });
   }
 
   getPendingDispatch() {
+
+    const rptMedDispSearchDto: IRptMedDispSearchDto = {
+      fromDate: this.medDispatchForm.value.fromDate,
+      toDate: this.medDispatchForm.value.toDate,
+      depotCode: this.medDispatchForm.value.depotCode,
+      donationId: this.medDispatchForm.value.donationId,
+      disStatus: this.medDispatchForm.value.disStatus,
+    };
+
     this.SpinnerService.show();
-    var empId = parseInt(this.empId);
-    this.pendingService.getPendingDispatch(empId,this.userRole).subscribe(response => {
+    //var empId = parseInt(this.empId);
+    this.pendingService.getRptMedDis(rptMedDispSearchDto).subscribe(response => {
       this.SpinnerService.hide();
       this.rptDepotLetter = response;
     }, error => {
@@ -115,7 +129,8 @@ export class PendingMedDispatchComponent implements OnInit {
     this.resetPage();
     this.getEmployeeId();
     this.createMedDispatchForm();
-    this.getPendingDispatch();
+    this.getDepot();
+    this.getDonation();
   }
 
   getEmployeeId() {
@@ -132,26 +147,11 @@ export class PendingMedDispatchComponent implements OnInit {
 
     this.investmentMedicineProds =[];
     this.medDispatchForm.setValue({
-      referenceNo: "",
-      issueReference: "",
-      issueDate: "",
-      employeeName: "",
-      doctorName: "",
-      marketName: "",
-      donationTypeName: "",
-      proposeAmt: "",
-      dispatchAmt: "",
-      remarks: "",
-      id: "",
-      searchText: "",
-      investmentInitId: "",
-      
-      productName:"",
-      productId:"",
-      originVal:  "",
-      originQty:"",
-      dispVal:  "",
-      dispQty: "",
+      fromDate: "",
+      toDate: "",
+      depotCode: "",
+      donationId: "",
+      disStatus: "",
     });
   }
 
@@ -349,4 +349,13 @@ export class PendingMedDispatchComponent implements OnInit {
   resetPage() {
 
   }
+}
+
+
+interface IRptMedDispSearchDto {
+  fromDate: Date | undefined | null;
+  toDate: Date | undefined | null;
+  disStatus: string;
+  donationId: string;
+  depotCode: string;
 }

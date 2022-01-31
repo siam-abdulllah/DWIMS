@@ -360,14 +360,14 @@ openPendingListModal(template: TemplateRef<any>) {
       else
       {
         //this.insertTracker(this.depotLetter);
-        this.getReport(this.depotLetter);
+        this.getReport(this.depotLetter, this.medDispatchForm.value.approvedBy);
       }   
     }, error => {
       console.log(error);
     });
   }
 
-  getReport(r: IrptDepotLetter[]) {
+  getReport(r: IrptDepotLetter[], aprby: any) {
     const totalPagesExp = "{total_pages_count_string}";
     const pdf = new jsPDF('l', 'pt', [842, 595]);
 
@@ -386,8 +386,9 @@ openPendingListModal(template: TemplateRef<any>) {
     pdf.text('Place: Dhaka', 680, 100);
       const pDate = this.datePipe.transform(r[0].setOn, "dd/MM/yyyy");
     pdf.text('Date: ' + pDate, 680, 120);
-    pdf.text('To: '+ r[0].employeeName + ' (Id:' +r[0].empId+ ') '+ r[0].designationName + ' ' + r[0].marketName  , 65, 140);
+    pdf.text('To: '+ r[0].employeeName + ' (Id:' +r[0].empId+ ') '+ r[0].designationName + ' ' + r[0].marketName  , 65, 120);
     pdf.text('Ref.: ' + r[0].referenceNo, 680, 140);
+    pdf.text('Approved By: '+ aprby,  65, 140);
     pdf.setLineWidth(0.5);    
     pdf.line(65, 150, 790, 150);  
 

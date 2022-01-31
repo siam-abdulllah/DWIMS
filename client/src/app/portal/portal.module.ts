@@ -45,6 +45,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { InvestmentRcvComponent } from '../investmentRcv/investmentRcv.component';
 import { ChangePasswordComponent } from '../changePassword/changePassword.component';
 import { BillTrackComponent } from '../billTrack/billTrack.component';
+import { RptMedDispatchComponent } from '../rptMedDispatch/rptMedDispatch.component';
 
 @NgModule({
   imports: [
@@ -89,6 +90,7 @@ import { BillTrackComponent } from '../billTrack/billTrack.component';
     PendingPrintDepotComponent,
     PendingChqPrintDepotComponent,
     PendingMedDispatchComponent,
+    RptMedDispatchComponent,
     BillTrackComponent,
     SbuWiseBudgetComponent,
     DocHonApprComponent,
