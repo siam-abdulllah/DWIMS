@@ -178,8 +178,10 @@ namespace API.Controllers
                             " AND  ir.EmployeeId = inDetail.EmployeeId " +
                             " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                             " UNION " +
-                            " Select  DISTINCT a.Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn,  SYSDATETIMEOFFSET() AS ModifiedOn,  a.ReferenceNo, a.ProposeFor, a.DonationTo, depo.DepotCode, depo.DepotName, " +
+                             " Select  DISTINCT a.Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn,  SYSDATETIMEOFFSET() AS ModifiedOn,  a.ReferenceNo, a.ProposeFor, a.DonationTo, depo.DepotCode, depo.DepotName, " +
                             " d.DonationTypeName, doc.DoctorName,  inDetail.ProposedAmount, e.EmployeeName, e.MarketName, ir.SetOn 'ApprovedDate', aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy' " +
+                            // " Select  DISTINCT a.Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn,  SYSDATETIMEOFFSET() AS ModifiedOn,  a.ReferenceNo, a.ProposeFor, a.DonationTo, depo.DepotCode, depo.DepotName, " +
+                            // " d.DonationTypeName, doc.DoctorName,  inDetail.ProposedAmount, e.EmployeeName, e.MarketName, ir.SetOn 'ApprovedDate', aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy' " +
                             " from InvestmentInit a " +
                             " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId " +
                             " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId   " +
@@ -194,8 +196,10 @@ namespace API.Controllers
                             " AND  ir.EmployeeId = inDetail.EmployeeId " +
                             " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                             " UNION " +
-                            " Select DISTINCT a.Id, 1 AS DataStatus,SYSDATETIMEOFFSET() AS SetOn,SYSDATETIMEOFFSET() AS ModifiedOn,a.ReferenceNo,  depo.DepotCode,  depo.DepotName, " +
-                            " a.ProposeFor,a.DonationTo,d.DonationTypeName,doc.InstitutionName,inDetail.ProposedAmount,e.EmployeeName,e.MarketName, ir.SetOn 'ApprovedDate', aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy' " +
+                            " Select  DISTINCT a.Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn,  SYSDATETIMEOFFSET() AS ModifiedOn,  a.ReferenceNo, a.ProposeFor, a.DonationTo, depo.DepotCode, depo.DepotName, " +
+                            " d.DonationTypeName, doc.InstitutionName,  inDetail.ProposedAmount, e.EmployeeName, e.MarketName, ir.SetOn 'ApprovedDate', aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy' " +
+                            // " Select DISTINCT a.Id, 1 AS DataStatus,SYSDATETIMEOFFSET() AS SetOn,SYSDATETIMEOFFSET() AS ModifiedOn,a.ReferenceNo,  depo.DepotCode,  depo.DepotName, " +
+                            // " a.ProposeFor,a.DonationTo,d.DonationTypeName,doc.InstitutionName,inDetail.ProposedAmount,e.EmployeeName,e.MarketName, ir.SetOn 'ApprovedDate', aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy' " +
                             " from InvestmentInit a  " +
                             " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " +
                             " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId  " +
@@ -210,8 +214,10 @@ namespace API.Controllers
                             " AND  ir.EmployeeId = inDetail.EmployeeId " +
                             " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                             " UNION " +
-                            " Select DISTINCT a.Id, 1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.ReferenceNo, a.ProposeFor, a.DonationTo, d.DonationTypeName, depo.DepotCode,  depo.DepotName,  " +
-                            " doc.BcdsName, inDetail.ProposedAmount, e.EmployeeName, e.MarketName, ir.SetOn 'ApprovedDate', aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy' " +
+                            " Select  DISTINCT a.Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn,  SYSDATETIMEOFFSET() AS ModifiedOn,  a.ReferenceNo, a.ProposeFor, a.DonationTo, depo.DepotCode, depo.DepotName, " +
+                            " d.DonationTypeName, doc.BcdsName,  inDetail.ProposedAmount, e.EmployeeName, e.MarketName, ir.SetOn 'ApprovedDate', aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy' " +
+                            // " Select DISTINCT a.Id, 1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.ReferenceNo, a.ProposeFor, a.DonationTo, d.DonationTypeName, depo.DepotCode,  depo.DepotName,  " +
+                            // " doc.BcdsName, inDetail.ProposedAmount, e.EmployeeName, e.MarketName, ir.SetOn 'ApprovedDate', aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy' " +
                             " from InvestmentInit a  " +
                             " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " +
                             " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId  " +
@@ -226,8 +232,10 @@ namespace API.Controllers
                             " AND  ir.EmployeeId = inDetail.EmployeeId " +
                             " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                             " UNION " +
-                            " Select DISTINCT a.Id, 1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.ReferenceNo, a.ProposeFor, a.DonationTo, depo.DepotCode,  depo.DepotName, " +
-                            " d.DonationTypeName, doc.SocietyName, inDetail.ProposedAmount, e.EmployeeName, e.MarketName, ir.SetOn 'ApprovedDate', aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy' " +
+                             " Select  DISTINCT a.Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn,  SYSDATETIMEOFFSET() AS ModifiedOn,  a.ReferenceNo, a.ProposeFor, a.DonationTo, depo.DepotCode, depo.DepotName, " +
+                            " d.DonationTypeName, doc.SocietyName,  inDetail.ProposedAmount, e.EmployeeName, e.MarketName, ir.SetOn 'ApprovedDate', aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy' " +
+                            //" Select DISTINCT a.Id, 1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.ReferenceNo, a.ProposeFor, a.DonationTo, depo.DepotCode,  depo.DepotName, " +
+                            //" d.DonationTypeName, doc.SocietyName, inDetail.ProposedAmount, e.EmployeeName, e.MarketName, ir.SetOn 'ApprovedDate', aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy' " +
                             " from InvestmentInit a  " +
                             " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " +
                             " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId  " +
@@ -242,8 +250,6 @@ namespace API.Controllers
                             " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                             " AND inDetail.PaymentMethod = 'Cash' AND a.DonationId = 4 ) X " +
                             " WHERE X.ID not in (SELECT InvestmentInitId FROM MedicineDispatch) ";
-                //" AND X.DepotCode = ''";
-                //" AND X.ReferenceNo IN ('20220107058','20220107179','20220107229','20220107133')" ;
                 if (userRole != "Administrator")
                 {
                     qry = qry + " AND X.DepotCode = '" + empData[0].DepotCode + "'";
