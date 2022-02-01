@@ -45,11 +45,10 @@
                                     </div>
                                     <div class="col-md-2">
                                         <label>Donation Type</label>
-                                        <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
                                         <select class="form-control" id="donationId" formControlName="donationId">
-                                            <option  [ngValue]="null">Select Donation Type</option>
+                                            <option  [value]="0">All</option>
                                             <option *ngFor="let a of donations" [value]="a.id">{{a.donationTypeName}}</option>
                                         </select>
                                     </div>
@@ -112,7 +111,7 @@
                                         {{a.paymentDate | date:'dd/MM/yyyy'}}
                                     </td>
                                     <td>
-                                        {{a.dispatchAmt}}
+                                        {{a.dispatchAmt | number:'2.1-2'}}
                                     </td>
                                     <td>
                                         {{a.remarks}}

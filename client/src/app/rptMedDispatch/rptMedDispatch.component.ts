@@ -78,6 +78,18 @@ export class RptMedDispatchComponent implements OnInit {
 
   getPendingDispatch() {
 
+    if(this.medDispatchForm.value.fromDate == "" || this.medDispatchForm.value.fromDate == null  || this.medDispatchForm.value.toDate == "" || this.medDispatchForm.value.toDate == null)
+    {
+      this.toastr.error('Select Date Range');
+      return;
+    }
+
+    if(this.medDispatchForm.value.depotCode == "" || this.medDispatchForm.value.depotCode == null )
+    {
+      this.toastr.error('Select a Depot');
+      return;
+    }
+
     const rptMedDispSearchDto: IRptMedDispSearchDto = {
       fromDate: this.medDispatchForm.value.fromDate,
       toDate: this.medDispatchForm.value.toDate,
@@ -91,6 +103,11 @@ export class RptMedDispatchComponent implements OnInit {
     this.pendingService.getRptMedDis(rptMedDispSearchDto).subscribe(response => {
       this.SpinnerService.hide();
       this.rptDepotLetter = response;
+      debugger;
+      if(this.rptDepotLetter.length==0)
+      {
+        this.toastr.info('No Data Found');
+      }
     }, error => {
       this.SpinnerService.hide();
       console.log(error);

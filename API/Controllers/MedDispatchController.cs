@@ -365,7 +365,12 @@ namespace API.Controllers
                                 " WHERE  a.id NOT IN (SELECT investmentinitid FROM   medicinedispatch) " +
                                 " AND IR.RecStatus = 'Approved'  " +
                                 " AND ir.seton BETWEEN '"+ searchDto.FromDate + "' AND '"+ searchDto.ToDate + "'  " +
-                                " AND a.donationid = "+ searchDto.DonationId + " AND depo.DepotCode = '"+ searchDto.DepotCode +"' ";
+                                " AND depo.DepotCode = '"+ searchDto.DepotCode +"' ";
+
+                    if (searchDto.DonationId != "0")
+                    {
+                        qry =  qry + " AND a.donationid = " + searchDto.DonationId + "";
+                    }
 
                     var results = _db.RptMedDisp.FromSqlRaw(qry).ToList();
 
@@ -383,8 +388,7 @@ namespace API.Controllers
                             " left join InvestmentRecComment C on a.InvestmentInitId = c.InvestmentInitId " +
                             " left join Donation d on b.DonationId = d.Id left join Employee prep on b.EmployeeId = prep.Id " +
                             " left join Employee apr on c.EmployeeId = apr.Id WHERE c.RecStatus = 'Approved' ) X " +
-                            " WHERE X.PaymentDate between '" + searchDto.FromDate + "' AND '" + searchDto.ToDate + "' " +
-                            " AND X.DonationId = '" + searchDto.DonationId + "' " +
+                            " WHERE X.PaymentDate between '" + searchDto.FromDate + "' AND '" + searchDto.ToDate + "'  AND X.DonationId = " + searchDto.DonationId + " " +
                             " AND X.DepotCode = '" + searchDto.DepotCode + "' ";
 
                         var results = _db.RptMedDisp.FromSqlRaw(qry).ToList();
@@ -394,15 +398,19 @@ namespace API.Controllers
                     {
                         string qry = "  SELECT* FROM(  " +
                             " select DISTINCT a.id,1 AS DataStatus, Sysdatetimeoffset() AS SetOn, Sysdatetimeoffset() AS ModifiedOn, b.ReferenceNo, d.DonationTypeName, prep.EmployeeName, apr.EmployeeName 'ApprovedBy', c.SetOn 'ApprovedDate',  " +
-                            " b.MarketName, a.PaymentRefNo AS PaymentRefNo, a.PaymentDate AS PaymentDate, ir.ProposedAmount AS DispatchAmt, a.Remarks, b.DonationId, a.DepotId " +
+                            " b.MarketName, a.PaymentRefNo AS PaymentRefNo, a.PaymentDate AS PaymentDate, ir.ApprovedAmount AS DispatchAmt, a.Remarks, b.DonationId, a.DepotId " +
                             " from[dbo].[DepotPrintTrack]  a left join InvestmentInit b on a.InvestmentInitId = b.id " +
                             " left join InvestmentRecComment C on a.InvestmentInitId = c.InvestmentInitId " +
                             " left join Donation d on b.DonationId = d.Id left join Employee prep on b.EmployeeId = prep.Id " +
-                            " left join InvestmentRec ir on ir.InvestmentInitId = b.Id " +
+                            " left join InvestmentDetailTracker ir on ir.InvestmentInitId = b.Id " +
                             " left join Employee apr on c.EmployeeId = apr.Id WHERE c.RecStatus = 'Approved' ) X " +
                             " WHERE X.PaymentDate between '" + searchDto.FromDate + "' AND '" + searchDto.ToDate + "' " +
-                            " AND X.DonationId = '" + searchDto.DonationId + "' " +
                             " AND X.DepotId = '" + searchDto.DepotCode + "' ";
+
+                        if (searchDto.DonationId != "0")
+                        {
+                            qry = qry + " AND X.DonationId = " + searchDto.DonationId + "";
+                        }
 
                         var results = _db.RptMedDisp.FromSqlRaw(qry).ToList();
                         return results;
