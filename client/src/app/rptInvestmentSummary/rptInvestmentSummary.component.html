@@ -104,7 +104,9 @@
                                                 {{a.employeeName}}
                                             </td>
                                             <td>
-                                                {{a.invStatus}}
+                                                <!-- {{a.invStatus}} -->
+                                                <span *ngIf="a.invCount===0">Completed</span>
+                                                <span *ngIf="a.invCount!==0">Not Completed</span>
                                             </td>
                                             <td>
                                                 {{a.approvedBy}}

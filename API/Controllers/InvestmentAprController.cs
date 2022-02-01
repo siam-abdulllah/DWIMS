@@ -610,9 +610,10 @@ namespace API.Controllers
                 var donation = await _donationRepo.GetByIdAsync(donationId);
                 if (donation.DonationTypeName == "Honorarium")
                 {
-                    DateTimeOffset calcDate = investmentAprDto.FromDate;
+                   
                     for (int i = 0; i < investmentAprDto.TotalMonth; i++)
                     {
+                        DateTimeOffset calcDate = investmentAprDto.FromDate;
                         calcDate = calcDate.AddMonths(i);
                         var invDT = new InvestmentDetailTracker
                         {
