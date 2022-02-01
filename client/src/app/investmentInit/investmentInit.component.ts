@@ -1166,6 +1166,9 @@ debugger;
     this.investmentInitService.investmentDetailFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
     if (this.investmentInitService.investmentDetailFormData.id == null || this.investmentInitService.investmentDetailFormData.id == undefined || this.investmentInitService.investmentDetailFormData.id == 0) {
       this.SpinnerService.show();
+      this.investmentInitService.investmentDetailFormData.fromDate  = this.datePipe.transform(this.investmentInitService.investmentDetailFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
+      this.investmentInitService.investmentDetailFormData.toDate= this.datePipe.transform(this.investmentInitService.investmentDetailFormData.toDate, 'yyyy-MM-dd HH:mm:ss');
+    
       this.investmentInitService.insertInvestmentDetail().subscribe(
         res => {
           var data = res as IInvestmentDetail;
@@ -1181,6 +1184,9 @@ debugger;
     }
     else {
       this.SpinnerService.show();
+      this.investmentInitService.investmentDetailFormData.fromDate  = this.datePipe.transform(this.investmentInitService.investmentDetailFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
+      this.investmentInitService.investmentDetailFormData.toDate= this.datePipe.transform(this.investmentInitService.investmentDetailFormData.toDate, 'yyyy-MM-dd HH:mm:ss');
+    
       this.investmentInitService.updateInvestmentDetail().subscribe(
         res => {
           var data = res as IInvestmentDetail;

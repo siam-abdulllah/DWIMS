@@ -65,8 +65,8 @@ export class InvestmentDetail implements IInvestmentDetail {
     totalMonth: number;
     proposedAmount: string;
     purpose: string;
-    fromDate: Date;
-    toDate: Date;
+    fromDate: any;
+    toDate: any;
 }
 export interface IInvestmentDetailOld {
     id: number;
@@ -80,8 +80,8 @@ export interface IInvestmentDetailOld {
     totalMonth: number;
     investmentAmount: string;
     purpose: string;
-    fromDate: Date;
-    toDate: Date;
+    fromDate: any;
+    toDate: any;
 }
  
 export class InvestmentDetailOld implements IInvestmentDetailOld {

@@ -126,7 +126,7 @@ E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\assets
 E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\favicon.ico
 E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\index.html
 E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\loginPageBackground.aab9f7d918417b4f87ed.jpg
-E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\main.f6a84f0fd53fcc0b4d68.js
+E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\main.e53b5d80c8d57bb4a995.js
 E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\polyfills.94daefd414b8355106ab.js
 E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\regPageBackground.2b8380da7df46342c165.jpg
 E:\DWIMS\TestApplication\API\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\runtime.7b63b9fd40098a2e8207.js
