@@ -65,6 +65,7 @@ export class MedDispatchComponent implements OnInit {
       remarks: new FormControl(''),
       approvedBy: new FormControl(''),
       approvedDate: new FormControl(''),
+      depotName: new FormControl(''),
 
 
       productName: new FormControl(''),
@@ -81,6 +82,7 @@ export class MedDispatchComponent implements OnInit {
     var empId = parseInt(this.empId);
     this.pendingService.getPendingDispatch(empId,this.userRole).subscribe(response => {
       this.SpinnerService.hide();
+      debugger;
       this.rptDepotLetter = response;
       if (this.rptDepotLetter.length > 0) {
         this.openPendingListModal(this.pendingListModal);
@@ -223,6 +225,7 @@ export class MedDispatchComponent implements OnInit {
       investmentInitId:  selectedRecord.id,
       approvedBy:  selectedRecord.approvedBy,
       approvedDate:  this.formatDate(selectedRecord.approvedDate),
+      depotName: selectedRecord.depotName,
       // formControlName2: myValue2 (can be omitted)
     });
     this.isValid = true;
@@ -338,7 +341,7 @@ openPendingListModal(template: TemplateRef<any>) {
       investmentInitId: "",
       approvedBy: "",
       approvedDate: "",
-      
+      depotName: "",
       productName:"",
       productId:"",
       originVal:  "",

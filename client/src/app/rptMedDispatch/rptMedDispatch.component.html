@@ -9,7 +9,7 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-sm-9">
-                                    <h3 class="card-title">Medicine Dispatch Status Report</h3>
+                                    <h3 class="card-title">Investment Dispatch Status Report</h3>
                                 </div>
                             </div>
                         </div>
@@ -109,7 +109,7 @@
                                         {{a.paymentRefNo}}
                                     </td>
                                     <td>
-                                        {{a.paymentDate}}
+                                        {{a.paymentDate | date:'dd/MM/yyyy'}}
                                     </td>
                                     <td>
                                         {{a.dispatchAmt}}

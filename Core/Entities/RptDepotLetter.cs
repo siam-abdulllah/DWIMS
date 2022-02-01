@@ -41,6 +41,7 @@ namespace Core.Entities
         public string MarketName { get; set; }
         public string EmployeeName { get; set; }
         public string ApprovedBy { get; set; }
+        public string DepotName { get; set; }
         public DateTimeOffset ApprovedDate { get; set; }
     }
 

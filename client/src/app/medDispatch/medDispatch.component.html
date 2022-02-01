@@ -136,6 +136,17 @@
                                 </div>
                             </div>
 
+                            <div class="form-group ">
+                                <div class="row ">
+                                    <div class="col-md-2 ">
+                                        <label>Depot Name</label>
+                                    </div>
+                                    <div class="col-md-4 ">
+                                        <input class="form-control" id="depotName" formControlName="depotName" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div [hidden]="valShow" style="background-color: cadetblue;">
                                 <br/>
                                 <div class="form-group ">
@@ -210,13 +221,13 @@
                                             {{a.boxQuantity}}
                                         </td>
                                         <td>
-                                            {{a.tpVat}}
+                                            {{a.tpVat | number:'2.1-2'}}
                                         </td>
                                         <td>
                                             {{a.dispatchQuantity}}
                                         </td>
                                         <td>
-                                            {{a.dispatchTpVat}}
+                                            {{a.dispatchTpVat | number:'2.1-2'}}
                                         </td>
                                         <td>
                                             <input type="button" value="Modify" (click)="modifyData(a)">
@@ -272,6 +283,7 @@
                                 <td>Proposed By</td>
                                 <td>Apr By</td>
                                 <td>Apr Date</td>
+                                <td>Depot</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -306,6 +318,9 @@
                                 </td>
                                 <td>
                                     {{a.approvedDate | date:'dd/MM/yyyy'}}
+                                </td>
+                                <td>
+                                    {{a.depotName}}
                                 </td>
                             </tr>
                         </tbody>

@@ -52,6 +52,7 @@ export class MedicineDispatchDtl implements IMedicineDispatchDtl {
 export interface IMedDispSearch {
     id: number;
     referenceNo: string;
+    depotName: string;
     donationTypeName: string;
     proposeFor: string;
     doctorName: string;
@@ -67,6 +68,7 @@ export class MedDispSearch implements IMedDispSearch {
     referenceNo: string;
     donationTypeName: string;
     proposeFor: string;
+    depotName: string;
     doctorName: string;
     proposedAmount: number;
     employeeName: string;
