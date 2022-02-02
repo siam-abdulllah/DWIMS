@@ -5,7 +5,7 @@ using Core.Entities.Identity;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
+using Infrastructure.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,13 +18,15 @@ namespace API.Controllers
         private readonly IGenericIdentityRepository<AppUser> _userRepo;
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
-        public EmployeeController(IGenericRepository<Employee> employeeRepo, IGenericIdentityRepository<AppUser> userRepo, UserManager<AppUser> userManager,
+        private readonly StoreContext _db;
+        public EmployeeController(IGenericRepository<Employee> employeeRepo, IGenericIdentityRepository<AppUser> userRepo, UserManager<AppUser> userManager, StoreContext db,
         IMapper mapper)
         {
             _mapper = mapper;
             _employeeRepo = employeeRepo;
             _userRepo = userRepo;
             _userManager = userManager;
+            _db = db;
         }
       
         [HttpGet("employeesForConfig")]
@@ -147,6 +149,23 @@ namespace API.Controllers
         //         throw ex;
         //     }
         // }
+
+
+
+        [HttpGet("getEmpDepot/{Id}")]
+        public object GetEmpDepot(int id)
+        {
+            try
+            {
+               var emp= _db.Employee.Where(x=> x.Id == id).FirstOrDefault();
+                return emp;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        } 
+
         [HttpGet("employeeValidateById/{employeeSapCode}")]
         public async Task<IReadOnlyList<Employee>> GetEmployeeValidateById(string employeeSapCode)
         {

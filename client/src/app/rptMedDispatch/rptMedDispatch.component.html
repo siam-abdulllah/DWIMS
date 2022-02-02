@@ -40,7 +40,7 @@
                                         <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <ng-select [virtualScroll]="true" [items]="depots" bindLabel="depotName" bindValue="depotCode" placeholder="Select Depot" formControlName="depotCode" id="depotCode">
+                                        <ng-select [virtualScroll]="true" [items]="depots" bindLabel="depotName" [readonly]="enableForm" bindValue="depotCode" placeholder="Select Depot" formControlName="depotCode" id="depotCode">
                                         </ng-select>
                                     </div>
                                     <div class="col-md-2">
