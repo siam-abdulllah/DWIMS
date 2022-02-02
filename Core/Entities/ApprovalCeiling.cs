@@ -18,5 +18,7 @@ namespace Core.Entities
         public string Additional { get; set; }
         public string Remarks { get; set; }
         public string Status { get; set; }
+        public int Year { get; set; }
+        public int Month { get; set; }
     }
 }
