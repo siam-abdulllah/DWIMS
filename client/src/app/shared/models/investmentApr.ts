@@ -49,8 +49,8 @@ export interface IInvestmentApr {
     totalMonth: number;
     proposedAmount: string;
     purpose: string;
-    fromDate: Date;
-    toDate: Date;
+    fromDate: any;
+    toDate: any;
 }
  
 export class InvestmentApr implements IInvestmentApr {
@@ -65,8 +65,8 @@ export class InvestmentApr implements IInvestmentApr {
     totalMonth: number;
     proposedAmount: string;
     purpose: string;
-    fromDate: Date;
-    toDate: Date;
+    fromDate: any;
+    toDate: any;
 }
 export interface IInvestmentAprComment {
     id: number;

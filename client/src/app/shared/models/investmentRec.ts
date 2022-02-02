@@ -51,8 +51,8 @@ export interface IInvestmentRec {
     totalMonth: number;
     proposedAmount: string;
     purpose: string;
-    fromDate: Date;
-    toDate: Date;
+    fromDate: any;
+    toDate: any;
     employeeId: number;
 }
  
@@ -68,8 +68,8 @@ export class InvestmentRec implements IInvestmentRec {
     totalMonth: number;
     proposedAmount: string;
     purpose: string;
-    fromDate: Date;
-    toDate: Date;
+    fromDate: any;
+    toDate: any;
     employeeId: number;
 }
 export interface IInvestmentRecComment {

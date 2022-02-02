@@ -728,12 +728,16 @@ export class InvestmentAprComponent implements OnInit {
       }
     }
     this.investmentAprService.investmentAprCommentFormData.employeeId = parseInt(this.empId);
+    this.investmentAprService.investmentDetailFormData.fromDate  = this.datePipe.transform(this.investmentAprService.investmentDetailFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
+    this.investmentAprService.investmentDetailFormData.toDate= this.datePipe.transform(this.investmentAprService.investmentDetailFormData.toDate, 'yyyy-MM-dd HH:mm:ss');
+  
     this.SpinnerService.show();
     this.investmentAprService.insertInvestmentApr(this.userRole).subscribe(
       res => {
         debugger;
         this.investmentAprService.investmentAprCommentFormData = res as IInvestmentAprComment;
         this.isValid = true;
+        this.getInvestmentAprDetails();
         this.insertInvestmentTargetedProd();
         this.SpinnerService.hide();
         if (this.sbu != this.investmentAprService.investmentAprFormData.sbu) {
@@ -793,11 +797,15 @@ export class InvestmentAprComponent implements OnInit {
         return false;
       }
     }
+    this.investmentAprService.investmentDetailFormData.fromDate  = this.datePipe.transform(this.investmentAprService.investmentDetailFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
+    this.investmentAprService.investmentDetailFormData.toDate= this.datePipe.transform(this.investmentAprService.investmentDetailFormData.toDate, 'yyyy-MM-dd HH:mm:ss');
+  
     this.SpinnerService.show();
     this.investmentAprService.updateInvestmentApr(this.userRole).subscribe(
       res => {
         this.isValid = true;
         this.investmentAprService.investmentAprCommentFormData = res as IInvestmentAprComment;
+        this.getInvestmentAprDetails();
         this.insertInvestmentTargetedProd();
         this.SpinnerService.hide();
         if (this.sbu != this.investmentAprService.investmentAprFormData.sbu) {

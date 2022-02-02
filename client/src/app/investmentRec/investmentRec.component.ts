@@ -599,12 +599,16 @@ export class InvestmentRecComponent implements OnInit {
     }
     this.SpinnerService.show();
     if (this.sbu == this.investmentRecService.investmentRecFormData.sbu) {
+      this.investmentRecService.investmentDetailFormData.fromDate  = this.datePipe.transform(this.investmentRecService.investmentDetailFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
+      this.investmentRecService.investmentDetailFormData.toDate= this.datePipe.transform(this.investmentRecService.investmentDetailFormData.toDate, 'yyyy-MM-dd HH:mm:ss');
+    
       this.investmentRecService.investmentDetailFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
       this.investmentRecService.insertRecommendForOwnSBU(parseInt(this.empId), this.sbu,this.investmentTargetedProds).subscribe(
         res => {
           this.investmentRecService.investmentRecCommentFormData = res as IInvestmentRecComment;
           this.isDonationValid = true;
           this.isValid = true;
+          this.getInvestmentRecDetails();
           this.getInvestmentTargetedGroup();
           this.SpinnerService.hide();
           this.toastr.info('Save successfully')
@@ -619,11 +623,16 @@ export class InvestmentRecComponent implements OnInit {
     }
     else {
       this.investmentRecService.investmentDetailFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
+      this.investmentRecService.investmentDetailFormData.fromDate  = this.datePipe.transform(this.investmentRecService.investmentDetailFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
+      this.investmentRecService.investmentDetailFormData.toDate= this.datePipe.transform(this.investmentRecService.investmentDetailFormData.toDate, 'yyyy-MM-dd HH:mm:ss');
+    
+
       this.investmentRecService.insertRecommendForOtherSBU(parseInt(this.empId), this.sbu,this.investmentTargetedProds).subscribe(
         res => {
           this.investmentRecService.investmentRecCommentFormData = res as IInvestmentRecComment;
           this.isDonationValid = true;
           this.isValid = true;
+          this.getInvestmentRecDetails();
           this.getInvestmentTargetedGroup();
           this.SpinnerService.hide();
           this.toastr.info('Save successfully')
@@ -702,12 +711,16 @@ export class InvestmentRecComponent implements OnInit {
     }
     this.SpinnerService.show();
     if (this.sbu == this.investmentRecService.investmentRecFormData.sbu) {
+      this.investmentRecService.investmentDetailFormData.fromDate  = this.datePipe.transform(this.investmentRecService.investmentDetailFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
+      this.investmentRecService.investmentDetailFormData.toDate= this.datePipe.transform(this.investmentRecService.investmentDetailFormData.toDate, 'yyyy-MM-dd HH:mm:ss');
+    
       this.investmentRecService.investmentDetailFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
       this.investmentRecService.updateRecommendForOwnSBU(parseInt(this.empId), this.sbu,this.investmentTargetedProds).subscribe(
         res => {
           this.investmentRecService.investmentRecCommentFormData = res as IInvestmentRecComment;
           this.isDonationValid = true;
           this.isValid = true;
+          this.getInvestmentRecDetails();
           this.getInvestmentTargetedGroup();
           this.SpinnerService.hide();
           this.toastr.info('Updated successfully', 'Investment ')
@@ -720,11 +733,15 @@ export class InvestmentRecComponent implements OnInit {
     }
     else {
       this.investmentRecService.investmentDetailFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
+      this.investmentRecService.investmentDetailFormData.fromDate  = this.datePipe.transform(this.investmentRecService.investmentDetailFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
+      this.investmentRecService.investmentDetailFormData.toDate= this.datePipe.transform(this.investmentRecService.investmentDetailFormData.toDate, 'yyyy-MM-dd HH:mm:ss');
+    
       this.investmentRecService.updateRecommendForOtherSBU(parseInt(this.empId), this.sbu,this.investmentTargetedProds).subscribe(
         res => {
           this.investmentRecService.investmentRecCommentFormData = res as IInvestmentRecComment;
           this.isDonationValid = true;
           this.isValid = true;
+          this.getInvestmentRecDetails();
           this.getInvestmentTargetedGroup();
           this.SpinnerService.hide();
           this.toastr.info('Updated successfully', 'Investment ')

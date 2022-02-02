@@ -690,8 +690,13 @@ export class InvestmentAprNoSbuComponent implements OnInit {
       return false;
     }
 
+    this.investmentAprService.investmentDetailFormData.fromDate  = this.datePipe.transform(this.investmentAprService.investmentDetailFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
+    this.investmentAprService.investmentDetailFormData.toDate= this.datePipe.transform(this.investmentAprService.investmentDetailFormData.toDate, 'yyyy-MM-dd HH:mm:ss');
+  
+
     this.investmentAprService.insertInvestAprNoSBU(parseInt(this.empId), this.investmentAprService.investmentAprFormData.sbu,this.investmentTargetedProds).subscribe(
       res => {
+        this.getInvestmentAprDetails();
         this.getInvestmentTargetedProd();
         this.getInvestmentTargetedGroup();
         this.toastr.success('Save successfully', 'Investment');
@@ -812,9 +817,13 @@ export class InvestmentAprNoSbuComponent implements OnInit {
       return false;
     }
     this.investmentAprService.investmentDetailFormData.investmentInitId = this.investmentAprService.investmentAprFormData.id;
+    this.investmentAprService.investmentDetailFormData.fromDate  = this.datePipe.transform(this.investmentAprService.investmentDetailFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
+    this.investmentAprService.investmentDetailFormData.toDate= this.datePipe.transform(this.investmentAprService.investmentDetailFormData.toDate, 'yyyy-MM-dd HH:mm:ss');
+  
     this.SpinnerService.show();
     this.investmentAprService.updateInvestAprNoSBU(parseInt(this.empId), this.investmentAprService.investmentAprFormData.sbu,this.investmentTargetedProds).subscribe(
       res => {
+        this.getInvestmentAprDetails();
         this.getInvestmentTargetedProd();
         this.getInvestmentTargetedGroup();
         this.toastr.success('Update successfully', 'Investment');
