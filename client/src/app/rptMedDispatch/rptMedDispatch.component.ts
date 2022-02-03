@@ -97,6 +97,7 @@ export class RptMedDispatchComponent implements OnInit {
       return;
     }
   
+    debugger;
     if(this.userRole == "SIC" || this.userRole == "DIC")
     {
       var dptCode = this.emp.depotCode.padStart(4,"0")
@@ -144,6 +145,7 @@ export class RptMedDispatchComponent implements OnInit {
     this.userRole = this.accountService.getUserRole();
     this.pendingService.getEmpDepot(parseInt(this.empId)).subscribe(response => {
       this.emp = response;
+      debugger;
       if (this.userRole == 'DIC' || this.userRole == 'SIC') {
         //this.medDispatchForm.get('depotCode').disable();
         this.enableForm = true;

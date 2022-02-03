@@ -60,18 +60,19 @@
                                 <div class="form-group">
                                     <table class="table  table-bordered">
                                         <tr class="HeaderRow">
-                                            <td>Investment Ref No</td>
-                                            <td>Donation Type</td>
+                                            <td>Ref No</td>
+                                            <td>Invest Type</td>
                                             <td>Donation To</td>
+                                            <td>Name</td>
                                             <td>Proposed Amount</td>
                                             <td>From Date</td>
-                                            <td>ToDate</td>
+                                            <td>To Date</td>
                                             <td>Market</td>
-                                            <td>Proposed By</td>
-                                            <td>Status</td>
+                                            <td>Initiator</td>
+                                            <td>Inv Status</td>
                                             <td>Completed By</td>
-                                            <td>Receive Status</td>
-                                            <td>Received By</td>
+                                            <td>Recv Status</td>
+                                            <td>Recv By</td>
                                             <td>Details</td>
                                         </tr>
                                         <!-- <tr *ngFor="let a of reports | paginate: configs"> -->
@@ -89,6 +90,9 @@
                                                 {{a.donationTo}}
                                             </td>
                                             <td>
+                                                {{a.name}}
+                                            </td>
+                                            <td>
                                                 {{a.proposedAmount}}
                                             </td>
                                             <td>
@@ -104,9 +108,9 @@
                                                 {{a.employeeName}}
                                             </td>
                                             <td>
-                                                <!-- {{a.invStatus}} -->
-                                                <span *ngIf="a.invCount===0">Completed</span>
-                                                <span *ngIf="a.invCount!==0">Not Completed</span>
+                                                {{a.invStatus}}
+                                                <!-- <span *ngIf="a.invCount===0">Completed</span>
+                                                <span *ngIf="a.invCount!==0">Not Completed</span> -->
                                             </td>
                                             <td>
                                                 {{a.approvedBy}}

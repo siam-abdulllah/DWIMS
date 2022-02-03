@@ -211,7 +211,15 @@ namespace API.Controllers
             // " AND (CONVERT(date,e.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,e.ToDate)) ";
 
             string qry = " select CAST(a.Id AS INT) as Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn," +
-                " a.ReferenceNo, d.DonationTypeName, a.DonationTo, b.ProposedAmount, b.FromDate, b.ToDate, ' ' InvStatus, (select  count(*) from [InvestmentTargetedGroup] t where t.[InvestmentInitId] = a.Id and t.CompletionStatus = 0) InvStatusCount," +
+                " a.ReferenceNo, d.DonationTypeName, a.DonationTo, b.ProposedAmount, b.FromDate, b.ToDate, " +
+                //"  [dbo].[fnGetInvestmentStatus] (a.Id) InvStatus, " +
+                " CASE WHEN a.DonationTo='Doctor' THEN (SELECT DoctorName FROM InvestmentDoctor x INNER JOIN DoctorInfo y ON x.DoctorId=y.Id WHERE x.InvestmentInitId=a.Id)  " +
+                " WHEN a.DonationTo='Institution' THEN (SELECT InstitutionName FROM InvestmentInstitution x INNER JOIN InstitutionInfo y ON x.InstitutionId=y.Id WHERE x.InvestmentInitId=a.Id)  " +
+                " WHEN a.DonationTo='Campaign' THEN (SELECT SubCampaignName FROM InvestmentCampaign x INNER JOIN CampaignDtl y ON x.CampaignDtlId=y.Id INNER JOIN [dbo].[SubCampaign] C ON y.SubCampaignId=C.Id WHERE x.InvestmentInitId=a.Id )  " +
+                " WHEN a.DonationTo='Bcds' THEN (SELECT BcdsName FROM InvestmentBcds x INNER JOIN Bcds y ON x.BcdsId=y.Id WHERE x.InvestmentInitId=a.Id ) " +
+                " WHEN a.DonationTo='Society' THEN (SELECT SocietyName FROM InvestmentSociety x INNER JOIN Society y ON x.SocietyId=y.Id  WHERE x.InvestmentInitId=a.Id )END Name, " +
+                " (select ISNULL ((select b.RecStatus from InvestmentRecComment b where b.Id in (select max(id) from InvestmentRecComment where InvestmentInitId = a.Id)), 'Pending'))  InvStatus , " + 
+                "  (select  count(*) from [InvestmentTargetedGroup] t where t.[InvestmentInitId] = a.Id and t.CompletionStatus = 0) InvStatusCount," +
                 " E.EmployeeName," +
                 " ISNULL ((select C.EmployeeName from InvestmentRecComment b join Employee c on c.Id=b.EmployeeId where b.InvestmentInitId = a.Id and b.Id = (select max(id) from InvestmentRecComment where InvestmentInitId = b.InvestmentInitId)), 'N/A') ApprovedBy," +
                 " a.MarketName, " +
@@ -272,14 +280,19 @@ namespace API.Controllers
             // " AND  (CONVERT(date,c.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,c.ToDate)) "+
             // " AND (CONVERT(date,e.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,e.ToDate)) ";
 
-            string qry = " select CAST(a.Id AS INT) as Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.ReferenceNo, d.DonationTypeName, a.DonationTo, b.ProposedAmount, b.FromDate, b.ToDate, dbo.fnGetInvestmentStatus(a.Id) InvStatus, e.EmployeeName,dbo.fnGetInvestmentApprovedBy(a.Id) ApprovedBy,e.MarketName, ISNULL(rcv.ReceiveStatus, 'Not Completed') ReceiveStatus, ISNULL(rcvBy.EmployeeName, 'N/A') ReceiveBy " +
+            string qry = " select CAST(a.Id AS INT) as Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.ReferenceNo, d.DonationTypeName, a.DonationTo, b.ProposedAmount, b.FromDate, b.ToDate, " +
+                //" dbo.fnGetInvestmentStatus(a.Id) InvStatus, "+ 
+                " (select ISNULL ((select b.RecStatus from InvestmentRecComment b where b.InvestmentInitId = a.Id and b.Id in (select max(id) from InvestmentRecComment where InvestmentInitId = b.InvestmentInitId)), 'Pending') from InvestmentInit a)  InvStatus" + 
+                " e.EmployeeName,dbo.fnGetInvestmentApprovedBy(a.Id) ApprovedBy,e.MarketName, ISNULL(rcv.ReceiveStatus, 'Not Completed') ReceiveStatus, ISNULL(rcvBy.EmployeeName, 'N/A') ReceiveBy " +
                 " from InvestmentInit a " +
                 " left join InvestmentDetail b on a.Id = b.InvestmentInitId " +
                 " left join InvestmentRecv rcv on a.Id = rcv.InvestmentInitId " +
                 " inner join Donation d on d.Id = a.DonationId " +
                 " left join Employee e on e.Id = a.EmployeeId " +
                 " left join Employee rcvBy on rcvBy.Id = rcv.EmployeeId " +
-                " Where 1 = 1 AND dbo.fnGetInvestmentStatus(a.Id) = '" + dt.ApproveStatus + "' AND a.Confirmation = 1 AND b.ProposedAmount is NOT NULL";
+                " Where 1 = 1 AND " +
+                //" dbo.fnGetInvestmentStatus(a.Id) = '" + dt.ApproveStatus + "'  "+
+                " AND a.Confirmation = 1 AND b.ProposedAmount is NOT NULL";
 
             if (dt.FromDate.Year > 1000 && dt.ToDate.Year > 1000)
             {

@@ -1188,8 +1188,8 @@ namespace API.Controllers
                 " a.TerritoryCode, a.TerritoryName, a.RegionCode, a.RegionName, a.ZoneCode, a.ZoneName, dbo.fnGetEmpNamedesig(a.EmployeeId) EmployeeName, '1','Inititator', '' Comments " +
                 " From InvestmentInit a where a.Id = '" + investmentInitId + "' AND a.Confirmation = 1 " +
                 " UNION " +
-                " select CAST(a.Id AS INT) AS Id, a.SetOn, a.ModifiedOn, a.DataStatus, a.MarketCode,  a.MarketName,  a.TerritoryCode, a.TerritoryName, a.RegionCode, a.RegionName, a.ZoneCode, a.ZoneName, dbo.fnGetEmpNamedesigByMarket(a.MarketCode) EmployeeName, '1', '' Comments," +
-                " RecStatus =CASE CompletionStatus WHEN 1 THEN 'Recommended' ELSE 'Not Recommended' END " +
+                " select CAST(a.Id AS INT) AS Id, a.SetOn, a.ModifiedOn, a.DataStatus, a.MarketCode,  a.MarketName,  a.TerritoryCode, a.TerritoryName, a.RegionCode, a.RegionName, a.ZoneCode, a.ZoneName, dbo.fnGetEmpNamedesigByMarket(a.MarketCode) EmployeeName, '1'," +
+                " RecStatus =CASE CompletionStatus WHEN 1 THEN 'Recommended' ELSE 'Not Recommended' END,'' Comments " +
                 " from InvestmentTargetedGroup a " +
                 " where a.InvestmentInitId = '" + investmentInitId + "' " +
                 " order by a.[Priority] desc ";
