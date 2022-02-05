@@ -43,7 +43,7 @@ namespace API.Controllers
                             " left join Employee e on a.EmployeeId = e.Id  left join Donation d on a.DonationId = d.Id  " +
                             " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId   " +
                             " inner join InvestmentDoctor inDc on a.Id = inDc.InvestmentInitId  left join DoctorInfo doc on inDc.DoctorId = doc.Id " +
-                            " where a.DonationTo = 'Doctor' AND  ir.RecStatus = 'Approved' AND inDetail.PaymentMethod = 'Cash' " +
+                            " where a.DataStatus=1 AND a.DonationTo = 'Doctor' AND  ir.RecStatus = 'Approved' AND inDetail.PaymentMethod = 'Cash' " +
                             " AND  ir.EmployeeId = inDetail.EmployeeId " +
                             " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                             " UNION " +
@@ -56,7 +56,7 @@ namespace API.Controllers
                             " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId   " +
                             " inner join InvestmentCampaign IC on a.Id = IC.InvestmentInitId " +
                             " left join DoctorInfo doc on IC.DoctorId = doc.Id   " +
-                            " where a.DonationTo = 'Campaign' AND  " +
+                            " where a.DataStatus=1 AND a.DonationTo = 'Campaign' AND  " +
                             " ir.RecStatus = 'Approved'  AND  " +
                             " inDetail.PaymentMethod = 'Cash'" +
                             " AND  ir.EmployeeId = inDetail.EmployeeId " +
@@ -73,7 +73,7 @@ namespace API.Controllers
                             " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId  " +
                             " inner join InvestmentInstitution IC on a.Id = IC.InvestmentInitId  " +
                             " left join InstitutionInfo doc on IC.InstitutionId = doc.Id  " +
-                            " where a.DonationTo = 'Institution'  " +
+                            " where a.DataStatus=1 AND a.DonationTo = 'Institution'  " +
                             " AND ir.RecStatus = 'Approved'  " +
                             " AND inDetail.PaymentMethod = 'Cash' " +
                             " AND  ir.EmployeeId = inDetail.EmployeeId " +
@@ -90,7 +90,7 @@ namespace API.Controllers
                             " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId  " +
                             " inner join InvestmentBcds IC on a.Id = IC.InvestmentInitId  " +
                             " left join Bcds doc on IC.BcdsId = doc.Id  " +
-                            " where a.DonationTo = 'Bcds'  " +
+                            " where a.DataStatus=1 AND  a.DonationTo = 'Bcds'  " +
                             " AND ir.RecStatus = 'Approved'  " +
                             " AND inDetail.PaymentMethod = 'Cash' " +
                             " AND  ir.EmployeeId = inDetail.EmployeeId " +
@@ -107,7 +107,7 @@ namespace API.Controllers
                             " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId  " +
                             " inner join InvestmentSociety IC on a.Id = IC.InvestmentInitId  " +
                             " left join Society doc on IC.SocietyId = doc.Id  " +
-                            " where a.DonationTo = 'Society' " +
+                            " where a.DataStatus=1 AND a.DonationTo = 'Society' " +
                             " AND ir.RecStatus = 'Approved' " +
                             " AND  ir.EmployeeId = inDetail.EmployeeId " +
                             " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
@@ -146,7 +146,7 @@ namespace API.Controllers
                             " left join Employee e on a.EmployeeId = e.Id  left join Donation d on a.DonationId = d.Id  " +
                             " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId   " +
                             " inner join InvestmentDoctor inDc on a.Id = inDc.InvestmentInitId  left join DoctorInfo doc on inDc.DoctorId = doc.Id " +
-                            " where a.DonationTo = 'Doctor' AND  ir.RecStatus = 'Approved' AND inDetail.PaymentMethod = 'Cheque'  " +
+                            " where a.DataStatus=1 AND  a.DonationTo = 'Doctor' AND  ir.RecStatus = 'Approved' AND inDetail.PaymentMethod = 'Cheque'  " +
                             " AND  ir.EmployeeId = inDetail.EmployeeId " +
                             " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                             " UNION " +
@@ -161,7 +161,7 @@ namespace API.Controllers
                             " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId   " +
                             " inner join InvestmentCampaign IC on a.Id = IC.InvestmentInitId " +
                             " left join DoctorInfo doc on IC.DoctorId = doc.Id   " +
-                            " where a.DonationTo = 'Campaign' AND  " +
+                            " where a.DataStatus=1 AND  a.DonationTo = 'Campaign' AND  " +
                             " ir.RecStatus = 'Approved'  AND  " +
                             " inDetail.PaymentMethod = 'Cheque' " +
                             " AND  ir.EmployeeId = inDetail.EmployeeId " +
@@ -178,7 +178,7 @@ namespace API.Controllers
                             " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId  " +
                             " inner join InvestmentInstitution IC on a.Id = IC.InvestmentInitId  " +
                             " left join InstitutionInfo doc on IC.InstitutionId = doc.Id  " +
-                            " where a.DonationTo = 'Institution'  " +
+                            " where a.DataStatus=1 AND  a.DonationTo = 'Institution'  " +
                             " AND ir.RecStatus = 'Approved'  " +
                             " AND inDetail.PaymentMethod = 'Cheque' " +
                             " AND  ir.EmployeeId = inDetail.EmployeeId " +
@@ -195,7 +195,7 @@ namespace API.Controllers
                             " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId  " +
                             " inner join InvestmentBcds IC on a.Id = IC.InvestmentInitId  " +
                             " left join Bcds doc on IC.BcdsId = doc.Id  " +
-                            " where a.DonationTo = 'Bcds'  " +
+                            " where a.DataStatus=1 AND  a.DonationTo = 'Bcds'  " +
                             " AND ir.RecStatus = 'Approved'  " +
                             " AND inDetail.PaymentMethod = 'Cheque' " +
                             " AND  ir.EmployeeId = inDetail.EmployeeId " +
@@ -212,7 +212,7 @@ namespace API.Controllers
                             " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId  " +
                             " inner join InvestmentSociety IC on a.Id = IC.InvestmentInitId  " +
                             " left join Society doc on IC.SocietyId = doc.Id  " +
-                            " where a.DonationTo = 'Society' " +
+                            " where a.DataStatus=1 AND  a.DonationTo = 'Society' " +
                             " AND ir.RecStatus = 'Approved' " +
                             " AND  ir.EmployeeId = inDetail.EmployeeId " +
                             " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
