@@ -120,6 +120,15 @@
         background: #28b9da47;
     }
     
+    .HeaderRowFixed {
+        font-weight: bold;
+        background: #28b9da47;
+        position: -webkit-sticky;
+        position: sticky;
+        z-index: 100;
+        top: 0;
+    }
+    
     .Searchbox {
         border-color: rgb(66, 151, 92);
         border-width: 3px;
