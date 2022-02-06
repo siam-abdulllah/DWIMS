@@ -129,7 +129,7 @@ namespace API.Controllers
                 " left join Employee e on a.EmployeeId = e.Id  left join Donation d on a.DonationId = d.Id " +
                 " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId " +
                 " where a.DataStatus= 1 AND  ir.RecStatus = 'Approved' AND inDetail.PaymentMethod = 'Cash' " +
-                " AND  ir.EmployeeId = inDetail.EmployeeId " +
+                " AND  ir.EmployeeId = inDetail.EmployeeId AND a.DonationId <> 4" +
                 " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                 " AND  ir.InvestmentInitId not in (SELECT InvestmentInitId FROM DepotPrintTrack) " ;
 
@@ -251,7 +251,7 @@ namespace API.Controllers
                 " left join Employee e on a.EmployeeId = e.Id  left join Donation d on a.DonationId = d.Id " +
                 " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId " +
                 " where a.DataStatus= 1 AND  ir.RecStatus = 'Approved' AND inDetail.PaymentMethod = 'Cheque' " +
-                " AND  ir.EmployeeId = inDetail.EmployeeId " +
+                " AND  ir.EmployeeId = inDetail.EmployeeId AND a.DonationId <> 4" +
                 " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                 " AND  ir.InvestmentInitId not in (SELECT InvestmentInitId FROM DepotPrintTrack) " ;
 
