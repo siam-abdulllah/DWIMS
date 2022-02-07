@@ -149,6 +149,7 @@ export class InvestmentRecComponent implements OnInit {
     this.investmentRecService.investmentRecFormData = Object.assign({}, selectedRecord);
     this.investmentRecService.investmentDetailFormData.investmentInitId = selectedRecord.id;
     this.investmentRecService.investmentRecCommentFormData.investmentInitId = selectedRecord.id;
+    this.investmentRecService.investmentMedicineProdFormData.investmentInitId = selectedRecord.id;
     this.convertedDate = this.datePipe.transform(selectedRecord.setOn, 'ddMMyyyy');
     this.isDonationValid = true;
     if (this.investmentRecService.investmentRecFormData.donationTo == "Doctor") {
@@ -615,6 +616,9 @@ export class InvestmentRecComponent implements OnInit {
           
         },
         err => { 
+          this.investmentRecService.investmentDetailFormData.fromDate  = this.datePipe.transform(this.investmentRecService.investmentDetailFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
+          this.investmentRecService.investmentDetailFormData.toDate= this.datePipe.transform(this.investmentRecService.investmentDetailFormData.toDate, 'yyyy-MM-dd HH:mm:ss');
+    
           console.log(err);
           this.SpinnerService.hide();
          }
@@ -726,6 +730,8 @@ export class InvestmentRecComponent implements OnInit {
           this.toastr.info('Updated successfully', 'Investment ')
         },
         err => { 
+          this.investmentRecService.investmentDetailFormData.fromDate  = this.datePipe.transform(this.investmentRecService.investmentDetailFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
+          this.investmentRecService.investmentDetailFormData.toDate= this.datePipe.transform(this.investmentRecService.investmentDetailFormData.toDate, 'yyyy-MM-dd HH:mm:ss');
           console.log(err); 
           this.SpinnerService.hide();
         }
@@ -748,6 +754,8 @@ export class InvestmentRecComponent implements OnInit {
           
         },
         err => { 
+          this.investmentRecService.investmentDetailFormData.fromDate  = this.datePipe.transform(this.investmentRecService.investmentDetailFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
+          this.investmentRecService.investmentDetailFormData.toDate= this.datePipe.transform(this.investmentRecService.investmentDetailFormData.toDate, 'yyyy-MM-dd HH:mm:ss');
           console.log(err); 
           this.SpinnerService.hide();}
       );
@@ -783,7 +791,12 @@ export class InvestmentRecComponent implements OnInit {
         this.isDonationValid = true;
         // this.toastr.success('Investment Details Save successfully', 'Investment Details');
       },
-      err => { console.log(err); }
+      
+      err => {
+        this.investmentRecService.investmentDetailFormData.fromDate  = this.datePipe.transform(this.investmentRecService.investmentDetailFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
+          this.investmentRecService.investmentDetailFormData.toDate= this.datePipe.transform(this.investmentRecService.investmentDetailFormData.toDate, 'yyyy-MM-dd HH:mm:ss');
+         console.log(err); 
+        }
     );
 
   }

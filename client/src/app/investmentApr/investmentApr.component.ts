@@ -745,7 +745,9 @@ export class InvestmentAprComponent implements OnInit {
         }
       },
       err => { 
-        debugger;
+        this.investmentAprService.investmentDetailFormData.fromDate  = this.datePipe.transform(this.investmentAprService.investmentDetailFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
+        this.investmentAprService.investmentDetailFormData.toDate= this.datePipe.transform(this.investmentAprService.investmentDetailFormData.toDate, 'yyyy-MM-dd HH:mm:ss');
+  
         console.log(err); }
     );
   }
@@ -812,7 +814,10 @@ export class InvestmentAprComponent implements OnInit {
           this.toastr.success('Save successfully', 'Investment')
         }
       },
-      err => { console.log(err); }
+      err => { 
+        this.investmentAprService.investmentDetailFormData.fromDate  = this.datePipe.transform(this.investmentAprService.investmentDetailFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
+        this.investmentAprService.investmentDetailFormData.toDate= this.datePipe.transform(this.investmentAprService.investmentDetailFormData.toDate, 'yyyy-MM-dd HH:mm:ss');
+        console.log(err); }
     );
   }
   insertInvestmentDetails() {
