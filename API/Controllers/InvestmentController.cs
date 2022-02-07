@@ -1141,7 +1141,7 @@ namespace API.Controllers
             string qry = " SELECT CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count " +
                 " FROM InvestmentDoctor d " +
                 " JOIN InvestmentInit i ON d.InvestmentInitId = i.Id " +
-                " WHERE " +
+                " WHERE  i.DataStatus=1 AND " +
                 // " EXISTS ( " +
                 // " SELECT InvestmentInitId " +
                 // " FROM InvestmentTargetedGroup IT " +
@@ -1267,7 +1267,7 @@ namespace API.Controllers
             string qry = " SELECT CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count " +
                 " FROM InvestmentInstitution d " +
                 " JOIN InvestmentInit i ON d.InvestmentInitId = i.Id " +
-                " WHERE " +
+                " WHERE   i.DataStatus=1 AND " +
                 //" EXISTS ( " +
                 //" SELECT InvestmentInitId " +
                 //" FROM InvestmentTargetedGroup IT " +
@@ -1381,7 +1381,7 @@ namespace API.Controllers
             string qry = " SELECT CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count " +
                 " FROM InvestmentCampaign d " +
                 " JOIN InvestmentInit i ON d.InvestmentInitId = i.Id " +
-                " WHERE " +
+                " WHERE   i.DataStatus=1 AND " +
                 //" EXISTS ( " +
                 //" SELECT InvestmentInitId " +
                 //" FROM InvestmentTargetedGroup IT " +
@@ -1504,7 +1504,7 @@ namespace API.Controllers
             string qry = " SELECT CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count " +
                 " FROM InvestmentBcds d " +
                 " JOIN InvestmentInit i ON d.InvestmentInitId = i.Id " +
-                " WHERE " +
+                " WHERE    i.DataStatus=1 AND " +
                 //" EXISTS ( " +
                 //" SELECT InvestmentInitId " +
                 //" FROM InvestmentTargetedGroup IT " +
@@ -1622,7 +1622,7 @@ namespace API.Controllers
             string qry = " SELECT CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count " +
                 " FROM InvestmentSociety d " +
                 " JOIN InvestmentInit i ON d.InvestmentInitId = i.Id " +
-                " WHERE " +
+                " WHERE   i.DataStatus=1 AND " +
                 //" EXISTS ( " +
                 //" SELECT InvestmentInitId " +
                 //" FROM InvestmentTargetedGroup IT " +

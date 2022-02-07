@@ -704,6 +704,8 @@ export class InvestmentAprNoSbuComponent implements OnInit {
         this.SpinnerService.hide();
       },
       err => {
+        this.investmentAprService.investmentDetailFormData.fromDate = new Date(this.investmentAprService.investmentDetailFormData.fromDate);
+        this.investmentAprService.investmentDetailFormData.toDate = new Date(this.investmentAprService.investmentDetailFormData.toDate);
         console.log(err);
         this.SpinnerService.hide();
       }
@@ -831,6 +833,8 @@ export class InvestmentAprNoSbuComponent implements OnInit {
         this.SpinnerService.hide();
       },
       err => {
+        this.investmentAprService.investmentDetailFormData.fromDate = new Date(this.investmentAprService.investmentDetailFormData.fromDate);
+        this.investmentAprService.investmentDetailFormData.toDate = new Date(this.investmentAprService.investmentDetailFormData.toDate);
         console.log(err);
         this.SpinnerService.hide();
       }

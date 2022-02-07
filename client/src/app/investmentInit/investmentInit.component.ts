@@ -1179,7 +1179,11 @@ debugger;
           this.isDonationValid = true;
           this.toastr.success('Save successfully', 'Investment Detail');
         },
-        err => { console.log(err); }
+        err => { 
+          this.investmentInitService.investmentDetailFormData.fromDate = new Date(this.investmentInitService.investmentDetailFormData.fromDate);
+          this.investmentInitService.investmentDetailFormData.toDate = new Date(this.investmentInitService.investmentDetailFormData.toDate);
+          console.log(err); 
+        }
       );
     }
     else {
@@ -1199,7 +1203,9 @@ debugger;
         },
         err => { 
          // this.toastr.warning(err.error.message);
-          console.log(err); 
+        this.investmentInitService.investmentDetailFormData.fromDate = new Date(this.investmentInitService.investmentDetailFormData.fromDate);
+        this.investmentInitService.investmentDetailFormData.toDate = new Date(this.investmentInitService.investmentDetailFormData.toDate);
+        console.log(err); 
         }
       );
     }
