@@ -164,7 +164,8 @@ export class PendingChqPrintDepotComponent implements OnInit {
     //const pDate = this.datePipe.transform(new Date, "dd/MM/yyyy");
     pdf.text('From: Sales Department', 65, 100);
     pdf.text('Place: Dhaka', 680, 100);
-      const pDate = this.datePipe.transform(r[0].setOn, "dd/MM/yyyy");
+    pdf.text('Approved By: '+ r[0].approvedBy,  65, 120);
+    const pDate = this.datePipe.transform(r[0].setOn, "dd/MM/yyyy");
     pdf.text('Date: ' + pDate, 680, 120);
     pdf.text('To: '+ r[0].employeeName + ' (Id:' +r[0].empId+ ') '+ r[0].designationName + ' ' + r[0].marketName  , 65, 140);
     pdf.text('Ref.: ' + r[0].referenceNo, 680, 140);

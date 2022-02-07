@@ -115,14 +115,15 @@ export class PendingPrintDepotComponent implements OnInit {
   {
     this.pendingService.getRptDepotLetter(selectedRecord.id).subscribe(resp => {
       // this.reportInvestmentService.getInsSocietyBCDSWiseInvestment().subscribe(resp => {  
+
       this.depotLetter = resp as IrptDepotLetter[];
  
-      if (this.rptDepotLetter.length <= 0) {
+      if (this.depotLetter.length <= 0) {
         this.toastr.warning('No Data Found', 'Report');
       }
       else
       {
-        //this.insertTracker(this.depotLetter);
+        debugger;
         this.getReport(this.depotLetter);
       }   
     }, error => {
@@ -167,6 +168,7 @@ export class PendingPrintDepotComponent implements OnInit {
     //const pDate = this.datePipe.transform(new Date, "dd/MM/yyyy");
     pdf.text('From: Sales Department', 65, 100);
     pdf.text('Place: Dhaka', 680, 100);
+    pdf.text('Approved By: '+ r[0].approvedBy,  65, 120);
       const pDate = this.datePipe.transform(r[0].setOn, "dd/MM/yyyy");
     pdf.text('Date: ' + pDate, 680, 120);
     pdf.text('To: '+ r[0].employeeName + ' (Id:' +r[0].empId+ ') '+ r[0].designationName + ' ' + r[0].marketName  , 65, 140);
