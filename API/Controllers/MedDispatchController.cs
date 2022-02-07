@@ -268,7 +268,7 @@ namespace API.Controllers
                 " where a.DataStatus= 1 AND  ir.RecStatus = 'Approved' AND inDetail.PaymentMethod = 'Cash' " +
                 " AND a.DonationId = 4 AND  ir.EmployeeId = inDetail.EmployeeId " +
                 " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
-                " AND  ir.InvestmentInitId not in (SELECT InvestmentInitId FROM DepotPrintTrack) " ;
+                " AND  ir.InvestmentInitId not in (SELECT InvestmentInitId FROM MedicineDispatch) " ;
                 if (userRole != "Administrator")
                 {
                     qry = qry + " AND depo.DepotCode = '" + empData[0].DepotCode + "'";
