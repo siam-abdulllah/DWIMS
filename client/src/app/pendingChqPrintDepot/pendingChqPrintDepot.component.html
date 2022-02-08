@@ -20,6 +20,19 @@
                         <div class="card-body">
                             <fieldset>
                                 <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input name="filterText" class="form-control m-input Searchbox" type="text" [(ngModel)]="searchText" placeholder="Search..">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="btn btn-danger" type="button" (click)="resetSearch()"><i class="fa fa-undo"></i>&nbsp; Reset</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="form-group">
                                     <table class="table  table-bordered">
                                         <tr class="HeaderRow">
                                             <td>Reference No</td>
@@ -29,9 +42,11 @@
                                             <td>Proposed Amount</td>
                                             <td>Market</td>
                                             <td>Proposed By</td>
+                                            <td>Approved By</td>
+                                            <td>Approved Date</td>
                                             <td>Details</td>
                                         </tr>
-                                        <tr *ngFor="let a of rptDepotLetter">
+                                        <tr *ngFor="let a of rptDepotLetter | filter: searchText ">
                                             <td>
                                                 {{a.referenceNo}}
                                             </td>
@@ -52,6 +67,12 @@
                                             </td>
                                             <td>
                                                 {{a.employeeName}}
+                                            </td>
+                                            <td>
+                                                {{a.approvedBy}}
+                                            </td>
+                                            <td>
+                                                {{a.approvedDate | date:'dd/MM/yyyy'}}
                                             </td>
                                             <td>
                                                 <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="ViewReport(a)" style="width: 100px;"><i class="fa fa-eye"></i>View Detail</button>

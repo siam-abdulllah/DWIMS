@@ -68,6 +68,10 @@
                                                 <td>Ref No</td>
                                                 <td>Inv Type</td>
                                                 <td>Inv To</td>
+                                                <td>Prop. For</td>
+                                                <td>Pmnt Type</td>
+                                                <td>SBU</td>
+                                                <td>ID</td>
                                                 <td>Name</td>
                                                 <td>Amount</td>
                                                 <td>From</td>
@@ -76,6 +80,7 @@
                                                 <td>Initiator</td>
                                                 <td>Inv Sts</td>
                                                 <td>Cmplt By</td>
+                                                <td>Depot</td>
                                                 <td>Recv Sts</td>
                                                 <td>Recv By</td>
                                                 <td>Details</td>
@@ -93,6 +98,18 @@
                                                 </td>
                                                 <td>
                                                     {{a.donationTo}}
+                                                </td>
+                                                <td>
+                                                    {{a.proposeFor}}
+                                                </td>
+                                                <td>
+                                                    {{a.paymentMethod}}
+                                                </td>
+                                                <td>
+                                                    {{a.sbuName}}
+                                                </td>
+                                                <td>
+                                                    {{a.dId}}
                                                 </td>
                                                 <td>
                                                     {{a.name}}
@@ -119,6 +136,9 @@
                                                 </td>
                                                 <td>
                                                     {{a.approvedBy}}
+                                                </td>
+                                                <td>
+                                                    {{a.depotName}}
                                                 </td>
                                                 <td>
                                                     {{a.receiveStatus}}

@@ -122,16 +122,19 @@ namespace API.Controllers
                 " WHEN a.donationto = 'Institution' THEN (SELECT institutionname FROM  investmentinstitution x INNER JOIN institutioninfo y ON x.institutionid = y.id WHERE x.investmentinitid = a.id) " + 
                 " WHEN a.donationto = 'Campaign' THEN (SELECT subcampaignname  FROM   investmentcampaign x INNER JOIN campaigndtl y  ON x.campaigndtlid = y.id  INNER JOIN [dbo].[subcampaign] C  ON y.subcampaignid = C.id  WHERE  x.investmentinitid = a.id) " + 
                 " WHEN a.donationto = 'Bcds' THEN (SELECT bcdsname   FROM   investmentbcds x  INNER JOIN bcds y   ON x.bcdsid = y.id   WHERE  x.investmentinitid = a.id) " + 
-                " WHEN a.donationto = 'Society' THEN (SELECT societyname FROM   investmentsociety x INNER JOIN society y ON x.societyid = y.id WHERE  x.investmentinitid = a.id) END  DoctorName " + 
+                " WHEN a.donationto = 'Society' THEN (SELECT societyname FROM   investmentsociety x INNER JOIN society y ON x.societyid = y.id WHERE  x.investmentinitid = a.id) END  DoctorName," +
+                " ir.SetOn ApprovedDate, aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy' " + 
                 " from InvestmentInit a " + 
                 " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId " + 
                 " left join InvestmentRecDepot depo on a.id = depo.InvestmentInitId " +
                 " left join Employee e on a.EmployeeId = e.Id  left join Donation d on a.DonationId = d.Id " +
+                " left join Employee aprBy on ir.EmployeeId = aprBy.Id" +
                 " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId " +
                 " where a.DataStatus= 1 AND  ir.RecStatus = 'Approved' AND inDetail.PaymentMethod = 'Cash' " +
                 " AND  ir.EmployeeId = inDetail.EmployeeId AND a.DonationId <> 4" +
                 " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
-                " AND  ir.InvestmentInitId not in (SELECT InvestmentInitId FROM DepotPrintTrack) " ;
+                " AND  ir.InvestmentInitId not in (SELECT InvestmentInitId FROM DepotPrintTrack) " +
+                " Order by ir.SetOn DESC " ;
 
                 if (userRole != "Administrator")
                 {
@@ -244,16 +247,19 @@ namespace API.Controllers
                 " WHEN a.donationto = 'Institution' THEN (SELECT institutionname FROM  investmentinstitution x INNER JOIN institutioninfo y ON x.institutionid = y.id WHERE x.investmentinitid = a.id) " + 
                 " WHEN a.donationto = 'Campaign' THEN (SELECT subcampaignname  FROM   investmentcampaign x INNER JOIN campaigndtl y  ON x.campaigndtlid = y.id  INNER JOIN [dbo].[subcampaign] C  ON y.subcampaignid = C.id  WHERE  x.investmentinitid = a.id) " + 
                 " WHEN a.donationto = 'Bcds' THEN (SELECT bcdsname   FROM   investmentbcds x  INNER JOIN bcds y   ON x.bcdsid = y.id   WHERE  x.investmentinitid = a.id) " + 
-                " WHEN a.donationto = 'Society' THEN (SELECT societyname FROM   investmentsociety x INNER JOIN society y ON x.societyid = y.id WHERE  x.investmentinitid = a.id) END  DoctorName " + 
+                " WHEN a.donationto = 'Society' THEN (SELECT societyname FROM   investmentsociety x INNER JOIN society y ON x.societyid = y.id WHERE  x.investmentinitid = a.id) END  DoctorName," +
+                " ir.SetOn ApprovedDate, aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy' " + 
                 " from InvestmentInit a " + 
                 " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId " + 
                 " left join InvestmentRecDepot depo on a.id = depo.InvestmentInitId " +
                 " left join Employee e on a.EmployeeId = e.Id  left join Donation d on a.DonationId = d.Id " +
+                " left join Employee aprBy on ir.EmployeeId = aprBy.Id" +
                 " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId " +
                 " where a.DataStatus= 1 AND  ir.RecStatus = 'Approved' AND inDetail.PaymentMethod = 'Cheque' " +
                 " AND  ir.EmployeeId = inDetail.EmployeeId AND a.DonationId <> 4" +
                 " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
-                " AND  ir.InvestmentInitId not in (SELECT InvestmentInitId FROM DepotPrintTrack) " ;
+                " AND  ir.InvestmentInitId not in (SELECT InvestmentInitId FROM DepotPrintTrack) " +
+                " Order by ir.SetOn DESC";
 
                 var results = _db.RptDepotLetterSearch.FromSqlRaw(qry).ToList();
 

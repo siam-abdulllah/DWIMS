@@ -20,5 +20,10 @@ namespace Core.Entities
         public string ReceiveBy { get; set; }
         public string ApprovedBy { get; set; }
          public string MarketName { get; set; }
+        public string DepotName { get; set; }
+        public string SBUName { get; set; }
+        public string ProposeFor { get; set; }
+        public string PaymentMethod { get; set; }
+        public int? DId { get; set; }
     }
 }

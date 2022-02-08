@@ -118,6 +118,7 @@ export class RptInvestSummaryComponent implements OnInit {
     };
 
     this.reportService.GetInvestmentSummaryReport(searchDto).subscribe(response => {
+      debugger;
       this.reports = response.data;
     }, error => {
       console.log(error);

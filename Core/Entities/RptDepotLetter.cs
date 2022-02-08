@@ -30,6 +30,8 @@ namespace Core.Entities
         public double ProposedAmount { get; set; }
         public string MarketName { get; set; }
         public string EmployeeName { get; set; }
+        public string ApprovedBy { get; set; }
+        public DateTimeOffset ApprovedDate { get; set; }
     }
 
     public class MedDispSearch : BaseEntity

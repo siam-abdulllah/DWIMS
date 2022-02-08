@@ -211,18 +211,28 @@ namespace API.Controllers
             // " AND (CONVERT(date,e.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,e.ToDate)) ";
 
             string qry = " SELECT Cast(a.id AS INT) AS Id, a.DataStatus, Sysdatetimeoffset() AS SetOn, Sysdatetimeoffset() AS ModifiedOn, a.referenceno, d.donationtypename, a.donationto, b.proposedamount, b.fromdate, ISNULL (rcv.ReceiveStatus, 'N/A') ReceiveStatus, b.todate, 0 InvStatusCount, " +
+            
+            " CASE WHEN a.donationto = 'Doctor' THEN (SELECT DoctorId  FROM   investmentdoctor x  INNER JOIN doctorinfo y ON x.doctorid = y.id WHERE x.investmentinitid = a.id)  "+
+            " WHEN a.donationto = 'Institution' THEN (SELECT InstitutionId FROM  investmentinstitution x INNER JOIN institutioninfo y ON x.institutionid = y.id WHERE x.investmentinitid = a.id)  "+
+            " WHEN a.donationto = 'Campaign' THEN (SELECT y.MstId  FROM   investmentcampaign x INNER JOIN campaigndtl y  ON x.campaigndtlid = y.id  INNER JOIN [dbo].[subcampaign] C  ON y.subcampaignid = C.id  WHERE x.investmentinitid = a.id)  "+
+            " WHEN a.donationto = 'Bcds' THEN (SELECT x.BcdsId   FROM   investmentbcds x  INNER JOIN bcds y   ON x.bcdsid = y.id   WHERE  x.investmentinitid = a.id)  "+
+            " WHEN a.donationto = 'Society' THEN (SELECT x.SocietyId FROM   investmentsociety x INNER JOIN society y ON x.societyid = y.id WHERE  x.investmentinitid = a.id) END  DId, "+
+        
             " CASE WHEN a.donationto = 'Doctor' THEN (SELECT doctorname FROM investmentdoctor x INNER JOIN doctorinfo y ON x.doctorid = y.id WHERE  x.investmentinitid = a.id) "+
+          
+            
             " WHEN a.donationto = 'Institution' THEN (SELECT institutionname FROM investmentinstitution x INNER JOIN institutioninfo y ON x.institutionid = y.id WHERE x.investmentinitid = a.id) "+
             " WHEN a.donationto = 'Campaign' THEN (SELECT subcampaignname FROM investmentcampaign x INNER JOIN campaigndtl y ON x.campaigndtlid = y.id INNER JOIN [dbo].[subcampaign] C ON y.subcampaignid = C.id WHERE  x.investmentinitid = a.id) "+
             " WHEN a.donationto = 'Bcds' THEN (SELECT bcdsname FROM investmentbcds x INNER JOIN bcds y ON x.bcdsid = y.id WHERE  x.investmentinitid = a.id)  "+
             " WHEN a.donationto = 'Society' THEN (SELECT societyname FROM investmentsociety x INNER JOIN society y ON x.societyid = y.id WHERE  x.investmentinitid = a.id) END NAME,  "+
             " (SELECT Isnull ((SELECT b.recstatus FROM investmentreccomment b WHERE  b.id IN (SELECT Max(id) FROM investmentreccomment WHERE  investmentinitid = a.id)), 'Pending')) InvStatus, "+
             " E.employeename, Isnull ((SELECT C.employeename FROM investmentreccomment b JOIN employee c ON c.id = b.employeeid WHERE  b.investmentinitid = a.id AND b.id = (SELECT Max(id) FROM   investmentreccomment WHERE  investmentinitid = b.investmentinitid)), 'N/A') ApprovedBy, "+
-            " a.MarketName, Isnull(M.employeename + ', ' + M.designationname,'N/A') ReceiveBy "+
+            " a.MarketName, Isnull(M.employeename + ', ' + M.designationname,'N/A') ReceiveBy, b.PaymentMethod, a.ProposeFor, a.SBUName, depo.DepotName "+
             " FROM investmentinit a"+
             " INNER JOIN employee E ON A.employeeid = E.id "+
-            " LEFT JOIN investmentdetail b ON a.id = b.investmentinitid "+
-            " LEFT JOIN investmentrecv rcv ON a.id = rcv.investmentinitid "+
+            " LEFT JOIN investmentdetail b ON a.id = b.investmentinitid " +
+            " LEFT JOIN InvestmentRecDepot depo on depo.investmentinitid = a.Id " +
+            " LEFT JOIN investmentrecv rcv ON a.id = rcv.investmentinitid " +
             " LEFT JOIN employee M ON  rcv.employeeid= M.id  "+
             " INNER JOIN donation d ON d.id = a.donationid "+
             " Where a.DataStatus=1 " +

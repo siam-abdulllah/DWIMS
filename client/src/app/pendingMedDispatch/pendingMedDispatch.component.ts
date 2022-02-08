@@ -46,31 +46,6 @@ export class PendingMedDispatchComponent implements OnInit {
      private router: Router, private toastr: ToastrService, private datePipe: DatePipe,) {
    }
 
-   createMedDispatchForm() {
-    this.medDispatchForm = new FormGroup({
-      referenceNo: new FormControl('', [Validators.required]),
-      issueReference: new FormControl('', [Validators.required]),
-      issueDate: new FormControl('', [Validators.required]),
-      employeeName: new FormControl(''),
-      doctorName: new FormControl(''),
-      marketName: new FormControl(''),
-      donationTypeName: new FormControl(''),
-      proposeAmt: new FormControl(''),
-      dispatchAmt: new FormControl(''),
-      id: new FormControl(''),
-      investmentInitId: new FormControl(''),
-      searchText: new FormControl(''),
-      remarks: new FormControl(''),
-
-
-      productName: new FormControl(''),
-      productId: new FormControl(''),
-      originVal:  new FormControl(''),
-      originQty:new FormControl(''),
-      dispVal:  new FormControl(''),
-      dispQty:  new FormControl(''),
-    });
-  }
 
   getPendingDispatch() {
     this.SpinnerService.show();
@@ -115,7 +90,6 @@ export class PendingMedDispatchComponent implements OnInit {
   ngOnInit() {
     this.resetPage();
     this.getEmployeeId();
-    this.createMedDispatchForm();
     this.getPendingDispatch();
   }
 
@@ -127,34 +101,6 @@ export class PendingMedDispatchComponent implements OnInit {
   resetSearch(){
     this.searchText = '';
 }
-
-
-  reset() {
-
-    this.investmentMedicineProds =[];
-    this.medDispatchForm.setValue({
-      referenceNo: "",
-      issueReference: "",
-      issueDate: "",
-      employeeName: "",
-      doctorName: "",
-      marketName: "",
-      donationTypeName: "",
-      proposeAmt: "",
-      dispatchAmt: "",
-      remarks: "",
-      id: "",
-      searchText: "",
-      investmentInitId: "",
-      
-      productName:"",
-      productId:"",
-      originVal:  "",
-      originQty:"",
-      dispVal:  "",
-      dispQty: "",
-    });
-  }
 
   ViewReport(selectedRecord: IMedDispSearch)
   {

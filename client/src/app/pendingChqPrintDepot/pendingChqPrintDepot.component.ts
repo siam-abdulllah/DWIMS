@@ -106,7 +106,10 @@ export class PendingChqPrintDepotComponent implements OnInit {
       totalItems:50,
       };
   }
-
+  
+  resetSearch(){
+    this.searchText = '';
+}
 
   ViewReport(selectedRecord: IrptDepotLetterSearch)
   {

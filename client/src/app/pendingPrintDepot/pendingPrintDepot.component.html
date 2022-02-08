@@ -31,6 +31,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <br/>
                                 <div class="form-group">
                                     <table class="table  table-bordered">
                                         <tr class="HeaderRow">
@@ -41,6 +42,8 @@
                                             <td>Proposed Amount</td>
                                             <td>Market</td>
                                             <td>Proposed By</td>
+                                            <td>Approved By</td>
+                                            <td>Approved Date</td>
                                             <td>Details</td>
                                         </tr>
                                         <tr *ngFor="let a of rptDepotLetter | filter: searchText ">
@@ -64,6 +67,12 @@
                                             </td>
                                             <td>
                                                 {{a.employeeName}}
+                                            </td>
+                                            <td>
+                                                {{a.approvedBy}}
+                                            </td>
+                                            <td>
+                                                {{a.approvedDate | date:'dd/MM/yyyy'}}
                                             </td>
                                             <td>
                                                 <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="ViewReport(a)" style="width: 100px;"><i class="fa fa-eye"></i>View Detail</button>
