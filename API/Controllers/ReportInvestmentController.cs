@@ -20,6 +20,7 @@ namespace API.Controllers
         private readonly StoreContext _db;
         private readonly IGenericRepository<ReportConfig> _rptConfitRepo;
         private readonly IGenericRepository<ReportInvestmentInfo> _investRepo;
+        private readonly IGenericRepository<InvestmentDetail> _investmentDetailRepo;
         private readonly IGenericRepository<InvestmentInit> _investmentInitRepo;
         private readonly IGenericRepository<InvestmentTargetedGroup> _investmentTargetedGroupRepo;
         private readonly IGenericRepository<InvestmentRecComment> _investmentRecCommentRepo;
@@ -30,11 +31,12 @@ namespace API.Controllers
 
         public ReportInvestmentController(IGenericRepository<ReportInvestmentInfo> investRepo, IGenericRepository<InvestmentTargetedGroup> investmentTargetedGroupRepo, IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<ApprovalAuthority> approvalAuthorityRepo, IGenericRepository<InvestmentRecComment> investmentRecCommentRepo,
              IGenericRepository<ApprAuthConfig> apprAuthConfigRepo, IGenericRepository<ReportConfig> rptConfitRepo, IMapper mapper,
-            IGenericRepository<InvestmentRec> investmentRecRepo, StoreContext db)
+            IGenericRepository<InvestmentRec> investmentRecRepo, StoreContext db, IGenericRepository<InvestmentDetail> investmentDetailRepo)
         {
             _mapper = mapper;
             _investRepo = investRepo;
             _rptConfitRepo = rptConfitRepo;
+            _investmentDetailRepo = investmentDetailRepo;
             _investmentInitRepo = investmentInitRepo;
             _investmentTargetedGroupRepo = investmentTargetedGroupRepo;
             _investmentRecCommentRepo = investmentRecCommentRepo;
@@ -240,6 +242,10 @@ namespace API.Controllers
             if (dt.UserRole != "Administrator")
             {
                 qry = qry + " AND (" +
+                            " e.SBU = COALESCE(NULLIF('" + empData[0].SBU + "',''), 'All')" +
+                            " OR COALESCE(NULLIF('" + empData[0].SBU + "',''), 'All') = 'All'" +
+                            " )" +
+                            " AND (" +
                             " a.MarketGroupCode = COALESCE(NULLIF('" + empData[0].MarketGroupCode + "',''), 'All')" +
                             " OR COALESCE(NULLIF('" + empData[0].MarketGroupCode + "',''), 'All') = 'All'" +
                             " )" +
@@ -305,6 +311,10 @@ namespace API.Controllers
             if (dt.UserRole != "Administrator")
             {
                 qry = qry + " AND (" +
+                            " e.SBU = COALESCE(NULLIF('" + empData[0].SBU + "',''), 'All')" +
+                            " OR COALESCE(NULLIF('" + empData[0].SBU + "',''), 'All') = 'All'" +
+                            " )" +
+                            " AND (" +
                             " e.MarketGroupCode = COALESCE(NULLIF('" + empData[0].MarketGroupCode + "',''), 'All')" +
                             " OR COALESCE(NULLIF('" + empData[0].MarketGroupCode + "',''), 'All') = 'All'" +
                             " )" +
@@ -609,9 +619,6 @@ namespace API.Controllers
             }
         }
 
-
-
-
         [HttpGet]
         [Route("rptChqPrint/{investmentInitId}")]
         public async Task<IReadOnlyList<RptDepotLetter>> ReportChequeLetter(int investmentInitId)
@@ -738,13 +745,39 @@ namespace API.Controllers
                 var investmentDetail = await _investmentRecRepo.ListAsync(spec);
                 return investmentDetail.Where(x => x.Priority == apprAuthConfigAppr.ApprovalAuthority.Priority - 1).ToList();
                 }
-
-
             }
             catch (System.Exception ex)
             {
                 throw ex;
             }
         }
+    [HttpGet]
+        [Route("investmentDetailsForSummary/{investmentInitId}/{empId}/{userRole}")]
+        public async Task<IReadOnlyList<object>> investmentDetailsForSummary(int investmentInitId,int empId,string userRole)
+        {
+            try
+            {
+                var initData = await _investmentInitRepo.GetByIdAsync(investmentInitId);
+                var spec = new InvestmentRecSpecification(investmentInitId);
+                var investmentRec = await _investmentRecRepo.ListAsync(spec);
+                string qry = "SELECT CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,Max(id) Count FROM investmentreccomment WHERE  investmentinitid =" + investmentInitId;
+                var result = _db.CountInt.FromSqlRaw(qry).ToList();
+                if (result[0].Count == 0)
+                {
+                    var specDetail = new InvestmentDetailSpecification(investmentInitId);
+                    var investmentDetail = await _investmentDetailRepo.ListAsync(specDetail);
+                    return investmentDetail;
+                }
+                return investmentRec.Where(x => x.Id == result[0].Count).ToList();
+                
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+    
     }
 }
