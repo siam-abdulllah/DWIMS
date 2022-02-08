@@ -55,7 +55,7 @@ const portalRoutes: Routes = [
         {path: 'rptInvestment', component: ReportInvestmentComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'rptInvestmentSummary', component: RptInvestSummaryComponent},
         {path: 'pendingPrintDepot', component: PendingPrintDepotComponent, canActivate: [SuperAdminRoleGuard]},
-        {path: 'pendingChqPrintDepot', component: PendingChqPrintDepotComponent, canActivate: [SuperAdminRoleGuard]},
+        {path: 'pendingChqPrintDepot', component: PendingChqPrintDepotComponent},
         {path: 'billTrack', component: BillTrackComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'chequeTrack', component: ChequeTrackComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'medDispatch', component: MedDispatchComponent, canActivate: [SuperAdminRoleGuard]},
