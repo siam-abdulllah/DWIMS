@@ -82,7 +82,6 @@ export class MedDispatchComponent implements OnInit {
     var empId = parseInt(this.empId);
     this.pendingService.getPendingDispatch(empId,this.userRole).subscribe(response => {
       this.SpinnerService.hide();
-      debugger;
       this.rptDepotLetter = response;
       if (this.rptDepotLetter.length > 0) {
         this.openPendingListModal(this.pendingListModal);

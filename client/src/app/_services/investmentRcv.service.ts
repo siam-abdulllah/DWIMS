@@ -57,24 +57,6 @@ export class InvestmentRcvService {
   // getBudget(sbu:string,empID:number,donationId:number){    
   //   return this.http.get(this.baseUrl + 'approvalCeiling/getBudgetCeiling/'+empID+'/'+sbu+'/'+donationId);
   // }
-  getLastFiveInvestment(marketCode:string,toDayDate:string){    
-    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestment/'+marketCode+'/'+toDayDate);
-  }
-  getLastFiveInvestmentForDoc(donationId:number,docId:number,marketCode: string, toDayDate: string) {
-    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForDoc/' + donationId + '/' + docId + '/' +marketCode + '/' +toDayDate);
-  }
-  getLastFiveInvestmentForInstitute(donationId:number,instituteId:number,marketCode: string, toDayDate: string) {
-    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForInstitute/' + donationId + '/' + instituteId + '/' +marketCode + '/' +toDayDate);
-  }
-  getLastFiveInvestmentForCampaign(donationId:number,campaignId:number,marketCode: string, toDayDate: string) {
-    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForCampaign/' + donationId + '/' + campaignId + '/' +marketCode + '/' +toDayDate);
-  }
-  getLastFiveInvestmentForBcds(donationId:number,bcdsId:number,marketCode: string, toDayDate: string) {
-    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForBcds/' + donationId + '/' + bcdsId + '/' +marketCode + '/' +toDayDate);
-  }
-  getLastFiveInvestmentForSociety(donationId:number,societyId:number,marketCode: string, toDayDate: string) {
-    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForSociety/' + donationId + '/' + societyId + '/' +marketCode + '/' +toDayDate);
-  }
   getCampaignMsts(empId:number){    
     return this.http.get(this.baseUrl + 'campaign/campaignMstsForInvestment/'+empId);
   }
@@ -87,9 +69,7 @@ export class InvestmentRcvService {
   getInvestmentDetails(investmentInitId:number){    
     return this.http.get(this.baseUrl + 'investmentRec/investmentRecDetails/'+investmentInitId);
   }
-  getInvestmentTargetedProds(investmentInitId:number,sbu:string){    
-    return this.http.get(this.baseUrl + 'investmentRec/investmentRecProducts/'+investmentInitId+'/'+sbu);
-  }
+
   getInvestmentRcvDetails(investmentInitId:number,empId:number){    
     return this.http.get(this.baseUrl + 'investmentApr/investmentAprDetails/'+investmentInitId+'/'+empId);
   }
@@ -119,43 +99,46 @@ export class InvestmentRcvService {
   }
   
   getInvestmentInit(empId:number,sbu:string){    
-    let params = new HttpParams();
-    if (this.genParams.search) {
-      params = params.append('search', this.genParams.search);
-    }
-    params = params.append('sort', this.genParams.sort);
-    params = params.append('pageIndex', this.genParams.pageIndex.toString());
-    params = params.append('pageSize', this.genParams.pageSize.toString());
-    return this.http.get<IInvestmentInitPagination>(this.baseUrl + 'investmentRecv/investmentInits/'+empId+'/'+sbu, { observe: 'response', params })
-    //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
-    .pipe(
-      map(response => {
-        this.investmentInits = [...this.investmentInits, ...response.body.data]; 
-        this.investmentInitPagination = response.body;
-        return this.investmentInitPagination;
-      })
-    );
+    // let params = new HttpParams();
+    // if (this.genParams.search) {
+    //   params = params.append('search', this.genParams.search);
+    // }
+    // params = params.append('sort', this.genParams.sort);
+    // params = params.append('pageIndex', this.genParams.pageIndex.toString());
+    // params = params.append('pageSize', this.genParams.pageSize.toString());
+    // return this.http.get<IInvestmentInitPagination>(this.baseUrl + 'investmentRecv/investmentInits/'+empId+'/'+sbu, { observe: 'response', params })
+    // //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
+    // .pipe(
+    //   map(response => {
+    //     this.investmentInits = [...this.investmentInits, ...response.body.data]; 
+    //     this.investmentInitPagination = response.body;
+    //     return this.investmentInitPagination;
+    //   })
+    // );
+
+    return this.http.get(this.baseUrl+ 'investmentRecv/investmentInits/'+empId+'/'+sbu);
     
   }
   getInvestmentApproved(empId:number,sbu:string){    
-    let params = new HttpParams();
-    if (this.genParams.search) {
-      params = params.append('search', this.genParams.search);
-    }
-    params = params.append('sort', this.genParams.sort);
-    params = params.append('pageIndex', this.genParams.pageIndex.toString());
-    params = params.append('pageSize', this.genParams.pageSize.toString());
-    //return this.http.get<IInvestmentAprPagination>(this.baseUrl + 'investmentRecv/investmentApproved/'+empId+'/'+sbu, { observe: 'response', params })
-    return this.http.get<IInvestmentInitPagination>(this.baseUrl + 'investmentRecv/GetinvestmentReceived/'+empId+'/'+sbu, { observe: 'response', params })
-    //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
-    .pipe(
-      map(response => {
-        this.investmentInits = [...this.investmentInits, ...response.body.data]; 
-        this.investmentInitPagination = response.body;
-        return this.investmentInitPagination;
-      })
-    );
+    // let params = new HttpParams();
+    // if (this.genParams.search) {
+    //   params = params.append('search', this.genParams.search);
+    // }
+    // params = params.append('sort', this.genParams.sort);
+    // params = params.append('pageIndex', this.genParams.pageIndex.toString());
+    // params = params.append('pageSize', this.genParams.pageSize.toString());
+    // //return this.http.get<IInvestmentAprPagination>(this.baseUrl + 'investmentRecv/investmentApproved/'+empId+'/'+sbu, { observe: 'response', params })
+    // return this.http.get<IInvestmentInitPagination>(this.baseUrl + 'investmentRecv/GetinvestmentReceived/'+empId+'/'+sbu, { observe: 'response', params })
+    // //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
+    // .pipe(
+    //   map(response => {
+    //     this.investmentInits = [...this.investmentInits, ...response.body.data]; 
+    //     this.investmentInitPagination = response.body;
+    //     return this.investmentInitPagination;
+    //   })
+    // );
     
+    return this.http.get(this.baseUrl+ 'investmentRecv/GetinvestmentReceived/'+empId+'/'+sbu);
   }
   // insertInvestmentRcv() {  
   //   return this.http.post(this.baseUrl+ 'investmentRecv/insertRcv', this.investmentRcvCommentFormData);

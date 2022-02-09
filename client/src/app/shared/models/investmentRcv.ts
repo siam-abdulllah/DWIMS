@@ -18,6 +18,9 @@ export interface IInvestmentInit {
     marketName: string;
     sbu: string;
     employeeId: number;
+    approvedBy: string;
+    approvedDate: Date;
+    depotName: string;
 }
  
 export class InvestmentInit implements IInvestmentInit {
@@ -31,6 +34,9 @@ export class InvestmentInit implements IInvestmentInit {
     marketName: string;
     sbu: string;
     employeeId: number;
+    approvedBy: string;
+    approvedDate: Date;
+    depotName: string;
 }
 
 

@@ -98,7 +98,8 @@ namespace Infrastructure.Data
         public DbSet<MedDispSearch> MedDispSearch { get; set; }
         [NotMapped]
         public DbSet<RptMedDisp> RptMedDisp { get; set; }
-
+        [NotMapped]
+        public DbSet<InvestmentRcvPending> InvestmentRcvPending { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

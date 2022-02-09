@@ -855,6 +855,14 @@
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
+    <br/>
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <input name="filterText" class="form-control m-input Searchbox" type="text" id="searchText" [(ngModel)]="searchText" name="searchText" placeholder="Search..">
+        </div>
+        <div class="col-md-3"></div>
+    </div>
     <div class="modal-body" style="padding: 20px 30px 20px 30px;">
         <div class="row">
             <div class="col-md-12">
@@ -867,26 +875,30 @@
                                 <th scope="col" style="width: 9%">Reference No</th>
                                 <th scope="col" style="width: 8%">Propose For</th>
                                 <th scope="col" style="width: 8%">Market Name</th>
-                                <!-- <th scope="col" style="width: 8%">Donation Type</th> -->
                                 <th scope="col" style="width: 8%">Donation To</th>
+                                <th scope="col" style="width: 8%">Name</th>
+                                <th scope="col" style="width: 8%">Approved By</th>
+                                <th scope="col" style="width: 8%">Approved Date</th>
+                                <th scope="col" style="width: 8%">Depot Name</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let a of investmentInits | paginate: configs | filter: searchText">
+                            <tr *ngFor="let a of investmentInits | filter: searchText">
                                 <td>
                                     <button class="btn btn-sm btn-embossed btn-success" (click)="selectInvestmentInit(a)">Select</button>
-
                                 </td>
                                 <td style="display:none;">{{a.id}}</td>
                                 <td>{{a.referenceNo}}</td>
                                 <td>{{a.proposeFor}}</td>
                                 <td>{{a.marketName}}</td>
-                                <!-- <td>{{a.donationId}}</td> -->
                                 <td>{{a.donationTo}}</td>
+                                <td>{{a.name}}</td>
+                                <td>{{a.approvedBy}}</td>
+                                <td>{{a.approvedDate | date:'dd/MM/yyyy'}}</td>
+                                <td>{{a.depotName}}</td>
                             </tr>
                         </tbody>
                     </table>
-                    <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls>
                 </div>
             </div>
         </div>
@@ -925,6 +937,9 @@
                                 <th scope="col" style="width: 8%">Market Name</th>
                                 <!-- <th scope="col" style="width: 8%">Donation Type</th> -->
                                 <th scope="col" style="width: 8%">Donation To</th>
+                                <th scope="col" style="width: 8%">Approved By</th>
+                                <th scope="col" style="width: 8%">Approved Date</th>
+                                <th scope="col" style="width: 8%">Depot Name</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -939,6 +954,9 @@
                                 <td>{{a.marketName}}</td>
                                 <!-- <td>{{a.donationId}}</td> -->
                                 <td>{{a.donationTo}}</td>
+                                <td>{{a.approvedBy}}</td>
+                                <td>{{a.approvedDate | date:'dd/MM/yyyy'}}</td>
+                                <td>{{a.depotName}}</td>
                             </tr>
                         </tbody>
                     </table>

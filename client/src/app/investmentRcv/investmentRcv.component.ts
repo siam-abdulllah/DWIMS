@@ -70,7 +70,7 @@ export class InvestmentRcvComponent implements OnInit {
   campaignDtls: ICampaignDtl[];
   campaignDtlProducts: ICampaignDtlProduct[];
   marketGroupMsts: IMarketGroupMst[];
-  investmentInits: IInvestmentInit[];
+  investmentInits: any;
   donationToVal: string;
   totalCount = 0;
   bsConfig: Partial<BsDatepickerConfig>;
@@ -135,8 +135,7 @@ export class InvestmentRcvComponent implements OnInit {
       this.getInvestmentSociety();
     }
     this.getInvestmentDetails();
-    this.getInvestmentTargetedProd();
-    this.getInvestmentTargetedGroup();
+
     if (this.sbu == this.investmentRcvService.investmentRcvFormData.sbu) {
       this.isInvOther = false;
       this.isValid = true;
@@ -183,79 +182,14 @@ export class InvestmentRcvComponent implements OnInit {
     //this.getBudget();
     this.closeSearchModalInvestRcv()
   }
-  getLastFiveInvestment(marketCode: string, toDayDate: string) {
-    if (this.investmentRcvService.investmentRcvFormData.donationTo == "Doctor") {
-      this.investmentRcvService.getLastFiveInvestmentForDoc(this.investmentRcvService.investmentRcvFormData.donationId, this.investmentRcvService.investmentDoctorFormData.doctorId, marketCode, toDayDate).subscribe(
-        (response) => {
-          this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    }
-    else if (this.investmentRcvService.investmentRcvFormData.donationTo == "Institution") {
-      this.investmentRcvService.getLastFiveInvestmentForInstitute(this.investmentRcvService.investmentRcvFormData.donationId, this.investmentRcvService.investmentInstitutionFormData.institutionId, marketCode, toDayDate).subscribe(
-        (response) => {
-          this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    }
-    else if (this.investmentRcvService.investmentRcvFormData.donationTo == "Campaign") {
-      this.investmentRcvService.getLastFiveInvestmentForCampaign(this.investmentRcvService.investmentRcvFormData.donationId, this.investmentRcvService.investmentCampaignFormData.campaignMstId, marketCode, toDayDate).subscribe(
-        (response) => {
-          this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    }
-    else if (this.investmentRcvService.investmentRcvFormData.donationTo == "Bcds") {
-      this.investmentRcvService.getLastFiveInvestmentForBcds(this.investmentRcvService.investmentRcvFormData.donationId, this.investmentRcvService.investmentBcdsFormData.bcdsId, marketCode, toDayDate).subscribe(
-        (response) => {
-          this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    }
-    else if (this.investmentRcvService.investmentRcvFormData.donationTo == "Society") {
-      this.investmentRcvService.getLastFiveInvestmentForSociety(this.investmentRcvService.investmentRcvFormData.donationId, this.investmentRcvService.investmentSocietyFormData.societyId, marketCode, toDayDate).subscribe(
-        (response) => {
-          this.lastFiveInvestmentDetail = response as ILastFiveInvestmentDetail[];
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    }
-
-  }
-  // getCampaignMst() {
-  //   this.investmentRcvService.getCampaignMsts().subscribe(response => {
-  //     this.campaignMsts = response as ICampaignMst[];
-  //   }, error => {
-  //     console.log(error);
-  //   });
-  // }
+  
   getInvestmentInit() {
     const params = this.investmentRcvService.getGenParams();
     this.SpinnerService.show();
     this.investmentRcvService.getInvestmentInit(parseInt(this.empId), this.sbu).subscribe(response => {
       this.SpinnerService.hide();
-      this.investmentInits = response.data;
-      this.totalCount = response.count;
-      this.configs = {
-        currentPage: params.pageIndex,
-        itemsPerPage: params.pageSize,
-        totalItems: this.totalCount,
-      };
-    
+      debugger;
+      this.investmentInits = response;
       if (this.investmentInits.length > 0) {
         if (params.pageIndex == 1) {
           this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
@@ -273,7 +207,7 @@ export class InvestmentRcvComponent implements OnInit {
     this.SpinnerService.show();
     this.investmentRcvService.getInvestmentApproved(parseInt(this.empId), this.sbu).subscribe(response => {
       this.SpinnerService.hide();
-      this.investmentInits = response.data;
+      this.investmentInits = response;
       if (this.investmentInits.length > 0) {
         this.openinvestmentRcvSearchModal(this.investmentRcvSearchModal);
       }
@@ -432,7 +366,6 @@ export class InvestmentRcvComponent implements OnInit {
         this.investmentRcvService.investmentDetailFormData.fromDate = new Date(data.fromDate);
         this.investmentRcvService.investmentDetailFormData.toDate = new Date(data.toDate);
         let convertedDate = this.datePipe.transform(data.fromDate, 'ddMMyyyy');
-        this.getLastFiveInvestment(this.investmentRcvService.investmentRcvFormData.marketCode, convertedDate);
       } else {
         this.toastr.warning('No Data Found', 'Investment');
       }
@@ -440,21 +373,7 @@ export class InvestmentRcvComponent implements OnInit {
       console.log(error);
     });
   }
-  getInvestmentTargetedProd() {
-    this.investmentRcvService.getInvestmentTargetedProds(this.investmentRcvService.investmentRcvFormData.id, this.sbu).subscribe(response => {
-      var data = response as IInvestmentTargetedProd[];
-      if (data !== undefined) {
-        this.investmentTargetedProds = data;
 
-      }
-      else {
-        this.toastr.warning('No Data Found', 'Investment ');
-      }
-
-    }, error => {
-      console.log(error);
-    });
-  }
   getinvestmentRcvDetails() {
     this.investmentRcvService.getInvestmentRcvDetails(this.investmentRcvService.investmentRcvFormData.id, parseInt(this.empId)).subscribe(response => {
       var data = response[0] as IInvestmentRcv;
@@ -464,7 +383,6 @@ export class InvestmentRcvComponent implements OnInit {
         this.investmentRcvService.investmentDetailFormData.fromDate = new Date(data.fromDate);
         this.investmentRcvService.investmentDetailFormData.toDate = new Date(data.toDate);
         let convertedDate = this.datePipe.transform(data.fromDate, 'ddMMyyyy');
-        this.getLastFiveInvestment(this.investmentRcvService.investmentRcvFormData.marketCode, convertedDate);
       } else {
         this.getInvestmentDetails();
       }
@@ -485,20 +403,6 @@ export class InvestmentRcvComponent implements OnInit {
       console.log(error);
     });
   }
-  getInvestmentTargetedGroup() {
-    this.investmentRcvService.getInvestmentTargetedGroups(this.investmentRcvService.investmentRcvFormData.id, parseInt(this.empId)).subscribe(response => {
-      var data = response as IInvestmentTargetedGroup[];
-      if (data !== undefined) {
-        this.investmentTargetedGroups = data;
-      }
-      else {
-        this.toastr.warning('No Data Found', 'Investment ');
-      }
-    }, error => {
-      console.log(error);
-    });
-  }
-
 
 
   changeDateInDetail() {
@@ -709,75 +613,6 @@ export class InvestmentRcvComponent implements OnInit {
     );
   }
 
-  // insertInvestmentTargetedProd() {
-  //   if (this.investmentRcvService.investmentRcvFormData.id == null || this.investmentRcvService.investmentRcvFormData.id == undefined || this.investmentRcvService.investmentRcvFormData.id == 0) {
-  //     this.toastr.warning('Insert Investment Initialisation First', 'Investment Product');
-  //     return false;
-  //   }
-  //   if (this.investmentTargetedProds !== undefined) {
-  //     for (let i = 0; i < this.investmentTargetedProds.length; i++) {
-  //       if (this.investmentTargetedProds[i].productInfo.id == this.investmentRcvService.investmentTargetedProdFormData.productId) {
-  //         this.toastr.warning("Product already exist !");
-  //         return false;
-  //       }
-  //     }
-  //   }
-  //   else {
-  //     this.toastr.warning('Select Product First', 'Investment Product');
-  //     return false;
-  //   }
-  //   this.investmentRcvService.investmentTargetedProdFormData.investmentInitId = this.investmentRcvService.investmentRcvFormData.id;
-  //   this.SpinnerService.show();
-  //   this.investmentRcvService.insertInvestmentTargetedProd(this.investmentTargetedProds).subscribe(
-  //     res => {if (this.sbu == this.investmentRcvService.investmentRcvFormData.sbu) 
-  //       { 
-  //       this.insertInvestmentDetails();
-  //       }
-  //       this.getInvestmentTargetedProd();
-  //       this.getInvestmentTargetedGroup();
-  //       this.isDonationValid = true;
-  //       this.SpinnerService.hide();
-  //       if (this.sbu != this.investmentRcvService.investmentRcvFormData.sbu) 
-  //       { 
-  //       this.toastr.success('Save successfully', 'Investment Product');
-  //       }
-  //     },
-  //     err => {
-  //       console.log(err);
-  //       this.SpinnerService.hide();
-  //     }
-  //   );
-  // }
-  addInvestmentTargetedProd() {
-    if (this.investmentRcvService.investmentTargetedProdFormData.productId == null || this.investmentRcvService.investmentTargetedProdFormData.productId == undefined || this.investmentRcvService.investmentTargetedProdFormData.productId == 0) {
-      this.toastr.warning('Select Product First', 'Investment ');
-      return false;
-    }
-    if (this.investmentTargetedProds !== undefined) {
-      for (let i = 0; i < this.investmentTargetedProds.length; i++) {
-        if (this.investmentTargetedProds[i].productInfo.id == this.investmentRcvService.investmentTargetedProdFormData.productId) {
-          this.toastr.warning("Product already exist !");
-          return false;
-        }
-
-      }
-      for (let i = 0; i < this.products.length; i++) {
-        if (this.products[i].id == this.investmentRcvService.investmentTargetedProdFormData.productId) {
-          let data = new InvestmentTargetedProd();
-          data.employeeId = parseInt(this.empId);
-          data.investmentInitId = this.investmentRcvService.investmentRcvFormData.id;
-          data.productId = this.investmentRcvService.investmentTargetedProdFormData.productId;
-          data.productInfo = this.products[i];
-          this.investmentTargetedProds.push(data);
-          return false;
-        }
-      }
-    }
-  }
-
-  editInvestmentTargetedProd(selectedAprord: IInvestmentTargetedProd) {
-    this.investmentRcvService.investmentTargetedProdFormData = Object.assign({}, selectedAprord);
-  }
   populateForm() {
   }
   resetPage(form: NgForm) {
@@ -864,7 +699,6 @@ export class InvestmentRcvComponent implements OnInit {
         res => {
           this.toastr.success(res);
           this.investmentRcvService.investmentTargetedProdFormData = new InvestmentTargetedProd();
-          this.getInvestmentTargetedProd();
         },
         err => { console.log(err); }
       );
