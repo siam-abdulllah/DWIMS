@@ -133,13 +133,13 @@ namespace API.Controllers
                 " where a.DataStatus= 1 AND  ir.RecStatus = 'Approved' AND inDetail.PaymentMethod = 'Cash' " +
                 " AND  ir.EmployeeId = inDetail.EmployeeId AND a.DonationId <> 4" +
                 " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
-                " AND  ir.InvestmentInitId not in (SELECT InvestmentInitId FROM DepotPrintTrack) " +
-                " Order by ir.SetOn DESC " ;
+                " AND  ir.InvestmentInitId not in (SELECT InvestmentInitId FROM DepotPrintTrack) ";
 
                 if (userRole != "Administrator")
                 {
                     qry = qry + " AND depo.DepotCode = '" + empData[0].DepotCode + "'";
                 }
+                qry = qry + " Order by ir.SetOn DESC ";
 
                 var results = _db.RptDepotLetterSearch.FromSqlRaw(qry).ToList();
 
