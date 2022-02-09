@@ -70,7 +70,7 @@ namespace API.Controllers
         }
 
         [HttpGet("investmentInits/{empId}/{sbu}")]
-        public ActionResult<Pagination<InvestmentInitDto>> GetInvestmentInits(int empId, string sbu,
+        public async Task<IReadOnlyList<InvestmentRcvPending>> GetInvestmentInits(int empId, string sbu,
           [FromQuery] InvestmentInitSpecParams investmentInitParrams)
         {
             try
@@ -81,12 +81,10 @@ namespace API.Controllers
                         new SqlParameter("@EID", empId),
                         new SqlParameter("@RSTATUS", "Approved")
                     };
-                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentRecvSearch @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
-                var data = _mapper
-                    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
+                var results = _dbContext.InvestmentRcvPending.FromSqlRaw("EXECUTE SP_InvestmentRecvSearch @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
 
 
-                return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, results.Count(), data));
+                return results;
             }
             catch (System.Exception e)
             {
@@ -254,54 +252,6 @@ namespace API.Controllers
         [HttpPost("InsertRecvCom")]
         public async Task<ActionResult<InvestmentRecCommentDto>> InsertInvestmentRecvComment(InvestmentRecCommentDto investmentRecDto)
         {
-            //var empData = await _employeeRepo.GetByIdAsync(investmentRecvDto.EmployeeId);
-            // var investmentInits = await _investmentInitRepo.GetByIdAsync((int)investmentRecvDto.InvestmentInitId);
-
-            // if (investmentInits.SBU == empData.SBU)
-            // {
-            //     bool isTrue = false;
-            //     var investmentTargetedGroupSpec = new InvestmentTargetedGroupSpecification((int)investmentRecvDto.InvestmentInitId);
-            //     var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(investmentTargetedGroupSpec);
-            //     var investmentRecvCommentSpec = new InvestmentRecvCommentSpecification((int)investmentRecvDto.InvestmentInitId);
-            //     var investmentRecvComments = await _investmentRecvCommentRepo.ListAsync(investmentRecvCommentSpec);
-            //     foreach (var v in investmentTargetedGroup)
-            //     {
-            //         isTrue = false;
-            //         foreach (var i in investmentRecvComments)
-            //         {
-            //             if (v.InvestmentInitId == i.InvestmentInitId && v.SBU == i.SBU)
-            //             {
-            //                 isTrue = true;
-            //             }
-            //         }
-            //         if (!isTrue) { return BadRequest(new ApiResponse(400, "Other recommendations are not completed yet")); }
-
-            //     }
-            // }
-            //var invRecv = new InvestmentRecvComment
-            //{
-            //    //ReferenceNo = investmentInitDto.ReferenceNo,
-            //    InvestmentInitId = investmentRecvDto.InvestmentInitId,
-            //    EmployeeId = investmentRecvDto.EmployeeId,
-            //    Comments = investmentRecvDto.Comments,
-            //    RecvStatus = investmentRecvDto.RecvStatus,
-            //    MarketGroupCode = empData.MarketGroupCode,
-            //    MarketGroupName = empData.MarketGroupName,
-            //    MarketCode = empData.MarketCode,
-            //    MarketName = empData.MarketName,
-            //    RegionCode = empData.RegionCode,
-            //    RegionName = empData.RegionName,
-            //    ZoneCode = empData.ZoneCode,
-            //    ZoneName = empData.ZoneName,
-            //    TerritoryCode = empData.TerritoryCode,
-            //    TerritoryName = empData.TerritoryName,
-            //    SBUName = empData.SBUName,
-            //    SBU = empData.SBU,
-            //    SetOn = DateTimeOffset.Now
-            //};
-            //_investmentRecvCommentRepo.Add(invRecv);
-            //_investmentRecvCommentRepo.Savechange();
-
             var isComplete = false;
             //var investmentInitSpec = new InvestmentInitSpecification((int)investmentRecDto.InvestmentInitId);
             var investmentInits = await _investmentInitRepo.GetByIdAsync((int)investmentRecDto.InvestmentInitId);
@@ -372,33 +322,6 @@ namespace API.Controllers
         [HttpPost("UpdateRecvCom")]
         public async Task<ActionResult<InvestmentRecCommentDto>> UpdateInvestmentRecvComment(InvestmentRecCommentDto investmentRecDto)
         {
-            // var user =  _approvalAuthorityRepo.GetByIdAsync(ApprovalAuthorityToReturnDto.Id);
-            // if (user == null) return Unauthorized(new ApiResponse(401));
-            //var empData = await _employeeRepo.GetByIdAsync(investmentRecvDto.EmployeeId);
-            //var invRecv = new InvestmentRecvComment
-            //{
-            //    Id = investmentRecvDto.Id,
-            //    InvestmentInitId = investmentRecvDto.InvestmentInitId,
-            //    EmployeeId = investmentRecvDto.EmployeeId,
-            //    Comments = investmentRecvDto.Comments,
-            //    RecvStatus = investmentRecvDto.RecvStatus,
-            //    MarketGroupCode = empData.MarketGroupCode,
-            //    MarketGroupName = empData.MarketGroupName,
-            //    MarketCode = empData.MarketCode,
-            //    MarketName = empData.MarketName,
-            //    RegionCode = empData.RegionCode,
-            //    RegionName = empData.RegionName,
-            //    ZoneCode = empData.ZoneCode,
-            //    ZoneName = empData.ZoneName,
-            //    TerritoryCode = empData.TerritoryCode,
-            //    TerritoryName = empData.TerritoryName,
-            //    SBUName = empData.SBUName,
-            //    SBU = empData.SBU,
-            //    ModifiedOn = DateTimeOffset.Now,
-            //};
-            //_investmentRecvCommentRepo.Update(invRecv);
-            //_investmentRecvCommentRepo.Savechange();
-
             var investmentInits = await _investmentInitRepo.GetByIdAsync((int)investmentRecDto.InvestmentInitId);
             var empData = await _employeeRepo.GetByIdAsync(investmentRecDto.EmployeeId);
             var spec = new ApprAuthConfigSpecification(investmentRecDto.EmployeeId, "A");
@@ -465,46 +388,6 @@ namespace API.Controllers
         [HttpPost("InsertRecvProd")]
         public async Task<IActionResult> InsertInvestmentRecvomendationProduct(List<InvestmentRecProductsDto> investmentRecProductDto)
         {
-            //try
-            //{
-            //    foreach (var i in investmentRecvProductDto)
-            //    {
-            //        var alreadyExistSpec = new InvestmentRecvProductSpecification(i.InvestmentInitId, i.ProductId);
-            //        var alreadyExistInvestmentRecvProductList = await _investmentRecvProductRepo.ListAsync(alreadyExistSpec);
-            //        if (alreadyExistInvestmentRecvProductList.Count > 0)
-            //        {
-            //            foreach (var v in alreadyExistInvestmentRecvProductList)
-            //            {
-            //                _investmentRecvProductRepo.Delete(v);
-            //                _investmentRecvProductRepo.Savechange();
-            //            }
-            //        }
-            //    }
-
-            //    foreach (var v in investmentRecvProductDto)
-            //    {
-            //        var investmentRecvProduct = new InvestmentRecvProducts
-            //        {
-            //            //ReferenceNo = investmentRecvDto.ReferenceNo,
-            //            InvestmentInitId = v.InvestmentInitId,
-            //            ProductId = v.ProductId,
-            //            EmployeeId = v.EmployeeId,
-            //            SBU = v.ProductInfo.SBU,
-            //            SetOn = DateTimeOffset.Now,
-            //            ModifiedOn = DateTimeOffset.Now
-            //        };
-            //        _investmentRecvProductRepo.Add(investmentRecvProduct);
-            //    }
-
-            //    _investmentRecvProductRepo.Savechange();
-
-            //    return Ok("Succsessfuly Saved!!!");
-            //}
-            //catch (Exception ex)
-            //{
-
-            //    throw ex;
-            //}
             try
             {
                 foreach (var i in investmentRecProductDto)
@@ -547,22 +430,6 @@ namespace API.Controllers
             }
         }
 
-
-        [HttpGet]
-        [Route("investmentRecvProducts/{investmentInitId}/{sbu}")]
-        //public async Task<IReadOnlyList<InvestmentRecProducts>> GetInvestmentRecvProducts(int investmentInitId, string sbu)
-        //{
-        //    try
-        //    {
-        //        var spec = new InvestmentRecProductSpecification(investmentInitId, sbu);
-        //        var investmentTargetedProd = await _investmentRecProductRepo.ListAsync(spec);
-        //        return investmentTargetedProd;
-        //    }
-        //    catch (System.Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
         public async Task<IReadOnlyList<InvestmentRecProducts>> GetInvestmentRecProducts(int investmentInitId, string sbu)
         {
             try
@@ -578,21 +445,6 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("investmentRecvDetails/{investmentInitId}/{empId}")]
-        //public async Task<IReadOnlyList<InvestmentRec>> GetInvestmentDetails(int investmentInitId,int empId)
-        //{
-        //    try
-        //    {
-        //        var spec = new InvestmentRecSpecification(investmentInitId, empId);
-        //        var investmentDetail = await _investmentRecRepo.ListAsync(spec);
-        //        return investmentDetail;
-        //    }
-        //    catch (System.Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
         public async Task<IReadOnlyList<InvestmentRec>> GetInvestmentDetails(int investmentInitId, int empId)
         {
             try
@@ -622,48 +474,6 @@ namespace API.Controllers
                 throw ex;
             }
         }
-
-        //public async Task<IReadOnlyList<InvestmentRecComment>> GetInvestmentRecComment(int investmentInitId, int empId)
-        //{
-        //    try
-        //    {
-        //        var spec = new InvestmentRecCommentSpecification(investmentInitId, empId);
-        //        var investmentDetail = await _investmentRecCommentRepo.ListAsync(spec);
-        //        return investmentDetail;
-        //    }
-        //    catch (System.Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
-        //[HttpGet]
-        //[Route("getInvestmentRecvComments/{investmentInitId}")]
-        //public async Task<IReadOnlyList<InvestmentRecvComment>> GetInvestmentRecvComments(int investmentInitId)
-        //{
-        //    try
-        //    {
-        //        var spec = new InvestmentRecvCommentSpecification(investmentInitId);
-        //        var investmentDetail = await _investmentRecvCommentRepo.ListAsync(spec);
-        //        return investmentDetail;
-        //    }
-        //    catch (System.Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
-        // public async Task<IReadOnlyList<InvestmentRecComment>> GetInvestmentRecComments(int investmentInitId)
-        // {
-        //     try
-        //     {
-        //         var spec = new InvestmentRecCommentSpecification(investmentInitId);
-        //         var investmentDetail = await _investmentRecCommentRepo.ListAsync(spec);
-        //         return investmentDetail;
-        //     }
-        //     catch (System.Exception ex)
-        //     {
-        //         throw ex;
-        //     }
-        // }
 
     }
 }
