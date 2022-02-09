@@ -24,6 +24,7 @@ namespace Core.Entities
         public string SBUName { get; set; }
         public string ProposeFor { get; set; }
         public string PaymentMethod { get; set; }
+        public bool Confirmation { get; set; }
         public int? DId { get; set; }
     }
 }

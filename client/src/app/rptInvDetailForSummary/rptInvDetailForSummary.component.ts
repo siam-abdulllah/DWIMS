@@ -31,12 +31,12 @@ import { IEmployeeLocation } from '../shared/models/empLocation';
 
 @Component({
   selector: 'app-investmentDetail',
-  templateUrl: './rptInvestmentDetail.component.html',
+  templateUrl: './rptInvDetailForSummary.component.html',
   styles: [
   ],
   providers: [DatePipe]
 })
-export class RptInvestmentDetailComponent implements OnInit {
+export class RptInvestmentDetailSummaryComponent implements OnInit {
   @ViewChild('search', { static: false }) searchTerm: ElementRef;
   @ViewChild('investmentInitSearchModal', { static: false }) investmentInitSearchModal: TemplateRef<any>;
   @ViewChild('submissionConfirmModal', { static: false }) submissionConfirmModal: TemplateRef<any>;

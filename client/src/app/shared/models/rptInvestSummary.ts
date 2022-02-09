@@ -13,6 +13,7 @@ export interface IrptInvestSummary {
     receiveBy: string;
     approvedBy: string;
     marketName: string;
+    confirmation: boolean;
 }
 
 export class rptInvestSummary implements IrptInvestSummary {
@@ -30,6 +31,7 @@ export class rptInvestSummary implements IrptInvestSummary {
     receiveBy: string;
     approvedBy: string;
     marketName: string;
+    confirmation: boolean;
 }
 
 export interface IrptDepotLetterSearch {

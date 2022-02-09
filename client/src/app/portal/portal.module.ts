@@ -33,6 +33,7 @@ import { DocHonApprComponent } from '../docHonAppr/docHonAppr.component';
 import { ClusterInfoComponent } from '../master/cluster-info/cluster-info.component';
 import { RptInvestSummaryComponent } from '../rptInvestmentSummary/rptInvestmentSummary.component';
 import { RptInvestmentDetailComponent } from '../RptInvestmentDetail/rptInvestmentDetail.component';
+import { RptInvestmentDetailSummaryComponent } from '../RptInvDetailForSummary/rptInvDetailForSummary.component'; ;
 import { PendingPrintDepotComponent } from '../pendingPrintDepot/pendingPrintDepot.component';
 import { PendingMedDispatchComponent } from './../PendingMedDispatch/pendingMedDispatch.component';
 import { ChequeTrackComponent } from './../chequeTrack/chequeTrack.component'; 
@@ -86,6 +87,7 @@ import { RptMedDispatchComponent } from '../rptMedDispatch/rptMedDispatch.compon
     RptInvestSummaryComponent,
     ParamInvestSummaryComponent,
     RptInvestmentDetailComponent,
+    RptInvestmentDetailSummaryComponent,
     MedDispatchComponent,
     PendingPrintDepotComponent,
     PendingChqPrintDepotComponent,

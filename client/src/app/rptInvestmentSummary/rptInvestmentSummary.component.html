@@ -66,6 +66,7 @@
                                         <table class="table  table-bordered">
                                             <tr class="HeaderRowFixed">
                                                 <td>Ref No</td>
+                                                <td>Cnfrm.</td>
                                                 <td>Inv Type</td>
                                                 <td>Inv To</td>
                                                 <td>Prop. For</td>
@@ -92,6 +93,10 @@
                                         </td> -->
                                                 <td>
                                                     {{a.referenceNo}}
+                                                </td>
+                                                <td>
+                                                    <span *ngIf="a.confirmation==true">Submitted</span>
+                                                    <span *ngIf="a.confirmation!=true">Not Submitted</span>
                                                 </td>
                                                 <td>
                                                     {{a.donationTypeName}}

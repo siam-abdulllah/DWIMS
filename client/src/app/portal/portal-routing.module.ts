@@ -22,6 +22,7 @@ import { PendingMedDispatchComponent } from './../PendingMedDispatch/pendingMedD
 import { RptMedDispatchComponent } from '../rptMedDispatch/rptMedDispatch.component';
 import { ChequeTrackComponent } from './../chequeTrack/chequeTrack.component'; 
 import { NgModule } from '@angular/core';
+import { RptInvestmentDetailSummaryComponent } from '../RptInvDetailForSummary/rptInvDetailForSummary.component'; ;
 import { PendingChqPrintDepotComponent } from '../pendingChqPrintDepot/pendingChqPrintDepot.component';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from '../home/home.component';
@@ -64,6 +65,7 @@ const portalRoutes: Routes = [
         {path: 'paramInvestmentSummary/:param', component: ParamInvestSummaryComponent},
         //{path: 'rptInvestmentDetail', component: RptInvestmentDetailComponent},
         {path: 'rptInvestmentDetail/:id', component: RptInvestmentDetailComponent},
+        {path: 'rptInvDtlSummary/:id', component: RptInvestmentDetailSummaryComponent},
         {path: 'cluster', component: ClusterInfoComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'menuHead', component: MenuHeadComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'subMenu', component: SubMenuComponent, canActivate: [SuperAdminRoleGuard]},

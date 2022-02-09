@@ -221,15 +221,13 @@ namespace API.Controllers
             " WHEN a.donationto = 'Society' THEN (SELECT x.SocietyId FROM   investmentsociety x INNER JOIN society y ON x.societyid = y.id WHERE  x.investmentinitid = a.id) END  DId, "+
         
             " CASE WHEN a.donationto = 'Doctor' THEN (SELECT doctorname FROM investmentdoctor x INNER JOIN doctorinfo y ON x.doctorid = y.id WHERE  x.investmentinitid = a.id) "+
-          
-            
             " WHEN a.donationto = 'Institution' THEN (SELECT institutionname FROM investmentinstitution x INNER JOIN institutioninfo y ON x.institutionid = y.id WHERE x.investmentinitid = a.id) "+
             " WHEN a.donationto = 'Campaign' THEN (SELECT subcampaignname FROM investmentcampaign x INNER JOIN campaigndtl y ON x.campaigndtlid = y.id INNER JOIN [dbo].[subcampaign] C ON y.subcampaignid = C.id WHERE  x.investmentinitid = a.id) "+
             " WHEN a.donationto = 'Bcds' THEN (SELECT bcdsname FROM investmentbcds x INNER JOIN bcds y ON x.bcdsid = y.id WHERE  x.investmentinitid = a.id)  "+
             " WHEN a.donationto = 'Society' THEN (SELECT societyname FROM investmentsociety x INNER JOIN society y ON x.societyid = y.id WHERE  x.investmentinitid = a.id) END NAME,  "+
             " (SELECT Isnull ((SELECT b.recstatus FROM investmentreccomment b WHERE  b.id IN (SELECT Max(id) FROM investmentreccomment WHERE  investmentinitid = a.id)), 'Pending')) InvStatus, "+
             " E.employeename, Isnull ((SELECT C.employeename FROM investmentreccomment b JOIN employee c ON c.id = b.employeeid WHERE  b.investmentinitid = a.id AND b.id = (SELECT Max(id) FROM   investmentreccomment WHERE  investmentinitid = b.investmentinitid)), 'N/A') ApprovedBy, "+
-            " a.MarketName, Isnull(M.employeename + ', ' + M.designationname,'N/A') ReceiveBy, b.PaymentMethod, a.ProposeFor, a.SBUName, depo.DepotName "+
+            " a.MarketName, Isnull(M.employeename + ', ' + M.designationname,'N/A') ReceiveBy, b.PaymentMethod, a.ProposeFor, a.SBUName, depo.DepotName, a.Confirmation "+
             " FROM investmentinit a"+
             " INNER JOIN employee E ON A.employeeid = E.id "+
             " LEFT JOIN investmentdetail b ON a.id = b.investmentinitid " +
@@ -758,9 +756,8 @@ namespace API.Controllers
             try
             {
                 var initData = await _investmentInitRepo.GetByIdAsync(investmentInitId);
-                var spec = new InvestmentRecSpecification(investmentInitId);
-                var investmentRec = await _investmentRecRepo.ListAsync(spec);
-                string qry = "SELECT CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,Max(id) Count FROM investmentreccomment WHERE  investmentinitid =" + investmentInitId;
+                var spec = new InvestmentRecSpecification(investmentInitId); 
+                string qry = "SELECT CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, isnull(Max(id),0) Count FROM investmentrec WHERE  investmentinitid =" + investmentInitId;
                 var result = _db.CountInt.FromSqlRaw(qry).ToList();
                 if (result[0].Count == 0)
                 {
@@ -768,6 +765,7 @@ namespace API.Controllers
                     var investmentDetail = await _investmentDetailRepo.ListAsync(specDetail);
                     return investmentDetail;
                 }
+                  var investmentRec = await _investmentRecRepo.ListAsync(spec);
                 return investmentRec.Where(x => x.Id == result[0].Count).ToList();
                 
             }

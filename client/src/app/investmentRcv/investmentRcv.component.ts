@@ -65,6 +65,7 @@ export class InvestmentRcvComponent implements OnInit {
   doctors: IDoctor[];
   institutions: IInstitution[];
   donations: IDonation[];
+  searchText = '';
   campaignMsts: ICampaignMst[];
   campaignDtls: ICampaignDtl[];
   campaignDtlProducts: ICampaignDtlProduct[];
@@ -284,6 +285,10 @@ export class InvestmentRcvComponent implements OnInit {
       console.log(error);
     });
   }
+
+  resetSearch(){
+    this.searchText = '';
+}
 
   getInvestmentCampaign() {
     this.investmentRcvService.getInvestmentCampaigns(this.investmentRcvService.investmentRcvFormData.id).subscribe(response => {
