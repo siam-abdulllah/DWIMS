@@ -78,7 +78,7 @@ namespace API.Controllers
             _donationRepo = donationRepo;
         }
         [HttpGet("investmentInits/{empId}/{sbu}")]
-        public ActionResult<IReadOnlyList<InvestmentInit>> GetInvestmentInits(int empId, string sbu,
+        public ActionResult<IReadOnlyList<InvestmentInitForApr>> GetInvestmentInits(int empId, string sbu,
           [FromQuery] InvestmentInitSpecParams investmentInitParrams)
         {
             try
@@ -97,7 +97,7 @@ namespace API.Controllers
                             join d in _dbContext.Donation on r.DonationId equals d.Id
                             join e in _dbContext.Employee on r.EmployeeId equals e.Id
                             orderby r.SetOn descending
-                            select new InvestmentInit
+                            select new InvestmentInitForApr
                             {
                                 Id = r.Id,
                                 DataStatus = r.DataStatus,
@@ -122,6 +122,7 @@ namespace API.Controllers
                                 SBUName = r.SBUName,
                                 Confirmation = r.Confirmation,
                                 SubmissionDate = r.SubmissionDate,
+                                RemainingSBU = null,
                                 Donation = d,
                                 Employee = e
                             }
@@ -136,7 +137,7 @@ namespace API.Controllers
         }
 
         [HttpGet("investmentInitsForRSM/{empId}/{sbu}")]
-        public ActionResult<IReadOnlyList<InvestmentInit>> GetInvestmentInitsForRSM(int empId, string sbu,
+        public ActionResult<IReadOnlyList<InvestmentInitForApr>> GetInvestmentInitsForRSM(int empId, string sbu,
          [FromQuery] InvestmentInitSpecParams investmentInitParrams)
         {
             try
@@ -154,7 +155,7 @@ namespace API.Controllers
                             join d in _dbContext.Donation on r.DonationId equals d.Id
                             join e in _dbContext.Employee on r.EmployeeId equals e.Id
                             orderby r.SetOn descending
-                            select new InvestmentInit
+                            select new InvestmentInitForApr
                             {
                                 Id = r.Id,
                                 DataStatus = r.DataStatus,
@@ -179,6 +180,7 @@ namespace API.Controllers
                                 SBUName = r.SBUName,
                                 Confirmation = r.Confirmation,
                                 SubmissionDate = r.SubmissionDate,
+                                RemainingSBU = null,
                                 Donation = d,
                                 Employee = e
                             }
@@ -192,8 +194,9 @@ namespace API.Controllers
                 throw e;
             }
         }
+      
         [HttpGet("investmentInitsForGPM/{empId}/{sbu}")]
-        public ActionResult<IReadOnlyList<InvestmentInit>> GetInvestmentInitsForGPM(int empId, string sbu,
+        public ActionResult<IReadOnlyList<InvestmentInitForApr>> GetInvestmentInitsForGPM(int empId, string sbu,
          [FromQuery] InvestmentInitSpecParams investmentInitParrams)
         {
             try
@@ -211,7 +214,7 @@ namespace API.Controllers
                             join d in _dbContext.Donation on r.DonationId equals d.Id
                             join e in _dbContext.Employee on r.EmployeeId equals e.Id
                             orderby r.SetOn descending
-                            select new InvestmentInit
+                            select new InvestmentInitForApr
                             {
                                 Id = r.Id,
                                 DataStatus = r.DataStatus,
@@ -236,6 +239,7 @@ namespace API.Controllers
                                 SBUName = r.SBUName,
                                 Confirmation = r.Confirmation,
                                 SubmissionDate = r.SubmissionDate,
+                                RemainingSBU = null,
                                 Donation = d,
                                 Employee = e
                             }
@@ -249,8 +253,9 @@ namespace API.Controllers
                 throw e;
             }
         }
+     
         [HttpGet("investmentInitsForSM/{empId}/{sbu}")]
-        public ActionResult<IReadOnlyList<InvestmentInit>> GetInvestmentInitsForSM(int empId, string sbu,
+        public ActionResult<IReadOnlyList<InvestmentInitForApr>> GetInvestmentInitsForSM(int empId, string sbu,
          [FromQuery] InvestmentInitSpecParams investmentInitParrams)
         {
             try
@@ -261,14 +266,15 @@ namespace API.Controllers
                         new SqlParameter("@EID", empId),
                         new SqlParameter("@RSTATUS", "Recommended")
                     };
-                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentAprSearchForMngr @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
+                var results = _dbContext.InvestmentInitForApr.FromSqlRaw<InvestmentInitForApr>("EXECUTE SP_InvestmentAprSearchForMngr @SBU,@EID,@RSTATUS", parms.ToArray()).ToList();
                 //var data = _mapper
                 //    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
                 var data = (from r in results
                             join d in _dbContext.Donation on r.DonationId equals d.Id
                             join e in _dbContext.Employee on r.EmployeeId equals e.Id
-                            orderby r.SetOn descending
-                            select new InvestmentInit
+                            //orderby r.SetOn descending
+                            orderby r.RemainingSBU.Length
+                            select new InvestmentInitForApr
                             {
                                 Id = r.Id,
                                 DataStatus = r.DataStatus,
@@ -293,6 +299,7 @@ namespace API.Controllers
                                 SBUName = r.SBUName,
                                 Confirmation = r.Confirmation,
                                 SubmissionDate = r.SubmissionDate,
+                                RemainingSBU = r.RemainingSBU,
                                 Donation = d,
                                 Employee = e
                             }
@@ -308,7 +315,7 @@ namespace API.Controllers
         }
 
         [HttpGet("investmentApproved/{empId}/{sbu}/{userRole}")]
-        public async Task<ActionResult<IReadOnlyList<InvestmentInit>>> GetinvestmentApproved(int empId, string sbu, string userRole,
+        public async Task<ActionResult<IReadOnlyList<InvestmentInitForApr>>> GetinvestmentApproved(int empId, string sbu, string userRole,
         [FromQuery] InvestmentInitSpecParams investmentInitParrams)
         {
             try
@@ -325,7 +332,7 @@ namespace API.Controllers
                                                  join e in _dbContext.Employee on r.EmployeeId equals e.Id
                                                  where rc.RecStatus == "Approved"
                                                  orderby r.SetOn descending
-                                                 select new InvestmentInit
+                                                 select new InvestmentInitForApr
                                                  {
                                                      Id = r.Id,
                                                      DataStatus = r.DataStatus,
@@ -350,6 +357,7 @@ namespace API.Controllers
                                                      SBUName = r.SBUName,
                                                      Confirmation = r.Confirmation,
                                                      SubmissionDate = r.SubmissionDate,
+                                                     RemainingSBU =null,
                                                      Donation = d,
                                                      Employee = e
                                                  }
@@ -379,7 +387,7 @@ namespace API.Controllers
                                 join d in _dbContext.Donation on r.DonationId equals d.Id
                                 join e in _dbContext.Employee on r.EmployeeId equals e.Id
                                 orderby r.SetOn descending
-                                select new InvestmentInit
+                                select new InvestmentInitForApr
                                 {
                                     Id = r.Id,
                                     DataStatus = r.DataStatus,
@@ -404,6 +412,7 @@ namespace API.Controllers
                                     SBUName = r.SBUName,
                                     Confirmation = r.Confirmation,
                                     SubmissionDate = r.SubmissionDate,
+                                    RemainingSBU = null,
                                     Donation = d,
                                     Employee = e
                                 }
@@ -418,7 +427,7 @@ namespace API.Controllers
             }
         }
         [HttpGet("investmentApprovedForRSM/{empId}/{sbu}/{userRole}")]
-        public ActionResult<IReadOnlyList<InvestmentInit>> GetinvestmentApprovedForRSM(int empId, string sbu, string userRole,
+        public ActionResult<IReadOnlyList<InvestmentInitForApr>> GetinvestmentApprovedForRSM(int empId, string sbu, string userRole,
         [FromQuery] InvestmentInitSpecParams investmentInitParrams)
         {
             try
@@ -441,7 +450,8 @@ namespace API.Controllers
                             join d in _dbContext.Donation on r.DonationId equals d.Id
                             join e in _dbContext.Employee on r.EmployeeId equals e.Id
                             orderby r.SetOn descending
-                            select new InvestmentInit
+                            orderby r.SetOn descending
+                            select new InvestmentInitForApr
                             {
                                 Id = r.Id,
                                 DataStatus = r.DataStatus,
@@ -466,6 +476,7 @@ namespace API.Controllers
                                 SBUName = r.SBUName,
                                 Confirmation = r.Confirmation,
                                 SubmissionDate = r.SubmissionDate,
+                                RemainingSBU = null,
                                 Donation = d,
                                 Employee = e
                             }
@@ -480,7 +491,7 @@ namespace API.Controllers
             }
         }
         [HttpGet("investmentApprovedForGPM/{empId}/{sbu}/{userRole}")]
-        public  ActionResult<IReadOnlyList<InvestmentInit>> GetinvestmentApprovedForGPM(int empId, string sbu, string userRole,
+        public  ActionResult<IReadOnlyList<InvestmentInitForApr>> GetinvestmentApprovedForGPM(int empId, string sbu, string userRole,
       [FromQuery] InvestmentInitSpecParams investmentInitParrams)
         {
             try
@@ -502,7 +513,7 @@ namespace API.Controllers
                             join d in _dbContext.Donation on r.DonationId equals d.Id
                             join e in _dbContext.Employee on r.EmployeeId equals e.Id
                             orderby r.SetOn descending
-                            select new InvestmentInit
+                            select new InvestmentInitForApr
                             {
                                 Id = r.Id,
                                 DataStatus = r.DataStatus,
@@ -527,6 +538,7 @@ namespace API.Controllers
                                 SBUName = r.SBUName,
                                 Confirmation = r.Confirmation,
                                 SubmissionDate = r.SubmissionDate,
+                                RemainingSBU = null,
                                 Donation = d,
                                 Employee = e
                             }

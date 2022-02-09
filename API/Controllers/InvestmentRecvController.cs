@@ -429,7 +429,8 @@ namespace API.Controllers
                 throw ex;
             }
         }
-
+        [HttpGet]
+        [Route("getInvestmentRecProducts/{investmentInitId}/{sbu}")]
         public async Task<IReadOnlyList<InvestmentRecProducts>> GetInvestmentRecProducts(int investmentInitId, string sbu)
         {
             try
@@ -444,7 +445,8 @@ namespace API.Controllers
                 throw ex;
             }
         }
-
+        [HttpGet]
+        [Route("getInvestmentDetails/{investmentInitId}/{empId}")]
         public async Task<IReadOnlyList<InvestmentRec>> GetInvestmentDetails(int investmentInitId, int empId)
         {
             try

@@ -143,7 +143,7 @@ export class RptInvestSummaryComponent implements OnInit {
     // );
     //this.router.navigate(['./rptInvestmentDetail'], {relativeTo: this.router});
     //this.router.navigate( ['/','rptInvestmentDetail', selectedRecord.id]);
-    this.router.navigate([]).then(result => {  window.open('/portal/rptInvestmentDetail/'+selectedRecord.id, '_blank'); });;
+    this.router.navigate([]).then(result => {  window.open('/portal/rptInvDtlSummary/'+selectedRecord.id, '_blank'); });;
     
 
   }

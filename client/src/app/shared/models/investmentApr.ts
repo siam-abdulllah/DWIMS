@@ -35,6 +35,35 @@ export class InvestmentInit implements IInvestmentInit {
     employee: IEmployee;
     setOn: Date;
 }
+export interface IInvestmentInitForApr {
+    id: number;
+    referenceNo: string;
+    proposeFor: string;
+    donationId: number;
+    donation:IDonation;
+    donationTo: string;
+    marketCode: string;
+    remainingSBU: string;
+    sbu: string;
+    employeeId: number;
+    employee: IEmployee;
+    setOn: Date;
+}
+ 
+export class InvestmentInitForApr implements IInvestmentInitForApr{
+    id: number=0;
+    referenceNo: string;
+    proposeFor: string=null;
+    donationId: number=null;
+    donation:IDonation;
+    donationTo: string=null;
+    marketCode: string;
+    remainingSBU: string;
+    sbu: string;
+    employeeId: number;
+    employee: IEmployee;
+    setOn: Date;
+}
 
 
 export interface IInvestmentApr {

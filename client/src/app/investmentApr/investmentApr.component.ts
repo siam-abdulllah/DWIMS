@@ -1,6 +1,6 @@
 import {
   InvestmentApr, IInvestmentApr, InvestmentInit, IInvestmentInit,
-  InvestmentTargetedProd, IInvestmentTargetedProd, InvestmentTargetedGroup, IInvestmentTargetedGroup, IInvestmentAprComment, InvestmentAprComment
+  InvestmentTargetedProd, IInvestmentTargetedProd, InvestmentTargetedGroup, IInvestmentTargetedGroup, IInvestmentAprComment, InvestmentAprComment, IInvestmentInitForApr, InvestmentInitForApr
 } from '../shared/models/investmentApr';
 import { InvestmentDoctor, IInvestmentDoctor, InvestmentInstitution, IInvestmentInstitution, InvestmentCampaign, IInvestmentCampaign } from '../shared/models/investmentApr';
 import { InvestmentBcds, IInvestmentBcds, InvestmentSociety, IInvestmentSociety } from '../shared/models/investmentApr';
@@ -49,7 +49,7 @@ export class InvestmentAprComponent implements OnInit {
   investmentDetailsOld: IInvestmentDetailOld[];
   lastFiveInvestmentDetail: ILastFiveInvestmentDetail[];
   investmentAprs: IInvestmentApr[];
-  investmentInits: IInvestmentInit[];
+  investmentInits: IInvestmentInitForApr[];
   investmentTargetedProds: IInvestmentTargetedProd[];
   investmentTargetedGroups: IInvestmentTargetedGroup[];
   investmentDetails: IInvestmentApr[];
@@ -86,6 +86,7 @@ export class InvestmentAprComponent implements OnInit {
   empId: string;
   donationName: string;
   sbu: string;
+  remainingSBUShow:boolean;
   config = {
     keyboard: false,
     class: 'modal-lg',
@@ -129,7 +130,7 @@ export class InvestmentAprComponent implements OnInit {
   openInvestmentAprSearchModal(template: TemplateRef<any>) {
     this.InvestmentAprSearchModalRef = this.modalService.show(template, this.config);
   }
-  async selectInvestmentInit(selectedAprord: IInvestmentInit) {
+  async selectInvestmentInit(selectedAprord: IInvestmentInitForApr) {
     this.resetForm();
     this.investmentAprService.investmentAprFormData = Object.assign({}, selectedAprord);
     var selectedDonation = this.donations.filter(res => res.id == selectedAprord.donationId).map(ele => ele.donationTypeName);
@@ -190,7 +191,7 @@ export class InvestmentAprComponent implements OnInit {
       }
     }
   }
-  async selectInvestmentApr(selectedAprord: IInvestmentInit) {
+  async selectInvestmentApr(selectedAprord: IInvestmentInitForApr) {
     this.resetForm();
     this.investmentAprService.investmentAprFormData = Object.assign({}, selectedAprord);
     var selectedDonation = this.donations.filter(res => res.id == selectedAprord.donationId).map(ele => ele.donationTypeName);
@@ -306,7 +307,7 @@ export class InvestmentAprComponent implements OnInit {
     this.SpinnerService.show();
     this.investmentAprService.getInvestmentInit(parseInt(this.empId), this.sbu, this.userRole).subscribe(response => {
       this.SpinnerService.hide();
-      this.investmentInits = response as IInvestmentInit[];
+      this.investmentInits = response as IInvestmentInitForApr[];
       if (this.investmentInits.length > 0) {
         this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
       }
@@ -324,7 +325,7 @@ export class InvestmentAprComponent implements OnInit {
     this.SpinnerService.show();
     this.investmentAprService.getInvestmentApproved(parseInt(this.empId), this.sbu, this.userRole).subscribe(response => {
       this.SpinnerService.hide();
-      this.investmentInits = response as IInvestmentInit[];
+      this.investmentInits = response as IInvestmentInitForApr[];
       // this.totalCount = response.count;
       // debugger;
       // this.configs = {
@@ -622,6 +623,12 @@ export class InvestmentAprComponent implements OnInit {
     this.empId = this.accountService.getEmployeeId();
     this.userRole = this.accountService.getUserRole();
     debugger;
+    if (this.userRole == 'M') {
+      this.remainingSBUShow=true;
+    }
+    else{
+      this.remainingSBUShow=false;
+    }
     if (this.userRole == 'Administrator') {
       this.isAdmin = true;
     }
@@ -987,7 +994,7 @@ export class InvestmentAprComponent implements OnInit {
   resetPage(form: NgForm) {
     window.location.reload();
     form.reset();
-    this.investmentAprService.investmentAprFormData = new InvestmentInit();
+    this.investmentAprService.investmentAprFormData = new InvestmentInitForApr();
     this.investmentAprService.investmentAprCommentFormData = new InvestmentAprComment();
     this.investmentAprService.investmentDepotFormData = new InvestmentRecDepot();
     this.investmentAprService.investmentDetailFormData = new InvestmentApr();
@@ -1014,7 +1021,7 @@ export class InvestmentAprComponent implements OnInit {
     };
   }
   resetForm() {
-    this.investmentAprService.investmentAprFormData = new InvestmentInit();
+    this.investmentAprService.investmentAprFormData = new InvestmentInitForApr();
     this.investmentAprService.investmentAprCommentFormData = new InvestmentAprComment();
     this.investmentAprService.investmentDepotFormData = new InvestmentRecDepot();
     this.investmentAprService.investmentDetailFormData = new InvestmentApr();

@@ -2,7 +2,7 @@ import { InvestmentAprPagination, IInvestmentAprPagination } from '../shared/mod
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { InvestmentApr, IInvestmentApr,InvestmentInit,IInvestmentInit,
-  InvestmentTargetedProd,IInvestmentTargetedProd,InvestmentTargetedGroup,IInvestmentTargetedGroup,InvestmentAprComment,IInvestmentAprComment } from '../shared/models/investmentApr';
+  InvestmentTargetedProd,IInvestmentTargetedProd,InvestmentTargetedGroup,IInvestmentTargetedGroup,InvestmentAprComment,IInvestmentAprComment, InvestmentInitForApr } from '../shared/models/investmentApr';
 import { InvestmentDoctor, IInvestmentDoctor,InvestmentInstitution,IInvestmentInstitution,InvestmentCampaign,IInvestmentCampaign } from '../shared/models/investmentApr';
 import { InvestmentBcds, IInvestmentBcds,InvestmentSociety,IInvestmentSociety } from '../shared/models/investmentApr';
 
@@ -24,7 +24,7 @@ export class InvestmentAprService {
   investmentInits: IInvestmentInit[]=[];
   investmentInitPagination = new InvestmentInitPagination();
   investmentDepotFormData: InvestmentRecDepot = new InvestmentRecDepot();
-  investmentAprFormData: InvestmentInit = new InvestmentInit();
+  investmentAprFormData: InvestmentInitForApr = new InvestmentInitForApr();
   investmentDetailFormData: InvestmentApr = new InvestmentApr();
   investmentAprCommentFormData: InvestmentAprComment = new InvestmentAprComment();
   investmentMedicineProdFormData: InvestmentMedicineProd = new InvestmentMedicineProd();

@@ -845,6 +845,8 @@
                                         <th scope="col" style="width: 8%">Inv. Type</th>
                                         <th scope="col" style="width: 8%">Market</th>
                                         <th scope="col" style="width: 8%">Donation To</th>
+                                        <th scope="col" style="width: 8%" [hidden]="!remainingSBUShow">Remaining SBU</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -858,6 +860,7 @@
                                         <td>{{a.donation.donationTypeName}}</td>
                                         <td>{{a.marketName}}</td>
                                         <td>{{a.donationTo}}</td>
+                                        <td [hidden]="!remainingSBUShow">{{a.remainingSBU}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -903,6 +906,7 @@
                                         <th scope="col" style="width: 8%">Inv. Type</th>
                                         <th scope="col" style="width: 8%">Market</th>
                                         <th scope="col" style="width: 8%">Donation To</th>
+                                        <!-- <th scope="col" style="width: 8%" [hidden]="!userRole=='M'">Remaining SBU</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -917,6 +921,7 @@
                                         <td>{{a.donation.donationTypeName}}</td>
                                         <td>{{a.marketName}}</td>
                                         <td>{{a.donationTo}}</td>
+                                        <!-- <td [hidden]="!userRole=='M'">{{a.remainingSBU}}</td> -->
                                     </tr>
                                 </tbody>
                             </table>
