@@ -78,6 +78,28 @@ namespace API.Controllers
                 throw ex;
             }
         }
+         [HttpGet("GetBudgetCeilingForCampaign/{empID}/{sbu}/{DonationId}")]
+        // [Authorize(Roles = "Owner,Administrator")]
+        // [Authorize(Policy = "DetailUserPolicy")]
+        public ActionResult<IReadOnlyList<BudgetCeilingForCampaign>> GetBudgetCeilingForCampaign(int empID, string sbu, string DonationId)
+        {
+            try
+            {
+                List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                        new SqlParameter("@SBU", sbu),
+                        new SqlParameter("@EID", empID),
+                        new SqlParameter("@DID", DonationId)
+                    };
+                var results = _dbContext.BudgetCeilingForCampaign.FromSqlRaw<BudgetCeilingForCampaign>("EXECUTE SP_BudgetCeilingSearchForCampaign @SBU,@EID,@DID", parms.ToArray()).ToList();
+                return results;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
 
         [HttpPost("CreateApprovalCeiling")]
         public async Task<ActionResult<ApprovalCeiling>> SaveApprovalCeiling(ApprovalCeiling apprclngDto)

@@ -47,6 +47,8 @@ namespace Infrastructure.Data
         public DbSet<InvestmentDoctor> InvestmentDoctor { get; set; }
         [NotMapped]
         public DbSet<InvestmentInitForApr> InvestmentInitForApr { get; set; }
+        [NotMapped]
+        public DbSet<BudgetCeilingForCampaign> BudgetCeilingForCampaign { get; set; }
         public DbSet<InvestmentInit> InvestmentInit { get; set; }
         public DbSet<InvestmentInstitution> InvestmentInstitution { get; set; }
         public DbSet<InvestmentSociety> InvestmentSociety { get; set; }

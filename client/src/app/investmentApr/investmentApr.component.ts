@@ -169,6 +169,9 @@ export class InvestmentAprComponent implements OnInit {
       if (this.investmentAprService.investmentAprFormData.donationTo != 'Campaign') {
         this.getBudget();
       }
+      else{
+        this.getBudgetForCampaign();
+      }
     }
     else {
       this.isInvOther = true;
@@ -230,6 +233,9 @@ export class InvestmentAprComponent implements OnInit {
       this.isValid = true;
       if (this.investmentAprService.investmentAprFormData.donationTo != 'Campaign') {
         await this.getBudget();
+      }
+      else{
+        await this.getBudgetForCampaign();
       }
     }
     else {
@@ -675,6 +681,14 @@ export class InvestmentAprComponent implements OnInit {
   }
   getBudget() {
     this.investmentAprService.getBudget(this.sbu, parseInt(this.empId), this.investmentAprService.investmentAprFormData.donationId).subscribe(response => {
+      this.budgetCeiling = response[0] as IBudgetCeiling;
+      this.isBudgetVisible = true;
+    }, error => {
+      console.log(error);
+    });
+  }
+  getBudgetForCampaign() {
+    this.investmentAprService.getBudgetForCampaign(this.sbu, parseInt(this.empId), this.investmentAprService.investmentAprFormData.donationId).subscribe(response => {
       this.budgetCeiling = response[0] as IBudgetCeiling;
       this.isBudgetVisible = true;
     }, error => {
