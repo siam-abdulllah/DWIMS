@@ -15,6 +15,8 @@ import { AccountService } from '../account/account.service';
 import { DatePipe } from '@angular/common';
 import { DepotPendingService } from '../_services/depotPending.service';
 import { DepotPrintTrack,IDepotPrintTrack } from '../shared/models/depotPrintTrack';
+declare  var jQuery:  any;
+
 
 @Component({
   selector: 'pendingPrintDepot',

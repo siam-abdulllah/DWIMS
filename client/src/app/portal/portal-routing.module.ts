@@ -17,6 +17,7 @@ import { SbuWiseBudgetComponent } from '../sbu-wise-budget/sbu-wise-budget.compo
 import { ReportInvestmentComponent } from './../report-investment/report-investment.component';
 import { PendingPrintDepotComponent } from '../pendingPrintDepot/pendingPrintDepot.component';
 import { BillTrackComponent } from '../billTrack/billTrack.component';
+import { ChangeDepotComponent } from '../changeDepot/changeDepot.component';
 import { MedDispatchComponent } from './../medDispatch/medDispatch.component';
 import { PendingMedDispatchComponent } from './../PendingMedDispatch/pendingMedDispatch.component';
 import { RptMedDispatchComponent } from '../rptMedDispatch/rptMedDispatch.component';
@@ -62,6 +63,7 @@ const portalRoutes: Routes = [
         {path: 'medDispatch', component: MedDispatchComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'pendingMedDispatch', component: PendingMedDispatchComponent},
         {path: 'rptMedDispatch', component: RptMedDispatchComponent},
+        {path: 'changeDepot', component: ChangeDepotComponent},
         {path: 'paramInvestmentSummary/:param', component: ParamInvestSummaryComponent},
         //{path: 'rptInvestmentDetail', component: RptInvestmentDetailComponent},
         {path: 'rptInvestmentDetail/:id', component: RptInvestmentDetailComponent},

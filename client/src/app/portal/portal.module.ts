@@ -47,6 +47,7 @@ import { InvestmentRcvComponent } from '../investmentRcv/investmentRcv.component
 import { ChangePasswordComponent } from '../changePassword/changePassword.component';
 import { BillTrackComponent } from '../billTrack/billTrack.component';
 import { RptMedDispatchComponent } from '../rptMedDispatch/rptMedDispatch.component';
+import { ChangeDepotComponent } from '../changeDepot/changeDepot.component';
 
 @NgModule({
   imports: [
@@ -83,6 +84,7 @@ import { RptMedDispatchComponent } from '../rptMedDispatch/rptMedDispatch.compon
     InvestmentRcvComponent,
     RegApprovalComponent,
     ReportInvestmentComponent,
+    ChangeDepotComponent,
     ChequeTrackComponent,
     RptInvestSummaryComponent,
     ParamInvestSummaryComponent,

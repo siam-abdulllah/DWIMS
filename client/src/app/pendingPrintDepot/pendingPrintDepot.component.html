@@ -9,12 +9,6 @@
                                 <div class="col-sm-9">
                                     <h3 class="card-title">Pending For Payment Letter</h3>
                                 </div>
-                                <!-- <div class="col-sm-1">
-                                    <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="form.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
-                                </div>
-                                <div class="col-sm-1">
-                                    <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetPage(form)"><i class="fa fa-undo"></i>&nbsp; Reset</button>
-                                </div> -->
                             </div>
                         </div>
                         <div class="card-body">
@@ -33,13 +27,15 @@
                                 </div>
                                 <br/>
                                 <div class="form-group">
-                                    <table class="table  table-bordered">
+                                    <table class="table  table-bordered" id="tableToExcel">
                                         <tr class="HeaderRow">
                                             <td>Reference No</td>
                                             <td>Donation Type</td>
                                             <td>Proposed For</td>
-                                            <td>Doctor Name</td>
-                                            <td>Proposed Amount</td>
+                                            <td>Donation To</td>
+                                            <td>Id</td>
+                                            <td>Name</td>
+                                            <td>Approved Amount</td>
                                             <td>Market</td>
                                             <td>Proposed By</td>
                                             <td>Approved By</td>
@@ -55,6 +51,12 @@
                                             </td>
                                             <td>
                                                 {{a.proposeFor}}
+                                            </td>
+                                            <td>
+                                                {{a.donationTo}}
+                                            </td>
+                                            <td>
+                                                {{a.dId}}
                                             </td>
                                             <td>
                                                 {{a.doctorName}}
