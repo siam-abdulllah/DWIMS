@@ -102,12 +102,6 @@ export class ChequeTrackComponent implements OnInit {
       return;
     }
 
-    if(this.billTrackForm.value.chequeNo == "" || this.billTrackForm.value.chequeNo == null || this.billTrackForm.value.bankName == "" || this.billTrackForm.value.bankName == null )
-    {
-      this.toastr.error('Enter Cheque No & Bank Name');
-      return;
-    }
-
     this.pendingService.depotPrintFormData.investmentInitId = this.billTrackForm.value.investmentInitId;
     this.pendingService.depotPrintFormData.paymentRefNo = this.billTrackForm.value.paymentRefNo;
     this.pendingService.depotPrintFormData.paymentDate = this.billTrackForm.value.paymentDate;
