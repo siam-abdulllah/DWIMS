@@ -286,6 +286,16 @@ namespace API.Controllers
             _investmentRecRepo.Add(invRec);
             _investmentRecRepo.Savechange();
 
+            var _investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentRecOwnSBUInsertDto.InvestmentRecComment.InvestmentInitId, empId);
+            var _investmentRecComments = await _investmentRecCommentRepo.ListAsync(_investmentRecCommentSpec);
+            if (_investmentRecComments.Count > 0)
+            {
+                foreach (var v in _investmentRecComments)
+                {
+                    _investmentRecCommentRepo.Delete(v);
+                    _investmentRecCommentRepo.Savechange();
+                }
+            }
             var empData = await _employeeRepo.GetByIdAsync(empId);
             var invRecCmnt = new InvestmentRecComment
             {
@@ -463,6 +473,16 @@ namespace API.Controllers
             var spec = new ApprAuthConfigSpecification(empId, "A");
             var apprAuthConfig = await _apprAuthConfigRepo.GetEntityWithSpec(spec);
             var empData = await _employeeRepo.GetByIdAsync(empId);
+            var _investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentRecOtherSBUInsertDto.InvestmentRecComment.InvestmentInitId, empId);
+            var _investmentRecComments = await _investmentRecCommentRepo.ListAsync(_investmentRecCommentSpec);
+            if (_investmentRecComments.Count > 0)
+            {
+                foreach (var v in _investmentRecComments)
+                {
+                    _investmentRecCommentRepo.Delete(v);
+                    _investmentRecCommentRepo.Savechange();
+                }
+            }
             var invRecCmnt = new InvestmentRecComment
             {
                 InvestmentInitId = investmentRecOtherSBUInsertDto.InvestmentRecComment.InvestmentInitId,

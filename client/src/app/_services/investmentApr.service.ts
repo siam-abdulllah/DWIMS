@@ -56,8 +56,9 @@ export class InvestmentAprService {
   getBudget(sbu:string,empID:number,donationId:number){    
     return this.http.get(this.baseUrl + 'approvalCeiling/getBudgetCeiling/'+empID+'/'+sbu+'/'+donationId);
   }
-  getBudgetForCampaign(sbu:string,empID:number,donationId:number){    
-    return this.http.get(this.baseUrl + 'approvalCeiling/getBudgetCeilingForCampaign/'+empID+'/'+sbu+'/'+donationId);
+  getBudgetForCampaign(sbu:string,empID:number,donationId:number,campaignDtlId:number){    
+    debugger;
+    return this.http.get(this.baseUrl + 'approvalCeiling/getBudgetCeilingForCampaign/'+empID+'/'+sbu+'/'+donationId+'/'+campaignDtlId);
   }
   getLastFiveInvestment(marketCode:string,toDayDate:string){    
     return this.http.get(this.baseUrl + 'investment/getLastFiveInvestment/'+marketCode+'/'+toDayDate);
@@ -232,7 +233,8 @@ export class InvestmentAprService {
     {
       if(this.investmentAprCommentFormData.recStatus=='Approved')
       {
-        return this.http.post(this.baseUrl+ 'investmentApr/insertAprForCampaign/'+empId+'/'+this.investmentAprCommentFormData.recStatus+'/'+sbu+'/'+this.investmentAprFormData.donationId, this.investmentDetailFormData);
+        debugger;
+        return this.http.post(this.baseUrl+ 'investmentApr/insertAprForCampaign/'+empId+'/'+this.investmentAprCommentFormData.recStatus+'/'+sbu+'/'+this.investmentAprFormData.donationId+'/'+this.investmentCampaignFormData.campaignDtlId, this.investmentDetailFormData);
       }
       else{
         return this.http.post(this.baseUrl+ 'investmentApr/insertRec/'+empId+'/'+this.investmentAprCommentFormData.recStatus+'/'+sbu+'/'+this.investmentAprFormData.donationId, this.investmentDetailFormData);
