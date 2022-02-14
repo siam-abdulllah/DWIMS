@@ -614,7 +614,28 @@ export class InvestmentAprComponent implements OnInit {
     this.investmentAprService.investmentDetailFormData.totalMonth = dateTo.getMonth() - dateFrom.getMonth() + (12 * (dateTo.getFullYear() - dateFrom.getFullYear()));
     this.investmentAprService.investmentDetailFormData.totalMonth = this.investmentAprService.investmentDetailFormData.totalMonth + 1;
   }
+  
   dateCompare(form: NgForm) {
+
+    let fDate = new Date(this.investmentAprService.investmentDetailFormData.fromDate);
+    let tDate = new Date(this.investmentAprService.investmentDetailFormData.toDate);
+
+    let crnt = new Date();
+
+    if(fDate.getMonth() < crnt.getMonth())
+    {
+      form.controls.fromDate.setValue("");
+      this.toastr.error('Month can not be less than current month', 'Error');
+      return;
+    }
+
+    if(tDate.getFullYear() >  crnt.getFullYear())
+    {
+      form.controls.toDate.setValue("");
+      this.toastr.error('Year can not be greater than current year', 'Error');
+      return;
+    }
+
     if (this.investmentAprService.investmentDetailFormData.fromDate != null && this.investmentAprService.investmentDetailFormData.toDate != null) {
       if (this.investmentAprService.investmentDetailFormData.toDate > this.investmentAprService.investmentDetailFormData.fromDate) {
       }

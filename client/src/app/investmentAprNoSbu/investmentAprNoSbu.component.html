@@ -676,11 +676,11 @@
                                                     </div>
                                                     <div class="col-md-3">
                                                         <input class="form-control" [disabled]="isInvOther && !isAdmin" required placeholder="Calender" (onHidden)="changeDateInDetail()" name="fromDate" #fromDate="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched"
-                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentAprForm)">
+                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (ngModelChange)="dateCompare(investmentAprForm)">
                                                     </div>
                                                     <div class="col-md-3">
                                                         <input class="form-control" [disabled]="isInvOther && !isAdmin" required placeholder="Calender" (onHidden)="changeDateInDetail()" name="toDate" #toDate="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched"
-                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentAprForm)">
+                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (ngModelChange)="dateCompare(investmentAprForm)">
 
                                                     </div>
                                                     <div class="col-md-2">

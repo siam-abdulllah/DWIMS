@@ -21,5 +21,6 @@ namespace Core.Entities
         public DateTimeOffset ToDate { get; set; }
         public double ApprovedAmount { get; set; }
         public string PaidStatus { get; set; }
+        public string PaymentRefNo { get; set; }
     }
 }
