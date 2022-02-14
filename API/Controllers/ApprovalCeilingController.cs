@@ -78,20 +78,21 @@ namespace API.Controllers
                 throw ex;
             }
         }
-         [HttpGet("GetBudgetCeilingForCampaign/{empID}/{sbu}/{DonationId}")]
+         [HttpGet("GetBudgetCeilingForCampaign/{empID}/{sbu}/{DonationId}/{CampaignDtlId}")]
         // [Authorize(Roles = "Owner,Administrator")]
         // [Authorize(Policy = "DetailUserPolicy")]
-        public ActionResult<IReadOnlyList<BudgetCeilingForCampaign>> GetBudgetCeilingForCampaign(int empID, string sbu, string DonationId)
+        public ActionResult<IReadOnlyList<BudgetCeilingForCampaign>> GetBudgetCeilingForCampaign(int empID, string sbu, int DonationId, int CampaignDtlId)
         {
             try
             {
                 List<SqlParameter> parms = new List<SqlParameter>
                     {
                         new SqlParameter("@SBU", sbu),
+                        new SqlParameter("@DID", DonationId),
                         new SqlParameter("@EID", empID),
-                        new SqlParameter("@DID", DonationId)
+                        new SqlParameter("@CDTLID", CampaignDtlId)
                     };
-                var results = _dbContext.BudgetCeilingForCampaign.FromSqlRaw<BudgetCeilingForCampaign>("EXECUTE SP_BudgetCeilingSearchForCampaign @SBU,@EID,@DID", parms.ToArray()).ToList();
+                var results = _dbContext.BudgetCeilingForCampaign.FromSqlRaw<BudgetCeilingForCampaign>("EXECUTE SP_BudgetCeilingSearchForCampaign @SBU,@DID,@EID,@CDTLID", parms.ToArray()).ToList();
                 return results;
             }
             catch (Exception ex)

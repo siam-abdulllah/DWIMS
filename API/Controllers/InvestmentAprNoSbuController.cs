@@ -390,8 +390,16 @@ namespace API.Controllers
                 var investmentInits = await _investmentInitRepo.GetByIdAsync((int)investmentNoSBUAprInsertDto.InvestmentRecComment.InvestmentInitId);
                 var empData = await _employeeRepo.GetByIdAsync(empId);
                
-                //var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentNoSBUAprInsertDto.InvestmentRecComment.InvestmentInitId, apprAuthConfig.ApprovalAuthority.Priority, "true");
-                //var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
+                var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentNoSBUAprInsertDto.InvestmentRecComment.InvestmentInitId, empId);
+                var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
+                if (investmentRecComments.Count > 0)
+                {
+                    foreach (var v in investmentRecComments)
+                    {
+                        _investmentRecCommentRepo.Delete(v);
+                        _investmentRecCommentRepo.Savechange();
+                    }
+                }
                 isComplete = true;
                 if (investmentNoSBUAprInsertDto.InvestmentRecComment.RecStatus == "Not Approved")
                 {
@@ -622,8 +630,16 @@ namespace API.Controllers
                 var empData = await _employeeRepo.GetByIdAsync(empId);
                 //var investmentTargetedGroupSpec = new InvestmentTargetedGroupSpecification((int)investmentNoSBUAprInsertDto.InvestmentRecComment.InvestmentInitId);
                 //var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(investmentTargetedGroupSpec);
-                var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentNoSBUAprInsertDto.InvestmentRecComment.InvestmentInitId, apprAuthConfig.ApprovalAuthority.Priority, "true");
-                var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
+                //var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentNoSBUAprInsertDto.InvestmentRecComment.InvestmentInitId, empId);
+                //var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
+                //if (investmentRecComments.Count > 0)
+                //{
+                //    foreach (var v in investmentRecComments)
+                //    {
+                //        _investmentRecCommentRepo.Delete(v);
+                //        _investmentRecCommentRepo.Savechange();
+                //    }
+                //}
                 isComplete = true;
                 if (investmentNoSBUAprInsertDto.InvestmentRecComment.RecStatus == "Not Approved")
                 {
