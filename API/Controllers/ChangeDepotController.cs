@@ -22,16 +22,13 @@ namespace API.Controllers
         private readonly StoreContext _db;
         private readonly IMapper _mapper;
         private readonly IGenericRepository<InvestmentMedicineProd> _investmentMedicineProdRepo;
-        private readonly IGenericRepository<MedicineDispatch> _dispRepo;
-        private readonly IGenericRepository<MedicineDispatchDtl> _dispdtlRepo;
+        private readonly IGenericRepository<ChangeDepot> _changeRepo;
 
-        public ChangeDepotController(IMapper mapper, StoreContext db, IGenericRepository<InvestmentMedicineProd> investmentMedicineProdRepo, IGenericRepository<MedicineDispatch> dispRepo, IGenericRepository<MedicineDispatchDtl> dispdtlRepo)
+        public ChangeDepotController(IMapper mapper, StoreContext db, IGenericRepository<ChangeDepot> changeRepo)
         {
             _db = db;
             _mapper = mapper;
-            _investmentMedicineProdRepo = investmentMedicineProdRepo;
-            _dispRepo = dispRepo;
-            _dispdtlRepo = dispdtlRepo;
+            _changeRepo = changeRepo;
         }
 
 
@@ -82,5 +79,39 @@ namespace API.Controllers
             }
         }
 
+        [HttpPost("createChangeDepot")]
+        public ActionResult<ChangeDepotDto> InsertChangeDepot(ChangeDepot trackDto)
+        {
+            var chngDpt = new ChangeDepot
+            {
+                InvestmentInitId = trackDto.InvestmentInitId,
+                ChangeDate = DateTimeOffset.Now,
+                OldDepotCode = trackDto.OldDepotCode,
+                DepotCode =  trackDto.DepotCode,
+                Remarks = trackDto.Remarks,
+                SetOn = DateTimeOffset.Now,
+                EmployeeId = trackDto.EmployeeId,
+            };
+
+            _changeRepo.Add(chngDpt);
+            _changeRepo.Savechange();
+
+            var dpt = (from t in _db.InvestmentRecDepot
+            where t.DepotCode == trackDto.DepotCode
+            select t).FirstOrDefault();
+
+            var y = _db.Database.ExecuteSqlRaw("EXECUTE [dbo].[SP_UpdateDepot] {0},{1},{2}", trackDto.InvestmentInitId, trackDto.DepotCode, dpt.DepotName);
+
+            return new ChangeDepotDto
+            {
+                Id = chngDpt.Id,
+                InvestmentInitId = trackDto.InvestmentInitId,
+                ChangeDate = trackDto.ChangeDate,
+                OldDepotCode = trackDto.OldDepotCode,
+                DepotCode =  trackDto.DepotCode,
+                Remarks = trackDto.Remarks,
+                EmployeeId = trackDto.EmployeeId,
+            };
+        }
     }
 }

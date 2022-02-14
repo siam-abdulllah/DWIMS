@@ -12,7 +12,7 @@
                                     <h3 class="card-title">Change Depot</h3>
                                 </div>
                                 <div class="col-sm-1">
-                                    <button class="btn btn-success btn-block" (click)="insertTracker()" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Save</button>
+                                    <button class="btn btn-success btn-block" (click)="insertChange()" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Save</button>
                                 </div>
                                 <div class="col-sm-1 ">
                                     <button class="btn btn-danger btn-block " (click)="reset()" type="button "><i class="fa fa-undo "></i>&nbsp; Reset</button>
@@ -86,7 +86,7 @@
                                         <span style="color:red; ">*</span>
                                     </div>
                                     <div class="col-md-4 ">
-                                        <input class="form-control " id="oldDepotName" placeholder="Current Depot" formControlName="oldDepotName">
+                                        <input class="form-control " id="oldDepotName" placeholder="Current Depot" formControlName="oldDepotName" readonly>
                                         <input type="hidden" id="oldDepotCode" formControlName="oldDepotCode" />
                                     </div>
                                     <div class="col-md-2 ">
@@ -94,10 +94,8 @@
                                         <span style="color:red; ">*</span>
                                     </div>
                                     <div class="col-md-4 ">
-                                        <div class="col-md-3">
-                                            <ng-select [virtualScroll]="true" [items]="depots" bindLabel="depotName" bindValue="depotCode" placeholder="Select Depot" formControlName="depotCode" id="depotCode">
-                                            </ng-select>
-                                        </div>
+                                        <ng-select [virtualScroll]="true" [items]="depots" bindLabel="depotName" bindValue="depotCode" placeholder="Select Depot" formControlName="depotCode" id="depotCode">
+                                        </ng-select>
                                     </div>
                                 </div>
                             </div>

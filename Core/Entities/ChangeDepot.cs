@@ -11,7 +11,7 @@ namespace Core.Entities
         public DateTimeOffset ChangeDate { get; set; }
         public int? EmployeeId { get; set; }
         public Employee Employee { get; set; }
-        public double Remarks { get; set; }
+        public string Remarks { get; set; }
         public string OldDepotCode { get; set; }
         public string DepotCode { get; set; }
     }
