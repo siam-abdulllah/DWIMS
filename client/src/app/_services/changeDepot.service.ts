@@ -1,5 +1,6 @@
+import { ChangeDepot } from './../shared/models/changeDepot';
 import { IRole, IRoleResponse } from '../shared/models/role';
-import { IrptDepotLetterSearch, rptDepotLetterSearch, DepotLetterSearchPagination } from '../shared/models/rptInvestSummary';
+import { DepotLetterSearchPagination } from '../shared/models/rptInvestSummary';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
@@ -8,8 +9,6 @@ import { IUser, IUserResponse } from '../shared/models/user';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { GenericParams } from '../shared/models/genericParams';
-import { InvestmentMedicineProd } from '../shared/models/investmentRec';
-import { MedicineDispatch, MedicineDispatchDtl} from '../shared/models/medDispatch';
 
 
 
@@ -17,12 +16,8 @@ import { MedicineDispatch, MedicineDispatchDtl} from '../shared/models/medDispat
   providedIn: 'root'
 })
 export class ChangeDepotService {
-
-  medDispatchFormData: MedicineDispatch = new MedicineDispatch();
-  investmentMedicineProdFormData: InvestmentMedicineProd = new InvestmentMedicineProd();
-  rptDepotLetter: IrptDepotLetterSearch[]=[];
-  medDispDtl: MedicineDispatchDtl = new MedicineDispatchDtl();
   pagination = new DepotLetterSearchPagination();
+  changeDepotFormData: ChangeDepot = new ChangeDepot();
  
 
   roles: IRole[] = [];
@@ -38,48 +33,20 @@ export class ChangeDepotService {
     return this.http.get(this.baseUrl + 'changeDepot/invListForDepotChange/'+ empId+'/'+userRole);
   }
 
-   // tslint:disable-next-line: typedef
    setGenParams(genParams: GenericParams) {
     this.genParams = genParams;
   }
 
-  
-
-  insertDispatch(medDispatchFormData: any) {
-    debugger;
-    return this.http.post(this.baseUrl+ 'medDispatch/createDispatch', medDispatchFormData);
-  }
-
-  insertMedicineDetail(medDispDtl:MedicineDispatchDtl[]) {
-    debugger;
-    return this.http.post(this.baseUrl+ 'medDispatch/insertMedicineDetail', medDispDtl);
+  insertChange(changeFormData: any) {
+    return this.http.post(this.baseUrl+ 'changeDepot/createChangeDepot', changeFormData);
   }
 
   getRptDepotLetter(initId:any) {
     return this.http.get(this.baseUrl+ 'reportInvestment/rptInvestDepo/'+initId);
   }
 
-  getPendingDispatch(empId:number,userRole:string){    
-    return this.http.get(this.baseUrl + 'medDispatch/pendingDispatch/'+ empId+'/'+userRole);
-  }
-
-  getRptMedDis(model: any){    
-    return this.http.post(this.baseUrl + 'medDispatch/medDispReport/', model);
-  }
-
-  // removeInvestmentMedicineProd() {
-  //   return this.http.post(this.baseUrl + 'medDispatch/removeInvestmentMedicineProd', this.investmentMedicineProdFormData,
-  //     { responseType: 'text' });
-  // }
-
-  getDonations() {
-    return this.http.get(this.baseUrl + 'donation/donationsForInvestment');
-  }
   getDepot() {
     return this.http.get(this.baseUrl + 'employee/depotForInvestment');
-  }
-  getInvestmentMedicineProds(investmentInitId: number) {
-    return this.http.get(this.baseUrl + 'medDispatch/getMedicineProds/' + investmentInitId );
   }
 
   getEmpDepot(empId: number) {

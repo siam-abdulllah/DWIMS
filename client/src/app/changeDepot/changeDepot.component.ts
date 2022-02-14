@@ -2,11 +2,9 @@ import { ChangeDepotService } from './../_services/changeDepot.service';
 import { Component, ElementRef, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { environment } from '../../environments/environment';
 import 'jspdf-autotable';
-import * as jsPDF from 'jspdf';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { IrptDepotLetter } from '../shared/models/rptDepotLetter';
-import { IrptDepotLetterSearch, rptDepotLetterSearch } from '../shared/models/rptInvestSummary';
 import { ToastrService } from 'ngx-toastr';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -14,9 +12,9 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { GenericParams } from '../shared/models/genericParams';
 import { AccountService } from '../account/account.service';
 import { DatePipe } from '@angular/common';
-import { DepotPendingService } from '../_services/depotPending.service';
-import { DepotPrintTrack,IDepotPrintTrack } from '../shared/models/depotPrintTrack';
+import { IDepotPrintTrack } from '../shared/models/depotPrintTrack';
 import { IDepotInfo } from '../shared/models/depotInfo';
+import { IChangeDepot, IChangeDepotSearch } from '../shared/models/changeDepot';
 
 @Component({
   selector: 'app-bcds-info',
@@ -69,7 +67,6 @@ export class ChangeDepotComponent implements OnInit {
     });
   }
 
-
   getDepotList() {
     this.SpinnerService.show();
     var empId = parseInt(this.empId);
@@ -92,6 +89,7 @@ export class ChangeDepotComponent implements OnInit {
     this.resetPage();
     this.getEmployeeId();
     this.createBillTrackForm();
+    this.getDepot();
   }
 
   getEmployeeId() {
@@ -99,45 +97,38 @@ export class ChangeDepotComponent implements OnInit {
     this.userRole = this.accountService.getUserRole();
   }
 
-  insertTracker() {
+  insertChange() {
 
-    if(this.billTrackForm.value.referenceNo == "" || this.billTrackForm.value.referenceNo == null )
+    if(this.billTrackForm.value.referenceNo == "" || this.billTrackForm.value.referenceNo == null)
     {
       this.toastr.error('Select a proposal First');
       return;
     }
 
-    if(this.billTrackForm.value.paymentRefNo == "" || this.billTrackForm.value.paymentRefNo == null || this.billTrackForm.value.paymentDate == "" || this.billTrackForm.value.paymentDate == null )
+    if(this.billTrackForm.value.depotCode == "" || this.billTrackForm.value.depotCode == null)
     {
       this.toastr.error('Enter Payment Reference No & Date');
       return;
     }
 
-    // this.pendingService.depotPrintFormData.investmentInitId = this.billTrackForm.value.investmentInitId;
-    // this.pendingService.depotPrintFormData.paymentRefNo = this.billTrackForm.value.paymentRefNo;
-    // this.pendingService.depotPrintFormData.paymentDate = this.billTrackForm.value.paymentDate;
-    // this.pendingService.depotPrintFormData.depotName = "";
-    // this.pendingService.depotPrintFormData.depotId = "";
-    // this.pendingService.depotPrintFormData.employeeId = parseInt(this.empId);
-    // this.pendingService.depotPrintFormData.remarks = "";
-    // this.pendingService.depotPrintFormData.printCount = 1;
-    // this.pendingService.depotPrintFormData.chequeNo = "";
-    // this.pendingService.depotPrintFormData.bankName = "";
+    this.pendingService.changeDepotFormData.investmentInitId = this.billTrackForm.value.investmentInitId;
+    this.pendingService.changeDepotFormData.depotCode = this.billTrackForm.value.depotCode;
+    this.pendingService.changeDepotFormData.oldDepotName = this.billTrackForm.value.oldDepotName;
+    this.pendingService.changeDepotFormData.oldDepotCode = this.billTrackForm.value.oldDepotCode;
+    this.pendingService.changeDepotFormData.employeeId = parseInt(this.empId);
+    this.pendingService.changeDepotFormData.remarks = "";
 
-    // this.pendingService.insertTrackReport(this.pendingService.depotPrintFormData).subscribe(
-    //   res => {
-    //     debugger;
-    //     this.toastr.success('Data Saved successfully', 'Report Tracker')
-    //   },
-    //   err => { console.log(err); }
-    // );
+    this.pendingService.insertChange(this.pendingService.changeDepotFormData).subscribe(
+      res => {
+        debugger;
+        this.toastr.success('Data Saved successfully', 'Change Depot')
+      },
+      err => { console.log(err); }
+    );
   }
-
-
 
   ViewData(selectedRecord: IChangeDepotSearch)
   {
-
     this.billTrackForm.patchValue({
       id: selectedRecord.id,
       referenceNo: selectedRecord.referenceNo,
@@ -164,15 +155,8 @@ openPendingListModal(template: TemplateRef<any>) {
 }
 
   reset() {
-    // this.searchText = '';
-    // form.reset();
-    // this.config = {
-    //   currentPage: 1,
-    //   itemsPerPage: 10,
-    //   totalItems:50,
-    //   };
 
-  this.billTrackForm.setValue({
+    this.billTrackForm.setValue({
       referenceNo: "",
       oldDepotCode: "",
       oldDepotName: "",
@@ -195,15 +179,3 @@ openPendingListModal(template: TemplateRef<any>) {
 
 
 
-export interface IChangeDepotSearch {
-  id: number;
-  referenceNo: string;
-  donationTypeName: string;
-  proposeFor: string;
-  doctorName: string;
-  proposedAmount: number;
-  employeeName: string;
-  marketName: string;
-  depotCode: string;
-  depotName: string;
-}
