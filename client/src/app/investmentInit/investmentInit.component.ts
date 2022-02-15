@@ -234,26 +234,6 @@ debugger;
     });
   }
   dateCompare(form: NgForm) {
-
-      let fDate = new Date(this.investmentInitService.investmentDetailFormData.fromDate);
-      let tDate = new Date(this.investmentInitService.investmentDetailFormData.toDate);
-
-      let crnt = new Date();
-
-      if(fDate.getFullYear() !=  crnt.getFullYear())
-      {
-        form.controls.fromDate.setValue("");
-        this.toastr.error('Year has to be current year', 'Error');
-        return;
-      }
-  
-      if(tDate.getFullYear() !=  crnt.getFullYear())
-      {
-        form.controls.toDate.setValue("");
-        this.toastr.error('Year has to be current year', 'Error');
-        return;
-      }
-
     if (this.investmentInitService.investmentDetailFormData.fromDate != null && this.investmentInitService.investmentDetailFormData.toDate != null) {
       if (this.investmentInitService.investmentDetailFormData.toDate > this.investmentInitService.investmentDetailFormData.fromDate) {
       }
@@ -261,7 +241,6 @@ debugger;
         form.controls.fromDate.setValue(null);
         form.controls.toDate.setValue(null);
         this.toastr.error('Select Appropriate Date Range', 'Error');
-        return;
       }
     }
   }

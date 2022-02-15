@@ -285,26 +285,6 @@ export class InvestmentRecComponent implements OnInit {
     });
   }
   dateCompare(form: NgForm) {
-
-    let fDate = new Date(this.investmentRecService.investmentDetailFormData.fromDate);
-    let tDate = new Date(this.investmentRecService.investmentDetailFormData.toDate);
-
-    let crnt = new Date();
-
-    if(fDate.getFullYear() !=  crnt.getFullYear())
-    {
-      form.controls.fromDate.setValue("");
-      this.toastr.error('Year has to be current year', 'Error');
-      return;
-    }
-
-    if(tDate.getFullYear() !=  crnt.getFullYear())
-    {
-      form.controls.toDate.setValue("");
-      this.toastr.error('Year has to be current year', 'Error');
-      return;
-    }
-
     if (this.investmentRecService.investmentDetailFormData.fromDate != null && this.investmentRecService.investmentDetailFormData.toDate != null) {
       if (this.investmentRecService.investmentDetailFormData.toDate > this.investmentRecService.investmentDetailFormData.fromDate) {
       }
