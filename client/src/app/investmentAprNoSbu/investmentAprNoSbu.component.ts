@@ -570,18 +570,18 @@ export class InvestmentAprNoSbuComponent implements OnInit {
     let tDate = new Date(this.investmentAprService.investmentDetailFormData.toDate);
 
     let crnt = new Date();
-
-    if(fDate.getMonth() < crnt.getMonth())
+    
+    if(fDate.getFullYear() !=  crnt.getFullYear())
     {
       form.controls.fromDate.setValue("");
-      this.toastr.error('Month can not be less than current month', 'Error');
+      this.toastr.error('Year has to be current year', 'Error');
       return;
     }
 
-    if(tDate.getFullYear() >  crnt.getFullYear())
+    if(tDate.getFullYear() !=  crnt.getFullYear())
     {
       form.controls.toDate.setValue("");
-      this.toastr.error('Year can not be greater than current year', 'Error');
+      this.toastr.error('Year has to be current year', 'Error');
       return;
     }
 

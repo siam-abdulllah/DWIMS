@@ -720,8 +720,8 @@
                                                         <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" placeholder="Purpose" name="purpose" id="purpose" #purpose="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.purpose" maxLength="100">
-                                                        <div class="invalid-feedback" *ngIf="purpose.errors?.maxLength">Maximum 100 Character long</div>
+                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" placeholder="Purpose" name="purpose" id="purpose" #purpose="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.purpose" maxLength="500">
+                                                        <div class="invalid-feedback" *ngIf="purpose.errors?.maxLength">Maximum 500 Character long</div>
                                                     </div>
                                                 </div>
                                             </div>
