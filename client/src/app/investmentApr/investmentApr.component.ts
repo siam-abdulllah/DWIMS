@@ -173,9 +173,9 @@ export class InvestmentAprComponent implements OnInit {
       if (this.investmentAprService.investmentAprFormData.donationTo != 'Campaign') {
         await this.getBudget();
       }
-      else {
-        await this.getBudgetForCampaign();
-      }
+      //else {
+        //await this.getBudgetForCampaign();
+      //}
     }
     else {
       this.isInvOther = true;
@@ -238,9 +238,9 @@ export class InvestmentAprComponent implements OnInit {
       if (this.investmentAprService.investmentAprFormData.donationTo != 'Campaign') {
         await this.getBudget();
       }
-      else {
-        await this.getBudgetForCampaign();
-      }
+     // else {
+        //await this.getBudgetForCampaign();
+      //}
     }
     else {
       this.isInvOther = true;
@@ -381,6 +381,9 @@ export class InvestmentAprComponent implements OnInit {
               if (this.campaignDtls[i].id == data.campaignDtl.id) {
                 this.investmentAprService.investmentCampaignFormData.subCampaignName = this.campaignDtls[i].subCampaign.subCampaignName;
               }
+            }
+            if (this.sbu == this.investmentAprService.investmentAprFormData.sbu) {
+            this.getBudgetForCampaign();
             }
           }, error => {
             console.log(error);
