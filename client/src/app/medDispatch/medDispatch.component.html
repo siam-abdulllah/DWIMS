@@ -33,11 +33,12 @@
                             <div class="form-group ">
                                 <div class="row ">
                                     <div class="col-md-2 ">
-                                        <label>Bill No</label>
+                                        <label>Payment Ref No</label>
                                         <span style="color:red; ">*</span>
                                     </div>
                                     <div class="col-md-4 ">
-                                        <input class="form-control clickable " id="referenceNo" placeholder="Please Double Click" (dblclick)="getPendingDispatch()" formControlName="referenceNo" readonly required>
+                                        <input class="form-control" id="referenceNo" style="display: none;" formControlName="referenceNo" readonly>
+                                        <input class="form-control clickable" id="payRefNo" placeholder="Please Double Click" (dblclick)="getPendingDispatch()" formControlName="payRefNo" readonly required>
                                     </div>
                                     <div class="col-md-2 ">
                                         <label>Initiated By</label>
@@ -102,7 +103,7 @@
                             <div class="form-group ">
                                 <div class="row ">
                                     <div class="col-md-2 ">
-                                        <label>Payment Ref. No</label>
+                                        <label>SAP Ref. No</label>
                                         <span style="color:red; ">*</span>
                                     </div>
                                     <div class="col-md-4 ">
@@ -273,8 +274,8 @@
                         <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc)); ">
                             <tr class="HeaderRow ">
                                 <td>Select</td>
-                                <td style="width: 0;display:none; ">Id</td>
-                                <td>Reference No</td>
+                                <td>Payment Ref No</td>
+                                <td style="width: 0;display:none; ">Reference No</td>
                                 <td>Donation Type</td>
                                 <td style="width: 0;display:none; ">Proposed For</td>
                                 <td>Doctor</td>
@@ -291,8 +292,9 @@
                                 <td>
                                     <button class="btn btn-sm btn-embossed btn-success " type="button " (click)="ViewData(a) " style="width: 70px; "><i class="fa fa-eye "></i>Select</button>
                                 </td>
-                                <td style="display:none; ">{{a.id}}</td>
-                                <td>
+                                <td style="display:none; ">{{a.investmentInitId}}</td>
+                                <td>{{a.payRefNo}}</td>
+                                <td style="width: 0;display:none; ">
                                     {{a.referenceNo}}
                                 </td>
                                 <td>

@@ -64,7 +64,6 @@ export class RptChqDispatchComponent implements OnInit {
     this.medDispatchForm = new FormGroup({
       fromDate: new FormControl('', [Validators.required]),
       toDate: new FormControl('', [Validators.required]),
-      depotCode: new FormControl('', [Validators.required]),
       donationId: new FormControl(''),
       disStatus: new FormControl(''),
     });
@@ -77,39 +76,23 @@ export class RptChqDispatchComponent implements OnInit {
       this.toastr.error('Select Date Range');
       return;
     }
-
-    if(this.medDispatchForm.value.depotCode == "" || this.medDispatchForm.value.depotCode == null )
-    {
-      this.toastr.error('Select a Depot');
-      return;
-    }
     if(this.medDispatchForm.value.donationId == "" || this.medDispatchForm.value.donationId == null )
     {
       this.toastr.error('Select a Donation Type');
       return;
     }
-  
-    debugger;
-    if(this.userRole == "SIC" || this.userRole == "DIC")
-    {
-      var dptCode = this.emp.depotCode.padStart(4,"0")
-    }
-    else
-    {
-      var dptCode = this.medDispatchForm.value.depotCode.padStart(4,"0");
-    }
 
     const rptMedDispSearchDto: IRptMedDispSearchDto = {
       fromDate: this.medDispatchForm.value.fromDate,
       toDate: this.medDispatchForm.value.toDate,
-      depotCode: dptCode,
+      depotCode: "",
       donationId: this.medDispatchForm.value.donationId,
       disStatus: this.medDispatchForm.value.disStatus,
     };
 
     this.SpinnerService.show();
     //var empId = parseInt(this.empId);
-    this.pendingService.getRptMedDis(rptMedDispSearchDto).subscribe(response => {
+    this.pendingService.getRptChqDis(rptMedDispSearchDto).subscribe(response => {
       this.SpinnerService.hide();
       this.rptDepotLetter = response;
       if(this.rptDepotLetter.length==0)
@@ -122,34 +105,18 @@ export class RptChqDispatchComponent implements OnInit {
     });
   }
 
- 
   ngOnInit() {
     this.resetPage();
     this.getEmployeeId();
     this.createMedDispatchForm();
     this.getDonation();
-
   }
 
   getEmployeeId() {
     this.empId = this.accountService.getEmployeeId();
     this.userRole = this.accountService.getUserRole();
     this.pendingService.getEmpDepot(parseInt(this.empId)).subscribe(response => {
-      this.emp = response;
-      debugger;
-      if (this.userRole == 'DIC' || this.userRole == 'SIC') {
-        //this.medDispatchForm.get('depotCode').disable();
-        this.enableForm = true;
-        this.medDispatchForm.patchValue({
-          depotCode: this.emp.depotCode,
-        });
-      }
-      else
-      {
-        //this.medDispatchForm.get('depotCode').enable();
-        this.enableForm = false;
-      }
-      debugger;
+      this.emp = response;   
     }, error => {
       console.log(error);
     });
@@ -163,7 +130,6 @@ export class RptChqDispatchComponent implements OnInit {
     this.medDispatchForm.setValue({
       fromDate: "",
       toDate: "",
-      depotCode: "",
       donationId: "",
       disStatus: "",
     });
@@ -172,7 +138,6 @@ export class RptChqDispatchComponent implements OnInit {
   resetPage() {
   }
 }
-
 
 interface IRptMedDispSearchDto {
   fromDate: Date | undefined | null;

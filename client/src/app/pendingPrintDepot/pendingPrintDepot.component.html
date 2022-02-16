@@ -29,7 +29,8 @@
                                 <div class="form-group">
                                     <table class="table  table-bordered" id="tableToExcel">
                                         <tr class="HeaderRow">
-                                            <td>Reference No</td>
+                                            <td>Payment Ref No</td>
+                                            <td style="width: 0;display:none; ">Reference No</td>
                                             <td>Donation Type</td>
                                             <td>Proposed For</td>
                                             <td>Donation To</td>
@@ -43,7 +44,8 @@
                                             <td>Details</td>
                                         </tr>
                                         <tr *ngFor="let a of rptDepotLetter | filter: searchText ">
-                                            <td>
+                                            <td>{{a.payRefNo}}</td>
+                                            <td style="width: 0;display:none; ">
                                                 {{a.referenceNo}}
                                             </td>
                                             <td>

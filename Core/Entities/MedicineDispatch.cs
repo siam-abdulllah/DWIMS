@@ -8,6 +8,8 @@ namespace Core.Entities
         public int InvestmentInitId { get; set; }
         [ForeignKey("InvestmentInitId")]
         public InvestmentInit InvestmentInit { get; set; }
+        public string PayRefNo { get; set; }
+        public string SAPRefNo { get; set; }
         public string IssueReference { get; set; }
         public DateTimeOffset IssueDate { get; set; }
         public int? EmployeeId { get; set; }

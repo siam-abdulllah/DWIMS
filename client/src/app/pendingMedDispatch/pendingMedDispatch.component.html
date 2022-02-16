@@ -33,7 +33,8 @@
                         <table class="table  table-bordered">
                             <tr class="HeaderRow ">
                                 <td style="width: 0;display:none; ">Id</td>
-                                <td>Reference No</td>
+                                <td>Payment Ref No</td>
+                                <td style="width: 0;display:none; ">Reference No</td>
                                 <td>Donation Type</td>
                                 <td style="width: 0;display:none; ">Proposed For</td>
                                 <td>Doctor</td>
@@ -46,7 +47,8 @@
                             </tr>
                             <tr *ngFor="let a of rptDepotLetter | filter: searchText ">
                                 <td style="display:none; ">{{a.id}}</td>
-                                <td>
+                                <td>{{a.payRefNo}}</td>
+                                <td style="width: 0;display:none; ">
                                     {{a.referenceNo}}
                                 </td>
                                 <td>
@@ -112,7 +114,8 @@
                             <tr class="HeaderRow ">
                                 <td>Select</td>
                                 <td style="width: 0;display:none; ">Id</td>
-                                <td>Reference No</td>
+                                <td>Payment Ref No</td>
+                                <td style="width: 0;display:none; ">Reference No</td>
                                 <td>Donation Type</td>
                                 <td style="width: 0;display:none; ">Proposed For</td>
                                 <td>Doctor</td>
@@ -129,7 +132,8 @@
                                     <button class="btn btn-sm btn-embossed btn-success " type="button " (click)="ViewData(a) " style="width: 70px; "><i class="fa fa-eye "></i>Select</button>
                                 </td>
                                 <td style="display:none; ">{{a.id}}</td>
-                                <td>
+                                <td>{{a.payRefNo}}</td>
+                                <td style="width: 0;display:none; ">
                                     {{a.referenceNo}}
                                 </td>
                                 <td>

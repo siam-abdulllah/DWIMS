@@ -33,6 +33,7 @@ import { MenuHeadComponent } from '../menuHead/menuHead.component';
 import { SubMenuComponent } from '../subMenu/subMenu.component';
 import { MenuConfigComponent } from '../menuConfig/menuConfig.component';
 import { ChangePasswordComponent } from '../changePassword/changePassword.component';
+import { RptChqDispatchComponent } from '../rptChqDispatch/rptChqDispatch.component';
 
 const portalRoutes: Routes = [
   {
@@ -63,6 +64,7 @@ const portalRoutes: Routes = [
         {path: 'medDispatch', component: MedDispatchComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'pendingMedDispatch', component: PendingMedDispatchComponent},
         {path: 'rptMedDispatch', component: RptMedDispatchComponent},
+        {path: 'rptChqDispatch', component: RptChqDispatchComponent},
         {path: 'changeDepot', component: ChangeDepotComponent},
         {path: 'paramInvestmentSummary/:param', component: ParamInvestSummaryComponent},
         //{path: 'rptInvestmentDetail', component: RptInvestmentDetailComponent},

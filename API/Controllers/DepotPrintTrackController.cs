@@ -35,13 +35,9 @@ namespace API.Controllers
             string dptCode = "";
             string dptName = "";
 
-            var check = (from t in _db.DepotPrintTrack
-                         where t.InvestmentInitId == trackDto.InvestmentInitId
-                         select t).FirstOrDefault();
-
             var depoCode = _db.InvestmentRecDepot.Where(x => x.InvestmentInitId == trackDto.InvestmentInitId).FirstOrDefault();
 
-            if(depoCode != null)
+            if (depoCode != null)
             {
                 dptCode = depoCode.DepotCode;
                 dptName = depoCode.DepotName;
@@ -52,115 +48,46 @@ namespace API.Controllers
                 dptName = "";
             }
 
-            if (check != null)
+            var bcds = new DepotPrintTrack
             {
-                var bcds = new DepotPrintTrack
-                {
-                    Id = check.Id,
-                    InvestmentInitId = trackDto.InvestmentInitId,
-                    PaymentRefNo = trackDto.PaymentRefNo,
-                    PaymentDate = trackDto.PaymentDate,
-                    DepotId = dptCode,
-                    DepotName =  dptName,
-                    Remarks = trackDto.Remarks,
-                    SetOn = DateTimeOffset.Now,
-                    EmployeeId = trackDto.EmployeeId,
-                    LastPrintTime = DateTimeOffset.Now,
-                    BankName = trackDto.BankName,
-                    ChequeNo = trackDto.ChequeNo,
-                    PrintCount = check.PrintCount + 1,
-                };
+                InvestmentInitId = trackDto.InvestmentInitId,
+                PaymentRefNo = trackDto.PaymentRefNo,
+                SAPRefNo = trackDto.PaymentRefNo,
+                PaymentDate = trackDto.PaymentDate,
+                PayRefNo = trackDto.PayRefNo,
+                DepotId = dptCode,
+                DepotName = dptName,
+                Remarks = trackDto.Remarks,
+                SetOn = DateTimeOffset.Now,
+                EmployeeId = trackDto.EmployeeId,
+                LastPrintTime = DateTimeOffset.Now,
+                BankName = trackDto.BankName,
+                ChequeNo = trackDto.ChequeNo,
+                PrintCount = 1,
+            };
 
-                _trackRepo.Update(bcds);
-                _trackRepo.Savechange();
+            _trackRepo.Add(bcds);
+            _trackRepo.Savechange();
 
-                return new DepotPrintTrackDto
-                {
-                    Id = bcds.Id,
-                    InvestmentInitId = trackDto.InvestmentInitId,
-                    PaymentRefNo = trackDto.PaymentRefNo,
-                    PaymentDate = trackDto.PaymentDate,
-                    DepotId = trackDto.DepotId,
-                    DepotName = trackDto.DepotName,
-                    Remarks = trackDto.Remarks,
-                    EmployeeId = trackDto.EmployeeId,
-                    LastPrintTime = DateTimeOffset.Now,
-                    BankName = trackDto.BankName,
-                    ChequeNo = trackDto.ChequeNo,
-                    PrintCount = 1,
-                };
-            }
-            else
+            return new DepotPrintTrackDto
             {
-                var bcds = new DepotPrintTrack
-                {
-                    InvestmentInitId = trackDto.InvestmentInitId,
-                    PaymentRefNo = trackDto.PaymentRefNo,
-                    PaymentDate = trackDto.PaymentDate,
-                    DepotId = dptCode,
-                    DepotName =  dptName,
-                    Remarks = trackDto.Remarks,
-                    SetOn = DateTimeOffset.Now,
-                    EmployeeId = trackDto.EmployeeId,
-                    LastPrintTime = DateTimeOffset.Now,
-                    BankName = trackDto.BankName,
-                    ChequeNo = trackDto.ChequeNo,
-                    PrintCount = 1,
-                };
+                Id = bcds.Id,
+                InvestmentInitId = trackDto.InvestmentInitId,
+                PaymentRefNo = trackDto.PaymentRefNo,
+                SAPRefNo = trackDto.PaymentRefNo,
+                PaymentDate = trackDto.PaymentDate,
+                PayRefNo = trackDto.PayRefNo,
+                DepotId = trackDto.DepotId,
+                DepotName = trackDto.DepotName,
+                Remarks = trackDto.Remarks,
+                EmployeeId = trackDto.EmployeeId,
+                LastPrintTime = DateTimeOffset.Now,
+                BankName = trackDto.BankName,
+                ChequeNo = trackDto.ChequeNo,
+                PrintCount = 1,
+            };
 
-                _trackRepo.Add(bcds);
-                _trackRepo.Savechange();
-
-                return new DepotPrintTrackDto
-                {
-                    Id = bcds.Id,
-                    InvestmentInitId = trackDto.InvestmentInitId,
-                    PaymentRefNo = trackDto.PaymentRefNo,
-                    PaymentDate = trackDto.PaymentDate,
-                    DepotId = trackDto.DepotId,
-                    DepotName = trackDto.DepotName,
-                    Remarks = trackDto.Remarks,
-                    EmployeeId = trackDto.EmployeeId,
-                    LastPrintTime = DateTimeOffset.Now,
-                    BankName = trackDto.BankName,
-                    ChequeNo = trackDto.ChequeNo,
-                    PrintCount = 1,
-                };
-            }
         }
-        
-  // [HttpPost("UpdateCount")]
-        // public ActionResult<DepotPrintTrackDto> UpdateDepoTracker(DepotPrintTrack trackDto, int count)
-        // {
-        //     var bcds = new DepotPrintTrack
-        //     {
-        //         Id = trackDto.Id,
-        //         InvestmentInitId = trackDto.InvestmentInitId,
-        //         DepotId = trackDto.DepotId,
-        //         DepotName = trackDto.DepotName,
-        //         Remarks = trackDto.Remarks,
-        //         SetOn = DateTimeOffset.Now,
-        //         EmployeeId = trackDto.EmployeeId,
-        //         LastPrintTime = DateTimeOffset.Now,
-        //         PrintCount = count,
-        //     };
 
-        //     _trackRepo.Add(bcds);
-        //     _trackRepo.Savechange();
-
-        //     return new DepotPrintTrackDto
-        //     {
-        //         Id = bcds.Id,
-        //         InvestmentInitId = trackDto.InvestmentInitId,
-        //         DepotId = trackDto.DepotId,
-        //         DepotName = trackDto.DepotName,
-        //         Remarks = trackDto.Remarks,
-        //         EmployeeId = trackDto.EmployeeId,
-        //         LastPrintTime = DateTimeOffset.Now,
-        //         PrintCount = 1,
-        //     };
-        // }
-
-      
     }
 }

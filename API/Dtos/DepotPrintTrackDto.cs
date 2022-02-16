@@ -8,6 +8,8 @@ namespace API.Dtos
         public int Id { get; set; }
         public int? InvestmentInitId { get; set; }
         public InvestmentInit InvestmentInit { get; set; }
+        public string PayRefNo { get; set; }
+        public string SAPRefNo { get; set; }
         public string DepotId { get; set; }
         public string DepotName { get; set; }
         public string Remarks { get; set; }

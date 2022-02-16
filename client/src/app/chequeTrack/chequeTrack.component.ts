@@ -45,6 +45,7 @@ export class ChequeTrackComponent implements OnInit {
     this.billTrackForm = new FormGroup({
       referenceNo: new FormControl('', [Validators.required]),
       paymentRefNo: new FormControl('', [Validators.required]),
+      payRefNo: new FormControl('', [Validators.required]),
       paymentDate: new FormControl('', [Validators.required]),
       employeeName: new FormControl(''),
       doctorName: new FormControl(''),
@@ -104,6 +105,8 @@ export class ChequeTrackComponent implements OnInit {
 
     this.pendingService.depotPrintFormData.investmentInitId = this.billTrackForm.value.investmentInitId;
     this.pendingService.depotPrintFormData.paymentRefNo = this.billTrackForm.value.paymentRefNo;
+    this.pendingService.depotPrintFormData.payRefNo = this.billTrackForm.value.payRefNo;
+    this.pendingService.depotPrintFormData.sapRefNo = this.billTrackForm.value.paymentRefNo;
     this.pendingService.depotPrintFormData.paymentDate = this.billTrackForm.value.paymentDate;
     this.pendingService.depotPrintFormData.depotName = "";
     this.pendingService.depotPrintFormData.depotId = "";
@@ -126,15 +129,16 @@ export class ChequeTrackComponent implements OnInit {
 
   ViewData(selectedRecord: IrptDepotLetterSearch)
   {
-
+    debugger;
     this.billTrackForm.patchValue({
+      payRefNo: selectedRecord.payRefNo,
       referenceNo: selectedRecord.referenceNo,
       employeeName: selectedRecord.employeeName,
       doctorName:  selectedRecord.doctorName,
       donationTypeName: selectedRecord.donationTypeName,
       marketName:  selectedRecord.marketName,
       proposedAmount:  selectedRecord.proposedAmount,
-      investmentInitId:  selectedRecord.id,
+      investmentInitId:  selectedRecord.investmentInitId,
       // formControlName2: myValue2 (can be omitted)
     });
     this.pendingListModalRef.hide();
@@ -153,6 +157,7 @@ openPendingListModal(template: TemplateRef<any>) {
   this.billTrackForm.setValue({
       referenceNo: "",
       paymentRefNo: "",
+      payRefNo: "",
       paymentDate: "",
       employeeName: "",
       doctorName: "",

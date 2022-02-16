@@ -48,6 +48,7 @@ import { ChangePasswordComponent } from '../changePassword/changePassword.compon
 import { BillTrackComponent } from '../billTrack/billTrack.component';
 import { RptMedDispatchComponent } from '../rptMedDispatch/rptMedDispatch.component';
 import { ChangeDepotComponent } from '../changeDepot/changeDepot.component';
+import { RptChqDispatchComponent } from '../rptChqDispatch/rptChqDispatch.component';
 
 @NgModule({
   imports: [
@@ -95,6 +96,7 @@ import { ChangeDepotComponent } from '../changeDepot/changeDepot.component';
     PendingChqPrintDepotComponent,
     PendingMedDispatchComponent,
     RptMedDispatchComponent,
+    RptChqDispatchComponent,
     BillTrackComponent,
     SbuWiseBudgetComponent,
     DocHonApprComponent,

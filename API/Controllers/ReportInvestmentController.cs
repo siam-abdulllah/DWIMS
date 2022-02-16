@@ -526,16 +526,17 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Route("rptInvestDepo/{investmentInitId}")]
-        public async Task<IReadOnlyList<RptDepotLetter>> ReportDepotLetter(int investmentInitId)
+        [Route("rptInvestDepo/{referenceNo}")]
+        public async Task<IReadOnlyList<RptDepotLetter>> ReportDepotLetter(string referenceNo)
         {
             try
             {
                  string qry = " SELECT * FROM  ( " + 
-                            " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Doctor' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, a.ReferenceNo, d.DonationTypeName, " + 
+                            " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Doctor' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, dtl.PaymentRefNo ReferenceNo, d.DonationTypeName, " + 
                             " doc.id as DocId, doc.DoctorName, doc.[Address], inDetail.ProposedAmount, inDetail.ChequeTitle, aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy', depo.DepotName " +
                             " from InvestmentInit a  " + 
                             " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " + 
+                            " inner join InvestmentDetailTracker dtl on dtl.InvestmentInitId = a.Id " +
                             " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId   " + 
                             " left join Employee e on a.EmployeeId = e.Id  left join Donation d on a.DonationId = d.Id  " + 
                             " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
@@ -545,10 +546,11 @@ namespace API.Controllers
                             " AND inDetail.PaymentMethod = 'Cash'  " + 
                             " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                             " UNION " + 
-                            " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Doctor' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, a.ReferenceNo, d.DonationTypeName, " + 
+                            " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Doctor' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, dtl.PaymentRefNo ReferenceNo, d.DonationTypeName, " + 
                             " doc.id as DocId, doc.DoctorName, doc.[Address], inDetail.ProposedAmount,  inDetail.ChequeTitle,  aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy',depo.DepotName " +
                             " from InvestmentInit a " + 
                             " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId " + 
+                            " inner join InvestmentDetailTracker dtl on dtl.InvestmentInitId = a.Id " +
                             " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId   " +
                             " left join Employee e on a.EmployeeId = e.Id  left join Donation d on a.DonationId = d.Id  " +
                             " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
@@ -560,10 +562,11 @@ namespace API.Controllers
                             " AND inDetail.PaymentMethod = 'Cash' " +
                             " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                             " UNION " + 
-                            " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Institution' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, a.ReferenceNo, d.DonationTypeName,  " +
+                            " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Institution' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, dtl.PaymentRefNo ReferenceNo, d.DonationTypeName,  " +
                             " doc.id as DocId, doc.InstitutionName, doc.[Address], inDetail.ProposedAmount,  inDetail.ChequeTitle,  aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy',depo.DepotName  " +
                             " from InvestmentInit a  " +
                             " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " +
+                            " inner join InvestmentDetailTracker dtl on dtl.InvestmentInitId = a.Id " +
                             " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId  " +
                             " left join Employee e on a.EmployeeId = e.Id  " +
                             " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
@@ -576,10 +579,11 @@ namespace API.Controllers
                             " AND inDetail.PaymentMethod = 'Cash' " +
                             " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                             " UNION " + 
-                            " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Bcds' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, a.ReferenceNo, d.DonationTypeName,  " +
+                            " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Bcds' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, dtl.PaymentRefNo ReferenceNo, d.DonationTypeName,  " +
                             " doc.id as DocId, doc.BcdsName, doc.BcdsAddress, inDetail.ProposedAmount,  inDetail.ChequeTitle,  aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy', depo.DepotName  " +
                             " from InvestmentInit a  " +
                             " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " +
+                            " inner join InvestmentDetailTracker dtl on dtl.InvestmentInitId = a.Id " +
                             " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId  " +
                             " left join Employee e on a.EmployeeId = e.Id left join Donation d on a.DonationId = d.Id  " +
                             " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
@@ -591,10 +595,11 @@ namespace API.Controllers
                             " AND inDetail.PaymentMethod = 'Cash' " +
                             " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                             " UNION " + 
-                            " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Society' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, a.ReferenceNo, d.DonationTypeName,  " +
+                            " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Society' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, dtl.PaymentRefNo ReferenceNo, d.DonationTypeName,  " +
                             " doc.id as DocId, doc.SocietyName, doc.SocietyAddress, inDetail.ProposedAmount,  inDetail.ChequeTitle,  aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy', depo.DepotName     " +
                             " from InvestmentInit a  " +
                             " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId " +
+                            " inner join InvestmentDetailTracker dtl on dtl.InvestmentInitId = a.Id " +
                             " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId  " +
                             " left join Employee e on a.EmployeeId = e.Id left join Donation d on a.DonationId = d.Id  " +
                             " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
@@ -605,7 +610,7 @@ namespace API.Controllers
                             " AND inDetail.PaymentMethod = 'Cash'  " +
                             " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                             " AND ir.RecStatus = 'Approved' ) x  " +                           
-                            "  WHERE X.Id = " + investmentInitId +" ";
+                            "  WHERE X.ReferenceNo = '" + referenceNo + "' ";
 
                 var results = _db.RptDepotLetter.FromSqlRaw(qry).ToList();
 
@@ -618,30 +623,32 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Route("rptChqPrint/{investmentInitId}")]
-        public async Task<IReadOnlyList<RptDepotLetter>> ReportChequeLetter(int investmentInitId)
+        [Route("rptChqPrint/{referenceNo}")]
+        public async Task<IReadOnlyList<RptDepotLetter>> ReportChequeLetter(string referenceNo)
         {
             try
             {
                 string qry = " SELECT * FROM  ( " +
-                           " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Doctor' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, a.ReferenceNo, d.DonationTypeName, " +
+                           " Select dtl.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Doctor' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, dtl.PaymentRefNo ReferenceNo, d.DonationTypeName, " +
                            " doc.id as DocId, doc.DoctorName, doc.[Address], inDetail.ProposedAmount, inDetail.ChequeTitle,  aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy', depo.EmployeeName +', '+ depo.DesignationName 'DepotName' " +
                            " from InvestmentInit a  " +
                            " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " +
+                           " inner join InvestmentDetailTracker dtl on dtl.InvestmentInitId = a.Id " +
                            " left join Employee depo on depo.Id = ir.EmployeeId  " +
                            " left join Employee e on a.EmployeeId = e.Id  left join Donation d on a.DonationId = d.Id  " +
                            " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
                            " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId " +
                            " inner join InvestmentDoctor inDc on a.Id = inDc.InvestmentInitId  left join DoctorInfo doc on inDc.DoctorId = doc.Id " +
                            " where a.DonationTo = 'Doctor' AND  ir.RecStatus = 'Approved' " +
-                           " AND  ir.EmployeeId = inDetail.EmployeeId " +
+                           " AND  ir.EmployeeId = inDetail.EmployeeId AND dtl.PaymentRefNo is NOT NULL " +
                            " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                            //" AND inDetail.PaymentMethod = 'Cash'  " + 
                            " UNION " +
-                           " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Doctor' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, a.ReferenceNo, d.DonationTypeName, " +
+                           " Select dtl.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Doctor' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, dtl.PaymentRefNo ReferenceNo, d.DonationTypeName, " +
                            " doc.id as DocId, doc.DoctorName, doc.[Address], inDetail.ProposedAmount,  inDetail.ChequeTitle,  aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy', depo.EmployeeName +', '+ depo.DesignationName 'DepotName' " +
                            " from InvestmentInit a " +
                            " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId " +
+                           " inner join InvestmentDetailTracker dtl on dtl.InvestmentInitId = a.Id " +
                            " left join Employee depo on depo.Id = ir.EmployeeId  " +
                            " left join Employee e on a.EmployeeId = e.Id  left join Donation d on a.DonationId = d.Id  " +
                            " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
@@ -650,14 +657,15 @@ namespace API.Controllers
                            " left join DoctorInfo doc on IC.DoctorId = doc.Id   " +
                            " where a.DonationTo = 'Campaign' AND  " +
                            " ir.RecStatus = 'Approved' " +
-                           " AND  ir.EmployeeId = inDetail.EmployeeId " +
+                           " AND  ir.EmployeeId = inDetail.EmployeeId AND dtl.PaymentRefNo is NOT NULL " +
                            " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                            //" AND inDetail.PaymentMethod = 'Cash' " +
                            " UNION " +
-                           " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Institution' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, a.ReferenceNo, d.DonationTypeName,  " +
+                           " Select dtl.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Institution' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, dtl.PaymentRefNo ReferenceNo, d.DonationTypeName,  " +
                            " doc.id as DocId, doc.InstitutionName, doc.[Address], inDetail.ProposedAmount,  inDetail.ChequeTitle,  aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy', depo.EmployeeName +', '+ depo.DesignationName 'DepotName'  " +
                            " from InvestmentInit a  " +
                            " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " +
+                           " inner join InvestmentDetailTracker dtl on dtl.InvestmentInitId = a.Id " +
                            " left join Employee depo on depo.Id = ir.EmployeeId  " +
                            " left join Employee e on a.EmployeeId = e.Id  " +
                            " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
@@ -667,14 +675,15 @@ namespace API.Controllers
                            " left join InstitutionInfo doc on IC.InstitutionId = doc.Id  " +
                            " where a.DonationTo = 'Institution' " +
                            " AND ir.RecStatus = 'Approved'  " +
-                           " AND  ir.EmployeeId = inDetail.EmployeeId " +
+                           " AND  ir.EmployeeId = inDetail.EmployeeId AND dtl.PaymentRefNo is NOT NULL " +
                            " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                            //" AND inDetail.PaymentMethod = 'Cash' " +
                            " UNION " +
-                           " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Bcds' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, a.ReferenceNo, d.DonationTypeName,  " +
+                           " Select dtl.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Bcds' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, dtl.PaymentRefNo ReferenceNo, d.DonationTypeName,  " +
                            " doc.id as DocId, doc.BcdsName, doc.BcdsAddress, inDetail.ProposedAmount,  inDetail.ChequeTitle,  aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy', depo.EmployeeName +', '+ depo.DesignationName 'DepotName'  " +
                            " from InvestmentInit a  " +
                            " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " +
+                           " inner join InvestmentDetailTracker dtl on dtl.InvestmentInitId = a.Id " +
                            " left join Employee depo on depo.Id = ir.EmployeeId " +
                            " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
                            " left join Employee e on a.EmployeeId = e.Id left join Donation d on a.DonationId = d.Id  " +
@@ -683,14 +692,15 @@ namespace API.Controllers
                            " left join Bcds doc on IC.BcdsId = doc.Id  " +
                            " where a.DonationTo = 'Bcds'  " +
                            " AND ir.RecStatus = 'Approved'  " +
-                           " AND  ir.EmployeeId = inDetail.EmployeeId " +
+                           " AND  ir.EmployeeId = inDetail.EmployeeId AND dtl.PaymentRefNo is NOT NULL " +
                            " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                            //" AND inDetail.PaymentMethod = 'Cash' " +
                            " UNION " +
-                           " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Society' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, a.ReferenceNo, d.DonationTypeName,  " +
+                           " Select dtl.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Society' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, dtl.PaymentRefNo ReferenceNo, d.DonationTypeName,  " +
                            " doc.id as DocId, doc.SocietyName, doc.SocietyAddress, inDetail.ProposedAmount,  inDetail.ChequeTitle,  aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy', depo.EmployeeName +', '+ depo.DesignationName 'DepotName' " +
                            " from InvestmentInit a  " +
                            " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId " +
+                           " inner join InvestmentDetailTracker dtl on dtl.InvestmentInitId = a.Id " +
                            " left join Employee depo on depo.Id = ir.EmployeeId " +
                            " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
                            " left join Employee e on a.EmployeeId = e.Id left join Donation d on a.DonationId = d.Id  " +
@@ -698,11 +708,11 @@ namespace API.Controllers
                            " inner join InvestmentSociety IC on a.Id = IC.InvestmentInitId  " +
                            " left join Society doc on IC.SocietyId = doc.Id  " +
                            " where a.DonationTo = 'Society'  " +
-                           " AND  ir.EmployeeId = inDetail.EmployeeId " +
+                           " AND  ir.EmployeeId = inDetail.EmployeeId AND dtl.PaymentRefNo is NOT NULL " +
                            " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                            " AND ir.RecStatus = 'Approved' ) x  " +
                            // " AND inDetail.PaymentMethod = 'Cash'  " +
-                           "  WHERE X.Id = " + investmentInitId + " ";
+                           "  WHERE X.ReferenceNo = '" + referenceNo + "' ";
 
                 var results = _db.RptDepotLetter.FromSqlRaw(qry).ToList();
 

@@ -113,7 +113,8 @@ export class PendingChqPrintDepotComponent implements OnInit {
 
   ViewReport(selectedRecord: IrptDepotLetterSearch)
   {
-    this.pendingService.rptChequePrint(selectedRecord.id).subscribe(resp => {
+    debugger;
+    this.pendingService.rptChequePrint(selectedRecord.payRefNo).subscribe(resp => {
       // this.reportInvestmentService.getInsSocietyBCDSWiseInvestment().subscribe(resp => {  
       this.depotLetter = resp as IrptDepotLetter[];
  
@@ -123,31 +124,13 @@ export class PendingChqPrintDepotComponent implements OnInit {
       else
       {
         //this.insertTracker(this.depotLetter);
+        debugger;
         this.getReport(this.depotLetter);
       }   
     }, error => {
       console.log(error);
     });
   }
-
-
-  //insertTracker(r: IrptDepotLetter[]) {
-  //   this.pendingService.depotPrintFormData.investmentInitId = r[0].id;
-  //   this.pendingService.depotPrintFormData.depotName = r[0].depotName;
-  //   this.pendingService.depotPrintFormData.depotId = "";
-  //   this.pendingService.depotPrintFormData.employeeId = r[0].empId;
-  //   this.pendingService.depotPrintFormData.remarks = "";
-  //   this.pendingService.depotPrintFormData.printCount = 1;
-
-  //   this.pendingService.insertTrackReport(this.pendingService.depotPrintFormData).subscribe(
-  //     res => {
-  //       debugger;
-  //       this.toastr.success('Data Saved successfully', 'Report Tracker')
-  //       this.getReport(this.depotLetter);
-  //     },
-  //     err => { console.log(err); }
-  //   );
-  // }
 
   getReport(r: IrptDepotLetter[]) {
     const totalPagesExp = "{total_pages_count_string}";

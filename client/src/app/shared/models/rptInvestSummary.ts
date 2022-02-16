@@ -37,23 +37,27 @@ export class rptInvestSummary implements IrptInvestSummary {
 export interface IrptDepotLetterSearch {
     id: number;
     referenceNo: string;
+    payRefNo: string;
     donationTypeName: string;
     proposeFor: string;
     doctorName: string;
     proposedAmount: number;
     employeeName: string;
     marketName: string;
+    investmentInitId: number;
 }
 
 export class rptDepotLetterSearch implements IrptDepotLetterSearch {
     id: number;
     referenceNo: string;
+    payRefNo: string;
     donationTypeName: string;
     proposeFor: string;
     doctorName: string;
     proposedAmount: number;
     employeeName: string;
     marketName: string;
+    investmentInitId: number;
 }
 
 export interface IDepotLetterSearchPagination {

@@ -41,8 +41,8 @@ namespace API.Controllers
                 string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode= '" + empId + "' ";
                 var empData = _db.Employee.FromSqlRaw(empQry).ToList();
 
-                string qry = " Select  DISTINCT a.Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn,  SYSDATETIMEOFFSET() AS ModifiedOn,  a.ReferenceNo, a.ProposeFor,  " +
-                             " a.DonationTo, depo.DepotCode, depo.DepotName, d.DonationTypeName,   inDetail.ProposedAmount, e.EmployeeName, e.MarketName,  " +
+                string qry = " Select  DISTINCT a.Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn,  SYSDATETIMEOFFSET() AS ModifiedOn,  a.ReferenceNo, a.ProposeFor,  dtl.PaymentRefNo PayRefNo, " +
+                             " a.DonationTo, depo.DepotCode, depo.DepotName, d.DonationTypeName,   dtl.ApprovedAmount   ProposedAmount, e.EmployeeName, e.MarketName,  " +
                              " CASE " +
                              " WHEN a.donationto = 'Doctor' THEN(SELECT doctorname  FROM   investmentdoctor x  INNER JOIN doctorinfo y ON x.doctorid = y.id WHERE  x.investmentinitid = a.id) " +
                              " WHEN a.donationto = 'Institution' THEN(SELECT institutionname FROM  investmentinstitution x INNER JOIN institutioninfo y ON x.institutionid = y.id WHERE x.investmentinitid = a.id) " +
@@ -51,7 +51,8 @@ namespace API.Controllers
                              " WHEN a.donationto = 'Society' THEN(SELECT societyname FROM   investmentsociety x INNER JOIN society y ON x.societyid = y.id WHERE  x.investmentinitid = a.id) END DoctorName,  " +
                              " ir.SetOn ApprovedDate, aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy' " +
                              " from InvestmentInit a " +
-                             " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId " +
+                             " inner join InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " +
+                             " inner join InvestmentDetailTracker dtl on dtl.InvestmentInitId = a.Id " +
                              " left join InvestmentRecDepot depo on a.id = depo.InvestmentInitId " +
                              " left  join Employee e on a.EmployeeId = e.Id " +
                              " left  join Donation d on a.DonationId = d.Id " +
@@ -59,7 +60,7 @@ namespace API.Controllers
                              " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId " +
                              " where a.DataStatus = 1 AND ir.RecStatus = 'Approved' AND inDetail.PaymentMethod = 'Cash' " +
                              " AND ir.EmployeeId = inDetail.EmployeeId " +
-                             " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
+                             //" AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                              " AND ir.InvestmentInitId not in (SELECT InvestmentInitId FROM DepotPrintTrack) " +
                              " AND ir.InvestmentInitId not in (SELECT InvestmentInitId FROM MedicineDispatch) ";
 

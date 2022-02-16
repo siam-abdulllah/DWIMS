@@ -53,6 +53,7 @@ export class MedDispatchComponent implements OnInit {
       referenceNo: new FormControl('', [Validators.required]),
       issueReference: new FormControl('', [Validators.required]),
       issueDate: new FormControl('', [Validators.required]),
+      payRefNo: new FormControl('', [Validators.required]),
       employeeName: new FormControl(''),
       doctorName: new FormControl(''),
       marketName: new FormControl(''),
@@ -155,6 +156,8 @@ export class MedDispatchComponent implements OnInit {
     this.pendingService.medDispatchFormData.investmentInitId = this.medDispatchForm.value.investmentInitId;
     this.pendingService.medDispatchFormData.issueReference = this.medDispatchForm.value.issueReference;
     this.pendingService.medDispatchFormData.issueDate = this.medDispatchForm.value.issueDate;
+    this.pendingService.medDispatchFormData.sapRefNo = this.medDispatchForm.value.issueReference;
+    this.pendingService.medDispatchFormData.payRefNo = this.medDispatchForm.value.payRefNo;
     this.pendingService.medDispatchFormData.depotName = "";
     this.pendingService.medDispatchFormData.depotCode = "";
     this.pendingService.medDispatchFormData.employeeId = parseInt(this.empId);
@@ -215,13 +218,14 @@ export class MedDispatchComponent implements OnInit {
   ViewData(selectedRecord: IMedDispSearch)
   {
     this.medDispatchForm.patchValue({
+      payRefNo: selectedRecord.payRefNo,
       referenceNo: selectedRecord.referenceNo,
       employeeName: selectedRecord.employeeName,
       doctorName:  selectedRecord.doctorName,
       donationTypeName: selectedRecord.donationTypeName,
       marketName:  selectedRecord.marketName,
       proposeAmt:  selectedRecord.proposedAmount,
-      investmentInitId:  selectedRecord.id,
+      investmentInitId:  selectedRecord.investmentInitId,
       approvedBy:  selectedRecord.approvedBy,
       approvedDate:  this.formatDate(selectedRecord.approvedDate),
       depotName: selectedRecord.depotName,

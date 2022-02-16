@@ -63,6 +63,10 @@ export class MedDispatchService {
     return this.http.post(this.baseUrl + 'medDispatch/medDispReport/', model);
   }
 
+  getRptChqDis(model: any){    
+    return this.http.post(this.baseUrl + 'depotPrinting/getRptChqDis/', model);
+  }
+
   // removeInvestmentMedicineProd() {
   //   return this.http.post(this.baseUrl + 'medDispatch/removeInvestmentMedicineProd', this.investmentMedicineProdFormData,
   //     { responseType: 'text' });

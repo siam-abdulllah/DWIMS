@@ -104,7 +104,8 @@ export class PendingMedDispatchComponent implements OnInit {
 
   ViewReport(selectedRecord: IMedDispSearch)
   {
-    this.pendingService.getRptDepotLetter(selectedRecord.id).subscribe(resp => {
+    debugger;
+    this.pendingService.getRptDepotLetter(selectedRecord.payRefNo).subscribe(resp => {
       // this.reportInvestmentService.getInsSocietyBCDSWiseInvestment().subscribe(resp => {  
       this.depotLetter = resp as IrptDepotLetter[];
       if (this.rptDepotLetter.length <= 0) {

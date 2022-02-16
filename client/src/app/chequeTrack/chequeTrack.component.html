@@ -30,11 +30,12 @@
                             <div class="form-group ">
                                 <div class="row ">
                                     <div class="col-md-2 ">
-                                        <label>Bill No</label>
+                                        <label>Payment Ref</label>
                                         <span style="color:red; ">*</span>
                                     </div>
                                     <div class="col-md-4 ">
-                                        <input class="form-control clickable " id="referenceNo" placeholder="Please Double Click" (dblclick)="getPendingList()" formControlName="referenceNo" readonly required>
+                                        <input class="form-control" id="referenceNo" style="display: none;" formControlName="referenceNo" readonly>
+                                        <input class="form-control clickable" id="payRefNo" placeholder="Please Double Click" (dblclick)="getPendingList()" formControlName="payRefNo" readonly required>
                                     </div>
                                     <div class="col-md-2 ">
                                         <label>Initiated By</label>
@@ -82,7 +83,7 @@
                             <div class="form-group ">
                                 <div class="row ">
                                     <div class="col-md-2 ">
-                                        <label>Payment Ref. No</label>
+                                        <label>SAP Ref. No</label>
                                         <span style="color:red; ">*</span>
                                     </div>
                                     <div class="col-md-4 ">
@@ -130,7 +131,7 @@
 
 <ng-template #pendingListModal>
     <div class="modal-header " style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));color: black; ">
-        <h4 class="modal-title pull-left ">Bill Payment</h4>
+        <h4 class="modal-title pull-left ">Cheque Payment</h4>
         <button type="button " class="close pull-right " aria-label="Close " (click)="pendingListModalRef.hide() ">
         <span aria-hidden="true ">&times;</span>
       </button>
@@ -147,7 +148,8 @@
                             <tr class="HeaderRow ">
                                 <td>Select</td>
                                 <td style="width: 0;display:none; ">Id</td>
-                                <td>Reference No</td>
+                                <td>Payment Ref No</td>
+                                <td style="width: 0;display:none; ">Reference No</td>
                                 <td>Donation Type</td>
                                 <td style="width: 0;display:none; ">Proposed For</td>
                                 <td>Doctor Name</td>
@@ -161,8 +163,9 @@
                                 <td>
                                     <button class="btn btn-sm btn-embossed btn-success " type="button " (click)="ViewData(a) " style="width: 70px; "><i class="fa fa-eye "></i>Select</button>
                                 </td>
-                                <td style="display:none; ">{{a.id}}</td>
-                                <td>
+                                <td style="display:none; ">{{a.investmentInitId}}</td>
+                                <td>{{a.payRefNo}}</td>
+                                <td style="width: 0;display:none; ">
                                     {{a.referenceNo}}
                                 </td>
                                 <td>

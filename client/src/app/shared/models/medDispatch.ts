@@ -2,6 +2,7 @@ export interface IMedicineDispatch {
     id: number;
     investmentInitId: number;
     issueReference: string;
+    payRefNo: string;
     issueDate: Date;
     depotCode: string;
     depotName: string;
@@ -9,12 +10,14 @@ export interface IMedicineDispatch {
     employeeId: number;
     dispatchAmt : number;
     proposeAmt : number;
+    sapRefNo: string;
 }
 
 export class MedicineDispatch implements IMedicineDispatch {
     id: number = 0;
     investmentInitId: number;
     issueReference: string;
+    payRefNo: string;
     issueDate: Date;
     depotCode: string;
     depotName: string;
@@ -22,6 +25,7 @@ export class MedicineDispatch implements IMedicineDispatch {
     employeeId: number;
     dispatchAmt : number;
     proposeAmt : number;
+    sapRefNo: string;
 }
 
 export interface IMedicineDispatchDtl {
@@ -51,8 +55,10 @@ export class MedicineDispatchDtl implements IMedicineDispatchDtl {
 
 export interface IMedDispSearch {
     id: number;
+    payRefNo: string;
     referenceNo: string;
     depotName: string;
+    investmentInitId: number;
     donationTypeName: string;
     proposeFor: string;
     doctorName: string;
@@ -66,7 +72,9 @@ export interface IMedDispSearch {
 export class MedDispSearch implements IMedDispSearch {
     id: number;
     referenceNo: string;
+    payRefNo: string;
     donationTypeName: string;
+    investmentInitId: number;
     proposeFor: string;
     depotName: string;
     doctorName: string;
