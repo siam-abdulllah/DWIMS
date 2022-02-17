@@ -6,7 +6,7 @@
         public string SBU { get; set; }
         public string DonationTypeName { get; set; }
         public int DonationId { get; set; }
-        public long Expense { get; set; }
+        public double Expense { get; set; }
         public long Budget { get; set; }
     }
 
@@ -17,7 +17,7 @@
         public string Duration { get; set; }
         public string DonationTypeName { get; set; }
         public int DonationId { get; set; }
-        public long Expense { get; set; }
+        public double Expense { get; set; }
         public long Budget { get; set; }
     }
 }
