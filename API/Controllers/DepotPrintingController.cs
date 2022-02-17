@@ -139,7 +139,7 @@ namespace API.Controllers
                                 " LEFT JOIN donation d ON a.donationid = d.id " +
                                 " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
 
-                                " WHERE  a.id NOT IN (SELECT investmentinitid FROM  DepotPrintTrack) " +
+                                " WHERE a.DataStatus= 1 AND a.id NOT IN (SELECT investmentinitid FROM  DepotPrintTrack) " +
                                 " AND IR.RecStatus = 'Approved'  AND a.DonationId <> 4 " +
                                 " AND ir.seton BETWEEN '" + searchDto.FromDate + "' AND '" + searchDto.ToDate + "' " +
                                 " AND inDetail.PaymentMethod = 'Cheque' " +
@@ -163,7 +163,7 @@ namespace API.Controllers
                         " left join InvestmentRecComment C on a.InvestmentInitId = c.InvestmentInitId " +
                         " left join Donation d on b.DonationId = d.Id left join Employee prep on b.EmployeeId = prep.Id " +
                         " left join InvestmentDetailTracker ir on ir.InvestmentInitId = b.Id " +
-                        " left join Employee apr on c.EmployeeId = apr.Id WHERE c.RecStatus = 'Approved') X " +
+                        " left join Employee apr on c.EmployeeId = apr.Id WHERE c.RecStatus = 'Approved' AND b.DataStatus= 1) X " +
                         " WHERE X.PaymentDate between '" + searchDto.FromDate + "' AND '" + searchDto.ToDate + "' " +
                         " AND LEN(X.DepotId) = 0 ";
 

@@ -225,7 +225,7 @@ namespace API.Controllers
                                 " LEFT JOIN employee e ON a.employeeid = e.id  " +
                                 " LEFT JOIN donation d ON a.donationid = d.id " +
                                 " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
-                                " WHERE dtl.PaymentRefNo not in (SELECT PayRefNo FROM medicinedispatch where PayRefNo is not null) " +
+                                " WHERE a.DataStatus= 1 AND dtl.PaymentRefNo not in (SELECT PayRefNo FROM medicinedispatch where PayRefNo is not null) " +
                                 " AND IR.RecStatus = 'Approved'  " +
                                 " AND ir.seton BETWEEN '" + searchDto.FromDate + "' AND '" + searchDto.ToDate + "'  " +
                                 " AND depo.DepotCode = '" + searchDto.DepotCode + "' ";
@@ -250,7 +250,7 @@ namespace API.Controllers
                             " from MedicineDispatch a left join InvestmentInit b on a.InvestmentInitId = b.id " +
                             " left join InvestmentRecComment C on a.InvestmentInitId = c.InvestmentInitId " +
                             " left join Donation d on b.DonationId = d.Id left join Employee prep on b.EmployeeId = prep.Id " +
-                            " left join Employee apr on c.EmployeeId = apr.Id WHERE c.RecStatus = 'Approved' ) X " +
+                            " left join Employee apr on c.EmployeeId = apr.Id WHERE c.RecStatus = 'Approved' AND a.DataStatus= 1 ) X " +
                             " WHERE X.PaymentDate between '" + searchDto.FromDate + "' AND '" + searchDto.ToDate + "'  AND X.DonationId = " + searchDto.DonationId + " " +
                             " AND X.DepotCode = '" + searchDto.DepotCode + "' ";
 
@@ -259,14 +259,14 @@ namespace API.Controllers
                     }
                     else
                     {
-                        string qry = "  SELECT* FROM(  " +
+                        string qry = "  SELECT * FROM(  " +
                             " select DISTINCT a.id,1 AS DataStatus, Sysdatetimeoffset() AS SetOn, Sysdatetimeoffset() AS ModifiedOn,  a.PayRefNo, b.ReferenceNo, d.DonationTypeName, prep.EmployeeName, apr.EmployeeName 'ApprovedBy', c.SetOn 'ApprovedDate',  " +
                             " b.MarketName, a.SAPRefNo, a.PaymentDate AS PaymentDate, ir.ApprovedAmount AS DispatchAmt, a.Remarks, b.DonationId, a.DepotId " +
                             " from[dbo].[DepotPrintTrack]  a left join InvestmentInit b on a.InvestmentInitId = b.id " +
                             " left join InvestmentRecComment C on a.InvestmentInitId = c.InvestmentInitId " +
                             " left join Donation d on b.DonationId = d.Id left join Employee prep on b.EmployeeId = prep.Id " +
                             " left join InvestmentDetailTracker ir on ir.InvestmentInitId = b.Id " +
-                            " left join Employee apr on c.EmployeeId = apr.Id WHERE c.RecStatus = 'Approved' ) X " +
+                            " left join Employee apr on c.EmployeeId = apr.Id WHERE c.RecStatus = 'Approved' AND a.DataStatus= 1 ) X " +
                             " WHERE X.PaymentDate between '" + searchDto.FromDate + "' AND '" + searchDto.ToDate + "' " +
                             " AND X.DepotId = '" + searchDto.DepotCode + "' ";
 
