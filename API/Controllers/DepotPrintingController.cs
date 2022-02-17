@@ -138,12 +138,12 @@ namespace API.Controllers
                                 " LEFT JOIN employee e ON a.employeeid = e.id  " +
                                 " LEFT JOIN donation d ON a.donationid = d.id " +
                                 " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
-                              
+
                                 " WHERE  a.id NOT IN (SELECT investmentinitid FROM  DepotPrintTrack) " +
                                 " AND IR.RecStatus = 'Approved'  AND a.DonationId <> 4 " +
                                 " AND ir.seton BETWEEN '" + searchDto.FromDate + "' AND '" + searchDto.ToDate + "' " +
                                 " AND inDetail.PaymentMethod = 'Cheque' " +
-                                " AND ir.InvestmentInitId not in (SELECT InvestmentInitId FROM DepotPrintTrack) " ;
+                                " AND dtl.PaymentRefNo not in (SELECT PayRefNo FROM DepotPrintTrack where PayRefNo is not null) ";
 
                     if (searchDto.DonationId != "0")
                     {

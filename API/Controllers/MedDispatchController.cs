@@ -189,7 +189,7 @@ namespace API.Controllers
               " AND a.DonationId = 4 AND  ir.EmployeeId = inDetail.EmployeeId " +
               //" AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
               //" AND  ir.InvestmentInitId not in (SELECT InvestmentInitId FROM MedicineDispatch) ";
-              " AND dtl.PaymentRefNo not in (SELECT PayRefNo FROM DepotPrintTrack where PayRefNo is not null) ";
+              " AND dtl.PaymentRefNo not in (SELECT PayRefNo FROM medicinedispatch where PayRefNo is not null) ";
                 if (userRole != "Administrator")
                 {
                     qry = qry + " AND depo.DepotCode = '" + empData[0].DepotCode + "'";
@@ -225,7 +225,7 @@ namespace API.Controllers
                                 " LEFT JOIN employee e ON a.employeeid = e.id  " +
                                 " LEFT JOIN donation d ON a.donationid = d.id " +
                                 " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
-                                " WHERE  a.id NOT IN (SELECT investmentinitid FROM   medicinedispatch) " +
+                                " WHERE dtl.PaymentRefNo not in (SELECT PayRefNo FROM medicinedispatch where PayRefNo is not null) " +
                                 " AND IR.RecStatus = 'Approved'  " +
                                 " AND ir.seton BETWEEN '" + searchDto.FromDate + "' AND '" + searchDto.ToDate + "'  " +
                                 " AND depo.DepotCode = '" + searchDto.DepotCode + "' ";
