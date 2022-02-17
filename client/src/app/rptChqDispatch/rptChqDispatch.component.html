@@ -65,13 +65,13 @@
                             <table class="table  table-bordered">
                                 <tr class="HeaderRow ">
                                     <td style="width: 0;display:none; ">Id</td>
-                                    <td>Reference No</td>
+                                    <td>Payment Ref No</td>
                                     <td>Donation Type</td>
                                     <td>Proposed By</td>
                                     <td>Approved By</td>
                                     <td>Approved Date</td>
                                     <td>Market</td>
-                                    <td>Payment Ref</td>
+                                    <td>SAP Ref</td>
                                     <td>Payment Date</td>
                                     <td>Dispatch Amt</td>
                                     <td>Remarks</td>
@@ -79,7 +79,7 @@
                                 <tr *ngFor="let a of rptDepotLetter | filter: searchText ">
                                     <td style="display:none; ">{{a.id}}</td>
                                     <td>
-                                        {{a.referenceNo}}
+                                        {{a.payRefNo}}
                                     </td>
                                     <td>
                                         {{a.donationTypeName}}
@@ -97,7 +97,7 @@
                                         {{a.marketName}}
                                     </td>
                                     <td>
-                                        {{a.paymentRefNo}}
+                                        {{a.sapRefNo}}
                                     </td>
                                     <td>
                                         {{a.paymentDate | date:'dd/MM/yyyy'}}

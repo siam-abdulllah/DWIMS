@@ -130,13 +130,15 @@ namespace API.Controllers
             {
                 if (searchDto.DisStatus == "Pending")
                 {
-                    string qry = "SELECT DISTINCT a.id,1 AS DataStatus,Sysdatetimeoffset() AS SetOn,Sysdatetimeoffset() AS ModifiedOn,a.referenceno,a.proposefor,a.donationto,a.donationid,'NA'PaymentRefNo, " +
-                                " null PaymentDate,CAST(0 as float) DispatchAmt, null Remarks, d.donationtypename, inDetail.proposedamount, e.employeename, e.marketname, ir.seton 'ApprovedDate', aprBy.employeename + ',' + aprBy.designationname 'ApprovedBy' " +
+                    string qry = "SELECT DISTINCT a.id,1 AS DataStatus,Sysdatetimeoffset() AS SetOn,Sysdatetimeoffset() AS ModifiedOn,dtl.PaymentRefNo PayRefNo, a.referenceno,a.proposefor,a.donationto,a.donationid,'NA' SAPRefNo, " +
+                                " null PaymentDate,CAST(0 as float) DispatchAmt, null Remarks, d.donationtypename,  dtl.ApprovedAmount  ProposedAmount, e.employeename, e.marketname, ir.seton 'ApprovedDate', aprBy.employeename + ',' + aprBy.designationname 'ApprovedBy' " +
                                 " FROM   investmentinit a LEFT JOIN investmentreccomment ir ON a.id = ir.investmentinitid " +
+                                " INNER JOIN investmentrec inDetail ON a.id = inDetail.investmentinitid " +
+                                " INNER JOIN InvestmentDetailTracker dtl on dtl.InvestmentInitId = a.Id " +
                                 " LEFT JOIN employee e ON a.employeeid = e.id  " +
                                 " LEFT JOIN donation d ON a.donationid = d.id " +
                                 " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
-                                " INNER JOIN investmentrec inDetail ON a.id = inDetail.investmentinitid " +
+                              
                                 " WHERE  a.id NOT IN (SELECT investmentinitid FROM  DepotPrintTrack) " +
                                 " AND IR.RecStatus = 'Approved'  AND a.DonationId <> 4 " +
                                 " AND ir.seton BETWEEN '" + searchDto.FromDate + "' AND '" + searchDto.ToDate + "' " +
@@ -156,7 +158,7 @@ namespace API.Controllers
                 {
                     string qry = "  SELECT* FROM(  " +
                         " select DISTINCT a.id,1 AS DataStatus, Sysdatetimeoffset() AS SetOn, Sysdatetimeoffset() AS ModifiedOn, b.ReferenceNo, d.DonationTypeName, prep.EmployeeName, apr.EmployeeName 'ApprovedBy', c.SetOn 'ApprovedDate',  " +
-                        " b.MarketName, a.PaymentRefNo AS PaymentRefNo, a.PaymentDate AS PaymentDate, ir.ApprovedAmount AS DispatchAmt, a.Remarks, b.DonationId, a.DepotId " +
+                        " b.MarketName, a.PayRefNo, a.SAPRefNo, a.PaymentDate AS PaymentDate, ir.ApprovedAmount AS DispatchAmt, a.Remarks, b.DonationId, a.DepotId " +
                         " from[dbo].[DepotPrintTrack]  a left join InvestmentInit b on a.InvestmentInitId = b.id " +
                         " left join InvestmentRecComment C on a.InvestmentInitId = c.InvestmentInitId " +
                         " left join Donation d on b.DonationId = d.Id left join Employee prep on b.EmployeeId = prep.Id " +
