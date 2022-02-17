@@ -33,7 +33,7 @@
                         <table class="table  table-bordered">
                             <tr class="HeaderRow ">
                                 <td style="width: 0;display:none; ">Id</td>
-                                <td>initId</td>
+                                <td style="width: 0;display:none; ">initId</td>
                                 <td>Payment Ref No</td>
                                 <td style="width: 0;display:none; ">Reference No</td>
                                 <td>Donation Type</td>
@@ -48,7 +48,7 @@
                             </tr>
                             <tr *ngFor="let a of rptDepotLetter | filter: searchText ">
                                 <td style="display:none; ">{{a.id}}</td>
-                                <td>{{a.investmentInitId}}</td>
+                                <td style="display:none; ">{{a.investmentInitId}}</td>
                                 <td>{{a.payRefNo}}</td>
                                 <td style="width: 0;display:none; ">
                                     {{a.referenceNo}}
