@@ -64,6 +64,7 @@ export class RptChqDispatchComponent implements OnInit {
     this.medDispatchForm = new FormGroup({
       fromDate: new FormControl('', [Validators.required]),
       toDate: new FormControl('', [Validators.required]),
+      searchText: new FormControl(''),
       donationId: new FormControl(''),
       disStatus: new FormControl(''),
     });

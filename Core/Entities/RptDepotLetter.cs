@@ -24,7 +24,6 @@ namespace Core.Entities
     public class RptDepotLetterSearch : BaseEntity
     {
         public int InvestmentInitId { get; set; }
-        public string ReferenceNo { get; set; }
         public string PayRefNo { get; set; }
         public string DonationTypeName { get; set; }
         public string DonationTo { get; set; }
@@ -42,7 +41,6 @@ namespace Core.Entities
     {
         public int InvestmentInitId { get; set; }
         public string PayRefNo { get; set; }
-        public string ReferenceNo { get; set; }
         public string DonationTypeName { get; set; }
         public string ProposeFor { get; set; }
         public string DoctorName { get; set; }

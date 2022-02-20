@@ -35,7 +35,10 @@ namespace API.Controllers
                 string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode= '" + empId + "' ";
                 var empData = _db.Employee.FromSqlRaw(empQry).ToList();
 
-                string qry = " Select  DISTINCT CAST(ROW_NUMBER() OVER (ORDER BY dtl.Id) AS INT)  AS Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn,  SYSDATETIMEOFFSET() AS ModifiedOn,  a.ReferenceNo, a.ProposeFor, dtl.PaymentRefNo 'PayRefNo', " +
+                string qry = " SELECT CAST(ROW_NUMBER() OVER (ORDER BY Id) AS INT)  AS Id, DataStatus, SetOn, ModifiedOn, ProposeFor, PayRefNo, DonationTo, DepotCode, DonationTypeName, " +
+                    " ProposedAmount, EmployeeName, MarketName, InvestmentInitId, DId, DoctorName, ApprovedDate, ApprovedBy FROM ( " +
+ 
+              " Select DISTINCT dtl.id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn,  SYSDATETIMEOFFSET() AS ModifiedOn, a.ProposeFor, dtl.PaymentRefNo 'PayRefNo', " +
               " a.DonationTo, depo.DepotCode, d.DonationTypeName,   dtl.ApprovedAmount   ProposedAmount, e.EmployeeName, e.MarketName, dtl.InvestmentInitId, " +
               " CASE WHEN a.donationto = 'Doctor' THEN (SELECT DoctorId  FROM   investmentdoctor x  INNER JOIN doctorinfo y ON x.doctorid = y.id WHERE x.investmentinitid = a.id)  " +
               " WHEN a.donationto = 'Institution' THEN (SELECT InstitutionId FROM  investmentinstitution x INNER JOIN institutioninfo y ON x.institutionid = y.id WHERE x.investmentinitid = a.id)  " +
@@ -66,7 +69,7 @@ namespace API.Controllers
                 {
                     qry = qry + " AND depo.DepotCode = '" + empData[0].DepotCode + "'";
                 }
-                qry = qry + " Order by ApprovedDate DESC ";
+                qry = qry + " ) A Order by A.ApprovedDate DESC ";
 
                 var results = _db.RptDepotLetterSearch.FromSqlRaw(qry).ToList();
 
@@ -85,7 +88,10 @@ namespace API.Controllers
         {
             try
             {
-                string qry = " Select  DISTINCT CAST(ROW_NUMBER() OVER (ORDER BY dtl.Id) AS INT)  AS Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn,  SYSDATETIMEOFFSET() AS ModifiedOn,  a.ReferenceNo, a.ProposeFor, dtl.PaymentRefNo PayRefNo, " +
+                string qry = " SELECT CAST(ROW_NUMBER() OVER (ORDER BY Id) AS INT)  AS Id, DataStatus, SetOn, ModifiedOn, ProposeFor, PayRefNo, DonationTo, DepotCode, DonationTypeName, " +
+                    " ProposedAmount, EmployeeName, MarketName, InvestmentInitId, DId, DoctorName, ApprovedDate, ApprovedBy FROM ( " + 
+                
+                 " Select  DISTINCT dtl.Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn,  SYSDATETIMEOFFSET() AS ModifiedOn,  a.ProposeFor, dtl.PaymentRefNo PayRefNo, " +
                 " a.DonationTo, depo.DepotCode, d.DonationTypeName,   dtl.ApprovedAmount   ProposedAmount, e.EmployeeName, e.MarketName, dtl.InvestmentInitId, " +
                 " CASE WHEN a.donationto = 'Doctor' THEN (SELECT DoctorId  FROM   investmentdoctor x  INNER JOIN doctorinfo y ON x.doctorid = y.id WHERE x.investmentinitid = a.id)  " +
                 " WHEN a.donationto = 'Institution' THEN (SELECT InstitutionId FROM  investmentinstitution x INNER JOIN institutioninfo y ON x.institutionid = y.id WHERE x.investmentinitid = a.id)  " +
@@ -111,7 +117,7 @@ namespace API.Controllers
                 //" AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                 //" AND  ir.InvestmentInitId not in (SELECT InvestmentInitId FROM DepotPrintTrack) " +
                 " AND dtl.PaymentRefNo not in (SELECT PayRefNo FROM DepotPrintTrack where PayRefNo is not null) " +
-                " Order by ApprovedDate DESC";
+                "  ) A  Order by ApprovedDate DESC";
 
                 var results = _db.RptDepotLetterSearch.FromSqlRaw(qry).ToList();
 
@@ -156,7 +162,7 @@ namespace API.Controllers
                 }
                 else
                 {
-                    string qry = "  SELECT* FROM(  " +
+                    string qry = "  SELECT * FROM(  " +
                         " select DISTINCT a.id,1 AS DataStatus, Sysdatetimeoffset() AS SetOn, Sysdatetimeoffset() AS ModifiedOn, b.ReferenceNo, d.DonationTypeName, prep.EmployeeName, apr.EmployeeName 'ApprovedBy', c.SetOn 'ApprovedDate',  " +
                         " b.MarketName, a.PayRefNo, a.SAPRefNo, a.PaymentDate AS PaymentDate, ir.ApprovedAmount AS DispatchAmt, a.Remarks, b.DonationId, a.DepotId " +
                         " from[dbo].[DepotPrintTrack]  a left join InvestmentInit b on a.InvestmentInitId = b.id " +

@@ -356,11 +356,11 @@ namespace API.Controllers
                     var alreadyExistInvestmentAprList = await _investmentRecRepo.ListAsync(alreadyExistSpec);
                     if (alreadyExistInvestmentAprList.Count > 0)
                     {
-                        //foreach (var v in alreadyExistInvestmentAprList)
-                        //{
-                        //    _investmentRecRepo.Delete(v);
-                        //    _investmentRecRepo.Savechange();
-                        //}
+                        foreach (var v in alreadyExistInvestmentAprList)
+                        {
+                            _investmentRecRepo.Delete(v);
+                            _investmentRecRepo.Savechange();
+                        }
                     }
                     //var spec = new ApprAuthConfigSpecification(empId, "A");
                     //var apprAuthConfig = await _apprAuthConfigRepo.GetEntityWithSpec(spec);
@@ -630,8 +630,8 @@ namespace API.Controllers
                 var empData = await _employeeRepo.GetByIdAsync(empId);
                 //var investmentTargetedGroupSpec = new InvestmentTargetedGroupSpecification((int)investmentNoSBUAprInsertDto.InvestmentRecComment.InvestmentInitId);
                 //var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(investmentTargetedGroupSpec);
-                //var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentNoSBUAprInsertDto.InvestmentRecComment.InvestmentInitId, empId);
-                //var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
+                var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentNoSBUAprInsertDto.InvestmentRecComment.InvestmentInitId, empId);
+                var investmentRecComments = await _investmentRecCommentRepo.GetEntityWithSpec(investmentRecCommentSpec);
                 //if (investmentRecComments.Count > 0)
                 //{
                 //    foreach (var v in investmentRecComments)
@@ -666,7 +666,8 @@ namespace API.Controllers
                     SBU = empData.SBU,
                     Priority = apprAuthConfig.ApprovalAuthority.Priority,
                     CompletionStatus = isComplete,
-                    SetOn = DateTimeOffset.Now
+                    ModifiedOn = DateTimeOffset.Now,
+                    SetOn = investmentRecComments.SetOn
                 };
                 _investmentRecCommentRepo.Update(invRecCmnt);
                 _investmentRecCommentRepo.Savechange();

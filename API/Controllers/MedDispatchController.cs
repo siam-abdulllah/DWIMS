@@ -169,7 +169,7 @@ namespace API.Controllers
                 string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode= '" + empId + "' ";
                 var empData = _db.Employee.FromSqlRaw(empQry).ToList();
 
-                string qry = " Select  DISTINCT CAST(ROW_NUMBER() OVER (ORDER BY dtl.Id) AS INT)  AS Id, 1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn,  SYSDATETIMEOFFSET() AS ModifiedOn,  a.ReferenceNo, a.ProposeFor,  dtl.PaymentRefNo PayRefNo, depo.DepotName, dtl.InvestmentInitId, " +
+                string qry = " Select  DISTINCT CAST(ROW_NUMBER() OVER (ORDER BY dtl.Id) AS INT)  AS Id, 1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn,  SYSDATETIMEOFFSET() AS ModifiedOn, a.ProposeFor,  dtl.PaymentRefNo PayRefNo, depo.DepotName, dtl.InvestmentInitId, " +
               " a.DonationTo, depo.DepotCode, d.DonationTypeName,   dtl.ApprovedAmount  ProposedAmount, e.EmployeeName, e.MarketName, ir.SetOn 'ApprovedDate', aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy', " +
               " CASE  " +
               " WHEN a.donationto = 'Doctor' THEN (SELECT doctorname  FROM   investmentdoctor x  INNER JOIN doctorinfo y ON x.doctorid = y.id WHERE  x.investmentinitid = a.id) " +

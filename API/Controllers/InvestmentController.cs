@@ -645,10 +645,20 @@ namespace API.Controllers
         #region investmentDetail
 
         [HttpPost("insertDetail")]
-        public ActionResult<InvestmentDetailDto> InsertInvestmentDetail(InvestmentDetailDto investmentDetailDto)
+        public async Task<ActionResult<InvestmentDetailDto>> InsertInvestmentDetail(InvestmentDetailDto investmentDetailDto)
         {
             try
             {
+                var spec = new InvestmentDetailSpecification(investmentDetailDto.InvestmentInitId);
+                var existedInvestmentDetail = await _investmentDetailRepo.ListAsync(spec);
+                if (existedInvestmentDetail.Count > 0)
+                {
+                    foreach (var v in existedInvestmentDetail)
+                    {
+                        _investmentDetailRepo.Delete(v);
+                        _investmentDetailRepo.Savechange();
+                    }
+                }
                 var investmentDetail = new InvestmentDetail
                 {
                     ChequeTitle = investmentDetailDto.ChequeTitle,
@@ -697,10 +707,10 @@ namespace API.Controllers
                 //var existedInvestmentDetail = await _investmentInitRepo.GetByIdAsync(investmentDetailDto.Id);
                 var spec = new InvestmentDetailSpecification(investmentDetailDto.InvestmentInitId);
                 var existedInvestmentDetail = await _investmentDetailRepo.GetEntityWithSpec(spec);
-                if (existedInvestmentDetail == null)
-                {
-                    return BadRequest(new ApiResponse(0, "Duplicate data found.Please Reload your page"));
-                }
+                //if (existedInvestmentDetail.Count == 0)
+                //{
+                //    return BadRequest(new ApiResponse(0, "Duplicate data found.Please Reload your page"));
+                //}
 
                 var investmentDetail = new InvestmentDetail
                 {
