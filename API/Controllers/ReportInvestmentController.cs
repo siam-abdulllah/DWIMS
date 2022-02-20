@@ -212,7 +212,7 @@ namespace API.Controllers
             // " AND  (CONVERT(date,c.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,c.ToDate)) "+
             // " AND (CONVERT(date,e.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,e.ToDate)) ";
 
-            string qry = " SELECT Cast(a.id AS INT) AS Id, a.DataStatus, Sysdatetimeoffset() AS SetOn, Sysdatetimeoffset() AS ModifiedOn, a.referenceno, d.donationtypename, a.donationto, b.proposedamount, b.fromdate, ISNULL (rcv.ReceiveStatus, 'N/A') ReceiveStatus, b.todate, 0 InvStatusCount, " +
+            string qry = " SELECT Cast(a.id AS INT) AS Id, a.DataStatus, Sysdatetimeoffset() AS SetOn, Sysdatetimeoffset() AS ModifiedOn, a.referenceno, b.ProposedAmount, d.donationtypename, a.donationto, b.fromdate, ISNULL (rcv.ReceiveStatus, 'N/A') ReceiveStatus, b.todate, 0 InvStatusCount, " +
             
             " CASE WHEN a.donationto = 'Doctor' THEN (SELECT DoctorId  FROM   investmentdoctor x  INNER JOIN doctorinfo y ON x.doctorid = y.id WHERE x.investmentinitid = a.id)  "+
             " WHEN a.donationto = 'Institution' THEN (SELECT InstitutionId FROM  investmentinstitution x INNER JOIN institutioninfo y ON x.institutionid = y.id WHERE x.investmentinitid = a.id)  "+
@@ -226,6 +226,11 @@ namespace API.Controllers
             " WHEN a.donationto = 'Bcds' THEN (SELECT bcdsname FROM investmentbcds x INNER JOIN bcds y ON x.bcdsid = y.id WHERE  x.investmentinitid = a.id)  "+
             " WHEN a.donationto = 'Society' THEN (SELECT societyname FROM investmentsociety x INNER JOIN society y ON x.societyid = y.id WHERE  x.investmentinitid = a.id) END NAME,  "+
             " (SELECT Isnull ((SELECT b.recstatus FROM investmentreccomment b WHERE  b.id IN (SELECT Max(id) FROM investmentreccomment WHERE  investmentinitid = a.id)), 'Pending')) InvStatus, "+
+
+            // " CASE WHEN  (SELECT b.recstatus FROM investmentreccomment b WHERE  b.id IN (SELECT Max(id) FROM investmentreccomment WHERE  investmentinitid = a.id)) = NULL THEN  (SELECT DISTINCT ProposedAmount FROM investmentdetail WHERE InvestmentInitId=A.Id) "+
+            // " WHEN  (SELECT b.recstatus FROM investmentreccomment b WHERE  b.id IN (SELECT Max(id) FROM investmentreccomment WHERE  investmentinitid = a.id))  = 'Approved' THEN  (SELECT DISTINCT ProposedAmount FROM InvestmentRec WHERE InvestmentInitId=A.Id AND  EmployeeId =(SELECT DISTINCT EmployeeId FROM InvestmentRecComment WHERE InvestmentInitId=A.Id AND CompletionStatus=1 and RecStatus='Approved')) "+
+            // " WHEN  (SELECT b.recstatus FROM investmentreccomment b WHERE  b.id IN (SELECT Max(id) FROM investmentreccomment WHERE  investmentinitid = a.id))  NOT IN (NULL,'Approved') THEN  (SELECT ProposedAmount FROM InvestmentRec WHERE InvestmentInitId=A.Id AND  EmployeeId =(select EmployeeId from InvestmentRecComment where InvestmentInitId=A.Id and CompletionStatus=1 and Priority=(select max(Priority) from InvestmentRecComment where InvestmentInitId=A.Id))) END ProposedAmount, "+
+
             " E.employeename, Isnull ((SELECT C.employeename FROM investmentreccomment b JOIN employee c ON c.id = b.employeeid WHERE  b.investmentinitid = a.id AND b.id = (SELECT Max(id) FROM   investmentreccomment WHERE  investmentinitid = b.investmentinitid)), 'N/A') ApprovedBy, "+
             " a.MarketName, Isnull(M.employeename + ', ' + M.designationname,'N/A') ReceiveBy, b.PaymentMethod, a.ProposeFor, a.SBUName, depo.DepotName, a.Confirmation "+
             " FROM investmentinit a"+
