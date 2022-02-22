@@ -84,15 +84,15 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("pendingChqForPrint/{empId}")]
-        public async Task<IReadOnlyList<RptDepotLetterSearch>> ReportChequeDepotLetter(int empId)
+        public async Task<IReadOnlyList<RptChequePrintSearch>> ReportChequeDepotLetter(int empId)
         {
             try
             {
-                string qry = " SELECT CAST(ROW_NUMBER() OVER (ORDER BY Id) AS INT)  AS Id, DataStatus, SetOn, ModifiedOn, ProposeFor, PayRefNo, DonationTo, DepotCode, DonationTypeName, " +
+                string qry = " SELECT CAST(ROW_NUMBER() OVER (ORDER BY Id) AS INT)  AS Id, DataStatus, SetOn, ModifiedOn, ProposeFor, PayRefNo, DonationTo, SBUName, ChequeTitle, DepotCode, DonationTypeName, " +
                     " ProposedAmount, EmployeeName, MarketName, InvestmentInitId, DId, DoctorName, ApprovedDate, ApprovedBy FROM ( " + 
                 
                  " Select  DISTINCT dtl.Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn,  SYSDATETIMEOFFSET() AS ModifiedOn,  a.ProposeFor, dtl.PaymentRefNo PayRefNo, " +
-                " a.DonationTo, depo.DepotCode, d.DonationTypeName,   dtl.ApprovedAmount   ProposedAmount, e.EmployeeName, e.MarketName, dtl.InvestmentInitId, " +
+                " a.DonationTo, a.SBUName, inDetail.ChequeTitle, depo.DepotCode, d.DonationTypeName,   dtl.ApprovedAmount   ProposedAmount, e.EmployeeName, e.MarketName, dtl.InvestmentInitId, " +
                 " CASE WHEN a.donationto = 'Doctor' THEN (SELECT DoctorId  FROM   investmentdoctor x  INNER JOIN doctorinfo y ON x.doctorid = y.id WHERE x.investmentinitid = a.id)  " +
                 " WHEN a.donationto = 'Institution' THEN (SELECT InstitutionId FROM  investmentinstitution x INNER JOIN institutioninfo y ON x.institutionid = y.id WHERE x.investmentinitid = a.id)  " +
                 " WHEN a.donationto = 'Campaign' THEN (SELECT y.MstId  FROM   investmentcampaign x INNER JOIN campaigndtl y  ON x.campaigndtlid = y.id  INNER JOIN [dbo].[subcampaign] C  ON y.subcampaignid = C.id  WHERE x.investmentinitid = a.id)  " +
@@ -119,7 +119,7 @@ namespace API.Controllers
                 " AND dtl.PaymentRefNo not in (SELECT PayRefNo FROM DepotPrintTrack where PayRefNo is not null) " +
                 "  ) A  Order by ApprovedDate DESC";
 
-                var results = _db.RptDepotLetterSearch.FromSqlRaw(qry).ToList();
+                var results = _db.RptChequePrintSearch.FromSqlRaw(qry).ToList();
 
                 return results;
             }

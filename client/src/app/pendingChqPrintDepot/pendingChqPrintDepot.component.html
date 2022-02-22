@@ -40,8 +40,10 @@
                                             <td>Donation Type</td>
                                             <td>Proposed For</td>
                                             <td>Donation To</td>
+                                            <td>SBU</td>
                                             <td>Id</td>
                                             <td>Name</td>
+                                            <td>Cheque Title</td>
                                             <td>Approved Amount</td>
                                             <td>Market</td>
                                             <td>Proposed By</td>
@@ -64,10 +66,16 @@
                                                 {{a.donationTo}}
                                             </td>
                                             <td>
+                                                {{a.sbuName}}
+                                            </td>
+                                            <td>
                                                 {{a.dId}}
                                             </td>
                                             <td>
                                                 {{a.doctorName}}
+                                            </td>
+                                            <td>
+                                                {{a.chequeTitle}}
                                             </td>
                                             <td>
                                                 {{a.proposedAmount | number:'2.1-2'}}

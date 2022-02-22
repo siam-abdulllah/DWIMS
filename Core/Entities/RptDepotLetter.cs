@@ -37,6 +37,24 @@ namespace Core.Entities
         public DateTime ApprovedDate { get; set; }
     }
 
+    public class RptChequePrintSearch : BaseEntity
+    {
+        public int InvestmentInitId { get; set; }
+        public string PayRefNo { get; set; }
+        public string DonationTypeName { get; set; }
+        public string DonationTo { get; set; }
+        public string ProposeFor { get; set; }
+        public int DId { get; set; }
+        public string DoctorName { get; set; }
+        public string SBUName { get; set; }
+        public string ChequeTitle { get; set; }
+        public double ProposedAmount { get; set; }
+        public string MarketName { get; set; }
+        public string EmployeeName { get; set; }
+        public string ApprovedBy { get; set; }
+        public DateTime ApprovedDate { get; set; }
+    }
+
     public class MedDispSearch : BaseEntity
     {
         public int InvestmentInitId { get; set; }
