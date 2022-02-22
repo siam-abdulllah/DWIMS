@@ -135,11 +135,6 @@ export class MedDispatchComponent implements OnInit {
 
   insertTracker() {
 
-    if(this.medDispatchForm.value.referenceNo == "" || this.medDispatchForm.value.referenceNo == null )
-    {
-      this.toastr.error('Select a proposal First');
-      return;
-    }
 
     if(this.medDispatchForm.value.issueReference == "" || this.medDispatchForm.value.issueReference == null || this.medDispatchForm.value.issueDate == "" || this.medDispatchForm.value.issueDate == null )
     {

@@ -91,12 +91,6 @@ export class ChequeTrackComponent implements OnInit {
 
   insertTracker() {
 
-    if(this.billTrackForm.value.referenceNo == "" || this.billTrackForm.value.referenceNo == null )
-    {
-      this.toastr.error('Select a proposal First');
-      return;
-    }
-
     if(this.billTrackForm.value.paymentRefNo == "" || this.billTrackForm.value.paymentRefNo == null || this.billTrackForm.value.paymentDate == "" || this.billTrackForm.value.paymentDate == null )
     {
       this.toastr.error('Enter Payment Reference No & Date');
