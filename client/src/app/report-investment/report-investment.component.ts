@@ -27,6 +27,7 @@ import { IProduct } from './../shared/models/product';
 import { ISBU } from '../shared/models/sbu';
 import { IMarket, IRegion, ITerritory, IDivision, IZone } from '../shared/models/location';
 import { Doctor, IDoctor } from '../shared/models/docotor';
+import { IYearlyBudgetReport } from '../shared/models/yearlyBudget';
 
 @Component({
   selector: 'app-report-investment',
@@ -43,6 +44,7 @@ export class ReportInvestmentComponent implements OnInit {
   docLocWiseInvestment: IDocLocWiseInvestment[] = [];
   sBUWiseExpSummaryReport :ISBUWiseExpSummaryReport[] = [];
   empWiseExpSummaryReport :IEmpWiseExpSummaryReport[] = [];
+  yearlyBudgetReport :IYearlyBudgetReport[] = [];
   searchText = '';
   visSoc: boolean = true;
   visBcd: boolean = true;
@@ -363,13 +365,101 @@ export class ReportInvestmentComponent implements OnInit {
     if (rpt == "Campaign / Sub Campaign Wise Investment Report") {
       this.getCampSubCampWiseInvestmentReport();
     }
-    if (rpt == "SBU wise Investment And Commitment vs Share") {
-      this.getSBUWiseInvestCommitShareIndivDocReport();
+    if (rpt == "Yearly Budget") {
+      this.getYearlyBudgetReport();
     }
     if (rpt == "SBU wise Budget And Expense Summary") {
       this.getSBUWiseBudgetInvest();
     }
   }
+
+
+/// ********************************************
+/// Generate Yearly Budget And Expense
+/// ********************************************
+
+getYearlyBudgetReport()  {
+  const investmentReportSearchDto: IInvestmentReportSearchDto = {
+    fromDate: this.investmentSearchForm.value.fromDate,
+    toDate: this.investmentSearchForm.value.toDate,
+    sbu: this.investmentSearchForm.value.sbu,
+    userId: 0,
+    donationType: this.investmentSearchForm.value.donationType,
+    investType: this.investmentSearchForm.value.donationTo,
+    institutionId: this.investmentSearchForm.value.institutionId,
+    societyId: this.investmentSearchForm.value.societyId,
+    bcdsId: this.investmentSearchForm.value.bcdsId,
+    doctorId: this.investmentSearchForm.value.doctorId,
+    locationType: this.investmentSearchForm.value.locationType,
+    territoryCode: this.investmentSearchForm.value.territoryCode,
+    marketCode: this.investmentSearchForm.value.marketCode,
+    regionCode: this.investmentSearchForm.value.regionCode,
+    zoneCode: this.investmentSearchForm.value.zoneCode,
+    divisionCode: this.investmentSearchForm.value.divisionCode,
+    brandCode: this.investmentSearchForm.value.brandCode,
+    campaignName: this.investmentSearchForm.value.campaignName,
+    subCampaignName: this.investmentSearchForm.value.subCampaignName,
+  };
+
+  this.reportInvestmentService.GetYearlyBudgetReport(investmentReportSearchDto).subscribe(resp => {
+    // this.reportInvestmentService.getInsSocietyBCDSWiseInvestment().subscribe(resp => {  
+    this.yearlyBudgetReport = resp as IYearlyBudgetReport[];
+    debugger;
+    if (this.yearlyBudgetReport.length <= 0) {
+      this.toastr.warning('No Data Found', 'Report');
+    }
+  
+    this.viewYearlyBudgetReport();
+  }, error => {
+    console.log(error);
+  });
+}
+
+/// ********************************************
+/// Generate Yearly Budget And Expense
+/// ********************************************
+
+viewYearlyBudgetReport() {
+
+  if (this.yearlyBudgetReport.length <= 0) {
+    return false;
+  }
+  debugger;
+  const r =  this.yearlyBudgetReport as IYearlyBudgetReport[];
+
+  let row: any[] = [];
+  let rowD: any[] = [];
+  let col = ['SBU', 'Donation Type','Yearly Budget' , 'Expense', 'Remaining', 'Usage (%)', 'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec' ]; // initialization for headers
+
+  //let slNO = 0;
+
+  for (const a of r) {
+    row.push(a.sbuName);
+    row.push(a.donationTypeName);
+    row.push((a.amount).toLocaleString());
+    row.push((a.expense).toLocaleString());
+    row.push((a.amount - a.expense).toLocaleString());
+    row.push((a.expense/a.amount * 100).toLocaleString());
+    row.push((a.january).toLocaleString());
+    row.push((a.february).toLocaleString());
+    row.push((a.march).toLocaleString());
+    row.push((a.april).toLocaleString());
+    row.push((a.may).toLocaleString());
+    row.push((a.june).toLocaleString());
+    row.push((a.july).toLocaleString());
+    row.push((a.august).toLocaleString());
+    row.push((a.september).toLocaleString());
+    row.push((a.october).toLocaleString());
+    row.push((a.november).toLocaleString());
+    row.push((a.december).toLocaleString());
+    rowD.push(row);
+    row = [];
+  }
+  //this.getReport(col, rowD, title, orgName, orgAddress);
+  this.getReport(col, rowD, 'Yearly Budget Report', 'Square Pharmaceuticals Ltd.', '48, Square Center, Mohakhali');
+}
+
+
 
 /// ********************************************
 /// Generate SBU wise Invested Doctor's ROI

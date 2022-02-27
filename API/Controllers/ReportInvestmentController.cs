@@ -12,6 +12,7 @@ using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace API.Controllers
 {
@@ -197,7 +198,34 @@ namespace API.Controllers
             return results;
         }
 
+        [HttpPost("GetYearlyBudgetReport")]
+        public ActionResult<IReadOnlyList<RptYearlyBudget>> GetYearlyBudgetReport(ReportSearchDto dt, [FromQuery] ReportInvestmentInfoSpecParams rptParrams)
+        {
+            int year = Convert.ToDateTime(dt.FromDate).Year;
 
+            string qry = "   select distinct CAST(ROW_NUMBER() OVER (ORDER BY b.January) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.Amount, " +
+                " (select SUM(x.ApprovedAmount) Expense from InvestmentDetailTracker x " +
+                " inner join InvestmentInit i on x.InvestmentInitId = i.Id " +
+                " where x.Year = "+ year +" and x.DonationId = b.DonationId and " +
+                " i.sbuname = b.sbuname) Expense,  b.* " +
+                " From SBUWiseBudget a" +
+                " left join vw_MonthlyExpense b on a.SBUName = b.SBUName " +
+                " where b.[year] = " + year + ""; 
+                if (!string.IsNullOrEmpty(dt.SBU))
+                {
+                    qry += " AND b.SBUName = '" + dt.SBU + "' ";
+                }
+                if (!string.IsNullOrEmpty(dt.DonationType))
+                {
+                    qry += " AND b.DonationTypeName = " + dt.DonationType +" ";
+                }
+
+                 qry += " order by b.sbuname, b.donationid ";
+
+            var results = _db.RptYearlyBudget.FromSqlRaw(qry).ToList();
+
+            return Ok(new Pagination<RptYearlyBudget>(rptParrams.PageIndex, rptParrams.PageSize, results.Count, results));
+        }
 
         [HttpPost("GetInvestmentSummaryReport")]
         public ActionResult<IReadOnlyList<RptInvestmentSummary>> GetInvestmentSummaryReport(SearchDto dt, [FromQuery] ReportInvestmentInfoSpecParams rptParrams)
@@ -338,8 +366,6 @@ namespace API.Controllers
                             " OR COALESCE(NULLIF('" + empData[0].ZoneCode + "',''), 'All') = 'All'" +
                             " )";
             }
-
-
 
             var results = _db.RptInvestmentSummary.FromSqlRaw(qry).ToList();
 

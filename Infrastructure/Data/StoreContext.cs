@@ -109,6 +109,8 @@ namespace Infrastructure.Data
         public DbSet<ChangeDepot> ChangeDepot { get; set; }
         [NotMapped]
         public DbSet<RptChequePrintSearch> RptChequePrintSearch { get; set; }
+        [NotMapped]
+        public DbSet<RptYearlyBudget> RptYearlyBudget { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
