@@ -203,13 +203,13 @@ namespace API.Controllers
         {
             int year = Convert.ToDateTime(dt.FromDate).Year;
 
-            string qry = "   select distinct CAST(ROW_NUMBER() OVER (ORDER BY b.January) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.Amount, " +
+            string qry = "   select distinct CAST(ABS(CHECKSUM(NewId())) % 200 AS int) as Id, 1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.Amount, " +
                 " (select SUM(x.ApprovedAmount) Expense from InvestmentDetailTracker x " +
                 " inner join InvestmentInit i on x.InvestmentInitId = i.Id " +
                 " where x.Year = "+ year +" and x.DonationId = b.DonationId and " +
                 " i.sbuname = b.sbuname) Expense,  b.* " +
                 " From SBUWiseBudget a" +
-                " left join vw_MonthlyExpense b on a.SBUName = b.SBUName " +
+                " left join vw_MonthlyExpense b on a.SBUName = b.SBUName and a.DonationId = b.DonationId " +
                 " where b.[year] = " + year + ""; 
                 if (!string.IsNullOrEmpty(dt.SBU))
                 {
@@ -224,7 +224,7 @@ namespace API.Controllers
 
             var results = _db.RptYearlyBudget.FromSqlRaw(qry).ToList();
 
-            return Ok(new Pagination<RptYearlyBudget>(rptParrams.PageIndex, rptParrams.PageSize, results.Count, results));
+            return results;
         }
 
         [HttpPost("GetInvestmentSummaryReport")]

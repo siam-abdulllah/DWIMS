@@ -60,9 +60,8 @@ namespace API.Controllers
                              " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId " +
                              " where a.DataStatus = 1 AND ir.RecStatus = 'Approved' AND inDetail.PaymentMethod = 'Cash' " +
                              " AND ir.EmployeeId = inDetail.EmployeeId " +
-                             //" AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
-                             " AND ir.InvestmentInitId not in (SELECT InvestmentInitId FROM DepotPrintTrack) " +
-                             " AND ir.InvestmentInitId not in (SELECT InvestmentInitId FROM MedicineDispatch) ";
+                             " AND NOT EXISTS (SELECT investmentinitid FROM depotprinttrack WHERE InvestmentInitId=ir.investmentinitid) " +
+                             " AND NOT EXISTS (SELECT investmentinitid FROM medicinedispatch WHERE InvestmentInitId=ir.investmentinitid) ";
 
                 if (userRole != "Administrator")
                 {

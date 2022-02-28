@@ -424,39 +424,38 @@ viewYearlyBudgetReport() {
   if (this.yearlyBudgetReport.length <= 0) {
     return false;
   }
-  debugger;
+
   const r =  this.yearlyBudgetReport as IYearlyBudgetReport[];
 
   let row: any[] = [];
   let rowD: any[] = [];
   let col = ['SBU', 'Donation Type','Yearly Budget' , 'Expense', 'Remaining', 'Usage (%)', 'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec' ]; // initialization for headers
 
-  //let slNO = 0;
-
+  debugger;
   for (const a of r) {
     row.push(a.sbuName);
     row.push(a.donationTypeName);
     row.push((a.amount).toLocaleString());
     row.push((a.expense).toLocaleString());
     row.push((a.amount - a.expense).toLocaleString());
-    row.push((a.expense/a.amount * 100).toLocaleString());
-    row.push((a.january).toLocaleString());
-    row.push((a.february).toLocaleString());
-    row.push((a.march).toLocaleString());
-    row.push((a.april).toLocaleString());
-    row.push((a.may).toLocaleString());
-    row.push((a.june).toLocaleString());
-    row.push((a.july).toLocaleString());
-    row.push((a.august).toLocaleString());
-    row.push((a.september).toLocaleString());
-    row.push((a.october).toLocaleString());
-    row.push((a.november).toLocaleString());
-    row.push((a.december).toLocaleString());
+    row.push(Number(a.expense/a.amount * 100).toFixed(2));
+    row.push(Number(a.january).toFixed(2));
+    row.push(Number(a.february).toFixed(2));
+    row.push(Number(a.march).toFixed(2));
+    row.push(Number(a.april).toFixed(2));
+    row.push(Number(a.may).toFixed(2));
+    row.push(Number(a.june).toFixed(2));
+    row.push(Number(a.july).toFixed(2));
+    row.push(Number(a.august).toFixed(2));
+    row.push(Number(a.september).toFixed(2));
+    row.push(Number(a.october).toFixed(2));
+    row.push(Number(a.november).toFixed(2));
+    row.push(Number(a.december).toFixed(2));
     rowD.push(row);
     row = [];
   }
   //this.getReport(col, rowD, title, orgName, orgAddress);
-  this.getReport(col, rowD, 'Yearly Budget Report', 'Square Pharmaceuticals Ltd.', '48, Square Center, Mohakhali');
+  this.getReportLetter(col, rowD, 'Yearly Budget Report', 'Square Pharmaceuticals Ltd.', '48, Square Center, Mohakhali');
 }
 
 
@@ -1769,6 +1768,72 @@ viewEmpWiseBudgetInvest() {
       var pageHeight = pdf.internal.pageSize.height || pdf.internal.pageSize.getHeight();
       pdf.text(str, data.settings.margin.left, pageHeight - 10); // showing current page number
      // pdf.text(title, 100, pageHeight - 10); 
+    };
+    pdf.autoTable(col, rowD,
+      {
+        theme: "grid",
+        // table: { fillColor: 255, textColor: 0, fontStyle: 'normal', lineWidth: 0.1 },
+        //head: { textColor: 0, fillColor: [211,211,211], fontStyle: 'bold', lineWidth: 0 },
+        // body: {},
+        // foot: { textColor: 255, fillColor: [26, 188, 156], fontStyle: 'bold', lineWidth: 0 },
+        // alternateRow: {},
+        headStyles: { fillColor: [192, 192, 192] },
+
+        didDrawPage: pageContent,
+        margin: { top: 110 },
+        bodyStyles: { valign: 'middle', lineColor: [153, 153, 153] },
+        styles: { overflow: 'linebreak', cellWidth: 'auto', fontSize: 9, textColor: 0 },
+      });
+
+    //for adding total number of pages // i.e 10 etc
+    if (typeof pdf.putTotalPages === 'function') {
+      pdf.putTotalPages(totalPagesExp);
+    }
+
+    // pdf.save(title + '.pdf');
+    pdf.setProperties({
+      title: title + ".pdf"
+    });
+
+    var blob = pdf.output("blob");
+    window.open(URL.createObjectURL(blob));
+    //this.loading = false;
+  }
+
+
+  getReportLetter(col: any[], rowD: any[], title: any, orgName: any, orgAddress: any) {
+    const totalPagesExp = "{total_pages_count_string}";
+    const pdf = new jsPDF('l', 'pt', [612, 1200]);
+    pdf.setTextColor(0, 0, 0);
+    pdf.setFontSize(11);
+    pdf.setFontType('bold');
+    pdf.text('Organization Name', 40, 60);
+    pdf.setFontType('normal');
+    pdf.text(': ' + orgName, 150, 60);
+    pdf.setFontType('bold');
+    pdf.text('Address', 40, 80);
+    pdf.setFontType('normal');
+    pdf.text(': ' + orgAddress, 150, 80);
+
+    pdf.setFontType('bold');
+    pdf.text('Report Name', 40, 100);
+    pdf.setFontType('normal');
+    pdf.text(': ' + title , 150, 100);
+    const pDate = this.datePipe.transform(new Date, "dd/MM/yyyy");
+    pdf.text('Printing Date: ' + pDate, 680, 100);
+    var pageContent = function (data) {
+      // HEADER
+
+      // FOOTER
+      var str = "Page " + data.pageCount;
+      // Total page number plugin only available in jspdf v1.0+
+      if (typeof pdf.putTotalPages === 'function') {
+        str = str + " of " + totalPagesExp;
+      }
+      pdf.setFontSize(9);
+      var pageHeight = pdf.internal.pageSize.height || pdf.internal.pageSize.getHeight();
+      pdf.text(str, data.settings.margin.left, pageHeight - 10); // showing current page number
+    // pdf.text(title, 100, pageHeight - 10); 
     };
     pdf.autoTable(col, rowD,
       {

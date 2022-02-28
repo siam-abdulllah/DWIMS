@@ -91,6 +91,12 @@ export class ChequeTrackComponent implements OnInit {
 
   insertTracker() {
 
+    if(this.billTrackForm.value.payRefNo == "" || this.billTrackForm.value.payRefNo == null)
+    {
+      this.toastr.error('Select Investment First');
+      return;
+    }
+
     if(this.billTrackForm.value.paymentRefNo == "" || this.billTrackForm.value.paymentRefNo == null || this.billTrackForm.value.paymentDate == "" || this.billTrackForm.value.paymentDate == null )
     {
       this.toastr.error('Enter Payment Reference No & Date');
@@ -119,11 +125,8 @@ export class ChequeTrackComponent implements OnInit {
     );
   }
 
-
-
   ViewData(selectedRecord: IrptDepotLetterSearch)
   {
-    debugger;
     this.billTrackForm.patchValue({
       payRefNo: selectedRecord.payRefNo,
       referenceNo: selectedRecord.referenceNo,
