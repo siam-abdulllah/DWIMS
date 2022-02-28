@@ -270,12 +270,16 @@ namespace API.Controllers
             {
                 InvestmentInitId = investmentRecOwnSBUInsertDto.InvestmentRec.InvestmentInitId,
                 ProposedAmount = investmentRecOwnSBUInsertDto.InvestmentRec.ProposedAmount,
+                PaymentFreq = investmentRecOwnSBUInsertDto.InvestmentRec.PaymentFreq,
                 Purpose = investmentRecOwnSBUInsertDto.InvestmentRec.Purpose,
                 CommitmentAllSBU = investmentRecOwnSBUInsertDto.InvestmentRec.CommitmentAllSBU,
                 CommitmentOwnSBU = investmentRecOwnSBUInsertDto.InvestmentRec.CommitmentOwnSBU,
                 FromDate = investmentRecOwnSBUInsertDto.InvestmentRec.FromDate,
                 ToDate = investmentRecOwnSBUInsertDto.InvestmentRec.ToDate,
+                CommitmentFromDate = investmentRecOwnSBUInsertDto.InvestmentRec.CommitmentFromDate,
+                CommitmentToDate = investmentRecOwnSBUInsertDto.InvestmentRec.CommitmentToDate,
                 TotalMonth = investmentRecOwnSBUInsertDto.InvestmentRec.TotalMonth,
+                CommitmentTotalMonth = investmentRecOwnSBUInsertDto.InvestmentRec.CommitmentTotalMonth,
                 PaymentMethod = investmentRecOwnSBUInsertDto.InvestmentRec.PaymentMethod,
                 ChequeTitle = investmentRecOwnSBUInsertDto.InvestmentRec.ChequeTitle,
                 EmployeeId = empId,
@@ -394,12 +398,16 @@ namespace API.Controllers
             {
                 InvestmentInitId = investmentRecOwnSBUInsertDto.InvestmentRec.InvestmentInitId,
                 ProposedAmount = investmentRecOwnSBUInsertDto.InvestmentRec.ProposedAmount,
+                PaymentFreq = investmentRecOwnSBUInsertDto.InvestmentRec.PaymentFreq,
                 Purpose = investmentRecOwnSBUInsertDto.InvestmentRec.Purpose,
                 CommitmentAllSBU = investmentRecOwnSBUInsertDto.InvestmentRec.CommitmentAllSBU,
                 CommitmentOwnSBU = investmentRecOwnSBUInsertDto.InvestmentRec.CommitmentOwnSBU,
                 FromDate = investmentRecOwnSBUInsertDto.InvestmentRec.FromDate,
                 ToDate = investmentRecOwnSBUInsertDto.InvestmentRec.ToDate,
+                CommitmentFromDate = investmentRecOwnSBUInsertDto.InvestmentRec.CommitmentFromDate,
+                CommitmentToDate = investmentRecOwnSBUInsertDto.InvestmentRec.CommitmentToDate,
                 TotalMonth = investmentRecOwnSBUInsertDto.InvestmentRec.TotalMonth,
+                CommitmentTotalMonth = investmentRecOwnSBUInsertDto.InvestmentRec.CommitmentTotalMonth,
                 PaymentMethod = investmentRecOwnSBUInsertDto.InvestmentRec.PaymentMethod,
                 ChequeTitle = investmentRecOwnSBUInsertDto.InvestmentRec.ChequeTitle,
                 EmployeeId = empId,
@@ -948,7 +956,7 @@ namespace API.Controllers
                                      RecStatus = p == null ? "Pending" : p.RecStatus,
                                      //ApprovalAuthorityName = aprAuthority.ApprovalAuthorityName
                                      ApprovalAuthorityName = aprAuthority.Remarks
-                                 }).ToList();
+                                 }).OrderBy(x=>x.MarketName).ToList();
 
                 return stsResult;
             }

@@ -188,49 +188,37 @@ export class InvestmentRecService {
     const headers = new HttpHeaders().set('Content-Type','application/json');
     return this.http.post(this.baseUrl+ 'investmentRec/updateRecommendForOtherSBU/'+empId+'/'+sbu, investmentRecOtherSBUInsertDto,{headers:headers});
   }
-
-  insertInvestmentRec() {
-    
-    return this.http.post(this.baseUrl+ 'investmentRec/insertRecCom', this.investmentRecCommentFormData);
-
-  }
+  // insertInvestmentRec() {
+  //   return this.http.post(this.baseUrl+ 'investmentRec/insertRecCom', this.investmentRecCommentFormData);
+  // }
   
-  updateInvestmentRec() {
-    return this.http.post(this.baseUrl+ 'investmentRec/updateRecCom',  this.investmentRecCommentFormData);
-  }
-  insertInvestmentDetail(empId:number,sbu:string) {
-    
-    return this.http.post(this.baseUrl+ 'investmentRec/insertRec/'+empId+'/'+this.investmentRecCommentFormData.recStatus+'/'+sbu, this.investmentDetailFormData);
-  
-  }
-  
+  // updateInvestmentRec() {
+  //   return this.http.post(this.baseUrl+ 'investmentRec/updateRecCom',  this.investmentRecCommentFormData);
+  // }
 
+  // insertInvestmentDetail(empId:number,sbu:string) {
+  //   return this.http.post(this.baseUrl+ 'investmentRec/insertRec/'+empId+'/'+this.investmentRecCommentFormData.recStatus+'/'+sbu, this.investmentDetailFormData);
+  // }
+  
 
   insertInvestmentMedicineProd() {
     return this.http.post(this.baseUrl + 'investmentRec/insertInvestmentMedicineProd', this.investmentMedicineProdFormData);
   }
- 
-  
+
   insertInvestmentTargetedProd(investmentTargetedProds:IInvestmentTargetedProd[]) {
-    
     return this.http.post(this.baseUrl+ 'investmentRec/insertRecProd', investmentTargetedProds,
     {responseType: 'text'});
-
   }
   
   removeInvestmentTargetedProd() {
     debugger;
     return this.http.post(this.baseUrl+ 'investmentRec/removeInvestmentTargetedProd', this.investmentTargetedProdFormData,
     {responseType: 'text'});
-
   }
-
 
   removeInvestmentMedicineProd() {
     return this.http.post(this.baseUrl + 'investmentRec/removeInvestmentMedicineProd', this.investmentMedicineProdFormData,
       { responseType: 'text' });
-
   }
-  
 }
 

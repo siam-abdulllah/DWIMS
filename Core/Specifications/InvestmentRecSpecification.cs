@@ -4,6 +4,7 @@ namespace Core.Specifications
 {
     public class InvestmentRecSpecification : BaseSpecification<InvestmentRec>
     {
+        private int investmentInitId;
 
         public InvestmentRecSpecification(InvestmentRecSpecParams parrams)
            : base(x =>
@@ -31,18 +32,23 @@ namespace Core.Specifications
             // }
         }
 
-        public InvestmentRecSpecification(int? id)
+        public InvestmentRecSpecification(int investmentInitId)
+            : base(x => x.InvestmentInitId == investmentInitId)
+        {
+        }
+
+        public InvestmentRecSpecification(int? id, int empId)
             : base(x => x.InvestmentInitId == id)
         {
 
-        } 
-        public InvestmentRecSpecification(int empId,string recStatus)
+        }
+        public InvestmentRecSpecification(int empId, string recStatus)
             : base(x => x.InvestmentInit.EmployeeId == empId)
         {
 
         }
-        public InvestmentRecSpecification(int id,int empId)
-            : base(x => x.InvestmentInitId == id &&  x.EmployeeId == empId)
+        public InvestmentRecSpecification(int id, int empId)
+            : base(x => x.InvestmentInitId == id && x.EmployeeId == empId)
         {
 
         }

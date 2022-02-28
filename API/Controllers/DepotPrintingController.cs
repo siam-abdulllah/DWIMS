@@ -28,7 +28,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("pendingForPrint/{empId}/{userRole}")]
-        public async Task<IReadOnlyList<RptDepotLetterSearch>> ReportDepotLetter(int empId, string userRole)
+        public IReadOnlyList<RptDepotLetterSearch> ReportDepotLetter(int empId, string userRole)
         {
             try
             {

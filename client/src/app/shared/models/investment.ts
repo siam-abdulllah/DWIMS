@@ -42,15 +42,19 @@ export interface IInvestmentDetail {
     investmentInitId: number;
     chequeTitle: string;
     paymentMethod: string;
+    paymentFreq: string;
     commitmentAllSBU: string;
     commitmentOwnSBU: string;
     shareAllSBU: string;
     shareOwnSBU: string;
     totalMonth: number;
+    commitmentTotalMonth: number;
     proposedAmount: string;
     purpose: string;
     fromDate: Date;
     toDate: Date;
+    commitmentFromDate: any;
+    commitmentToDate: any;
 }
  
 export class InvestmentDetail implements IInvestmentDetail {
@@ -58,15 +62,19 @@ export class InvestmentDetail implements IInvestmentDetail {
     investmentInitId: number;
     chequeTitle: string;
     paymentMethod: string=null;
+    paymentFreq: string=null;
     commitmentAllSBU: string;
     commitmentOwnSBU: string;
     shareAllSBU: string;
     shareOwnSBU: string;
     totalMonth: number;
+    commitmentTotalMonth: number;
     proposedAmount: string;
     purpose: string;
     fromDate: any;
     toDate: any;
+    commitmentFromDate: any;
+    commitmentToDate: any;
 }
 export interface IInvestmentDetailOld {
     id: number;

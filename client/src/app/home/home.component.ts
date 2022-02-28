@@ -66,10 +66,10 @@ export class HomeComponent implements OnInit {
     this.dashboardService.getMyPending(this.sbu,this.userRole,this.empId).subscribe(response => {
       var data = response;
       this.myPending = data;
-      if(this.userRole=='Administrator')
-      {
-        this.getAprPending();
-      }
+      // if(this.userRole=='Administrator')
+      // {
+      //   this.getAprPending();
+      // }
     }, error => {
       console.log(error);
     });

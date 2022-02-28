@@ -621,24 +621,64 @@
                                             <div class="form-group">
                                                 <div class="row">
                                                     <div class="col-md-2">
-                                                        <label>Duration</label>
+                                                        <label>Payment Freq</label>
                                                         <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" required placeholder="Calender" (onHidden)="changeDateInDetail()" name="fromDate" #fromDate="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched"
-                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentAprForm)">
+                                                        <select class="form-control" [disabled]="isInvOther && !isAdmin" id="paymentFreq" name="paymentFreq" #paymentFreq="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.paymentFreq" [class.invalid]="paymentFreq.invalid && paymentFreq.touched">
+                                                            <option  [ngValue]="null">Select Payment Freq</option>
+                                                            <option value="Monthly">Monthly</option>
+                                                            <option value="Quarterly">Quarterly</option>
+                                                            <option value="Half Yearly">Half Yearly</option>
+                                                            <option value="Yearly">Yearly</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <label>Payment Dur.</label>
+                                                        <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" required placeholder="Calender" (onHidden)="changeDateInDetail()" name="toDate" #toDate="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched"
-                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentAprForm)">
+                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" placeholder="Calender" (onHidden)="changeDateInDetail()" name="fromDate" #fromDate="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched"
+                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentAprForm)" [minDate]="minDate" [maxDate]="maxDate">
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" placeholder="Calender" (onHidden)="changeDateInDetail()" name="toDate" #toDate="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched"
+                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentAprForm)" [minDate]="minDate" [maxDate]="maxDate">
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label>Pay. Tot. Mon.</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <input class="form-control" placeholder="Total Month" name="totalMonth" id="totalMonth" #totalMonth="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.totalMonth" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <label>Commit. Dur.</label>
+                                                        <span style="color:red;">*</span>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" placeholder="Calender" (onHidden)="changeCommitmentDateInDetail()" name="commitmentFromDate" #commitmentFromDate="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.commitmentFromDate"
+                                                            [class.invalid]="commitmentFromDate.invalid && commitmentFromDate.touched" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCommitmentCompare(investmentAprForm)" [minDate]="minDate"
+                                                            [maxDate]="maxDate">
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" placeholder="Calender" (onHidden)="changeCommitmentDateInDetail()" name="commitmentToDate" #commitmentToDate="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.commitmentToDate"
+                                                            [class.invalid]="commitmentToDate.invalid && commitmentToDate.touched" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCommitmentCompare(investmentAprForm)" [minDate]="minDate"
+                                                            [maxDate]="maxDate">
 
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <label>Total Month</label>
+                                                        <label>Com. Tot. Mon.</label>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <input class="form-control" name="totalMonth" id="totalMonth" #totalMonth="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.totalMonth" readonly>
-
+                                                        <input class="form-control" placeholder="Total Month" name="commitmentTotalMonth" id="commitmentTotalMonth" #commitmentTotalMonth="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.commitmentTotalMonth" readonly>
                                                     </div>
                                                 </div>
                                             </div>

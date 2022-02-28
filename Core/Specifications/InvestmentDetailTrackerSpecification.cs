@@ -4,14 +4,15 @@ namespace Core.Specifications
 {
     public class InvestmentDetailTrackerSpecification : BaseSpecification<InvestmentDetailTracker>
     {
+        private int? investmentInitId;
 
         public InvestmentDetailTrackerSpecification(InvestmentDetailTrackerSpecParams parrams)
            : base(x =>
                //(string.IsNullOrEmpty(parrams.Search) || x.Employee.SBU.ToLower().Contains(parrams.Search))
-               (string.IsNullOrEmpty(parrams.Search) )
+               (string.IsNullOrEmpty(parrams.Search))
            )
         {
-            
+
             AddOrderBy(x => x.SetOn);
             ApplyPaging(parrams.PageSize * (parrams.PageIndex - 1), parrams.PageSize);
         }
@@ -20,9 +21,16 @@ namespace Core.Specifications
             : base(x => x.InvestmentInitId == id)
         {
 
-        } 
+        }
+
+        public InvestmentDetailTrackerSpecification(int? investmentInitId)
+            : base(x => x.InvestmentInitId == investmentInitId)
+        {
+           
+        }
+
         public InvestmentDetailTrackerSpecification(int empId, string DetailTrackerStatus)
-            : base(x => x.EmployeeId == empId && DetailTrackerStatus=="Approved")
+            : base(x => x.EmployeeId == empId && DetailTrackerStatus == "Approved")
         {
 
         }

@@ -62,6 +62,8 @@ export class InvestmentAprNoSbuComponent implements OnInit {
   isBudgetVisible: boolean = false;
   isDonationValid: boolean = false;
   searchText = '';
+  minDate: Date;
+  maxDate: Date;
   //configs: any;
   numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
   depots: IDepotInfo[];
@@ -104,6 +106,9 @@ export class InvestmentAprNoSbuComponent implements OnInit {
     this.getDonation();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-blue' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
+    const currentDate = new Date();
+    this.minDate = new Date(currentDate.getFullYear(), 0, 1);
+    this.maxDate = new Date(currentDate.getFullYear(), 11, 31);
   }
   onSubmit(form: NgForm) {
     if (this.investmentAprService.investmentAprCommentFormData.id == null || this.investmentAprService.investmentAprCommentFormData.id == undefined || this.investmentAprService.investmentAprCommentFormData.id == 0)
@@ -564,6 +569,24 @@ export class InvestmentAprNoSbuComponent implements OnInit {
     this.investmentAprService.investmentDetailFormData.totalMonth = dateTo.getMonth() - dateFrom.getMonth() + (12 * (dateTo.getFullYear() - dateFrom.getFullYear()));
     this.investmentAprService.investmentDetailFormData.totalMonth = this.investmentAprService.investmentDetailFormData.totalMonth + 1;
   }
+  changeCommitmentDateInDetail() {
+    //this.printingDate=this.getDigitBanglaFromEnglish(this.datePipe.transform(value, "dd/MM/yyyy"));
+    if (this.investmentAprService.investmentDetailFormData.commitmentFromDate == null || this.investmentAprService.investmentDetailFormData.commitmentFromDate == undefined) {
+
+      return false;
+    }
+    if (this.investmentAprService.investmentDetailFormData.commitmentToDate == null || this.investmentAprService.investmentDetailFormData.commitmentToDate == undefined) {
+
+      return false;
+    }
+    let dateFrom = this.investmentAprService.investmentDetailFormData.commitmentFromDate;
+    let dateTo = this.investmentAprService.investmentDetailFormData.commitmentToDate;
+    //let dateFrom = new Date();
+    //let dateTo = new Date();
+
+    this.investmentAprService.investmentDetailFormData.commitmentTotalMonth = dateTo.getMonth() - dateFrom.getMonth() + (12 * (dateTo.getFullYear() - dateFrom.getFullYear()));
+    this.investmentAprService.investmentDetailFormData.commitmentTotalMonth = this.investmentAprService.investmentDetailFormData.commitmentTotalMonth + 1;
+  }
   dateCompare(form: NgForm) {
     if (this.investmentAprService.investmentDetailFormData.fromDate != null && this.investmentAprService.investmentDetailFormData.toDate != null) {
       if (this.investmentAprService.investmentDetailFormData.toDate > this.investmentAprService.investmentDetailFormData.fromDate) {
@@ -572,6 +595,17 @@ export class InvestmentAprNoSbuComponent implements OnInit {
         form.controls.fromDate.setValue(null);
         form.controls.toDate.setValue(null);
         this.toastr.error('Select Appropriate Date Range', 'Error')
+      }
+    }
+  }
+  dateCommitmentCompare(form: NgForm) {
+    if (this.investmentAprService.investmentDetailFormData.commitmentFromDate != null && this.investmentAprService.investmentDetailFormData.commitmentToDate != null) {
+      if (this.investmentAprService.investmentDetailFormData.commitmentToDate > this.investmentAprService.investmentDetailFormData.commitmentFromDate) {
+      }
+      else {
+        form.controls.commitmentFromDate.setValue(null);
+        form.controls.commitmentToDate.setValue(null);
+        this.toastr.error('Select Appropriate Commitment Date Range');
       }
     }
   }
@@ -600,6 +634,11 @@ export class InvestmentAprNoSbuComponent implements OnInit {
         console.log(error);
       });
   }
+  changePaymentMethod() {
+    if (this.investmentAprService.investmentDetailFormData.paymentMethod != 'Cheque') {
+      this.investmentAprService.investmentDetailFormData.chequeTitle = "";
+    }
+   }
   getProduct() {
     this.investmentAprService.getProduct(this.sbu).subscribe(response => {
       this.products = response as IProduct[];
@@ -638,12 +677,32 @@ export class InvestmentAprNoSbuComponent implements OnInit {
       this.toastr.warning('Enter Purpose First', 'Investment ');
       return false;
     }
+    if (this.investmentAprService.investmentDetailFormData.paymentFreq == null || this.investmentAprService.investmentDetailFormData.paymentFreq == undefined || this.investmentAprService.investmentDetailFormData.paymentFreq == "") {
+      this.toastr.warning('Select Payment Frequency First', 'Investment Detail');
+      return false;
+    }
     if (this.investmentAprService.investmentDetailFormData.fromDate == null || this.investmentAprService.investmentDetailFormData.fromDate == undefined) {
-      this.toastr.warning('Select From Date  First', 'Investment ');
+      this.toastr.warning('Select Payment Dur. From Date  First', 'Investment Detail');
       return false;
     }
     if (this.investmentAprService.investmentDetailFormData.toDate == null || this.investmentAprService.investmentDetailFormData.toDate == undefined) {
-      this.toastr.warning('Select To Date  First', 'Investment ');
+      this.toastr.warning('Select Payment Dur. To Date  First', 'Investment Detail');
+      return false;
+    }
+    if (this.investmentAprService.investmentDetailFormData.totalMonth  == null || this.investmentAprService.investmentDetailFormData.totalMonth  == undefined || this.investmentAprService.investmentDetailFormData.totalMonth==0) {
+      this.toastr.warning('Invalid Payment Total Month', 'Investment Detail');
+      return false;
+    }
+    if (this.investmentAprService.investmentDetailFormData.commitmentFromDate == null || this.investmentAprService.investmentDetailFormData.commitmentFromDate == undefined) {
+      this.toastr.warning('Select Commitment From Date  First', 'Investment Detail');
+      return false;
+    }
+    if (this.investmentAprService.investmentDetailFormData.commitmentToDate == null || this.investmentAprService.investmentDetailFormData.commitmentToDate == undefined) {
+      this.toastr.warning('Select Commitment To Date  First', 'Investment Detail');
+      return false;
+    }
+    if (this.investmentAprService.investmentDetailFormData.commitmentTotalMonth  == null || this.investmentAprService.investmentDetailFormData.commitmentTotalMonth  == undefined || this.investmentAprService.investmentDetailFormData.commitmentTotalMonth==0) {
+      this.toastr.warning('Invalid Commitment Total Month', 'Investment Detail');
       return false;
     }
     if (this.investmentAprService.investmentDetailFormData.commitmentAllSBU == null || this.investmentAprService.investmentDetailFormData.commitmentAllSBU == undefined || this.investmentAprService.investmentDetailFormData.commitmentAllSBU == "") {
@@ -657,6 +716,12 @@ export class InvestmentAprNoSbuComponent implements OnInit {
     if (this.investmentAprService.investmentDetailFormData.paymentMethod == null || this.investmentAprService.investmentDetailFormData.paymentMethod == undefined || this.investmentAprService.investmentDetailFormData.paymentMethod == "") {
       this.toastr.warning('Select Payment Method First', 'Investment ');
       return false;
+    }
+    if (this.investmentAprService.investmentDetailFormData.paymentMethod == 'Cheque') {
+      if (this.investmentAprService.investmentDetailFormData.chequeTitle == null || this.investmentAprService.investmentDetailFormData.chequeTitle == undefined || this.investmentAprService.investmentDetailFormData.chequeTitle == "") {
+        this.toastr.warning('Enter  Cheque Title First', 'Investment Detail');
+        return false;
+      }
     }
     if (this.userRole == 'RSM' || this.userRole == 'Administrator') {
       if (this.investmentAprService.investmentDetailFormData.paymentMethod == 'Cash') {
@@ -767,12 +832,32 @@ export class InvestmentAprNoSbuComponent implements OnInit {
       this.toastr.warning('Enter Purpose First', 'Investment ');
       return false;
     }
+    if (this.investmentAprService.investmentDetailFormData.paymentFreq == null || this.investmentAprService.investmentDetailFormData.paymentFreq == undefined || this.investmentAprService.investmentDetailFormData.paymentFreq == "") {
+      this.toastr.warning('Select Payment Frequency First', 'Investment Detail');
+      return false;
+    }
     if (this.investmentAprService.investmentDetailFormData.fromDate == null || this.investmentAprService.investmentDetailFormData.fromDate == undefined) {
-      this.toastr.warning('Select From Date  First', 'Investment ');
+      this.toastr.warning('Select Payment Dur. From Date  First', 'Investment Detail');
       return false;
     }
     if (this.investmentAprService.investmentDetailFormData.toDate == null || this.investmentAprService.investmentDetailFormData.toDate == undefined) {
-      this.toastr.warning('Select To Date  First', 'Investment ');
+      this.toastr.warning('Select Payment Dur. To Date  First', 'Investment Detail');
+      return false;
+    }
+    if (this.investmentAprService.investmentDetailFormData.totalMonth  == null || this.investmentAprService.investmentDetailFormData.totalMonth  == undefined || this.investmentAprService.investmentDetailFormData.totalMonth==0) {
+      this.toastr.warning('Invalid Payment Total Month', 'Investment Detail');
+      return false;
+    }
+    if (this.investmentAprService.investmentDetailFormData.commitmentFromDate == null || this.investmentAprService.investmentDetailFormData.commitmentFromDate == undefined) {
+      this.toastr.warning('Select Commitment From Date  First', 'Investment Detail');
+      return false;
+    }
+    if (this.investmentAprService.investmentDetailFormData.commitmentToDate == null || this.investmentAprService.investmentDetailFormData.commitmentToDate == undefined) {
+      this.toastr.warning('Select Commitment To Date  First', 'Investment Detail');
+      return false;
+    }
+    if (this.investmentAprService.investmentDetailFormData.commitmentTotalMonth  == null || this.investmentAprService.investmentDetailFormData.commitmentTotalMonth  == undefined || this.investmentAprService.investmentDetailFormData.commitmentTotalMonth==0) {
+      this.toastr.warning('Invalid Commitment Total Month', 'Investment Detail');
       return false;
     }
     if (this.investmentAprService.investmentDetailFormData.commitmentAllSBU == null || this.investmentAprService.investmentDetailFormData.commitmentAllSBU == undefined || this.investmentAprService.investmentDetailFormData.commitmentAllSBU == "") {
@@ -786,6 +871,12 @@ export class InvestmentAprNoSbuComponent implements OnInit {
     if (this.investmentAprService.investmentDetailFormData.paymentMethod == null || this.investmentAprService.investmentDetailFormData.paymentMethod == undefined || this.investmentAprService.investmentDetailFormData.paymentMethod == "") {
       this.toastr.warning('Select Payment Method First', 'Investment ');
       return false;
+    }
+    if (this.investmentAprService.investmentDetailFormData.paymentMethod == 'Cheque') {
+      if (this.investmentAprService.investmentDetailFormData.chequeTitle == null || this.investmentAprService.investmentDetailFormData.chequeTitle == undefined || this.investmentAprService.investmentDetailFormData.chequeTitle == "") {
+        this.toastr.warning('Enter  Cheque Title First', 'Investment Detail');
+        return false;
+      }
     }
     if (this.userRole == 'RSM' || this.userRole == 'Administrator') {
       if (this.investmentAprService.investmentDetailFormData.paymentMethod == 'Cash') {

@@ -70,7 +70,7 @@ namespace API.Controllers
         }
 
         [HttpGet("investmentInits/{empId}/{sbu}")]
-        public async Task<IReadOnlyList<InvestmentRcvPending>> GetInvestmentInits(int empId, string sbu,
+        public IReadOnlyList<InvestmentRcvPending> GetInvestmentInits(int empId, string sbu,
           [FromQuery] InvestmentInitSpecParams investmentInitParrams)
         {
             try

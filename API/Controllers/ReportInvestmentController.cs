@@ -624,7 +624,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("rptChqPrint/{referenceNo}")]
-        public async Task<IReadOnlyList<RptDepotLetter>> ReportChequeLetter(string referenceNo)
+        public IReadOnlyList<RptDepotLetter> ReportChequeLetter(string referenceNo)
         {
             try
             {

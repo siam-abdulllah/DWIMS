@@ -44,15 +44,19 @@ export interface IInvestmentRec {
     investmentInitId: number;
     chequeTitle: string;
     paymentMethod: string;
+    paymentFreq: string;
     commitmentAllSBU: string;
     commitmentOwnSBU: string;
     shareAllSBU: string;
     shareOwnSBU: string;
     totalMonth: number;
+    commitmentTotalMonth: number;
     proposedAmount: string;
     purpose: string;
     fromDate: any;
     toDate: any;
+    commitmentFromDate: any;
+    commitmentToDate: any;
     employeeId: number;
 }
  
@@ -61,15 +65,19 @@ export class InvestmentRec implements IInvestmentRec {
     investmentInitId: number;
     chequeTitle: string;
     paymentMethod: string=null;
+    paymentFreq: string=null;
     commitmentAllSBU: string;
     commitmentOwnSBU: string;
     shareAllSBU: string;
     shareOwnSBU: string;
     totalMonth: number;
+    commitmentTotalMonth: number;
     proposedAmount: string;
     purpose: string;
     fromDate: any;
     toDate: any;
+    commitmentFromDate: any;
+    commitmentToDate: any;
     employeeId: number;
 }
 export interface IInvestmentRecComment {

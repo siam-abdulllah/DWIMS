@@ -334,7 +334,6 @@
                             </fieldset>
                             <fieldset *ngIf="investmentInitService.investmentInitFormData.donationTo=='Campaign'">
                                 <legend>Campaign Info</legend>
-
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-2">
@@ -459,7 +458,6 @@
                             </fieldset>
                             <fieldset *ngIf="investmentInitService.investmentInitFormData.donationTo=='Bcds'">
                                 <legend>BCDS</legend>
-
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-2">
@@ -530,7 +528,6 @@
                             </fieldset>
                             <fieldset *ngIf="investmentInitService.investmentInitFormData.donationTo=='Society'">
                                 <legend>Society</legend>
-
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-2">
@@ -728,23 +725,65 @@
                                             <div class="form-group">
                                                 <div class="row">
                                                     <div class="col-md-2">
-                                                        <label>Duration</label>
+                                                        <label>Payment Freq</label>
+                                                        <span style="color:red;">*</span>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <select class="form-control" [disabled]="isInvOther && !isAdmin" id="paymentFreq" name="paymentFreq" #paymentFreq="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.paymentFreq" [class.invalid]="paymentFreq.invalid && paymentFreq.touched">
+                                                            <option  [ngValue]="null">Select Payment Freq</option>
+                                                            <option value="Monthly">Monthly</option>
+                                                            <option value="Quarterly">Quarterly</option>
+                                                            <option value="Half Yearly">Half Yearly</option>
+                                                            <option value="Yearly">Yearly</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <label>Payment Dur.</label>
                                                         <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-3">
                                                         <input class="form-control" [disabled]="isInvOther && !isAdmin" placeholder="Calender" (onHidden)="changeDateInDetail()" name="fromDate" #fromDate="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched"
-                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentInitForm)">
+                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentInitForm)" [minDate]="minDate" [maxDate]="maxDate">
                                                     </div>
                                                     <div class="col-md-3">
                                                         <input class="form-control" [disabled]="isInvOther && !isAdmin" placeholder="Calender" (onHidden)="changeDateInDetail()" name="toDate" #toDate="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched"
-                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentInitForm)">
+                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentInitForm)" [minDate]="minDate" [maxDate]="maxDate">
 
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <label>Total Month</label>
+                                                        <label>Pay. Tot. Mon.</label>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <input class="form-control" name="totalMonth" id="totalMonth" #totalMonth="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.totalMonth" readonly>
+                                                        <input class="form-control" placeholder="Total Month" name="totalMonth" id="totalMonth" #totalMonth="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.totalMonth" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <label>Commit. Dur.</label>
+                                                        <span style="color:red;">*</span>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" placeholder="Calender" (onHidden)="changeCommitmentDateInDetail()" name="commitmentFromDate" #commitmentFromDate="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.commitmentFromDate"
+                                                            [class.invalid]="commitmentFromDate.invalid && commitmentFromDate.touched" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCommitmentCompare(investmentInitForm)" [minDate]="minDate"
+                                                            [maxDate]="maxDate">
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" placeholder="Calender" (onHidden)="changeCommitmentDateInDetail()" name="commitmentToDate" #commitmentToDate="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.commitmentToDate"
+                                                            [class.invalid]="commitmentToDate.invalid && commitmentToDate.touched" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCommitmentCompare(investmentInitForm)" [minDate]="minDate"
+                                                            [maxDate]="maxDate">
+
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label>Com. Tot. Mon.</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <input class="form-control" placeholder="Total Month" name="commitmentTotalMonth" id="commitmentTotalMonth" #commitmentTotalMonth="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.commitmentTotalMonth" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -778,10 +817,10 @@
                                             <div class="form-group">
                                                 <div class="row">
                                                     <div class="col-md-2">
-                                                        <label>Payment Method</label>
+                                                        <label>Pay. Method</label>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <select class="form-control" [disabled]="isInvOther && !isAdmin" name="paymentMethod" id="paymentMethod" #paymentMethod="ngModel" [(ngModel)]="investmentInitService.investmentDetailFormData.paymentMethod">
+                                                        <select class="form-control" [disabled]="isInvOther && !isAdmin" name="paymentMethod" id="paymentMethod" #paymentMethod="ngModel" (change)="changePaymentMethod()" [(ngModel)]="investmentInitService.investmentDetailFormData.paymentMethod">
                                                         
                                                             <option  [ngValue]="null">Select Payment Method</option>
                                                             <option value="Cash">Cash</option>

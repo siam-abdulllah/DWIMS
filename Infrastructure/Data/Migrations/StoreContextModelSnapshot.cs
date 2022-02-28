@@ -287,6 +287,42 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("BudgetCeiling");
                 });
 
+            modelBuilder.Entity("Core.Entities.BudgetCeilingForCampaign", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("CampaignBudget")
+                        .HasColumnType("float");
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DonationId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("SBU")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<double>("TotalExpense")
+                        .HasColumnType("float");
+
+                    b.Property<double>("TotalRemaining")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BudgetCeilingForCampaign");
+                });
+
             modelBuilder.Entity("Core.Entities.CampaignDtl", b =>
                 {
                     b.Property<int>("Id")
@@ -394,6 +430,103 @@ namespace Infrastructure.Data.Migrations
                     b.HasIndex("EmployeeId");
 
                     b.ToTable("CampaignMst");
+                });
+
+            modelBuilder.Entity("Core.Entities.ChangeDepot", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTimeOffset>("ChangeDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DepotCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InvestmentInitId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("OldDepotCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Remarks")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("InvestmentInitId");
+
+                    b.ToTable("ChangeDepot");
+                });
+
+            modelBuilder.Entity("Core.Entities.ChangeDepotSearch", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DepotCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DepotName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DoctorName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DonationTo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DonationTypeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmployeeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MarketName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("PayRefNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProposeFor")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("ProposedAmount")
+                        .HasColumnType("float");
+
+                    b.Property<string>("ReferenceNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ChangeDepotSearch");
                 });
 
             modelBuilder.Entity("Core.Entities.ClusterDtl", b =>
@@ -519,6 +652,9 @@ namespace Infrastructure.Data.Migrations
                     b.Property<DateTimeOffset>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<string>("PayRefNo")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTimeOffset?>("PaymentDate")
                         .HasColumnType("datetimeoffset");
 
@@ -529,6 +665,9 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Remarks")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SAPRefNo")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("SetOn")
@@ -1052,8 +1191,17 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("CommitmentAllSBU")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("CommitmentFromDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("CommitmentOwnSBU")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CommitmentToDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CommitmentTotalMonth")
+                        .HasColumnType("int");
 
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
@@ -1069,6 +1217,9 @@ namespace Infrastructure.Data.Migrations
 
                     b.Property<DateTimeOffset>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("PaymentFreq")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PaymentMethod")
                         .HasColumnType("nvarchar(max)");
@@ -1299,8 +1450,17 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("CommitmentAllSBU")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("CommitmentFromDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("CommitmentOwnSBU")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CommitmentToDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CommitmentTotalMonth")
+                        .HasColumnType("int");
 
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
@@ -1313,6 +1473,9 @@ namespace Infrastructure.Data.Migrations
 
                     b.Property<DateTimeOffset>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("PaymentFreq")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PaymentMethod")
                         .HasColumnType("nvarchar(max)");
@@ -1371,6 +1534,9 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("PaidStatus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentRefNo")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("SetOn")
@@ -1523,6 +1689,91 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("InvestmentInit");
                 });
 
+            modelBuilder.Entity("Core.Entities.InvestmentInitForApr", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Confirmation")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DonationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DonationTo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MarketCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MarketGroupCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MarketGroupName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MarketName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("ProposeFor")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReferenceNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RegionCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RegionName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RemainingSBU")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SBU")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SBUName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset?>("SubmissionDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("TerritoryCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TerritoryName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ZoneCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ZoneName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DonationId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("InvestmentInitForApr");
+                });
+
             modelBuilder.Entity("Core.Entities.InvestmentInstitution", b =>
                 {
                     b.Property<int>("Id")
@@ -1607,6 +1858,100 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("InvestmentMedicineProd");
                 });
 
+            modelBuilder.Entity("Core.Entities.InvestmentRcvPending", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ApprovedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("ApprovedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("Confirmation")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DepotName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DonationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DonationTo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MarketCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MarketGroupCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MarketGroupName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MarketName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProposeFor")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReferenceNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RegionCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RegionName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SBU")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SBUName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset?>("SubmissionDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("TerritoryCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TerritoryName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ZoneCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ZoneName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DonationId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("InvestmentRcvPending");
+                });
+
             modelBuilder.Entity("Core.Entities.InvestmentRec", b =>
                 {
                     b.Property<int>("Id")
@@ -1620,8 +1965,17 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("CommitmentAllSBU")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("CommitmentFromDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("CommitmentOwnSBU")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CommitmentToDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CommitmentTotalMonth")
+                        .HasColumnType("int");
 
                     b.Property<bool?>("CompletionStatus")
                         .HasColumnType("bit");
@@ -1640,6 +1994,9 @@ namespace Infrastructure.Data.Migrations
 
                     b.Property<DateTimeOffset>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("PaymentFreq")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PaymentMethod")
                         .HasColumnType("nvarchar(max)");
@@ -2302,11 +2659,17 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("EmployeeName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("InvestmentInitId")
+                        .HasColumnType("int");
+
                     b.Property<string>("MarketName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("PayRefNo")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProposeFor")
                         .HasColumnType("nvarchar(max)");
@@ -2359,10 +2722,16 @@ namespace Infrastructure.Data.Migrations
                     b.Property<DateTimeOffset>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<string>("PayRefNo")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("ProposeAmt")
                         .HasColumnType("float");
 
                     b.Property<string>("Remarks")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SAPRefNo")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("SetOn")
@@ -2928,6 +3297,9 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ApprovedBy")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ChequeTitle")
                         .HasColumnType("nvarchar(max)");
 
@@ -2985,10 +3357,22 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("ApprovedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ApprovedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DId")
+                        .HasColumnType("int");
+
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
 
                     b.Property<string>("DoctorName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DonationTo")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DonationTypeName")
@@ -2997,11 +3381,17 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("EmployeeName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("InvestmentInitId")
+                        .HasColumnType("int");
+
                     b.Property<string>("MarketName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("PayRefNo")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProposeFor")
                         .HasColumnType("nvarchar(max)");
@@ -3435,8 +3825,17 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("ApprovedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Confirmation")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("DId")
+                        .HasColumnType("int");
+
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
+
+                    b.Property<string>("DepotName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DonationTo")
                         .HasColumnType("nvarchar(max)");
@@ -3465,6 +3864,12 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PaymentMethod")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProposeFor")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double?>("ProposedAmount")
                         .HasColumnType("float");
 
@@ -3475,6 +3880,9 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReferenceNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SBUName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("SetOn")
@@ -3854,6 +4262,19 @@ namespace Infrastructure.Data.Migrations
                         .HasForeignKey("EmployeeId");
                 });
 
+            modelBuilder.Entity("Core.Entities.ChangeDepot", b =>
+                {
+                    b.HasOne("Core.Entities.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId");
+
+                    b.HasOne("Core.Entities.InvestmentInit", "InvestmentInit")
+                        .WithMany()
+                        .HasForeignKey("InvestmentInitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Core.Entities.ClusterDtl", b =>
                 {
                     b.HasOne("Core.Entities.ClusterMst", null)
@@ -4042,6 +4463,21 @@ namespace Infrastructure.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Core.Entities.InvestmentInitForApr", b =>
+                {
+                    b.HasOne("Core.Entities.Donation", "Donation")
+                        .WithMany()
+                        .HasForeignKey("DonationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Core.Entities.InvestmentInstitution", b =>
                 {
                     b.HasOne("Core.Entities.InstitutionInfo", "InstitutionInfo")
@@ -4078,6 +4514,21 @@ namespace Infrastructure.Data.Migrations
                     b.HasOne("Core.Entities.MedicineProduct", "MedicineProduct")
                         .WithMany()
                         .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Core.Entities.InvestmentRcvPending", b =>
+                {
+                    b.HasOne("Core.Entities.Donation", "Donation")
+                        .WithMany()
+                        .HasForeignKey("DonationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

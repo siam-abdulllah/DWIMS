@@ -76,7 +76,7 @@ namespace API.Controllers
             _investmentDetailTrackerRepo = investmentDetailTrackerRepo;
             _donationRepo = donationRepo;
         }
-       
+
         [HttpGet("investmentInits/{empId}/{sbu}")]
         public ActionResult<IReadOnlyList<InvestmentInit>> GetInvestmentInits(int empId, string sbu,
         [FromQuery] InvestmentInitSpecParams investmentInitParrams)
@@ -243,7 +243,6 @@ namespace API.Controllers
         [HttpPost("insertInvestAprNoSBU/{empID}/{aprStatus}/{sbu}/{donationId}")]
         public async Task<ActionResult<InvestmentRecComment>> InsertInvestmentAprNoSBU(int empId, string aprStatus, string sbu, int donationId, InvestmentNoSBUAprInsertDto investmentNoSBUAprInsertDto)
         {
-
             try
             {
                 var spec = new ApprAuthConfigSpecification(empId, "A");
@@ -281,12 +280,16 @@ namespace API.Controllers
                     {
                         InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
                         ProposedAmount = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount,
+                        PaymentFreq = investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq,
                         Purpose = investmentNoSBUAprInsertDto.InvestmentApr.Purpose,
                         CommitmentAllSBU = investmentNoSBUAprInsertDto.InvestmentApr.CommitmentAllSBU,
                         CommitmentOwnSBU = investmentNoSBUAprInsertDto.InvestmentApr.CommitmentOwnSBU,
                         FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
                         ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
+                        CommitmentFromDate = investmentNoSBUAprInsertDto.InvestmentApr.CommitmentFromDate,
+                        CommitmentToDate = investmentNoSBUAprInsertDto.InvestmentApr.CommitmentToDate,
                         TotalMonth = investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth,
+                        CommitmentTotalMonth = investmentNoSBUAprInsertDto.InvestmentApr.CommitmentTotalMonth,
                         PaymentMethod = investmentNoSBUAprInsertDto.InvestmentApr.PaymentMethod,
                         ChequeTitle = investmentNoSBUAprInsertDto.InvestmentApr.ChequeTitle,
                         EmployeeId = empId,
@@ -307,8 +310,8 @@ namespace API.Controllers
                             _investmentDetailTrackerRepo.Savechange();
                         }
                     }
-                    var donation = await _donationRepo.GetByIdAsync(donationId);
-                    if (donation.DonationTypeName == "Honorarium")
+                    //var donation = await _donationRepo.GetByIdAsync(donationId);
+                    if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Monthly")
                     {
                         for (int i = 0; i < investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth; i++)
                         {
@@ -331,7 +334,54 @@ namespace API.Controllers
                         }
                         _investmentDetailTrackerRepo.Savechange();
                     }
-                    else
+                    else if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Quarterly")
+                    {
+                        DateTimeOffset calcDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate;
+                        for (int i = 0; i < investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth/3; i++)
+                        {
+                            var invDT = new InvestmentDetailTracker
+                            {
+                                InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
+                                DonationId = donationId,
+                                ApprovedAmount = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount,
+                                Month = calcDate.Month,
+                                Year = calcDate.Year,
+                                FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
+                                ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
+                                PaidStatus = "Paid",
+                                EmployeeId = empId,
+                                SetOn = DateTimeOffset.Now
+                            };
+                            _investmentDetailTrackerRepo.Add(invDT);
+                            calcDate = calcDate.AddMonths(3);
+                        }
+                        _investmentDetailTrackerRepo.Savechange();
+                    }
+                    
+                    else if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Half Yearly")
+                    {
+                        DateTimeOffset calcDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate;
+                        for (int i = 0; i < investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth/6; i++)
+                        {
+                            var invDT = new InvestmentDetailTracker
+                            {
+                                InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
+                                DonationId = donationId,
+                                ApprovedAmount = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount,
+                                Month = calcDate.Month,
+                                Year = calcDate.Year,
+                                FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
+                                ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
+                                PaidStatus = "Paid",
+                                EmployeeId = empId,
+                                SetOn = DateTimeOffset.Now
+                            };
+                            _investmentDetailTrackerRepo.Add(invDT);
+                            calcDate = calcDate.AddMonths(6);
+                        }
+                        _investmentDetailTrackerRepo.Savechange();
+                    }
+                    else if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Yearly")
                     {
                         var invDT = new InvestmentDetailTracker
                         {
@@ -369,11 +419,15 @@ namespace API.Controllers
                         InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
                         ProposedAmount = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount,
                         Purpose = investmentNoSBUAprInsertDto.InvestmentApr.Purpose,
+                        PaymentFreq = investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq,
                         CommitmentAllSBU = investmentNoSBUAprInsertDto.InvestmentApr.CommitmentAllSBU,
                         CommitmentOwnSBU = investmentNoSBUAprInsertDto.InvestmentApr.CommitmentOwnSBU,
                         FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
                         ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
+                        CommitmentFromDate = investmentNoSBUAprInsertDto.InvestmentApr.CommitmentFromDate,
+                        CommitmentToDate = investmentNoSBUAprInsertDto.InvestmentApr.CommitmentToDate,
                         TotalMonth = investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth,
+                        CommitmentTotalMonth = investmentNoSBUAprInsertDto.InvestmentApr.CommitmentTotalMonth,
                         PaymentMethod = investmentNoSBUAprInsertDto.InvestmentApr.PaymentMethod,
                         ChequeTitle = investmentNoSBUAprInsertDto.InvestmentApr.ChequeTitle,
                         EmployeeId = empId,
@@ -389,7 +443,7 @@ namespace API.Controllers
                 var isComplete = false;
                 var investmentInits = await _investmentInitRepo.GetByIdAsync((int)investmentNoSBUAprInsertDto.InvestmentRecComment.InvestmentInitId);
                 var empData = await _employeeRepo.GetByIdAsync(empId);
-               
+
                 var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentNoSBUAprInsertDto.InvestmentRecComment.InvestmentInitId, empId);
                 var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
                 if (investmentRecComments.Count > 0)
@@ -473,7 +527,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
-         [HttpPost("UpdateInvestAprNoSBU/{empID}/{aprStatus}/{sbu}/{donationId}")]
+        [HttpPost("UpdateInvestAprNoSBU/{empID}/{aprStatus}/{sbu}/{donationId}")]
         public async Task<ActionResult<InvestmentRecComment>> UpdateInvestmentAprNoSBU(int empId, string aprStatus, string sbu, int donationId, InvestmentNoSBUAprInsertDto investmentNoSBUAprInsertDto)
         {
 
@@ -513,11 +567,15 @@ namespace API.Controllers
                         InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
                         ProposedAmount = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount,
                         Purpose = investmentNoSBUAprInsertDto.InvestmentApr.Purpose,
+                        PaymentFreq = investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq,
                         CommitmentAllSBU = investmentNoSBUAprInsertDto.InvestmentApr.CommitmentAllSBU,
                         CommitmentOwnSBU = investmentNoSBUAprInsertDto.InvestmentApr.CommitmentOwnSBU,
                         FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
                         ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
+                        CommitmentFromDate = investmentNoSBUAprInsertDto.InvestmentApr.CommitmentFromDate,
+                        CommitmentToDate = investmentNoSBUAprInsertDto.InvestmentApr.CommitmentToDate,
                         TotalMonth = investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth,
+                        CommitmentTotalMonth = investmentNoSBUAprInsertDto.InvestmentApr.CommitmentTotalMonth,
                         PaymentMethod = investmentNoSBUAprInsertDto.InvestmentApr.PaymentMethod,
                         ChequeTitle = investmentNoSBUAprInsertDto.InvestmentApr.ChequeTitle,
                         EmployeeId = empId,
@@ -608,11 +666,15 @@ namespace API.Controllers
                         InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
                         ProposedAmount = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount,
                         Purpose = investmentNoSBUAprInsertDto.InvestmentApr.Purpose,
+                        PaymentFreq = investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq,
                         CommitmentAllSBU = investmentNoSBUAprInsertDto.InvestmentApr.CommitmentAllSBU,
                         CommitmentOwnSBU = investmentNoSBUAprInsertDto.InvestmentApr.CommitmentOwnSBU,
                         FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
                         ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
+                        CommitmentFromDate = investmentNoSBUAprInsertDto.InvestmentApr.CommitmentFromDate,
+                        CommitmentToDate = investmentNoSBUAprInsertDto.InvestmentApr.CommitmentToDate,
                         TotalMonth = investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth,
+                        CommitmentTotalMonth = investmentNoSBUAprInsertDto.InvestmentApr.CommitmentTotalMonth,
                         PaymentMethod = investmentNoSBUAprInsertDto.InvestmentApr.PaymentMethod,
                         ChequeTitle = investmentNoSBUAprInsertDto.InvestmentApr.ChequeTitle,
                         EmployeeId = empId,
@@ -714,7 +776,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
-        
+
         [HttpPost("InsertApr/{empID}/{aprStatus}/{sbu}/{donationId}")]
         public async Task<ActionResult<InvestmentAprDto>> InsertInvestmentApr(int empId, string aprStatus, string sbu, int donationId, InvestmentAprDto investmentAprDto)
         {
@@ -911,7 +973,7 @@ namespace API.Controllers
             var empData = await _employeeRepo.GetByIdAsync(investmentRecDto.EmployeeId);
             var spec = new ApprAuthConfigSpecification(investmentRecDto.EmployeeId, "A");
             var apprAuthConfig = await _apprAuthConfigRepo.GetEntityWithSpec(spec);
-            bool isTrue = false;
+            //bool isTrue = false;
             var investmentTargetedGroupSpec = new InvestmentTargetedGroupSpecification((int)investmentRecDto.InvestmentInitId);
             var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(investmentTargetedGroupSpec);
             var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentRecDto.InvestmentInitId, apprAuthConfig.ApprovalAuthority.Priority, "true");
@@ -979,7 +1041,7 @@ namespace API.Controllers
             var spec = new ApprAuthConfigSpecification(investmentRecDto.EmployeeId, "A");
             var apprAuthConfig = await _apprAuthConfigRepo.GetEntityWithSpec(spec);
             var isComplete = false;
-            bool isTrue = false;
+            //bool isTrue = false;
             var investmentTargetedGroupSpec = new InvestmentTargetedGroupSpecification((int)investmentRecDto.InvestmentInitId);
             var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(investmentTargetedGroupSpec);
             var investmentRecCommentSpec = new InvestmentRecCommentSpecification((int)investmentRecDto.InvestmentInitId, apprAuthConfig.ApprovalAuthority.Priority, "true");

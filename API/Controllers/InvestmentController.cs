@@ -39,7 +39,6 @@ namespace API.Controllers
         private readonly StoreContext _dbContext;
         private readonly IGenericRepository<MarketGroupDtl> _marketGroupDtlRepo;
 
-
         public InvestmentController(IGenericRepository<InvestmentTargetedGroup> investmentTargetedGroupRepo, IGenericRepository<InvestmentTargetedProd> investmentTargetedProdRepo,
             IGenericRepository<InvestmentMedicineProd> investmentMedicineProdRepo, IGenericRepository<MedicineProduct> medicineProductRepo,
             IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<InvestmentDetail> investmentDetailRepo, IGenericRepository<InvestmentDoctor> investmentDoctorRepo,
@@ -345,7 +344,7 @@ namespace API.Controllers
                     SBUName = empData.SBUName,
                     SBU = empData.SBU,
                     Confirmation = false,
-                    SetOn = DateTimeOffset.Now
+                    SetOn = DateTimeOffset.Now.AddMonths(1)
                 };
                 _investmentInitRepo.Add(investmentInit);
                 _investmentInitRepo.Savechange();
@@ -355,7 +354,7 @@ namespace API.Controllers
                         new SqlParameter("@IID", investmentInit.Id),
                         new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
                     };
-                var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentRefNoInsert @IID,@r out", parms.ToArray());
+                var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentRefNoInsert_New @IID,@r out", parms.ToArray());
                 return new InvestmentInitDto
                 {
                     Id = investmentInit.Id,
@@ -645,19 +644,33 @@ namespace API.Controllers
         #region investmentDetail
 
         [HttpPost("insertDetail")]
-        public ActionResult<InvestmentDetailDto> InsertInvestmentDetail(InvestmentDetailDto investmentDetailDto)
+        public async Task<ActionResult<InvestmentDetailDto>> InsertInvestmentDetail(InvestmentDetailDto investmentDetailDto)
         {
             try
             {
+                var spec = new InvestmentDetailSpecification(investmentDetailDto.InvestmentInitId);
+                var existedInvestmentDetail = await _investmentDetailRepo.ListAsync(spec);
+                if (existedInvestmentDetail.Count > 0)
+                {
+                    foreach (var v in existedInvestmentDetail)
+                    {
+                        _investmentDetailRepo.Delete(v);
+                        _investmentDetailRepo.Savechange();
+                    }
+                }
                 var investmentDetail = new InvestmentDetail
                 {
                     ChequeTitle = investmentDetailDto.ChequeTitle,
                     PaymentMethod = investmentDetailDto.PaymentMethod,
+                    PaymentFreq = investmentDetailDto.PaymentFreq,
                     CommitmentAllSBU = investmentDetailDto.CommitmentAllSBU,
                     CommitmentOwnSBU = investmentDetailDto.CommitmentOwnSBU,
                     FromDate = investmentDetailDto.FromDate,
                     ToDate = investmentDetailDto.ToDate,
+                    CommitmentFromDate = investmentDetailDto.CommitmentFromDate,
+                    CommitmentToDate = investmentDetailDto.CommitmentToDate,
                     TotalMonth = investmentDetailDto.TotalMonth,
+                    CommitmentTotalMonth = investmentDetailDto.CommitmentTotalMonth,
                     ProposedAmount = investmentDetailDto.ProposedAmount,
                     Purpose = investmentDetailDto.Purpose,
                     InvestmentInitId = investmentDetailDto.InvestmentInitId,
@@ -671,11 +684,15 @@ namespace API.Controllers
                     Id = investmentDetail.Id,
                     ChequeTitle = investmentDetailDto.ChequeTitle,
                     PaymentMethod = investmentDetailDto.PaymentMethod,
+                    PaymentFreq = investmentDetailDto.PaymentFreq,
                     CommitmentAllSBU = investmentDetailDto.CommitmentAllSBU,
                     CommitmentOwnSBU = investmentDetailDto.CommitmentOwnSBU,
                     FromDate = investmentDetailDto.FromDate,
                     ToDate = investmentDetailDto.ToDate,
+                    CommitmentFromDate = investmentDetailDto.CommitmentFromDate,
+                    CommitmentToDate = investmentDetailDto.CommitmentToDate,
                     TotalMonth = investmentDetailDto.TotalMonth,
+                    CommitmentTotalMonth = investmentDetailDto.CommitmentTotalMonth,
                     ProposedAmount = investmentDetailDto.ProposedAmount,
                     Purpose = investmentDetailDto.Purpose,
                     InvestmentInitId = investmentDetailDto.InvestmentInitId,
@@ -697,21 +714,25 @@ namespace API.Controllers
                 //var existedInvestmentDetail = await _investmentInitRepo.GetByIdAsync(investmentDetailDto.Id);
                 var spec = new InvestmentDetailSpecification(investmentDetailDto.InvestmentInitId);
                 var existedInvestmentDetail = await _investmentDetailRepo.GetEntityWithSpec(spec);
-                if (existedInvestmentDetail == null)
-                {
-                    return BadRequest(new ApiResponse(0, "Duplicate data found.Please Reload your page"));
-                }
+                // if (existedInvestmentDetail.Count == 0)
+                // {
+                //     return BadRequest(new ApiResponse(0, "Duplicate data found.Please Reload your page"));
+                // }
 
                 var investmentDetail = new InvestmentDetail
                 {
                     Id = investmentDetailDto.Id,
                     ChequeTitle = investmentDetailDto.ChequeTitle,
                     PaymentMethod = investmentDetailDto.PaymentMethod,
+                    PaymentFreq = investmentDetailDto.PaymentFreq,
                     CommitmentAllSBU = investmentDetailDto.CommitmentAllSBU,
                     CommitmentOwnSBU = investmentDetailDto.CommitmentOwnSBU,
                     FromDate = investmentDetailDto.FromDate,
                     ToDate = investmentDetailDto.ToDate,
+                    CommitmentFromDate = investmentDetailDto.CommitmentFromDate,
+                    CommitmentToDate = investmentDetailDto.CommitmentToDate,
                     TotalMonth = investmentDetailDto.TotalMonth,
+                    CommitmentTotalMonth = investmentDetailDto.CommitmentTotalMonth,
                     ProposedAmount = investmentDetailDto.ProposedAmount,
                     Purpose = investmentDetailDto.Purpose,
                     InvestmentInitId = investmentDetailDto.InvestmentInitId,
@@ -726,11 +747,15 @@ namespace API.Controllers
                     Id = investmentDetail.Id,
                     ChequeTitle = investmentDetailDto.ChequeTitle,
                     PaymentMethod = investmentDetailDto.PaymentMethod,
+                    PaymentFreq = investmentDetailDto.PaymentFreq,
                     CommitmentAllSBU = investmentDetailDto.CommitmentAllSBU,
                     CommitmentOwnSBU = investmentDetailDto.CommitmentOwnSBU,
                     FromDate = investmentDetailDto.FromDate,
                     ToDate = investmentDetailDto.ToDate,
+                    CommitmentFromDate = investmentDetailDto.CommitmentFromDate,
+                    CommitmentToDate = investmentDetailDto.CommitmentToDate,
                     TotalMonth = investmentDetailDto.TotalMonth,
+                    CommitmentTotalMonth = investmentDetailDto.CommitmentTotalMonth,
                     ProposedAmount = investmentDetailDto.ProposedAmount,
                     Purpose = investmentDetailDto.Purpose,
                     InvestmentInitId = investmentDetailDto.InvestmentInitId,
@@ -1152,9 +1177,15 @@ namespace API.Controllers
                 " FROM InvestmentRecComment ir " +
                 " WHERE ir.InvestmentInitId = I.Id " +
                 " AND (ir.RecStatus = 'Approved' OR ir.RecStatus = 'Not Approved' OR ir.RecStatus = 'Cancelled')" +
+                " ) AND " +
+                " NOT EXISTS ( " +
+                " SELECT InvestmentInitId " +
+                " FROM InvestmentDoctor  " +
+                " WHERE InvestmentInitId = " + initId + " " +
+                " AND DoctorId = " + doctorId + " " +
                 " ) " +
-                //" )" +
                 " AND i.MarketCode = '" + iInit.MarketCode + "' " +
+                //" AND i.Id <> " + initId + " " +
                 " AND i.DonationId = '" + iInit.DonationId + "' " +
                 " AND d.DoctorId = " + doctorId + "";
             var result = _dbContext.CountInt.FromSqlRaw(qry).ToList();
@@ -1279,7 +1310,12 @@ namespace API.Controllers
                 " WHERE ir.InvestmentInitId = I.Id " +
                 " AND (ir.RecStatus = 'Approved' OR ir.RecStatus = 'Not Approved' OR ir.RecStatus = 'Cancelled')" +
                 " ) " +
-                //" )" +
+                " NOT EXISTS ( " +
+                " SELECT InvestmentInitId " +
+                " FROM InvestmentInstitution  " +
+                " WHERE InvestmentInitId = " + initId + " " +
+                " AND InstitutionId = " + institutionId + " " +
+                " ) " +
                 " AND i.MarketCode = '" + iInit.MarketCode + "' " +
                 " AND i.DonationId = '" + iInit.DonationId + "' " +
                 " AND d.InstitutionId = " + institutionId + "";
@@ -1393,7 +1429,12 @@ namespace API.Controllers
                 " WHERE ir.InvestmentInitId = I.Id " +
                 " AND (ir.RecStatus = 'Approved' OR ir.RecStatus = 'Not Approved' OR ir.RecStatus = 'Cancelled')" +
                 " ) " +
-                //" )" +
+                " NOT EXISTS ( " +
+                " SELECT InvestmentInitId " +
+                " FROM InvestmentCampaign  " +
+                " WHERE InvestmentInitId = " + initId + " " +
+                " AND CampaignDtlId = " + campaignDtlId + " " +
+                " ) " +
                 " AND i.MarketCode = '" + iInit.MarketCode + "' " +
                 " AND i.DonationId = '" + iInit.DonationId + "' " +
                 " AND d.DoctorId = " + doctorId + " " +
@@ -1516,7 +1557,11 @@ namespace API.Controllers
                 " WHERE ir.InvestmentInitId = I.Id " +
                 " AND (ir.RecStatus = 'Approved' OR ir.RecStatus = 'Not Approved' OR ir.RecStatus = 'Cancelled')" +
                 " ) " +
-                //" )" +
+                " NOT EXISTS ( " +
+                " SELECT InvestmentInitId " +
+                " FROM InvestmentBcds  " +
+                " WHERE InvestmentInitId = " + initId + " " +
+                " AND BcdsId = " + bcdsId + " " +
                 " AND i.MarketCode = '" + iInit.MarketCode + "' " +
                 " AND i.DonationId = '" + iInit.DonationId + "' " +
                 " AND d.BcdsId = " + bcdsId + "";
@@ -1634,7 +1679,11 @@ namespace API.Controllers
                 " WHERE ir.InvestmentInitId = I.Id " +
                 " AND (ir.RecStatus = 'Approved' OR ir.RecStatus = 'Not Approved' OR ir.RecStatus = 'Cancelled')" +
                 " ) " +
-                //" )" +
+                " NOT EXISTS ( " +
+                " SELECT InvestmentInitId " +
+                " FROM InvestmentSociety  " +
+                " WHERE InvestmentInitId = " + initId + " " +
+                " AND SocietyId = " + societyId + " " +
                 " AND i.MarketCode = '" + iInit.MarketCode + "' " +
                 " AND i.DonationId = '" + iInit.DonationId + "' " +
                 " AND d.SocietyId = " + societyId + "";
