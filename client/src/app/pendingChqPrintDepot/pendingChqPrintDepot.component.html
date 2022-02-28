@@ -36,12 +36,14 @@
                                     <table class="table  table-bordered">
                                         <tr class="HeaderRow">
                                             <td>Payment Ref No</td>
-                                            <td style="width: 0;display:none; ">Reference No</td>
+                                            <!-- <td style="width: 0;display:none; ">Reference No</td> -->
                                             <td>Donation Type</td>
                                             <td>Proposed For</td>
                                             <td>Donation To</td>
+                                            <td>SBU</td>
                                             <td>Id</td>
                                             <td>Name</td>
+                                            <td>Cheque Title</td>
                                             <td>Approved Amount</td>
                                             <td>Market</td>
                                             <td>Proposed By</td>
@@ -51,9 +53,9 @@
                                         </tr>
                                         <tr *ngFor="let a of rptDepotLetter | filter: searchText ">
                                             <td>{{a.payRefNo}}</td>
-                                            <td style="width: 0;display:none; ">
+                                            <!-- <td style="width: 0;display:none; ">
                                                 {{a.referenceNo}}
-                                            </td>
+                                            </td> -->
                                             <td>
                                                 {{a.donationTypeName}}
                                             </td>
@@ -64,10 +66,16 @@
                                                 {{a.donationTo}}
                                             </td>
                                             <td>
+                                                {{a.sbuName}}
+                                            </td>
+                                            <td>
                                                 {{a.dId}}
                                             </td>
                                             <td>
                                                 {{a.doctorName}}
+                                            </td>
+                                            <td>
+                                                {{a.chequeTitle}}
                                             </td>
                                             <td>
                                                 {{a.proposedAmount | number:'2.1-2'}}

@@ -718,7 +718,7 @@ namespace API.Controllers
                 // {
                 //     return BadRequest(new ApiResponse(0, "Duplicate data found.Please Reload your page"));
                 // }
-
+        
                 var investmentDetail = new InvestmentDetail
                 {
                     Id = investmentDetailDto.Id,

@@ -135,12 +135,11 @@ export class MedDispatchComponent implements OnInit {
 
   insertTracker() {
 
-    if(this.medDispatchForm.value.referenceNo == "" || this.medDispatchForm.value.referenceNo == null )
+    if(this.medDispatchForm.value.payRefNo == "" || this.medDispatchForm.value.payRefNo == null)
     {
-      this.toastr.error('Select a proposal First');
+      this.toastr.error('Select Investment First');
       return;
     }
-
     if(this.medDispatchForm.value.issueReference == "" || this.medDispatchForm.value.issueReference == null || this.medDispatchForm.value.issueDate == "" || this.medDispatchForm.value.issueDate == null )
     {
       this.toastr.error('Enter Payment Reference No & Date');

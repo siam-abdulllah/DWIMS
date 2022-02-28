@@ -477,5 +477,20 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("investmentRecDetails/{investmentInitId}")]
+        public IReadOnlyList<InvestmentRec> GetInvestmentDetails(int investmentInitId)
+        {
+            try
+            {
+                var rec = _dbContext.InvestmentRec.FromSqlRaw("select * from InvestmentRec a where a.InvestmentInitId = '" + investmentInitId + "' AND a.EmployeeId in (select EmployeeId from InvestmentRecComment where RecStatus = 'Approved' AND InvestmentInitId = '" + investmentInitId + "')").ToList();
+                return rec;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

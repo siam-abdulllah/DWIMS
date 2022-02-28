@@ -30,7 +30,6 @@ export class ReportInvestmentService {
     if (this.genParams.search) {
       params = params.append('search', this.genParams.search);
     }
-    debugger;
     params = params.append('sort', this.genParams.sort);
     params = params.append('pageIndex', this.genParams.pageIndex.toString());
     params = params.append('pageSize', this.genParams.pageSize.toString());
@@ -112,6 +111,10 @@ export class ReportInvestmentService {
 
 GetSBUWiseExpSummaryReport(model: any) {
   return this.http.post(this.baseUrl + 'reportInvestment/GetSBUWiseExpSummaryReport', model);
+}
+
+GetYearlyBudgetReport(model: any) {
+  return this.http.post(this.baseUrl + 'reportInvestment/GetYearlyBudgetReport', model);
 }
 
 GetEmpWiseExpSummaryReport(model: any) {

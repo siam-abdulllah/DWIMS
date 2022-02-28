@@ -114,7 +114,7 @@ export class PendingMedDispatchComponent implements OnInit {
       else
       {
         //this.getReport(this.depotLetter);
-        this.getInvestmentMedicineProd(selectedRecord.id, selectedRecord.approvedBy);
+        this.getInvestmentMedicineProd(selectedRecord.investmentInitId, selectedRecord.approvedBy);
       }   
     }, error => {
       console.log(error);

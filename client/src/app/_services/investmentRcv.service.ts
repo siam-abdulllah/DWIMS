@@ -67,7 +67,7 @@ export class InvestmentRcvService {
     return this.http.get(this.baseUrl + 'investmentRecv/getInvestmentRecvComment/'+investmentInitId);
   }
   getInvestmentDetails(investmentInitId:number){    
-    return this.http.get(this.baseUrl + 'investmentRec/investmentRecDetails/'+investmentInitId);
+    return this.http.get(this.baseUrl + 'investmentRecv/investmentRecDetails/'+investmentInitId);
   }
 
   getInvestmentRcvDetails(investmentInitId:number,empId:number){    

@@ -16,5 +16,49 @@ export class YearlyBudget implements IYearlyBudget {
     status: string;
 }
 
+export interface IYearlyBudgetReport {
+    id: number;
+    year : number; 
+    donationTypeName  : string;
+    dnationId  : string;
+    sbuName  : string;
+    amount : number;
+    expense : number;
+    january : number;
+    february : number;
+    march : number;
+    april : number;
+    may : number;
+    june : number;
+    july : number;
+    august : number;
+    september : number;
+    october : number;
+    november : number;
+    december : number;
+}
+
+export class YearlyBudgetReport implements IYearlyBudgetReport {
+    id: number = 0;
+    year : number; 
+    donationTypeName  : string;
+    dnationId  : string;
+    sbuName  : string;
+    amount : number;
+    expense : number;
+    january : number;
+    february : number;
+    march : number;
+    april : number;
+    may : number;
+    june : number;
+    july : number;
+    august : number;
+    september : number;
+    october : number;
+    november : number;
+    december : number;
+}
+
 
 

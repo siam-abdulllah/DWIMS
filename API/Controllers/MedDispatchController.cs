@@ -169,7 +169,7 @@ namespace API.Controllers
                 string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode= '" + empId + "' ";
                 var empData = _db.Employee.FromSqlRaw(empQry).ToList();
 
-                string qry = " Select  DISTINCT CAST(ROW_NUMBER() OVER (ORDER BY dtl.Id) AS INT)  AS Id, 1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn,  SYSDATETIMEOFFSET() AS ModifiedOn,  a.ReferenceNo, a.ProposeFor,  dtl.PaymentRefNo PayRefNo, depo.DepotName, dtl.InvestmentInitId, " +
+                string qry = " Select  DISTINCT CAST(ROW_NUMBER() OVER (ORDER BY dtl.Id) AS INT)  AS Id, 1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn,  SYSDATETIMEOFFSET() AS ModifiedOn, a.ProposeFor,  dtl.PaymentRefNo PayRefNo, depo.DepotName, dtl.InvestmentInitId, " +
               " a.DonationTo, depo.DepotCode, d.DonationTypeName,   dtl.ApprovedAmount  ProposedAmount, e.EmployeeName, e.MarketName, ir.SetOn 'ApprovedDate', aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy', " +
               " CASE  " +
               " WHEN a.donationto = 'Doctor' THEN (SELECT doctorname  FROM   investmentdoctor x  INNER JOIN doctorinfo y ON x.doctorid = y.id WHERE  x.investmentinitid = a.id) " +
@@ -189,7 +189,7 @@ namespace API.Controllers
               " AND a.DonationId = 4 AND  ir.EmployeeId = inDetail.EmployeeId " +
               //" AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
               //" AND  ir.InvestmentInitId not in (SELECT InvestmentInitId FROM MedicineDispatch) ";
-              " AND dtl.PaymentRefNo not in (SELECT PayRefNo FROM DepotPrintTrack where PayRefNo is not null) ";
+              " AND dtl.PaymentRefNo not in (SELECT PayRefNo FROM medicinedispatch where PayRefNo is not null) ";
                 if (userRole != "Administrator")
                 {
                     qry = qry + " AND depo.DepotCode = '" + empData[0].DepotCode + "'";
@@ -215,15 +215,17 @@ namespace API.Controllers
             {
                 if (searchDto.DisStatus == "Pending")
                 {
-                    string qry = "SELECT DISTINCT a.id,1 AS DataStatus,Sysdatetimeoffset() AS SetOn,Sysdatetimeoffset() AS ModifiedOn,a.referenceno,a.proposefor,a.donationto,a.donationid,depo.depotcode,'NA'PaymentRefNo, " +
+                    string qry = "SELECT DISTINCT a.id,1 AS DataStatus,Sysdatetimeoffset() AS SetOn,Sysdatetimeoffset() AS ModifiedOn,a.referenceno, dtl.PaymentRefNo PayRefNo, a.proposefor,a.donationto,a.donationid,depo.depotcode,'NA'SAPRefNo, " +
                                 " null PaymentDate,CAST(0 as float) DispatchAmt, null Remarks, d.donationtypename, inDetail.proposedamount, e.employeename, e.marketname, ir.seton 'ApprovedDate', aprBy.employeename + ',' + aprBy.designationname 'ApprovedBy' " +
-                                " FROM   investmentinit a LEFT JOIN investmentreccomment ir ON a.id = ir.investmentinitid " +
+                                " FROM   investmentinit a " +
+                                " INNER JOIN investmentrec inDetail ON a.id = inDetail.investmentinitid " +
+                                " INNER JOIN InvestmentDetailTracker dtl on dtl.InvestmentInitId = a.Id " +
+                                " LEFT JOIN investmentreccomment ir ON a.id = ir.investmentinitid " +
                                 " LEFT JOIN investmentrecdepot depo ON depo.investmentinitid = ir.investmentinitid " +
                                 " LEFT JOIN employee e ON a.employeeid = e.id  " +
-                                " LEFT JOIN donation d                       ON a.donationid = d.id " +
+                                " LEFT JOIN donation d ON a.donationid = d.id " +
                                 " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
-                                " INNER JOIN investmentrec inDetail ON a.id = inDetail.investmentinitid " +
-                                " WHERE  a.id NOT IN (SELECT investmentinitid FROM   medicinedispatch) " +
+                                " WHERE a.DataStatus= 1 AND dtl.PaymentRefNo not in (SELECT PayRefNo FROM medicinedispatch where PayRefNo is not null) " +
                                 " AND IR.RecStatus = 'Approved'  " +
                                 " AND ir.seton BETWEEN '" + searchDto.FromDate + "' AND '" + searchDto.ToDate + "'  " +
                                 " AND depo.DepotCode = '" + searchDto.DepotCode + "' ";
@@ -243,12 +245,12 @@ namespace API.Controllers
                     if (searchDto.DonationId == "4")
                     {
                         string qry = "  SELECT * FROM  ( " +
-                            " select DISTINCT a.id,1 AS DataStatus,Sysdatetimeoffset() AS SetOn,Sysdatetimeoffset() AS ModifiedOn, b.ReferenceNo, d.DonationTypeName, prep.EmployeeName, apr.EmployeeName 'ApprovedBy', c.SetOn 'ApprovedDate'," +
-                            " b.MarketName, a.IssueReference AS PaymentRefNo, a.IssueDate AS PaymentDate, a.DispatchAmt, a.Remarks, b.DonationId, a.DepotCode " +
+                            " select DISTINCT a.id,1 AS DataStatus,Sysdatetimeoffset() AS SetOn,Sysdatetimeoffset() AS ModifiedOn, a.PayRefNo, b.ReferenceNo, d.DonationTypeName, prep.EmployeeName, apr.EmployeeName 'ApprovedBy', c.SetOn 'ApprovedDate'," +
+                            " b.MarketName, a.SAPRefNo, a.IssueDate AS PaymentDate, a.DispatchAmt, a.Remarks, b.DonationId, a.DepotCode " +
                             " from MedicineDispatch a left join InvestmentInit b on a.InvestmentInitId = b.id " +
                             " left join InvestmentRecComment C on a.InvestmentInitId = c.InvestmentInitId " +
                             " left join Donation d on b.DonationId = d.Id left join Employee prep on b.EmployeeId = prep.Id " +
-                            " left join Employee apr on c.EmployeeId = apr.Id WHERE c.RecStatus = 'Approved' ) X " +
+                            " left join Employee apr on c.EmployeeId = apr.Id WHERE c.RecStatus = 'Approved' AND a.DataStatus= 1 ) X " +
                             " WHERE X.PaymentDate between '" + searchDto.FromDate + "' AND '" + searchDto.ToDate + "'  AND X.DonationId = " + searchDto.DonationId + " " +
                             " AND X.DepotCode = '" + searchDto.DepotCode + "' ";
 
@@ -257,14 +259,14 @@ namespace API.Controllers
                     }
                     else
                     {
-                        string qry = "  SELECT* FROM(  " +
-                            " select DISTINCT a.id,1 AS DataStatus, Sysdatetimeoffset() AS SetOn, Sysdatetimeoffset() AS ModifiedOn, b.ReferenceNo, d.DonationTypeName, prep.EmployeeName, apr.EmployeeName 'ApprovedBy', c.SetOn 'ApprovedDate',  " +
-                            " b.MarketName, a.PaymentRefNo AS PaymentRefNo, a.PaymentDate AS PaymentDate, ir.ApprovedAmount AS DispatchAmt, a.Remarks, b.DonationId, a.DepotId " +
+                        string qry = "  SELECT * FROM(  " +
+                            " select DISTINCT a.id,1 AS DataStatus, Sysdatetimeoffset() AS SetOn, Sysdatetimeoffset() AS ModifiedOn,  a.PayRefNo, b.ReferenceNo, d.DonationTypeName, prep.EmployeeName, apr.EmployeeName 'ApprovedBy', c.SetOn 'ApprovedDate',  " +
+                            " b.MarketName, a.SAPRefNo, a.PaymentDate AS PaymentDate, ir.ApprovedAmount AS DispatchAmt, a.Remarks, b.DonationId, a.DepotId " +
                             " from[dbo].[DepotPrintTrack]  a left join InvestmentInit b on a.InvestmentInitId = b.id " +
                             " left join InvestmentRecComment C on a.InvestmentInitId = c.InvestmentInitId " +
                             " left join Donation d on b.DonationId = d.Id left join Employee prep on b.EmployeeId = prep.Id " +
                             " left join InvestmentDetailTracker ir on ir.InvestmentInitId = b.Id " +
-                            " left join Employee apr on c.EmployeeId = apr.Id WHERE c.RecStatus = 'Approved' ) X " +
+                            " left join Employee apr on c.EmployeeId = apr.Id WHERE c.RecStatus = 'Approved' AND a.DataStatus= 1 ) X " +
                             " WHERE X.PaymentDate between '" + searchDto.FromDate + "' AND '" + searchDto.ToDate + "' " +
                             " AND X.DepotId = '" + searchDto.DepotCode + "' ";
 
