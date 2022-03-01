@@ -786,32 +786,6 @@ namespace API.Controllers
                         _investmentRecRepo.Add(invRec);
                         _investmentRecRepo.Savechange();
                     }
-                    var alreadyExistSpec = new InvestmentRecDepotSpecification(investmenAprForOwnSBUInsert.investmentRecDepot.InvestmentInitId, investmenAprForOwnSBUInsert.investmentRecDepot.DepotCode);
-                    var alreadyExistInvestmentRecDepotList = await _investmentRecDepotRepo.ListAsync(alreadyExistSpec);
-                    if (alreadyExistInvestmentRecDepotList.Count > 0)
-                    {
-                        foreach (var v in alreadyExistInvestmentRecDepotList)
-                        {
-                            _investmentRecDepotRepo.Delete(v);
-                            _investmentRecDepotRepo.Savechange();
-                        }
-                    }
-                    if (investmenAprForOwnSBUInsert.InvestmentRecComment.RecStatus != "Not Approved")
-                    {
-                        var invRecDepot = new InvestmentRecDepot
-                        {
-                            //ReferenceNo = investmentRecDto.ReferenceNo,
-                            InvestmentInitId = investmenAprForOwnSBUInsert.investmentRecDepot.InvestmentInitId,
-                            DepotCode = investmenAprForOwnSBUInsert.investmentRecDepot.DepotCode,
-                            DepotName = investmenAprForOwnSBUInsert.investmentRecDepot.DepotName,
-                            EmployeeId = investmenAprForOwnSBUInsert.investmentRecDepot.EmployeeId,
-                            SetOn = DateTimeOffset.Now,
-                            ModifiedOn = DateTimeOffset.Now
-                        };
-                        _investmentRecDepotRepo.Add(invRecDepot);
-                        _investmentRecProductRepo.Savechange();
-                    }
-
                 }
 
 
@@ -1125,32 +1099,6 @@ namespace API.Controllers
                         _investmentRecRepo.Add(invRec);
                         _investmentRecRepo.Savechange();
                     }
-                    var alreadyExistSpec = new InvestmentRecDepotSpecification(investmenAprForOwnSBUInsert.investmentRecDepot.InvestmentInitId, investmenAprForOwnSBUInsert.investmentRecDepot.DepotCode);
-                    var alreadyExistInvestmentRecDepotList = await _investmentRecDepotRepo.ListAsync(alreadyExistSpec);
-                    if (alreadyExistInvestmentRecDepotList.Count > 0)
-                    {
-                        foreach (var v in alreadyExistInvestmentRecDepotList)
-                        {
-                            _investmentRecDepotRepo.Delete(v);
-                            _investmentRecDepotRepo.Savechange();
-                        }
-                    }
-                    if (investmenAprForOwnSBUInsert.InvestmentRecComment.RecStatus != "Not Approved")
-                    {
-                        var invRecDepot = new InvestmentRecDepot
-                        {
-                            //ReferenceNo = investmentRecDto.ReferenceNo,
-                            InvestmentInitId = investmenAprForOwnSBUInsert.investmentRecDepot.InvestmentInitId,
-                            DepotCode = investmenAprForOwnSBUInsert.investmentRecDepot.DepotCode,
-                            DepotName = investmenAprForOwnSBUInsert.investmentRecDepot.DepotName,
-                            EmployeeId = investmenAprForOwnSBUInsert.investmentRecDepot.EmployeeId,
-                            SetOn = DateTimeOffset.Now,
-                            ModifiedOn = DateTimeOffset.Now
-                        };
-                        _investmentRecDepotRepo.Add(invRecDepot);
-                        _investmentRecProductRepo.Savechange();
-                    }
-
                 }
 
 
@@ -1472,6 +1420,31 @@ namespace API.Controllers
                         _investmentRecRepo.Add(invRec);
                         _investmentRecRepo.Savechange();
                     }
+                    var alreadyExistSpecRecDepot = new InvestmentRecDepotSpecification(investmenAprForOwnSBUInsert.investmentRecDepot.InvestmentInitId, investmenAprForOwnSBUInsert.investmentRecDepot.DepotCode);
+                    var alreadyExistInvestmentRecDepotList = await _investmentRecDepotRepo.ListAsync(alreadyExistSpecRecDepot);
+                    if (alreadyExistInvestmentRecDepotList.Count > 0)
+                    {
+                        foreach (var v in alreadyExistInvestmentRecDepotList)
+                        {
+                            _investmentRecDepotRepo.Delete(v);
+                            _investmentRecDepotRepo.Savechange();
+                        }
+                    }
+                    if (investmenAprForOwnSBUInsert.InvestmentRecComment.RecStatus != "Not Approved")
+                    {
+                        var invRecDepot = new InvestmentRecDepot
+                        {
+                            //ReferenceNo = investmentRecDto.ReferenceNo,
+                            InvestmentInitId = investmenAprForOwnSBUInsert.investmentRecDepot.InvestmentInitId,
+                            DepotCode = investmenAprForOwnSBUInsert.investmentRecDepot.DepotCode,
+                            DepotName = investmenAprForOwnSBUInsert.investmentRecDepot.DepotName,
+                            EmployeeId = empId,
+                            SetOn = DateTimeOffset.Now,
+                            ModifiedOn = DateTimeOffset.Now
+                        };
+                        _investmentRecDepotRepo.Add(invRecDepot);
+                        _investmentRecProductRepo.Savechange();
+                    }
                 }
 
 
@@ -1555,6 +1528,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
+     
         [HttpPost("updateAprForOwnSBURSM/{empID}/{aprStatus}/{sbu}/{donationId}")]
         public async Task<ActionResult<InvestmentRecCommentDto>> UpdateInvestmentAprForOwnSBURSM(int empId, string sbu, int donationId, InvestmenAprForOwnSBUInsert investmenAprForOwnSBUInsert)
         {
@@ -1789,23 +1763,33 @@ namespace API.Controllers
                         _investmentRecRepo.Add(invRec);
                         _investmentRecRepo.Savechange();
                     }
+                    var alreadyExistSpecRecDepot = new InvestmentRecDepotSpecification(investmenAprForOwnSBUInsert.investmentRecDepot.InvestmentInitId, investmenAprForOwnSBUInsert.investmentRecDepot.DepotCode);
+                    var alreadyExistInvestmentRecDepotList = await _investmentRecDepotRepo.ListAsync(alreadyExistSpecRecDepot);
+                    if (alreadyExistInvestmentRecDepotList.Count > 0)
+                    {
+                        foreach (var v in alreadyExistInvestmentRecDepotList)
+                        {
+                            _investmentRecDepotRepo.Delete(v);
+                            _investmentRecDepotRepo.Savechange();
+                        }
+                    }
+                    if (investmenAprForOwnSBUInsert.InvestmentRecComment.RecStatus != "Not Approved")
+                    {
+                        var invRecDepot = new InvestmentRecDepot
+                        {
+                            //ReferenceNo = investmentRecDto.ReferenceNo,
+                            InvestmentInitId = investmenAprForOwnSBUInsert.investmentRecDepot.InvestmentInitId,
+                            DepotCode = investmenAprForOwnSBUInsert.investmentRecDepot.DepotCode,
+                            DepotName = investmenAprForOwnSBUInsert.investmentRecDepot.DepotName,
+                            EmployeeId = empId,
+                            SetOn = DateTimeOffset.Now,
+                            ModifiedOn = DateTimeOffset.Now
+                        };
+                        _investmentRecDepotRepo.Add(invRecDepot);
+                        _investmentRecProductRepo.Savechange();
+                    }
                 }
 
-
-
-
-
-
-                //var investmentRecCmntSpec = new InvestmentRecCommentSpecification((int)investmenAprForOwnSBUInsert.InvestmentRecComment.InvestmentInitId, empId);
-                //var investmentRecCmnts = await _investmentRecCommentRepo.ListAsync(investmentRecCmntSpec);
-                //if (investmentRecCmnts.Count > 0)
-                //{
-                //foreach (var v in investmentRecCmnts)
-                //{
-                //    _investmentRecCommentRepo.Delete(v);
-                //    _investmentRecCommentRepo.Savechange();
-                //}
-                //}
                 var existsInvestmentRecs = await _investmentRecCommentRepo.GetByIdAsync(investmenAprForOwnSBUInsert.InvestmentRecComment.Id);
                 var invRecCmnt = new InvestmentRecComment
                 {
@@ -1875,8 +1859,6 @@ namespace API.Controllers
                 throw ex;
             }
         }
-
-
 
         [HttpPost("insertAprForOwnSBUCampaign/{empID}/{aprStatus}/{sbu}/{donationId}/{CampaignDtlId}")]
         public async Task<ActionResult<InvestmentRecCommentDto>> InsertInvestmentAprForOwnSBUCampaign(int empId, string sbu, int donationId, int campaignDtlId, InvestmenAprForOwnSBUInsert investmenAprForOwnSBUInsert)
@@ -2132,7 +2114,7 @@ namespace API.Controllers
                             InvestmentInitId = investmenAprForOwnSBUInsert.investmentRecDepot.InvestmentInitId,
                             DepotCode = investmenAprForOwnSBUInsert.investmentRecDepot.DepotCode,
                             DepotName = investmenAprForOwnSBUInsert.investmentRecDepot.DepotName,
-                            EmployeeId = investmenAprForOwnSBUInsert.investmentRecDepot.EmployeeId,
+                            EmployeeId = empId,
                             SetOn = DateTimeOffset.Now,
                             ModifiedOn = DateTimeOffset.Now
                         };
@@ -2476,7 +2458,7 @@ namespace API.Controllers
                             InvestmentInitId = investmenAprForOwnSBUInsert.investmentRecDepot.InvestmentInitId,
                             DepotCode = investmenAprForOwnSBUInsert.investmentRecDepot.DepotCode,
                             DepotName = investmenAprForOwnSBUInsert.investmentRecDepot.DepotName,
-                            EmployeeId = investmenAprForOwnSBUInsert.investmentRecDepot.EmployeeId,
+                            EmployeeId = empId,
                             SetOn = DateTimeOffset.Now,
                             ModifiedOn = DateTimeOffset.Now
                         };
@@ -2560,8 +2542,6 @@ namespace API.Controllers
                 throw ex;
             }
         }
-
-
 
         [HttpPost("insertAprForOwnSBUGPM/{empID}/{aprStatus}/{sbu}/{donationId}/{CampaignDtlId}")]
         public async Task<ActionResult<InvestmentRecCommentDto>> InsertInvestmentAprForOwnSBUGPM(int empId, string sbu, int donationId, int campaignDtlId, InvestmenAprForOwnSBUInsert investmenAprForOwnSBUInsert)

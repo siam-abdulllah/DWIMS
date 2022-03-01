@@ -823,6 +823,18 @@ export class InvestmentAprComponent implements OnInit {
         return false;
       }
     }
+    if (this.investmentAprService.investmentDetailFormData.paymentFreq == 'Quarterly') {
+      if (this.investmentAprService.investmentDetailFormData.totalMonth  <3) {
+        this.toastr.warning('Duration can not be less than 3 Month for Quarterly Investment ');
+        return false;
+      }
+    }
+    if (this.investmentAprService.investmentDetailFormData.paymentFreq == 'Half Yearly') {
+      if (this.investmentAprService.investmentDetailFormData.totalMonth  <6) {
+        this.toastr.warning('Duration can not be less than 6 Month for Half Yearly Investment');
+        return false;
+      }
+    }
     this.investmentAprService.investmentDetailFormData.investmentInitId = this.investmentAprService.investmentAprFormData.id;
     this.investmentAprService.investmentAprCommentFormData.employeeId = parseInt(this.empId);
     this.investmentAprService.investmentDetailFormData.fromDate = this.datePipe.transform(this.investmentAprService.investmentDetailFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
@@ -844,10 +856,11 @@ export class InvestmentAprComponent implements OnInit {
         this.toastr.success('Save successfully', 'Investment')
       },
       err => {
-        this.investmentAprService.investmentDetailFormData.fromDate = this.datePipe.transform(this.investmentAprService.investmentDetailFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
-        this.investmentAprService.investmentDetailFormData.toDate = this.datePipe.transform(this.investmentAprService.investmentDetailFormData.toDate, 'yyyy-MM-dd HH:mm:ss');
-        this.investmentAprService.investmentDetailFormData.commitmentFromDate = this.datePipe.transform(this.investmentAprService.investmentDetailFormData.commitmentFromDate, 'yyyy-MM-dd HH:mm:ss');
-        this.investmentAprService.investmentDetailFormData.commitmentToDate = this.datePipe.transform(this.investmentAprService.investmentDetailFormData.commitmentToDate, 'yyyy-MM-dd HH:mm:ss');
+        debugger
+        this.investmentAprService.investmentDetailFormData.fromDate = new Date(this.investmentAprService.investmentDetailFormData.fromDate);
+        this.investmentAprService.investmentDetailFormData.toDate = new Date(this.investmentAprService.investmentDetailFormData.toDate); 
+        this.investmentAprService.investmentDetailFormData.commitmentFromDate = new Date(this.investmentAprService.investmentDetailFormData.commitmentFromDate);
+        this.investmentAprService.investmentDetailFormData.commitmentToDate = new Date(this.investmentAprService.investmentDetailFormData.commitmentToDate);
         this.SpinnerService.hide();
         console.log(err);
       }
@@ -912,7 +925,7 @@ export class InvestmentAprComponent implements OnInit {
         return false;
       }
     }
-    if (this.userRole == ' ' || this.userRole == 'Administrator') {
+    if (this.userRole == 'RSM' || this.userRole == 'Administrator') {
       if (this.investmentAprService.investmentDetailFormData.paymentMethod == 'Cash') {
         if (this.investmentAprService.investmentAprCommentFormData.recStatus != 'Not Approved') {
           if (this.sbu == this.investmentAprService.investmentAprFormData.sbu && this.userRole != 'Administrator') {
@@ -938,6 +951,18 @@ export class InvestmentAprComponent implements OnInit {
         return false;
       }
     }
+    if (this.investmentAprService.investmentDetailFormData.paymentFreq == 'Quarterly') {
+      if (this.investmentAprService.investmentDetailFormData.totalMonth  <3) {
+        this.toastr.warning('Duration can not be less than 3 Month for Quarterly Investment ');
+        return false;
+      }
+    }
+    if (this.investmentAprService.investmentDetailFormData.paymentFreq == 'Half Yearly') {
+      if (this.investmentAprService.investmentDetailFormData.totalMonth  <6) {
+        this.toastr.warning('Duration can not be less than 6 Month for Half Yearly Investment');
+        return false;
+      }
+    }
     this.investmentAprService.investmentDetailFormData.investmentInitId = this.investmentAprService.investmentAprFormData.id;
     this.investmentAprService.investmentAprCommentFormData.employeeId = parseInt(this.empId);
     this.investmentAprService.investmentDetailFormData.fromDate = this.datePipe.transform(this.investmentAprService.investmentDetailFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
@@ -959,10 +984,10 @@ export class InvestmentAprComponent implements OnInit {
         this.toastr.success('Save successfully', 'Investment')
       },
       err => {
-        this.investmentAprService.investmentDetailFormData.fromDate = this.datePipe.transform(this.investmentAprService.investmentDetailFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
-        this.investmentAprService.investmentDetailFormData.toDate = this.datePipe.transform(this.investmentAprService.investmentDetailFormData.toDate, 'yyyy-MM-dd HH:mm:ss');
-        this.investmentAprService.investmentDetailFormData.commitmentFromDate = this.datePipe.transform(this.investmentAprService.investmentDetailFormData.commitmentFromDate, 'yyyy-MM-dd HH:mm:ss');
-        this.investmentAprService.investmentDetailFormData.commitmentToDate = this.datePipe.transform(this.investmentAprService.investmentDetailFormData.commitmentToDate, 'yyyy-MM-dd HH:mm:ss');
+        this.investmentAprService.investmentDetailFormData.fromDate = new Date(this.investmentAprService.investmentDetailFormData.fromDate);
+        this.investmentAprService.investmentDetailFormData.toDate = new Date(this.investmentAprService.investmentDetailFormData.toDate); 
+        this.investmentAprService.investmentDetailFormData.commitmentFromDate = new Date(this.investmentAprService.investmentDetailFormData.commitmentFromDate);
+        this.investmentAprService.investmentDetailFormData.commitmentToDate = new Date(this.investmentAprService.investmentDetailFormData.commitmentToDate);
         this.SpinnerService.hide();
         console.log(err);
       }

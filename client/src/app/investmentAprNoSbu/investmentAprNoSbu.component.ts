@@ -464,6 +464,9 @@ export class InvestmentAprNoSbuComponent implements OnInit {
         this.investmentAprService.investmentDetailFormData.id = 0;
         this.investmentAprService.investmentDetailFormData.fromDate = new Date(data.fromDate);
         this.investmentAprService.investmentDetailFormData.toDate = new Date(data.toDate);
+        this.investmentAprService.investmentDetailFormData.commitmentFromDate = new Date(this.investmentAprService.investmentDetailFormData.commitmentFromDate);
+        this.investmentAprService.investmentDetailFormData.commitmentToDate = new Date(this.investmentAprService.investmentDetailFormData.commitmentToDate);
+       
         if (data.paymentMethod == 'Cash') {
           this.getInvestmentRecDepot();
           this.isDepotRequire = false;
@@ -504,7 +507,9 @@ export class InvestmentAprNoSbuComponent implements OnInit {
         this.investmentAprService.investmentDetailFormData.id = 0;
         this.investmentAprService.investmentDetailFormData.fromDate = new Date(data.fromDate);
         this.investmentAprService.investmentDetailFormData.toDate = new Date(data.toDate);
-
+        this.investmentAprService.investmentDetailFormData.commitmentFromDate = new Date(this.investmentAprService.investmentDetailFormData.commitmentFromDate);
+        this.investmentAprService.investmentDetailFormData.commitmentToDate = new Date(this.investmentAprService.investmentDetailFormData.commitmentToDate);
+       
         if (data.paymentMethod == 'Cash') {
           this.getInvestmentRecDepot();
           this.isDepotRequire = false;
@@ -742,6 +747,7 @@ export class InvestmentAprNoSbuComponent implements OnInit {
       this.toastr.warning('Insert Investment Initialisation First', 'Investment Product');
       return false;
     }
+
     if (this.investmentTargetedProds !== undefined) {
       for (let i = 0; i < this.investmentTargetedProds.length; i++) {
         if (this.investmentTargetedProds[i].productInfo.id == this.investmentAprService.investmentTargetedProdFormData.productId) {
@@ -754,9 +760,23 @@ export class InvestmentAprNoSbuComponent implements OnInit {
       this.toastr.warning('Select Product First', 'Investment Product');
       return false;
     }
-
+if (this.investmentAprService.investmentDetailFormData.paymentFreq == 'Quarterly') {
+      if (this.investmentAprService.investmentDetailFormData.totalMonth  <3) {
+        this.toastr.warning('Duration can not be less than 3 Month for Quarterly Investment ');
+        return false;
+      }
+    }
+    if (this.investmentAprService.investmentDetailFormData.paymentFreq == 'Half Yearly') {
+      if (this.investmentAprService.investmentDetailFormData.totalMonth  <6) {
+        this.toastr.warning('Duration can not be less than 6 Month for Half Yearly Investment');
+        return false;
+      }
+    }
     this.investmentAprService.investmentDetailFormData.fromDate  = this.datePipe.transform(this.investmentAprService.investmentDetailFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
     this.investmentAprService.investmentDetailFormData.toDate= this.datePipe.transform(this.investmentAprService.investmentDetailFormData.toDate, 'yyyy-MM-dd HH:mm:ss');
+  
+    this.investmentAprService.investmentDetailFormData.commitmentFromDate  = this.datePipe.transform(this.investmentAprService.investmentDetailFormData.commitmentFromDate, 'yyyy-MM-dd HH:mm:ss');
+    this.investmentAprService.investmentDetailFormData.commitmentToDate= this.datePipe.transform(this.investmentAprService.investmentDetailFormData.commitmentToDate, 'yyyy-MM-dd HH:mm:ss');
   
 
     this.investmentAprService.insertInvestAprNoSBU(parseInt(this.empId), this.investmentAprService.investmentAprFormData.sbu,this.investmentTargetedProds).subscribe(
@@ -771,7 +791,9 @@ export class InvestmentAprNoSbuComponent implements OnInit {
       err => {
         this.investmentAprService.investmentDetailFormData.fromDate = new Date(this.investmentAprService.investmentDetailFormData.fromDate);
         this.investmentAprService.investmentDetailFormData.toDate = new Date(this.investmentAprService.investmentDetailFormData.toDate);
-        console.log(err);
+        this.investmentAprService.investmentDetailFormData.commitmentFromDate = new Date(this.investmentAprService.investmentDetailFormData.commitmentFromDate);
+        this.investmentAprService.investmentDetailFormData.commitmentToDate = new Date(this.investmentAprService.investmentDetailFormData.commitmentToDate);
+       console.log(err);
         this.SpinnerService.hide();
       }
     );
@@ -909,9 +931,24 @@ export class InvestmentAprNoSbuComponent implements OnInit {
       this.toastr.warning('Select Product First', 'Investment Product');
       return false;
     }
+    if (this.investmentAprService.investmentDetailFormData.paymentFreq == 'Quarterly') {
+      if (this.investmentAprService.investmentDetailFormData.totalMonth  <3) {
+        this.toastr.warning('Duration can not be less than 3 Month for Quarterly Investment ');
+        return false;
+      }
+    }
+    if (this.investmentAprService.investmentDetailFormData.paymentFreq == 'Half Yearly') {
+      if (this.investmentAprService.investmentDetailFormData.totalMonth  <6) {
+        this.toastr.warning('Duration can not be less than 6 Month for Half Yearly Investment');
+        return false;
+      }
+    }
     this.investmentAprService.investmentDetailFormData.investmentInitId = this.investmentAprService.investmentAprFormData.id;
     this.investmentAprService.investmentDetailFormData.fromDate  = this.datePipe.transform(this.investmentAprService.investmentDetailFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
     this.investmentAprService.investmentDetailFormData.toDate= this.datePipe.transform(this.investmentAprService.investmentDetailFormData.toDate, 'yyyy-MM-dd HH:mm:ss');
+  
+    this.investmentAprService.investmentDetailFormData.commitmentFromDate  = this.datePipe.transform(this.investmentAprService.investmentDetailFormData.commitmentFromDate, 'yyyy-MM-dd HH:mm:ss');
+    this.investmentAprService.investmentDetailFormData.commitmentToDate= this.datePipe.transform(this.investmentAprService.investmentDetailFormData.commitmentToDate, 'yyyy-MM-dd HH:mm:ss');
   
     this.SpinnerService.show();
     this.investmentAprService.updateInvestAprNoSBU(parseInt(this.empId), this.investmentAprService.investmentAprFormData.sbu,this.investmentTargetedProds).subscribe(
@@ -926,7 +963,9 @@ export class InvestmentAprNoSbuComponent implements OnInit {
       err => {
         this.investmentAprService.investmentDetailFormData.fromDate = new Date(this.investmentAprService.investmentDetailFormData.fromDate);
         this.investmentAprService.investmentDetailFormData.toDate = new Date(this.investmentAprService.investmentDetailFormData.toDate);
-        console.log(err);
+        this.investmentAprService.investmentDetailFormData.commitmentFromDate = new Date(this.investmentAprService.investmentDetailFormData.commitmentFromDate);
+        this.investmentAprService.investmentDetailFormData.commitmentToDate = new Date(this.investmentAprService.investmentDetailFormData.commitmentToDate);
+       console.log(err);
         this.SpinnerService.hide();
       }
     );

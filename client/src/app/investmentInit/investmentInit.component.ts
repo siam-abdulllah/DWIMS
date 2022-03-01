@@ -1224,6 +1224,18 @@ export class InvestmentInitComponent implements OnInit {
         return false;
       }
     }
+    if (this.investmentInitService.investmentDetailFormData.paymentFreq == 'Quarterly') {
+      if (this.investmentInitService.investmentDetailFormData.totalMonth  <3) {
+        this.toastr.warning('Duration can not be less than 3 Month for Quarterly Investment ');
+        return false;
+      }
+    }
+    if (this.investmentInitService.investmentDetailFormData.paymentFreq == 'Half Yearly') {
+      if (this.investmentInitService.investmentDetailFormData.totalMonth  <6) {
+        this.toastr.warning('Duration can not be less than 6 Month for Half Yearly Investment');
+        return false;
+      }
+    }
     this.investmentInitService.investmentDetailFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
     if (this.investmentInitService.investmentDetailFormData.id == null || this.investmentInitService.investmentDetailFormData.id == undefined || this.investmentInitService.investmentDetailFormData.id == 0) {
       this.SpinnerService.show();

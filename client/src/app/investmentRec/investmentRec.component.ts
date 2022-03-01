@@ -659,7 +659,18 @@ export class InvestmentRecComponent implements OnInit {
       this.toastr.warning('Please Add the Selected Product First', 'Investment ');
       return false;
     }
-    
+    if (this.investmentRecService.investmentDetailFormData.paymentFreq == 'Quarterly') {
+      if (this.investmentRecService.investmentDetailFormData.totalMonth  <3) {
+        this.toastr.warning('Duration can not be less than 3 Month for Quarterly Investment ');
+        return false;
+      }
+    }
+    if (this.investmentRecService.investmentDetailFormData.paymentFreq == 'Half Yearly') {
+      if (this.investmentRecService.investmentDetailFormData.totalMonth  <6) {
+        this.toastr.warning('Duration can not be less than 6 Month for Half Yearly Investment');
+        return false;
+      }
+    }
     this.SpinnerService.show();
     if (this.sbu == this.investmentRecService.investmentRecFormData.sbu) {
       this.investmentRecService.investmentDetailFormData.fromDate  = this.datePipe.transform(this.investmentRecService.investmentDetailFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
@@ -681,12 +692,11 @@ export class InvestmentRecComponent implements OnInit {
           
         },
         err => { 
-          this.investmentRecService.investmentDetailFormData.fromDate  = this.datePipe.transform(this.investmentRecService.investmentDetailFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
-          this.investmentRecService.investmentDetailFormData.toDate= this.datePipe.transform(this.investmentRecService.investmentDetailFormData.toDate, 'yyyy-MM-dd HH:mm:ss');
-    
-          this.investmentRecService.investmentDetailFormData.commitmentFromDate  = this.datePipe.transform(this.investmentRecService.investmentDetailFormData.commitmentFromDate, 'yyyy-MM-dd HH:mm:ss');
-          this.investmentRecService.investmentDetailFormData.commitmentToDate= this.datePipe.transform(this.investmentRecService.investmentDetailFormData.commitmentToDate, 'yyyy-MM-dd HH:mm:ss');
-    
+          this.investmentRecService.investmentDetailFormData.fromDate = new Date(this.investmentRecService.investmentDetailFormData.fromDate);
+        this.investmentRecService.investmentDetailFormData.toDate = new Date(this.investmentRecService.investmentDetailFormData.toDate); 
+        this.investmentRecService.investmentDetailFormData.commitmentFromDate = new Date(this.investmentRecService.investmentDetailFormData.commitmentFromDate);
+        this.investmentRecService.investmentDetailFormData.commitmentToDate = new Date(this.investmentRecService.investmentDetailFormData.commitmentToDate);
+        
           console.log(err);
           this.SpinnerService.hide();
          }
@@ -779,7 +789,18 @@ export class InvestmentRecComponent implements OnInit {
       this.toastr.warning('Please Add the Selected Product First', 'Investment ');
       return false;
     }
-    
+    if (this.investmentRecService.investmentDetailFormData.paymentFreq == 'Quarterly') {
+      if (this.investmentRecService.investmentDetailFormData.totalMonth  <3) {
+        this.toastr.warning('Duration can not be less than 3 Month for Quarterly Investment ');
+        return false;
+      }
+    }
+    if (this.investmentRecService.investmentDetailFormData.paymentFreq == 'Half Yearly') {
+      if (this.investmentRecService.investmentDetailFormData.totalMonth  <6) {
+        this.toastr.warning('Duration can not be less than 6 Month for Half Yearly Investment');
+        return false;
+      }
+    }
     this.SpinnerService.show();
     if (this.sbu == this.investmentRecService.investmentRecFormData.sbu) {
       this.investmentRecService.investmentDetailFormData.fromDate  = this.datePipe.transform(this.investmentRecService.investmentDetailFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
@@ -800,12 +821,11 @@ export class InvestmentRecComponent implements OnInit {
           this.toastr.info('Updated successfully', 'Investment ')
         },
         err => { 
-          this.investmentRecService.investmentDetailFormData.fromDate  = this.datePipe.transform(this.investmentRecService.investmentDetailFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
-          this.investmentRecService.investmentDetailFormData.toDate= this.datePipe.transform(this.investmentRecService.investmentDetailFormData.toDate, 'yyyy-MM-dd HH:mm:ss');
-
-          this.investmentRecService.investmentDetailFormData.commitmentFromDate  = this.datePipe.transform(this.investmentRecService.investmentDetailFormData.commitmentFromDate, 'yyyy-MM-dd HH:mm:ss');
-          this.investmentRecService.investmentDetailFormData.commitmentToDate= this.datePipe.transform(this.investmentRecService.investmentDetailFormData.commitmentToDate, 'yyyy-MM-dd HH:mm:ss');
-          console.log(err); 
+          this.investmentRecService.investmentDetailFormData.fromDate = new Date(this.investmentRecService.investmentDetailFormData.fromDate);
+          this.investmentRecService.investmentDetailFormData.toDate = new Date(this.investmentRecService.investmentDetailFormData.toDate); 
+          this.investmentRecService.investmentDetailFormData.commitmentFromDate = new Date(this.investmentRecService.investmentDetailFormData.commitmentFromDate);
+          this.investmentRecService.investmentDetailFormData.commitmentToDate = new Date(this.investmentRecService.investmentDetailFormData.commitmentToDate);
+           console.log(err); 
           this.SpinnerService.hide();
         }
       );

@@ -1310,7 +1310,7 @@ namespace API.Controllers
                 " WHERE ir.InvestmentInitId = I.Id " +
                 " AND (ir.RecStatus = 'Approved' OR ir.RecStatus = 'Not Approved' OR ir.RecStatus = 'Cancelled')" +
                 " ) " +
-                " NOT EXISTS ( " +
+                " AND  NOT EXISTS ( " +
                 " SELECT InvestmentInitId " +
                 " FROM InvestmentInstitution  " +
                 " WHERE InvestmentInitId = " + initId + " " +
@@ -1429,7 +1429,7 @@ namespace API.Controllers
                 " WHERE ir.InvestmentInitId = I.Id " +
                 " AND (ir.RecStatus = 'Approved' OR ir.RecStatus = 'Not Approved' OR ir.RecStatus = 'Cancelled')" +
                 " ) " +
-                " NOT EXISTS ( " +
+                " AND NOT EXISTS ( " +
                 " SELECT InvestmentInitId " +
                 " FROM InvestmentCampaign  " +
                 " WHERE InvestmentInitId = " + initId + " " +
@@ -1557,7 +1557,7 @@ namespace API.Controllers
                 " WHERE ir.InvestmentInitId = I.Id " +
                 " AND (ir.RecStatus = 'Approved' OR ir.RecStatus = 'Not Approved' OR ir.RecStatus = 'Cancelled')" +
                 " ) " +
-                " NOT EXISTS ( " +
+                " AND  NOT EXISTS ( " +
                 " SELECT InvestmentInitId " +
                 " FROM InvestmentBcds  " +
                 " WHERE InvestmentInitId = " + initId + " " +
@@ -1679,7 +1679,7 @@ namespace API.Controllers
                 " WHERE ir.InvestmentInitId = I.Id " +
                 " AND (ir.RecStatus = 'Approved' OR ir.RecStatus = 'Not Approved' OR ir.RecStatus = 'Cancelled')" +
                 " ) " +
-                " NOT EXISTS ( " +
+                " AND  NOT EXISTS ( " +
                 " SELECT InvestmentInitId " +
                 " FROM InvestmentSociety  " +
                 " WHERE InvestmentInitId = " + initId + " " +
