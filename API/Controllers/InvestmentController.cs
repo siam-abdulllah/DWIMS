@@ -344,17 +344,17 @@ namespace API.Controllers
                     SBUName = empData.SBUName,
                     SBU = empData.SBU,
                     Confirmation = false,
-                    SetOn = DateTimeOffset.Now.AddMonths(1)
+                    SetOn = DateTimeOffset.Now
                 };
                 _investmentInitRepo.Add(investmentInit);
                 _investmentInitRepo.Savechange();
                 List<SqlParameter> parms = new List<SqlParameter>
                     {
-                        
+
                         new SqlParameter("@IID", investmentInit.Id),
                         new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
                     };
-                var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentRefNoInsert_New @IID,@r out", parms.ToArray());
+                var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentRefNoInsert @IID,@r out", parms.ToArray());
                 return new InvestmentInitDto
                 {
                     Id = investmentInit.Id,
@@ -718,7 +718,7 @@ namespace API.Controllers
                 // {
                 //     return BadRequest(new ApiResponse(0, "Duplicate data found.Please Reload your page"));
                 // }
-        
+
                 var investmentDetail = new InvestmentDetail
                 {
                     Id = investmentDetailDto.Id,
@@ -1411,7 +1411,7 @@ namespace API.Controllers
         #region investmentCampaign
 
         [HttpPost("IsCampaignInvestmentApprovalPending")]
-        public async Task<int> IsCampaignInvestmentApprovalPending(int initId, int campaignDtlId,int doctorId)
+        public async Task<int> IsCampaignInvestmentApprovalPending(int initId, int campaignDtlId, int doctorId)
         {
             var iInit = await _investmentInitRepo.GetByIdAsync(initId);
             string qry = " SELECT CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count " +
@@ -1449,7 +1449,7 @@ namespace API.Controllers
         {
             try
             {
-                if (await IsCampaignInvestmentApprovalPending(investmentCampaignDto.InvestmentInitId, investmentCampaignDto.CampaignDtlId,investmentCampaignDto.DoctorId) > 0)
+                if (await IsCampaignInvestmentApprovalPending(investmentCampaignDto.InvestmentInitId, investmentCampaignDto.CampaignDtlId, investmentCampaignDto.DoctorId) > 0)
                 {
                     return BadRequest(new ApiResponse(0, "Investment Approval is Pending for this Campaign!"));
                 }
@@ -2084,7 +2084,7 @@ namespace API.Controllers
 
 
 
-                 
+
 
                 var results = _dbContext.LastFiveInvestmentInfo.FromSqlRaw(qry).ToList();
                 return results;
