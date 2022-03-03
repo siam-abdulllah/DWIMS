@@ -365,98 +365,11 @@ export class ReportInvestmentComponent implements OnInit {
     if (rpt == "Campaign / Sub Campaign Wise Investment Report") {
       this.getCampSubCampWiseInvestmentReport();
     }
-    if (rpt == "Yearly Budget") {
-      this.getYearlyBudgetReport();
-    }
     if (rpt == "SBU wise Budget And Expense Summary") {
       this.getSBUWiseBudgetInvest();
     }
   }
 
-
-/// ********************************************
-/// Generate Yearly Budget And Expense
-/// ********************************************
-
-getYearlyBudgetReport()  {
-  const investmentReportSearchDto: IInvestmentReportSearchDto = {
-    fromDate: this.investmentSearchForm.value.fromDate,
-    toDate: this.investmentSearchForm.value.toDate,
-    sbu: this.investmentSearchForm.value.sbu,
-    userId: 0,
-    donationType: this.investmentSearchForm.value.donationType,
-    investType: this.investmentSearchForm.value.donationTo,
-    institutionId: this.investmentSearchForm.value.institutionId,
-    societyId: this.investmentSearchForm.value.societyId,
-    bcdsId: this.investmentSearchForm.value.bcdsId,
-    doctorId: this.investmentSearchForm.value.doctorId,
-    locationType: this.investmentSearchForm.value.locationType,
-    territoryCode: this.investmentSearchForm.value.territoryCode,
-    marketCode: this.investmentSearchForm.value.marketCode,
-    regionCode: this.investmentSearchForm.value.regionCode,
-    zoneCode: this.investmentSearchForm.value.zoneCode,
-    divisionCode: this.investmentSearchForm.value.divisionCode,
-    brandCode: this.investmentSearchForm.value.brandCode,
-    campaignName: this.investmentSearchForm.value.campaignName,
-    subCampaignName: this.investmentSearchForm.value.subCampaignName,
-  };
-
-  this.reportInvestmentService.GetYearlyBudgetReport(investmentReportSearchDto).subscribe(resp => {
-    // this.reportInvestmentService.getInsSocietyBCDSWiseInvestment().subscribe(resp => {  
-    this.yearlyBudgetReport = resp as IYearlyBudgetReport[];
-    debugger;
-    if (this.yearlyBudgetReport.length <= 0) {
-      this.toastr.warning('No Data Found', 'Report');
-    }
-  
-    this.viewYearlyBudgetReport();
-  }, error => {
-    console.log(error);
-  });
-}
-
-/// ********************************************
-/// Generate Yearly Budget And Expense
-/// ********************************************
-
-viewYearlyBudgetReport() {
-
-  if (this.yearlyBudgetReport.length <= 0) {
-    return false;
-  }
-
-  const r =  this.yearlyBudgetReport as IYearlyBudgetReport[];
-
-  let row: any[] = [];
-  let rowD: any[] = [];
-  let col = ['SBU', 'Donation Type','Yearly Budget' , 'Expense', 'Remaining', 'Usage (%)', 'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec' ]; // initialization for headers
-
-  debugger;
-  for (const a of r) {
-    row.push(a.sbuName);
-    row.push(a.donationTypeName);
-    row.push((a.amount).toLocaleString());
-    row.push((a.expense).toLocaleString());
-    row.push((a.amount - a.expense).toLocaleString());
-    row.push(Number(a.expense/a.amount * 100).toFixed(2));
-    row.push(Number(a.january).toFixed(2));
-    row.push(Number(a.february).toFixed(2));
-    row.push(Number(a.march).toFixed(2));
-    row.push(Number(a.april).toFixed(2));
-    row.push(Number(a.may).toFixed(2));
-    row.push(Number(a.june).toFixed(2));
-    row.push(Number(a.july).toFixed(2));
-    row.push(Number(a.august).toFixed(2));
-    row.push(Number(a.september).toFixed(2));
-    row.push(Number(a.october).toFixed(2));
-    row.push(Number(a.november).toFixed(2));
-    row.push(Number(a.december).toFixed(2));
-    rowD.push(row);
-    row = [];
-  }
-  //this.getReport(col, rowD, title, orgName, orgAddress);
-  this.getReportLetter(col, rowD, 'Yearly Budget Report', 'Square Pharmaceuticals Ltd.', '48, Square Center, Mohakhali');
-}
 
 
 

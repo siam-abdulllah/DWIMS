@@ -217,7 +217,7 @@ namespace API.Controllers
                 }
                 if (!string.IsNullOrEmpty(dt.DonationType))
                 {
-                    qry += " AND b.DonationTypeName = " + dt.DonationType +" ";
+                    qry += " AND b.DonationTypeName = '" + dt.DonationType +"' ";
                 }
 
                  qry += " order by b.sbuname, b.donationid ";
