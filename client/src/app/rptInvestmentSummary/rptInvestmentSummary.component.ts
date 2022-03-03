@@ -57,41 +57,11 @@ export class RptInvestSummaryComponent implements OnInit {
     private SpinnerService: NgxSpinnerService,private accountService: AccountService,) { }
 
   ngOnInit() {
-
-    // var url_string = window.location.href
-    // var url = new URL(url_string);
-    // var v=url.pathname.split("/");
-
     this.resetForm();
     this.getEmployeeId();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-blue' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
-    // this.configs = {
-    //   currentPage: 1,
-    //   itemsPerPage: 10,
-    //   totalItems:50,
-    //   };
-      //this.GetData(v[3]);
   }
-
-  
-  // GetData(param)
-  // {
-
-  //   this.date=new Date();
-  //   let latest_date =this.datepipe.transform(this.date, 'yyyy-MM-dd');
-
-  //   this.reportService.rptInvestSummaryFormData.fromDate = new Date(new Date().getFullYear(), 0, 1);;
-  //   this.reportService.rptInvestSummaryFormData.toDate = this.date;
-  //   if(param== "Approved")
-  //   {
-  //     alert('Approved');
-  //   }
-  //   if(param== "Pending")
-  //   {
-  //     alert('Pending');
-  //   }
-  // }
 
   getEmployeeId() {
     this.empId = this.accountService.getEmployeeId();
