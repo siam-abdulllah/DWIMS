@@ -1323,8 +1323,6 @@ namespace API.Controllers
             return result[0].Count;
         }
 
-
-
         [HttpPost("insertInvestmentInstitution")]
         public async Task<ActionResult<InvestmentInstitutionDto>> InsertInvestmentInstitution(InvestmentInstitutionDto investmentInstitutionDto)
         {
@@ -1334,7 +1332,17 @@ namespace API.Controllers
                 {
                     return BadRequest(new ApiResponse(0, "Investment Approval is Pending for this Institution!"));
                 }
-                var investmentInstitution = new InvestmentInstitution
+                var alreadyExistSpec = new InvestmentInstitutionSpecification(investmentInstitutionDto.InvestmentInitId);
+                var alreadyExistInvestmentInstitutionList = await _investmentInstitutionRepo.ListAsync(alreadyExistSpec);
+                if (alreadyExistInvestmentInstitutionList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentInstitutionList)
+                    {
+                        _investmentInstitutionRepo.Delete(v);
+                        _investmentInstitutionRepo.Savechange();
+                    }
+                }
+                    var investmentInstitution = new InvestmentInstitution
                 {
                     //ReferenceNo = investmentInstitutionDto.ReferenceNo,
                     InvestmentInitId = investmentInstitutionDto.InvestmentInitId,
@@ -1560,7 +1568,8 @@ namespace API.Controllers
                 " AND  NOT EXISTS ( " +
                 " SELECT InvestmentInitId " +
                 " FROM InvestmentBcds  " +
-                " WHERE InvestmentInitId = " + initId + " " +
+                " WHERE InvestmentInitId = " + initId + "  " +
+                " ) " +
                 " AND BcdsId = " + bcdsId + " " +
                 " AND i.MarketCode = '" + iInit.MarketCode + "' " +
                 " AND i.DonationId = '" + iInit.DonationId + "' " +
@@ -1683,6 +1692,7 @@ namespace API.Controllers
                 " SELECT InvestmentInitId " +
                 " FROM InvestmentSociety  " +
                 " WHERE InvestmentInitId = " + initId + " " +
+                " ) " +
                 " AND SocietyId = " + societyId + " " +
                 " AND i.MarketCode = '" + iInit.MarketCode + "' " +
                 " AND i.DonationId = '" + iInit.DonationId + "' " +
