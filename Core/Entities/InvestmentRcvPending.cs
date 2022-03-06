@@ -29,6 +29,7 @@ namespace Core.Entities
         public string MarketName { get; set; }
         public string MarketGroupCode { get; set; }
         public string MarketGroupName { get; set; }
+        public string PayRefNo { get; set; }
         public bool Confirmation { get; set; }
         public DateTimeOffset? SubmissionDate { get; set; }
         public string ApprovedBy { get; set; }

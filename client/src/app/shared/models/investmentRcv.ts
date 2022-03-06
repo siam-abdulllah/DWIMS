@@ -21,6 +21,7 @@ export interface IInvestmentInit {
     approvedBy: string;
     approvedDate: Date;
     depotName: string;
+    payRefNo: string;
 }
  
 export class InvestmentInit implements IInvestmentInit {
@@ -37,6 +38,7 @@ export class InvestmentInit implements IInvestmentInit {
     approvedBy: string;
     approvedDate: Date;
     depotName: string;
+    payRefNo: string;
 }
 
 
@@ -294,6 +296,7 @@ export interface IInvestmentRcv {
     proposedAmount: string;
     purpose: string;
     marketCode: string;
+    payRefNo: string;
     sbu: string;
     fromDate: Date;
     toDate: Date;
@@ -315,6 +318,7 @@ export class InvestmentRcv implements IInvestmentRcv {
     proposedAmount: string;
     purpose: string;
     marketCode: string;
+    payRefNo: string;
     sbu: string;
     fromDate: Date;
     toDate: Date;

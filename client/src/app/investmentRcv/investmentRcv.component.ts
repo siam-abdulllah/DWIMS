@@ -478,6 +478,7 @@ export class InvestmentRcvComponent implements OnInit {
       sbu: this.investmentRcvService.investmentDetailFormData.sbu,
       fromDate: this.investmentRcvService.investmentDetailFormData.fromDate,
       toDate: this.investmentRcvService.investmentDetailFormData.toDate,
+      payRefNo: this.investmentRcvService.investmentDetailFormData.payRefNo,
       receiveStatus: this.investmentRcvService.investmentRcvCommentFormData.receiveStatus,
       comments: this.investmentRcvService.investmentRcvCommentFormData.comments,
       employeeId: parseInt(this.empId),
@@ -523,6 +524,7 @@ export class InvestmentRcvComponent implements OnInit {
       proposedAmount: this.investmentRcvService.investmentDetailFormData.proposedAmount,
       purpose: this.investmentRcvService.investmentDetailFormData.purpose,
       marketCode: this.investmentRcvService.investmentDetailFormData.marketCode,
+      payRefNo: this.investmentRcvService.investmentDetailFormData.payRefNo,
       sbu: this.investmentRcvService.investmentDetailFormData.sbu,
       fromDate: this.investmentRcvService.investmentDetailFormData.fromDate,
       toDate: this.investmentRcvService.investmentDetailFormData.toDate,
@@ -735,6 +737,7 @@ export interface IInvestmentRcvInsert {
   proposedAmount: string;
   priority: number;
   purpose: string;
+  payRefNo: string;
   receiveStatus: string;
 }
 
@@ -764,6 +767,7 @@ export class InvestmentRcvInsert implements IInvestmentRcvInsert {
   totalMonth: number;
   proposedAmount: string;
   priority: number;
+  payRefNo: string;
   purpose: string;
   receiveStatus: string;
 }
