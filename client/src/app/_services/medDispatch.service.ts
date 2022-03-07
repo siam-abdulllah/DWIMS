@@ -67,6 +67,9 @@ export class MedDispatchService {
     return this.http.post(this.baseUrl + 'depotPrinting/getRptChqDis/', model);
   }
 
+  mpoPendingPayment(empId:number,userRole:string){    
+    return this.http.get(this.baseUrl + 'depotPrinting/mpoPendingPayment/'+ empId+'/'+userRole);
+  }
   // removeInvestmentMedicineProd() {
   //   return this.http.post(this.baseUrl + 'medDispatch/removeInvestmentMedicineProd', this.investmentMedicineProdFormData,
   //     { responseType: 'text' });

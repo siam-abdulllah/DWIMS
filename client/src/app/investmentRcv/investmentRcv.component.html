@@ -616,7 +616,7 @@
                                                         <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" [disabled]="isInvOther" required name="proposedAmount" placeholder="Amount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentRcvService.investmentDetailFormData.proposedAmount" readonly>
+                                                        <input class="form-control" [disabled]="isInvOther" required name="proposedAmount" placeholder="Amount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentRcvService.investmentRcvFormData.proposedAmount" readonly>
                                                         <!-- <div class="invalid-feedback" *ngIf="proposedAmount.errors?.pattern">Only numeric value</div> -->
                                                     </div>
                                                 </div>
@@ -886,6 +886,7 @@
                                 <th scope="col" style="width: 8%">Approved By</th>
                                 <th scope="col" style="width: 8%">Approved Date</th>
                                 <th scope="col" style="width: 8%">Depot Name</th>
+                                <th scope="col" style="width: 0;display:none;">Approved Amount</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -903,6 +904,7 @@
                                 <td>{{a.approvedBy}}</td>
                                 <td>{{a.approvedDate | date:'dd/MM/yyyy'}}</td>
                                 <td>{{a.depotName}}</td>
+                                <td style="display:none;">{{a.proposedAmount}}</td>
                             </tr>
                         </tbody>
                     </table>

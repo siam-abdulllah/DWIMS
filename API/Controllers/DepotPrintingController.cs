@@ -129,6 +129,51 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("mpoPendingPayment/{empId}/{userRole}")]
+        public object MPOPaymentPending(int empId, string userRole)
+        {
+            try
+            {
+                string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode= '" + empId + "' ";
+                var empData = _db.Employee.FromSqlRaw(empQry).ToList();
+
+                string qry = " SELECT DISTINCT a.id,1 AS DataStatus, Sysdatetimeoffset() AS SetOn, Sysdatetimeoffset() AS ModifiedOn, a.referenceno, dtl.PaymentRefNo PayRefNo, a.proposefor,a.donationto,a.donationid,ISNULL(depo.DepotName, 'CHQ') DepotCode,'NA'SAPRefNo,  " +
+                    " null PaymentDate,dtl.ApprovedAmount as DispatchAmt, null Remarks, d.donationtypename, inDetail.proposedamount, e.employeename, e.marketname, ir.seton 'ApprovedDate', aprBy.employeename + ',' + aprBy.designationname 'ApprovedBy' " +
+                    " FROM investmentinit a  " +
+                    " INNER JOIN investmentrec inDetail ON a.id = inDetail.investmentinitid " +
+                    " INNER JOIN InvestmentDetailTracker dtl on dtl.InvestmentInitId = a.Id " +
+                    " LEFT JOIN investmentreccomment ir ON a.id = ir.investmentinitid " +
+                    " LEFT JOIN investmentrecdepot depo ON depo.investmentinitid = ir.investmentinitid " +
+                    " LEFT JOIN employee e ON a.employeeid = e.id " +
+                    " LEFT JOIN donation d ON a.donationid = d.id " +
+                    " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
+                    " WHERE a.DataStatus = 1 AND DTL.PaymentRefNo is not null " +
+                    " AND NOT EXISTS(SELECT PayRefNo FROM depotprinttrack WHERE PayRefNo = dtl.PaymentRefNo)" +
+                    " AND NOT EXISTS(SELECT PayRefNo FROM medicinedispatch WHERE PayRefNo = dtl.PaymentRefNo) " +
+                    " AND IR.RecStatus = 'Approved' ";
+
+                if (userRole != "Administrator")
+                {
+                    qry = qry + "  AND (A.MarketGroupCode = ISNULL('"+ empData[0].MarketGroupCode  + "', 'All') OR ISNULL('" + empData[0].MarketGroupCode + "', 'All') = 'All') " +
+                        " AND (A.MarketCode = ISNULL('" + empData[0].MarketCode + "', 'All') OR ISNULL('" + empData[0].MarketCode + "', 'All') = 'All') " +
+                        " AND (A.TerritoryCode = ISNULL('" + empData[0].TerritoryCode + "', 'All') OR ISNULL('" + empData[0].TerritoryCode + "', 'All') = 'All') " +
+                        " AND (A.RegionCode = ISNULL('" + empData[0].RegionCode + "', 'All') OR ISNULL('" + empData[0].RegionCode + "', 'All') = 'All') " +
+                        " AND (A.ZoneCode = ISNULL('" + empData[0].ZoneCode + "', 'All') OR ISNULL('" + empData[0].ZoneCode + "', 'All') = 'All') ";
+                }
+                qry = qry + " Order by ir.seton DESC ";
+
+                var results = _db.RptMedDisp.FromSqlRaw(qry).ToList();
+
+                return results;
+                
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         [HttpPost("getRptChqDis")]
         public object MedicineDispReport(RptMedicineDispatchSearchDto searchDto)
         {
@@ -136,7 +181,7 @@ namespace API.Controllers
             {
                 if (searchDto.DisStatus == "Pending")
                 {
-                    string qry = "SELECT DISTINCT a.id,1 AS DataStatus,Sysdatetimeoffset() AS SetOn,Sysdatetimeoffset() AS ModifiedOn,dtl.PaymentRefNo PayRefNo, a.referenceno,a.proposefor,a.donationto,a.donationid,'NA' SAPRefNo, " +
+                    string qry = "SELECT DISTINCT a.id,1 AS DataStatus,Sysdatetimeoffset() AS SetOn,Sysdatetimeoffset() AS ModifiedOn,dtl.PaymentRefNo PayRefNo, a.referenceno,a.proposefor,a.donationto,a.donationid,'NA' SAPRefNo, '' DepotCode, " +
                                 " null PaymentDate,CAST(0 as float) DispatchAmt, null Remarks, d.donationtypename,  dtl.ApprovedAmount  ProposedAmount, e.employeename, e.marketname, ir.seton 'ApprovedDate', aprBy.employeename + ',' + aprBy.designationname 'ApprovedBy' " +
                                 " FROM   investmentinit a LEFT JOIN investmentreccomment ir ON a.id = ir.investmentinitid " +
                                 " INNER JOIN investmentrec inDetail ON a.id = inDetail.investmentinitid " +
@@ -145,8 +190,7 @@ namespace API.Controllers
                                 " LEFT JOIN donation d ON a.donationid = d.id " +
                                 " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
 
-                                " WHERE a.DataStatus= 1 AND a.id NOT IN (SELECT investmentinitid FROM  DepotPrintTrack) " +
-                                " AND IR.RecStatus = 'Approved'  AND a.DonationId <> 4 " +
+                                " WHERE a.DataStatus= 1 AND IR.RecStatus = 'Approved'  AND a.DonationId <> 4  " +
                                 " AND ir.seton BETWEEN '" + searchDto.FromDate + "' AND '" + searchDto.ToDate + "' " +
                                 " AND inDetail.PaymentMethod = 'Cheque' " +
                                 " AND dtl.PaymentRefNo not in (SELECT PayRefNo FROM DepotPrintTrack where PayRefNo is not null) ";
@@ -164,7 +208,7 @@ namespace API.Controllers
                 {
                     string qry = "  SELECT * FROM(  " +
                         " select DISTINCT a.id,1 AS DataStatus, Sysdatetimeoffset() AS SetOn, Sysdatetimeoffset() AS ModifiedOn, b.ReferenceNo, d.DonationTypeName, prep.EmployeeName, apr.EmployeeName 'ApprovedBy', c.SetOn 'ApprovedDate',  " +
-                        " b.MarketName, a.PayRefNo, a.SAPRefNo, a.PaymentDate AS PaymentDate, ir.ApprovedAmount AS DispatchAmt, a.Remarks, b.DonationId, a.DepotId " +
+                        " b.MarketName, a.PayRefNo, a.SAPRefNo, a.PaymentDate AS PaymentDate, ir.ApprovedAmount AS DispatchAmt, a.Remarks, b.DonationId, a.DepotId as DepotCode " +
                         " from[dbo].[DepotPrintTrack]  a left join InvestmentInit b on a.InvestmentInitId = b.id " +
                         " left join InvestmentRecComment C on a.InvestmentInitId = c.InvestmentInitId " +
                         " left join Donation d on b.DonationId = d.Id left join Employee prep on b.EmployeeId = prep.Id " +

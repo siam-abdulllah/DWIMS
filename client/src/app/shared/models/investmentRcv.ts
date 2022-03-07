@@ -22,6 +22,7 @@ export interface IInvestmentInit {
     approvedDate: Date;
     depotName: string;
     payRefNo: string;
+    proposedAmount: number;
 }
  
 export class InvestmentInit implements IInvestmentInit {
@@ -39,6 +40,7 @@ export class InvestmentInit implements IInvestmentInit {
     approvedDate: Date;
     depotName: string;
     payRefNo: string;
+    proposedAmount: number;
 }
 
 
