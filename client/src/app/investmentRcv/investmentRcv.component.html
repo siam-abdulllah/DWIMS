@@ -24,25 +24,31 @@
 
                             <div class="form-group">
                                 <div class="row">
-                                    <div class="col-md-1">
-                                        <label>Reference</label>
+                                    <div class="col-md-2">
+                                        <label>Investment Reference</label>
                                         <span style="color:red;">*</span>
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-4">
                                         <input class="form-control" id="id" name="id" #id="ngModel" [(ngModel)]="investmentRcvService.investmentRcvFormData.id" readonly style="display: none;" required>
                                         <input class="form-control clickable" placeholder="Please Double Click Here" (dblclick)="getInvestmentInit()" id="referenceNo" name="referenceNo" #referenceNo="ngModel" [(ngModel)]="investmentRcvService.investmentRcvFormData.referenceNo" readonly required>
                                     </div>
-                                    <div class="col-md-1">
+                                    <div class="col-md-2">
+                                        <label>Payment Reference</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input class="form-control" id="payRefNo" name="payRefNo" #payRefNo="ngModel" [(ngModel)]="investmentRcvService.investmentRcvFormData.payRefNo" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
                                         <label>Propose For</label>
                                     </div>
                                     <div class="col-md-2">
                                         <input class="form-control" id="proposeFor" name="proposeFor" #proposeFor="ngModel" [(ngModel)]="investmentRcvService.investmentRcvFormData.proposeFor" readonly>
                                     </div>
-                                    <!-- </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row"> -->
-                                    <div class="col-md-1">
+                                    <div class="col-md-2">
                                         <label>Donation Type</label>
                                     </div>
                                     <div class="col-md-2">
@@ -52,7 +58,7 @@
                                                 <option *ngFor="let a of donations" [value]="a.id">{{a.donationTypeName}}</option>
                                             </select>
                                     </div>
-                                    <div class="col-md-1">
+                                    <div class="col-md-2">
                                         <label>Donation To</label>
                                     </div>
                                     <div class="col-md-2">
@@ -610,9 +616,8 @@
                                                         <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" [disabled]="isInvOther" required name="proposedAmount" placeholder="Amount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentRcvService.investmentDetailFormData.proposedAmount" [pattern]="numberPattern"
-                                                            readonly>
-                                                        <div class="invalid-feedback" *ngIf="proposedAmount.errors?.pattern">Only numeric value</div>
+                                                        <input class="form-control" [disabled]="isInvOther" required name="proposedAmount" placeholder="Amount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentRcvService.investmentRcvFormData.proposedAmount" readonly>
+                                                        <!-- <div class="invalid-feedback" *ngIf="proposedAmount.errors?.pattern">Only numeric value</div> -->
                                                     </div>
                                                 </div>
                                             </div>
@@ -873,6 +878,7 @@
                                 <th scope="col" style="width: 7%">Action</th>
                                 <th scope="col" style="width: 0;display:none;">Id</th>
                                 <th scope="col" style="width: 9%">Reference No</th>
+                                <th scope="col" style="width: 9%">Payment Ref No</th>
                                 <th scope="col" style="width: 8%">Propose For</th>
                                 <th scope="col" style="width: 8%">Market Name</th>
                                 <th scope="col" style="width: 8%">Donation To</th>
@@ -880,6 +886,7 @@
                                 <th scope="col" style="width: 8%">Approved By</th>
                                 <th scope="col" style="width: 8%">Approved Date</th>
                                 <th scope="col" style="width: 8%">Depot Name</th>
+                                <th scope="col" style="width: 0;display:none;">Approved Amount</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -889,6 +896,7 @@
                                 </td>
                                 <td style="display:none;">{{a.id}}</td>
                                 <td>{{a.referenceNo}}</td>
+                                <td>{{a.payRefNo}}</td>
                                 <td>{{a.proposeFor}}</td>
                                 <td>{{a.marketName}}</td>
                                 <td>{{a.donationTo}}</td>
@@ -896,6 +904,7 @@
                                 <td>{{a.approvedBy}}</td>
                                 <td>{{a.approvedDate | date:'dd/MM/yyyy'}}</td>
                                 <td>{{a.depotName}}</td>
+                                <td style="display:none;">{{a.proposedAmount}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -933,6 +942,7 @@
                                 <th scope="col" style="width: 7%">Action</th>
                                 <th scope="col" style="width: 0;display:none;">Id</th>
                                 <th scope="col" style="width: 9%">Reference No</th>
+                                <th scope="col" style="width: 9%">Payment Ref No</th>
                                 <th scope="col" style="width: 8%">Propose For</th>
                                 <th scope="col" style="width: 8%">Market Name</th>
                                 <!-- <th scope="col" style="width: 8%">Donation Type</th> -->
@@ -950,6 +960,7 @@
                                 </td>
                                 <td style="display:none;">{{a.id}}</td>
                                 <td>{{a.referenceNo}}</td>
+                                <td>{{a.payRefNo}}</td>
                                 <td>{{a.proposeFor}}</td>
                                 <td>{{a.marketName}}</td>
                                 <!-- <td>{{a.donationId}}</td> -->

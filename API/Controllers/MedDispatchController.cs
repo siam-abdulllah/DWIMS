@@ -261,7 +261,7 @@ namespace API.Controllers
                     {
                         string qry = "  SELECT * FROM(  " +
                             " select DISTINCT a.id,1 AS DataStatus, Sysdatetimeoffset() AS SetOn, Sysdatetimeoffset() AS ModifiedOn,  a.PayRefNo, b.ReferenceNo, d.DonationTypeName, prep.EmployeeName, apr.EmployeeName 'ApprovedBy', c.SetOn 'ApprovedDate',  " +
-                            " b.MarketName, a.SAPRefNo, a.PaymentDate AS PaymentDate, ir.ApprovedAmount AS DispatchAmt, a.Remarks, b.DonationId, a.DepotId " +
+                            " b.MarketName, a.SAPRefNo, a.PaymentDate AS PaymentDate, ir.ApprovedAmount AS DispatchAmt, a.Remarks, b.DonationId, a.DepotId as DepotCode " +
                             " from[dbo].[DepotPrintTrack]  a left join InvestmentInit b on a.InvestmentInitId = b.id " +
                             " left join InvestmentRecComment C on a.InvestmentInitId = c.InvestmentInitId " +
                             " left join Donation d on b.DonationId = d.Id left join Employee prep on b.EmployeeId = prep.Id " +

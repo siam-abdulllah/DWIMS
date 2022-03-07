@@ -50,6 +50,7 @@ import { RptMedDispatchComponent } from '../rptMedDispatch/rptMedDispatch.compon
 import { ChangeDepotComponent } from '../changeDepot/changeDepot.component';
 import { RptChqDispatchComponent } from '../rptChqDispatch/rptChqDispatch.component';
 import { ReportYearlyBudgetComponent } from '../reportYearlyBudget/reportYearlyBudget.component';
+import { PendingDisburseComponent } from './../pendingDisburse/pendingDisburse.component'; 
 
 @NgModule({
   imports: [
@@ -103,6 +104,7 @@ import { ReportYearlyBudgetComponent } from '../reportYearlyBudget/reportYearlyB
     SbuWiseBudgetComponent,
     DocHonApprComponent,
     ClusterInfoComponent,
+    PendingDisburseComponent,
     MenuHeadComponent,
     SubMenuComponent,
     MenuConfigComponent,

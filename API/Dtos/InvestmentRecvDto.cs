@@ -34,5 +34,6 @@ namespace API.Dtos
         public string Purpose { get; set; }
         public string ReceiveStatus { get; set; }
         public int Priority { get; set; }
+        public string PayRefNo { get; set; }
     }
 }

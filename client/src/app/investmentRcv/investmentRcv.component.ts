@@ -115,9 +115,11 @@ export class InvestmentRcvComponent implements OnInit {
   }
   selectInvestmentInit(selectedAprord: IInvestmentInit) {
     this.resetForm();
+    debugger;
     this.investmentRcvService.investmentRcvFormData = Object.assign({}, selectedAprord);
     this.investmentRcvService.investmentDetailFormData.investmentInitId = selectedAprord.id;
     this.investmentRcvService.investmentRcvCommentFormData.investmentInitId = selectedAprord.id;
+    this.investmentRcvService.investmentRcvFormData.proposedAmount = selectedAprord.proposedAmount;
     this.isDonationValid = true;
     if (this.investmentRcvService.investmentRcvFormData.donationTo == "Doctor") {
       this.getInvestmentDoctor();
@@ -472,12 +474,13 @@ export class InvestmentRcvComponent implements OnInit {
       commitmentAllSBU: this.investmentRcvService.investmentDetailFormData.commitmentAllSBU,
       commitmentOwnSBU: this.investmentRcvService.investmentDetailFormData.commitmentOwnSBU,
       totalMonth: this.investmentRcvService.investmentDetailFormData.totalMonth,
-      proposedAmount: this.investmentRcvService.investmentDetailFormData.proposedAmount,
+      proposedAmount: this.investmentRcvService.investmentRcvFormData.proposedAmount,
       purpose: this.investmentRcvService.investmentDetailFormData.purpose,
       marketCode: this.investmentRcvService.investmentDetailFormData.marketCode,
       sbu: this.investmentRcvService.investmentDetailFormData.sbu,
       fromDate: this.investmentRcvService.investmentDetailFormData.fromDate,
       toDate: this.investmentRcvService.investmentDetailFormData.toDate,
+      payRefNo: this.investmentRcvService.investmentRcvFormData.payRefNo,
       receiveStatus: this.investmentRcvService.investmentRcvCommentFormData.receiveStatus,
       comments: this.investmentRcvService.investmentRcvCommentFormData.comments,
       employeeId: parseInt(this.empId),
@@ -520,9 +523,10 @@ export class InvestmentRcvComponent implements OnInit {
       commitmentAllSBU: this.investmentRcvService.investmentDetailFormData.commitmentAllSBU,
       commitmentOwnSBU: this.investmentRcvService.investmentDetailFormData.commitmentOwnSBU,
       totalMonth: this.investmentRcvService.investmentDetailFormData.totalMonth,
-      proposedAmount: this.investmentRcvService.investmentDetailFormData.proposedAmount,
+      proposedAmount: this.investmentRcvService.investmentRcvFormData.proposedAmount,
       purpose: this.investmentRcvService.investmentDetailFormData.purpose,
       marketCode: this.investmentRcvService.investmentDetailFormData.marketCode,
+      payRefNo: this.investmentRcvService.investmentDetailFormData.payRefNo,
       sbu: this.investmentRcvService.investmentDetailFormData.sbu,
       fromDate: this.investmentRcvService.investmentDetailFormData.fromDate,
       toDate: this.investmentRcvService.investmentDetailFormData.toDate,
@@ -563,7 +567,7 @@ export class InvestmentRcvComponent implements OnInit {
       this.toastr.warning('Insert Investment Initialisation First', 'Investment ');
       return false;
     }
-    if (this.investmentRcvService.investmentDetailFormData.proposedAmount == null || this.investmentRcvService.investmentDetailFormData.proposedAmount == undefined || this.investmentRcvService.investmentDetailFormData.proposedAmount == "") {
+    if (this.investmentRcvService.investmentRcvFormData.proposedAmount == null || this.investmentRcvService.investmentRcvFormData.proposedAmount == undefined) {
       this.toastr.warning('Enter Proposed Amount First', 'Investment ');
       return false;
     }
@@ -732,9 +736,10 @@ export interface IInvestmentRcvInsert {
   fromDate: Date;
   toDate: Date;
   totalMonth: number;
-  proposedAmount: string;
+  proposedAmount: number;
   priority: number;
   purpose: string;
+  payRefNo: string;
   receiveStatus: string;
 }
 
@@ -762,8 +767,9 @@ export class InvestmentRcvInsert implements IInvestmentRcvInsert {
   fromDate: Date;
   toDate: Date;
   totalMonth: number;
-  proposedAmount: string;
+  proposedAmount: number;
   priority: number;
+  payRefNo: string;
   purpose: string;
   receiveStatus: string;
 }

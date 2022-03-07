@@ -80,6 +80,7 @@ namespace Core.Entities
         public string ApprovedBy { get; set; }
         public DateTimeOffset ApprovedDate { get; set; }
         public string MarketName { get; set; }
+        public string DepotCode { get; set; }
         public string SAPRefNo { get; set; }
         public DateTimeOffset? PaymentDate { get; set; }
         public double? DispatchAmt { get; set; }
