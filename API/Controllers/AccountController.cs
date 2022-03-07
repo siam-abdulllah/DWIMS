@@ -149,6 +149,11 @@ namespace API.Controllers
                 var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, lockoutOnFailure: true);
 
                 if (!result.Succeeded) return Unauthorized(new ApiResponse(401));
+                var isValidEmp= _db.Employee.Where(r =>r.Id== user.EmployeeId && r.DataStatus==1).ToList();
+                if (isValidEmp.Count < 1)
+                {
+                    return Unauthorized(new ApiResponse(401, "Employee does not exist."));
+                }
 
                 IList<string> roles = await _userManager.GetRolesAsync(user);
 
