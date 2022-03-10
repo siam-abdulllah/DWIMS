@@ -658,6 +658,8 @@ namespace API.Controllers
                         _investmentDetailRepo.Savechange();
                     }
                 }
+                investmentDetailDto.FromDate = new DateTimeOffset(investmentDetailDto.FromDate.Year, investmentDetailDto.FromDate.Month, investmentDetailDto.FromDate.Day,0,0,0,new TimeSpan(6, 0, 0));
+                investmentDetailDto.ToDate = new DateTimeOffset(investmentDetailDto.ToDate.Year, investmentDetailDto.ToDate.Month, investmentDetailDto.ToDate.Day, 0, 0, 0, new TimeSpan(6, 0, 0));
                 var investmentDetail = new InvestmentDetail
                 {
                     ChequeTitle = investmentDetailDto.ChequeTitle,
@@ -718,6 +720,8 @@ namespace API.Controllers
                 // {
                 //     return BadRequest(new ApiResponse(0, "Duplicate data found.Please Reload your page"));
                 // }
+                investmentDetailDto.FromDate = new DateTimeOffset(investmentDetailDto.FromDate.Year, investmentDetailDto.FromDate.Month, investmentDetailDto.FromDate.Day, 0, 0, 0, new TimeSpan(6, 0, 0));
+                investmentDetailDto.ToDate = new DateTimeOffset(investmentDetailDto.ToDate.Year, investmentDetailDto.ToDate.Month, investmentDetailDto.ToDate.Day, 0, 0, 0, new TimeSpan(6, 0, 0));
 
                 var investmentDetail = new InvestmentDetail
                 {
