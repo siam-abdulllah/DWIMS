@@ -155,11 +155,12 @@ namespace API.Controllers
 
                 if (userRole != "Administrator")
                 {
-                    qry = qry + "  AND (A.MarketGroupCode = ISNULL('"+ empData[0].MarketGroupCode  + "', 'All') OR ISNULL('" + empData[0].MarketGroupCode + "', 'All') = 'All') " +
-                        " AND (A.MarketCode = ISNULL('" + empData[0].MarketCode + "', 'All') OR ISNULL('" + empData[0].MarketCode + "', 'All') = 'All') " +
-                        " AND (A.TerritoryCode = ISNULL('" + empData[0].TerritoryCode + "', 'All') OR ISNULL('" + empData[0].TerritoryCode + "', 'All') = 'All') " +
-                        " AND (A.RegionCode = ISNULL('" + empData[0].RegionCode + "', 'All') OR ISNULL('" + empData[0].RegionCode + "', 'All') = 'All') " +
-                        " AND (A.ZoneCode = ISNULL('" + empData[0].ZoneCode + "', 'All') OR ISNULL('" + empData[0].ZoneCode + "', 'All') = 'All') ";
+                    qry = qry + "  AND (A.SBU = COALESCE(NULLIF('"+ empData[0].SBU  + "', ''), 'All') OR COALESCE(NULLIF('" + empData[0].SBU + "', ''), 'All') = 'All') " +
+                        "  AND (A.MarketGroupCode = COALESCE(NULLIF('"+ empData[0].MarketGroupCode  + "', ''), 'All') OR COALESCE(NULLIF('" + empData[0].MarketGroupCode + "', ''), 'All') = 'All') " +
+                        " AND (A.MarketCode = COALESCE(NULLIF('" + empData[0].MarketCode + "', ''), 'All') OR COALESCE(NULLIF('" + empData[0].MarketCode + "', ''), 'All') = 'All') " +
+                        " AND (A.TerritoryCode = COALESCE(NULLIF('" + empData[0].TerritoryCode + "', ''), 'All') OR COALESCE(NULLIF('" + empData[0].TerritoryCode + "', ''), 'All') = 'All') " +
+                        " AND (A.RegionCode = COALESCE(NULLIF('" + empData[0].RegionCode + "', ''), 'All') OR COALESCE(NULLIF('" + empData[0].RegionCode + "', ''), 'All') = 'All') " +
+                        " AND (A.ZoneCode = COALESCE(NULLIF('" + empData[0].ZoneCode + "', ''), 'All') OR COALESCE(NULLIF('" + empData[0].ZoneCode + "', ''), 'All') = 'All') ";
                 }
                 qry = qry + " Order by ir.seton DESC ";
 
