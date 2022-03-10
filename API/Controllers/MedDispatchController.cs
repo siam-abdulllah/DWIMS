@@ -268,7 +268,7 @@ namespace API.Controllers
                             " left join InvestmentDetailTracker ir on ir.InvestmentInitId = b.Id " +
                             " left join Employee apr on c.EmployeeId = apr.Id WHERE c.RecStatus = 'Approved' AND a.DataStatus= 1 ) X " +
                             " WHERE X.PaymentDate between '" + searchDto.FromDate + "' AND '" + searchDto.ToDate + "' " +
-                            " AND X.DepotId = '" + searchDto.DepotCode + "' ";
+                            " AND X.DepotCode = '" + searchDto.DepotCode + "' ";
 
                         if (searchDto.DonationId != "0")
                         {
