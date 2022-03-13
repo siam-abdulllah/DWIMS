@@ -138,7 +138,7 @@ namespace API.Controllers
                 string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode= '" + empId + "' ";
                 var empData = _db.Employee.FromSqlRaw(empQry).ToList();
 
-                string qry = " SELECT DISTINCT a.id,1 AS DataStatus, Sysdatetimeoffset() AS SetOn, Sysdatetimeoffset() AS ModifiedOn, a.referenceno, dtl.PaymentRefNo PayRefNo, a.proposefor,a.donationto,a.donationid,ISNULL(depo.DepotName, 'CHQ') DepotCode,'NA'SAPRefNo,  " +
+                string qry = " SELECT DISTINCT dtl.id,1 AS DataStatus, Sysdatetimeoffset() AS SetOn, Sysdatetimeoffset() AS ModifiedOn, a.referenceno, dtl.PaymentRefNo PayRefNo, a.proposefor,a.donationto,a.donationid,ISNULL(depo.DepotName, 'CHQ') DepotCode,'NA'SAPRefNo,  " +
                     " null PaymentDate,dtl.ApprovedAmount as DispatchAmt, null Remarks, d.donationtypename, inDetail.proposedamount, e.employeename, e.marketname, ir.seton 'ApprovedDate', aprBy.employeename + ',' + aprBy.designationname 'ApprovedBy' " +
                     " FROM investmentinit a  " +
                     " INNER JOIN investmentrec inDetail ON a.id = inDetail.investmentinitid " +
