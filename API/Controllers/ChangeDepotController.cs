@@ -41,7 +41,7 @@ namespace API.Controllers
                 string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode= '" + empId + "' ";
                 var empData = _db.Employee.FromSqlRaw(empQry).ToList();
 
-                string qry = " Select  DISTINCT a.Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn,  SYSDATETIMEOFFSET() AS ModifiedOn,  a.ReferenceNo, a.ProposeFor,  dtl.PaymentRefNo PayRefNo, " +
+                string qry = " Select  DISTINCT dtl.Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn,  SYSDATETIMEOFFSET() AS ModifiedOn,  a.ReferenceNo, a.ProposeFor,  dtl.PaymentRefNo PayRefNo, " +
                              " a.DonationTo, depo.DepotCode, depo.DepotName, d.DonationTypeName,   dtl.ApprovedAmount   ProposedAmount, e.EmployeeName, e.MarketName,  " +
                              " CASE " +
                              " WHEN a.donationto = 'Doctor' THEN(SELECT doctorname  FROM   investmentdoctor x  INNER JOIN doctorinfo y ON x.doctorid = y.id WHERE  x.investmentinitid = a.id) " +
@@ -59,7 +59,7 @@ namespace API.Controllers
                              " left  join Employee aprBy on ir.EmployeeId = aprBy.Id " +
                              " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId " +
                              " where a.DataStatus = 1 AND ir.RecStatus = 'Approved' AND inDetail.PaymentMethod = 'Cash' " +
-                             " AND ir.EmployeeId = inDetail.EmployeeId " +
+                             " AND ir.EmployeeId = inDetail.EmployeeId AND dtl.PaymentRefNo IS NOT NULL " +
                              " AND NOT EXISTS (SELECT investmentinitid FROM depotprinttrack WHERE InvestmentInitId=ir.investmentinitid) " +
                              " AND NOT EXISTS (SELECT investmentinitid FROM medicinedispatch WHERE InvestmentInitId=ir.investmentinitid) ";
 
