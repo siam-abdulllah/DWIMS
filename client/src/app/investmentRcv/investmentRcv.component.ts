@@ -466,6 +466,18 @@ export class InvestmentRcvComponent implements OnInit {
   // }
   insertinvestmentRcv() {
 
+    if(this.investmentRcvService.investmentRcvCommentFormData.investmentInitId == 0 || this.investmentRcvService.investmentRcvCommentFormData.investmentInitId == null)
+    {
+      this.toastr.error('Invalid Reference No', 'Error');
+      return false;
+    }
+
+    if(this.investmentRcvService.investmentRcvFormData.payRefNo =='' || this.investmentRcvService.investmentRcvFormData.payRefNo == null)
+    {
+      this.toastr.error('No Payment Reference No Found', 'Error');
+      return false;
+    }
+
     const investRecvhDto: IInvestmentRcvInsert = {
       id: 0,
       investmentInitId: this.investmentRcvService.investmentRcvCommentFormData.investmentInitId,
