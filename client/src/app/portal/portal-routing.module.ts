@@ -36,6 +36,7 @@ import { SubMenuComponent } from '../subMenu/subMenu.component';
 import { MenuConfigComponent } from '../menuConfig/menuConfig.component';
 import { ChangePasswordComponent } from '../changePassword/changePassword.component';
 import { RptChqDispatchComponent } from '../rptChqDispatch/rptChqDispatch.component';
+import { RptInvSummarySingleComponent } from '../rptInvSummarySingle/rptInvSummarySingle.component';
 
 const portalRoutes: Routes = [
   {
@@ -59,6 +60,7 @@ const portalRoutes: Routes = [
         {path: 'sbu-wise-budget', component: SbuWiseBudgetComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'rptInvestment', component: ReportInvestmentComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'rptInvestmentSummary', component: RptInvestSummaryComponent},
+        {path: 'rptInvestmentSingle', component: RptInvSummarySingleComponent},
         {path: 'pendingPrintDepot', component: PendingPrintDepotComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'pendingChqPrintDepot', component: PendingChqPrintDepotComponent},
         {path: 'mpoPendingDisburse', component: PendingDisburseComponent},

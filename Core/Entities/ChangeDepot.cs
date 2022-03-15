@@ -18,6 +18,7 @@ namespace Core.Entities
 
     public class ChangeDepotSearch : BaseEntity
     {
+        public int InvestmentInitId { get; set; }
         public string PayRefNo { get; set; }
         public string ReferenceNo { get; set; }
         public string DonationTypeName { get; set; }

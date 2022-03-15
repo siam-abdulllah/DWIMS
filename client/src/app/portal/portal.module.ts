@@ -51,6 +51,7 @@ import { ChangeDepotComponent } from '../changeDepot/changeDepot.component';
 import { RptChqDispatchComponent } from '../rptChqDispatch/rptChqDispatch.component';
 import { ReportYearlyBudgetComponent } from '../reportYearlyBudget/reportYearlyBudget.component';
 import { PendingDisburseComponent } from './../pendingDisburse/pendingDisburse.component'; 
+import { RptInvSummarySingleComponent } from '../rptInvSummarySingle/rptInvSummarySingle.component';
 
 @NgModule({
   imports: [
@@ -94,6 +95,7 @@ import { PendingDisburseComponent } from './../pendingDisburse/pendingDisburse.c
     ParamInvestSummaryComponent,
     RptInvestmentDetailComponent,
     RptInvestmentDetailSummaryComponent,
+    RptInvSummarySingleComponent,
     MedDispatchComponent,
     PendingPrintDepotComponent,
     PendingChqPrintDepotComponent,

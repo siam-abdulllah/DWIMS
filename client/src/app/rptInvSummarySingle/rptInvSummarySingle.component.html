@@ -1,0 +1,164 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <form novalidate autocomplete="off" #form="ngForm">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h3 class="card-title">Investment Summary Report</h3>
+                                </div>
+                                <!-- <div class="col-sm-1">
+                                    <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="form.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                </div>
+                                <div class="col-sm-1">
+                                    <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetPage(form)"><i class="fa fa-undo"></i>&nbsp; Reset</button>
+                                </div> -->
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <fieldset>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Reference No</label>
+                                            <span style="color:red;">*</span>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="text" class="form-control " name="referenceNo" id="referenceNo" #referenceNo="ngModel" [(ngModel)]="reportService.rptInvestSummaryFormData.referenceNo">
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <button class="btn btn-info btn-lg btn-block" type="button" (click)="ViewData()"><i class="fa fa-eye"></i>&nbsp;View</button>
+                                        </div>
+                                        <!-- <div class="col-sm-1">
+                                            <button class="btn btn-info btn-lg btn-block" type="button" (click)="ViewReport()"><i class="fa fa-eye"></i>&nbsp;Print Report</button>
+                                        </div> -->
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input name="filterText" class="form-control m-input Searchbox" type="text" [(ngModel)]="searchText" placeholder="Search..">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="btn btn-danger" type="button" (click)="resetSearch()"><i class="fa fa-undo"></i>&nbsp; Reset</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </fieldset>
+                            <br/>
+                            <div class="form-group" style="overflow: auto; max-height: 250px;">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table  table-bordered">
+                                            <tr class="HeaderRowFixed">
+                                                <td>Ref No</td>
+                                                <td>Cnfrm.</td>
+                                                <td>Inv Type</td>
+                                                <td>Inv To</td>
+                                                <td>Prop. For</td>
+                                                <td>Pmnt Type</td>
+                                                <td>SBU</td>
+                                                <td>ID</td>
+                                                <td>Name</td>
+                                                <td>Amount</td>
+                                                <td>From</td>
+                                                <td>To</td>
+                                                <td>Market</td>
+                                                <td>Initiator</td>
+                                                <td>Inv Sts</td>
+                                                <td>Cmplt By</td>
+                                                <td>Depot</td>
+                                                <td>Recv Sts</td>
+                                                <td>Recv By</td>
+                                                <td>Details</td>
+                                            </tr>
+                                            <!-- <tr *ngFor="let a of reports | paginate: configs"> -->
+                                            <tr *ngFor="let a of reports | filter: searchText ">
+                                                <!-- <td>
+                                            {{a.id}}
+                                        </td> -->
+                                                <td>
+                                                    {{a.referenceNo}}
+                                                </td>
+                                                <td>
+                                                    <span *ngIf="a.confirmation==true">Submitted</span>
+                                                    <span *ngIf="a.confirmation!=true">Not Submitted</span>
+                                                </td>
+                                                <td>
+                                                    {{a.donationTypeName}}
+                                                </td>
+                                                <td>
+                                                    {{a.donationTo}}
+                                                </td>
+                                                <td>
+                                                    {{a.proposeFor}}
+                                                </td>
+                                                <td>
+                                                    {{a.paymentMethod}}
+                                                </td>
+                                                <td>
+                                                    {{a.sbuName}}
+                                                </td>
+                                                <td>
+                                                    {{a.dId}}
+                                                </td>
+                                                <td>
+                                                    {{a.name}}
+                                                </td>
+                                                <td>
+                                                    {{a.proposedAmount}}
+                                                </td>
+                                                <td>
+                                                    {{a.fromDate| date:'dd/MM/yyyy'}}
+                                                </td>
+                                                <td>
+                                                    {{a.toDate| date:'dd/MM/yyyy'}}
+                                                </td>
+                                                <td>
+                                                    {{a.marketName}}
+                                                </td>
+                                                <td>
+                                                    {{a.employeeName}}
+                                                </td>
+                                                <td>
+                                                    {{a.invStatus}}
+                                                    <!-- <span *ngIf="a.invCount===0">Completed</span>
+                                            <span *ngIf="a.invCount!==0">Not Completed</span> -->
+                                                </td>
+                                                <td>
+                                                    {{a.approvedBy}}
+                                                </td>
+                                                <td>
+                                                    {{a.depotName}}
+                                                </td>
+                                                <td>
+                                                    {{a.receiveStatus}}
+                                                </td>
+                                                <td>
+                                                    {{a.receiveBy}}
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="getSummaryDetail(a)" style="width: 100px;"><i class="fa fa-eye"></i>View</button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls> -->
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
+    <p style="color: black">Please Wait. </p>
+</ngx-spinner>

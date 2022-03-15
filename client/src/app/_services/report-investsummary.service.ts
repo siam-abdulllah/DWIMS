@@ -51,6 +51,10 @@ export class RptInvestSummaryService {
   }
 
 
+  GetInvestmentSummarySingle(referenceNo: string){ 
+    return this.http.get(this.baseUrl+ 'reportInvestment/getInvestmentSummarySingle/'+referenceNo);  
+  }
+
   GetParamInvestmentSummaryReport(model: any){ 
     let params = new HttpParams();
     

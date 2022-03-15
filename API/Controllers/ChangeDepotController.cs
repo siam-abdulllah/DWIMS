@@ -63,10 +63,11 @@ namespace API.Controllers
                              " AND NOT EXISTS (SELECT investmentinitid FROM depotprinttrack WHERE InvestmentInitId=ir.investmentinitid) " +
                              " AND NOT EXISTS (SELECT investmentinitid FROM medicinedispatch WHERE InvestmentInitId=ir.investmentinitid) ";
 
-                if (userRole != "Administrator")
+                if (userRole == "DIC" || userRole == "SIC" )
                 {
-                    qry = qry + " AND depo.DepotCode = '" + empData[0].DepotCode + "'";
+                    qry = qry + " AND depo.DepotCode = '" + empData[0].DepotCode + "'";                
                 }
+                    
                 qry = qry + " Order by ir.SetOn DESC ";
 
                 var results = _db.ChangeDepotSearch.FromSqlRaw(qry).ToList();
