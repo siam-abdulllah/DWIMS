@@ -114,8 +114,11 @@ export class RptInvDetailForSummaryService {
     return this.http.get(this.baseUrl + 'InvestmentRec/investmentTargetedGroups/' + investmentInitId);
   }
 
+  // getInvestmentRcvComment(investmentInitId:number){    
+  //   return this.http.get(this.baseUrl + 'investmentRecv/getInvestmentRecvComment/'+investmentInitId);
+  // }
   getInvestmentRcvComment(investmentInitId:number){    
-    return this.http.get(this.baseUrl + 'investmentRecv/getInvestmentRecvComment/'+investmentInitId);
+    return this.http.get(this.baseUrl + 'investmentRecv/getInvestmentRecvCommentList/'+investmentInitId);
   }
   getInvestmentTargetedGroupStatus(investmentInitId:number){    
     //return this.http.get(this.baseUrl + 'investment/investmentTargetedGroups/'+investmentInitId);

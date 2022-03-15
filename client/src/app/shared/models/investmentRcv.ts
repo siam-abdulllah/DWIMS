@@ -75,6 +75,24 @@ export class InvestmentInit implements IInvestmentInit {
 //     fromDate: Date;
 //     toDate: Date;
 // }
+export interface IInvestmentRcvCommentRpt {
+    id: number;
+    investmentInitId: number;
+    comments: string;
+    receiveStatus: string;
+    employeeId: number;
+    payRefNo: string;
+}
+ 
+export class InvestmentRcvCommentRpt implements InvestmentRcvCommentRpt {
+    id: number=0;
+    investmentInitId: number;
+    comments: string;
+    receiveStatus: string=null;
+    employeeId: number;
+    payRefNo: string;
+}
+
 export interface IInvestmentRcvComment {
     id: number;
     investmentInitId: number;

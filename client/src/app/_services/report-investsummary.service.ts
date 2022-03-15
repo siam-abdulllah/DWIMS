@@ -54,6 +54,9 @@ export class RptInvestSummaryService {
   GetInvestmentSummarySingle(referenceNo: string){ 
     return this.http.get(this.baseUrl+ 'reportInvestment/getInvestmentSummarySingle/'+referenceNo);  
   }
+  IsInvestmentInActive(referenceNo: string){ 
+    return this.http.get(this.baseUrl+ 'reportInvestment/isInvestmentInActive/'+referenceNo);  
+  }
 
   GetParamInvestmentSummaryReport(model: any){ 
     let params = new HttpParams();

@@ -78,6 +78,15 @@ namespace API.Controllers
             return Ok(new Pagination<InstSocDocInvestmentDto>(rptParrams.PageIndex, rptParrams.PageSize, 10, data));
         }
 
+        [HttpGet("IsInvestmentInActive/{referenceNo}")]
+        public ActionResult<IReadOnlyList<CountInt>> IsInvestmentInActive(string referenceNo)
+        {
+            string qry = "SELECT [Id],[DataStatus] ,[SetOn],[ModifiedOn],[DataStatus] Count  FROM InvestmentInit WHERE ReferenceNo='"+ referenceNo +"'";
+            
+
+            var results = _db.CountInt.FromSqlRaw(qry).ToList();
+            return results;
+        }
         [HttpPost("GetDoctorCampaingWiseInvestment")]
         public ActionResult<IReadOnlyList<RptDocCampWiseInvestment>> GetDoctorCampaingWiseInvestment([FromQuery] ReportInvestmentInfoSpecParams rptParrams, ReportSearchDto search)
         {
@@ -307,7 +316,7 @@ namespace API.Controllers
         [Route("getInvestmentSummarySingle/{referenceNo}")]
         public ActionResult<IReadOnlyList<RptInvestmentSummary>> GetInvestmentSummarySingle(string ReferenceNo)
         {
-            string qry = " SELECT Cast(a.id AS INT) AS Id, a.DataStatus, Sysdatetimeoffset() AS SetOn, Sysdatetimeoffset() AS ModifiedOn, a.referenceno, b.ProposedAmount, d.donationtypename, a.donationto, b.fromdate, ISNULL (rcv.ReceiveStatus, 'N/A') ReceiveStatus, b.todate, 0 InvStatusCount, " +
+            string qry = " SELECT  DISTINCT Cast(a.id AS INT) AS Id, a.DataStatus, Sysdatetimeoffset() AS SetOn, Sysdatetimeoffset() AS ModifiedOn, a.referenceno, b.ProposedAmount, d.donationtypename, a.donationto, b.fromdate, ISNULL (rcv.ReceiveStatus, 'N/A') ReceiveStatus, b.todate, 0 InvStatusCount, " +
             
             " CASE WHEN a.donationto = 'Doctor' THEN (SELECT DoctorId  FROM   investmentdoctor x  INNER JOIN doctorinfo y ON x.doctorid = y.id WHERE x.investmentinitid = a.id)  "+
             " WHEN a.donationto = 'Institution' THEN (SELECT InstitutionId FROM  investmentinstitution x INNER JOIN institutioninfo y ON x.institutionid = y.id WHERE x.investmentinitid = a.id)  "+

@@ -31,6 +31,7 @@ export class RptInvSummarySingleComponent implements OnInit {
   @ViewChild('toDate') toDate: ElementRef;
   genParams: GenericParams;
   empId: string;
+  isInvestmentInActive: boolean;
   searchText = '';
   //configs: any;
   searchDto: IReportSearchDto;
@@ -80,13 +81,26 @@ export class RptInvSummarySingleComponent implements OnInit {
   }
 
   ViewData() {
-
-    this.reportService.GetInvestmentSummarySingle(this.reportService.rptInvestSummaryFormData.referenceNo).subscribe(response => {
+    this.reportService.IsInvestmentInActive(this.reportService.rptInvestSummaryFormData.referenceNo).subscribe(response => {
       debugger;
-      this.reports = response;
+      if(response[0].count==0)
+      {
+        this.isInvestmentInActive=true;
+      }
+      else{
+        this.isInvestmentInActive=false;
+      this.reportService.GetInvestmentSummarySingle(this.reportService.rptInvestSummaryFormData.referenceNo).subscribe(response => {
+        debugger;
+        this.reports = response;
+      }, error => {
+        console.log(error);
+      });
+      }
     }, error => {
       console.log(error);
     });
+  
+    
   }
 
   onPageChanged(event: any){
@@ -121,6 +135,7 @@ export class RptInvSummarySingleComponent implements OnInit {
   }
 
   resetForm() {
+    this.isInvestmentInActive=false;
   }
 
 

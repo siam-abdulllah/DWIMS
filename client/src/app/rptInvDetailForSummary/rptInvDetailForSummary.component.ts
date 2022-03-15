@@ -1,6 +1,6 @@
 
 import {InvestmentInit, IInvestmentInit, InvestmentDetail, IInvestmentDetail,InvestmentTargetedProd, IInvestmentTargetedProd,  IInvestmentDetailOld} from '../shared/models/investment';
-import { IInvestmentRcvComment, InvestmentRcvComment, InvestmentTargetedGroup, IInvestmentTargetedGroup,} from '../shared/models/investmentRcv';
+import { IInvestmentRcvComment, InvestmentRcvComment, InvestmentTargetedGroup, IInvestmentTargetedGroup, IInvestmentRcvCommentRpt,} from '../shared/models/investmentRcv';
 import { InvestmentInstitution, IInvestmentInstitution, InvestmentCampaign, IInvestmentCampaign } from '../shared/models/investmentRcv';
 import { InvestmentBcds, IInvestmentBcds, InvestmentSociety, IInvestmentSociety } from '../shared/models/investmentRcv';
 import { InvestmentDoctor, IInvestmentDoctor} from '../shared/models/investmentRec';
@@ -28,6 +28,7 @@ import { MarketGroupMst, IMarketGroupMst } from '../shared/models/marketGroupMst
 import { AccountService } from '../account/account.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { IEmployeeLocation } from '../shared/models/empLocation';
+import { IInvestmentRcvInsert } from '../investmentRcv/investmentRcv.component';
 
 @Component({
   selector: 'app-investmentDetail',
@@ -47,6 +48,7 @@ export class RptInvestmentDetailSummaryComponent implements OnInit {
   sbu: string;
   marketCode: string;
   id: string;
+  investmentRcvList: IInvestmentRcvCommentRpt[];
   empLocation: IEmployeeLocation[];
   investmentInits: IInvestmentInit[];
   investmentTargetedProds: IInvestmentTargetedProd[];
@@ -226,12 +228,14 @@ export class RptInvestmentDetailSummaryComponent implements OnInit {
 
   getinvestmentRcvComment() {
     this.rptInvDetailForService.getInvestmentRcvComment(this.rptInvDetailForService.investmentRcvFormData.id).subscribe(response => {
-      var data = response[0] as IInvestmentRcvComment;
+      var data = response as IInvestmentRcvCommentRpt[];
       if (data !== undefined) {
-        this.rptInvDetailForService.investmentRcvCommentFormData = data;
+        //this.rptInvDetailForService.investmentRcvCommentFormData = data;
+        this.investmentRcvList=data;
       }
       else {
         //this.toastr.warning('No Data Found', 'Investment ');
+        this.investmentRcvList=[];
       }
 
     }, error => {

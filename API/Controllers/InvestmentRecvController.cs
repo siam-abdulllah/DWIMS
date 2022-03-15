@@ -19,7 +19,7 @@ namespace API.Controllers
 {
     public class InvestmentRecvController : BaseApiController
     {
-
+        private readonly StoreContext _db;
         private readonly IGenericRepository<InvestmentInit> _investmentInitRepo;
         private readonly IGenericRepository<InvestmentRec> _investmentRecRepo;
         private readonly IGenericRepository<InvestmentRecProducts> _investmentRecProductRepo;
@@ -50,7 +50,7 @@ namespace API.Controllers
             IGenericRepository<InvestmentRec> investmentRecRepo,
             IGenericRepository<InvestmentDetailTracker> investmentDetailTrackerRepo,
             IGenericRepository<Donation> donationRepo,
-        IMapper mapper)
+        IMapper mapper, StoreContext db)
         {
             _mapper = mapper;
             _investmentRecvRepo = investmentRecvRepo;
@@ -67,6 +67,7 @@ namespace API.Controllers
             _investmentRecRepo = investmentRecRepo;
             _investmentDetailTrackerRepo = investmentDetailTrackerRepo;
             _donationRepo = donationRepo;
+            _db = db;
         }
 
         [HttpGet("investmentInits/{empId}/{sbu}")]
@@ -464,7 +465,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
-       
+
         [HttpGet]
         [Route("getInvestmentRecvComment/{investmentInitId}")]
         public async Task<IReadOnlyList<InvestmentRecv>> GetInvestmentRecvComment(int investmentInitId)
@@ -474,6 +475,24 @@ namespace API.Controllers
                 var spec = new InvestmentRecvSpecification(investmentInitId);
                 var investmentDetail = await _investmentRecvRepo.ListAsync(spec);
                 return investmentDetail;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpGet]
+        [Route("getInvestmentRecvCommentList/{investmentInitId}")]
+        public IReadOnlyList<InvestmentRecv> GetInvestmentRecvCommentList(int investmentInitId)
+        {
+            try
+            {
+                string qry = " SELECT A.Id ,A.DataStatus ,A.SetOn ,A.ModifiedOn ,A.InvestmentInitId,A.EmployeeId ,B.SBU ,B.SBUName ,B.ZoneCode,B.ZoneName ,B.RegionCode ,B.RegionName ,B.TerritoryCode ,B.TerritoryName ,B.MarketCode ,B.MarketName ,B.MarketGroupCode ,B.MarketGroupName ,B.Comments ,B.ChequeTitle ,B.PaymentMethod ,B.CommitmentAllSBU ,B.CommitmentOwnSBU ,ISNULL(B.FromDate,'0001-01-01 00:00:00.0000000 +00:00') FromDate  ,ISNULL(B.ToDate,'0001-01-01 00:00:00.0000000 +00:00') ToDate ,ISNULL(B.TotalMonth,0 ) TotalMonth ,ISNULL(B.ProposedAmount,0 ) ProposedAmount ,B.Purpose ,C.SAPRefNo + ',' + ISNULL(B.ReceiveStatus,'Not Received' ) ReceiveStatus ,ISNULL(B.Priority,0 ) Priority  ,A.PaymentRefNo PayRefNo  FROM [DIDS].[dbo].[InvestmentDetailTracker] A LEFT JOIN InvestmentRecv B ON A.PaymentRefNo = B.PayRefNo LEFT JOIN ( SELECT [SAPRefNo] ,PayRefNo FROM [DIDS].[dbo].[DepotPrintTrack] UNION SELECT [SAPRefNo] ,PayRefNo FROM [DIDS].[dbo].[MedicineDispatch] ) C ON A.PaymentRefNo = C.PayRefNo " +
+                    " WHERE A.PaymentRefNo IS NOT NULL AND A.InvestmentInitId=" + investmentInitId + "";
+
+
+                var results = _db.InvestmentRecv.FromSqlRaw(qry).ToList();
+                return results;
             }
             catch (System.Exception ex)
             {

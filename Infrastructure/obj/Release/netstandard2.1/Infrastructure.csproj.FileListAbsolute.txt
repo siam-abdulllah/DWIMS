@@ -10,6 +10,7 @@ G:\DIDS\DIDS_GIT\DWIMS\Infrastructure\obj\Release\netstandard2.1\Infrastructure.
 G:\DIDS\DIDS_GIT\DWIMS\Infrastructure\obj\Release\netstandard2.1\Infrastructure.csproj.CoreCompileInputs.cache
 G:\DIDS\DIDS_GIT\DWIMS\Infrastructure\obj\Release\netstandard2.1\Infrastructure.dll
 G:\DIDS\DIDS_GIT\DWIMS\Infrastructure\obj\Release\netstandard2.1\Infrastructure.pdb
+G:\DIDS\DIDS_GIT\DWIMS\Infrastructure\obj\Release\netstandard2.1\Infrastructure.csproj.CopyComplete
 E:\DWIMS\TestApplication\Infrastructure\bin\Release\netstandard2.1\Infrastructure.deps.json
 E:\DWIMS\TestApplication\Infrastructure\bin\Release\netstandard2.1\Infrastructure.dll
 E:\DWIMS\TestApplication\Infrastructure\bin\Release\netstandard2.1\Infrastructure.pdb
@@ -23,4 +24,3 @@ E:\DWIMS\TestApplication\Infrastructure\obj\Release\netstandard2.1\Infrastructur
 E:\DWIMS\TestApplication\Infrastructure\obj\Release\netstandard2.1\Infrastructure.csproj.CopyComplete
 E:\DWIMS\TestApplication\Infrastructure\obj\Release\netstandard2.1\Infrastructure.dll
 E:\DWIMS\TestApplication\Infrastructure\obj\Release\netstandard2.1\Infrastructure.pdb
-G:\DIDS\DIDS_GIT\DWIMS\Infrastructure\obj\Release\netstandard2.1\Infrastructure.csproj.CopyComplete

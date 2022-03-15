@@ -31,6 +31,11 @@
                                         <div class="col-sm-1">
                                             <button class="btn btn-info btn-lg btn-block" type="button" (click)="ViewData()"><i class="fa fa-eye"></i>&nbsp;View</button>
                                         </div>
+                                        <div class="col-sm-1">
+                                        </div>
+                                        <div class="col-sm-4" *ngIf="isInvestmentInActive" style="color: red;font-weight: bold;font-size:14px;">
+                                            This Reference No is deleted!
+                                        </div>
                                         <!-- <div class="col-sm-1">
                                             <button class="btn btn-info btn-lg btn-block" type="button" (click)="ViewReport()"><i class="fa fa-eye"></i>&nbsp;Print Report</button>
                                         </div> -->
@@ -51,7 +56,7 @@
 
                             </fieldset>
                             <br/>
-                            <div class="form-group" style="overflow: auto; max-height: 250px;">
+                            <div class="form-group" style="overflow: auto; max-height: 250px;" *ngIf="!isInvestmentInActive">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <table class="table  table-bordered">

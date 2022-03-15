@@ -853,12 +853,9 @@
                                             <h6 class=" "><strong>Receive Status</strong></h6>
                                         </div>
                                         <div class="col-sm-2"></div>
-                                        <!-- <div class="col-sm-2">
-                                            <button class="btn btn-success btn-lg btn-block" type="button"><i class="fa fa-save"></i>&nbsp; Save</button>
-                                        </div> -->
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-2">
                                             <label>Receiving Status</label>
@@ -866,8 +863,6 @@
                                         <div class="col-md-3">
                                             <select class="form-control" id="receiveStatus" name="receiveStatus" #receiveStatus="ngModel" [(ngModel)]="rptInvDetailForService.investmentRcvCommentFormData.receiveStatus" [class.invalid]="receiveStatus.invalid && receiveStatus.touched" required>  
                                                 <option  [ngValue]="null">Pending</option>
-                                                <!-- <option *ngIf=" !isInvOther" value="Approved">Approved</option>
-                                                <option *ngIf="!isInvOther" value="Not Approved">Not Approved</option> -->
                                                 <option  value="Received">Received</option>
                                                 <option  value="Not Received">Not Received</option>
                                                 </select>
@@ -879,8 +874,23 @@
                                             <input class="form-control" name="comments" id="comments" #comments="ngModel" [(ngModel)]="rptInvDetailForService.investmentRcvCommentFormData.comments">
                                         </div>
                                     </div>
+                                </div> -->
+                                <div class="form-group">
+                                    <table class="table  table-bordered">
+                                        <tr class="HeaderRow">
+                                            <td>Payment Reference No</td>
+                                            <td>Receive Staus</td>
+                                        </tr>
+                                        <tr *ngFor="let a of investmentRcvList">
+                                            <td>
+                                                {{a.payRefNo}}
+                                            </td>
+                                            <td>
+                                                {{a.receiveStatus}}
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </div>
-
                             </fieldset>
                         </div>
                     </div>
