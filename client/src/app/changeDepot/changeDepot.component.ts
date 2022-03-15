@@ -137,7 +137,7 @@ export class ChangeDepotComponent implements OnInit {
       donationTypeName: selectedRecord.donationTypeName,
       marketName:  selectedRecord.marketName,
       proposedAmount:  selectedRecord.proposedAmount,
-      investmentInitId:  selectedRecord.id,
+      investmentInitId:  selectedRecord.investmentInitId,
       oldDepotName: selectedRecord.depotName,
       oldDepotCode: selectedRecord.depotCode,
 

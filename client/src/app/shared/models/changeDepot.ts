@@ -20,6 +20,7 @@ export class ChangeDepot implements IChangeDepot {
 
 export interface IChangeDepotSearch {
     id: number;
+    investmentInitId: number;
     referenceNo: string;
     donationTypeName: string;
     proposeFor: string;
