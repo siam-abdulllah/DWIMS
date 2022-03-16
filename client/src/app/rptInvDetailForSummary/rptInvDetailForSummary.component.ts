@@ -246,9 +246,12 @@ export class RptInvestmentDetailSummaryComponent implements OnInit {
     this.rptInvDetailForService.getInvestmentDetails(this.rptInvDetailForService.investmentDetailFormData.investmentInitId,parseInt(this.empId),this.userRole).subscribe(response => {
       var data = response[0] as IInvestmentDetail;
       if (data !== undefined) {
+        debugger;
         this.rptInvDetailForService.investmentDetailFormData = data;
         this.rptInvDetailForService.investmentDetailFormData.fromDate = new Date(data.fromDate);
         this.rptInvDetailForService.investmentDetailFormData.toDate = new Date(data.toDate);
+        this.rptInvDetailForService.investmentDetailFormData.commitmentFromDate = new Date(data.commitmentFromDate);
+        this.rptInvDetailForService.investmentDetailFormData.commitmentToDate = new Date(data.commitmentToDate);
         this.convertedDate = this.datePipe.transform(data.fromDate, 'ddMMyyyy');
         //this.getLastFiveInvestment(this.rptInvDetailForService.investmentInitFormData.marketCode, this.convertedDate);
 

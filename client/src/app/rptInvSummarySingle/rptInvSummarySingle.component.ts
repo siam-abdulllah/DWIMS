@@ -16,6 +16,7 @@ import { GenericParams } from '../shared/models/genericParams';
 import { AccountService } from '../account/account.service';
 import { InvestmentInit } from '../shared/models/investmentRec';
 import { DatePipe } from '@angular/common';
+import { IDoctor } from '../shared/models/docotor';
 
 
 @Component({
@@ -33,11 +34,15 @@ export class RptInvSummarySingleComponent implements OnInit {
   empId: string;
   isInvestmentInActive: boolean;
   searchText = '';
+  doctors: IDoctor[];
   //configs: any;
   searchDto: IReportSearchDto;
   numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
   //totalCount = 0;
   reports: any;
+  referenceNoDoc: string;
+  doctorId: any;
+  doctorName: any;
   rptDepotLetter :IrptDepotLetterSearch[] = [];
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date = new Date();
@@ -99,6 +104,51 @@ export class RptInvSummarySingleComponent implements OnInit {
     }, error => {
       console.log(error);
     });
+  
+    
+  }
+  ViewDataDoc() {
+     debugger;
+    // this.reportService.IsInvestmentInActiveDoc(this.referenceNoDoc,this.doctorId,this.doctorName).subscribe(response => {
+    //   debugger;
+      // if(1==0)
+      // {
+      //   this.isInvestmentInActive=true;
+      // }
+      // else{
+        //this.isInvestmentInActive=false;
+        if((this.referenceNoDoc==undefined || this.referenceNoDoc=="") && (this.doctorId==undefined || this.doctorId=="") && (this.doctorName==undefined || this.doctorName==""))
+        {
+          this.toastr.warning('Please enter at least 1 parameter!');
+         return false;
+        }
+        
+        if(this.referenceNoDoc!=undefined && this.referenceNoDoc!="")
+        {
+          if(this.referenceNoDoc.length!=11)
+          {
+            this.toastr.warning('Please enter must be 11 character in Reference No ');
+            return false;
+          }
+        }
+        if(this.doctorName!=undefined && this.doctorName!="")
+        {
+          if(this.doctorName.length<4)
+          {
+            this.toastr.warning('Please enter minimum 4 character in Doctor Name! ');
+            return false;
+          }
+        }
+      this.reportService.GetInvestmentSummarySingleDoc(this.referenceNoDoc,this.doctorId,this.doctorName).subscribe(response => {
+        debugger;
+        this.reports = response;
+      }, error => {
+        console.log(error);
+      });
+     // }
+    // }, error => {
+    //   console.log(error);
+    // });
   
     
   }
@@ -239,6 +289,19 @@ export class RptInvSummarySingleComponent implements OnInit {
       return rupees
     }
   }
+  customSearchFnDoc(term: string, item: any) {
+    term = term.toLocaleLowerCase();
+    return item.doctorCode.toLocaleLowerCase().indexOf(term) > -1 ||
+      item.doctorName.toLocaleLowerCase().indexOf(term) > -1;
+  }
+  // getDoctor() {
+  //   this.reportService.getDoctors().subscribe(response => {
+  //     this.doctors = response as IDoctor[];
+  //   }, error => {
+  //     this.SpinnerService.hide();
+  //     console.log(error);
+  //   });
+  // }
 
 
 }

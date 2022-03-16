@@ -87,6 +87,34 @@ namespace API.Controllers
             var results = _db.CountInt.FromSqlRaw(qry).ToList();
             return results;
         }
+         [HttpGet("IsInvestmentInActiveDoc/{referenceNo}/{doctorId}/{doctorName}")]
+        public ActionResult<IReadOnlyList<CountInt>> IsInvestmentInActiveDoc(string referenceNo,int doctorId, string doctorName)
+        {
+            
+
+            string qry = "SELECT A.[Id],A.[DataStatus] ,A.[SetOn],A.[ModifiedOn],A.[DataStatus] Count  " +
+                " FROM InvestmentInit A " +
+                " LEFT JOIN InvestmentDoctor B ON A.Id=B.InvestmentInitId " +
+                " LEFT JOIN DoctorInfo C ON B.DoctorId=C.Id" +
+                " WHERE 1=1";
+            if (!string.IsNullOrEmpty(referenceNo) && referenceNo!="undefined")
+            {
+                qry = qry+" AND ReferenceNo = '" + referenceNo +"'";
+            }
+            if (!string.IsNullOrEmpty(doctorName) && doctorName!="undefined")
+            {
+                qry = qry + " AND C.DoctorName Like '%" + doctorName + "%'";
+            }
+            if (doctorId!=0)
+            {
+                qry = qry + " AND B.DoctorId = " + doctorId + " ";
+            }
+
+            var results = _db.CountInt.FromSqlRaw(qry).ToList();
+            return results;
+        }
+        
+        
         [HttpPost("GetDoctorCampaingWiseInvestment")]
         public ActionResult<IReadOnlyList<RptDocCampWiseInvestment>> GetDoctorCampaingWiseInvestment([FromQuery] ReportInvestmentInfoSpecParams rptParrams, ReportSearchDto search)
         {
@@ -348,6 +376,57 @@ namespace API.Controllers
 
             return results;
         }
+
+        [HttpGet]
+        [Route("getInvestmentSummarySingleDoc/{referenceNo}/{doctorName}/{doctorId}")]
+        public ActionResult<IReadOnlyList<RptInvestmentSummary>> GetInvestmentSummarySingleDoc(string referenceNo,string doctorName,int doctorId)
+        {
+            //string qry = " SELECT  DISTINCT Cast(a.id AS INT) AS Id, a.DataStatus, Sysdatetimeoffset() AS SetOn, Sysdatetimeoffset() AS ModifiedOn, a.referenceno, b.ProposedAmount, d.donationtypename, a.donationto, b.fromdate, ISNULL (rcv.ReceiveStatus, 'N/A') ReceiveStatus, b.todate, 0 InvStatusCount, " +
+
+            //" CASE WHEN a.donationto = 'Doctor' THEN (SELECT DoctorId  FROM   investmentdoctor x  INNER JOIN doctorinfo y ON x.doctorid = y.id WHERE x.investmentinitid = a.id)  " +
+            //" WHEN a.donationto = 'Institution' THEN (SELECT InstitutionId FROM  investmentinstitution x INNER JOIN institutioninfo y ON x.institutionid = y.id WHERE x.investmentinitid = a.id)  " +
+            //" WHEN a.donationto = 'Campaign' THEN (SELECT y.MstId  FROM   investmentcampaign x INNER JOIN campaigndtl y  ON x.campaigndtlid = y.id  INNER JOIN [dbo].[subcampaign] C  ON y.subcampaignid = C.id  WHERE x.investmentinitid = a.id)  " +
+            //" WHEN a.donationto = 'Bcds' THEN (SELECT x.BcdsId   FROM   investmentbcds x  INNER JOIN bcds y   ON x.bcdsid = y.id   WHERE  x.investmentinitid = a.id)  " +
+            //" WHEN a.donationto = 'Society' THEN (SELECT x.SocietyId FROM   investmentsociety x INNER JOIN society y ON x.societyid = y.id WHERE  x.investmentinitid = a.id) END  DId, " +
+
+            //" CASE WHEN a.donationto = 'Doctor' THEN (SELECT doctorname FROM investmentdoctor x INNER JOIN doctorinfo y ON x.doctorid = y.id WHERE  x.investmentinitid = a.id) " +
+            //" WHEN a.donationto = 'Institution' THEN (SELECT institutionname FROM investmentinstitution x INNER JOIN institutioninfo y ON x.institutionid = y.id WHERE x.investmentinitid = a.id) " +
+            //" WHEN a.donationto = 'Campaign' THEN (SELECT subcampaignname FROM investmentcampaign x INNER JOIN campaigndtl y ON x.campaigndtlid = y.id INNER JOIN [dbo].[subcampaign] C ON y.subcampaignid = C.id WHERE  x.investmentinitid = a.id) " +
+            //" WHEN a.donationto = 'Bcds' THEN (SELECT bcdsname FROM investmentbcds x INNER JOIN bcds y ON x.bcdsid = y.id WHERE  x.investmentinitid = a.id)  " +
+            //" WHEN a.donationto = 'Society' THEN (SELECT societyname FROM investmentsociety x INNER JOIN society y ON x.societyid = y.id WHERE  x.investmentinitid = a.id) END NAME,  " +
+            //" (SELECT Isnull ((SELECT b.recstatus FROM investmentreccomment b WHERE  b.id IN (SELECT Max(id) FROM investmentreccomment WHERE  investmentinitid = a.id)), 'Pending')) InvStatus, " +
+
+            //" E.employeename, Isnull ((SELECT C.employeename FROM investmentreccomment b JOIN employee c ON c.id = b.employeeid WHERE  b.investmentinitid = a.id AND b.id = (SELECT Max(id) FROM   investmentreccomment WHERE  investmentinitid = b.investmentinitid)), 'N/A') ApprovedBy, " +
+            //" a.MarketName, Isnull(M.employeename + ', ' + M.designationname,'N/A') ReceiveBy, b.PaymentMethod, a.ProposeFor, a.SBUName, depo.DepotName, a.Confirmation " +
+            //" FROM investmentinit a" +
+            //" INNER JOIN employee E ON A.employeeid = E.id " +
+            //" LEFT JOIN investmentdetail b ON a.id = b.investmentinitid " +
+            //" LEFT JOIN InvestmentRecDepot depo on depo.investmentinitid = a.Id " +
+            //" LEFT JOIN investmentrecv rcv ON a.id = rcv.investmentinitid " +
+            //" LEFT JOIN employee M ON  rcv.employeeid= M.id  " +
+            //" INNER JOIN donation d ON d.id = a.donationid " +
+            //" LEFT JOIN InvestmentDoctor ind ON a.Id=ind.InvestmentInitId " +
+            //" LEFT JOIN DoctorInfo dc ON ind.DoctorId=dc.Id" +
+            //" Where 1=1 ";
+            string qry = "SELECT * FROM [DIDS].[dbo].[InvestmentSummaryVW] WHERE 1=1";
+            
+            if (!string.IsNullOrEmpty(referenceNo) && referenceNo!="undefined")
+            {
+                qry = qry + " AND refno = '" + referenceNo + "'";
+            }
+            if (!string.IsNullOrEmpty(doctorName) && doctorName!="undefined")
+            {
+                qry = qry + " AND DoctorName Like '%" + doctorName + "%'";
+            }
+            if (doctorId != 0)
+            {
+                qry = qry + " AND DoctorId = " + doctorId + " ";
+            }
+            var results = _db.RptInvestmentSummary.FromSqlRaw(qry).ToList();
+
+            return results;
+        }
+
 
         [HttpPost("GetParamInvestmentSummaryReport")]
         public ActionResult<IReadOnlyList<RptInvestmentSummary>> GetParamInvestmentSummaryReport(ParamSearchDto dt, [FromQuery] ReportInvestmentInfoSpecParams rptParrams)

@@ -538,9 +538,11 @@
                                                 <div class="row">
                                                     <div class="col-md-2">
                                                         <label>Prop. Inv.</label>
+                                                        <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" [disabled]="isInvOther" placeholder="Amount" name="proposedAmount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.proposedAmount" [pattern]="numberPattern">
+                                                        <input class="form-control" [disabled]="(isInvOther ) || rptInvDetailForService.investmentInitFormData.donationId==4" placeholder="Amount" name="proposedAmount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.proposedAmount"
+                                                            [pattern]="numberPattern">
                                                         <div class="invalid-feedback" *ngIf="proposedAmount.errors?.pattern">Only numeric value</div>
                                                     </div>
                                                 </div>
@@ -549,33 +551,74 @@
                                                 <div class="row">
                                                     <div class="col-md-2">
                                                         <label>Purpose</label>
+                                                        <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" [disabled]="isInvOther" placeholder="Purpose" name="purpose" id="purpose" #purpose="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.purpose" maxLength="100">
-                                                        <div class="invalid-feedback" *ngIf="purpose.errors?.maxLength">Maximum 100 Character long</div>
+                                                        <input class="form-control" [disabled]="isInvOther" placeholder="Purpose" name="purpose" id="purpose" #purpose="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.purpose" maxLength="500">
+                                                        <div class="invalid-feedback" *ngIf="purpose.errors?.maxLength">Maximum 500 Character long</div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <div class="row">
                                                     <div class="col-md-2">
-                                                        <label>Duration</label>
+                                                        <label>Payment Freq</label>
+                                                        <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input class="form-control" [disabled]="isInvOther" placeholder="Calender" (onHidden)="changeDateInDetail()" name="fromDate" #fromDate="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched"
-                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentInitForm)">
+                                                        <select class="form-control" [disabled]="isInvOther  " id="paymentFreq" name="paymentFreq" #paymentFreq="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.paymentFreq" [class.invalid]="paymentFreq.invalid && paymentFreq.touched">
+                                                            <option  [ngValue]="null">Select Payment Freq</option>
+                                                            <option value="Monthly">Monthly</option>
+                                                            <option value="Quarterly">Quarterly</option>
+                                                            <option value="Half Yearly">Half Yearly</option>
+                                                            <option value="Yearly">Yearly</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <label>Payment Dur.</label>
+                                                        <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input class="form-control" [disabled]="isInvOther" placeholder="Calender" (onHidden)="changeDateInDetail()" name="toDate" #toDate="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched"
-                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentInitForm)">
+                                                        <input class="form-control" [disabled]="isInvOther  " placeholder="Calender" name="fromDate" #fromDate="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched" [bsValue]="bsValue"
+                                                            bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentInitForm)">
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input class="form-control" [disabled]="isInvOther  " placeholder="Calender" name="toDate" #toDate="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched" [bsValue]="bsValue" bsDatepicker
+                                                            [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentInitForm)">
 
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <label>Total Month</label>
+                                                        <label>Pay. Tot. Mon.</label>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <input class="form-control" name="totalMonth" id="totalMonth" #totalMonth="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.totalMonth" readonly>
+                                                        <input class="form-control" placeholder="Total Month" name="totalMonth" id="totalMonth" #totalMonth="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.totalMonth" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <label>Commit. Dur.</label>
+                                                        <span style="color:red;">*</span>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input class="form-control" [disabled]="isInvOther  " placeholder="Calender" name="commitmentFromDate" #commitmentFromDate="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.commitmentFromDate" [class.invalid]="commitmentFromDate.invalid && commitmentFromDate.touched"
+                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input class="form-control" [disabled]="isInvOther  " placeholder="Calender" name="commitmentToDate" #commitmentToDate="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.commitmentToDate" [class.invalid]="commitmentToDate.invalid && commitmentToDate.touched"
+                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
 
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label>Com. Tot. Mon.</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <input class="form-control" placeholder="Total Month" name="commitmentTotalMonth" id="commitmentTotalMonth" #commitmentTotalMonth="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.commitmentTotalMonth" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -588,7 +631,7 @@
                                                         <label>All SBU </label>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <input class="form-control" [disabled]="isInvOther" name="commitmentAllSBU" id="commitmentAllSBU" #commitmentAllSBU="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.commitmentAllSBU" [pattern]="numberPattern">
+                                                        <input class="form-control" [disabled]="isInvOther  " name="commitmentAllSBU" id="commitmentAllSBU" #commitmentAllSBU="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.commitmentAllSBU" [pattern]="numberPattern">
                                                         <div class="invalid-feedback" *ngIf="commitmentAllSBU.errors?.pattern">Only numeric value</div>
                                                     </div>
                                                     <div class="col-md-1">
@@ -598,7 +641,7 @@
                                                         <label>Own SBU</label>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <input class="form-control" [disabled]="isInvOther" name="commitmentOwnSBU" id="commitmentOwnSBU" #commitmentOwnSBU="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.commitmentOwnSBU" [pattern]="numberPattern">
+                                                        <input class="form-control" [disabled]="isInvOther  " name="commitmentOwnSBU" id="commitmentOwnSBU" #commitmentOwnSBU="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.commitmentOwnSBU" [pattern]="numberPattern">
                                                         <div class="invalid-feedback" *ngIf="commitmentOwnSBU.errors?.pattern">Only numeric value</div>
                                                     </div>
                                                     <div class="col-md-1">
@@ -609,10 +652,10 @@
                                             <div class="form-group">
                                                 <div class="row">
                                                     <div class="col-md-2">
-                                                        <label>Payment Method</label>
+                                                        <label>Pay. Method</label>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <select class="form-control" [disabled]="isInvOther" name="paymentMethod" id="paymentMethod" #paymentMethod="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.paymentMethod">
+                                                        <select class="form-control" [disabled]="isInvOther  " name="paymentMethod" id="paymentMethod" #paymentMethod="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.paymentMethod">
                                                         
                                                             <option  [ngValue]="null">Select Payment Method</option>
                                                             <option value="Cash">Cash</option>
@@ -630,7 +673,7 @@
                                                         <label>Cheque Title</label>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" maxlength="100" [disabled]="isInvOther" placeholder="Cheque Title" name="chequeTitle" id="chequeTitle" #chequeTitle="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.chequeTitle">
+                                                        <input class="form-control" maxlength="100" [disabled]="isInvOther  " placeholder="Cheque Title" name="chequeTitle" id="chequeTitle" #chequeTitle="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.chequeTitle">
                                                     </div>
                                                 </div>
                                             </div>

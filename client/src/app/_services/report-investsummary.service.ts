@@ -28,7 +28,9 @@ export class RptInvestSummaryService {
   setGenParams(genParams: GenericParams) {
     this.genParams = genParams;
   }
-
+  getDoctors() {
+    return this.http.get(this.baseUrl + 'doctor/doctorsForReport');
+  }
 
   GetInvestmentSummaryReport(model: any){ 
     let params = new HttpParams();
@@ -54,8 +56,27 @@ export class RptInvestSummaryService {
   GetInvestmentSummarySingle(referenceNo: string){ 
     return this.http.get(this.baseUrl+ 'reportInvestment/getInvestmentSummarySingle/'+referenceNo);  
   }
+  GetInvestmentSummarySingleDoc(referenceNo: string,doctorId:any,doctorName:string){ 
+    debugger;
+    if(referenceNo==undefined || referenceNo=="")
+    {
+      referenceNo="undefined";
+    }
+    if(doctorId==undefined || doctorId=="")
+    {
+      doctorId=0;
+    }
+    if(doctorName==undefined || doctorName=="")
+    {
+      doctorName="undefined";
+    }
+    return this.http.get(this.baseUrl+ 'reportInvestment/getInvestmentSummarySingleDoc/'+referenceNo+'/'+doctorName+'/'+doctorId);  
+  }
   IsInvestmentInActive(referenceNo: string){ 
     return this.http.get(this.baseUrl+ 'reportInvestment/isInvestmentInActive/'+referenceNo);  
+  }
+  IsInvestmentInActiveDoc(referenceNo: string,doctorId:number,doctorName:string){ 
+    return this.http.get(this.baseUrl+ 'reportInvestment/IsInvestmentInActiveDoc/'+referenceNo+'/'+doctorId+'/'+doctorName);  
   }
 
   GetParamInvestmentSummaryReport(model: any){ 

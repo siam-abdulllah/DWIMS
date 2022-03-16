@@ -9,12 +9,6 @@
                                 <div class="col-sm-9">
                                     <h3 class="card-title">Investment Summary Report</h3>
                                 </div>
-                                <!-- <div class="col-sm-1">
-                                    <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="form.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
-                                </div>
-                                <div class="col-sm-1">
-                                    <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetPage(form)"><i class="fa fa-undo"></i>&nbsp; Reset</button>
-                                </div> -->
                             </div>
                         </div>
                         <div class="card-body">
@@ -22,26 +16,36 @@
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-2">
-                                            <label>Reference No</label>
-                                            <span style="color:red;">*</span>
+                                            <label>Inv. Reference No</label>
                                         </div>
-                                        <div class="col-md-3">
-                                            <input type="text" class="form-control " name="referenceNo" id="referenceNo" #referenceNo="ngModel" [(ngModel)]="reportService.rptInvestSummaryFormData.referenceNo">
+                                        <div class="col-md-2">
+                                            <input type="text" class="form-control" id="referenceNoDoc" name="referenceNoDoc" [(ngModel)]="referenceNoDoc">
+                                        </div>
+                                        <div class="col-md-1">
+                                            <label>Doctor Id</label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="text" class="form-control" id="doctorId" name="doctorId" [(ngModel)]="doctorId">
+                                        </div>
+                                        <div class="col-md-1">
+                                            <label>Doctor Name</label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="text" class="form-control" id="doctorName" name="doctorName" [(ngModel)]="doctorName">
                                         </div>
                                         <div class="col-sm-1">
-                                            <button class="btn btn-info btn-lg btn-block" type="button" (click)="ViewData()"><i class="fa fa-eye"></i>&nbsp;View</button>
+                                            <button class="btn btn-info btn-lg btn-block" type="button" (click)="ViewDataDoc()"><i class="fa fa-eye"></i>&nbsp;View</button>
                                         </div>
-                                        <div class="col-sm-1">
-                                        </div>
-                                        <div class="col-sm-4" *ngIf="isInvestmentInActive" style="color: red;font-weight: bold;font-size:14px;">
-                                            This Reference No is deleted!
-                                        </div>
-                                        <!-- <div class="col-sm-1">
-                                            <button class="btn btn-info btn-lg btn-block" type="button" (click)="ViewReport()"><i class="fa fa-eye"></i>&nbsp;Print Report</button>
-                                        </div> -->
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <div class="col-sm-4">
+                                    </div>
+                                    <div class="col-sm-4" *ngIf="isInvestmentInActive" style="color: red;font-weight: bold;font-size:14px;">
+                                        This Reference No is deleted!
+                                    </div>
+                                </div>
+                                <!-- <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-2">
                                         </div>
@@ -52,17 +56,18 @@
                                             <button class="btn btn-danger" type="button" (click)="resetSearch()"><i class="fa fa-undo"></i>&nbsp; Reset</button>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
 
                             </fieldset>
                             <br/>
-                            <div class="form-group" style="overflow: auto; max-height: 250px;" *ngIf="!isInvestmentInActive">
+                            <div class="form-group" style="overflow: auto; max-height: 500px;" *ngIf="!isInvestmentInActive">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <table class="table  table-bordered">
                                             <tr class="HeaderRowFixed">
-                                                <td>Ref No</td>
+                                                <td>Inv. Ref No</td>
                                                 <td>Cnfrm.</td>
+                                                <td>Del.</td>
                                                 <td>Inv Type</td>
                                                 <td>Inv To</td>
                                                 <td>Prop. For</td>
@@ -70,7 +75,7 @@
                                                 <td>SBU</td>
                                                 <td>ID</td>
                                                 <td>Name</td>
-                                                <td>Amount</td>
+                                                <td>Inv. Amount</td>
                                                 <td>From</td>
                                                 <td>To</td>
                                                 <td>Market</td>
@@ -93,6 +98,10 @@
                                                 <td>
                                                     <span *ngIf="a.confirmation==true">Submitted</span>
                                                     <span *ngIf="a.confirmation!=true">Not Submitted</span>
+                                                </td>
+                                                <td [ngStyle]="a.dataStatus==0 ? {'background-color': 'red', 'color': 'white'} : {}">
+                                                    <span *ngIf="a.dataStatus==1">  </span>
+                                                    <span *ngIf="a.dataStatus==0">Deleted</span>
                                                 </td>
                                                 <td>
                                                     {{a.donationTypeName}}
