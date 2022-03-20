@@ -1,3 +1,4 @@
+import { ChangePasswordAllComponent } from './../changePasswordAll/changePasswordAll.component';
 import { ParamInvestSummaryComponent } from './../paramInvestmentSummary/paramInvestmentSummary.component';
 import { PortalComponent } from './portal.component';
 import { MarketGroupComponent } from '../marketGroup/marketGroup.component';
@@ -63,6 +64,7 @@ const portalRoutes: Routes = [
         {path: 'rptInvestmentSingle', component: RptInvSummarySingleComponent},
         {path: 'pendingPrintDepot', component: PendingPrintDepotComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'pendingChqPrintDepot', component: PendingChqPrintDepotComponent},
+        {path: 'changePassAll', component: ChangePasswordAllComponent},
         {path: 'mpoPendingDisburse', component: PendingDisburseComponent},
         {path: 'billTrack', component: BillTrackComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'chequeTrack', component: ChequeTrackComponent, canActivate: [SuperAdminRoleGuard]},
@@ -85,6 +87,7 @@ const portalRoutes: Routes = [
         {path: 'master', loadChildren: () => import('../master/master.module')
        .then(mod => mod.MasterModule) , data: {breadcrumb: {skip: true}}}, 
         ]
+        
 }
 ];
 @NgModule({

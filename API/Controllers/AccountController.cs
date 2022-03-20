@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace API.Controllers
 {
@@ -513,6 +514,57 @@ namespace API.Controllers
 
                 throw ex;
             }
+        }
+
+        [HttpGet]
+        [Route("changePasswordAnySupport/{employeeSAPCode}/{empId}")]
+        public async Task<ActionResult<bool>> ChangePasswordAnySupport(string employeeSAPCode, string empId)
+        {
+            try
+            {
+                var user = await _userManager.FindByNameAsync(employeeSAPCode);
+
+                // var userObj = await _userManager.ChangePasswordAsync(user, changePasswordDto.CurrentPassword, changePasswordDto.NewPassword);
+                var userRemove = await _userManager.RemovePasswordAsync(user);
+                if (userRemove.Succeeded) { 
+                    var userObj = await _userManager.AddPasswordAsync(user, "@Aa123");
+                    if (userObj.Succeeded)
+                    {
+                        var userLockedOutDisable= await _userManager.SetLockoutEnabledAsync( user, false);
+                        if (userLockedOutDisable.Succeeded)
+                        {
+                            var y = _db.Database.ExecuteSqlRaw("EXECUTE [dbo].[SP_AuditInsert] {0},{1},{2},{3},{4},{5},{6}", "Password Update", "Update", "[IdentityDIDS].[dbo].[AspNetUsers]", "Change Password Support", empId, GetIPAddress(), employeeSAPCode);
+                            return true;
+                        }
+                    }                  
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public string GetIPAddress()
+        {
+            IPAddress ip;
+            var headers = Request.Headers.ToList();
+            if (headers.Exists((kvp) => kvp.Key == "X-Forwarded-For"))
+            {
+                // when running behind a load balancer you can expect this header
+                var header = headers.First((kvp) => kvp.Key == "X-Forwarded-For").Value.ToString();
+                // in case the IP contains a port, remove ':' and everything after
+                ip = IPAddress.Parse(header.Remove(header.IndexOf(':')));
+            }
+            else
+            {
+                // this will always have a value (running locally in development won't have the header)
+                ip = Request.HttpContext.Connection.RemoteIpAddress;
+            }
+
+            return ip.ToString();
         }
 
     }

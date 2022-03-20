@@ -5,7 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { PortalComponent } from './portal.component';
 import { PortalRoutingModule } from './portal-routing.module';
-
+import { ChangePasswordAllComponent } from './../changePasswordAll/changePasswordAll.component';
 import { TopnavComponent } from '../mastertheme/topnav/topnav.component';
 import { AsidenavComponent } from '../mastertheme/asidenav/asidenav.component';
 import { FooterComponent } from '../mastertheme/footer/footer.component';
@@ -87,6 +87,7 @@ import { RptInvSummarySingleComponent } from '../rptInvSummarySingle/rptInvSumma
     InvestmentAprNoSbuComponent,
     InvestmentRcvComponent,
     RegApprovalComponent,
+    ChangePasswordAllComponent,
     ReportInvestmentComponent,
     ReportYearlyBudgetComponent,
     ChangeDepotComponent,

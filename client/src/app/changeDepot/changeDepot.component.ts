@@ -53,6 +53,7 @@ export class ChangeDepotComponent implements OnInit {
       marketName: new FormControl(''),
       donationTypeName: new FormControl(''),
       proposedAmount: new FormControl(''),
+      remarks: new FormControl(''),
       id: new FormControl(''),
       investmentInitId: new FormControl(''),
       searchText: new FormControl(''),
@@ -116,7 +117,7 @@ export class ChangeDepotComponent implements OnInit {
     this.pendingService.changeDepotFormData.oldDepotName = this.billTrackForm.value.oldDepotName;
     this.pendingService.changeDepotFormData.oldDepotCode = this.billTrackForm.value.oldDepotCode;
     this.pendingService.changeDepotFormData.employeeId = parseInt(this.empId);
-    this.pendingService.changeDepotFormData.remarks = "";
+    this.pendingService.changeDepotFormData.remarks = this.billTrackForm.value.remarks;
 
     this.pendingService.insertChange(this.pendingService.changeDepotFormData).subscribe(
       res => {
@@ -166,6 +167,7 @@ openPendingListModal(template: TemplateRef<any>) {
       marketName: "",
       donationTypeName: "",
       proposedAmount: "",
+      remarks: "",
       id: "",
       searchText: "",
       investmentInitId: "",

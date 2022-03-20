@@ -111,6 +111,7 @@ namespace Infrastructure.Data
         public DbSet<RptChequePrintSearch> RptChequePrintSearch { get; set; }
         [NotMapped]
         public DbSet<RptYearlyBudget> RptYearlyBudget { get; set; }
+        public DbSet<AuditTrail> AuditTrail { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
