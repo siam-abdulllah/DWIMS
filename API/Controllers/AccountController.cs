@@ -547,6 +547,7 @@ namespace API.Controllers
             }
         }
 
+        [HttpPost]
         public string GetIPAddress()
         {
             IPAddress ip;
