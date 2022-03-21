@@ -1,4 +1,5 @@
 import { ChangePasswordAllComponent } from './../changePasswordAll/changePasswordAll.component';
+import { RptDocLocMapComponent } from './../RptDocLocMap/RptDocLocMap.component';
 import { ParamInvestSummaryComponent } from './../paramInvestmentSummary/paramInvestmentSummary.component';
 import { PortalComponent } from './portal.component';
 import { MarketGroupComponent } from '../marketGroup/marketGroup.component';
@@ -38,6 +39,7 @@ import { MenuConfigComponent } from '../menuConfig/menuConfig.component';
 import { ChangePasswordComponent } from '../changePassword/changePassword.component';
 import { RptChqDispatchComponent } from '../rptChqDispatch/rptChqDispatch.component';
 import { RptInvSummarySingleComponent } from '../rptInvSummarySingle/rptInvSummarySingle.component';
+import { RptEmpInfoComponent } from '../rptEmpInfo/rptEmpInfo.component';
 
 const portalRoutes: Routes = [
   {
@@ -81,7 +83,9 @@ const portalRoutes: Routes = [
         {path: 'cluster', component: ClusterInfoComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'menuHead', component: MenuHeadComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'subMenu', component: SubMenuComponent, canActivate: [SuperAdminRoleGuard]},
-        {path: 'menuConfig', component: MenuConfigComponent},
+        {path: 'rptDocLoc', component: RptDocLocMapComponent},
+        {path: 'rptEmpInfo', component: RptEmpInfoComponent},
+        {path: 'menuConfig', component: MenuConfigComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'changePassword', component: ChangePasswordComponent},
         {path: '', component: PortalComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'master', loadChildren: () => import('../master/master.module')

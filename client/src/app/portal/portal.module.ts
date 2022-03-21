@@ -52,6 +52,8 @@ import { RptChqDispatchComponent } from '../rptChqDispatch/rptChqDispatch.compon
 import { ReportYearlyBudgetComponent } from '../reportYearlyBudget/reportYearlyBudget.component';
 import { PendingDisburseComponent } from './../pendingDisburse/pendingDisburse.component'; 
 import { RptInvSummarySingleComponent } from '../rptInvSummarySingle/rptInvSummarySingle.component';
+import { RptDocLocMapComponent } from './../RptDocLocMap/RptDocLocMap.component';
+import { RptEmpInfoComponent } from '../rptEmpInfo/rptEmpInfo.component';
 
 @NgModule({
   imports: [
@@ -87,6 +89,7 @@ import { RptInvSummarySingleComponent } from '../rptInvSummarySingle/rptInvSumma
     InvestmentAprNoSbuComponent,
     InvestmentRcvComponent,
     RegApprovalComponent,
+    RptDocLocMapComponent,
     ChangePasswordAllComponent,
     ReportInvestmentComponent,
     ReportYearlyBudgetComponent,
@@ -110,6 +113,7 @@ import { RptInvSummarySingleComponent } from '../rptInvSummarySingle/rptInvSumma
     PendingDisburseComponent,
     MenuHeadComponent,
     SubMenuComponent,
+    RptEmpInfoComponent,
     MenuConfigComponent,
     ChangePasswordComponent
   ],

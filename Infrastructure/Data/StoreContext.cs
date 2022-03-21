@@ -112,6 +112,8 @@ namespace Infrastructure.Data
         [NotMapped]
         public DbSet<RptYearlyBudget> RptYearlyBudget { get; set; }
         public DbSet<AuditTrail> AuditTrail { get; set; }
+        [NotMapped]
+        public DbSet<DocLocMap> DocLocMap { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
