@@ -54,6 +54,7 @@ import { PendingDisburseComponent } from './../pendingDisburse/pendingDisburse.c
 import { RptInvSummarySingleComponent } from '../rptInvSummarySingle/rptInvSummarySingle.component';
 import { RptDocLocMapComponent } from './../RptDocLocMap/RptDocLocMap.component';
 import { RptEmpInfoComponent } from '../rptEmpInfo/rptEmpInfo.component';
+import { ReportYearlySbuExpComponent } from '../reportYearlySbuExp/reportYearlySbuExp.component';
 
 @NgModule({
   imports: [
@@ -93,6 +94,7 @@ import { RptEmpInfoComponent } from '../rptEmpInfo/rptEmpInfo.component';
     ChangePasswordAllComponent,
     ReportInvestmentComponent,
     ReportYearlyBudgetComponent,
+    ReportYearlySbuExpComponent,
     ChangeDepotComponent,
     ChequeTrackComponent,
     RptInvestSummaryComponent,

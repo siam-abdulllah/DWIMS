@@ -264,6 +264,26 @@ namespace API.Controllers
             return results;
         }
 
+
+         [HttpPost("GetSBUWiseExpenseReport")]
+        public ActionResult<IReadOnlyList<RptSBUWiseExp>> GetSBUWiseExpenseReport(ReportSearchDto dt)
+        {
+            int year = Convert.ToDateTime(dt.FromDate).Year;
+
+            string qry = " Select DISTINCT Cast(Abs(Checksum(Newid())) % 200 AS INT) AS Id,1 AS DataStatus,Sysdatetimeoffset() AS SetOn,Sysdatetimeoffset() AS ModifiedOn, " +
+            " SUM(a.amount) amount,(SELECT Sum(x.approvedamount) Expense FROM   investmentdetailtracker x INNER JOIN investmentinit i ON x.investmentinitid = i.id  " +
+            " WHERE  x.year = "+ year +" AND i.sbuname = b.sbuname) Expense, b.SBUName, b.Year " +
+            " FROM   sbuwisebudget a  " +
+            " LEFT JOIN vw_monthlyexpense b ON a.sbuname = b.sbuname AND a.donationid = b.donationid " +
+            " WHERE  b.[year] = "+ year +" " +
+            " GROUP  BY b.sbuname, b.Year " +
+            " ORDER  BY b.sbuname ";
+
+            var results = _db.RptSBUWiseExp.FromSqlRaw(qry).ToList();
+
+            return results;
+        }
+
         [HttpPost("GetInvestmentSummaryReport")]
         public ActionResult<IReadOnlyList<RptInvestmentSummary>> GetInvestmentSummaryReport(SearchDto dt, [FromQuery] ReportInvestmentInfoSpecParams rptParrams)
         {

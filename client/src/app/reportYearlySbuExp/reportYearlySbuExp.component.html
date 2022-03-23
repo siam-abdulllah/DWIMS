@@ -1,0 +1,45 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <!-- form start -->
+                <!-- <form novalidate autocomplete="off"> -->
+                <form [formGroup]="investmentSearchForm">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h3 class="card-title">Yearly Budget Report</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <fieldset>
+                                <div class="form-group">
+                                    <div class="row">
+
+                                        <div class="col-md-1">
+                                            <label>Year</label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input class="form-control" id="from-date" placeholder="From Date" formControlName="fromDate" [bsValue]="bsValue" bsDatepicker (onShown)="onOpenCalendar($event)" [bsConfig]="bsConfig">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button class="btn btn-info  btn-block" type="button" (click)="getYearlySBUWiseExpReport()"><i class="fa fa-save"></i>&nbsp;
+                                            View</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <!-- /.card -->
+                </form>
+            </div>
+            <!-- /.row -->
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>

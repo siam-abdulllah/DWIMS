@@ -7,8 +7,9 @@ import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { GenericParams } from '../shared/models/genericParams';
 import { DatePipe } from '@angular/common';
 import { EmployeeService } from '../_services/employee.service';
-declare  var jQuery:  any;
-
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'rptEmpInfo',
@@ -35,7 +36,9 @@ export class RptEmpInfoComponent implements OnInit {
 
   constructor(private router: Router,
     public datepipe: DatePipe,
-    public empService: EmployeeService) { }
+    public empService: EmployeeService,  
+    private toastr: ToastrService, private modalService: BsModalService,
+    private SpinnerService: NgxSpinnerService,) { }
 
   ngOnInit() {
      this.ViewData();

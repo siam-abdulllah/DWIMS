@@ -26,6 +26,7 @@ import { RptMedDispatchComponent } from '../rptMedDispatch/rptMedDispatch.compon
 import { ChequeTrackComponent } from './../chequeTrack/chequeTrack.component'; 
 import { PendingDisburseComponent } from './../pendingDisburse/pendingDisburse.component'; 
 import { ReportYearlyBudgetComponent } from '../reportYearlyBudget/reportYearlyBudget.component';
+import { ReportYearlySbuExpComponent } from '../reportYearlySbuExp/reportYearlySbuExp.component';
 import { NgModule } from '@angular/core';
 import { RptInvestmentDetailSummaryComponent } from '../RptInvDetailForSummary/rptInvDetailForSummary.component'; ;
 import { PendingChqPrintDepotComponent } from '../pendingChqPrintDepot/pendingChqPrintDepot.component';
@@ -75,6 +76,7 @@ const portalRoutes: Routes = [
         {path: 'rptMedDispatch', component: RptMedDispatchComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'rptChqDispatch', component: RptChqDispatchComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'rptYearlyBudget', component: ReportYearlyBudgetComponent, canActivate: [SuperAdminRoleGuard]},
+        {path: 'rptYearlySbuExp', component: ReportYearlySbuExpComponent},
         {path: 'changeDepot', component: ChangeDepotComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'paramInvestmentSummary/:param', component: ParamInvestSummaryComponent},
         //{path: 'rptInvestmentDetail', component: RptInvestmentDetailComponent},

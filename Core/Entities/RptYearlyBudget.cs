@@ -26,4 +26,12 @@ namespace Core.Entities
         public double? November { get; set; }
         public double? December { get; set; }
     }
+
+    public class RptSBUWiseExp : BaseEntity
+    {
+        public int Year { get; set; }
+        public string SBUName { get; set; }
+        public long Amount { get; set; }
+        public double? Expense { get; set; }
+    }
 }

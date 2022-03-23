@@ -117,6 +117,10 @@ GetYearlyBudgetReport(model: any) {
   return this.http.post(this.baseUrl + 'reportInvestment/GetYearlyBudgetReport', model);
 }
 
+GetSBUWiseExpenseReport(model: any) {
+  return this.http.post(this.baseUrl + 'reportInvestment/GetSBUWiseExpenseReport', model);
+}
+
 GetEmpWiseExpSummaryReport(model: any) {
   return this.http.post(this.baseUrl + 'reportInvestment/GetEmpWiseExpSummaryReport', model);
 }

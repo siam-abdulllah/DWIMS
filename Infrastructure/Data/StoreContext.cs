@@ -114,6 +114,8 @@ namespace Infrastructure.Data
         public DbSet<AuditTrail> AuditTrail { get; set; }
         [NotMapped]
         public DbSet<DocLocMap> DocLocMap { get; set; }
+        [NotMapped]
+        public DbSet<RptSBUWiseExp> RptSBUWiseExp { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
