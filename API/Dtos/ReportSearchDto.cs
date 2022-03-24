@@ -37,13 +37,21 @@ namespace API.Dtos
         public string UserRole { get; set; } 
     }
 
-     public class ParamSearchDto
+    public class ParamSearchDto
     {
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; } 
         public int EmpId { get; set; } 
         public string UserRole { get; set; } 
          public string ApproveStatus { get; set; } 
+    }
 
+
+    public class EmpWiseExpSearchDto
+    {
+        public int EmployeeId { get; set; }
+        public int ApprovalAuthorityId { get; set; }
+        public int DonationId { get; set; }
+        public DateTime Year { get; set; }
     }
 }

@@ -284,6 +284,51 @@ namespace API.Controllers
             return results;
         }
 
+
+        [HttpPost("GetEmpMonthlyExpense")]
+        public ActionResult<IReadOnlyList<RptEmpWiseExp>> GetEmpMonthlyExpense(EmpWiseExpSearchDto dt)
+        {
+            int year = Convert.ToDateTime(dt.Year).Year;
+
+            string qry = " Select Cast(Abs(Checksum(Newid())) % 200 AS INT) AS Id,1 AS DataStatus,Sysdatetimeoffset() AS SetOn,Sysdatetimeoffset() AS ModifiedOn, " +
+                " X.ApprovalAuthorityId, X.Priority, X.EmployeeId, e.EmployeeName, X.DonationId, d.DonationTypeName, DateName(month, DateAdd(month, X.[Month], - 1)) [Month], X.Year, CAST (X.Budget as float) Budget, X.Expense " +
+                " FROM ( " +
+                " select aprCeiling.ApprovalAuthorityId, aprAuth.Priority, authConf.EmployeeId, aprCeiling.DonationId, aprCeiling.Month, aprCeiling.Year, aprCeiling.AmountPerMonth Budget, " +
+                " (select SUM(a.ApprovedAmount) from InvestmentDetailTracker a " +
+                " WHERE a.DonationId = aprCeiling.DonationId AND a.Month = aprCeiling.Month " +
+                " AND a.Year = aprCeiling.Year AND a.EmployeeId = authConf.EmployeeId " +
+                " group by a.Month, a.Year, a.DonationId, a.EmployeeId) Expense " +
+                " from ApprAuthConfig authConf " +
+                " inner join ApprovalAuthority aprAuth on aprAuth.Id = authConf.ApprovalAuthorityId " +
+                " inner join ApprovalCeiling aprCeiling on aprAuth.Id = aprCeiling.ApprovalAuthorityId " +
+                " where aprCeiling.AmountPerMonth > 0 " +
+                " group by aprCeiling.ApprovalAuthorityId, aprAuth.Priority, authConf.EmployeeId, aprCeiling.AmountPerMonth, aprCeiling.DonationId, aprCeiling.Month, aprCeiling.Year " +
+                " ) X " +
+                " join Employee e on e.Id = x.EmployeeId " +
+                " join Donation d on d.Id = x.DonationId " +
+                " WHERE X.Expense > 0 AND X.Year = "+ year +" ";
+
+            if (dt.ApprovalAuthorityId > 0)
+            {
+                qry = qry + " AND ApprovalAuthorityId = " + dt.ApprovalAuthorityId + " ";
+            }
+            if (dt.EmployeeId > 0 && dt.EmployeeId.ToString().Length > 0)
+            {
+                qry = qry + " AND EmployeeId = " + dt.EmployeeId + " ";
+            }
+            if (dt.DonationId > 0)
+            {
+                qry = qry + " AND DonationId = " + dt.DonationId + " ";
+            }
+
+            qry = qry + " Order by x.Priority desc, x.EmployeeId , x.Month, x.Year, x.DonationId  ";
+
+            var results = _db.RptEmpWiseExp.FromSqlRaw(qry).ToList();
+
+            return results;
+        }
+
+
         [HttpPost("GetInvestmentSummaryReport")]
         public ActionResult<IReadOnlyList<RptInvestmentSummary>> GetInvestmentSummaryReport(SearchDto dt, [FromQuery] ReportInvestmentInfoSpecParams rptParrams)
         {
@@ -575,7 +620,7 @@ namespace API.Controllers
 
             string qry = "SELECT [Id], [EmployeeSAPCode], [EmployeeName], [DesignationName], [SBU], [SBUName], [MarketCode], [MarketName], " +
                 " [TerritoryCode], [TerritoryName], [RegionCode], [RegionName], [ZoneCode], [ZoneName], [MarketGroupCode], [MarketGroupName]" +
-                " FROM[DIDS].[dbo].[Employee] WHERE 1 = 1 ";
+                " FROM [DIDS].[dbo].[Employee] WHERE 1 = 1 ";
 
             if (!string.IsNullOrEmpty(search.MarketCode))
             {

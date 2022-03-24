@@ -41,6 +41,7 @@ import { ChangePasswordComponent } from '../changePassword/changePassword.compon
 import { RptChqDispatchComponent } from '../rptChqDispatch/rptChqDispatch.component';
 import { RptInvSummarySingleComponent } from '../rptInvSummarySingle/rptInvSummarySingle.component';
 import { RptEmpInfoComponent } from '../rptEmpInfo/rptEmpInfo.component';
+import { RptEmpWiseExpComponent } from '../rptEmpWiseExp/rptEmpWiseExp.component'
 
 const portalRoutes: Routes = [
   {
@@ -77,6 +78,7 @@ const portalRoutes: Routes = [
         {path: 'rptChqDispatch', component: RptChqDispatchComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'rptYearlyBudget', component: ReportYearlyBudgetComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'rptYearlySbuExp', component: ReportYearlySbuExpComponent},
+        {path: 'rptEmpExp', component: RptEmpWiseExpComponent},
         {path: 'changeDepot', component: ChangeDepotComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'paramInvestmentSummary/:param', component: ParamInvestSummaryComponent},
         //{path: 'rptInvestmentDetail', component: RptInvestmentDetailComponent},
@@ -93,7 +95,6 @@ const portalRoutes: Routes = [
         {path: 'master', loadChildren: () => import('../master/master.module')
        .then(mod => mod.MasterModule) , data: {breadcrumb: {skip: true}}}, 
         ]
-        
 }
 ];
 @NgModule({

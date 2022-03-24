@@ -116,6 +116,8 @@ namespace Infrastructure.Data
         public DbSet<DocLocMap> DocLocMap { get; set; }
         [NotMapped]
         public DbSet<RptSBUWiseExp> RptSBUWiseExp { get; set; }
+        [NotMapped]
+        public DbSet<RptEmpWiseExp> RptEmpWiseExp { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

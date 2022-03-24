@@ -55,6 +55,7 @@ import { RptInvSummarySingleComponent } from '../rptInvSummarySingle/rptInvSumma
 import { RptDocLocMapComponent } from './../RptDocLocMap/RptDocLocMap.component';
 import { RptEmpInfoComponent } from '../rptEmpInfo/rptEmpInfo.component';
 import { ReportYearlySbuExpComponent } from '../reportYearlySbuExp/reportYearlySbuExp.component';
+import { RptEmpWiseExpComponent } from '../rptEmpWiseExp/rptEmpWiseExp.component'
 
 @NgModule({
   imports: [
@@ -92,6 +93,7 @@ import { ReportYearlySbuExpComponent } from '../reportYearlySbuExp/reportYearlyS
     RegApprovalComponent,
     RptDocLocMapComponent,
     ChangePasswordAllComponent,
+    RptEmpWiseExpComponent,
     ReportInvestmentComponent,
     ReportYearlyBudgetComponent,
     ReportYearlySbuExpComponent,

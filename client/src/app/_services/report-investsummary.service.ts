@@ -103,5 +103,18 @@ export class RptInvestSummaryService {
     return this.http.get(this.baseUrl+ 'reportInvestment/rptInvestDepo/'+initId);
   }
 
+
+  getEmpMonthlyExpense(model: any) {
+    return this.http.post(this.baseUrl+ 'reportInvestment/GetEmpMonthlyExpense/', model);
+  }
+
+  getApprovalAuthority(){    
+    return this.http.get(this.baseUrl + 'approvalAuthority/approvalAuthoritiesForConfig');
+  }
+
+  getDonations() {
+    return this.http.get(this.baseUrl + 'donation/donationsForInvestment');
+  }
+
 }
 
