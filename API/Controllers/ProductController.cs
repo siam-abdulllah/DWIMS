@@ -8,6 +8,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Data;
+using Infrastructure.Data;
+using Oracle.ManagedDataAccess.Client;
+using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 
 namespace API.Controllers
 {
@@ -16,12 +22,16 @@ namespace API.Controllers
         private readonly IGenericRepository<ProductInfo> _productRepo;
         private readonly IGenericRepository<MedicineProduct> _medicineProductRepo;
         private readonly IMapper _mapper;
+        private readonly StoreContext _dbContext;
+        private readonly IConfiguration _configuration;
         public ProductController(IGenericRepository<ProductInfo> productRepo, IGenericRepository<MedicineProduct> medicineProductRepo,
-        IMapper mapper)
+        StoreContext dbContext, IMapper mapper, IConfiguration configuration)
         {
             _mapper = mapper;
             _productRepo = productRepo;
             _medicineProductRepo = medicineProductRepo;
+            _dbContext = dbContext;
+            _configuration = configuration;
         }
 
         [HttpGet("getBrand/{sbu}")]
@@ -181,5 +191,110 @@ namespace API.Controllers
                 throw ex;
             }
         }
+        [HttpGet("insertNewProdFromESO")]
+        public void InsertNewProdFromESO()
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                //string ConnStr = @"Data Source=(DESCRIPTION =(ADDRESS_LIST =(ADDRESS = (PROTOCOL = TCP)(HOST = 172.16.189.11)(PORT = 1522)) (ADDRESS = (PROTOCOL = TCP)(HOST = 172.16.189.12)(PORT = 1522)) (ADDRESS = (PROTOCOL = TCP)(HOST = 172.16.148.11)(PORT = 1522)))(CONNECT_DATA = (SERVICE_NAME = ESODB.SQUAREGROUP.COM)));;User Id=DIDS_INFO;Password=dids2202";
+                using (var _db = new OracleConnection("Data Source=(DESCRIPTION =(ADDRESS_LIST =(ADDRESS = (PROTOCOL = TCP)(HOST =172.16.189.11)(PORT = 1522)))(CONNECT_DATA =(SERVICE_NAME=ESODB.SQUAREGROUP.COM)(SERVER = DEDICATED)));User Id=DIDS_INFO;Password=dids2202"))
+                {
+                    using (OracleCommand objCmd = new OracleCommand())
+                    {
+                        objCmd.CommandText = "SELECT PRODUCT_CODE, PRODUCT_NAME,SORGA_CODE FROM ESOS_PRD.VW_DIDS_PRODUCTS WHERE to_char(ENTRY_DATE,'MM') = '03' AND PRODUCT_STATUS='A' ";
+                        objCmd.Connection = _db;
+                        _db.Open();
+                        objCmd.ExecuteNonQuery();
+                        using (OracleDataReader rdr = objCmd.ExecuteReader())
+                        {
+                            if (rdr.HasRows)
+                            {
+                                dt.Load(rdr);
+                            }
+                        }
+                    }
+                }
+                var result = _dbContext.Database.ExecuteSqlRaw("Delete FROM dbo.ProductInfoTemp");
+                var conString = this._configuration.GetConnectionString("DefaultConnection");
+                using (SqlConnection con = new SqlConnection(conString))
+                {
+                    using (SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(con))
+                    {
+                        //Set the database table name.
+                        sqlBulkCopy.DestinationTableName = "dbo.ProductInfoTemp";
+
+                        //[OPTIONAL]: Map the Excel columns with that of the database table.
+                        sqlBulkCopy.ColumnMappings.Add("PRODUCT_CODE", "ProductCode");
+                        sqlBulkCopy.ColumnMappings.Add("PRODUCT_NAME", "ProductName");
+                        sqlBulkCopy.ColumnMappings.Add("SORGA_CODE", "SBU");
+                        con.Open();
+                        sqlBulkCopy.WriteToServer(dt);
+                        con.Close();
+                    }
+                }
+                //var resultSp = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InsertNewInstitution");
+
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpGet("insertNewMedProdFromESO")]
+        //[RequestFormLimits(ValueCountLimit = int.MaxValue)]
+        public void InsertNewMedProdFromESO()
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                using (var _db = new OracleConnection("Data Source=(DESCRIPTION =(ADDRESS_LIST =(ADDRESS = (PROTOCOL = TCP)(HOST =172.16.189.11)(PORT = 1521))(ADDRESS = (PROTOCOL = TCP)(HOST =172.16.189.12)(PORT = 1521))(ADDRESS = (PROTOCOL = TCP)(HOST =172.16.148.11)(PORT = 1521)))(CONNECT_DATA =(SID = ESODB)(SERVER = DEDICATED)));User Id=DIDS_INFO;Password=dids2202"))
+                {
+                    using (OracleCommand objCmd = new OracleCommand())
+                    {
+                        objCmd.CommandText = "SELECT PRODUCT_CODE, PRODUCT_NAME,ENTRY_DATE FROM ESOS_PRD.VW_DIDS_PRODUCTS WHERE to_char(ENTRY_DATE,'MM') = '03'";
+                        objCmd.Connection = _db;
+                        _db.Open();
+                        objCmd.ExecuteNonQuery();
+                        using (OracleDataReader rdr = objCmd.ExecuteReader())
+                        {
+                            if (rdr.HasRows)
+                            {
+                                dt.Load(rdr);
+                            }
+                        }
+                    }
+                }
+                var result = _dbContext.Database.ExecuteSqlRaw("Delete FROM dbo.MedicineProductTemp");
+                var conString = this._configuration.GetConnectionString("DefaultConnection");
+                using (SqlConnection con = new SqlConnection(conString))
+                {
+                    using (SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(con))
+                    {
+                        //Set the database table name.
+                        sqlBulkCopy.DestinationTableName = "dbo.MedicineProductTemp";
+
+                        //[OPTIONAL]: Map the Excel columns with that of the database table.
+                        sqlBulkCopy.ColumnMappings.Add("INSTI_CODE", "InstitutionCode");
+                        sqlBulkCopy.ColumnMappings.Add("MARKET_CODE", "MarketCode");
+                        sqlBulkCopy.ColumnMappings.Add("MARKET_NAME", "MarketName");
+                        sqlBulkCopy.ColumnMappings.Add("STATUS", "Status");
+                        sqlBulkCopy.ColumnMappings.Add("SBU_UNIT", "SBU");
+
+                        con.Open();
+                        sqlBulkCopy.WriteToServer(dt);
+                        con.Close();
+                    }
+                }
+                var resultSp = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InsertNewInstitutionMarket");
+
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }
