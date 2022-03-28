@@ -19,7 +19,7 @@
                                             <label>Year</label>
                                         </div>
                                         <div class="col-md-1">
-                                            <input class="form-control" id="fromDate" name="fromDate" placeholder="Year" [(ngModel)]="fromDate" [bsValue]="bsValue" bsDatepicker (onShown)="onOpenCalendar($event)" [bsConfig]="bsConfig">
+                                            <input class="form-control" id="fromDate" name="fromDate" placeholder="Year" [(ngModel)]="fromDate" [bsValue]="bsValue" bsDatepicker [bsConfig]="{ containerClass: 'theme-blue', minMode:'year', adaptivePosition: true, dateInputFormat: 'YYYY' }">
                                         </div>
                                         <div class="col-md-1">
                                             <label>Employee Id</label>

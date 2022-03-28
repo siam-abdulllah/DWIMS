@@ -24,7 +24,7 @@
                                             <label>Year</label>
                                         </div>
                                         <div class="col-md-2">
-                                            <input class="form-control" id="from-date" placeholder="From Date" formControlName="fromDate" [bsValue]="bsValue" bsDatepicker (onShown)="onOpenCalendar($event)" [bsConfig]="bsConfig">
+                                            <input class="form-control" id="from-date" placeholder="From Date" formControlName="fromDate" [bsValue]="bsValue" bsDatepicker [bsConfig]="{  containerClass: 'theme-blue', minMode:'year', adaptivePosition: true, dateInputFormat: 'YYYY' }">
                                         </div>
                                         <div class="col-md-2">
                                             <button class="btn btn-info  btn-block" type="button" (click)="getYearlySBUWiseExpReport()"><i class="fa fa-save"></i>&nbsp;
