@@ -70,59 +70,73 @@
                                     </div>
                                 </div>
                             </div>
-                            <table class="table  table-bordered">
-                                <tr class="HeaderRow ">
-                                    <td style="width: 0;display:none; ">Id</td>
-                                    <td>Payment Ref. No</td>
-                                    <td>Inv. Ref. No</td>
-                                    <td>Donation Type</td>
-                                    <td>Proposed By</td>
-                                    <td>Approved By</td>
-                                    <td>Approved Date</td>
-                                    <td>Market</td>
-                                    <td>Payment Ref</td>
-                                    <td>Payment Date</td>
-                                    <td>Dispatch Amt</td>
-                                    <td>Remarks</td>
-                                </tr>
-                                <tr *ngFor="let a of rptDepotLetter | filter: searchText ">
-                                    <td style="display:none; ">{{a.id}}</td>
-                                    <td>
-                                        {{a.payRefNo}}
-                                    </td>
-                                    <td>
-                                        {{a.referenceNo}}
-                                    </td>
-                                    <td>
-                                        {{a.donationTypeName}}
-                                    </td>
-                                    <td>
-                                        {{a.employeeName}}
-                                    </td>
-                                    <td>
-                                        {{a.approvedBy}}
-                                    </td>
-                                    <td>
-                                        {{a.approvedDate | date:'dd/MM/yyyy'}}
-                                    </td>
-                                    <td>
-                                        {{a.marketName}}
-                                    </td>
-                                    <td>
-                                        {{a.sapRefNo}}
-                                    </td>
-                                    <td>
-                                        {{a.paymentDate | date:'dd/MM/yyyy'}}
-                                    </td>
-                                    <td>
-                                        {{a.dispatchAmt | number:'2.1-2'}}
-                                    </td>
-                                    <td>
-                                        {{a.remarks}}
-                                    </td>
+                            <div class="form-group" style="overflow: auto; max-height: 500px; max-width: 96%;">
+                                <table class="table  table-bordered">
+                                    <tr class="HeaderRow ">
+                                        <td style="width: 0;display:none; ">Id</td>
+                                        <td>Payment Ref. No</td>
+                                        <td>Inv. Ref. No</td>
+                                        <td>SBU</td>
+                                        <td>Name</td>
+                                        <td>Donation Type</td>
+                                        <td>Proposed By</td>
+                                        <td>Approved By</td>
+                                        <td>Approved Date</td>
+                                        <td>Market</td>
+                                        <td>Region</td>
+                                        <td>Payment Ref</td>
+                                        <td>Payment Date</td>
+                                        <td>Dispatch Amt</td>
+                                        <td>Remarks</td>
+                                    </tr>
+                                    <tr *ngFor="let a of rptDepotLetter | filter: searchText ">
+                                        <td style="display:none; ">{{a.id}}</td>
+                                        <td>
+                                            {{a.payRefNo}}
+                                        </td>
+                                        <td>
+                                            {{a.referenceNo}}
+                                        </td>
+                                        <td>
+                                            {{a.sbuName}}
+                                        </td>
+                                        <td>
+                                            {{a.doctorName}}
+                                        </td>
+                                        <td>
+                                            {{a.donationTypeName}}
+                                        </td>
+                                        <td>
+                                            {{a.employeeName}}
+                                        </td>
+                                        <td>
+                                            {{a.approvedBy}}
+                                        </td>
+                                        <td>
+                                            {{a.approvedDate | date:'dd/MM/yyyy'}}
+                                        </td>
+                                        <td>
+                                            {{a.marketName}}
+                                        </td>
+                                        <td>
+                                            {{a.regionName}}
+                                        </td>
+                                        <td>
+                                            {{a.sapRefNo}}
+                                        </td>
+                                        <td>
+                                            {{a.paymentDate | date:'dd/MM/yyyy'}}
+                                        </td>
+                                        <td>
+                                            {{a.dispatchAmt | number:'2.1-2'}}
+                                        </td>
+                                        <td>
+                                            {{a.remarks}}
+                                        </td>
 
-                                </tr>
-                            </table>
+                                    </tr>
+                                </table>
+                            </div>
                             <!-- <div class="card-footer ">
                           </div> -->
                         </div>
