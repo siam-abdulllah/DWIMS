@@ -119,3 +119,16 @@ E:\DWIMS\TestApplication\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.
 E:\DWIMS\TestApplication\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.csproj.CopyComplete
 E:\DWIMS\TestApplication\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.dll
 E:\DWIMS\TestApplication\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.pdb
+D:\DWIMS\Infrastructure\bin\Debug\netstandard2.1\Infrastructure.deps.json
+D:\DWIMS\Infrastructure\bin\Debug\netstandard2.1\Infrastructure.dll
+D:\DWIMS\Infrastructure\bin\Debug\netstandard2.1\Infrastructure.pdb
+D:\DWIMS\Infrastructure\bin\Debug\netstandard2.1\Core.dll
+D:\DWIMS\Infrastructure\bin\Debug\netstandard2.1\Core.pdb
+D:\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.csproj.AssemblyReference.cache
+D:\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+D:\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.AssemblyInfoInputs.cache
+D:\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.AssemblyInfo.cs
+D:\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.csproj.CoreCompileInputs.cache
+D:\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.csproj.CopyComplete
+D:\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.dll
+D:\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.pdb

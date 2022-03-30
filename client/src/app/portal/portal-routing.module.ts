@@ -43,6 +43,7 @@ import { RptChqDispatchComponent } from '../rptChqDispatch/rptChqDispatch.compon
 import { RptInvSummarySingleComponent } from '../rptInvSummarySingle/rptInvSummarySingle.component';
 import { RptEmpInfoComponent } from '../rptEmpInfo/rptEmpInfo.component';
 import { RptEmpWiseExpComponent } from '../rptEmpWiseExp/rptEmpWiseExp.component'
+//import { RptInvestStatusComponent } from '../rptInvestmentStatus/rptInvestmentStatus.component';
 
 const portalRoutes: Routes = [
   {
@@ -93,6 +94,7 @@ const portalRoutes: Routes = [
         {path: 'rptEmpInfo', component: RptEmpInfoComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'menuConfig', component: MenuConfigComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'changePassword', component: ChangePasswordComponent},
+        //{path: 'rptInvestStatus', component: RptInvestStatusComponent},
         {path: '', component: PortalComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'master', loadChildren: () => import('../master/master.module')
        .then(mod => mod.MasterModule) , data: {breadcrumb: {skip: true}}}, 
