@@ -215,8 +215,14 @@ namespace API.Controllers
             {
                 if (searchDto.DisStatus == "Pending")
                 {
-                    string qry = "SELECT DISTINCT a.id,1 AS DataStatus,Sysdatetimeoffset() AS SetOn,Sysdatetimeoffset() AS ModifiedOn,a.referenceno, dtl.PaymentRefNo PayRefNo, a.proposefor,a.donationto,a.donationid,depo.depotcode,'NA'SAPRefNo, " +
-                                " null PaymentDate,CAST(0 as float) DispatchAmt, null Remarks, d.donationtypename, inDetail.proposedamount, e.employeename, e.marketname, ir.seton 'ApprovedDate', aprBy.employeename + ',' + aprBy.designationname 'ApprovedBy' " +
+                    string qry = "SELECT DISTINCT a.id,1 AS DataStatus,Sysdatetimeoffset() AS SetOn,Sysdatetimeoffset() AS ModifiedOn,a.referenceno, a.SBUName, dtl.PaymentRefNo PayRefNo, a.proposefor,a.donationto,a.donationid,depo.depotcode,'NA'SAPRefNo, " +
+                                " null PaymentDate,CAST(0 as float) DispatchAmt, null Remarks, d.donationtypename, inDetail.proposedamount, e.employeename, e.marketname, e.RegionName, ir.seton 'ApprovedDate', aprBy.employeename + ',' + aprBy.designationname 'ApprovedBy', " +
+                                " CASE  " +
+                                " WHEN a.donationto = 'Doctor' THEN (SELECT doctorname  FROM   investmentdoctor x  INNER JOIN doctorinfo y ON x.doctorid = y.id WHERE  x.investmentinitid = a.id) " +
+                                " WHEN a.donationto = 'Institution' THEN (SELECT institutionname FROM  investmentinstitution x INNER JOIN institutioninfo y ON x.institutionid = y.id WHERE x.investmentinitid = a.id) " +
+                                " WHEN a.donationto = 'Campaign' THEN (SELECT subcampaignname  FROM   investmentcampaign x INNER JOIN campaigndtl y  ON x.campaigndtlid = y.id  INNER JOIN [dbo].[subcampaign] C  ON y.subcampaignid = C.id  WHERE  x.investmentinitid = a.id) " +
+                                " WHEN a.donationto = 'Bcds' THEN (SELECT bcdsname   FROM   investmentbcds x  INNER JOIN bcds y   ON x.bcdsid = y.id   WHERE  x.investmentinitid = a.id) " +
+                                " WHEN a.donationto = 'Society' THEN (SELECT societyname FROM   investmentsociety x INNER JOIN society y ON x.societyid = y.id WHERE  x.investmentinitid = a.id) END  DoctorName " +
                                 " FROM   investmentinit a " +
                                 " INNER JOIN investmentrec inDetail ON a.id = inDetail.investmentinitid " +
                                 " INNER JOIN InvestmentDetailTracker dtl on dtl.InvestmentInitId = a.Id " +
@@ -245,8 +251,14 @@ namespace API.Controllers
                     if (searchDto.DonationId == "4")
                     {
                         string qry = "  SELECT * FROM  ( " +
-                            " select DISTINCT a.id,1 AS DataStatus,Sysdatetimeoffset() AS SetOn,Sysdatetimeoffset() AS ModifiedOn, a.PayRefNo, b.ReferenceNo, d.DonationTypeName, prep.EmployeeName, apr.EmployeeName 'ApprovedBy', c.SetOn 'ApprovedDate'," +
-                            " b.MarketName, a.SAPRefNo, a.IssueDate AS PaymentDate, a.DispatchAmt, a.Remarks, b.DonationId, a.DepotCode " +
+                            " select DISTINCT a.id,1 AS DataStatus,Sysdatetimeoffset() AS SetOn,Sysdatetimeoffset() AS ModifiedOn, a.PayRefNo, b.ReferenceNo, b.SBUName, d.DonationTypeName, prep.EmployeeName, apr.EmployeeName 'ApprovedBy', c.SetOn 'ApprovedDate'," +
+                            " b.MarketName, b.RegionName, a.SAPRefNo, a.IssueDate AS PaymentDate, a.DispatchAmt, a.Remarks, b.DonationId, a.DepotCode, " +
+                             " CASE  " +
+                            " WHEN b.donationto = 'Doctor' THEN (SELECT doctorname  FROM   investmentdoctor x  INNER JOIN doctorinfo y ON x.doctorid = y.id WHERE  x.investmentinitid = b.id) " +
+                            " WHEN b.donationto = 'Institution' THEN (SELECT institutionname FROM  investmentinstitution x INNER JOIN institutioninfo y ON x.institutionid = y.id WHERE x.investmentinitid = b.id) " +
+                            " WHEN b.donationto = 'Campaign' THEN (SELECT subcampaignname  FROM   investmentcampaign x INNER JOIN campaigndtl y  ON x.campaigndtlid = y.id  INNER JOIN [dbo].[subcampaign] C  ON y.subcampaignid = C.id  WHERE  x.investmentinitid = b.id) " +
+                            " WHEN b.donationto = 'Bcds' THEN (SELECT bcdsname   FROM   investmentbcds x  INNER JOIN bcds y   ON x.bcdsid = y.id   WHERE  x.investmentinitid = b.id) " +
+                            " WHEN b.donationto = 'Society' THEN (SELECT societyname FROM   investmentsociety x INNER JOIN society y ON x.societyid = y.id WHERE  x.investmentinitid = b.id) END  DoctorName " +
                             " from MedicineDispatch a left join InvestmentInit b on a.InvestmentInitId = b.id " +
                             " left join InvestmentRecComment C on a.InvestmentInitId = c.InvestmentInitId " +
                             " left join Donation d on b.DonationId = d.Id left join Employee prep on b.EmployeeId = prep.Id " +
@@ -260,8 +272,14 @@ namespace API.Controllers
                     else
                     {
                         string qry = "  SELECT * FROM(  " +
-                            " select DISTINCT a.id,1 AS DataStatus, Sysdatetimeoffset() AS SetOn, Sysdatetimeoffset() AS ModifiedOn,  a.PayRefNo, b.ReferenceNo, d.DonationTypeName, prep.EmployeeName, apr.EmployeeName 'ApprovedBy', c.SetOn 'ApprovedDate',  " +
-                            " b.MarketName, a.SAPRefNo, a.PaymentDate AS PaymentDate, ir.ApprovedAmount AS DispatchAmt, a.Remarks, b.DonationId, a.DepotId as DepotCode " +
+                            " select DISTINCT a.id,1 AS DataStatus, Sysdatetimeoffset() AS SetOn, Sysdatetimeoffset() AS ModifiedOn,  a.PayRefNo, b.ReferenceNo, b.SBUName, d.DonationTypeName, prep.EmployeeName, apr.EmployeeName 'ApprovedBy', c.SetOn 'ApprovedDate',  " +
+                            " b.MarketName, b.RegionName, a.SAPRefNo, a.PaymentDate AS PaymentDate, ir.ApprovedAmount AS DispatchAmt, a.Remarks, b.DonationId, a.DepotId as DepotCode, " +
+                            " CASE  " +
+                            " WHEN b.donationto = 'Doctor' THEN (SELECT doctorname  FROM   investmentdoctor x  INNER JOIN doctorinfo y ON x.doctorid = y.id WHERE  x.investmentinitid = b.id) " +
+                            " WHEN b.donationto = 'Institution' THEN (SELECT institutionname FROM  investmentinstitution x INNER JOIN institutioninfo y ON x.institutionid = y.id WHERE x.investmentinitid = b.id) " +
+                            " WHEN b.donationto = 'Campaign' THEN (SELECT subcampaignname  FROM   investmentcampaign x INNER JOIN campaigndtl y  ON x.campaigndtlid = y.id  INNER JOIN [dbo].[subcampaign] C  ON y.subcampaignid = C.id  WHERE  x.investmentinitid = b.id) " +
+                            " WHEN b.donationto = 'Bcds' THEN (SELECT bcdsname   FROM   investmentbcds x  INNER JOIN bcds y   ON x.bcdsid = y.id   WHERE  x.investmentinitid = b.id) " +
+                            " WHEN b.donationto = 'Society' THEN (SELECT societyname FROM   investmentsociety x INNER JOIN society y ON x.societyid = y.id WHERE  x.investmentinitid = b.id) END  DoctorName " +
                             " from[dbo].[DepotPrintTrack]  a left join InvestmentInit b on a.InvestmentInitId = b.id " +
                             " left join InvestmentRecComment C on a.InvestmentInitId = c.InvestmentInitId " +
                             " left join Donation d on b.DonationId = d.Id left join Employee prep on b.EmployeeId = prep.Id " +
