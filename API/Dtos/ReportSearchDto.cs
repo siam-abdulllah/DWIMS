@@ -57,11 +57,12 @@ namespace API.Dtos
 
     public class CampaignSummaryExpSearchDto
     {
-        public int CampaignId { get; set; }
-        public DateTime FromDate { get; set; }
-        public DateTime ToDate { get; set; }
-        public int InstitutionId { get; set; }
-        public int DoctorId { get; set; }
+        public int? CampaignId { get; set; }
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
+        public int? InstitutionId { get; set; }
+        public int? DoctorId { get; set; }
+        public int? DonationId { get; set; }
         public string MarketCode { get; set; }
         public string SBU { get; set; }
     }

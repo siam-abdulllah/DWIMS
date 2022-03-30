@@ -12,12 +12,11 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { RptInvestSummaryService } from '../_services/report-investsummary.service';
 import { GenericParams } from '../shared/models/genericParams';
 import { AccountService } from '../account/account.service';
-import { InvestmentInit } from '../shared/models/investmentRec';
 import { DatePipe } from '@angular/common';
-import { IDoctor } from '../shared/models/docotor';
-import { RptDocLocService } from '../_services/report-DocLoc.service';
 import { ICampaignMst } from '../shared/models/campaign';
 import * as XLSX from 'xlsx';
+import { IDonation } from '../shared/models/donation';
+import { ISBU } from '../shared/models/sbu';
 
 
 
@@ -42,8 +41,12 @@ export class RptCampaignSummaryComponent implements OnInit {
   marketCode: string;
   campaignId: any;
   doctorCode: any;
+  donationId: any;
+  sbu: any;
   institutionId: any;
   campaignMsts: ICampaignMst[];
+  donations: IDonation[];
+  SBUs: ISBU[];
   rptDepotLetter :IrptDepotLetterSearch[] = [];
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date = new Date();
@@ -65,8 +68,10 @@ export class RptCampaignSummaryComponent implements OnInit {
 
   ngOnInit() {
     this.resetForm();
+    this.getSBU();
     //this.getEmployeeId();
     this.getCampaign();
+    this.getDonation();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-blue' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
   }
@@ -75,7 +80,23 @@ export class RptCampaignSummaryComponent implements OnInit {
     this.empId = this.accountService.getEmployeeId();
     this.userRole = this.accountService.getUserRole();
   }
+
+  getDonation() {
+    this.reportService.getDonations().subscribe(response => {
+      this.donations = response as IDonation[];
+    }, error => {
+      console.log(error);
+    });
+  }
  
+  getSBU() {
+    this.reportService.getSBU().subscribe(response => {
+      this.SBUs = response as ISBU[];
+    }, error => {
+      console.log(error);
+    });
+  }
+
   getCampaign() {
     this.SpinnerService.show();
     this.reportService.getCampaignMsts().subscribe(response => {
@@ -88,10 +109,10 @@ export class RptCampaignSummaryComponent implements OnInit {
   }
 
   ViewDataDoc() {
-        if( (this.campaignId==undefined || this.campaignId=="") && (this.institutionId==undefined || this.institutionId=="") && (this.doctorCode==undefined || this.doctorCode=="") && (this.marketCode==undefined || this.marketCode==""))
+        if( (this.campaignId==undefined || this.campaignId=="") && (this.institutionId==undefined || this.institutionId=="") && (this.doctorCode==undefined || this.doctorCode=="") && (this.marketCode==undefined || this.marketCode=="") && (this.sbu==undefined || this.sbu=="") && (this.donationId==undefined || this.donationId=="")  )
         {
           this.toastr.warning('Please enter at least 1 parameter!');
-         return false;
+          return false;
         }
     
         if(this.campaignId == "")
@@ -114,8 +135,9 @@ export class RptCampaignSummaryComponent implements OnInit {
           campaignId: this.campaignId,
           fromDate: this.fromDate,
           toDate: this.toDate,
-          sbu: "",
+          sbu: this.sbu,
           institutionId: this.institutionId,
+          donationId: this.donationId,
           doctorId: this.doctorCode,
           marketCode: this.marketCode,
         };
@@ -163,6 +185,7 @@ interface ICampaignSearchDto {
   sbu: string;
   institutionId: number | null;
   doctorId: number | null;
+  donationId: number | null;
   marketCode: string;
 }
 

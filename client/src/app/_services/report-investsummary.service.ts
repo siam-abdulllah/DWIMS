@@ -112,6 +112,9 @@ export class RptInvestSummaryService {
     return this.http.get(this.baseUrl + 'approvalAuthority/approvalAuthoritiesForConfig');
   }
 
+  getSBU(){    
+    return this.http.get(this.baseUrl + 'employee/getSBU');
+  }
   getDonations() {
     return this.http.get(this.baseUrl + 'donation/donationsForInvestment');
   }

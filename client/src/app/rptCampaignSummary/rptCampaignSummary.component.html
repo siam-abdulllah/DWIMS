@@ -13,7 +13,7 @@
                         </div>
                         <div class="card-body">
                             <fieldset>
-                                <!-- <div class="form-group">
+                                <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-2">
                                             <label>From Date</label>
@@ -28,9 +28,34 @@
                                             <input class="form-control" id="toDate" placeholder="To Date" [(ngModel)]="toDate" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
                                         </div>
                                     </div>
-                                </div> -->
+                                </div>
+
                                 <div class="form-group">
                                     <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Donation Type</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-control" id="donationId" name="donationId" [(ngModel)]="donationId">
+                                                <option  [value]="0">All</option>
+                                                <option *ngFor="let a of donations" [value]="a.id">{{a.donationTypeName}}</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <label>SBU</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-control" id="sbu" name="sbu" [(ngModel)]="sbu">
+                                            <option  [value]="">All</option>
+                                            <option *ngFor="let a of SBUs" [value]="a.sbuName">{{a.sbuName}}</option>
+                                        </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+
                                         <div class="col-md-2">
                                             <label>Doctor Code</label>
                                         </div>
@@ -52,12 +77,6 @@
                                             <label>Select Campaign</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <!-- <input type="text" class="form-control" id="campaignId" name="campaignId" [(ngModel)]="campaignId"> -->
-
-                                            <!-- <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="campaignMsts" bindLabel="campaignName" bindValue="id" placeholder="Select Campaign" (change)="onChangeCampaignInCamp()" name="campaignMstId" id="campaignMstId" #campaignMstId="ngModel"
-                                                [(ngModel)]="investmentInitService.investmentCampaignFormData.campaignMstId">
-                                            </ng-select> -->
-
                                             <select class="form-control" id="campaignId" name="campaignId" [(ngModel)]="campaignId">
                                                 <option  [ngValue]="0">All</option>
                                                 <option *ngFor="let a of campaignMsts" [value]="a.id">{{a.campaignName}}</option>
@@ -109,6 +128,7 @@
                                                 <td>Reference</td>
                                                 <td>Donation</td>
                                                 <td>SBU</td>
+                                                <td>Payment Freq</td>
                                                 <td>From Date</td>
                                                 <td>To Date</td>
                                                 <td>Ins. ID</td>
@@ -116,10 +136,11 @@
                                                 <td>Doc ID</td>
                                                 <td>Doctor</td>
                                                 <td>Approval Status</td>
+                                                <td>Approved By</td>
                                                 <td>Approved Amt</td>
+                                                <td>Depot</td>
                                                 <td>Market Code</td>
                                                 <td>Market Name</td>
-
                                                 <td>Territory Code</td>
                                                 <td>Territory Name</td>
                                                 <td>Region Code</td>
@@ -139,6 +160,9 @@
                                                 </td>
                                                 <td>
                                                     {{a.sbuName}}
+                                                </td>
+                                                <td>
+                                                    {{a.paymentFreq}}
                                                 </td>
                                                 <td>
                                                     {{a.fromDate | date:'dd/MM/yyyy'}}
@@ -162,8 +186,15 @@
                                                     {{a.recStatus}}
                                                 </td>
                                                 <td>
-                                                    {{a.total}}
+                                                    {{a.approvedBy}}
                                                 </td>
+                                                <td>
+                                                    {{a.proposedAmount}}
+                                                </td>
+                                                <td>
+                                                    {{a.depotName}}
+                                                </td>
+
                                                 <td>
                                                     {{a.marketCode}}
                                                 </td>

@@ -10,8 +10,8 @@ namespace Core.Entities
         public string ReferenceNo { get; set; }
         public string DonationTypeName { get; set; }
         public string SBUName { get; set; }
-        public DateTimeOffset FromDate { get; set; }
-        public DateTimeOffset ToDate { get; set; }  
+        public DateTimeOffset? FromDate { get; set; }
+        public DateTimeOffset? ToDate { get; set; }  
         public int? InstitutionId { get; set; }
         public string InstitutionName { get; set; }
         public int? DoctorId { get; set; }
@@ -27,7 +27,8 @@ namespace Core.Entities
         public string RegionName { get; set; }
         public string ZoneCode { get; set; }
         public string ZoneName { get; set; }
-
-
+        public string PaymentFreq {get; set; }
+        public string DepotName {get; set; }
+        public string ApprovedBy {get; set; }
     }
 }

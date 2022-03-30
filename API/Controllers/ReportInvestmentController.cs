@@ -333,21 +333,27 @@ namespace API.Controllers
         public ActionResult<IReadOnlyList<RptCampaignSummary>> GetCampaignSummary(CampaignSummaryExpSearchDto dt)
         {
             string qry = " Select distinct a.Id, a.DataStatus, a.SetOn, a.ModifiedOn, " +
-                " cmp.CampaignName, a.ReferenceNo, dn.DonationTypeName, a.SBUName, invD.FromDate, invD.ToDate, ic.InstitutionId, ins.InstitutionName, ic.DoctorId, d.DoctorName, rc.RecStatus, (select SUM(ApprovedAmount) from InvestmentDetailTracker where InvestmentInitId = a.Id) Total, " +
-                " invD.ProposedAmount, a.MarketCode, a.MarketName, a.TerritoryCode, a.TerritoryName, a.RegionCode, a.RegionName, a.ZoneCode, a.ZoneName " +
+                " cmp.CampaignName, a.ReferenceNo, dn.DonationTypeName, a.SBUName, rec.FromDate, rec.ToDate, rec.PaymentFreq, ic.InstitutionId, ins.InstitutionName, ic.DoctorId, d.DoctorName, rc.RecStatus, emp.EmployeeName + ','+ emp.DesignationName ApprovedBy ,(select SUM(ApprovedAmount) from InvestmentDetailTracker where InvestmentInitId = a.Id) Total,   " +
+                " rec.ProposedAmount, ISNULL(dpt.DepotName, 'CHQ') DepotName, a.MarketCode, a.MarketName, a.TerritoryCode, a.TerritoryName, a.RegionCode, a.RegionName, a.ZoneCode, a.ZoneName " +
                 " from InvestmentInit a " +
                 " join InvestmentCampaign IC on a.Id = IC.InvestmentInitId " +
+                "  join CampaignMst cmp on cmp.Id = ic.CampaignDtlId " +
                 " join Donation dn on dn.Id = a.DonationId " +
-                " join InvestmentDetail invD on a.id = invD.InvestmentInitId " +
+                " left join InvestmentRecComment rc on a.id = rc.InvestmentInitId " +
+                " left join InvestmentRec rec on rec.InvestmentInitId = a.Id AND rec.Priority = rc.Priority "+
                 " left join DoctorInfo d on d.Id = ic.DoctorId " +
                 " left join InstitutionInfo ins on ins.Id = ic.InstitutionId " +
                 " left join InvestmentDetailTracker dt on a.id = dt.InvestmentInitId " +
-                " left join InvestmentRecComment rc on a.id = rc.InvestmentInitId " +
-                " join CampaignMst cmp on cmp.Id = ic.CampaignDtlId " +
+                " left join InvestmentRecDepot dpt on dpt.InvestmentInitId = a.Id " +
+                "  left join Employee emp on emp.Id = rc.EmployeeId " +
                 " where  1 = 1 " +
                 " and a.DataStatus = 1 and a.Confirmation = 1 " +
                 " and rc.Id in ((select top 1 (id) from InvestmentRecComment where InvestmentInitId = a.Id order by id desc)) ";
 
+            if (dt.FromDate != null && dt.ToDate != null)
+            {
+                qry = qry + " (CONVERT(date,a.FromDate) >= CAST('" + dt.FromDate + "' as Date) AND CAST('" + dt.ToDate + "' as Date) >= CONVERT(date,a.ToDate)) ";
+            }
 
             if (dt.CampaignId > 0)
             {
@@ -357,9 +363,17 @@ namespace API.Controllers
             {
                 qry = qry + " AND ic.DoctorId = " + dt.DoctorId + " ";
             }
+            if (dt.DonationId > 0 && dt.DonationId.ToString().Length > 0)
+            {
+                qry = qry + " AND a.DonationId = " + dt.DonationId + " ";
+            }
              if (dt.InstitutionId > 0 && dt.InstitutionId.ToString().Length > 0)
             {
                 qry = qry + " AND ic.InstitutionId = " + dt.InstitutionId + " ";
+            }
+            if (!string.IsNullOrEmpty(dt.SBU))
+            {
+                qry = qry + " AND a.SBUName = '" + dt.SBU + "' ";
             }
             if (dt.MarketCode != null && dt.MarketCode.ToString().Length > 0)
             {
