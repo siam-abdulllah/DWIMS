@@ -43,7 +43,7 @@ namespace API.Dtos
         public DateTime ToDate { get; set; } 
         public int EmpId { get; set; } 
         public string UserRole { get; set; } 
-         public string ApproveStatus { get; set; } 
+        public string ApproveStatus { get; set; } 
     }
 
 
@@ -54,4 +54,16 @@ namespace API.Dtos
         public int DonationId { get; set; }
         public DateTime Year { get; set; }
     }
+
+    public class CampaignSummaryExpSearchDto
+    {
+        public int CampaignId { get; set; }
+        public DateTime FromDate { get; set; }
+        public DateTime ToDate { get; set; }
+        public int InstitutionId { get; set; }
+        public int DoctorId { get; set; }
+        public string MarketCode { get; set; }
+        public string SBU { get; set; }
+    }
+
 }

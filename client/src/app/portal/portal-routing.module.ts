@@ -1,3 +1,4 @@
+import { RptCampaignSummaryComponent } from './../rptCampaignSummary/rptCampaignSummary.component';
 import { ChangePasswordAllComponent } from './../changePasswordAll/changePasswordAll.component';
 import { RptDocLocMapComponent } from './../RptDocLocMap/RptDocLocMap.component';
 import { ParamInvestSummaryComponent } from './../paramInvestmentSummary/paramInvestmentSummary.component';
@@ -78,6 +79,7 @@ const portalRoutes: Routes = [
         {path: 'rptChqDispatch', component: RptChqDispatchComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'rptYearlyBudget', component: ReportYearlyBudgetComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'rptYearlySbuExp', component: ReportYearlySbuExpComponent, canActivate: [SuperAdminRoleGuard]},
+        {path: 'rptCampSummary', component: RptCampaignSummaryComponent },
         {path: 'rptEmpExp', component: RptEmpWiseExpComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'changeDepot', component: ChangeDepotComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'paramInvestmentSummary/:param', component: ParamInvestSummaryComponent},

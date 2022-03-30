@@ -116,5 +116,13 @@ export class RptInvestSummaryService {
     return this.http.get(this.baseUrl + 'donation/donationsForInvestment');
   }
 
+  getCampaignMsts() {
+    return this.http.get(this.baseUrl + 'reportInvestment/campaignMsts/');
+  }
+
+  getCampaignSummaryReport(model: any) {
+    return this.http.post(this.baseUrl+ 'reportInvestment/GetCampaignSummaryReport/', model);
+  }
+
 }
 

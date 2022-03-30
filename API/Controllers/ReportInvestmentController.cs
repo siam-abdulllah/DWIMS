@@ -329,6 +329,50 @@ namespace API.Controllers
         }
 
 
+        [HttpPost("GetCampaignSummaryReport")]
+        public ActionResult<IReadOnlyList<RptCampaignSummary>> GetCampaignSummary(CampaignSummaryExpSearchDto dt)
+        {
+            string qry = " Select distinct a.Id, a.DataStatus, a.SetOn, a.ModifiedOn, " +
+                " cmp.CampaignName, a.ReferenceNo, dn.DonationTypeName, a.SBUName, invD.FromDate, invD.ToDate, ic.InstitutionId, ins.InstitutionName, ic.DoctorId, d.DoctorName, rc.RecStatus, (select SUM(ApprovedAmount) from InvestmentDetailTracker where InvestmentInitId = a.Id) Total, " +
+                " invD.ProposedAmount, a.MarketCode, a.MarketName, a.TerritoryCode, a.TerritoryName, a.RegionCode, a.RegionName, a.ZoneCode, a.ZoneName " +
+                " from InvestmentInit a " +
+                " join InvestmentCampaign IC on a.Id = IC.InvestmentInitId " +
+                " join Donation dn on dn.Id = a.DonationId " +
+                " join InvestmentDetail invD on a.id = invD.InvestmentInitId " +
+                " left join DoctorInfo d on d.Id = ic.DoctorId " +
+                " left join InstitutionInfo ins on ins.Id = ic.InstitutionId " +
+                " left join InvestmentDetailTracker dt on a.id = dt.InvestmentInitId " +
+                " left join InvestmentRecComment rc on a.id = rc.InvestmentInitId " +
+                " join CampaignMst cmp on cmp.Id = ic.CampaignDtlId " +
+                " where  1 = 1 " +
+                " and a.DataStatus = 1 and a.Confirmation = 1 " +
+                " and rc.Id in ((select top 1 (id) from InvestmentRecComment where InvestmentInitId = a.Id order by id desc)) ";
+
+
+            if (dt.CampaignId > 0)
+            {
+                qry = qry + " AND IC.CampaignDtlId =  " + dt.CampaignId + " ";
+            }
+            if (dt.DoctorId > 0 && dt.DoctorId.ToString().Length > 0)
+            {
+                qry = qry + " AND ic.DoctorId = " + dt.DoctorId + " ";
+            }
+             if (dt.InstitutionId > 0 && dt.InstitutionId.ToString().Length > 0)
+            {
+                qry = qry + " AND ic.InstitutionId = " + dt.InstitutionId + " ";
+            }
+            if (dt.MarketCode != null && dt.MarketCode.ToString().Length > 0)
+            {
+                qry = qry + " AND a.MarketCode = '" + dt.MarketCode + "' ";
+            }
+            qry = qry + " order by cmp.CampaignName, rc.RecStatus, a.ReferenceNo ";
+
+            var results = _db.RptCampaignSummary.FromSqlRaw(qry).ToList();
+
+            return results;
+        }
+
+
         [HttpPost("GetInvestmentSummaryReport")]
         public ActionResult<IReadOnlyList<RptInvestmentSummary>> GetInvestmentSummaryReport(SearchDto dt, [FromQuery] ReportInvestmentInfoSpecParams rptParrams)
         {
@@ -940,6 +984,21 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet("campaignMsts")]
+        public async Task<IReadOnlyList<CampaignMst>> GetCampaignMst()
+        {
+            try
+            {
+
+                var data = _db.CampaignMst.Where(x => x.DataStatus == 1).ToList();
+                return data;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         [HttpGet]
         [Route("investmentDetails/{investmentInitId}/{empId}/{userRole}")]
         public async Task<IReadOnlyList<InvestmentRec>> investmentRecDetails(int investmentInitId,int empId,string userRole)
@@ -975,7 +1034,8 @@ namespace API.Controllers
                 throw ex;
             }
         }
-    [HttpGet]
+
+        [HttpGet]
         [Route("investmentDetailsForSummary/{investmentInitId}/{empId}/{userRole}")]
         public async Task<IReadOnlyList<object>> investmentDetailsForSummary(int investmentInitId,int empId,string userRole)
         {

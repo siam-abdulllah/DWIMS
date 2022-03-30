@@ -55,7 +55,8 @@ import { RptInvSummarySingleComponent } from '../rptInvSummarySingle/rptInvSumma
 import { RptDocLocMapComponent } from './../RptDocLocMap/RptDocLocMap.component';
 import { RptEmpInfoComponent } from '../rptEmpInfo/rptEmpInfo.component';
 import { ReportYearlySbuExpComponent } from '../reportYearlySbuExp/reportYearlySbuExp.component';
-import { RptEmpWiseExpComponent } from '../rptEmpWiseExp/rptEmpWiseExp.component'
+import { RptEmpWiseExpComponent } from '../rptEmpWiseExp/rptEmpWiseExp.component';
+import { RptCampaignSummaryComponent } from './../rptCampaignSummary/rptCampaignSummary.component';
 
 @NgModule({
   imports: [
@@ -103,6 +104,7 @@ import { RptEmpWiseExpComponent } from '../rptEmpWiseExp/rptEmpWiseExp.component
     ParamInvestSummaryComponent,
     RptInvestmentDetailComponent,
     RptInvestmentDetailSummaryComponent,
+    RptCampaignSummaryComponent,
     RptInvSummarySingleComponent,
     MedDispatchComponent,
     PendingPrintDepotComponent,

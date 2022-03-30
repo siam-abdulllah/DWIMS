@@ -118,6 +118,8 @@ namespace Infrastructure.Data
         public DbSet<RptSBUWiseExp> RptSBUWiseExp { get; set; }
         [NotMapped]
         public DbSet<RptEmpWiseExp> RptEmpWiseExp { get; set; }
+        [NotMapped]
+        public DbSet<RptCampaignSummary> RptCampaignSummary { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
