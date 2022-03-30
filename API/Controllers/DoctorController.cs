@@ -183,7 +183,8 @@ namespace API.Controllers
                 {
                     using (OracleCommand objCmd = new OracleCommand())
                     {
-                        objCmd.CommandText = "SELECT DOCTOR_ID ,PRAC_MKT_CODE ,MARKET_NAME ,'Active' STATUS ,B.SBU_UNIT FROM DOC_MKT_MAS A INNER JOIN DOC_MKT_DTL B ON A.DOC_MKT_MAS_SLNO = B.DOC_MKT_MAS_SLNO INNER JOIN MARKET C ON B.PRAC_MKT_CODE = C.MARKET_CODE WHERE B.ENTRY_DATE >= sysdate - 7";
+                        //objCmd.CommandText = "SELECT DOCTOR_ID ,PRAC_MKT_CODE ,MARKET_NAME ,'Active' STATUS ,B.SBU_UNIT FROM DOC_MKT_MAS A INNER JOIN DOC_MKT_DTL B ON A.DOC_MKT_MAS_SLNO = B.DOC_MKT_MAS_SLNO INNER JOIN MARKET C ON B.PRAC_MKT_CODE = C.MARKET_CODE WHERE B.ENTRY_DATE >= sysdate - 7";
+                        objCmd.CommandText = "SELECT DOCTOR_ID ,PRAC_MKT_CODE ,MARKET_NAME ,'Active' STATUS ,B.SBU_UNIT FROM DOC_MKT_MAS A INNER JOIN DOC_MKT_DTL B ON A.DOC_MKT_MAS_SLNO = B.DOC_MKT_MAS_SLNO INNER JOIN MARKET C ON B.PRAC_MKT_CODE = C.MARKET_CODE ";
                         objCmd.Connection = _db;
                         _db.Open();
                         objCmd.ExecuteNonQuery();

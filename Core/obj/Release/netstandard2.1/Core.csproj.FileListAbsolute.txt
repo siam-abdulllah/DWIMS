@@ -18,3 +18,13 @@ E:\DWIMS\TestApplication\Core\obj\Release\netstandard2.1\Core.AssemblyInfo.cs
 E:\DWIMS\TestApplication\Core\obj\Release\netstandard2.1\Core.csproj.CoreCompileInputs.cache
 E:\DWIMS\TestApplication\Core\obj\Release\netstandard2.1\Core.dll
 E:\DWIMS\TestApplication\Core\obj\Release\netstandard2.1\Core.pdb
+D:\DWIMS\Core\bin\Release\netstandard2.1\Core.deps.json
+D:\DWIMS\Core\bin\Release\netstandard2.1\Core.dll
+D:\DWIMS\Core\bin\Release\netstandard2.1\Core.pdb
+D:\DWIMS\Core\obj\Release\netstandard2.1\Core.csproj.AssemblyReference.cache
+D:\DWIMS\Core\obj\Release\netstandard2.1\Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\DWIMS\Core\obj\Release\netstandard2.1\Core.AssemblyInfoInputs.cache
+D:\DWIMS\Core\obj\Release\netstandard2.1\Core.AssemblyInfo.cs
+D:\DWIMS\Core\obj\Release\netstandard2.1\Core.csproj.CoreCompileInputs.cache
+D:\DWIMS\Core\obj\Release\netstandard2.1\Core.dll
+D:\DWIMS\Core\obj\Release\netstandard2.1\Core.pdb
