@@ -19,7 +19,7 @@ import { RptDocLocService } from '../_services/report-DocLoc.service';
 import { ICampaignMst } from '../shared/models/campaign';
 import * as XLSX from 'xlsx';
 import { IDonation } from '../shared/models/donation';
-
+import { ISBU } from '../shared/models/sbu';
 
 
 @Component({
@@ -38,12 +38,15 @@ export class RptCampaignSummaryComponent implements OnInit {
   numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
   //totalCount = 0;
   donations: IDonation[];
+  SBUs: ISBU[];
   reports: any;
   fromDate: Date;
   toDate: Date;
   marketCode: string;
   campaignId: any;
+  donationId: any;
   doctorCode: any;
+  sbu: any;
   institutionId: any;
   campaignMsts: ICampaignMst[];
   rptDepotLetter :IrptDepotLetterSearch[] = [];
@@ -69,6 +72,8 @@ export class RptCampaignSummaryComponent implements OnInit {
     this.resetForm();
     //this.getEmployeeId();
     this.getCampaign();
+    this.getDonation();
+    this.getSBU();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-blue' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
   }
@@ -95,12 +100,17 @@ export class RptCampaignSummaryComponent implements OnInit {
       console.log(error);
     });
   }
+
+  getSBU() {
+    this.reportService.getSBU().subscribe(response => {
+      this.SBUs = response as ISBU[];
+    }, error => {
+      console.log(error);
+    });
+  }
+
   ViewDataDoc() {
-        if( (this.campaignId==undefined || this.campaignId=="") && (this.institutionId==undefined || this.institutionId=="") && (this.doctorCode==undefined || this.doctorCode=="") && (this.marketCode==undefined || this.marketCode==""))
-        {
-          this.toastr.warning('Please enter at least 1 parameter!');
-         return false;
-        }
+    if( (this.campaignId==undefined || this.campaignId=="") && (this.institutionId==undefined || this.institutionId=="") && (this.doctorCode==undefined || this.doctorCode=="") && (this.marketCode==undefined || this.marketCode=="") && (this.sbu==undefined || this.sbu=="") && (this.donationId==undefined || this.donationId=="")  )
     
         if(this.campaignId == "")
         {
@@ -117,12 +127,18 @@ export class RptCampaignSummaryComponent implements OnInit {
           this.doctorCode = 0;
         }
 
+        if(this.sbu == "All")
+        {
+          this.sbu = "";
+        }
+
         debugger;
         const campaignSearchDto: ICampaignSearchDto = {
           campaignId: this.campaignId,
           fromDate: this.fromDate,
           toDate: this.toDate,
-          sbu: "",
+          donationId: this.donationId,
+          sbu: this.sbu,
           institutionId: this.institutionId,
           doctorId: this.doctorCode,
           marketCode: this.marketCode,
@@ -170,6 +186,7 @@ interface ICampaignSearchDto {
   toDate: Date | undefined | null;
   sbu: string;
   institutionId: number | null;
+  donationId: number | null;
   doctorId: number | null;
   marketCode: string;
 }
