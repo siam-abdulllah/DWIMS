@@ -348,7 +348,7 @@ namespace API.Controllers
                 "  left join Employee emp on emp.Id = rc.EmployeeId " +
                 " where  1 = 1 " +
                 " and a.DataStatus = 1 and a.Confirmation = 1 " +
-                " and rc.Id in ((select top 1 (id) from InvestmentRecComment where InvestmentInitId = a.Id order by id desc)) ";
+                " and rc.Id in ((select top 1 (id) from InvestmentRecComment where InvestmentInitId = a.Id order by [Priority] desc)) ";
 
             if (dt.FromDate != null && dt.ToDate != null)
             {
