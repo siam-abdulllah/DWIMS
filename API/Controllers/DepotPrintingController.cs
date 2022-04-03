@@ -69,7 +69,7 @@ namespace API.Controllers
                 {
                     qry = qry + " AND depo.DepotCode = '" + empData[0].DepotCode + "'";
                 }
-                qry = qry + " ) A Order by A.ApprovedDate DESC ";
+                qry = qry + " ) A Order by A.ApprovedDate ";
 
                 var results = _db.RptDepotLetterSearch.FromSqlRaw(qry).ToList();
 
@@ -117,7 +117,7 @@ namespace API.Controllers
                 //" AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                 //" AND  ir.InvestmentInitId not in (SELECT InvestmentInitId FROM DepotPrintTrack) " +
                 " AND dtl.PaymentRefNo not in (SELECT PayRefNo FROM DepotPrintTrack where PayRefNo is not null) " +
-                "  ) A  Order by ApprovedDate DESC";
+                "  ) A  Order by ApprovedDate";
 
                 var results = _db.RptChequePrintSearch.FromSqlRaw(qry).ToList();
 
