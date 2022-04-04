@@ -55,6 +55,47 @@ namespace API.Dtos
         public DateTime Year { get; set; }
     }
 
+    public class SummaryExpSearchDto
+    {
+        public int? DoctorId { get; set; }
+        public int? InstitutionId { get; set; }
+        public int? CampaignId { get; set; }
+        public string BcdsName { get; set; }
+        public string SocietyName { get; set; }
+
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
+        public int? DonationId { get; set; }
+        public string MarketCode { get; set; }
+        public string SBU { get; set; }
+    } public class DoctorSummaryExpSearchDto
+    {
+        public int? DoctorId { get; set; }
+        public int? InstitutionId { get; set; }
+        public int? CampaignId { get; set; }
+        public string BcdsName { get; set; }
+        public string SocietyName { get; set; }
+
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
+        public int? DonationId { get; set; }
+        public string MarketCode { get; set; }
+        public string SBU { get; set; }
+    } 
+    public class InstituteSummaryExpSearchDto
+    {
+        public int? DoctorId { get; set; }
+        public int? InstitutionId { get; set; }
+        public int? CampaignId { get; set; }
+        public string BcdsName { get; set; }
+        public string SocietyName { get; set; }
+
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
+        public int? DonationId { get; set; }
+        public string MarketCode { get; set; }
+        public string SBU { get; set; }
+    } 
     public class CampaignSummaryExpSearchDto
     {
         public int? CampaignId { get; set; }
@@ -65,6 +106,35 @@ namespace API.Dtos
         public int? DonationId { get; set; }
         public string MarketCode { get; set; }
         public string SBU { get; set; }
-    }
+    } 
+    public class BcdsSummaryExpSearchDto
+    {
+        public int? DoctorId { get; set; }
+        public int? InstitutionId { get; set; }
+        public int? CampaignId { get; set; }
+        public string BcdsName { get; set; }
+        public string SocietyName { get; set; }
+
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
+        public int? DonationId { get; set; }
+        public string MarketCode { get; set; }
+        public string SBU { get; set; }
+    } 
+    public class SocietySummaryExpSearchDto
+    {
+        public int? DoctorId { get; set; }
+        public int? InstitutionId { get; set; }
+        public int? CampaignId { get; set; }
+        public string BcdsName { get; set; }
+        public string SocietyName { get; set; }
+
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
+        public int? DonationId { get; set; }
+        public string MarketCode { get; set; }
+        public string SBU { get; set; }
+    } 
+   
 
 }

@@ -10,8 +10,8 @@ namespace Core.Entities
         public string ReferenceNo { get; set; }
         public string DonationTypeName { get; set; }
         public string SBUName { get; set; }
-        public DateTimeOffset? FromDate { get; set; }
-        public DateTimeOffset? ToDate { get; set; }  
+        public string FromDate { get; set; }
+        public string ToDate { get; set; }  
         public int? InstitutionId { get; set; }
         public string InstitutionName { get; set; }
         public int? DoctorId { get; set; }
