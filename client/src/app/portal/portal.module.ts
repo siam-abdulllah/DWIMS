@@ -57,7 +57,7 @@ import { RptEmpInfoComponent } from '../rptEmpInfo/rptEmpInfo.component';
 import { ReportYearlySbuExpComponent } from '../reportYearlySbuExp/reportYearlySbuExp.component';
 import { RptEmpWiseExpComponent } from '../rptEmpWiseExp/rptEmpWiseExp.component';
 import { RptCampaignSummaryComponent } from './../rptCampaignSummary/rptCampaignSummary.component';
-//import { RptInvestStatusComponent } from '../rptInvestmentStatus/rptInvestmentStatus.component';
+import {ReportSystemSummaryComponent} from '../reportSystemSummary/reportSystemSummary.component'
 
 @NgModule({
   imports: [
@@ -112,6 +112,7 @@ import { RptCampaignSummaryComponent } from './../rptCampaignSummary/rptCampaign
     PendingPrintDepotComponent,
     PendingChqPrintDepotComponent,
     PendingMedDispatchComponent,
+    ReportSystemSummaryComponent,
     RptMedDispatchComponent,
     RptChqDispatchComponent,
     BillTrackComponent,

@@ -125,5 +125,9 @@ GetEmpWiseExpSummaryReport(model: any) {
   return this.http.post(this.baseUrl + 'reportInvestment/GetEmpWiseExpSummaryReport', model);
 }
 
+getSystemSummary(){    
+  return this.http.get(this.baseUrl + 'reportInvestment/getSystemSummaryData');
+}
+
 }
 

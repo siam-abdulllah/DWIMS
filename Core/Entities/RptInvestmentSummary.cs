@@ -27,4 +27,15 @@ namespace Core.Entities
         public bool Confirmation { get; set; }
         public int? DId { get; set; }
     }
+
+    public class SystemSummary : BaseEntity
+    {
+        public string Phase { get; set; }
+        public int? SBUA { get; set; }
+        public int? SBUB { get; set; }
+        public int? SBUC { get; set; }
+        public int? SBUD { get; set; }
+        public int? SBUE { get; set; }
+        public int? SBUN { get; set; }
+    }
 }

@@ -1,0 +1,70 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <!-- form start -->
+                <!-- <form novalidate autocomplete="off"> -->
+                <form [formGroup]="investmentSearchForm">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h3 class="card-title">Investment Data Summary Report</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <fieldset>
+                                <div class="form-group" style="overflow: auto; max-height: 500px;">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <table class="table  table-bordered">
+                                                <tr class="HeaderRowFixed">
+                                                    <td>Phase</td>
+                                                    <td>SBU - A</td>
+                                                    <td>SBU - B</td>
+                                                    <td>SBU - C</td>
+                                                    <td>SBU - D</td>
+                                                    <td>SBU - E</td>
+                                                    <td>SBU - N</td>
+                                                </tr>
+                                                <tr *ngFor="let a of rptSysSum ">
+                                                    <td>
+                                                        {{a.phase}}
+                                                    </td>
+                                                    <td>
+                                                        {{a.sbua}}
+                                                    </td>
+                                                    <td>
+                                                        {{a.sbub}}
+                                                    </td>
+                                                    <td>
+                                                        {{a.sbuc}}
+                                                    </td>
+                                                    <td>
+                                                        {{a.sbud}}
+                                                    </td>
+                                                    <td>
+                                                        {{a.sbue}}
+                                                    </td>
+                                                    <td>
+                                                        {{a.sbun}}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <!-- /.card -->
+                </form>
+            </div>
+            <!-- /.row -->
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
