@@ -1443,7 +1443,7 @@ namespace API.Controllers
                             ModifiedOn = DateTimeOffset.Now
                         };
                         _investmentRecDepotRepo.Add(invRecDepot);
-                        _investmentRecProductRepo.Savechange();
+                        _investmentRecDepotRepo.Savechange();
                     }
                 }
 
@@ -1786,7 +1786,7 @@ namespace API.Controllers
                             ModifiedOn = DateTimeOffset.Now
                         };
                         _investmentRecDepotRepo.Add(invRecDepot);
-                        _investmentRecProductRepo.Savechange();
+                        _investmentRecDepotRepo.Savechange();
                     }
                 }
 
@@ -2119,7 +2119,7 @@ namespace API.Controllers
                             ModifiedOn = DateTimeOffset.Now
                         };
                         _investmentRecDepotRepo.Add(invRecDepot);
-                        _investmentRecProductRepo.Savechange();
+                        _investmentRecDepotRepo.Savechange();
                     }
                 }
 
@@ -2463,7 +2463,7 @@ namespace API.Controllers
                             ModifiedOn = DateTimeOffset.Now
                         };
                         _investmentRecDepotRepo.Add(invRecDepot);
-                        _investmentRecProductRepo.Savechange();
+                        _investmentRecDepotRepo.Savechange();
                     }
                 }
 

@@ -103,7 +103,6 @@ export class RptInvestSummaryService {
     return this.http.get(this.baseUrl+ 'reportInvestment/rptInvestDepo/'+initId);
   }
 
-
   getEmpMonthlyExpense(model: any) {
     return this.http.post(this.baseUrl+ 'reportInvestment/GetEmpMonthlyExpense/', model);
   }
@@ -125,6 +124,22 @@ export class RptInvestSummaryService {
 
   getCampaignSummaryReport(model: any) {
     return this.http.post(this.baseUrl+ 'reportInvestment/GetCampaignSummaryReport/', model);
+  }
+
+  getDoctorSummaryReport(model: any) {
+    return this.http.post(this.baseUrl+ 'reportInvestment/GetDoctorSummaryReport/', model);
+  }
+  getInstitutionSummaryReport(model: any) {
+    return this.http.post(this.baseUrl+ 'reportInvestment/GetInstitutionSummaryReport/', model);
+  }
+  getBcdsSummaryReport(model: any) {
+    return this.http.post(this.baseUrl+ 'reportInvestment/GetBcdsSummaryReport/', model);
+  }
+  getSocietySummaryReport(model: any) {
+    return this.http.post(this.baseUrl+ 'reportInvestment/GetSocietySummaryReport/', model);
+  }
+  getSummaryReport(model: any) {
+    return this.http.post(this.baseUrl+ 'reportInvestment/GetSummaryReport/', model);
   }
 
 }

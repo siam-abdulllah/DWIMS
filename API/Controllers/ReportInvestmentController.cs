@@ -81,8 +81,8 @@ namespace API.Controllers
         [HttpGet("IsInvestmentInActive/{referenceNo}")]
         public ActionResult<IReadOnlyList<CountInt>> IsInvestmentInActive(string referenceNo)
         {
-            string qry = "SELECT [Id],[DataStatus] ,[SetOn],[ModifiedOn],[DataStatus] Count  FROM InvestmentInit WHERE ReferenceNo='"+ referenceNo +"'";
-            
+            string qry = "SELECT [Id],[DataStatus] ,[SetOn],[ModifiedOn],[DataStatus] Count  FROM InvestmentInit WHERE ReferenceNo='" + referenceNo + "'";
+
 
             var results = _db.CountInt.FromSqlRaw(qry).ToList();
             return results;
@@ -106,22 +106,22 @@ namespace API.Controllers
         [HttpGet("IsInvestmentInActiveDoc/{referenceNo}/{doctorId}/{doctorName}")]
         public ActionResult<IReadOnlyList<CountInt>> IsInvestmentInActiveDoc(string referenceNo,int doctorId, string doctorName)
         {
-            
+
 
             string qry = "SELECT A.[Id],A.[DataStatus] ,A.[SetOn],A.[ModifiedOn],A.[DataStatus] Count  " +
                 " FROM InvestmentInit A " +
                 " LEFT JOIN InvestmentDoctor B ON A.Id=B.InvestmentInitId " +
                 " LEFT JOIN DoctorInfo C ON B.DoctorId=C.Id" +
                 " WHERE 1=1";
-            if (!string.IsNullOrEmpty(referenceNo) && referenceNo!="undefined")
+            if (!string.IsNullOrEmpty(referenceNo) && referenceNo != "undefined")
             {
-                qry = qry+" AND ReferenceNo = '" + referenceNo +"'";
+                qry = qry + " AND ReferenceNo = '" + referenceNo + "'";
             }
-            if (!string.IsNullOrEmpty(doctorName) && doctorName!="undefined")
+            if (!string.IsNullOrEmpty(doctorName) && doctorName != "undefined")
             {
                 qry = qry + " AND C.DoctorName Like '%" + doctorName + "%'";
             }
-            if (doctorId!=0)
+            if (doctorId != 0)
             {
                 qry = qry + " AND B.DoctorId = " + doctorId + " ";
             }
@@ -129,8 +129,8 @@ namespace API.Controllers
             var results = _db.CountInt.FromSqlRaw(qry).ToList();
             return results;
         }
-        
-        
+
+
         [HttpPost("GetDoctorCampaingWiseInvestment")]
         public ActionResult<IReadOnlyList<RptDocCampWiseInvestment>> GetDoctorCampaingWiseInvestment([FromQuery] ReportInvestmentInfoSpecParams rptParrams, ReportSearchDto search)
         {
@@ -259,21 +259,21 @@ namespace API.Controllers
             string qry = "   select distinct CAST(ABS(CHECKSUM(NewId())) % 200 AS int) as Id, 1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.Amount, " +
                 " (select SUM(x.ApprovedAmount) Expense from InvestmentDetailTracker x " +
                 " inner join InvestmentInit i on x.InvestmentInitId = i.Id " +
-                " where x.Year = "+ year +" and x.DonationId = b.DonationId and " +
+                " where x.Year = " + year + " and x.DonationId = b.DonationId and " +
                 " i.sbuname = b.sbuname) Expense,  b.* " +
                 " From SBUWiseBudget a" +
                 " left join vw_MonthlyExpense b on a.SBUName = b.SBUName and a.DonationId = b.DonationId " +
-                " where b.[year] = " + year + ""; 
-                if (!string.IsNullOrEmpty(dt.SBU))
-                {
-                    qry += " AND b.SBUName = '" + dt.SBU + "' ";
-                }
-                if (!string.IsNullOrEmpty(dt.DonationType))
-                {
-                    qry += " AND b.DonationTypeName = '" + dt.DonationType +"' ";
-                }
+                " where b.[year] = " + year + "";
+            if (!string.IsNullOrEmpty(dt.SBU))
+            {
+                qry += " AND b.SBUName = '" + dt.SBU + "' ";
+            }
+            if (!string.IsNullOrEmpty(dt.DonationType))
+            {
+                qry += " AND b.DonationTypeName = '" + dt.DonationType + "' ";
+            }
 
-                 qry += " order by b.sbuname, b.donationid ";
+            qry += " order by b.sbuname, b.donationid ";
 
             var results = _db.RptYearlyBudget.FromSqlRaw(qry).ToList();
 
@@ -281,17 +281,17 @@ namespace API.Controllers
         }
 
 
-         [HttpPost("GetSBUWiseExpenseReport")]
+        [HttpPost("GetSBUWiseExpenseReport")]
         public ActionResult<IReadOnlyList<RptSBUWiseExp>> GetSBUWiseExpenseReport(ReportSearchDto dt)
         {
             int year = Convert.ToDateTime(dt.FromDate).Year;
 
             string qry = " Select DISTINCT Cast(Abs(Checksum(Newid())) % 200 AS INT) AS Id,1 AS DataStatus,Sysdatetimeoffset() AS SetOn,Sysdatetimeoffset() AS ModifiedOn, " +
             " SUM(a.amount) amount,(SELECT Sum(x.approvedamount) Expense FROM   investmentdetailtracker x INNER JOIN investmentinit i ON x.investmentinitid = i.id  " +
-            " WHERE  x.year = "+ year +" AND i.sbuname = b.sbuname) Expense, b.SBUName, b.Year " +
+            " WHERE  x.year = " + year + " AND i.sbuname = b.sbuname) Expense, b.SBUName, b.Year " +
             " FROM   sbuwisebudget a  " +
             " LEFT JOIN vw_monthlyexpense b ON a.sbuname = b.sbuname AND a.donationid = b.donationid " +
-            " WHERE  b.[year] = "+ year +" " +
+            " WHERE  b.[year] = " + year + " " +
             " GROUP  BY b.sbuname, b.Year " +
             " ORDER  BY b.sbuname ";
 
@@ -322,7 +322,7 @@ namespace API.Controllers
                 " ) X " +
                 " join Employee e on e.Id = x.EmployeeId " +
                 " join Donation d on d.Id = x.DonationId " +
-                " WHERE X.Expense > 0 AND X.Year = "+ year +" ";
+                " WHERE X.Expense > 0 AND X.Year = " + year + " ";
 
             if (dt.ApprovalAuthorityId > 0)
             {
@@ -345,18 +345,362 @@ namespace API.Controllers
         }
 
 
+        [HttpPost("GetDoctorSummaryReport")]
+        public ActionResult<IReadOnlyList<RptSummary>> GetDoctorSummaryReport(DoctorSummaryExpSearchDto dt)
+        {
+            try
+            {
+                string qry = "SELECT DISTINCT a.id Id,a.DataStatus,a.SetOn,Sysdatetimeoffset() AS ModifiedOn,a.referenceno" +
+                            ",CASE WHEN a.donationto = 'Doctor' THEN (" +
+                            " SELECT DoctorId" +
+                            " FROM investmentdoctor x" +
+                            " INNER JOIN doctorinfo y ON x.doctorid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " WHEN a.donationto = 'Institution'" +
+                            " THEN (" +
+                            " SELECT InstitutionId" +
+                            " FROM investmentinstitution x" +
+                            " INNER JOIN institutioninfo y ON x.institutionid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " WHEN a.donationto = 'Bcds'" +
+                            " THEN (" +
+                            " SELECT x.BcdsId" +
+                            " FROM investmentbcds x" +
+                            " INNER JOIN bcds y ON x.bcdsid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " WHEN a.donationto = 'Society'" +
+                            " THEN (" +
+                            " SELECT x.SocietyId" +
+                            " FROM investmentsociety x" +
+                            " INNER JOIN society y ON x.societyid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " END DId" +
+                            " ,CASE " +
+                            " WHEN a.donationto = 'Doctor'" +
+                            " THEN (" +
+                            " SELECT doctorname" +
+                            " FROM investmentdoctor x" +
+                            " INNER JOIN doctorinfo y ON x.doctorid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " WHEN a.donationto = 'Institution'" +
+                            " THEN (" +
+                            " SELECT institutionname" +
+                            " FROM investmentinstitution x" +
+                            " INNER JOIN institutioninfo y ON x.institutionid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " WHEN a.donationto = 'Bcds'" +
+                            " THEN (" +
+                            " SELECT bcdsname" +
+                            " FROM investmentbcds x" +
+                            " INNER JOIN bcds y ON x.bcdsid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " WHEN a.donationto = 'Society'" +
+                            " THEN (" +
+                            " SELECT societyname" +
+                            " FROM investmentsociety x" +
+                            " INNER JOIN society y ON x.societyid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " END NAME" +
+                            " ,E.employeename" +
+                            " ,a.SBUName" +
+                            " ,+'['+a.MarketCode+'] '+a.MarketName MarketName" +
+                            " ,+'['+a.TerritoryCode+'] '+a.TerritoryName TerritoryName" +
+                            " ,+'['+a.RegionCode+'] '+a.RegionName RegionName" +
+                            " ,+'['+a.ZoneCode+'] '+a.ZoneName ZoneName" +
+                            " ,b.ProposedAmount" +
+                            " ,(" +
+                            " SELECT Isnull((" +
+                            " SELECT b.recstatus" +
+                            " FROM investmentreccomment b" +
+                            " WHERE b.id IN (" +
+                            " SELECT Max(id)" +
+                            " FROM investmentreccomment" +
+                            " WHERE investmentinitid = a.id" +
+                            " )" +
+                            " ), 'Pending')" +
+                            " ) InvStatus" +
+                            " ,Isnull((" +
+                            " SELECT  C.employeename+','+C.DesignationName+', '+C.SBUName" +
+                            " FROM investmentreccomment b" +
+                            " JOIN employee c ON c.id = b.employeeid" +
+                            " WHERE b.investmentinitid = a.id" +
+                            " AND b.id = (" +
+                            " SELECT Max(id)" +
+                            " FROM investmentreccomment" +
+                            " WHERE investmentinitid = b.investmentinitid" +
+                            " )" +
+                            " ), 'N/A') ApprovedBy" +
+                            " ,d.donationtypename" +
+                            " ,a.donationto" +
+                            " ,convert(varchar, b.fromdate, 3) fromdate" +
+                            " ,convert(varchar, b.todate, 3) todate" +
+                            " ,b.PaymentMethod" +
+                            " , b.PaymentFreq" +
+                            " ,depo.DepotName" +
+                            " ,ISNULL(rcv.ReceiveStatus, 'N/A') ReceiveStatus" +
+                            " ,Isnull(M.employeename + ', ' + M.designationname, 'N/A') ReceiveBy" +
+                            " ,a.ProposeFor" +
+                            " ,a.Confirmation" +
+                            " ,(" +
+                            " SELECT DISTINCT STUFF((" +
+                            " SELECT ', ' + PaymentRefNo" +
+                            " FROM InvestmentDetailTracker invD" +
+                            " WHERE invD.InvestmentInitId = a.Id" +
+                            " FOR XML PATH('')" +
+                            " ), 1, 1, '') AS PaymentRefNo" +
+                            " FROM InvestmentDetailTracker" +
+                            " ) PaymentRefNo" +
+                            " FROM investmentinit a" +
+                            " INNER JOIN InvestmentDoctor invS ON a.Id=invS.InvestmentInitId" +
+                            " INNER JOIN DoctorInfo s ON invS.DoctorId=s.Id" +
+                            " INNER JOIN employee E ON A.employeeid = E.id" +
+                            " LEFT JOIN InvestmentRecComment rc ON a.id = rc.InvestmentInitId" +
+                            " LEFT JOIN InvestmentRec b ON a.id = b.investmentinitid" +
+                            " LEFT JOIN InvestmentRecDepot depo ON depo.investmentinitid = a.Id" +
+                            " LEFT JOIN investmentrecv rcv ON a.id = rcv.investmentinitid" +
+                            " LEFT JOIN employee M ON rcv.employeeid = M.id" +
+                            " INNER JOIN donation d ON d.id = a.donationid" +
+                            " WHERE 1 = 1" +
+                            " AND a.DonationTo <> 'Campaign'" +
+                            " AND a.DataStatus = 1" +
+                            " AND a.Confirmation = 1" +
+                            " AND rc.Id IN (" +
+                            " (" +
+                            " SELECT TOP 1 (id)" +
+                            " FROM InvestmentRecComment" +
+                            " WHERE InvestmentInitId = a.Id" +
+                            " ORDER BY Priority DESC" +
+                            " )" +
+                            " )";
+
+                if (dt.FromDate != null && dt.ToDate != null)
+                {
+                    qry = qry + " AND (CONVERT(date,a.SetOn) >= CAST('" + dt.FromDate + "' as Date) AND CAST('" + dt.ToDate + "' as Date) >= CONVERT(date,a.SetOn)) ";
+                }
+
+                if (dt.DonationId > 0 && dt.DonationId.ToString().Length > 0)
+                {
+                    qry = qry + " AND a.DonationId = " + dt.DonationId + " ";
+                }
+                if (dt.DoctorId > 0 && dt.DoctorId.ToString().Length > 0)
+                {
+                    qry = qry + " AND invS.DoctorId = " + dt.DoctorId + " ";
+                }
+
+                if (!string.IsNullOrEmpty(dt.SBU))
+                {
+                    qry = qry + " AND a.SBUName = '" + dt.SBU + "' ";
+                }
+
+                if (dt.MarketCode != null && dt.MarketCode.ToString().Length > 0)
+                {
+                    qry = qry + " AND a.MarketCode = '" + dt.MarketCode + "' ";
+                }
+                qry = qry + " order by  a.SetOn DESC ";
+
+                var results = _db.RptSummary.FromSqlRaw(qry).ToList();
+
+                return results;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        [HttpPost("GetInstitutionSummaryReport")]
+        public ActionResult<IReadOnlyList<RptSummary>> GetInstitutionSummaryReport(InstituteSummaryExpSearchDto dt)
+        {
+            try
+            {
+                string qry = "SELECT DISTINCT a.id Id,a.DataStatus,a.SetOn,Sysdatetimeoffset() AS ModifiedOn,a.referenceno" +
+                            ",CASE WHEN a.donationto = 'Doctor' THEN (" +
+                            " SELECT DoctorId" +
+                            " FROM investmentdoctor x" +
+                            " INNER JOIN doctorinfo y ON x.doctorid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " WHEN a.donationto = 'Institution'" +
+                            " THEN (" +
+                            " SELECT InstitutionId" +
+                            " FROM investmentinstitution x" +
+                            " INNER JOIN institutioninfo y ON x.institutionid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " WHEN a.donationto = 'Bcds'" +
+                            " THEN (" +
+                            " SELECT x.BcdsId" +
+                            " FROM investmentbcds x" +
+                            " INNER JOIN bcds y ON x.bcdsid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " WHEN a.donationto = 'Society'" +
+                            " THEN (" +
+                            " SELECT x.SocietyId" +
+                            " FROM investmentsociety x" +
+                            " INNER JOIN society y ON x.societyid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " END DId" +
+                            " ,CASE " +
+                            " WHEN a.donationto = 'Doctor'" +
+                            " THEN (" +
+                            " SELECT doctorname" +
+                            " FROM investmentdoctor x" +
+                            " INNER JOIN doctorinfo y ON x.doctorid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " WHEN a.donationto = 'Institution'" +
+                            " THEN (" +
+                            " SELECT institutionname" +
+                            " FROM investmentinstitution x" +
+                            " INNER JOIN institutioninfo y ON x.institutionid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " WHEN a.donationto = 'Bcds'" +
+                            " THEN (" +
+                            " SELECT bcdsname" +
+                            " FROM investmentbcds x" +
+                            " INNER JOIN bcds y ON x.bcdsid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " WHEN a.donationto = 'Society'" +
+                            " THEN (" +
+                            " SELECT societyname" +
+                            " FROM investmentsociety x" +
+                            " INNER JOIN society y ON x.societyid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " END NAME" +
+                            " ,E.employeename" +
+                            " ,a.SBUName" +
+                            " ,+'['+a.MarketCode+'] '+a.MarketName MarketName" +
+                            " ,+'['+a.TerritoryCode+'] '+a.TerritoryName TerritoryName" +
+                            " ,+'['+a.RegionCode+'] '+a.RegionName RegionName" +
+                            " ,+'['+a.ZoneCode+'] '+a.ZoneName ZoneName" +
+                            " ,b.ProposedAmount" +
+                            " ,(" +
+                            " SELECT Isnull((" +
+                            " SELECT b.recstatus" +
+                            " FROM investmentreccomment b" +
+                            " WHERE b.id IN (" +
+                            " SELECT Max(id)" +
+                            " FROM investmentreccomment" +
+                            " WHERE investmentinitid = a.id" +
+                            " )" +
+                            " ), 'Pending')" +
+                            " ) InvStatus" +
+                            " ,Isnull((" +
+                            " SELECT  C.employeename+','+C.DesignationName+', '+C.SBUName" +
+                            " FROM investmentreccomment b" +
+                            " JOIN employee c ON c.id = b.employeeid" +
+                            " WHERE b.investmentinitid = a.id" +
+                            " AND b.id = (" +
+                            " SELECT Max(id)" +
+                            " FROM investmentreccomment" +
+                            " WHERE investmentinitid = b.investmentinitid" +
+                            " )" +
+                            " ), 'N/A') ApprovedBy" +
+                            " ,d.donationtypename" +
+                            " ,a.donationto" +
+                            " ,convert(varchar, b.fromdate, 3) fromdate" +
+                            " ,convert(varchar, b.todate, 3) todate" +
+                            " ,b.PaymentMethod" +
+                            " , b.PaymentFreq" +
+                            " ,depo.DepotName" +
+                            " ,ISNULL(rcv.ReceiveStatus, 'N/A') ReceiveStatus" +
+                            " ,Isnull(M.employeename + ', ' + M.designationname, 'N/A') ReceiveBy" +
+                            " ,a.ProposeFor" +
+                            " ,a.Confirmation" +
+                            " ,(" +
+                            " SELECT DISTINCT STUFF((" +
+                            " SELECT ', ' + PaymentRefNo" +
+                            " FROM InvestmentDetailTracker invD" +
+                            " WHERE invD.InvestmentInitId = a.Id" +
+                            " FOR XML PATH('')" +
+                            " ), 1, 1, '') AS PaymentRefNo" +
+                            " FROM InvestmentDetailTracker" +
+                            " ) PaymentRefNo" +
+                            " FROM investmentinit a" +
+                            " INNER JOIN InvestmentInstitution invS ON a.Id=invS.InvestmentInitId" +
+                            " INNER JOIN InstitutionInfo s ON invS.InstitutionId=s.Id" +
+                            " INNER JOIN employee E ON A.employeeid = E.id" +
+                            " LEFT JOIN InvestmentRecComment rc ON a.id = rc.InvestmentInitId" +
+                            " LEFT JOIN InvestmentRec b ON a.id = b.investmentinitid" +
+                            " LEFT JOIN InvestmentRecDepot depo ON depo.investmentinitid = a.Id" +
+                            " LEFT JOIN investmentrecv rcv ON a.id = rcv.investmentinitid" +
+                            " LEFT JOIN employee M ON rcv.employeeid = M.id" +
+                            " INNER JOIN donation d ON d.id = a.donationid" +
+                            " WHERE 1 = 1" +
+                            " AND a.DonationTo <> 'Campaign'" +
+                            " AND a.DataStatus = 1" +
+                            " AND a.Confirmation = 1" +
+                            " AND rc.Id IN (" +
+                            " (" +
+                            " SELECT TOP 1 (id)" +
+                            " FROM InvestmentRecComment" +
+                            " WHERE InvestmentInitId = a.Id" +
+                            " ORDER BY Priority DESC" +
+                            " )" +
+                            " )";
+
+                if (dt.FromDate != null && dt.ToDate != null)
+                {
+                    qry = qry + " AND (CONVERT(date,a.SetOn) >= CAST('" + dt.FromDate + "' as Date) AND CAST('" + dt.ToDate + "' as Date) >= CONVERT(date,a.SetOn)) ";
+                }
+
+                if (dt.DonationId > 0 && dt.DonationId.ToString().Length > 0)
+                {
+                    qry = qry + " AND a.DonationId = " + dt.DonationId + " ";
+                }
+                  if (dt.InstitutionId > 0 && dt.InstitutionId.ToString().Length > 0)
+                {
+                    qry = qry + " AND invS.InstitutionId = " + dt.InstitutionId + " ";
+                }
+
+                if (!string.IsNullOrEmpty(dt.SBU))
+                {
+                    qry = qry + " AND a.SBUName = '" + dt.SBU + "' ";
+                }
+               
+                if (dt.MarketCode != null && dt.MarketCode.ToString().Length > 0)
+                {
+                    qry = qry + " AND a.MarketCode = '" + dt.MarketCode + "' ";
+                }
+                qry = qry + " order by  a.SetOn DESC ";
+
+                var results = _db.RptSummary.FromSqlRaw(qry).ToList();
+
+                return results;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
         [HttpPost("GetCampaignSummaryReport")]
         public ActionResult<IReadOnlyList<RptCampaignSummary>> GetCampaignSummary(CampaignSummaryExpSearchDto dt)
         {
             string qry = " Select distinct a.Id, a.DataStatus, a.SetOn, a.ModifiedOn, " +
-                " cmp.CampaignName, a.ReferenceNo, dn.DonationTypeName, a.SBUName, rec.FromDate, rec.ToDate, rec.PaymentFreq, ic.InstitutionId, ins.InstitutionName, ic.DoctorId, d.DoctorName, rc.RecStatus, emp.EmployeeName + ','+ emp.DesignationName ApprovedBy ,(select SUM(ApprovedAmount) from InvestmentDetailTracker where InvestmentInitId = a.Id) Total,   " +
+                " cmp.CampaignName, a.ReferenceNo, dn.DonationTypeName, a.SBUName, convert(varchar, rec.FromDate, 3) FromDate, convert(varchar, rec.ToDate, 3) ToDate, rec.PaymentFreq, ic.InstitutionId, ins.InstitutionName, ic.DoctorId, d.DoctorName, rc.RecStatus, emp.EmployeeName + ','+ emp.DesignationName ApprovedBy ,(select SUM(ApprovedAmount) from InvestmentDetailTracker where InvestmentInitId = a.Id) Total,   " +
                 " rec.ProposedAmount, ISNULL(dpt.DepotName, 'CHQ') DepotName, a.MarketCode, a.MarketName, a.TerritoryCode, a.TerritoryName, a.RegionCode, a.RegionName, a.ZoneCode, a.ZoneName " +
                 " from InvestmentInit a " +
                 " join InvestmentCampaign IC on a.Id = IC.InvestmentInitId " +
                 "  join CampaignMst cmp on cmp.Id = ic.CampaignDtlId " +
                 " join Donation dn on dn.Id = a.DonationId " +
                 " left join InvestmentRecComment rc on a.id = rc.InvestmentInitId " +
-                " left join InvestmentRec rec on rec.InvestmentInitId = a.Id AND rec.Priority = rc.Priority "+
+                " left join InvestmentRec rec on rec.InvestmentInitId = a.Id AND rec.Priority = rc.Priority " +
                 " left join DoctorInfo d on d.Id = ic.DoctorId " +
                 " left join InstitutionInfo ins on ins.Id = ic.InstitutionId " +
                 " left join InvestmentDetailTracker dt on a.id = dt.InvestmentInitId " +
@@ -368,7 +712,7 @@ namespace API.Controllers
 
             if (dt.FromDate != null && dt.ToDate != null)
             {
-                qry = qry + " (CONVERT(date,a.FromDate) >= CAST('" + dt.FromDate + "' as Date) AND CAST('" + dt.ToDate + "' as Date) >= CONVERT(date,a.ToDate)) ";
+                qry = qry + " AND (CONVERT(date,a.SetOn) >= CAST('" + dt.FromDate + "' as Date) AND CAST('" + dt.ToDate + "' as Date) >= CONVERT(date,a.SetOn)) ";
             }
 
             if (dt.CampaignId > 0)
@@ -383,7 +727,7 @@ namespace API.Controllers
             {
                 qry = qry + " AND a.DonationId = " + dt.DonationId + " ";
             }
-             if (dt.InstitutionId > 0 && dt.InstitutionId.ToString().Length > 0)
+            if (dt.InstitutionId > 0 && dt.InstitutionId.ToString().Length > 0)
             {
                 qry = qry + " AND ic.InstitutionId = " + dt.InstitutionId + " ";
             }
@@ -402,12 +746,519 @@ namespace API.Controllers
             return results;
         }
 
+        [HttpPost("GetBcdsSummaryReport")]
+        public ActionResult<IReadOnlyList<RptSummary>> GetBcdsSummaryReport(BcdsSummaryExpSearchDto dt)
+        {
+            try
+            {
+                string qry = "SELECT DISTINCT a.id Id,a.DataStatus,a.SetOn,Sysdatetimeoffset() AS ModifiedOn,a.referenceno" +
+                            ",CASE WHEN a.donationto = 'Doctor' THEN (" +
+                            " SELECT DoctorId" +
+                            " FROM investmentdoctor x" +
+                            " INNER JOIN doctorinfo y ON x.doctorid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " WHEN a.donationto = 'Institution'" +
+                            " THEN (" +
+                            " SELECT InstitutionId" +
+                            " FROM investmentinstitution x" +
+                            " INNER JOIN institutioninfo y ON x.institutionid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " WHEN a.donationto = 'Bcds'" +
+                            " THEN (" +
+                            " SELECT x.BcdsId" +
+                            " FROM investmentbcds x" +
+                            " INNER JOIN bcds y ON x.bcdsid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " WHEN a.donationto = 'Society'" +
+                            " THEN (" +
+                            " SELECT x.SocietyId" +
+                            " FROM investmentsociety x" +
+                            " INNER JOIN society y ON x.societyid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " END DId" +
+                            " ,CASE " +
+                            " WHEN a.donationto = 'Doctor'" +
+                            " THEN (" +
+                            " SELECT doctorname" +
+                            " FROM investmentdoctor x" +
+                            " INNER JOIN doctorinfo y ON x.doctorid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " WHEN a.donationto = 'Institution'" +
+                            " THEN (" +
+                            " SELECT institutionname" +
+                            " FROM investmentinstitution x" +
+                            " INNER JOIN institutioninfo y ON x.institutionid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " WHEN a.donationto = 'Bcds'" +
+                            " THEN (" +
+                            " SELECT bcdsname" +
+                            " FROM investmentbcds x" +
+                            " INNER JOIN bcds y ON x.bcdsid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " WHEN a.donationto = 'Society'" +
+                            " THEN (" +
+                            " SELECT societyname" +
+                            " FROM investmentsociety x" +
+                            " INNER JOIN society y ON x.societyid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " END NAME" +
+                            " ,E.employeename" +
+                            " ,a.SBUName" +
+                            " ,+'['+a.MarketCode+'] '+a.MarketName MarketName" +
+                            " ,+'['+a.TerritoryCode+'] '+a.TerritoryName TerritoryName" +
+                            " ,+'['+a.RegionCode+'] '+a.RegionName RegionName" +
+                            " ,+'['+a.ZoneCode+'] '+a.ZoneName ZoneName" +
+                            " ,b.ProposedAmount" +
+                            " ,(" +
+                            " SELECT Isnull((" +
+                            " SELECT b.recstatus" +
+                            " FROM investmentreccomment b" +
+                            " WHERE b.id IN (" +
+                            " SELECT Max(id)" +
+                            " FROM investmentreccomment" +
+                            " WHERE investmentinitid = a.id" +
+                            " )" +
+                            " ), 'Pending')" +
+                            " ) InvStatus" +
+                            " ,Isnull((" +
+                            " SELECT  C.employeename+','+C.DesignationName+', '+C.SBUName" +
+                            " FROM investmentreccomment b" +
+                            " JOIN employee c ON c.id = b.employeeid" +
+                            " WHERE b.investmentinitid = a.id" +
+                            " AND b.id = (" +
+                            " SELECT Max(id)" +
+                            " FROM investmentreccomment" +
+                            " WHERE investmentinitid = b.investmentinitid" +
+                            " )" +
+                            " ), 'N/A') ApprovedBy" +
+                            " ,d.donationtypename" +
+                            " ,a.donationto" +
+                            " , convert(varchar, b.fromdate, 3) fromdate" +
+                            " , convert(varchar, b.todate, 3) todate" +
+                            " ,b.PaymentMethod" +
+                            " , b.PaymentFreq" +
+                            " ,depo.DepotName" +
+                            " ,ISNULL(rcv.ReceiveStatus, 'N/A') ReceiveStatus" +
+                            " ,Isnull(M.employeename + ', ' + M.designationname, 'N/A') ReceiveBy" +
+                            " ,a.ProposeFor" +
+                            " ,a.Confirmation" +
+                            " ,(" +
+                            " SELECT DISTINCT STUFF((" +
+                            " SELECT ', ' + PaymentRefNo" +
+                            " FROM InvestmentDetailTracker invD" +
+                            " WHERE invD.InvestmentInitId = a.Id" +
+                            " FOR XML PATH('')" +
+                            " ), 1, 1, '') AS PaymentRefNo" +
+                            " FROM InvestmentDetailTracker" +
+                            " ) PaymentRefNo" +
+                            " FROM investmentinit a" +
+                            " INNER JOIN InvestmentBcds invS ON a.Id=invS.InvestmentInitId" +
+                            " INNER JOIN Bcds s ON invS.BcdsId=s.Id" +
+                            " INNER JOIN employee E ON A.employeeid = E.id" +
+                            " LEFT JOIN InvestmentRecComment rc ON a.id = rc.InvestmentInitId" +
+                            " LEFT JOIN InvestmentRec b ON a.id = b.investmentinitid" +
+                            " LEFT JOIN InvestmentRecDepot depo ON depo.investmentinitid = a.Id" +
+                            " LEFT JOIN investmentrecv rcv ON a.id = rcv.investmentinitid" +
+                            " LEFT JOIN employee M ON rcv.employeeid = M.id" +
+                            " INNER JOIN donation d ON d.id = a.donationid" +
+                            " WHERE 1 = 1" +
+                            " AND a.DonationTo <> 'Campaign'" +
+                            " AND a.DataStatus = 1" +
+                            " AND a.Confirmation = 1" +
+                            " AND rc.Id IN (" +
+                            " (" +
+                            " SELECT TOP 1 (id)" +
+                            " FROM InvestmentRecComment" +
+                            " WHERE InvestmentInitId = a.Id" +
+                            " ORDER BY Priority DESC" +
+                            " )" +
+                            " )";
+
+                if (dt.FromDate != null && dt.ToDate != null)
+                {
+                    qry = qry + " AND (CONVERT(date,a.SetOn) >= CAST('" + dt.FromDate + "' as Date) AND CAST('" + dt.ToDate + "' as Date) >= CONVERT(date,a.SetOn)) ";
+                }
+
+                if (dt.DonationId > 0 && dt.DonationId.ToString().Length > 0)
+                {
+                    qry = qry + " AND a.DonationId = " + dt.DonationId + " ";
+                }
+
+                if (!string.IsNullOrEmpty(dt.SBU))
+                {
+                    qry = qry + " AND a.SBUName = '" + dt.SBU + "' ";
+                }
+                if (!string.IsNullOrEmpty(dt.BcdsName))
+                {
+                    qry = qry + " AND s.BcdsName like '%" + dt.BcdsName + "%' ";
+                }
+                if (dt.MarketCode != null && dt.MarketCode.ToString().Length > 0)
+                {
+                    qry = qry + " AND a.MarketCode = '" + dt.MarketCode + "' ";
+                }
+                qry = qry + " order by  a.SetOn DESC ";
+
+                var results = _db.RptSummary.FromSqlRaw(qry).ToList();
+
+                return results;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        [HttpPost("GetSocietySummaryReport")]
+        public ActionResult<IReadOnlyList<RptSummary>> GetSocietySummaryReport(SocietySummaryExpSearchDto dt)
+        {
+            try
+            {
+                string qry = "SELECT DISTINCT a.id Id,a.DataStatus,a.SetOn,Sysdatetimeoffset() AS ModifiedOn,a.referenceno" +
+                            ",CASE WHEN a.donationto = 'Doctor' THEN (" +
+                            " SELECT DoctorId" +
+                            " FROM investmentdoctor x" +
+                            " INNER JOIN doctorinfo y ON x.doctorid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " WHEN a.donationto = 'Institution'" +
+                            " THEN (" +
+                            " SELECT InstitutionId" +
+                            " FROM investmentinstitution x" +
+                            " INNER JOIN institutioninfo y ON x.institutionid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " WHEN a.donationto = 'Bcds'" +
+                            " THEN (" +
+                            " SELECT x.BcdsId" +
+                            " FROM investmentbcds x" +
+                            " INNER JOIN bcds y ON x.bcdsid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " WHEN a.donationto = 'Society'" +
+                            " THEN (" +
+                            " SELECT x.SocietyId" +
+                            " FROM investmentsociety x" +
+                            " INNER JOIN society y ON x.societyid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " END DId" +
+                            " ,CASE " +
+                            " WHEN a.donationto = 'Doctor'" +
+                            " THEN (" +
+                            " SELECT doctorname" +
+                            " FROM investmentdoctor x" +
+                            " INNER JOIN doctorinfo y ON x.doctorid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " WHEN a.donationto = 'Institution'" +
+                            " THEN (" +
+                            " SELECT institutionname" +
+                            " FROM investmentinstitution x" +
+                            " INNER JOIN institutioninfo y ON x.institutionid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " WHEN a.donationto = 'Bcds'" +
+                            " THEN (" +
+                            " SELECT bcdsname" +
+                            " FROM investmentbcds x" +
+                            " INNER JOIN bcds y ON x.bcdsid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " WHEN a.donationto = 'Society'" +
+                            " THEN (" +
+                            " SELECT societyname" +
+                            " FROM investmentsociety x" +
+                            " INNER JOIN society y ON x.societyid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " END NAME" +
+                            " ,E.employeename" +
+                            " ,a.SBUName" +
+                            " ,+'['+a.MarketCode+'] '+a.MarketName MarketName" +
+                            " ,+'['+a.TerritoryCode+'] '+a.TerritoryName TerritoryName" +
+                            " ,+'['+a.RegionCode+'] '+a.RegionName RegionName" +
+                            " ,+'['+a.ZoneCode+'] '+a.ZoneName ZoneName" +
+                            " ,b.ProposedAmount" +
+                            " ,(" +
+                            " SELECT Isnull((" +
+                            " SELECT b.recstatus" +
+                            " FROM investmentreccomment b" +
+                            " WHERE b.id IN (" +
+                            " SELECT Max(id)" +
+                            " FROM investmentreccomment" +
+                            " WHERE investmentinitid = a.id" +
+                            " )" +
+                            " ), 'Pending')" +
+                            " ) InvStatus" +
+                            " ,Isnull((" +
+                            " SELECT  C.employeename+','+C.DesignationName+', '+C.SBUName" +
+                            " FROM investmentreccomment b" +
+                            " JOIN employee c ON c.id = b.employeeid" +
+                            " WHERE b.investmentinitid = a.id" +
+                            " AND b.id = (" +
+                            " SELECT Max(id)" +
+                            " FROM investmentreccomment" +
+                            " WHERE investmentinitid = b.investmentinitid" +
+                            " )" +
+                            " ), 'N/A') ApprovedBy" +
+                            " ,d.donationtypename" +
+                            " ,a.donationto" +
+                            " , convert(varchar, b.fromdate, 3) fromdate" +
+                            " , convert(varchar, b.todate, 3) todate" +
+                            " ,b.PaymentMethod" +
+                            " , b.PaymentFreq" +
+                            " ,depo.DepotName" +
+                            " ,ISNULL(rcv.ReceiveStatus, 'N/A') ReceiveStatus" +
+                            " ,Isnull(M.employeename + ', ' + M.designationname, 'N/A') ReceiveBy" +
+                            " ,a.ProposeFor" +
+                            " ,a.Confirmation" +
+                            " ,(" +
+                            " SELECT DISTINCT STUFF((" +
+                            " SELECT ', ' + PaymentRefNo" +
+                            " FROM InvestmentDetailTracker invD" +
+                            " WHERE invD.InvestmentInitId = a.Id" +
+                            " FOR XML PATH('')" +
+                            " ), 1, 1, '') AS PaymentRefNo" +
+                            " FROM InvestmentDetailTracker" +
+                            " ) PaymentRefNo" +
+                            " FROM investmentinit a" +
+                            " INNER JOIN InvestmentSociety invS ON a.Id=invS.InvestmentInitId" +
+                            " INNER JOIN Society s ON invS.SocietyId=s.Id" +
+                            " INNER JOIN employee E ON A.employeeid = E.id" +
+                            " LEFT JOIN InvestmentRecComment rc ON a.id = rc.InvestmentInitId" +
+                            " LEFT JOIN InvestmentRec b ON a.id = b.investmentinitid" +
+                            " LEFT JOIN InvestmentRecDepot depo ON depo.investmentinitid = a.Id" +
+                            " LEFT JOIN investmentrecv rcv ON a.id = rcv.investmentinitid" +
+                            " LEFT JOIN employee M ON rcv.employeeid = M.id" +
+                            " INNER JOIN donation d ON d.id = a.donationid" +
+                            " WHERE 1 = 1" +
+                            " AND a.DonationTo <> 'Campaign'" +
+                            " AND a.DataStatus = 1" +
+                            " AND a.Confirmation = 1" +
+                            " AND rc.Id IN (" +
+                            " (" +
+                            " SELECT TOP 1 (id)" +
+                            " FROM InvestmentRecComment" +
+                            " WHERE InvestmentInitId = a.Id" +
+                            " ORDER BY Priority DESC" +
+                            " )" +
+                            " )";
+
+                if (dt.FromDate != null && dt.ToDate != null)
+                {
+                    qry = qry + " AND (CONVERT(date,a.SetOn) >= CAST('" + dt.FromDate + "' as Date) AND CAST('" + dt.ToDate + "' as Date) >= CONVERT(date,a.SetOn)) ";
+                }
+
+                if (dt.DonationId > 0 && dt.DonationId.ToString().Length > 0)
+                {
+                    qry = qry + " AND a.DonationId = " + dt.DonationId + " ";
+                }
+
+                if (!string.IsNullOrEmpty(dt.SBU))
+                {
+                    qry = qry + " AND a.SBUName = '" + dt.SBU + "' ";
+                } 
+                if (!string.IsNullOrEmpty(dt.SocietyName))
+                {
+                    qry = qry + " AND s.SocietyName like '%" + dt.SocietyName + "%' ";
+                }
+                if (dt.MarketCode != null && dt.MarketCode.ToString().Length > 0)
+                {
+                    qry = qry + " AND a.MarketCode = '" + dt.MarketCode + "' ";
+                }
+                qry = qry + " order by  a.SetOn DESC ";
+
+                var results = _db.RptSummary.FromSqlRaw(qry).ToList();
+
+                return results;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        [HttpPost("GetSummaryReport")]
+        public ActionResult<IReadOnlyList<RptSummary>> GetSummaryReport(SummaryExpSearchDto dt)
+        {
+            try
+            {
+                string qry = "SELECT DISTINCT a.id Id,a.DataStatus,a.SetOn,Sysdatetimeoffset() AS ModifiedOn,a.referenceno" +
+                            ",CASE WHEN a.donationto = 'Doctor' THEN (" +
+                            " SELECT DoctorId" +
+                            " FROM investmentdoctor x" +
+                            " INNER JOIN doctorinfo y ON x.doctorid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " WHEN a.donationto = 'Institution'" +
+                            " THEN (" +
+                            " SELECT InstitutionId" +
+                            " FROM investmentinstitution x" +
+                            " INNER JOIN institutioninfo y ON x.institutionid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " WHEN a.donationto = 'Bcds'" +
+                            " THEN (" +
+                            " SELECT x.BcdsId" +
+                            " FROM investmentbcds x" +
+                            " INNER JOIN bcds y ON x.bcdsid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " WHEN a.donationto = 'Society'" +
+                            " THEN (" +
+                            " SELECT x.SocietyId" +
+                            " FROM investmentsociety x" +
+                            " INNER JOIN society y ON x.societyid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " END DId" +
+                            " ,CASE " +
+                            " WHEN a.donationto = 'Doctor'" +
+                            " THEN (" +
+                            " SELECT doctorname" +
+                            " FROM investmentdoctor x" +
+                            " INNER JOIN doctorinfo y ON x.doctorid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " WHEN a.donationto = 'Institution'" +
+                            " THEN (" +
+                            " SELECT institutionname" +
+                            " FROM investmentinstitution x" +
+                            " INNER JOIN institutioninfo y ON x.institutionid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " WHEN a.donationto = 'Bcds'" +
+                            " THEN (" +
+                            " SELECT bcdsname" +
+                            " FROM investmentbcds x" +
+                            " INNER JOIN bcds y ON x.bcdsid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " WHEN a.donationto = 'Society'" +
+                            " THEN (" +
+                            " SELECT societyname" +
+                            " FROM investmentsociety x" +
+                            " INNER JOIN society y ON x.societyid = y.id" +
+                            " WHERE x.investmentinitid = a.id" +
+                            " )" +
+                            " END NAME" +
+                            " ,E.employeename" +
+                            " ,a.SBUName" +
+                            " ,+'['+a.MarketCode+'] '+a.MarketName MarketName" +
+                            " ,+'['+a.TerritoryCode+'] '+a.TerritoryName TerritoryName" +
+                            " ,+'['+a.RegionCode+'] '+a.RegionName RegionName" +
+                            " ,+'['+a.ZoneCode+'] '+a.ZoneName ZoneName" +
+                            " ,b.ProposedAmount" +
+                            " ,(" +
+                            " SELECT Isnull((" +
+                            " SELECT b.recstatus" +
+                            " FROM investmentreccomment b" +
+                            " WHERE b.id IN (" +
+                            " SELECT Max(id)" +
+                            " FROM investmentreccomment" +
+                            " WHERE investmentinitid = a.id" +
+                            " )" +
+                            " ), 'Pending')" +
+                            " ) InvStatus" +
+                            " ,Isnull((" +
+                            " SELECT  C.employeename+','+C.DesignationName+', '+C.SBUName" +
+                            " FROM investmentreccomment b" +
+                            " JOIN employee c ON c.id = b.employeeid" +
+                            " WHERE b.investmentinitid = a.id" +
+                            " AND b.id = (" +
+                            " SELECT Max(id)" +
+                            " FROM investmentreccomment" +
+                            " WHERE investmentinitid = b.investmentinitid" +
+                            " )" +
+                            " ), 'N/A') ApprovedBy" +
+                            " ,d.donationtypename" +
+                            " ,a.donationto" +
+                            " ,convert(varchar,b.fromdate, 3) fromdate" +
+                            " ,convert(varchar,b.todate, 3) todate" +
+                            " ,b.PaymentMethod" +
+                            " , b.PaymentFreq" +
+                            " ,depo.DepotName" +
+                            " ,ISNULL(rcv.ReceiveStatus, 'N/A') ReceiveStatus" +
+                            " ,Isnull(M.employeename + ', ' + M.designationname, 'N/A') ReceiveBy" +
+                            " ,a.ProposeFor" +
+                            " ,a.Confirmation" +
+                            " ,(" +
+                            " SELECT DISTINCT STUFF((" +
+                            " SELECT ', ' + PaymentRefNo" +
+                            " FROM InvestmentDetailTracker invD" +
+                            " WHERE invD.InvestmentInitId = a.Id" +
+                            " FOR XML PATH('')" +
+                            " ), 1, 1, '') AS PaymentRefNo" +
+                            " FROM InvestmentDetailTracker" +
+                            " ) PaymentRefNo" +
+                            " FROM investmentinit a" +
+                            " INNER JOIN employee E ON A.employeeid = E.id" +
+                            " LEFT JOIN InvestmentRecComment rc ON a.id = rc.InvestmentInitId" +
+                            " LEFT JOIN InvestmentRec b ON a.id = b.investmentinitid" +
+                            " LEFT JOIN InvestmentRecDepot depo ON depo.investmentinitid = a.Id" +
+                            " LEFT JOIN investmentrecv rcv ON a.id = rcv.investmentinitid" +
+                            " LEFT JOIN employee M ON rcv.employeeid = M.id" +
+                            " INNER JOIN donation d ON d.id = a.donationid" +
+                            " WHERE 1 = 1" +
+                            " AND a.DonationTo <> 'Campaign'" +
+                            " AND a.DataStatus = 1" +
+                            " AND a.Confirmation = 1" +
+                            " AND rc.Id IN (" +
+                            " (" +
+                            " SELECT TOP 1 (id)" +
+                            " FROM InvestmentRecComment" +
+                            " WHERE InvestmentInitId = a.Id" +
+                            " ORDER BY Priority DESC" +
+                            " )" +
+                            " )";
+
+                if (dt.FromDate != null && dt.ToDate != null)
+                {
+                    qry = qry + " AND (CONVERT(date,a.SetOn) >= CAST('" + dt.FromDate + "' as Date) AND CAST('" + dt.ToDate + "' as Date) >= CONVERT(date,a.SetOn)) ";
+                }
+
+                if (dt.DonationId > 0 && dt.DonationId.ToString().Length > 0)
+                {
+                    qry = qry + " AND a.DonationId = " + dt.DonationId + " ";
+                }
+
+                if (!string.IsNullOrEmpty(dt.SBU))
+                {
+                    qry = qry + " AND a.SBUName = '" + dt.SBU + "' ";
+                }
+                if (dt.MarketCode != null && dt.MarketCode.ToString().Length > 0)
+                {
+                    qry = qry + " AND a.MarketCode = '" + dt.MarketCode + "' ";
+                }
+                qry = qry + " order by  a.SetOn DESC ";
+
+                var results = _db.RptSummary.FromSqlRaw(qry).ToList();
+
+                return results;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
 
         [HttpPost("GetInvestmentSummaryReport")]
         public ActionResult<IReadOnlyList<RptInvestmentSummary>> GetInvestmentSummaryReport(SearchDto dt, [FromQuery] ReportInvestmentInfoSpecParams rptParrams)
         {
 
-            string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode='"+dt.EmpId+"'";
+            string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode='" + dt.EmpId + "'";
             var empData = _db.Employee.FromSqlRaw(empQry).ToList();
             // string qry = "select CAST(ROW_NUMBER() OVER (ORDER BY c.SBU) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, SUM (e.ApprovedAmount) Expense, c.SBUName, c.SBU, c.Amount Budget,  c.DonationId, d.DonationTypeName " +
             // " from SBUWiseBudget c, InvestmentInit b  inner join InvestmentDetailTracker e on e.InvestmentInitId = b.Id " +
@@ -417,33 +1268,33 @@ namespace API.Controllers
             // " AND (CONVERT(date,e.FromDate) >= CAST('"+ search.FromDate +"' as Date) AND CAST('"+ search.ToDate +"' as Date) >= CONVERT(date,e.ToDate)) ";
 
             string qry = " SELECT Cast(a.id AS INT) AS Id, a.DataStatus, Sysdatetimeoffset() AS SetOn, Sysdatetimeoffset() AS ModifiedOn, a.referenceno, b.ProposedAmount, d.donationtypename, a.donationto, b.fromdate, ISNULL (rcv.ReceiveStatus, 'N/A') ReceiveStatus, b.todate, 0 InvStatusCount, " +
-            
-            " CASE WHEN a.donationto = 'Doctor' THEN (SELECT DoctorId  FROM   investmentdoctor x  INNER JOIN doctorinfo y ON x.doctorid = y.id WHERE x.investmentinitid = a.id)  "+
-            " WHEN a.donationto = 'Institution' THEN (SELECT InstitutionId FROM  investmentinstitution x INNER JOIN institutioninfo y ON x.institutionid = y.id WHERE x.investmentinitid = a.id)  "+
-            " WHEN a.donationto = 'Campaign' THEN (SELECT y.MstId  FROM   investmentcampaign x INNER JOIN campaigndtl y  ON x.campaigndtlid = y.id  INNER JOIN [dbo].[subcampaign] C  ON y.subcampaignid = C.id  WHERE x.investmentinitid = a.id)  "+
-            " WHEN a.donationto = 'Bcds' THEN (SELECT x.BcdsId   FROM   investmentbcds x  INNER JOIN bcds y   ON x.bcdsid = y.id   WHERE  x.investmentinitid = a.id)  "+
-            " WHEN a.donationto = 'Society' THEN (SELECT x.SocietyId FROM   investmentsociety x INNER JOIN society y ON x.societyid = y.id WHERE  x.investmentinitid = a.id) END  DId, "+
-        
-            " CASE WHEN a.donationto = 'Doctor' THEN (SELECT doctorname FROM investmentdoctor x INNER JOIN doctorinfo y ON x.doctorid = y.id WHERE  x.investmentinitid = a.id) "+
-            " WHEN a.donationto = 'Institution' THEN (SELECT institutionname FROM investmentinstitution x INNER JOIN institutioninfo y ON x.institutionid = y.id WHERE x.investmentinitid = a.id) "+
-            " WHEN a.donationto = 'Campaign' THEN (SELECT subcampaignname FROM investmentcampaign x INNER JOIN campaigndtl y ON x.campaigndtlid = y.id INNER JOIN [dbo].[subcampaign] C ON y.subcampaignid = C.id WHERE  x.investmentinitid = a.id) "+
-            " WHEN a.donationto = 'Bcds' THEN (SELECT bcdsname FROM investmentbcds x INNER JOIN bcds y ON x.bcdsid = y.id WHERE  x.investmentinitid = a.id)  "+
-            " WHEN a.donationto = 'Society' THEN (SELECT societyname FROM investmentsociety x INNER JOIN society y ON x.societyid = y.id WHERE  x.investmentinitid = a.id) END NAME,  "+
-            " (SELECT Isnull ((SELECT b.recstatus FROM investmentreccomment b WHERE  b.id IN (SELECT Max(id) FROM investmentreccomment WHERE  investmentinitid = a.id)), 'Pending')) InvStatus, "+
+
+            " CASE WHEN a.donationto = 'Doctor' THEN (SELECT DoctorId  FROM   investmentdoctor x  INNER JOIN doctorinfo y ON x.doctorid = y.id WHERE x.investmentinitid = a.id)  " +
+            " WHEN a.donationto = 'Institution' THEN (SELECT InstitutionId FROM  investmentinstitution x INNER JOIN institutioninfo y ON x.institutionid = y.id WHERE x.investmentinitid = a.id)  " +
+            " WHEN a.donationto = 'Campaign' THEN (SELECT y.MstId  FROM   investmentcampaign x INNER JOIN campaigndtl y  ON x.campaigndtlid = y.id  INNER JOIN [dbo].[subcampaign] C  ON y.subcampaignid = C.id  WHERE x.investmentinitid = a.id)  " +
+            " WHEN a.donationto = 'Bcds' THEN (SELECT x.BcdsId   FROM   investmentbcds x  INNER JOIN bcds y   ON x.bcdsid = y.id   WHERE  x.investmentinitid = a.id)  " +
+            " WHEN a.donationto = 'Society' THEN (SELECT x.SocietyId FROM   investmentsociety x INNER JOIN society y ON x.societyid = y.id WHERE  x.investmentinitid = a.id) END  DId, " +
+
+            " CASE WHEN a.donationto = 'Doctor' THEN (SELECT doctorname FROM investmentdoctor x INNER JOIN doctorinfo y ON x.doctorid = y.id WHERE  x.investmentinitid = a.id) " +
+            " WHEN a.donationto = 'Institution' THEN (SELECT institutionname FROM investmentinstitution x INNER JOIN institutioninfo y ON x.institutionid = y.id WHERE x.investmentinitid = a.id) " +
+            " WHEN a.donationto = 'Campaign' THEN (SELECT subcampaignname FROM investmentcampaign x INNER JOIN campaigndtl y ON x.campaigndtlid = y.id INNER JOIN [dbo].[subcampaign] C ON y.subcampaignid = C.id WHERE  x.investmentinitid = a.id) " +
+            " WHEN a.donationto = 'Bcds' THEN (SELECT bcdsname FROM investmentbcds x INNER JOIN bcds y ON x.bcdsid = y.id WHERE  x.investmentinitid = a.id)  " +
+            " WHEN a.donationto = 'Society' THEN (SELECT societyname FROM investmentsociety x INNER JOIN society y ON x.societyid = y.id WHERE  x.investmentinitid = a.id) END NAME,  " +
+            " (SELECT Isnull ((SELECT b.recstatus FROM investmentreccomment b WHERE  b.id IN (SELECT Max(id) FROM investmentreccomment WHERE  investmentinitid = a.id)), 'Pending')) InvStatus, " +
 
             // " CASE WHEN  (SELECT b.recstatus FROM investmentreccomment b WHERE  b.id IN (SELECT Max(id) FROM investmentreccomment WHERE  investmentinitid = a.id)) = NULL THEN  (SELECT DISTINCT ProposedAmount FROM investmentdetail WHERE InvestmentInitId=A.Id) "+
             // " WHEN  (SELECT b.recstatus FROM investmentreccomment b WHERE  b.id IN (SELECT Max(id) FROM investmentreccomment WHERE  investmentinitid = a.id))  = 'Approved' THEN  (SELECT DISTINCT ProposedAmount FROM InvestmentRec WHERE InvestmentInitId=A.Id AND  EmployeeId =(SELECT DISTINCT EmployeeId FROM InvestmentRecComment WHERE InvestmentInitId=A.Id AND CompletionStatus=1 and RecStatus='Approved')) "+
             // " WHEN  (SELECT b.recstatus FROM investmentreccomment b WHERE  b.id IN (SELECT Max(id) FROM investmentreccomment WHERE  investmentinitid = a.id))  NOT IN (NULL,'Approved') THEN  (SELECT ProposedAmount FROM InvestmentRec WHERE InvestmentInitId=A.Id AND  EmployeeId =(select EmployeeId from InvestmentRecComment where InvestmentInitId=A.Id and CompletionStatus=1 and Priority=(select max(Priority) from InvestmentRecComment where InvestmentInitId=A.Id))) END ProposedAmount, "+
 
-            " E.employeename, Isnull ((SELECT C.employeename FROM investmentreccomment b JOIN employee c ON c.id = b.employeeid WHERE  b.investmentinitid = a.id AND b.id = (SELECT Max(id) FROM   investmentreccomment WHERE  investmentinitid = b.investmentinitid)), 'N/A') ApprovedBy, "+
-            " a.MarketName, Isnull(M.employeename + ', ' + M.designationname,'N/A') ReceiveBy, b.PaymentMethod, a.ProposeFor, a.SBUName, depo.DepotName, a.Confirmation "+
-            " FROM investmentinit a"+
-            " INNER JOIN employee E ON A.employeeid = E.id "+
+            " E.employeename, Isnull ((SELECT C.employeename FROM investmentreccomment b JOIN employee c ON c.id = b.employeeid WHERE  b.investmentinitid = a.id AND b.id = (SELECT Max(id) FROM   investmentreccomment WHERE  investmentinitid = b.investmentinitid)), 'N/A') ApprovedBy, " +
+            " a.MarketName, Isnull(M.employeename + ', ' + M.designationname,'N/A') ReceiveBy, b.PaymentMethod, a.ProposeFor, a.SBUName, depo.DepotName, a.Confirmation " +
+            " FROM investmentinit a" +
+            " INNER JOIN employee E ON A.employeeid = E.id " +
             " LEFT JOIN investmentdetail b ON a.id = b.investmentinitid " +
             " LEFT JOIN InvestmentRecDepot depo on depo.investmentinitid = a.Id " +
             " LEFT JOIN investmentrecv rcv ON a.id = rcv.investmentinitid " +
-            " LEFT JOIN employee M ON  rcv.employeeid= M.id  "+
-            " INNER JOIN donation d ON d.id = a.donationid "+
+            " LEFT JOIN employee M ON  rcv.employeeid= M.id  " +
+            " INNER JOIN donation d ON d.id = a.donationid " +
             " Where a.DataStatus=1 " +
             " AND(CONVERT(date, a.SetOn) >= CAST('" + dt.FromDate + "' as Date) AND CAST('" + dt.ToDate + "' as Date) >= CONVERT(date, a.SetOn)) ";
             if (dt.UserRole != "Administrator")
@@ -484,30 +1335,30 @@ namespace API.Controllers
         public ActionResult<IReadOnlyList<RptInvestmentSummary>> GetInvestmentSummarySingle(string ReferenceNo)
         {
             string qry = " SELECT  DISTINCT Cast(a.id AS INT) AS Id, a.DataStatus, Sysdatetimeoffset() AS SetOn, Sysdatetimeoffset() AS ModifiedOn, a.referenceno, b.ProposedAmount, d.donationtypename, a.donationto, b.fromdate, ISNULL (rcv.ReceiveStatus, 'N/A') ReceiveStatus, b.todate, 0 InvStatusCount, " +
-            
-            " CASE WHEN a.donationto = 'Doctor' THEN (SELECT DoctorId  FROM   investmentdoctor x  INNER JOIN doctorinfo y ON x.doctorid = y.id WHERE x.investmentinitid = a.id)  "+
-            " WHEN a.donationto = 'Institution' THEN (SELECT InstitutionId FROM  investmentinstitution x INNER JOIN institutioninfo y ON x.institutionid = y.id WHERE x.investmentinitid = a.id)  "+
-            " WHEN a.donationto = 'Campaign' THEN (SELECT y.MstId  FROM   investmentcampaign x INNER JOIN campaigndtl y  ON x.campaigndtlid = y.id  INNER JOIN [dbo].[subcampaign] C  ON y.subcampaignid = C.id  WHERE x.investmentinitid = a.id)  "+
-            " WHEN a.donationto = 'Bcds' THEN (SELECT x.BcdsId   FROM   investmentbcds x  INNER JOIN bcds y   ON x.bcdsid = y.id   WHERE  x.investmentinitid = a.id)  "+
-            " WHEN a.donationto = 'Society' THEN (SELECT x.SocietyId FROM   investmentsociety x INNER JOIN society y ON x.societyid = y.id WHERE  x.investmentinitid = a.id) END  DId, "+
-        
-            " CASE WHEN a.donationto = 'Doctor' THEN (SELECT doctorname FROM investmentdoctor x INNER JOIN doctorinfo y ON x.doctorid = y.id WHERE  x.investmentinitid = a.id) "+
-            " WHEN a.donationto = 'Institution' THEN (SELECT institutionname FROM investmentinstitution x INNER JOIN institutioninfo y ON x.institutionid = y.id WHERE x.investmentinitid = a.id) "+
-            " WHEN a.donationto = 'Campaign' THEN (SELECT subcampaignname FROM investmentcampaign x INNER JOIN campaigndtl y ON x.campaigndtlid = y.id INNER JOIN [dbo].[subcampaign] C ON y.subcampaignid = C.id WHERE  x.investmentinitid = a.id) "+
-            " WHEN a.donationto = 'Bcds' THEN (SELECT bcdsname FROM investmentbcds x INNER JOIN bcds y ON x.bcdsid = y.id WHERE  x.investmentinitid = a.id)  "+
-            " WHEN a.donationto = 'Society' THEN (SELECT societyname FROM investmentsociety x INNER JOIN society y ON x.societyid = y.id WHERE  x.investmentinitid = a.id) END NAME,  "+
-            " (SELECT Isnull ((SELECT b.recstatus FROM investmentreccomment b WHERE  b.id IN (SELECT Max(id) FROM investmentreccomment WHERE  investmentinitid = a.id)), 'Pending')) InvStatus, "+
 
-            " E.employeename, Isnull ((SELECT C.employeename FROM investmentreccomment b JOIN employee c ON c.id = b.employeeid WHERE  b.investmentinitid = a.id AND b.id = (SELECT Max(id) FROM   investmentreccomment WHERE  investmentinitid = b.investmentinitid)), 'N/A') ApprovedBy, "+
-            " a.MarketName, Isnull(M.employeename + ', ' + M.designationname,'N/A') ReceiveBy, b.PaymentMethod, a.ProposeFor, a.SBUName, depo.DepotName, a.Confirmation "+
-            " FROM investmentinit a"+
-            " INNER JOIN employee E ON A.employeeid = E.id "+
+            " CASE WHEN a.donationto = 'Doctor' THEN (SELECT DoctorId  FROM   investmentdoctor x  INNER JOIN doctorinfo y ON x.doctorid = y.id WHERE x.investmentinitid = a.id)  " +
+            " WHEN a.donationto = 'Institution' THEN (SELECT InstitutionId FROM  investmentinstitution x INNER JOIN institutioninfo y ON x.institutionid = y.id WHERE x.investmentinitid = a.id)  " +
+            " WHEN a.donationto = 'Campaign' THEN (SELECT y.MstId  FROM   investmentcampaign x INNER JOIN campaigndtl y  ON x.campaigndtlid = y.id  INNER JOIN [dbo].[subcampaign] C  ON y.subcampaignid = C.id  WHERE x.investmentinitid = a.id)  " +
+            " WHEN a.donationto = 'Bcds' THEN (SELECT x.BcdsId   FROM   investmentbcds x  INNER JOIN bcds y   ON x.bcdsid = y.id   WHERE  x.investmentinitid = a.id)  " +
+            " WHEN a.donationto = 'Society' THEN (SELECT x.SocietyId FROM   investmentsociety x INNER JOIN society y ON x.societyid = y.id WHERE  x.investmentinitid = a.id) END  DId, " +
+
+            " CASE WHEN a.donationto = 'Doctor' THEN (SELECT doctorname FROM investmentdoctor x INNER JOIN doctorinfo y ON x.doctorid = y.id WHERE  x.investmentinitid = a.id) " +
+            " WHEN a.donationto = 'Institution' THEN (SELECT institutionname FROM investmentinstitution x INNER JOIN institutioninfo y ON x.institutionid = y.id WHERE x.investmentinitid = a.id) " +
+            " WHEN a.donationto = 'Campaign' THEN (SELECT subcampaignname FROM investmentcampaign x INNER JOIN campaigndtl y ON x.campaigndtlid = y.id INNER JOIN [dbo].[subcampaign] C ON y.subcampaignid = C.id WHERE  x.investmentinitid = a.id) " +
+            " WHEN a.donationto = 'Bcds' THEN (SELECT bcdsname FROM investmentbcds x INNER JOIN bcds y ON x.bcdsid = y.id WHERE  x.investmentinitid = a.id)  " +
+            " WHEN a.donationto = 'Society' THEN (SELECT societyname FROM investmentsociety x INNER JOIN society y ON x.societyid = y.id WHERE  x.investmentinitid = a.id) END NAME,  " +
+            " (SELECT Isnull ((SELECT b.recstatus FROM investmentreccomment b WHERE  b.id IN (SELECT Max(id) FROM investmentreccomment WHERE  investmentinitid = a.id)), 'Pending')) InvStatus, " +
+
+            " E.employeename, Isnull ((SELECT C.employeename FROM investmentreccomment b JOIN employee c ON c.id = b.employeeid WHERE  b.investmentinitid = a.id AND b.id = (SELECT Max(id) FROM   investmentreccomment WHERE  investmentinitid = b.investmentinitid)), 'N/A') ApprovedBy, " +
+            " a.MarketName, Isnull(M.employeename + ', ' + M.designationname,'N/A') ReceiveBy, b.PaymentMethod, a.ProposeFor, a.SBUName, depo.DepotName, a.Confirmation " +
+            " FROM investmentinit a" +
+            " INNER JOIN employee E ON A.employeeid = E.id " +
             " LEFT JOIN investmentdetail b ON a.id = b.investmentinitid " +
             " LEFT JOIN InvestmentRecDepot depo on depo.investmentinitid = a.Id " +
             " LEFT JOIN investmentrecv rcv ON a.id = rcv.investmentinitid " +
-            " LEFT JOIN employee M ON  rcv.employeeid= M.id  "+
-            " INNER JOIN donation d ON d.id = a.donationid "+
-            " Where a.referenceno = '"+ ReferenceNo +"' ";
+            " LEFT JOIN employee M ON  rcv.employeeid= M.id  " +
+            " INNER JOIN donation d ON d.id = a.donationid " +
+            " Where a.referenceno = '" + ReferenceNo + "' ";
 
             var results = _db.RptInvestmentSummary.FromSqlRaw(qry).ToList();
 
@@ -518,7 +1369,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("getInvestmentSummarySingleDoc/{referenceNo}/{doctorName}/{doctorId}")]
-        public ActionResult<IReadOnlyList<RptInvestmentSummary>> GetInvestmentSummarySingleDoc(string referenceNo,string doctorName,int doctorId)
+        public ActionResult<IReadOnlyList<RptInvestmentSummary>> GetInvestmentSummarySingleDoc(string referenceNo, string doctorName, int doctorId)
         {
             //string qry = " SELECT  DISTINCT Cast(a.id AS INT) AS Id, a.DataStatus, Sysdatetimeoffset() AS SetOn, Sysdatetimeoffset() AS ModifiedOn, a.referenceno, b.ProposedAmount, d.donationtypename, a.donationto, b.fromdate, ISNULL (rcv.ReceiveStatus, 'N/A') ReceiveStatus, b.todate, 0 InvStatusCount, " +
 
@@ -548,12 +1399,12 @@ namespace API.Controllers
             //" LEFT JOIN DoctorInfo dc ON ind.DoctorId=dc.Id" +
             //" Where 1=1 ";
             string qry = "SELECT * FROM [DIDS].[dbo].[InvestmentSummaryVW] WHERE 1=1";
-            
-            if (!string.IsNullOrEmpty(referenceNo) && referenceNo!="undefined")
+
+            if (!string.IsNullOrEmpty(referenceNo) && referenceNo != "undefined")
             {
                 qry = qry + " AND refno = '" + referenceNo + "'";
             }
-            if (!string.IsNullOrEmpty(doctorName) && doctorName!="undefined")
+            if (!string.IsNullOrEmpty(doctorName) && doctorName != "undefined")
             {
                 qry = qry + " AND DoctorName Like '%" + doctorName + "%'";
             }
@@ -571,7 +1422,7 @@ namespace API.Controllers
         public ActionResult<IReadOnlyList<RptInvestmentSummary>> GetParamInvestmentSummaryReport(ParamSearchDto dt, [FromQuery] ReportInvestmentInfoSpecParams rptParrams)
         {
 
-            string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode='"+dt.EmpId+"'";
+            string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode='" + dt.EmpId + "'";
             var empData = _db.Employee.FromSqlRaw(empQry).ToList();
             // string qry = "select CAST(ROW_NUMBER() OVER (ORDER BY c.SBU) AS INT)  AS Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, SUM (e.ApprovedAmount) Expense, c.SBUName, c.SBU, c.Amount Budget,  c.DonationId, d.DonationTypeName " +
             // " from SBUWiseBudget c, InvestmentInit b  inner join InvestmentDetailTracker e on e.InvestmentInitId = b.Id " +
@@ -582,7 +1433,7 @@ namespace API.Controllers
 
             string qry = " select CAST(a.Id AS INT) as Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.ReferenceNo, d.DonationTypeName, a.DonationTo, b.ProposedAmount, b.FromDate, b.ToDate, " +
                 //" dbo.fnGetInvestmentStatus(a.Id) InvStatus, "+ 
-                " (select ISNULL ((select b.RecStatus from InvestmentRecComment b where b.InvestmentInitId = a.Id and b.Id in (select max(id) from InvestmentRecComment where InvestmentInitId = b.InvestmentInitId)), 'Pending') from InvestmentInit a)  InvStatus" + 
+                " (select ISNULL ((select b.RecStatus from InvestmentRecComment b where b.InvestmentInitId = a.Id and b.Id in (select max(id) from InvestmentRecComment where InvestmentInitId = b.InvestmentInitId)), 'Pending') from InvestmentInit a)  InvStatus" +
                 " e.EmployeeName,dbo.fnGetInvestmentApprovedBy(a.Id) ApprovedBy,e.MarketName, ISNULL(rcv.ReceiveStatus, 'Not Completed') ReceiveStatus, ISNULL(rcvBy.EmployeeName, 'N/A') ReceiveBy " +
                 " from InvestmentInit a " +
                 " left join InvestmentDetail b on a.Id = b.InvestmentInitId " +
@@ -755,8 +1606,6 @@ namespace API.Controllers
         {
             try
             {
-
-
                 var spec = new InvestmentInitSpecification(id);
 
                 var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
@@ -821,86 +1670,86 @@ namespace API.Controllers
         {
             try
             {
-                 string qry = " SELECT * FROM  ( " + 
-                            " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Doctor' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, dtl.PaymentRefNo ReferenceNo, d.DonationTypeName, " + 
-                            " doc.id as DocId, doc.DoctorName, doc.[Address], inDetail.ProposedAmount, inDetail.ChequeTitle, aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy', depo.DepotName " +
-                            " from InvestmentInit a  " + 
-                            " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " + 
-                            " inner join InvestmentDetailTracker dtl on dtl.InvestmentInitId = a.Id " +
-                            " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId   " + 
-                            " left join Employee e on a.EmployeeId = e.Id  left join Donation d on a.DonationId = d.Id  " + 
-                            " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
-                            " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId   " + 
-                            " inner join InvestmentDoctor inDc on a.Id = inDc.InvestmentInitId  left join DoctorInfo doc on inDc.DoctorId = doc.Id " + 
-                            " where a.DonationTo = 'Doctor' AND  ir.RecStatus = 'Approved' " +
-                            " AND inDetail.PaymentMethod = 'Cash'  " + 
-                            " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
-                            " UNION " + 
-                            " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Doctor' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, dtl.PaymentRefNo ReferenceNo, d.DonationTypeName, " + 
-                            " doc.id as DocId, doc.DoctorName, doc.[Address], inDetail.ProposedAmount,  inDetail.ChequeTitle,  aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy',depo.DepotName " +
-                            " from InvestmentInit a " + 
-                            " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId " + 
-                            " inner join InvestmentDetailTracker dtl on dtl.InvestmentInitId = a.Id " +
-                            " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId   " +
-                            " left join Employee e on a.EmployeeId = e.Id  left join Donation d on a.DonationId = d.Id  " +
-                            " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
-                            " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId   " +
-                            " inner join InvestmentCampaign IC on a.Id = IC.InvestmentInitId " +
-                            " left join DoctorInfo doc on IC.DoctorId = doc.Id   " +
-                            " where a.DonationTo = 'Campaign' AND  " +
-                            " ir.RecStatus = 'Approved' " +
-                            " AND inDetail.PaymentMethod = 'Cash' " +
-                            " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
-                            " UNION " + 
-                            " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Institution' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, dtl.PaymentRefNo ReferenceNo, d.DonationTypeName,  " +
-                            " doc.id as DocId, doc.InstitutionName, doc.[Address], inDetail.ProposedAmount,  inDetail.ChequeTitle,  aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy',depo.DepotName  " +
-                            " from InvestmentInit a  " +
-                            " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " +
-                            " inner join InvestmentDetailTracker dtl on dtl.InvestmentInitId = a.Id " +
-                            " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId  " +
-                            " left join Employee e on a.EmployeeId = e.Id  " +
-                            " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
-                            " left join Donation d on a.DonationId = d.Id  " +
-                            " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId  " +
-                            " inner join InvestmentInstitution IC on a.Id = IC.InvestmentInitId  " +
-                            " left join InstitutionInfo doc on IC.InstitutionId = doc.Id  " +
-                            " where a.DonationTo = 'Institution' " +
-                            " AND ir.RecStatus = 'Approved'  " +
-                            " AND inDetail.PaymentMethod = 'Cash' " +
-                            " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
-                            " UNION " + 
-                            " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Bcds' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, dtl.PaymentRefNo ReferenceNo, d.DonationTypeName,  " +
-                            " doc.id as DocId, doc.BcdsName, doc.BcdsAddress, inDetail.ProposedAmount,  inDetail.ChequeTitle,  aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy', depo.DepotName  " +
-                            " from InvestmentInit a  " +
-                            " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " +
-                            " inner join InvestmentDetailTracker dtl on dtl.InvestmentInitId = a.Id " +
-                            " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId  " +
-                            " left join Employee e on a.EmployeeId = e.Id left join Donation d on a.DonationId = d.Id  " +
-                            " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
-                            " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId  " +
-                            " inner join InvestmentBcds IC on a.Id = IC.InvestmentInitId  " +
-                            " left join Bcds doc on IC.BcdsId = doc.Id  " +
-                            " where a.DonationTo = 'Bcds'  " +
-                            " AND ir.RecStatus = 'Approved'  " +
-                            " AND inDetail.PaymentMethod = 'Cash' " +
-                            " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
-                            " UNION " + 
-                            " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Society' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, dtl.PaymentRefNo ReferenceNo, d.DonationTypeName,  " +
-                            " doc.id as DocId, doc.SocietyName, doc.SocietyAddress, inDetail.ProposedAmount,  inDetail.ChequeTitle,  aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy', depo.DepotName     " +
-                            " from InvestmentInit a  " +
-                            " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId " +
-                            " inner join InvestmentDetailTracker dtl on dtl.InvestmentInitId = a.Id " +
-                            " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId  " +
-                            " left join Employee e on a.EmployeeId = e.Id left join Donation d on a.DonationId = d.Id  " +
-                            " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
-                            " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId  " +
-                            " inner join InvestmentSociety IC on a.Id = IC.InvestmentInitId  " +
-                            " left join Society doc on IC.SocietyId = doc.Id  " +
-                            " where a.DonationTo = 'Society'  " +
-                            " AND inDetail.PaymentMethod = 'Cash'  " +
-                            " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
-                            " AND ir.RecStatus = 'Approved' ) x  " +                           
-                            "  WHERE X.ReferenceNo = '" + referenceNo + "' ";
+                string qry = " SELECT * FROM  ( " +
+                           " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Doctor' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, dtl.PaymentRefNo ReferenceNo, d.DonationTypeName, " +
+                           " doc.id as DocId, doc.DoctorName, doc.[Address], inDetail.ProposedAmount, inDetail.ChequeTitle, aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy', depo.DepotName " +
+                           " from InvestmentInit a  " +
+                           " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " +
+                           " inner join InvestmentDetailTracker dtl on dtl.InvestmentInitId = a.Id " +
+                           " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId   " +
+                           " left join Employee e on a.EmployeeId = e.Id  left join Donation d on a.DonationId = d.Id  " +
+                           " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
+                           " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId   " +
+                           " inner join InvestmentDoctor inDc on a.Id = inDc.InvestmentInitId  left join DoctorInfo doc on inDc.DoctorId = doc.Id " +
+                           " where a.DonationTo = 'Doctor' AND  ir.RecStatus = 'Approved' " +
+                           " AND inDetail.PaymentMethod = 'Cash'  " +
+                           " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
+                           " UNION " +
+                           " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Doctor' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, dtl.PaymentRefNo ReferenceNo, d.DonationTypeName, " +
+                           " doc.id as DocId, doc.DoctorName, doc.[Address], inDetail.ProposedAmount,  inDetail.ChequeTitle,  aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy',depo.DepotName " +
+                           " from InvestmentInit a " +
+                           " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId " +
+                           " inner join InvestmentDetailTracker dtl on dtl.InvestmentInitId = a.Id " +
+                           " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId   " +
+                           " left join Employee e on a.EmployeeId = e.Id  left join Donation d on a.DonationId = d.Id  " +
+                           " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
+                           " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId   " +
+                           " inner join InvestmentCampaign IC on a.Id = IC.InvestmentInitId " +
+                           " left join DoctorInfo doc on IC.DoctorId = doc.Id   " +
+                           " where a.DonationTo = 'Campaign' AND  " +
+                           " ir.RecStatus = 'Approved' " +
+                           " AND inDetail.PaymentMethod = 'Cash' " +
+                           " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
+                           " UNION " +
+                           " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Institution' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, dtl.PaymentRefNo ReferenceNo, d.DonationTypeName,  " +
+                           " doc.id as DocId, doc.InstitutionName, doc.[Address], inDetail.ProposedAmount,  inDetail.ChequeTitle,  aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy',depo.DepotName  " +
+                           " from InvestmentInit a  " +
+                           " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " +
+                           " inner join InvestmentDetailTracker dtl on dtl.InvestmentInitId = a.Id " +
+                           " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId  " +
+                           " left join Employee e on a.EmployeeId = e.Id  " +
+                           " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
+                           " left join Donation d on a.DonationId = d.Id  " +
+                           " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId  " +
+                           " inner join InvestmentInstitution IC on a.Id = IC.InvestmentInitId  " +
+                           " left join InstitutionInfo doc on IC.InstitutionId = doc.Id  " +
+                           " where a.DonationTo = 'Institution' " +
+                           " AND ir.RecStatus = 'Approved'  " +
+                           " AND inDetail.PaymentMethod = 'Cash' " +
+                           " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
+                           " UNION " +
+                           " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Bcds' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, dtl.PaymentRefNo ReferenceNo, d.DonationTypeName,  " +
+                           " doc.id as DocId, doc.BcdsName, doc.BcdsAddress, inDetail.ProposedAmount,  inDetail.ChequeTitle,  aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy', depo.DepotName  " +
+                           " from InvestmentInit a  " +
+                           " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " +
+                           " inner join InvestmentDetailTracker dtl on dtl.InvestmentInitId = a.Id " +
+                           " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId  " +
+                           " left join Employee e on a.EmployeeId = e.Id left join Donation d on a.DonationId = d.Id  " +
+                           " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
+                           " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId  " +
+                           " inner join InvestmentBcds IC on a.Id = IC.InvestmentInitId  " +
+                           " left join Bcds doc on IC.BcdsId = doc.Id  " +
+                           " where a.DonationTo = 'Bcds'  " +
+                           " AND ir.RecStatus = 'Approved'  " +
+                           " AND inDetail.PaymentMethod = 'Cash' " +
+                           " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
+                           " UNION " +
+                           " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Society' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, dtl.PaymentRefNo ReferenceNo, d.DonationTypeName,  " +
+                           " doc.id as DocId, doc.SocietyName, doc.SocietyAddress, inDetail.ProposedAmount,  inDetail.ChequeTitle,  aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy', depo.DepotName     " +
+                           " from InvestmentInit a  " +
+                           " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId " +
+                           " inner join InvestmentDetailTracker dtl on dtl.InvestmentInitId = a.Id " +
+                           " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId  " +
+                           " left join Employee e on a.EmployeeId = e.Id left join Donation d on a.DonationId = d.Id  " +
+                           " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
+                           " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId  " +
+                           " inner join InvestmentSociety IC on a.Id = IC.InvestmentInitId  " +
+                           " left join Society doc on IC.SocietyId = doc.Id  " +
+                           " where a.DonationTo = 'Society'  " +
+                           " AND inDetail.PaymentMethod = 'Cash'  " +
+                           " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
+                           " AND ir.RecStatus = 'Approved' ) x  " +
+                           "  WHERE X.ReferenceNo = '" + referenceNo + "' ";
 
                 var results = _db.RptDepotLetter.FromSqlRaw(qry).ToList();
 
@@ -1031,11 +1880,12 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("investmentDetails/{investmentInitId}/{empId}/{userRole}")]
-        public async Task<IReadOnlyList<InvestmentRec>> investmentRecDetails(int investmentInitId,int empId,string userRole)
+        public async Task<IReadOnlyList<InvestmentRec>> investmentRecDetails(int investmentInitId, int empId, string userRole)
         {
             try
             {
-                if (userRole == "M") {
+                if (userRole == "M")
+                {
                     var initData = await _investmentInitRepo.GetByIdAsync(investmentInitId);
                     var spec = new InvestmentRecSpecification(investmentInitId);
                     var investmentDetail = await _investmentRecRepo.ListAsync(spec);
@@ -1044,19 +1894,21 @@ namespace API.Controllers
                     var result = _db.CountInt.FromSqlRaw(qry).ToList();
                     return investmentDetail.Where(x => x.Priority == result[0].Count).ToList();
                 }
-                else if (userRole == "GPM") {
+                else if (userRole == "GPM")
+                {
                     var specAppr = new ApprAuthConfigSpecification(empId, "A");
                     var apprAuthConfigAppr = await _apprAuthConfigRepo.GetEntityWithSpec(specAppr);
                     var spec = new InvestmentRecSpecification(investmentInitId);
                     var investmentDetail = await _investmentRecRepo.ListAsync(spec);
                     return investmentDetail.Where(x => x.Priority == 3).ToList();
                 }
-                else { 
-                var specAppr = new ApprAuthConfigSpecification(empId, "A");
-                var apprAuthConfigAppr = await _apprAuthConfigRepo.GetEntityWithSpec(specAppr);
-                var spec = new InvestmentRecSpecification(investmentInitId);
-                var investmentDetail = await _investmentRecRepo.ListAsync(spec);
-                return investmentDetail.Where(x => x.Priority == apprAuthConfigAppr.ApprovalAuthority.Priority - 1).ToList();
+                else
+                {
+                    var specAppr = new ApprAuthConfigSpecification(empId, "A");
+                    var apprAuthConfigAppr = await _apprAuthConfigRepo.GetEntityWithSpec(specAppr);
+                    var spec = new InvestmentRecSpecification(investmentInitId);
+                    var investmentDetail = await _investmentRecRepo.ListAsync(spec);
+                    return investmentDetail.Where(x => x.Priority == apprAuthConfigAppr.ApprovalAuthority.Priority - 1).ToList();
                 }
             }
             catch (System.Exception ex)
@@ -1067,12 +1919,12 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("investmentDetailsForSummary/{investmentInitId}/{empId}/{userRole}")]
-        public async Task<IReadOnlyList<object>> investmentDetailsForSummary(int investmentInitId,int empId,string userRole)
+        public async Task<IReadOnlyList<object>> investmentDetailsForSummary(int investmentInitId, int empId, string userRole)
         {
             try
             {
                 var initData = await _investmentInitRepo.GetByIdAsync(investmentInitId);
-                var spec = new InvestmentRecSpecification(investmentInitId); 
+                var spec = new InvestmentRecSpecification(investmentInitId);
                 string qry = "SELECT CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, isnull(Max(id),0) Count FROM investmentrec WHERE  investmentinitid =" + investmentInitId;
                 var result = _db.CountInt.FromSqlRaw(qry).ToList();
                 if (result[0].Count == 0)
@@ -1081,9 +1933,9 @@ namespace API.Controllers
                     var investmentDetail = await _investmentDetailRepo.ListAsync(specDetail);
                     return investmentDetail;
                 }
-                  var investmentRec = await _investmentRecRepo.ListAsync(spec);
+                var investmentRec = await _investmentRecRepo.ListAsync(spec);
                 return investmentRec.Where(x => x.Id == result[0].Count).ToList();
-                
+
             }
             catch (System.Exception ex)
             {
@@ -1092,6 +1944,6 @@ namespace API.Controllers
         }
 
 
-    
+
     }
 }

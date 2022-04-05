@@ -121,7 +121,11 @@ namespace Infrastructure.Data
         [NotMapped]
         public DbSet<RptCampaignSummary> RptCampaignSummary { get; set; }
         [NotMapped]
+
         public DbSet<SystemSummary> SystemSummary { get; set; }
+
+        public DbSet<RptSummary> RptSummary { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

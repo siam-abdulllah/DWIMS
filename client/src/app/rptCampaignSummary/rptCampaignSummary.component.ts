@@ -20,6 +20,7 @@ import { ICampaignMst } from '../shared/models/campaign';
 import * as XLSX from 'xlsx';
 import { IDonation } from '../shared/models/donation';
 import { ISBU } from '../shared/models/sbu';
+import { ThisReceiver } from '@angular/compiler';
 
 
 @Component({
@@ -32,6 +33,7 @@ import { ISBU } from '../shared/models/sbu';
 export class RptCampaignSummaryComponent implements OnInit {
   @ViewChild('search', { static: false }) searchTerm: ElementRef;
   genParams: GenericParams;
+  donationTo: string;
   empId: string;
   isInvestmentInActive: boolean;
   searchText = '';
@@ -46,10 +48,14 @@ export class RptCampaignSummaryComponent implements OnInit {
   campaignId: any;
   donationId: any;
   doctorCode: any;
+  societyName: any;
+  bcdsName: any;
   sbu: any;
   institutionId: any;
+  //societyId: any;
+  //bcdsId: any;
   campaignMsts: ICampaignMst[];
-  rptDepotLetter :IrptDepotLetterSearch[] = [];
+  rptDepotLetter: IrptDepotLetterSearch[] = [];
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date = new Date();
   baseUrl = environment.apiUrl;
@@ -60,13 +66,11 @@ export class RptCampaignSummaryComponent implements OnInit {
   };
   userRole: any;
   date: Date;
-
-
   constructor(private router: Router,
     public datepipe: DatePipe,
     public reportService: RptInvestSummaryService, private datePipe: DatePipe,
     private toastr: ToastrService, private modalService: BsModalService,
-    private SpinnerService: NgxSpinnerService,private accountService: AccountService,) { }
+    private SpinnerService: NgxSpinnerService, private accountService: AccountService) { }
 
   ngOnInit() {
     this.resetForm();
@@ -82,7 +86,7 @@ export class RptCampaignSummaryComponent implements OnInit {
     this.empId = this.accountService.getEmployeeId();
     this.userRole = this.accountService.getUserRole();
   }
- 
+
   getCampaign() {
     this.SpinnerService.show();
     this.reportService.getCampaignMsts().subscribe(response => {
@@ -110,84 +114,200 @@ export class RptCampaignSummaryComponent implements OnInit {
   }
 
   ViewDataDoc() {
-    if( (this.campaignId==undefined || this.campaignId=="") && (this.institutionId==undefined || this.institutionId=="") && (this.doctorCode==undefined || this.doctorCode=="") && (this.marketCode==undefined || this.marketCode=="") && (this.sbu==undefined || this.sbu=="") && (this.donationId==undefined || this.donationId=="")  )
-    
-        if(this.campaignId == "")
-        {
-          this.campaignId = 0;
-        }
+    if ((this.campaignId == undefined || this.campaignId == "") && (this.institutionId == undefined || this.institutionId == "") && (this.doctorCode == undefined || this.doctorCode == "") && (this.marketCode == undefined || this.marketCode == "") && (this.sbu == undefined || this.sbu == "") && (this.donationId == undefined || this.donationId == ""))
 
-        if(this.institutionId == "")
-        {
-          this.institutionId = 0;
-        }
+      if (this.campaignId == "") {
+        this.campaignId = 0;
+      }
 
-        if(this.doctorCode == "")
-        {
-          this.doctorCode = 0;
-        }
+    if (this.institutionId == "") {
+      this.institutionId = 0;
+    }
 
-        if(this.sbu == "All")
-        {
-          this.sbu = "";
-        }
+    if (this.doctorCode == "") {
+      this.doctorCode = 0;
+    }
 
-        debugger;
-        const campaignSearchDto: ICampaignSearchDto = {
-          campaignId: this.campaignId,
-          fromDate: this.fromDate,
-          toDate: this.toDate,
-          donationId: this.donationId,
-          sbu: this.sbu,
-          institutionId: this.institutionId,
-          doctorId: this.doctorCode,
-          marketCode: this.marketCode,
-        };
+    if (this.sbu == "All") {
+      this.sbu = "";
+    }
+    debugger;
+    if (this.donationTo == 'Campaign') {
+      const campaignSearchDto: ICampaignSearchDto = {
+        campaignId: this.campaignId,
+        fromDate: this.datePipe.transform(this.fromDate, 'yyyy-MM-dd HH:mm:ss'),
+        toDate: this.datePipe.transform(this.toDate, 'yyyy-MM-dd HH:mm:ss'),
 
+        //fromDate: this.fromDate,
+        //toDate: this.toDate,
+        donationId: this.donationId,
+        sbu: this.sbu,
+        institutionId: this.institutionId,
+        doctorId: this.doctorCode,
+        marketCode: this.marketCode,
+      };
       this.reportService.getCampaignSummaryReport(campaignSearchDto).subscribe(response => {
         debugger;
         this.reports = response;
       }, error => {
         console.log(error);
       });
+    }
+    else if (this.donationTo == 'Doctor') {
+      const searchDto: ISearchDto = {
+        doctorId: this.doctorCode,
+        institutionId: 0,
+        campaignId: 0,
+        bcdsName: '',
+        societyName: '',
+        fromDate: this.datePipe.transform(this.fromDate, 'yyyy-MM-dd HH:mm:ss'),
+        toDate: this.datePipe.transform(this.toDate, 'yyyy-MM-dd HH:mm:ss'),
+        donationId: this.donationId,
+        sbu: this.sbu,
+        marketCode: this.marketCode,
+      };
+      this.reportService.getDoctorSummaryReport(searchDto).subscribe(response => {
+        debugger;
+        this.reports = response;
+      }, error => {
+        console.log(error);
+      });
+    }
+    else if (this.donationTo == 'Institution') {
+      const searchDto: ISearchDto = {
+        doctorId: 0,
+        institutionId: this.institutionId,
+        campaignId: 0,
+        bcdsName: '',
+        societyName: '',
+        fromDate: this.datePipe.transform(this.fromDate, 'yyyy-MM-dd HH:mm:ss'),
+        toDate: this.datePipe.transform(this.toDate, 'yyyy-MM-dd HH:mm:ss'),
+        donationId: this.donationId,
+        sbu: this.sbu,
+        marketCode: this.marketCode,
+      };
+      this.reportService.getInstitutionSummaryReport(searchDto).subscribe(response => {
+        debugger;
+        this.reports = response;
+      }, error => {
+        console.log(error);
+      });
+    }
+    else if (this.donationTo == 'Bcds') {
+      const searchDto: ISearchDto = {
+        doctorId: 0,
+        institutionId: 0,
+        campaignId: 0,
+        bcdsName: this.bcdsName,
+        societyName: '',
+        fromDate: this.datePipe.transform(this.fromDate, 'yyyy-MM-dd HH:mm:ss'),
+        toDate: this.datePipe.transform(this.toDate, 'yyyy-MM-dd HH:mm:ss'),
+        donationId: this.donationId,
+        sbu: this.sbu,
+        marketCode: this.marketCode,
+      };
+      this.reportService.getBcdsSummaryReport(searchDto).subscribe(response => {
+        debugger;
+        this.reports = response;
+      }, error => {
+        console.log(error);
+      });
+    }
+    else if (this.donationTo == 'Society') {
+      const searchDto: ISearchDto = {
+        doctorId: 0,
+        institutionId: 0,
+        campaignId: 0,
+        bcdsName: '',
+        societyName: this.societyName,
+        fromDate: this.datePipe.transform(this.fromDate, 'yyyy-MM-dd HH:mm:ss'),
+        toDate: this.datePipe.transform(this.toDate, 'yyyy-MM-dd HH:mm:ss'),
+        donationId: this.donationId,
+        sbu: this.sbu,
+        marketCode: this.marketCode,
+      };
+      this.reportService.getSocietySummaryReport(searchDto).subscribe(response => {
+        debugger;
+        this.reports = response;
+      }, error => {
+        console.log(error);
+      });
+    }
+    else if (this.donationTo == 'All') {
+      const searchDto: ISearchDto = {
+        doctorId: this.doctorCode,
+        institutionId: this.institutionId,
+        campaignId: this.campaignId,
+        bcdsName: this.bcdsName,
+        societyName: this.societyName,
+        fromDate: this.datePipe.transform(this.fromDate, 'yyyy-MM-dd HH:mm:ss'),
+        toDate: this.datePipe.transform(this.toDate, 'yyyy-MM-dd HH:mm:ss'),
+        donationId: this.donationId,
+        sbu: this.sbu,
+        marketCode: this.marketCode,
+      };
+      this.reportService.getSummaryReport(searchDto).subscribe(response => {
+        debugger;
+        this.reports = response;
+      }, error => {
+        console.log(error);
+      });
+    }
   }
 
-  exportexcel(): void
-  {
+  exportexcel(): void {
     /* pass here the table id */
     let element = document.getElementById('excel-table');
-    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
- 
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
+
     /* generate workbook and add the worksheet */
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
- 
-    /* save to file */  
+
+    /* save to file */
+    if(this.donationTo == 'All'){}
+    else if (this.donationTo == 'Doctor') {}
+    else if (this.donationTo == 'Institution'){}
+    else if (this.donationTo == 'Campaign'){}
+    else if (this.donationTo == 'Society'){}
+    else if (this.donationTo == 'Bcds'){}
     XLSX.writeFile(wb, 'Campaign_summary_report.xlsx');
- 
+
   }
 
-  resetSearch(){
+  resetSearch() {
     this.searchText = '';
-}
+  }
 
   resetPage(form: NgForm) {
     form.form.reset();
   }
 
   resetForm() {
-    this.isInvestmentInActive=false;
+    this.donationTo = 'Campaign';
   }
 }
 
 interface ICampaignSearchDto {
   campaignId: number | null;
-  fromDate: Date | undefined | null;
-  toDate: Date | undefined | null;
+  fromDate: any;
+  toDate: any;
   sbu: string;
   institutionId: number | null;
   donationId: number | null;
   doctorId: number | null;
+  marketCode: string;
+}
+interface ISearchDto {
+  doctorId: number | null;
+  institutionId: number | null;
+  campaignId: number | null;
+  bcdsName: string;
+  societyName: string;
+  fromDate: any;
+  toDate: any;
+  sbu: string;
+  donationId: number | null;
   marketCode: string;
 }
 
