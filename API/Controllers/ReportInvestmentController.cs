@@ -87,7 +87,23 @@ namespace API.Controllers
             var results = _db.CountInt.FromSqlRaw(qry).ToList();
             return results;
         }
-         [HttpGet("IsInvestmentInActiveDoc/{referenceNo}/{doctorId}/{doctorName}")]
+
+        [HttpGet("getSystemSummaryData")]
+        public ActionResult<IReadOnlyList<SystemSummary>> GetSystemSummaryData()
+        {
+            string qry = "SELECT CAST(ABS(CHECKSUM(NewId())) % 200 AS int) as Id, 1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, " +
+                " x.Sts Phase, x.[1021] SBUA, x.[1022] SBUB, x.[1023] SBUC, x.[1024] SBUD, x.[1025] SBUE, x.[1026] SBUN " +
+                " FROM ( " +
+                " SELECT * FROM [VW_CountInvSubmitted] UNION " +
+                " SELECT * FROM [VW_CountInvStatus] UNION " +
+                " SELECT * FROM [VW_CountDispatch] UNION " +
+                " SELECT * FROM [VW_CountDispatchPending]) X ";
+
+            var results = _db.SystemSummary.FromSqlRaw(qry).ToList();
+            return results;
+        }
+
+        [HttpGet("IsInvestmentInActiveDoc/{referenceNo}/{doctorId}/{doctorName}")]
         public ActionResult<IReadOnlyList<CountInt>> IsInvestmentInActiveDoc(string referenceNo,int doctorId, string doctorName)
         {
             
@@ -348,7 +364,7 @@ namespace API.Controllers
                 "  left join Employee emp on emp.Id = rc.EmployeeId " +
                 " where  1 = 1 " +
                 " and a.DataStatus = 1 and a.Confirmation = 1 " +
-                " and rc.Id in ((select top 1 (id) from InvestmentRecComment where InvestmentInitId = a.Id order by [Priority] desc)) ";
+                " and rc.Id in ((select top 1 (id) from InvestmentRecComment where InvestmentInitId = a.Id order by [Id] desc)) ";
 
             if (dt.FromDate != null && dt.ToDate != null)
             {
