@@ -1,7 +1,5 @@
 
 import 'jspdf-autotable';
-import * as jsPDF from 'jspdf';
-//import { GenericParams } from '../shared/models/genericParams';
 import { Component, ElementRef, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
@@ -10,7 +8,6 @@ import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { DatePipe } from '@angular/common';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ReportInvestmentService } from '../_services/report-investment.service';
-import { CalendarCellViewModel } from 'ngx-bootstrap/datepicker/models';
 
 @Component({
   selector: 'reportSystemSummary',
