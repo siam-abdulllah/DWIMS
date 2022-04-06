@@ -694,7 +694,16 @@ namespace API.Controllers
         {
             string qry = " Select distinct a.Id, a.DataStatus, a.SetOn, a.ModifiedOn, " +
                 " cmp.CampaignName, a.ReferenceNo, dn.DonationTypeName, a.SBUName, convert(varchar, rec.FromDate, 3) FromDate, convert(varchar, rec.ToDate, 3) ToDate, rec.PaymentFreq, ic.InstitutionId, ins.InstitutionName, ic.DoctorId, d.DoctorName, rc.RecStatus, emp.EmployeeName + ','+ emp.DesignationName ApprovedBy ,(select SUM(ApprovedAmount) from InvestmentDetailTracker where InvestmentInitId = a.Id) Total,   " +
-                " rec.ProposedAmount, ISNULL(dpt.DepotName, 'CHQ') DepotName, a.MarketCode, a.MarketName, a.TerritoryCode, a.TerritoryName, a.RegionCode, a.RegionName, a.ZoneCode, a.ZoneName " +
+                " rec.ProposedAmount, ISNULL(dpt.DepotName, 'CHQ') DepotName, a.MarketCode, a.MarketName, a.TerritoryCode, a.TerritoryName, a.RegionCode, a.RegionName, a.ZoneCode, a.ZoneName, " +
+                 " (SELECT DISTINCT STUFF((" +
+                            " SELECT ', ' + PaymentRefNo" +
+                            " FROM InvestmentDetailTracker invD" +
+                            " WHERE invD.InvestmentInitId = a.Id" +
+                            " FOR XML PATH('')" +
+                            " ), 1, 1, '') AS PaymentRefNo" +
+                            " FROM InvestmentDetailTracker" +
+                            " ) PaymentRefNo, '' SAPRefNo " +
+      
                 " from InvestmentInit a " +
                 " join InvestmentCampaign IC on a.Id = IC.InvestmentInitId " +
                 "  join CampaignMst cmp on cmp.Id = ic.CampaignDtlId " +
@@ -708,7 +717,8 @@ namespace API.Controllers
                 "  left join Employee emp on emp.Id = rc.EmployeeId " +
                 " where  1 = 1 " +
                 " and a.DataStatus = 1 and a.Confirmation = 1 " +
-                " and rc.Id in ((select top 1 (id) from InvestmentRecComment where InvestmentInitId = a.Id order by [Id] desc)) ";
+                " and rc.RecStatus = 'Approved' ";
+                //" and rc.Id in ((select top 1 (id) from InvestmentRecComment where InvestmentInitId = a.Id order by [Id] desc)) ";
 
             if (dt.FromDate != null && dt.ToDate != null)
             {

@@ -30,6 +30,12 @@
                                                 <option value="Society">Society</option>
                                             </select>
                                         </div>
+                                        <div class="col-md-2">
+                                            <label>Total Value: </label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label style="color: red; font-weight: bold;">{{totalValue}}</label>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -175,6 +181,7 @@
                                                 <td>Approved By</td>
                                                 <td>Approved Amt</td>
                                                 <td>Depot</td>
+                                                <td>Payment Ref No</td>
                                                 <td>Market Code</td>
                                                 <td>Market Name</td>
                                                 <td>Territory Code</td>
@@ -230,7 +237,9 @@
                                                 <td>
                                                     {{a.depotName}}
                                                 </td>
-
+                                                <td>
+                                                    {{a.paymentRefNo}}
+                                                </td>
                                                 <td>
                                                     {{a.marketCode}}
                                                 </td>

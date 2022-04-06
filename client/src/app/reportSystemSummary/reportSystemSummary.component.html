@@ -17,10 +17,13 @@
                         <!-- /.card-header -->
                         <div class="card-body">
                             <fieldset>
+                                <div class="col-sm-1">
+                                    <button class="btn btn-info btn-lg btn-block" type="button" (click)="exportexcel()"><i class="fa fa-eye"></i>&nbsp;Excel</button>
+                                </div>
                                 <div class="form-group" style="overflow: auto; max-height: 500px;">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <table class="table  table-bordered">
+                                            <table class="table  table-bordered" id="excel-table">
                                                 <tr class="HeaderRowFixed">
                                                     <td>Phase</td>
                                                     <td>SBU - A</td>

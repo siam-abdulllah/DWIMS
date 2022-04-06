@@ -30,5 +30,7 @@ namespace Core.Entities
         public string PaymentFreq {get; set; }
         public string DepotName {get; set; }
         public string ApprovedBy {get; set; }
+        public string PaymentRefNo { get; set; }
+        public string SAPRefNo { get; set; }
     }
 }

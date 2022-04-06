@@ -52,6 +52,7 @@ export class RptCampaignSummaryComponent implements OnInit {
   bcdsName: any;
   sbu: any;
   institutionId: any;
+  totalValue: number;
   //societyId: any;
   //bcdsId: any;
   campaignMsts: ICampaignMst[];
@@ -114,6 +115,7 @@ export class RptCampaignSummaryComponent implements OnInit {
   }
 
   ViewDataDoc() {
+    this.totalValue = 0;
     if ((this.campaignId == undefined || this.campaignId == "") && (this.institutionId == undefined || this.institutionId == "") && (this.doctorCode == undefined || this.doctorCode == "") && (this.marketCode == undefined || this.marketCode == "") && (this.sbu == undefined || this.sbu == "") && (this.donationId == undefined || this.donationId == ""))
 
       if (this.campaignId == "") {
@@ -149,6 +151,10 @@ export class RptCampaignSummaryComponent implements OnInit {
       this.reportService.getCampaignSummaryReport(campaignSearchDto).subscribe(response => {
         debugger;
         this.reports = response;
+        for(let j=0;j<this.reports.length;j++){   
+          this.totalValue+= this.reports[j].proposedAmount;
+        }
+
       }, error => {
         console.log(error);
       });
@@ -169,6 +175,10 @@ export class RptCampaignSummaryComponent implements OnInit {
       this.reportService.getDoctorSummaryReport(searchDto).subscribe(response => {
         debugger;
         this.reports = response;
+        for(let j=0;j<this.reports.length;j++){   
+          this.totalValue+= this.reports[j].proposedAmount;
+        }
+
       }, error => {
         console.log(error);
       });
@@ -189,6 +199,9 @@ export class RptCampaignSummaryComponent implements OnInit {
       this.reportService.getInstitutionSummaryReport(searchDto).subscribe(response => {
         debugger;
         this.reports = response;
+        for(let j=0;j<this.reports.length;j++){   
+          this.totalValue+= this.reports[j].proposedAmount;
+        }
       }, error => {
         console.log(error);
       });
@@ -209,6 +222,9 @@ export class RptCampaignSummaryComponent implements OnInit {
       this.reportService.getBcdsSummaryReport(searchDto).subscribe(response => {
         debugger;
         this.reports = response;
+        for(let j=0;j<this.reports.length;j++){   
+          this.totalValue+= this.reports[j].proposedAmount;
+        }
       }, error => {
         console.log(error);
       });
@@ -229,6 +245,10 @@ export class RptCampaignSummaryComponent implements OnInit {
       this.reportService.getSocietySummaryReport(searchDto).subscribe(response => {
         debugger;
         this.reports = response;
+        for(let j=0;j<this.reports.length;j++){   
+          this.totalValue+= this.reports[j].proposedAmount;
+        }
+
       }, error => {
         console.log(error);
       });
@@ -247,8 +267,10 @@ export class RptCampaignSummaryComponent implements OnInit {
         marketCode: this.marketCode,
       };
       this.reportService.getSummaryReport(searchDto).subscribe(response => {
-        debugger;
         this.reports = response;
+        for(let j=0;j<this.reports.length;j++){   
+          this.totalValue+= this.reports[j].proposedAmount;
+        }
       }, error => {
         console.log(error);
       });
