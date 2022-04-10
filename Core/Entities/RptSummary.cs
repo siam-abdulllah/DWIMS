@@ -30,5 +30,6 @@ namespace Core.Entities
         public string ProposeFor { get; set; }
         public bool Confirmation { get; set; }
         public string PaymentRefNo { get; set; }
+        public string SAPRefNo { get; set; }
     }
 }

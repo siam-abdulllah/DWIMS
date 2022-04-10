@@ -303,6 +303,7 @@
                                                 <td>Recv Sts</td>
                                                 <td>Recv By</td>
                                                 <td>Payment Ref.No</td>
+                                                <td>SAP Ref.No</td>
                                             </tr>
                                             <tr *ngFor="let a of reports | filter: searchText ">
 
@@ -374,6 +375,9 @@
                                                 </td>
                                                 <td>
                                                     {{a.paymentRefNo}}
+                                                </td>
+                                                <td>
+                                                    {{a.sapRefNo}}
                                                 </td>
                                             </tr>
                                         </table>

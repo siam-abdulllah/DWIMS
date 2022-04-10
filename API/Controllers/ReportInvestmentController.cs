@@ -455,7 +455,19 @@ namespace API.Controllers
                             " FROM InvestmentDetailTracker invD" +
                             " WHERE invD.InvestmentInitId = a.Id" +
                             " FOR XML PATH('')" +
-                            " ), 1, 1, '') AS PaymentRefNo" +
+                            " ), 1, 1, '') AS PaymentRefNo, " +
+
+
+                            " (SELECT DISTINCT STUFF((  " +
+                            " SELECT ', ' , [SAPRefNo] " +
+                            " FROM ( " +
+                            " SELECT DISTINCT SAPRefNo  FROM DepotPrintTrack invD  WHERE invD.InvestmentInitId = a.Id " +
+                            " UNION " +
+                            " SELECT DISTINCT SAPRefNo  FROM MedicineDispatch invD  WHERE invD.InvestmentInitId = a.Id ) X " +
+                            " FOR XML PATH(''), TYPE).value('.', 'varchar(max)'), 1, 1, '')  AS [SAPRefNo] " +
+                            " FROM DepotPrintTrack, MedicineDispatch " +
+                            " ) [SAPRefNo] " +
+
                             " FROM InvestmentDetailTracker" +
                             " ) PaymentRefNo" +
                             " FROM investmentinit a" +
@@ -627,7 +639,18 @@ namespace API.Controllers
                             " FROM InvestmentDetailTracker invD" +
                             " WHERE invD.InvestmentInitId = a.Id" +
                             " FOR XML PATH('')" +
-                            " ), 1, 1, '') AS PaymentRefNo" +
+                            " ), 1, 1, '') AS PaymentRefNo, " +
+
+                            " (SELECT DISTINCT STUFF((  " +
+                            " SELECT ', ' , [SAPRefNo] " +
+                            " FROM ( " +
+                            " SELECT DISTINCT SAPRefNo  FROM DepotPrintTrack invD  WHERE invD.InvestmentInitId = a.Id " +
+                            " UNION " +
+                            " SELECT DISTINCT SAPRefNo  FROM MedicineDispatch invD  WHERE invD.InvestmentInitId = a.Id ) X " +
+                            " FOR XML PATH(''), TYPE).value('.', 'varchar(max)'), 1, 1, '')  AS [SAPRefNo] " +
+                            " FROM DepotPrintTrack, MedicineDispatch " +
+                            " ) [SAPRefNo] " +
+
                             " FROM InvestmentDetailTracker" +
                             " ) PaymentRefNo" +
                             " FROM investmentinit a" +
@@ -875,7 +898,20 @@ namespace API.Controllers
                             " FROM InvestmentDetailTracker invD" +
                             " WHERE invD.InvestmentInitId = a.Id" +
                             " FOR XML PATH('')" +
-                            " ), 1, 1, '') AS PaymentRefNo" +
+                            " ), 1, 1, '') AS PaymentRefNo, " +
+
+
+
+                            " (SELECT DISTINCT STUFF((  " +
+                            " SELECT ', ' , [SAPRefNo] " +
+                            " FROM ( " +
+                            " SELECT DISTINCT SAPRefNo  FROM DepotPrintTrack invD  WHERE invD.InvestmentInitId = a.Id " +
+                            " UNION " +
+                            " SELECT DISTINCT SAPRefNo  FROM MedicineDispatch invD  WHERE invD.InvestmentInitId = a.Id ) X " +
+                            " FOR XML PATH(''), TYPE).value('.', 'varchar(max)'), 1, 1, '')  AS [SAPRefNo] " +
+                            " FROM DepotPrintTrack, MedicineDispatch " +
+                            " ) [SAPRefNo] " +
+
                             " FROM InvestmentDetailTracker" +
                             " ) PaymentRefNo" +
                             " FROM investmentinit a" +
@@ -1048,7 +1084,20 @@ namespace API.Controllers
                             " FOR XML PATH('')" +
                             " ), 1, 1, '') AS PaymentRefNo" +
                             " FROM InvestmentDetailTracker" +
-                            " ) PaymentRefNo" +
+                            " ) PaymentRefNo, " +
+
+
+                            " (SELECT DISTINCT STUFF((  " +
+                            " SELECT ', ' , [SAPRefNo] " +
+                            " FROM ( " +
+                            " SELECT DISTINCT SAPRefNo  FROM DepotPrintTrack invD  WHERE invD.InvestmentInitId = a.Id " +
+                            " UNION " +
+                            " SELECT DISTINCT SAPRefNo  FROM MedicineDispatch invD  WHERE invD.InvestmentInitId = a.Id ) X " +
+                            " FOR XML PATH(''), TYPE).value('.', 'varchar(max)'), 1, 1, '')  AS [SAPRefNo] " +
+                            " FROM DepotPrintTrack, MedicineDispatch " +
+                            " ) [SAPRefNo] " +
+
+
                             " FROM investmentinit a" +
                             " INNER JOIN InvestmentSociety invS ON a.Id=invS.InvestmentInitId" +
                             " INNER JOIN Society s ON invS.SocietyId=s.Id" +
@@ -1219,7 +1268,20 @@ namespace API.Controllers
                             " FOR XML PATH('')" +
                             " ), 1, 1, '') AS PaymentRefNo" +
                             " FROM InvestmentDetailTracker" +
-                            " ) PaymentRefNo" +
+                            " ) PaymentRefNo, " +
+
+
+                            " (SELECT DISTINCT STUFF((  " +
+                            " SELECT ', ' , [SAPRefNo] " +
+                            " FROM ( " +
+                            " SELECT DISTINCT SAPRefNo  FROM DepotPrintTrack invD  WHERE invD.InvestmentInitId = a.Id " +
+                            " UNION " +
+                            " SELECT DISTINCT SAPRefNo  FROM MedicineDispatch invD  WHERE invD.InvestmentInitId = a.Id ) X " +
+                            " FOR XML PATH(''), TYPE).value('.', 'varchar(max)'), 1, 1, '')  AS [SAPRefNo] " +
+                            " FROM DepotPrintTrack, MedicineDispatch " +
+                            " ) [SAPRefNo] " +
+
+
                             " FROM investmentinit a" +
                             " INNER JOIN employee E ON A.employeeid = E.id" +
                             " LEFT JOIN InvestmentRecComment rc ON a.id = rc.InvestmentInitId" +
