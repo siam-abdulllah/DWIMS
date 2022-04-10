@@ -702,7 +702,16 @@ namespace API.Controllers
                             " FOR XML PATH('')" +
                             " ), 1, 1, '') AS PaymentRefNo" +
                             " FROM InvestmentDetailTracker" +
-                            " ) PaymentRefNo, '' SAPRefNo " +
+                            " ) PaymentRefNo, " +
+                            " (SELECT DISTINCT STUFF((  " +
+                            " SELECT ', ' , [SAPRefNo] " +
+                            " FROM ( " +
+                            " SELECT DISTINCT SAPRefNo  FROM DepotPrintTrack invD  WHERE invD.InvestmentInitId = a.Id " +
+                            " UNION " +
+                            " SELECT DISTINCT SAPRefNo  FROM MedicineDispatch invD  WHERE invD.InvestmentInitId = a.Id ) X " +
+                            " FOR XML PATH(''), TYPE).value('.', 'varchar(max)'), 1, 1, '')  AS [SAPRefNo] " +
+                            " FROM DepotPrintTrack, MedicineDispatch " +
+                            " ) [SAPRefNo] " +
       
                 " from InvestmentInit a " +
                 " join InvestmentCampaign IC on a.Id = IC.InvestmentInitId " +
