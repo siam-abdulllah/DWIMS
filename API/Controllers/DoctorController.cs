@@ -125,7 +125,7 @@ namespace API.Controllers
                 {
                     using (OracleCommand objCmd = new OracleCommand())
                     {
-                        objCmd.CommandText = "SELECT DOCTOR_ID ,DOCTOR_NAME ,NVL(PATIENT_PER_DAY, 0) PATIENT_PER_DAY  ,NVL(AVG_PRESC_VALUE, 0) AVG_PRESC_VALUE ,DEGREE || ',' || SPECIALIZATION DEGREES ,DESIGNATION ,ADDRESS1 ,'Active' STATUS FROM DOCTOR A INNER JOIN DOCTOR_SPECIALIZATION B ON A.SPECIA_1ST_CODE = B.SPECIALIZATION_CODE WHERE A.ENTERED_DATE >= sysdate - 7";
+                        objCmd.CommandText = "SELECT DOCTOR_ID ,DOCTOR_NAME ,NVL(PATIENT_PER_DAY, 0) PATIENT_PER_DAY  ,NVL(AVG_PRESC_VALUE, 0) AVG_PRESC_VALUE ,DEGREE || ',' || SPECIALIZATION DEGREES ,DESIGNATION ,ADDRESS1 ,'Active' STATUS FROM DOCTOR A INNER JOIN DOCTOR_SPECIALIZATION B ON A.SPECIA_1ST_CODE = B.SPECIALIZATION_CODE WHERE TO_CHAR(A.ENTERED_DATE,'MMRRRR') = '032022'";
                         objCmd.Connection = _db;
                         _db.Open();
                         objCmd.ExecuteNonQuery();

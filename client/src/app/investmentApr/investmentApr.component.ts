@@ -1056,7 +1056,6 @@ export class InvestmentAprComponent implements OnInit {
       if (this.investmentAprService.investmentDetailFormData.paymentMethod == 'Cash') {
         if (this.investmentAprService.investmentAprCommentFormData.recStatus != 'Not Approved') {
           if (this.sbu == this.investmentAprService.investmentAprFormData.sbu && this.userRole != 'Administrator') {
-
             if (this.investmentAprService.investmentDepotFormData.depotCode == null || this.investmentAprService.investmentDepotFormData.depotCode == undefined || this.investmentAprService.investmentDepotFormData.depotCode == "") {
               this.toastr.warning('Select Depot First', 'Investment');
               return false;
