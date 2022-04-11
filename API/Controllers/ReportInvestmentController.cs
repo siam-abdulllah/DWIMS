@@ -455,8 +455,9 @@ namespace API.Controllers
                             " FROM InvestmentDetailTracker invD" +
                             " WHERE invD.InvestmentInitId = a.Id" +
                             " FOR XML PATH('')" +
-                            " ), 1, 1, '') AS PaymentRefNo, " +
-
+                            " ), 1, 1, '') AS PaymentRefNo " +
+                            " FROM InvestmentDetailTracker" +
+                            " ) PaymentRefNo, " +
 
                             " (SELECT DISTINCT STUFF((  " +
                             " SELECT ', ' , [SAPRefNo] " +
@@ -468,8 +469,7 @@ namespace API.Controllers
                             " FROM DepotPrintTrack, MedicineDispatch " +
                             " ) [SAPRefNo] " +
 
-                            " FROM InvestmentDetailTracker" +
-                            " ) PaymentRefNo" +
+                         
                             " FROM investmentinit a" +
                             " INNER JOIN InvestmentDoctor invS ON a.Id=invS.InvestmentInitId" +
                             " INNER JOIN DoctorInfo s ON invS.DoctorId=s.Id" +
@@ -639,7 +639,9 @@ namespace API.Controllers
                             " FROM InvestmentDetailTracker invD" +
                             " WHERE invD.InvestmentInitId = a.Id" +
                             " FOR XML PATH('')" +
-                            " ), 1, 1, '') AS PaymentRefNo, " +
+                            " ), 1, 1, '') AS PaymentRefNo " +
+                            " FROM InvestmentDetailTracker" +
+                            " ) PaymentRefNo, " +
 
                             " (SELECT DISTINCT STUFF((  " +
                             " SELECT ', ' , [SAPRefNo] " +
@@ -651,8 +653,7 @@ namespace API.Controllers
                             " FROM DepotPrintTrack, MedicineDispatch " +
                             " ) [SAPRefNo] " +
 
-                            " FROM InvestmentDetailTracker" +
-                            " ) PaymentRefNo" +
+                         
                             " FROM investmentinit a" +
                             " INNER JOIN InvestmentInstitution invS ON a.Id=invS.InvestmentInitId" +
                             " INNER JOIN InstitutionInfo s ON invS.InstitutionId=s.Id" +
@@ -898,8 +899,9 @@ namespace API.Controllers
                             " FROM InvestmentDetailTracker invD" +
                             " WHERE invD.InvestmentInitId = a.Id" +
                             " FOR XML PATH('')" +
-                            " ), 1, 1, '') AS PaymentRefNo, " +
-
+                            " ), 1, 1, '') AS PaymentRefNo " +
+                            " FROM InvestmentDetailTracker" +
+                            " ) PaymentRefNo, " +
 
 
                             " (SELECT DISTINCT STUFF((  " +
@@ -912,8 +914,7 @@ namespace API.Controllers
                             " FROM DepotPrintTrack, MedicineDispatch " +
                             " ) [SAPRefNo] " +
 
-                            " FROM InvestmentDetailTracker" +
-                            " ) PaymentRefNo" +
+                          
                             " FROM investmentinit a" +
                             " INNER JOIN InvestmentBcds invS ON a.Id=invS.InvestmentInitId" +
                             " INNER JOIN Bcds s ON invS.BcdsId=s.Id" +
