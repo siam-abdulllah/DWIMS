@@ -1756,27 +1756,29 @@ namespace API.Controllers
                            " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Doctor' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, dtl.PaymentRefNo ReferenceNo, d.DonationTypeName, " +
                            " doc.id as DocId, doc.DoctorName, doc.[Address], inDetail.ProposedAmount, inDetail.ChequeTitle, aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy', depo.DepotName " +
                            " from InvestmentInit a  " +
-                           " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " +
+                           " LEFT JOIN InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " +
                            " inner join InvestmentDetailTracker dtl on dtl.InvestmentInitId = a.Id " +
-                           " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId   " +
-                           " left join Employee e on a.EmployeeId = e.Id  left join Donation d on a.DonationId = d.Id  " +
+                           " LEFT JOIN InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId   " +
+                           " LEFT JOIN Employee e on a.EmployeeId = e.Id  LEFT JOIN Donation d on a.DonationId = d.Id  " +
                            " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
-                           " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId   " +
-                           " inner join InvestmentDoctor inDc on a.Id = inDc.InvestmentInitId  left join DoctorInfo doc on inDc.DoctorId = doc.Id " +
+                           " INNER JOIN InvestmentRec inDetail on a.id = inDetail.InvestmentInitId   " +
+                           " INNER JOIN InvestmentDoctor inDc on a.Id = inDc.InvestmentInitId  LEFT JOIN DoctorInfo doc on inDc.DoctorId = doc.Id " +
                            " where a.DonationTo = 'Doctor' AND  ir.RecStatus = 'Approved' " +
                            " AND inDetail.PaymentMethod = 'Cash'  " +
                            " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
                            " UNION " +
                            " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Doctor' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, dtl.PaymentRefNo ReferenceNo, d.DonationTypeName, " +
-                           " doc.id as DocId, doc.DoctorName, doc.[Address], inDetail.ProposedAmount,  inDetail.ChequeTitle,  aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy',depo.DepotName " +
+                           " doc.id as DocId, doc.DoctorName + ',' + C.SubCampaignName, doc.[Address], inDetail.ProposedAmount,  inDetail.ChequeTitle,  aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy',depo.DepotName " +
                            " from InvestmentInit a " +
-                           " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId " +
-                           " inner join InvestmentDetailTracker dtl on dtl.InvestmentInitId = a.Id " +
-                           " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId   " +
-                           " left join Employee e on a.EmployeeId = e.Id  left join Donation d on a.DonationId = d.Id  " +
+                           " LEFT JOIN InvestmentRecComment ir on a.Id = ir.InvestmentInitId " +
+                           " INNER JOIN InvestmentDetailTracker dtl on dtl.InvestmentInitId = a.Id " +
+                           " LEFT JOIN InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId   " +
+                           " LEFT JOIN Employee e on a.EmployeeId = e.Id  LEFT JOIN Donation d on a.DonationId = d.Id  " +
                            " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
-                           " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId   " +
-                           " inner join InvestmentCampaign IC on a.Id = IC.InvestmentInitId " +
+                           " INNER JOIN InvestmentRec inDetail on a.id = inDetail.InvestmentInitId   " +
+                           " INNER JOIN InvestmentCampaign IC on a.Id = IC.InvestmentInitId " +
+                           " INNER JOIN CampaignDtl CD  ON IC.CampaignDtlId = CD.Id  " +
+                           " INNER JOIN [SubCampaign] C  ON CD.SubCampaignId = C.id " +
                            " left join DoctorInfo doc on IC.DoctorId = doc.Id   " +
                            " where a.DonationTo = 'Campaign' AND  " +
                            " ir.RecStatus = 'Approved' " +
@@ -1786,15 +1788,15 @@ namespace API.Controllers
                            " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Institution' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, dtl.PaymentRefNo ReferenceNo, d.DonationTypeName,  " +
                            " doc.id as DocId, doc.InstitutionName, doc.[Address], inDetail.ProposedAmount,  inDetail.ChequeTitle,  aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy',depo.DepotName  " +
                            " from InvestmentInit a  " +
-                           " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " +
+                           " LEFT JOIN InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " +
                            " inner join InvestmentDetailTracker dtl on dtl.InvestmentInitId = a.Id " +
-                           " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId  " +
-                           " left join Employee e on a.EmployeeId = e.Id  " +
+                           " LEFT JOIN InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId  " +
+                           " LEFT JOIN Employee e on a.EmployeeId = e.Id  " +
                            " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
-                           " left join Donation d on a.DonationId = d.Id  " +
+                           " LEFT JOIN Donation d on a.DonationId = d.Id  " +
                            " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId  " +
                            " inner join InvestmentInstitution IC on a.Id = IC.InvestmentInitId  " +
-                           " left join InstitutionInfo doc on IC.InstitutionId = doc.Id  " +
+                           " LEFT JOIN InstitutionInfo doc on IC.InstitutionId = doc.Id  " +
                            " where a.DonationTo = 'Institution' " +
                            " AND ir.RecStatus = 'Approved'  " +
                            " AND inDetail.PaymentMethod = 'Cash' " +
@@ -1803,14 +1805,14 @@ namespace API.Controllers
                            " Select a.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Bcds' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, dtl.PaymentRefNo ReferenceNo, d.DonationTypeName,  " +
                            " doc.id as DocId, doc.BcdsName, doc.BcdsAddress, inDetail.ProposedAmount,  inDetail.ChequeTitle,  aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy', depo.DepotName  " +
                            " from InvestmentInit a  " +
-                           " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " +
+                           " LEFT JOIN InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " +
                            " inner join InvestmentDetailTracker dtl on dtl.InvestmentInitId = a.Id " +
-                           " left join InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId  " +
-                           " left join Employee e on a.EmployeeId = e.Id left join Donation d on a.DonationId = d.Id  " +
+                           " LEFT JOIN InvestmentRecDepot depo on depo.InvestmentInitId = ir.InvestmentInitId  " +
+                           " LEFT JOIN Employee e on a.EmployeeId = e.Id LEFT JOIN Donation d on a.DonationId = d.Id  " +
                            " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
                            " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId  " +
                            " inner join InvestmentBcds IC on a.Id = IC.InvestmentInitId  " +
-                           " left join Bcds doc on IC.BcdsId = doc.Id  " +
+                           " LEFT JOIN Bcds doc on IC.BcdsId = doc.Id  " +
                            " where a.DonationTo = 'Bcds'  " +
                            " AND ir.RecStatus = 'Approved'  " +
                            " AND inDetail.PaymentMethod = 'Cash' " +
@@ -1866,7 +1868,7 @@ namespace API.Controllers
                            //" AND inDetail.PaymentMethod = 'Cash'  " + 
                            " UNION " +
                            " Select dtl.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus, 'Doctor' DonationTo, e.Id as EmpId, e.DesignationName, e.MarketName, dtl.PaymentRefNo ReferenceNo, d.DonationTypeName, " +
-                           " doc.id as DocId, doc.DoctorName, doc.[Address], inDetail.ProposedAmount,  inDetail.ChequeTitle,  aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy', depo.EmployeeName +', '+ depo.DesignationName 'DepotName' " +
+                           " doc.id as DocId, doc.DoctorName + ',' + C.SubCampaignName, doc.[Address], inDetail.ProposedAmount,  inDetail.ChequeTitle,  aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy', depo.EmployeeName +', '+ depo.DesignationName 'DepotName' " +
                            " from InvestmentInit a " +
                            " left join InvestmentRecComment ir on a.Id = ir.InvestmentInitId " +
                            " inner join InvestmentDetailTracker dtl on dtl.InvestmentInitId = a.Id " +
@@ -1875,6 +1877,8 @@ namespace API.Controllers
                            " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
                            " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId   " +
                            " inner join InvestmentCampaign IC on a.Id = IC.InvestmentInitId " +
+                           " INNER JOIN CampaignDtl CD  ON IC.CampaignDtlId = CD.Id  " +
+                           " INNER JOIN [SubCampaign] C  ON CD.SubCampaignId = C.id " +
                            " left join DoctorInfo doc on IC.DoctorId = doc.Id   " +
                            " where a.DonationTo = 'Campaign' AND  " +
                            " ir.RecStatus = 'Approved' " +

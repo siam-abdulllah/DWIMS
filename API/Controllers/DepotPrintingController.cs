@@ -48,7 +48,8 @@ namespace API.Controllers
               " CASE  " +
               " WHEN a.donationto = 'Doctor' THEN (SELECT DISTINCT doctorname  FROM   investmentdoctor x  INNER JOIN doctorinfo y ON x.doctorid = y.id WHERE  x.investmentinitid = a.id) " +
               " WHEN a.donationto = 'Institution' THEN (SELECT DISTINCT institutionname FROM  investmentinstitution x INNER JOIN institutioninfo y ON x.institutionid = y.id WHERE x.investmentinitid = a.id) " +
-              " WHEN a.donationto = 'Campaign' THEN (SELECT DISTINCT subcampaignname  FROM   investmentcampaign x INNER JOIN campaigndtl y  ON x.campaigndtlid = y.id  INNER JOIN [dbo].[subcampaign] C  ON y.subcampaignid = C.id  WHERE  x.investmentinitid = a.id) " +
+              " WHEN a.donationto = 'Campaign' THEN (SELECT  dc.DoctorName  + ',' + subcampaignname FROM   investmentcampaign x INNER JOIN campaigndtl y  ON x.campaigndtlid = y.id  INNER JOIN [dbo].[subcampaign] C  ON y.subcampaignid = C.id INNER JOIN DoctorInfo dc on x.DoctorId = dc.Id   WHERE  x.investmentinitid = a.id)   "+
+              
               " WHEN a.donationto = 'Bcds' THEN (SELECT DISTINCT bcdsname   FROM   investmentbcds x  INNER JOIN bcds y   ON x.bcdsid = y.id   WHERE  x.investmentinitid = a.id) " +
               " WHEN a.donationto = 'Society' THEN (SELECT DISTINCT societyname FROM   investmentsociety x INNER JOIN society y ON x.societyid = y.id WHERE  x.investmentinitid = a.id) END  DoctorName," +
               " CONVERT(date, ir.SetOn) ApprovedDate, aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy' " +
@@ -101,7 +102,7 @@ namespace API.Controllers
                 " CASE  " +
                 " WHEN a.donationto = 'Doctor' THEN (SELECT doctorname  FROM   investmentdoctor x  INNER JOIN doctorinfo y ON x.doctorid = y.id WHERE  x.investmentinitid = a.id) " +
                 " WHEN a.donationto = 'Institution' THEN (SELECT institutionname FROM  investmentinstitution x INNER JOIN institutioninfo y ON x.institutionid = y.id WHERE x.investmentinitid = a.id) " +
-                " WHEN a.donationto = 'Campaign' THEN (SELECT subcampaignname  FROM   investmentcampaign x INNER JOIN campaigndtl y  ON x.campaigndtlid = y.id  INNER JOIN [dbo].[subcampaign] C  ON y.subcampaignid = C.id  WHERE  x.investmentinitid = a.id) " +
+                " WHEN a.donationto = 'Campaign' THEN (SELECT  dc.DoctorName  + ',' + subcampaignname FROM   investmentcampaign x INNER JOIN campaigndtl y  ON x.campaigndtlid = y.id  INNER JOIN [dbo].[subcampaign] C  ON y.subcampaignid = C.id INNER JOIN DoctorInfo dc on x.DoctorId = dc.Id   WHERE  x.investmentinitid = a.id) " +
                 " WHEN a.donationto = 'Bcds' THEN (SELECT bcdsname   FROM   investmentbcds x  INNER JOIN bcds y   ON x.bcdsid = y.id   WHERE  x.investmentinitid = a.id) " +
                 " WHEN a.donationto = 'Society' THEN (SELECT societyname FROM   investmentsociety x INNER JOIN society y ON x.societyid = y.id WHERE  x.investmentinitid = a.id) END  DoctorName," +
                 " CONVERT(date, ir.SetOn) ApprovedDate, aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy' " +

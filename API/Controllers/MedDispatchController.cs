@@ -173,8 +173,8 @@ namespace API.Controllers
               " a.DonationTo, depo.DepotCode, d.DonationTypeName,   dtl.ApprovedAmount  ProposedAmount, e.EmployeeName, e.MarketName, ir.SetOn 'ApprovedDate', aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy', " +
               " CASE  " +
               " WHEN a.donationto = 'Doctor' THEN (SELECT doctorname  FROM   investmentdoctor x  INNER JOIN doctorinfo y ON x.doctorid = y.id WHERE  x.investmentinitid = a.id) " +
-              " WHEN a.donationto = 'Institution' THEN (SELECT institutionname FROM  investmentinstitution x INNER JOIN institutioninfo y ON x.institutionid = y.id WHERE x.investmentinitid = a.id) " +
-              " WHEN a.donationto = 'Campaign' THEN (SELECT subcampaignname  FROM   investmentcampaign x INNER JOIN campaigndtl y  ON x.campaigndtlid = y.id  INNER JOIN [dbo].[subcampaign] C  ON y.subcampaignid = C.id  WHERE  x.investmentinitid = a.id) " +
+              " WHEN a.donationto = 'Institution' THEN (SELECT institutionname FROM  investmentinstitution x INNER JOIN institutioninfo y ON x.institutionid = y.id WHERE x.investmentinitid = a.id) " +            
+              " WHEN a.donationto = 'Campaign' THEN (SELECT  dc.DoctorName  + ',' + subcampaignname FROM   investmentcampaign x INNER JOIN campaigndtl y  ON x.campaigndtlid = y.id  INNER JOIN [dbo].[subcampaign] C  ON y.subcampaignid = C.id INNER JOIN DoctorInfo dc on x.DoctorId = dc.Id   WHERE  x.investmentinitid = a.id) " +
               " WHEN a.donationto = 'Bcds' THEN (SELECT bcdsname   FROM   investmentbcds x  INNER JOIN bcds y   ON x.bcdsid = y.id   WHERE  x.investmentinitid = a.id) " +
               " WHEN a.donationto = 'Society' THEN (SELECT societyname FROM   investmentsociety x INNER JOIN society y ON x.societyid = y.id WHERE  x.investmentinitid = a.id) END  DoctorName " +
               " from InvestmentInit a " +
