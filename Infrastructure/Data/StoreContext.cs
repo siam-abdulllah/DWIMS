@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
+using System.Data;
 
 namespace Infrastructure.Data
 {
@@ -125,6 +127,38 @@ namespace Infrastructure.Data
         public DbSet<SystemSummary> SystemSummary { get; set; }
 
         public DbSet<RptSummary> RptSummary { get; set; }
+        public DbSet<InvestmentRapid> InvestmentRapid { get; set; }
+        public DbSet<InvestmentRapidAppr> InvestmentRapidAppr { get; set; }
+        
+            public List<T> ExecSQL<T>(string query)
+        {
+            using (var command = Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = query;
+                command.CommandType = CommandType.Text;
+                Database.OpenConnection();
+
+                List<T> list = new List<T>();
+                using (var result = command.ExecuteReader())
+                {
+                    T obj = default(T);
+                    while (result.Read())
+                    {
+                        obj = Activator.CreateInstance<T>();
+                        foreach (PropertyInfo prop in obj.GetType().GetProperties())
+                        {
+                            if (!object.Equals(result[prop.Name], DBNull.Value))
+                            {
+                                prop.SetValue(obj, result[prop.Name], null);
+                            }
+                        }
+                        list.Add(obj);
+                    }
+                }
+                Database.CloseConnection();
+                return list;
+            }
+        }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

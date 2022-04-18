@@ -179,6 +179,51 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("ApprovalTimeLimit");
                 });
 
+            modelBuilder.Entity("Core.Entities.AuditTrail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ActionBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ActionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ActionName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ActionTable")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ActionType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FormName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HostAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("TransID")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AuditTrail");
+                });
+
             modelBuilder.Entity("Core.Entities.Bcds", b =>
                 {
                     b.Property<int>("Id")
@@ -503,6 +548,9 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("EmployeeName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("InvestmentInitId")
+                        .HasColumnType("int");
+
                     b.Property<string>("MarketName")
                         .HasColumnType("nvarchar(max)");
 
@@ -680,6 +728,48 @@ namespace Infrastructure.Data.Migrations
                     b.HasIndex("InvestmentInitId");
 
                     b.ToTable("DepotPrintTrack");
+                });
+
+            modelBuilder.Entity("Core.Entities.DocLocMap", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Designation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DoctorCode")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DoctorName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MarketCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MarketName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("SBU")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DocLocMap");
                 });
 
             modelBuilder.Entity("Core.Entities.DoctorHonAppr", b =>
@@ -1858,6 +1948,117 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("InvestmentMedicineProd");
                 });
 
+            modelBuilder.Entity("Core.Entities.InvestmentRapid", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ChequeTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DepotCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DepotName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DonationTo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("InitiatorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InvestmentInitId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("PaymentMethod")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProposeFor")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("ProposedAmount")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("PropsalDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ReferenceNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Remarks")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SBU")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("SubCampaignId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SubCampaignName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("InvestmentRapid");
+                });
+
+            modelBuilder.Entity("Core.Entities.InvestmentRapidAppr", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ApprovalAuthId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ApprovalRemarks")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ApprovedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ApprovedStatus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InvestmentInitId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InvestmentRapidId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("InvestmentRapidAppr");
+                });
+
             modelBuilder.Entity("Core.Entities.InvestmentRcvPending", b =>
                 {
                     b.Property<int>("Id")
@@ -1912,6 +2113,9 @@ namespace Infrastructure.Data.Migrations
 
                     b.Property<string>("ProposeFor")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("ProposedAmount")
+                        .HasColumnType("float");
 
                     b.Property<string>("ReferenceNo")
                         .HasColumnType("nvarchar(max)");
@@ -3290,6 +3494,105 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("ReportProductInfo");
                 });
 
+            modelBuilder.Entity("Core.Entities.RptCampaignSummary", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ApprovedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CampaignName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DepotName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("DoctorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DoctorName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DonationTypeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FromDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("InstitutionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("InstitutionName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MarketCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MarketName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("PaymentFreq")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentRefNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("ProposedAmount")
+                        .HasColumnType("float");
+
+                    b.Property<string>("RecStatus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReferenceNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RegionCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RegionName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SAPRefNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SBUName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("TerritoryCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TerritoryName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ToDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("Total")
+                        .HasColumnType("float");
+
+                    b.Property<string>("ZoneCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ZoneName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RptCampaignSummary");
+                });
+
             modelBuilder.Entity("Core.Entities.RptChequePrintSearch", b =>
                 {
                     b.Property<int>("Id")
@@ -3752,6 +4055,57 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("RptDocLocWiseInvestment");
                 });
 
+            modelBuilder.Entity("Core.Entities.RptEmpWiseExp", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ApprovalAuthorityId")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("Budget")
+                        .HasColumnType("float");
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DonationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DonationTypeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EmployeeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("Expense")
+                        .HasColumnType("float");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Month")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RptEmpWiseExp");
+                });
+
             modelBuilder.Entity("Core.Entities.RptInsSocBcdsInvestment", b =>
                 {
                     b.Property<int>("Id")
@@ -3975,8 +4329,14 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("DataStatus")
                         .HasColumnType("int");
 
+                    b.Property<string>("DepotCode")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double?>("DispatchAmt")
                         .HasColumnType("float");
+
+                    b.Property<string>("DoctorName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DonationTypeName")
                         .HasColumnType("nvarchar(max)");
@@ -3999,10 +4359,16 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("ReferenceNo")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("RegionName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Remarks")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SAPRefNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SBUName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("SetOn")
@@ -4011,6 +4377,39 @@ namespace Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("RptMedDisp");
+                });
+
+            modelBuilder.Entity("Core.Entities.RptSBUWiseExp", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<long>("Amount")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("Expense")
+                        .HasColumnType("float");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("SBUName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RptSBUWiseExp");
                 });
 
             modelBuilder.Entity("Core.Entities.RptSBUWiseExpSummart", b =>
@@ -4050,6 +4449,102 @@ namespace Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("RptSBUWiseExpSummart");
+                });
+
+            modelBuilder.Entity("Core.Entities.RptSummary", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ApprovedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Confirmation")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("DId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DepotName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DonationTo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DonationTypeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmployeeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FromDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("InvStatus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MarketName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentFreq")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentMethod")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentRefNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProposeFor")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("ProposedAmount")
+                        .HasColumnType("float");
+
+                    b.Property<string>("ReceiveBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReceiveStatus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReferenceNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RegionName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SAPRefNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SBUName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("TerritoryName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ToDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ZoneName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RptSummary");
                 });
 
             modelBuilder.Entity("Core.Entities.RptYearlyBudget", b =>
@@ -4292,6 +4787,48 @@ namespace Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SubMenu");
+                });
+
+            modelBuilder.Entity("Core.Entities.SystemSummary", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("DataStatus")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Phase")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("SBUA")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SBUB")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SBUC")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SBUD")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SBUE")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SBUN")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("SetOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SystemSummary");
                 });
 
             modelBuilder.Entity("Core.Entities.YearlyBudget", b =>

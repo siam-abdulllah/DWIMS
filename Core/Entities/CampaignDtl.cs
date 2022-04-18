@@ -19,4 +19,11 @@ namespace Core.Entities
         
         
     }
+    public class SubCampainDtl
+    {
+        public int SubCampId { get; set; }
+        public string SBU { get; set; }
+        public string SubCampaignName { get; set; }
+
+    }
 }

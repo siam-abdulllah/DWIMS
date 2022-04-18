@@ -58,6 +58,8 @@ import { ReportYearlySbuExpComponent } from '../reportYearlySbuExp/reportYearlyS
 import { RptEmpWiseExpComponent } from '../rptEmpWiseExp/rptEmpWiseExp.component';
 import { RptCampaignSummaryComponent } from './../rptCampaignSummary/rptCampaignSummary.component';
 import {ReportSystemSummaryComponent} from '../reportSystemSummary/reportSystemSummary.component'
+import { InvestmentFormComponent } from '../investmentForm/investmentForm.component';
+import { InvestmentRapidAprComponent } from '../investmentRapidApr/investmentRapidApr.component';
 
 @NgModule({
   imports: [
@@ -88,6 +90,8 @@ import {ReportSystemSummaryComponent} from '../reportSystemSummary/reportSystemS
     ApprovalCeilingComponent,
     ApprovalTimeLimitComponent,
     InvestmentInitComponent,
+    InvestmentFormComponent,
+    InvestmentRapidAprComponent,
     InvestmentRecComponent,
     InvestmentAprComponent,
     InvestmentAprNoSbuComponent,

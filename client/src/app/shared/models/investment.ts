@@ -23,9 +23,11 @@ export interface IInvestmentInit {
  
 export class InvestmentInit implements IInvestmentInit {
     id: number=0;
+
     referenceNo: string;
     proposeFor: string=null;
     donationTo: string=null;
+
     marketCode: string;
     marketName: string;
     employeeId: number;
@@ -36,6 +38,68 @@ export class InvestmentInit implements IInvestmentInit {
     sbu:string;
     setOn: Date;
 }
+export interface IInvestmentForm {
+    id: number;
+    investmentInitId:number;
+    referenceNo: string;
+    proposeFor: string;
+    approvedStatus:string;
+    type:string;
+    donationTypeName:string;
+    proposalDateStr:string;
+    subCampaignId:number;
+    subCampaignName:string;
+    propsalDate:Date;
+    depotCode:string;
+    depotName:string;
+    employee: IEmployee;
+    proposedAmount:string,
+    paymentMethod:string
+    remarks:string;
+    InitiatorId: number;
+    approvalAuthId: number;
+    sbu:string;
+    sbuName:string;
+    donationTo: string;
+    address:string;
+    chequeTitle: string;
+    approval:string;
+    boxQuantity:number;
+    investmentMedicineProd:InvestmentMedicineProd[];
+    investmentRecProducts:InvestmentTargetedProd[];
+
+}
+export class InvestmentForm implements IInvestmentForm {
+    id: number=0;
+    investmentInitId:number;
+    referenceNo: string;
+    approvedStatus:string=null;
+    type:string=null;
+    donationTypeName:string;
+    proposeFor: string=null;
+    proposalDateStr:string;
+    subCampaignId:number=0;
+    subCampaignName:string;
+    propsalDate:Date;
+    depotCode:string;
+    depotName:string;
+    InitiatorId: number;
+    approvalAuthId: number;
+    employee: IEmployee;
+    proposedAmount:string;
+    paymentMethod:string=null;
+    remarks:string;
+    sbu:string=null;
+    sbuName:string;
+    donationTo: string;
+    address:string;
+    chequeTitle: string;
+    approval:string;
+    boxQuantity:number;
+    investmentMedicineProd:InvestmentMedicineProd[];
+    investmentRecProducts:InvestmentTargetedProd[];
+}
+
 
 export interface IInvestmentDetail {
     id: number;
@@ -45,6 +109,7 @@ export interface IInvestmentDetail {
     paymentFreq: string;
     commitmentAllSBU: string;
     commitmentOwnSBU: string;
+    
     shareAllSBU: string;
     shareOwnSBU: string;
     totalMonth: number;
