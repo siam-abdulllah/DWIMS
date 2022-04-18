@@ -40,6 +40,17 @@ export class CampaignDtl implements ICampaignDtl {
     subCampEndDate: Date;
     subCampaign:ISubCampaign;
 }
+export interface ISubCampaignRapid {
+    subCampId: number;
+    sbu: string;
+    subCampaignName: string;
+
+}
+export class SubCampaignRapid implements ISubCampaignRapid {
+    subCampId: number;
+    sbu: string;
+    subCampaignName: string;
+}
 export interface ICampaignDtlProduct {
     id: number;
     dtlId: number;

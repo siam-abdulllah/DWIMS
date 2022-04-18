@@ -44,6 +44,8 @@ import { RptInvSummarySingleComponent } from '../rptInvSummarySingle/rptInvSumma
 import { RptEmpInfoComponent } from '../rptEmpInfo/rptEmpInfo.component';
 import { RptEmpWiseExpComponent } from '../rptEmpWiseExp/rptEmpWiseExp.component';
 import { ReportSystemSummaryComponent } from '../reportSystemSummary/reportSystemSummary.component'
+import { InvestmentFormComponent } from '../investmentForm/investmentForm.component';
+import { InvestmentRapidAprComponent } from '../investmentRapidApr/investmentRapidApr.component';
 
 //import { RptInvestStatusComponent } from '../rptInvestmentStatus/rptInvestmentStatus.component';
 
@@ -60,7 +62,9 @@ const portalRoutes: Routes = [
         {path: 'approval-time-limit', component: ApprovalTimeLimitComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'docHonAppr', component: DocHonApprComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'investmentInit', component: InvestmentInitComponent, canActivate: [SuperAdminRoleGuard]},
-        {path: 'investmentRec', component: InvestmentRecComponent, canActivate: [SuperAdminRoleGuard]},
+        {path: 'investmentrapid', component: InvestmentFormComponent},
+        {path: 'investmentrapidapr', component: InvestmentRapidAprComponent},
+       {path: 'investmentRec', component: InvestmentRecComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'investmentApr', component: InvestmentAprComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'investmentAprNoSbu', component: InvestmentAprNoSbuComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'investmentRcv', component: InvestmentRcvComponent, canActivate: [SuperAdminRoleGuard]},
