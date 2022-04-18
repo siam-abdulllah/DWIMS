@@ -491,7 +491,15 @@ namespace API.Controllers
                             " WHERE InvestmentInitId = a.Id" +
                             " ORDER BY Priority DESC" +
                             " )" +
-                            " )";
+                            " ) " +
+                            " AND b.Id IN (  " +
+                            " (  " +
+                            " SELECT TOP 1 (id)  " +
+                            " FROM InvestmentRec " +
+                            " WHERE InvestmentInitId = a.Id  " +
+                            " ORDER BY Priority DESC  " +
+                            "  )  " +
+                            "  ) ";
 
                 if (dt.FromDate != null && dt.ToDate != null)
                 {
@@ -675,7 +683,15 @@ namespace API.Controllers
                             " WHERE InvestmentInitId = a.Id" +
                             " ORDER BY Priority DESC" +
                             " )" +
-                            " )";
+                            " ) " +
+                            " AND b.Id IN (  " +
+                            " (  " +
+                            " SELECT TOP 1 (id)  " +
+                            " FROM InvestmentRec " +
+                            " WHERE InvestmentInitId = a.Id  " +
+                            " ORDER BY Priority DESC  " +
+                            "  )  " +
+                            "  ) ";
 
                 if (dt.FromDate != null && dt.ToDate != null)
                 {
@@ -936,7 +952,15 @@ namespace API.Controllers
                             " WHERE InvestmentInitId = a.Id" +
                             " ORDER BY Priority DESC" +
                             " )" +
-                            " )";
+                            " ) " +
+                            " AND b.Id IN (  " +
+                            " (  " +
+                            " SELECT TOP 1 (id)  " +
+                            " FROM InvestmentRec " +
+                            " WHERE InvestmentInitId = a.Id  " +
+                            " ORDER BY Priority DESC  " +
+                            "  )  " +
+                            "  ) ";
 
                 if (dt.FromDate != null && dt.ToDate != null)
                 {
@@ -1120,7 +1144,15 @@ namespace API.Controllers
                             " WHERE InvestmentInitId = a.Id" +
                             " ORDER BY Priority DESC" +
                             " )" +
-                            " )";
+                            " ) " +
+                            " AND b.Id IN (  " +
+                            " (  " +
+                            " SELECT TOP 1 (id)  " +
+                            " FROM InvestmentRec " +
+                            " WHERE InvestmentInitId = a.Id  " +
+                            " ORDER BY Priority DESC  " +
+                            "  )  " +
+                            "  ) ";
 
                 if (dt.FromDate != null && dt.ToDate != null)
                 {
@@ -1302,7 +1334,15 @@ namespace API.Controllers
                             " WHERE InvestmentInitId = a.Id" +
                             " ORDER BY Priority DESC" +
                             " )" +
-                            " )";
+                            " ) " +
+                            " AND b.Id IN (  " +
+                            " (  " +
+                            " SELECT TOP 1 (id)  " +
+                            " FROM InvestmentRec " +
+                            " WHERE InvestmentInitId = a.Id  " +
+                            " ORDER BY Priority DESC  " +
+                            "  )  " +
+                            "  ) ";
 
                 if (dt.FromDate != null && dt.ToDate != null)
                 {
