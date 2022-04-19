@@ -1,0 +1,1010 @@
+<style>
+    @media screen and (min-width: 0px) and (max-width: 450px) {
+        #longHead {
+            display: none;
+        }
+    }
+    
+    @media screen and (min-width: 450px) and (max-width: 4000px) {
+        #shortHead {
+            display: none;
+        }
+    }
+</style>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <form novalidate autocomplete="off" #investmentCancelForm="ngForm" (submit)="onSubmit(investmentCancelForm)">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h3 class="card-title">Investment Approval</h3>
+                                </div>
+                                <div class="col-sm-1">
+                                    <button class="btn btn-success btn-block" type="submit" [disabled]="investmentCancelForm.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                </div>
+                                <div class="col-sm-1">
+                                    <button class="btn btn-info btn-block" type="button" (click)="getInvestmentApproved()"><i class="fa fa-search" ></i>Search</button>
+                                </div>
+                                <div class="col-sm-1">
+                                    <button class="btn btn-danger  btn-block" type="button" (click)="resetPage(investmentCancelForm)"><i class="fa fa-undo"></i>Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-1">
+                                        <label>Reference</label>
+                                        <span style="color:red;">*</span>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input class="form-control" id="id" name="id" #id="ngModel" [(ngModel)]="investmentCancelService.investmentCancelFormData.id" readonly style="display: none;" required>
+                                        <input class="form-control clickable" placeholder="Please Double Click Here" (dblclick)="getInvestmentInit()" id="referenceNo" name="referenceNo" #referenceNo="ngModel" [(ngModel)]="investmentCancelService.investmentCancelFormData.referenceNo" readonly
+                                            required>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <label>Propose For</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input class="form-control" id="proposeFor" name="proposeFor" #proposeFor="ngModel" [(ngModel)]="investmentCancelService.investmentCancelFormData.proposeFor" readonly>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <label>Donation Type</label>
+                                    </div>
+                                    <div class="col-md-2"> <select class="form-control" [disabled]=true id="donationId" name="donationId" #donationId="ngModel" [(ngModel)]="investmentCancelService.investmentCancelFormData.donationId">
+                                                <option  [ngValue]="null">Select Donation Type</option>
+                                                <option *ngFor="let a of donations" [value]="a.id">{{a.donationTypeName}}</option>
+                                            </select>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <label>Donation To</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input class="form-control" id="donationTo" name="donationTo" #donationTo="ngModel" [(ngModel)]="investmentCancelService.investmentCancelFormData.donationTo" readonly>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <fieldset *ngIf="investmentCancelService.investmentCancelFormData.donationTo=='Doctor'">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h6 class=""><strong>Doctor Profile</strong></h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Doctor Name</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" id="id" name="id" #id="ngModel" [(ngModel)]="investmentCancelService.investmentDoctorFormData.id" readonly style="display: none;">
+                                            <input class="form-control" name="doctorName" readonly id="doctorName" #doctorId="ngModel" [(ngModel)]="investmentCancelService.investmentDoctorFormData.doctorName">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Doctor Id</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="doctorId" readonly id="doctorId" #doctorId="ngModel" [(ngModel)]="investmentCancelService.investmentDoctorFormData.doctorId">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Degree</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="degree" readonly id="degree" name="degree" #degree="ngModel" [(ngModel)]="investmentCancelService.investmentDoctorFormData.degree">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Designation</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="designation" readonly id="designation" name="designation" #designation="ngModel" [(ngModel)]="investmentCancelService.investmentDoctorFormData.designation">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Institution</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="designation" readonly id="institutionId" name="institutionId" #institutionId="ngModel" [(ngModel)]="investmentCancelService.investmentDoctorFormData.institutionId">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Doctor Category</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="doctorCategory" id="doctorCategory" #doctorCategory="ngModel" [(ngModel)]="investmentCancelService.investmentDoctorFormData.doctorCategory" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Address</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="address" readonly id="address" name="address" #address="ngModel" [(ngModel)]="investmentCancelService.investmentDoctorFormData.address">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Doctor Type</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" readonly name="doctorType" id="doctorType" #doctorType="ngModel" [(ngModel)]="investmentCancelService.investmentDoctorFormData.doctorType">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>No. Of Prac. Day/ Month</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" readonly id="practiceDayPerMonth" name="practiceDayPerMonth" #practiceDayPerMonth="ngModel" [(ngModel)]="investmentCancelService.investmentDoctorFormData.practiceDayPerMonth">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>No. Of Patients Day</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" readonly id="patientsPerDay" name="patientsPerDay" #patientsPerDay="ngModel" [(ngModel)]="investmentCancelService.investmentDoctorFormData.patientsPerDay">
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset *ngIf="investmentCancelService.investmentCancelFormData.donationTo=='Institution'">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h6 class=" "><strong>Institution Profile</strong></h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Institution </label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" id="institutionName" name="institutionName" #institutionName="ngModel" [(ngModel)]="investmentCancelService.investmentInstitutionFormData.institutionName" readonly>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Responsible Doctor</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" id="responsibleDoctorName" name="responsibleDoctorName" #responsibleDoctorName="ngModel" [(ngModel)]="investmentCancelService.investmentInstitutionFormData.responsibleDoctorName" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Address</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="address" id="address" #address="ngModel" [(ngModel)]="investmentCancelService.investmentInstitutionFormData.address" readonly>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Institution Type</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="institutionType" id="institutionType" #institutionType="ngModel" [(ngModel)]="investmentCancelService.investmentInstitutionFormData.institutionType" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>No. Of Bed</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="noOfBed" id="noOfBed" #noOfBed="ngModel" [(ngModel)]="investmentCancelService.investmentInstitutionFormData.noOfBed" readonly>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Department/ Unit</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="departmentUnit" id="departmentUnit" #departmentUnit="ngModel" [(ngModel)]="investmentCancelService.investmentInstitutionFormData.departmentUnit" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset *ngIf="investmentCancelService.investmentCancelFormData.donationTo=='Campaign'">
+
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h6 class=" "><strong>Campaign Info</strong></h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Campaign Name</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="campaignName" id="campaignName" #campaignName="ngModel" [(ngModel)]="investmentCancelService.investmentCampaignFormData.campaignName" readonly>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Sub-Campaign Name</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="subCampaignName" id="subCampaignName" #subCampaignName="ngModel" [(ngModel)]="investmentCancelService.investmentCampaignFormData.subCampaignName" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Campaign Start date</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="subCampStartDate" #subCampStartDate="ngModel" [(ngModel)]="investmentCancelService.investmentCampaignFormData.subCampStartDate" readonly>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Campaign End Date</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="subCampEndDate" #subCampEndDate="ngModel" [(ngModel)]="investmentCancelService.investmentCampaignFormData.subCampEndDate" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label> Doctor</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="doctorName" id="doctorName" #doctorName="ngModel" [(ngModel)]="investmentCancelService.investmentCampaignFormData.doctorName" readonly>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Doctor ID</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="doctorId" id="doctorId" #doctorId="ngModel" [(ngModel)]="investmentCancelService.investmentCampaignFormData.doctorId" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+
+                                        <div class="col-md-2">
+                                            <label>Institution Name</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="institutionName" id="institutionName" #institutionName="ngModel" [(ngModel)]="investmentCancelService.investmentCampaignFormData.institutionName" readonly>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label> Institution ID</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="institutionId" id="institutionId" #institutionId="ngModel" [(ngModel)]="investmentCancelService.investmentCampaignFormData.institutionId" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <table class="table  table-bordered">
+                                            <tr class="HeaderRow">
+                                                <td>Product Code</td>
+                                                <td>Product Name</td>
+                                                <!-- <td></td> -->
+                                            </tr>
+                                            <tr *ngFor="let a of campaignDtlProducts">
+                                                <td>
+                                                    {{a.productInfo.productCode}}
+                                                </td>
+                                                <td>
+                                                    {{a.productInfo.productName}}
+                                                </td>
+                                                <!-- <td>
+                                                    Details
+                                                </td> -->
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset *ngIf="investmentCancelService.investmentCancelFormData.donationTo=='Bcds'">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h6 class=" "><strong>BCDS</strong></h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>BCDS </label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="bcdsName" id="bcdsName" #bcdsName="ngModel" [(ngModel)]="investmentCancelService.investmentBcdsFormData.bcdsName" readonly>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Responsible Doctor</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" id="responsibleDoctorNameBcds" name="responsibleDoctorNameBcds" #responsibleDoctorNameBcds="ngModel" [(ngModel)]="investmentCancelService.investmentBcdsFormData.responsibleDoctorName" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>BCDS Address</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="bcdsAddress" id="bcdsAddress" #bcdsAddress="ngModel" [(ngModel)]="investmentCancelService.investmentBcdsFormData.bcdsAddress" readonly>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>No. Of Members</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="noOfMember" id="noOfMember" #noOfMember="ngModel" [(ngModel)]="investmentCancelService.investmentBcdsFormData.noOfMember" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset *ngIf="investmentCancelService.investmentCancelFormData.donationTo=='Society'">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h6 class=" "><strong>Society</strong></h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Society Id</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" id="societyName" name="societyName" #societyName="ngModel" [(ngModel)]="investmentCancelService.investmentSocietyFormData.societyName" readonly>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Responsible Doctor</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" id="responsibleDoctorNameSoc" name="responsibleDoctorNameSoc" #responsibleDoctorNameSoc="ngModel" [(ngModel)]="investmentCancelService.investmentSocietyFormData.responsibleDoctorName" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Society Address</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="societyAddress" id="societyAddress" #societyAddress="ngModel" [(ngModel)]="investmentCancelService.investmentSocietyFormData.societyAddress" readonly>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>No. Of Members</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="noOfMembers" id="noOfMember" #noOfMember="ngModel" [(ngModel)]="investmentCancelService.investmentSocietyFormData.noOfMember" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset *ngIf="investmentCancelService.investmentCancelFormData.donationId==4">
+                                <div class="form-group">
+                                    <legend>Add Donated Medicine</legend>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Product</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <ng-select [virtualScroll]="true" [items]="medicineProducts" bindLabel="productName" bindValue="id" placeholder="Select Product" id="productId" name="productId" #productId="ngModel" [(ngModel)]="investmentCancelService.investmentMedicineProdFormData.productId"
+                                                [class.invalid]="productId.invalid && productId.touched">
+                                            </ng-select>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <label>Quantity</label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input class="form-control" [disabled]="isInvOther && !isAdmin" placeholder="Box Quantity" name="boxQuantity" id="boxQuantity" #boxQuantity="ngModel" [(ngModel)]="investmentCancelService.investmentMedicineProdFormData.boxQuantity" [pattern]="numberPattern">
+                                            <div class="invalid-feedback" *ngIf="boxQuantity.errors?.pattern">Only numeric value</div>
+                                        </div>
+                                        <div class="col-md-2" *ngIf="isValid && !isInvOther ">
+                                            <button class="btn btn-primary btn-lg btn-block" type="button" (click)="insertInvestmentMedicineProd()"><i class="fa fa-plus"></i>&nbsp; Add</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <table class="table table-bordered">
+                                        <tr class="HeaderRow">
+                                            <td>Product Name</td>
+                                            <td>Box Quantity</td>
+                                            <td>TP Vat</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr *ngFor="let a of investmentMedicineProds">
+                                            <td>
+                                                {{a.medicineProduct.productName}}
+                                            </td>
+                                            <td>
+                                                {{a.boxQuantity}}
+                                            </td>
+                                            <td>
+                                                {{a.tpVat}}
+                                            </td>
+                                            <td>
+                                                <input type="button" *ngIf="sbu==this.investmentCancelService.investmentCancelFormData.sbu" (click)="removeInvestmentMedicineProd(a)" value="Remove">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h6 class=" "><strong>Investment Details &nbsp;&nbsp; &nbsp;&nbsp;<b style="color: rgb(255, 81, 0);">Donation Type: {{donationName}}</b></strong></h6>
+                                            <h6> </h6>
+                                        </div>
+                                        <div class="col-sm-2"></div>
+                                    </div>
+                                </div>
+                                <div class="form-group" *ngIf="isBudgetVisible">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <table class="table  table-bordered" style="font-weight: bold;font-size: 12px;">
+                                                    <tr id="longHead">
+                                                        <td>
+                                                            Trns. Limit
+                                                        </td>
+                                                        <td>
+                                                            {{budgetCeiling.amountPerTransacion}}
+                                                        </td>
+                                                        <td>
+                                                            Ceiling/ month
+                                                        </td>
+                                                        <td>
+                                                            {{budgetCeiling.amountPerMonth}}
+                                                        </td>
+                                                        <td>
+                                                            Current Spend
+                                                        </td>
+                                                        <td style="color: red;">
+                                                            {{budgetCeiling.monthlyExpense}}
+                                                        </td>
+                                                        <td>
+                                                            Rem. Amt.
+                                                        </td>
+                                                        <td style="color: green;">
+                                                            {{budgetCeiling.monthlyRemaining}}
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr id="shortHead">
+                                                        <td>
+                                                            Trns. Limit
+                                                        </td>
+                                                        <td>
+                                                            {{budgetCeiling.amountPerTransacion}}
+                                                        </td>
+                                                        <td>
+                                                            CLG./ month
+                                                        </td>
+                                                        <td>
+                                                            {{budgetCeiling.amountPerMonth}}
+                                                        </td>
+                                                        <td>
+                                                            Curr. Spend
+                                                        </td>
+                                                        <td style="color: red;">
+                                                            {{budgetCeiling.monthlyExpense}}
+                                                        </td>
+                                                        <td>
+                                                            Rem. Amt.
+                                                        </td>
+                                                        <td style="color: green;">
+                                                            {{budgetCeiling.monthlyRemaining}}
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group" *ngIf="isBudgetForCampaignVisible">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <table class="table  table-bordered" style="font-weight: bold;font-size: 12px;">
+                                                    <tr id="longHead">
+                                                        <td>
+                                                            Budget
+                                                        </td>
+                                                        <td>
+                                                            {{budgetCeilingForCampaign.campaignBudget}}
+                                                        </td>
+                                                        <td>
+                                                            Current Spend
+                                                        </td>
+                                                        <td style="color: red;">
+                                                            {{budgetCeilingForCampaign.totalExpense}}
+                                                        </td>
+                                                        <td>
+                                                            Rem. Amt.
+                                                        </td>
+                                                        <td style="color: green;">
+                                                            {{budgetCeilingForCampaign.totalRemaining}}
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <table class="table  table-bordered">
+                                                    <tr id="longHead" class="HeaderRow">
+                                                        <td>Invest Type</td>
+                                                        <td>Amount</td>
+                                                        <td>Commitment All</td>
+                                                        <td>Commitment Own</td>
+                                                        <td>Share All</td>
+                                                        <td>Share Own</td>
+                                                    </tr>
+                                                    <tr id="shortHead" class="HeaderRow">
+                                                        <td>Inv Type</td>
+                                                        <td>Amt</td>
+                                                        <td>Cmmt All</td>
+                                                        <td>Cmmt Own</td>
+                                                        <td>Share All</td>
+                                                        <td>Share Own</td>
+                                                    </tr>
+                                                    <tr *ngFor="let a of lastFiveInvestmentDetail">
+                                                        <td>
+                                                            {{a.donationShortName}}
+                                                        </td>
+                                                        <td>
+                                                            {{a.investmentAmount}}
+                                                        </td>
+                                                        <td>
+                                                            {{a.comtSharePrcntAll}}
+                                                        </td>
+                                                        <td>
+                                                            {{a.comtSharePrcnt}}
+                                                        </td>
+                                                        <td>
+                                                            {{a.prescribedSharePrcntAll}}
+                                                        </td>
+                                                        <td>
+                                                            {{a.prescribedSharePrcnt}}
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <label>Prop. Inv.</label>
+                                                        <span style="color:red;">*</span>
+                                                    </div>
+                                                    <div class="col-md-10">
+                                                        <input class="form-control" [disabled]="(isInvOther && !isAdmin) || investmentCancelService.investmentCancelFormData.donationId==4" required name="proposedAmount" placeholder="Amount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.proposedAmount"
+                                                            [pattern]="numberPattern">
+                                                        <div class="invalid-feedback" *ngIf="proposedAmount.errors?.pattern">Only numeric value</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <label>Purpose</label>
+                                                        <span style="color:red;">*</span>
+                                                    </div>
+                                                    <div class="col-md-10">
+                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" required name="purpose" id="purpose" #purpose="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.purpose">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <label>Payment Freq</label>
+                                                        <span style="color:red;">*</span>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <select class="form-control" [disabled]="isInvOther && !isAdmin" id="paymentFreq" name="paymentFreq" #paymentFreq="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.paymentFreq" [class.invalid]="paymentFreq.invalid && paymentFreq.touched">
+                                                            <option  [ngValue]="null">Select Payment Freq</option>
+                                                            <option value="Monthly">Monthly</option>
+                                                            <option value="Quarterly">Quarterly</option>
+                                                            <option value="Half Yearly">Half Yearly</option>
+                                                            <option value="Yearly">Yearly</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <label>Payment Dur.</label>
+                                                        <span style="color:red;">*</span>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" placeholder="Calender" (onHidden)="changeDateInDetail()" name="fromDate" #fromDate="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched"
+                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentCancelForm)" [minDate]="minDate" [maxDate]="maxDate">
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" placeholder="Calender" (onHidden)="changeDateInDetail()" name="toDate" #toDate="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched"
+                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentCancelForm)" [minDate]="minDate" [maxDate]="maxDate">
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label>Pay. Tot. Mon.</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <input class="form-control" placeholder="Total Month" name="totalMonth" id="totalMonth" #totalMonth="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.totalMonth" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <label>Commit. Dur.</label>
+                                                        <span style="color:red;">*</span>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" placeholder="Calender" (onHidden)="changeCommitmentDateInDetail()" name="commitmentFromDate" #commitmentFromDate="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.commitmentFromDate"
+                                                            [class.invalid]="commitmentFromDate.invalid && commitmentFromDate.touched" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCommitmentCompare(investmentCancelForm)" [minDate]="minDate"
+                                                            [maxDate]="maxDate">
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" placeholder="Calender" (onHidden)="changeCommitmentDateInDetail()" name="commitmentToDate" #commitmentToDate="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.commitmentToDate"
+                                                            [class.invalid]="commitmentToDate.invalid && commitmentToDate.touched" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCommitmentCompare(investmentCancelForm)" [minDate]="minDate"
+                                                            [maxDate]="maxDate">
+
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label>Com. Tot. Mon.</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <input class="form-control" placeholder="Total Month" name="commitmentTotalMonth" id="commitmentTotalMonth" #commitmentTotalMonth="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.commitmentTotalMonth" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <label>Commitment:</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label>All SBU </label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" name="commitmentAllSBU" id="commitmentAllSBU" #commitmentAllSBU="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.commitmentAllSBU" [pattern]="numberPattern">
+                                                        <div class="invalid-feedback" *ngIf="commitmentAllSBU.errors?.pattern">Only numeric value</div>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label>%/</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label>Own SBU</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" name="commitmentOwnSBU" id="commitmentOwnSBU" #commitmentOwnSBU="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.commitmentOwnSBU" [pattern]="numberPattern">
+                                                        <div class="invalid-feedback" *ngIf="commitmentOwnSBU.errors?.pattern">Only numeric value</div>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label>%</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <label>Payment Method</label>
+                                                    </div>
+                                                    <div class="col-md-10">
+                                                        <select class="form-control" (change)="onPaymentMethod()" [disabled]="isInvOther && !isAdmin" name="paymentMethod" id="paymentMethod" #paymentMethod="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.paymentMethod">
+                                                        
+                                                            <option  [ngValue]="null">Select Payment Method</option>
+                                                            <option value="Cash">Cash</option>
+                                                            <option value="Cheque">Cheque</option>
+                                                            <option value="DD">DD</option>
+                                                            <option value="TT">TT</option>
+                                                            <option value="PO">PO</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <label>Depot</label>
+                                                        <span style="color:red;" *ngIf="isDepotRequire">*</span>
+                                                    </div>
+                                                    <div class="col-md-10">
+                                                        <ng-select [virtualScroll]="true" [disabled]="(isInvOther && !isAdmin) || !isDepotRequire" [items]="depots" bindLabel="depotName" bindValue="depotCode" placeholder="Select Depot" name="depotCode" id="depotCode" #depotCode="ngModel" [(ngModel)]="investmentCancelService.investmentDepotFormData.depotCode">
+                                                        </ng-select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <label>Cheque Title</label>
+                                                    </div>
+                                                    <div class="col-md-10">
+                                                        <input class="form-control" maxlength="100" [disabled]="isInvOther && !isAdmin" name="chequeTitle" id="chequeTitle" #chequeTitle="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.chequeTitle">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h6 class=" "><strong>Targeted Products of SBU</strong></h6>
+                                        </div>
+                                        <div class="col-sm-2"></div>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Product</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <!-- <select class="form-control " id="productId" name="productId" #productId="ngModel" [(ngModel)]="investmentCancelService.investmentTargetedProdFormData.productId" [class.invalid]="productId.invalid && productId.touched">
+                                                <option  [ngValue]="null">Select Product</option>
+                                                <option *ngFor="let product of products" [value]="product.id">{{product.productName}}</option>
+                                            </select> -->
+                                            <ng-select [virtualScroll]="true" [items]="products" bindLabel="productName" bindValue="id" placeholder="Select Product" id="productId" name="productId" #productId="ngModel" [(ngModel)]="investmentCancelService.investmentTargetedProdFormData.productId"
+                                                [class.invalid]="productId.invalid && productId.touched">
+                                            </ng-select>
+                                        </div>
+                                        <div class="col-md-3"></div>
+                                        <div class="col-md-2">
+                                            <button class="btn btn-primary btn-lg btn-block" type="button" (click)="addInvestmentTargetedProd()"><i class="fa fa-plus"></i>&nbsp; Add</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <table class="table  table-bordered">
+                                        <tr class="HeaderRow">
+                                            <td>Product Name</td>
+                                            <td>SBU</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr *ngFor="let a of investmentTargetedProds">
+                                            <td>
+                                                {{a.productInfo.productName}}
+                                            </td>
+                                            <td>
+                                                {{a.productInfo.sbuName}}
+                                            </td>
+                                            <td>
+                                                <input type="button" *ngIf="sbu==a.sbu" (click)="removeInvestmentTargetedProd(a)" value="Remove">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h6 class=" "><strong>Targeted Group</strong></h6>
+                                        </div>
+                                        <div class="col-sm-2"></div>
+                                        <div class="col-sm-4"> <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="getSummaryDetail()" style="width: 100px;"><i class="fa fa-eye"></i>View Detail</button></div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <table class="table  table-bordered">
+                                        <tr class="HeaderRow">
+                                            <td>Market Code</td>
+                                            <td>Market Name</td>
+                                            <td>Authority</td>
+                                            <td>Status</td>
+                                        </tr>
+                                        <tr *ngFor="let a of investmentTargetedGroups">
+                                            <td>
+                                                {{a.marketCode}}
+                                            </td>
+                                            <td>
+                                                {{a.marketName}}
+                                            </td>
+                                            <td>
+                                                {{a.approvalAuthorityName}}
+                                            </td>
+                                            <td>
+                                                {{a.recStatus}}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h6 class=" "><strong>Approval</strong></h6>
+                                        </div>
+                                        <div class="col-sm-2"></div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Approval Status</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-control" id="recStatus" name="recStatus" #recStatus="ngModel" [(ngModel)]="investmentCancelService.investmentCancelCommentFormData.recStatus" [class.invalid]="recStatus.invalid && recStatus.touched" required>  
+                                                <option  [ngValue]="null">Select Status</option>
+                                                <option *ngIf=" !isInvOther || isAdmin" value="Approved">Approved</option>
+                                                <option *ngIf="!isInvOther || isAdmin" value="Not Approved">Not Approved</option>
+                                                <option  value="Recommended">Recommended</option>
+                                                <option  value="Not Recommended">Not Recommended</option>
+                                                </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Comments</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="comments" id="comments" #comments="ngModel" [(ngModel)]="investmentCancelService.investmentCancelCommentFormData.comments">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </fieldset>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</section>
+<ng-template #investmentInitSearchModal>
+    <div class="modal-header" style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));color: black;">
+        <h4 class="modal-title pull-left">Investment</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="InvestmentInitSearchModalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" style="padding: 20px 30px 20px 30px;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-2">
+                        </div>
+                        <div class="col-md-6">
+                            <input name="filterText" class="form-control m-input Searchbox" type="text" [(ngModel)]="searchText" placeholder="Search..">
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-danger" type="button" (click)="resetSearch()"><i class="fa fa-undo"></i>&nbsp; Reset</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive" style="border: 1px solid #bed2c9; width: 100%;">
+                            <table class="table table-bordered table-responsive table-hover table-striped">
+                                <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));">
+                                    <tr class="HeaderRow">
+                                        <th scope="col" style="width: 7%">Action</th>
+                                        <th scope="col" style="width: 0;display:none;">Id</th>
+                                        <th scope="col" style="width: 9%">Reference No</th>
+                                        <th scope="col" style="width: 8%">Propose For</th>
+                                        <th scope="col" style="width: 8%">Inv. Type</th>
+                                        <th scope="col" style="width: 8%">Market</th>
+                                        <th scope="col" style="width: 8%">Donation To</th>
+                                        <th scope="col" style="width: 8%" [hidden]="!remainingSBUShow">Remaining SBU</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let a of investmentInits | filter: searchText">
+                                        <td>
+                                            <button class="btn btn-sm btn-embossed btn-success" (click)="selectInvestmentInit(a)"><i class="fa fa-check" aria-hidden="true"></i>Select</button>
+                                        </td>
+                                        <td style="display:none;">{{a.id}}</td>
+                                        <td>{{a.referenceNo}}</td>
+                                        <td>{{a.proposeFor}}</td>
+                                        <td>{{a.donation.donationTypeName}}</td>
+                                        <td>{{a.marketName}}</td>
+                                        <td>{{a.donationTo}}</td>
+                                        <td [hidden]="!remainingSBUShow">{{a.remainingSBU}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<ng-template #investmentCancelSearchModal>
+    <div class="modal-header" style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));color: black;">
+        <h4 class="modal-title pull-left">Investment Approval</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="investmentCancelSearchModalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" style="padding: 20px 30px 20px 30px;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-2">
+                        </div>
+                        <div class="col-md-6">
+                            <input name="filterText" class="form-control m-input Searchbox" type="text" [(ngModel)]="searchText" placeholder="Search..">
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-danger" type="button" (click)="resetSearch()"><i class="fa fa-undo"></i>&nbsp; Reset</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive" style="border: 1px solid #bed2c9; width: 100%;">
+                            <table class="table table-bordered table-responsive table-hover table-striped">
+                                <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));">
+                                    <tr class="HeaderRow">
+                                        <th scope="col" style="width: 7%">Action</th>
+                                        <th scope="col" style="width: 0;display:none;">Id</th>
+                                        <th scope="col" style="width: 9%">Reference No</th>
+                                        <th scope="col" style="width: 8%">Propose For</th>
+                                        <th scope="col" style="width: 8%">Inv. Type</th>
+                                        <th scope="col" style="width: 8%">Market</th>
+                                        <th scope="col" style="width: 8%">Donation To</th>
+                                        <!-- <th scope="col" style="width: 8%" [hidden]="!userRole=='M'">Remaining SBU</th> -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let a of investmentInits  | filter: searchText">
+                                        <td>
+                                            <button class="btn btn-sm btn-embossed btn-success" (click)="selectinvestmentCancel(a)"><i class="fa fa-check" aria-hidden="true"></i>Select</button>
+
+                                        </td>
+                                        <td style="display:none;">{{a.id}}</td>
+                                        <td>{{a.referenceNo}}</td>
+                                        <td>{{a.proposeFor}}</td>
+                                        <td>{{a.donation.donationTypeName}}</td>
+                                        <td>{{a.marketName}}</td>
+                                        <td>{{a.donationTo}}</td>
+                                        <!-- <td [hidden]="!userRole=='M'">{{a.remainingSBU}}</td> -->
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!-- <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
+    <p style="color: black">Please Wait. </p>
+</ngx-spinner>

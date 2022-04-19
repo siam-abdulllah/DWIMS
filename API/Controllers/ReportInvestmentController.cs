@@ -469,7 +469,7 @@ namespace API.Controllers
                             " FROM DepotPrintTrack, MedicineDispatch " +
                             " ) [SAPRefNo] " +
 
-                         
+
                             " FROM investmentinit a" +
                             " INNER JOIN InvestmentDoctor invS ON a.Id=invS.InvestmentInitId" +
                             " INNER JOIN DoctorInfo s ON invS.DoctorId=s.Id" +
@@ -484,22 +484,22 @@ namespace API.Controllers
                             " AND a.DonationTo <> 'Campaign'" +
                             " AND a.DataStatus = 1" +
                             " AND a.Confirmation = 1" +
-                            " AND rc.Id IN (" +
-                            " (" +
-                            " SELECT TOP 1 (id)" +
+                            " AND rc.Id = (" +
+                            //" (" +
+                            " SELECT id" +
                             " FROM InvestmentRecComment" +
-                            " WHERE InvestmentInitId = a.Id" +
-                            " ORDER BY Priority DESC" +
-                            " )" +
-                            " ) " +
-                            " AND b.Id IN (  " +
-                            " (  " +
-                            " SELECT TOP 1 (id)  " +
-                            " FROM InvestmentRec " +
-                            " WHERE InvestmentInitId = a.Id  " +
-                            " ORDER BY Priority DESC  " +
-                            "  )  " +
-                            "  ) ";
+                            " WHERE InvestmentInitId = a.Id AND CompletionStatus=1 AND RecStatus = 'Approved'" +
+                            //" ORDER BY Priority DESC" +
+                           // " )" +
+                            " ) AND b.Priority=rc.Priority";
+                            //" AND b.Id IN (  " +
+                            //" (  " +
+                            //" SELECT TOP 1 (id)  " +
+                            //" FROM InvestmentRec " +
+                            //" WHERE InvestmentInitId = a.Id  " +
+                            //" ORDER BY Priority DESC  " +
+                            //"  )  " +
+                            //"  ) ";
 
                 if (dt.FromDate != null && dt.ToDate != null)
                 {
