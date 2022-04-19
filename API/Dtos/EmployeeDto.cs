@@ -25,5 +25,7 @@ namespace API.Dtos
         public string TerritoryName { get; set; }
         public string DivisionId { get; set; }
         public string DivisionName { get; set; }
+        public string SBU { get; set; }
+        public string SBUName { get; set; }
     }
 }

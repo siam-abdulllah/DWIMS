@@ -11,12 +11,19 @@ namespace Core.Entities
         [ForeignKey("SubCampaignId")]
         public SubCampaign SubCampaign { get; set; }
         public long Budget { get; set; }
-        public DateTime SubCampStartDate { get; set; }
-        public DateTime SubCampEndDate { get; set; }
+        public DateTimeOffset SubCampStartDate { get; set; }
+        public DateTimeOffset SubCampEndDate { get; set; }
         
         [ForeignKey("DtlId")]
         public virtual IEnumerable<CampaignDtlProduct> CampaignDtlProducts { get; set; }
         
         
+    }
+    public class SubCampainDtl
+    {
+        public int SubCampId { get; set; }
+        public string SBU { get; set; }
+        public string SubCampaignName { get; set; }
+
     }
 }

@@ -9,25 +9,35 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-bcds-info',
   templateUrl: './bcds-info.component.html',
-  styleUrls: ['./bcds-info.component.scss']
 })
 export class BcdsInfoComponent implements OnInit {
 
   @ViewChild('search', {static: false}) searchTerm: ElementRef;
   genParams: GenericParams;
+  numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
   bcdsInfo: IBcdsInfo[];
+  searchText = '';
+  config: any;
   totalCount = 0;
-  constructor(public masterService: MasterService, private router: Router, private toastr: ToastrService) { }
+  constructor(public masterService: MasterService, private router: Router, private toastr: ToastrService) {
+   }
 
   ngOnInit() {
+    this.resetPage();
     this.getBcds();
   }
 
   getBcds(){
     this.masterService.getBcdsList().subscribe(response => {
-      debugger;
+      const params = this.masterService.getGenParams();
       this.bcdsInfo = response.data;
       this.totalCount = response.count;
+      this.config = {
+        currentPage: params.pageIndex,
+        itemsPerPage: params.pageSize,
+        totalItems:this.totalCount,
+        };
+
     }, error => {
         console.log(error);
     });
@@ -66,12 +76,50 @@ export class BcdsInfoComponent implements OnInit {
     );
   }
 
+  resetSearch(){
+    this.searchText = '';
+}
+
+onPageChanged(event: any){
+  const params = this.masterService.getGenParams();
+  if (params.pageIndex !== event)
+  {
+    params.pageIndex = event;
+    this.masterService.setGenParams(params);
+    this.getBcds();
+  }
+}
+
+onSearch(){
+  const params = this.masterService.getGenParams();
+  params.search = this.searchTerm.nativeElement.value;
+  params.pageIndex = 1;
+  this.masterService.setGenParams(params);
+  this.getBcds();
+}
+
   populateForm(selectedRecord: IBcdsInfo) {
     this.masterService.bcdsFormData = Object.assign({}, selectedRecord);
   }
+  // resetForm(form: NgForm) {
+  //   form.form.reset();
+  //   this.masterService.bcdsFormData = new BcdsInfo();
+  // }
   resetForm(form: NgForm) {
-    form.form.reset();
-    this.masterService.bcdsFormData = new BcdsInfo();
+    this.searchText = '';
+    form.reset();
+    this.config = {
+      currentPage: 1,
+      itemsPerPage: 10,
+      totalItems:50,
+      };
   }
-
+  resetPage() {
+    this.masterService.bcdsFormData=new BcdsInfo();
+    this.config = {
+      currentPage: 1,
+      itemsPerPage: 10,
+      totalItems:50,
+      };
+  }
 }

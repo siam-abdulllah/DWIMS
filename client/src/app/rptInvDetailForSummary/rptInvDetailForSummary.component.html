@@ -1,0 +1,947 @@
+<style>
+    .form-control:disabled,
+    .form-control[readonly] {
+        background-color: #ffffff;
+        opacity: 1;
+    }
+    
+    select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        text-indent: 1px;
+        text-overflow: '';
+    }
+    
+    .form-control {
+        color: black;
+    }
+</style>
+<section class="content" id="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <form novalidate autocomplete="off" #investmentInitForm="ngForm" (submit)="onSubmit(investmentInitForm)">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <h3 class="card-title">Investment Detail Report</h3>
+                                </div>
+                                <!-- <div class="col-sm-1">
+                                    <button *ngIf="!isSubmitted" class="btn btn-warning btn-lg btn-block" type="button" (click)="confirmSubmission()" [disabled]="investmentInitForm.invalid"><i class="fa fa-save"></i>&nbsp; Submit</button>
+                                </div>
+                                <div class="col-sm-1">
+                                    <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="investmentInitForm.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                </div>-->
+                                <!-- <div class="col-sm-2">
+                                    <button class="btn btn-info btn-lg btn-block" type="button" (click)="printPDF()"><i class="fa fa-search" ></i>Search</button>
+                                </div> -->
+                                <div class="col-sm-2">
+                                    <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetPage(investmentInitForm)"><i class="fa fa-window-close"></i>&nbsp;&nbsp;&nbsp;Close Report</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Propose For</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <!-- <select class="form-control" id="proposeFor" [disabled]="true" name="proposeFor" #proposeFor="ngModel" [(ngModel)]="rptInvDetailForService.investmentInitFormData.proposeFor" required [class.invalid]="proposeFor.invalid && proposeFor.touched" readonly>
+                                            <option  [ngValue]="null">Select Propose For</option>
+                                            <option value="BrandCampaign">Brand Campaign</option>
+                                            <option value="Others">Others</option>
+                                        </select> -->
+                                        <input class="form-control" id="proposeFor" [disabled]="true" name="proposeFor" #proposeFor="ngModel" [(ngModel)]="rptInvDetailForService.investmentInitFormData.proposeFor" required [class.invalid]="proposeFor.invalid && proposeFor.touched" readonly>
+
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Reference</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input class="form-control" id="id" name="id" #id="ngModel" [(ngModel)]="rptInvDetailForService.investmentInitFormData.id" readonly style="display: none;">
+                                        <input class="form-control" placeholder="Auto Generated" id="referenceNo" name="referenceNo" #referenceNo="ngModel" [(ngModel)]="rptInvDetailForService.investmentInitFormData.referenceNo" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Donation Type</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select class="form-control" [disabled]="true" id="donationId" name="donationId" #donationId="ngModel" [(ngModel)]="rptInvDetailForService.investmentInitFormData.donationId" required [class.invalid]="donationId.invalid && donationId.touched" readonly>
+                                            <option  [ngValue]="null">Select Donation Type</option>
+                                            <option *ngFor="let a of donations" [value]="a.id">{{a.donationTypeName}}</option>
+                                            <!-- <option value="Donation">Donation</option>
+                                            <option value="Gift">Gift</option>
+                                            <option value="Honorarium">Honorarium</option> -->
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Donation To</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <!-- <select class="form-control " (change)="onChangeDonationTo()" [disabled]="true" id="donationTo" name="donationTo" #donationTo="ngModel" [(ngModel)]="rptInvDetailForService.investmentInitFormData.donationTo" required [class.invalid]="donationTo.invalid && donationTo.touched"
+                                            readonly>
+                                            <option  [ngValue]="null">Select Donation To</option>
+                                            <option value="Doctor">Doctor</option>
+                                            <option value="Institution">Institution</option>
+                                            <option value="Campaign">Campaign</option>
+                                            <option value="Bcds">Bcds</option>
+                                            <option value="Society">Society</option>
+                                        </select> -->
+                                        <input class="form-control" [disabled]="true" id="donationTo" name="donationTo" #donationTo="ngModel" [(ngModel)]="rptInvDetailForService.investmentInitFormData.donationTo" required [class.invalid]="donationTo.invalid && donationTo.touched" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <fieldset *ngIf="rptInvDetailForService.investmentInitFormData.donationTo=='Doctor'">
+                                <!-- <legend>Doctor Profile</legend> -->
+
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h6 class=""><strong>Doctor Profile</strong></h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Doctor Name</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" id="id" name="id" #id="ngModel" [(ngModel)]="rptInvDetailForService.investmentDoctorFormData.id" readonly style="display: none;">
+                                            <input class="form-control" name="doctorName" readonly id="doctorName" #doctorId="ngModel" [(ngModel)]="rptInvDetailForService.investmentDoctorFormData.doctorName">
+
+                                            <!-- <select class="form-control " (change)="onChangeDoctorInDoc()" name="doctorName" id="doctorName" name="doctorName" #doctorName="ngModel" [(ngModel)]="rptInvDetailForService.investmentDoctorFormData.doctorName">
+                                                <option  [ngValue]="null">Select Doctor</option>
+                                                <option *ngFor="let a of doctors" [value]="a.id">{{a.doctorName}}</option>
+                                            </select> -->
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Doctor Id</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="doctorId" readonly id="doctorId" #doctorId="ngModel" [(ngModel)]="rptInvDetailForService.investmentDoctorFormData.doctorId">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Degree</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="degree" readonly id="degree" name="degree" #degree="ngModel" [(ngModel)]="rptInvDetailForService.investmentDoctorFormData.degree">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Designation</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="designation" readonly id="designation" name="designation" #designation="ngModel" [(ngModel)]="rptInvDetailForService.investmentDoctorFormData.designation">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Institution</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="designation" readonly id="institutionId" name="institutionId" #institutionId="ngModel" [(ngModel)]="rptInvDetailForService.investmentDoctorFormData.institutionId">
+
+                                            <!-- <select class="form-control " (change)="onChangeInstitutionInDoc()" id="institutionId" name="institutionId" #institutionId="ngModel" [(ngModel)]="rptInvDetailForService.investmentDoctorFormData.institutionId">
+                                                <option  [ngValue]="null">Select Institution</option>
+                                                <option *ngFor="let a of institutions" [value]="a.id">{{a.institutionName}}</option>
+                                            </select> -->
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Doctor Category</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="doctorCategory" id="doctorCategory" #doctorCategory="ngModel" [(ngModel)]="rptInvDetailForService.investmentDoctorFormData.doctorCategory" readonly>
+
+                                            <!-- <select class="form-control " name="doctorCategory" id="doctorCategory" #donationId="ngModel" [(ngModel)]="rptInvDetailForService.investmentDoctorFormData.doctorCategory">
+                                            <option  [ngValue]="null">Select Doctor Category</option>
+                                            <option value="Regular">Regular</option>
+                                                <option value="Migratory">Mirgratory</option>
+                                            </select> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Address</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="address" readonly id="address" name="address" #address="ngModel" [(ngModel)]="rptInvDetailForService.investmentDoctorFormData.address">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Doctor Type</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" readonly name="doctorType" id="doctorType" #doctorType="ngModel" [(ngModel)]="rptInvDetailForService.investmentDoctorFormData.doctorType">
+
+                                            <!-- <select class="form-control " name="doctorType" id="doctorType" #doctorType="ngModel" [(ngModel)]="rptInvDetailForService.investmentDoctorFormData.doctorType">
+                                            <option  [ngValue]="null">Select Doctor Type</option>
+                                                 <option value="A">A</option>
+                                                <option value="B">B</option>
+                                                <option value="C">C</option>
+                                            </select> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>No. Of Prac. Day/ Month</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" readonly id="practiceDayPerMonth" name="practiceDayPerMonth" #practiceDayPerMonth="ngModel" [(ngModel)]="rptInvDetailForService.investmentDoctorFormData.practiceDayPerMonth">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>No. Of Patients Day</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" readonly id="patientsPerDay" name="patientsPerDay" #patientsPerDay="ngModel" [(ngModel)]="rptInvDetailForService.investmentDoctorFormData.patientsPerDay">
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset *ngIf="rptInvDetailForService.investmentInitFormData.donationTo=='Institution'">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h6 class=" "><strong>Institution Profile</strong></h6>
+                                        </div>
+                                        <!-- <div class="col-sm-2"></div>
+                                        <div class="col-sm-2" *ngIf="isValid">
+                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentInstitution()"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                        </div>
+                                        <div class="col-sm-2" *ngIf="isValid">
+                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentInstitution()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
+                                        </div> -->
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Institution </label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" id="institutionName" name="institutionName" #institutionName="ngModel" [(ngModel)]="rptInvDetailForService.investmentInstitutionFormData.institutionName" readonly>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Responsible Doctor</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" id="responsibleDoctorName" name="responsibleDoctorName" #responsibleDoctorName="ngModel" [(ngModel)]="rptInvDetailForService.investmentInstitutionFormData.responsibleDoctorName" readonly>
+
+                                            <!-- <select class="form-control " name="responsibleDoctorId" id="responsibleDoctorId" #responsibleDoctorId="ngModel" [(ngModel)]="rptInvDetailForService.investmentInstitutionFormData.responsibleDoctorId">
+                                                <option  [ngValue]="null">Select Doctor</option>
+                                                <option *ngFor="let a of doctors" [value]="a.id">{{a.doctorName}}</option>
+                                            </select> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Address</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="address" id="address" #address="ngModel" [(ngModel)]="rptInvDetailForService.investmentInstitutionFormData.address" readonly>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Institution Type</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="institutionType" id="institutionType" #institutionType="ngModel" [(ngModel)]="rptInvDetailForService.investmentInstitutionFormData.institutionType" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>No. Of Bed</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="noOfBed" id="noOfBed" #noOfBed="ngModel" [(ngModel)]="rptInvDetailForService.investmentInstitutionFormData.noOfBed" readonly>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Department/ Unit</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="departmentUnit" id="departmentUnit" #departmentUnit="ngModel" [(ngModel)]="rptInvDetailForService.investmentInstitutionFormData.departmentUnit" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset *ngIf="rptInvDetailForService.investmentInitFormData.donationTo=='Campaign'">
+
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h6 class=" "><strong>Campaign Info</strong></h6>
+                                        </div>
+                                        <!-- <div class="col-sm-2"></div>
+                                        <div class="col-sm-2" *ngIf="isValid">
+                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentCampaign()"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                        </div>
+                                        <div class="col-sm-2" *ngIf="isValid">
+                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentCampaign()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
+                                        </div> -->
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Campaign Name</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="campaignName" id="campaignName" #campaignName="ngModel" [(ngModel)]="rptInvDetailForService.investmentCampaignFormData.campaignName" readonly>
+
+                                            <!-- <select class="form-control " (change)="onChangeCampaignInCamp()" name="campaignMstId" id="campaignMstId" #campaignMstId="ngModel" [(ngModel)]="rptInvDetailForService.investmentCampaignFormData.campaignMstId">
+                                                <option  [ngValue]="null">Select Campaign</option>
+                                                <option *ngFor="let a of campaignMsts" [value]="a.id">{{a.campaignName}}</option>
+                                            </select> -->
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Sub-Campaign Name</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="subCampaignName" id="subCampaignName" #subCampaignName="ngModel" [(ngModel)]="rptInvDetailForService.investmentCampaignFormData.subCampaignName" readonly>
+
+                                            <!-- <select class="form-control " (change)="onChangeSubCampaignInCamp()" name="campaignDtlId" id="campaignDtlId" #campaignDtlId="ngModel" [(ngModel)]="rptInvDetailForService.investmentCampaignFormData.campaignDtlId">
+                                                    <option  [ngValue]="null">Select Sub-Campaign</option>
+                                                    <option *ngFor="let a of campaignDtls" [value]="a.id">{{a.subCampaign.subCampaignName}}</option>
+                                                </select> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Campaign Start date</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="subCampStartDate" #subCampStartDate="ngModel" [(ngModel)]="rptInvDetailForService.investmentCampaignFormData.subCampStartDate" readonly>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Campaign End Date</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="subCampEndDate" #subCampEndDate="ngModel" [(ngModel)]="rptInvDetailForService.investmentCampaignFormData.subCampEndDate" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label> Doctor</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="doctorName" id="doctorName" #doctorName="ngModel" [(ngModel)]="rptInvDetailForService.investmentCampaignFormData.doctorName" readonly>
+
+                                            <!-- <select class="form-control " name="doctorId" id="doctorId" #doctorId="ngModel" [(ngModel)]="rptInvDetailForService.investmentCampaignFormData.doctorId">
+                                                <option  [ngValue]="null">Select Doctor</option>
+                                                <option *ngFor="let a of doctors" [value]="a.id">{{a.doctorName}}</option>
+                                            </select> -->
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Institution Id</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="institutionName" id="institutionName" #institutionName="ngModel" [(ngModel)]="rptInvDetailForService.investmentCampaignFormData.institutionName" readonly>
+                                            <!-- <select class="form-control " (change)="onChangeInstitutionInInst()" name="institutionId" id="institutionId" #institutionId="ngModel" [(ngModel)]="rptInvDetailForService.investmentCampaignFormData.institutionId">
+                                                <option  [ngValue]="null">Select Institution</option>
+                                                <option *ngFor="let a of institutions" [value]="a.id">{{a.institutionName}}</option>
+                                            </select> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="form-group">
+                                    <div class="form-group">
+                                        <table class="table  table-bordered">
+                                            <tr class="HeaderRow">
+                                                <td>Product Code</td>
+                                                <td>Product Name</td>
+                                                <td></td>
+                                            </tr>
+                                            <tr *ngFor="let a of campaignDtlProducts">
+                                                <td>
+                                                    {{a.productInfo.productCode}}
+                                                </td>
+                                                <td>
+                                                    {{a.productInfo.productName}}
+                                                </td>
+                                                <td>
+                                                    Details
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div> -->
+                            </fieldset>
+                            <fieldset *ngIf="rptInvDetailForService.investmentInitFormData.donationTo=='Bcds'">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h6 class=" "><strong>BCDS</strong></h6>
+                                        </div>
+                                        <!-- <div class="col-sm-2"></div>
+                                        <div class="col-sm-2" *ngIf="isValid">
+                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentBcds()"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                        </div>
+                                        <div class="col-sm-2" *ngIf="isValid">
+                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentBcds()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
+                                        </div> -->
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>BCDS </label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="bcdsName" id="bcdsName" #bcdsName="ngModel" [(ngModel)]="rptInvDetailForService.investmentBcdsFormData.bcdsName" readonly>
+
+                                            <!-- <select class="form-control " (change)="onChangeBcdsInBcds()" name="bcdsId" id="bcdsId" #bcdsId="ngModel" [(ngModel)]="rptInvDetailForService.investmentBcdsFormData.bcdsId">
+                                                <option  [ngValue]="null">Select Bcds</option>
+                                                <option *ngFor="let a of bcds" [value]="a.id">{{a.bcdsName}}</option>
+                                            </select> -->
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Responsible Doctor</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" id="responsibleDoctorNameBcds" name="responsibleDoctorNameBcds" #responsibleDoctorNameBcds="ngModel" [(ngModel)]="rptInvDetailForService.investmentBcdsFormData.responsibleDoctorName" readonly>
+
+                                            <!-- <select class="form-control " name="responsibleDoctorId" id="responsibleDoctorId" #responsibleDoctorId="ngModel" [(ngModel)]="rptInvDetailForService.investmentInstitutionFormData.responsibleDoctorId">
+                                                <option  [ngValue]="null">Select Doctor</option>
+                                                <option *ngFor="let a of doctors" [value]="a.id">{{a.doctorName}}</option>
+                                            </select> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>BCDS Address</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="bcdsAddress" id="bcdsAddress" #bcdsAddress="ngModel" [(ngModel)]="rptInvDetailForService.investmentBcdsFormData.bcdsAddress" readonly>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>No. Of Members</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="noOfMember" id="noOfMember" #noOfMember="ngModel" [(ngModel)]="rptInvDetailForService.investmentBcdsFormData.noOfMember" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset *ngIf="rptInvDetailForService.investmentInitFormData.donationTo=='Society'">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h6 class=" "><strong>Society</strong></h6>
+                                        </div>
+                                        <!-- <div class="col-sm-2"></div>
+                                        <div class="col-sm-2" *ngIf="isValid">
+                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentSociety()"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                        </div>
+                                        <div class="col-sm-2" *ngIf="isValid">
+                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentSociety()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
+                                        </div> -->
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Society Id</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" id="societyName" name="societyName" #societyName="ngModel" [(ngModel)]="rptInvDetailForService.investmentSocietyFormData.societyName" readonly>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Responsible Doctor</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" id="responsibleDoctorNameSoc" name="responsibleDoctorNameSoc" #responsibleDoctorNameSoc="ngModel" [(ngModel)]="rptInvDetailForService.investmentSocietyFormData.responsibleDoctorName" readonly>
+
+                                            <!-- <select class="form-control " name="responsibleDoctorId" id="responsibleDoctorId" #responsibleDoctorId="ngModel" [(ngModel)]="rptInvDetailForService.investmentInstitutionFormData.responsibleDoctorId">
+                                                <option  [ngValue]="null">Select Doctor</option>
+                                                <option *ngFor="let a of doctors" [value]="a.id">{{a.doctorName}}</option>
+                                            </select> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Society Address</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="societyAddress" id="societyAddress" #societyAddress="ngModel" [(ngModel)]="rptInvDetailForService.investmentSocietyFormData.societyAddress" readonly>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>No. Of Members</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="noOfMembers" id="noOfMember" #noOfMember="ngModel" [(ngModel)]="rptInvDetailForService.investmentSocietyFormData.noOfMember" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset disabled>
+                                <h6><strong>Investment Details</strong></h6>
+
+                                <div class="form-group">
+                                    <div class="row">
+                                        <!--<div class="col-md-6">
+                                            <div class="form-group">
+                                                <table class="table  table-bordered">
+                                                    <tr class="HeaderRow">
+                                                        <td>Investment</td>
+                                                        <td>Commitment-All</td>
+                                                        <td>Commitment-Own</td>
+                                                        <td>Share-All</td>
+                                                        <td>Share-Own</td>
+                                                    </tr>
+                                                    <tr *ngFor="let a of investmentDetailsOld">
+                                                        <td>
+                                                            {{a.investmentAmount}}
+                                                        </td>
+                                                        <td>
+                                                            {{a.comtSharePrcntAll}}
+                                                        </td>
+                                                        <td>
+                                                            {{a.comtSharePrcnt}}
+                                                        </td>
+                                                        <td>
+                                                            {{a.prescribedSharePrcntAll}}
+                                                        </td>
+                                                        <td>
+                                                            {{a.prescribedSharePrcnt}}
+                                                        </td>
+                                                    </tr>
+                                                </table> 
+                                            </div>
+                                        </div>-->
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <label>Prop. Inv.</label>
+                                                        <span style="color:red;">*</span>
+                                                    </div>
+                                                    <div class="col-md-10">
+                                                        <input class="form-control" [disabled]="(isInvOther ) || rptInvDetailForService.investmentInitFormData.donationId==4" placeholder="Amount" name="proposedAmount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.proposedAmount"
+                                                            [pattern]="numberPattern">
+                                                        <div class="invalid-feedback" *ngIf="proposedAmount.errors?.pattern">Only numeric value</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <label>Purpose</label>
+                                                        <span style="color:red;">*</span>
+                                                    </div>
+                                                    <div class="col-md-10">
+                                                        <input class="form-control" [disabled]="isInvOther" placeholder="Purpose" name="purpose" id="purpose" #purpose="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.purpose" maxLength="500">
+                                                        <div class="invalid-feedback" *ngIf="purpose.errors?.maxLength">Maximum 500 Character long</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <label>Payment Freq</label>
+                                                        <span style="color:red;">*</span>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <select class="form-control" [disabled]="isInvOther  " id="paymentFreq" name="paymentFreq" #paymentFreq="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.paymentFreq" [class.invalid]="paymentFreq.invalid && paymentFreq.touched">
+                                                            <option  [ngValue]="null">Select Payment Freq</option>
+                                                            <option value="Monthly">Monthly</option>
+                                                            <option value="Quarterly">Quarterly</option>
+                                                            <option value="Half Yearly">Half Yearly</option>
+                                                            <option value="Yearly">Yearly</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <label>Payment Dur.</label>
+                                                        <span style="color:red;">*</span>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input class="form-control" [disabled]="isInvOther  " placeholder="Calender" name="fromDate" #fromDate="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched" [bsValue]="bsValue"
+                                                            bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentInitForm)">
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input class="form-control" [disabled]="isInvOther  " placeholder="Calender" name="toDate" #toDate="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched" [bsValue]="bsValue" bsDatepicker
+                                                            [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentInitForm)">
+
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label>Pay. Tot. Mon.</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <input class="form-control" placeholder="Total Month" name="totalMonth" id="totalMonth" #totalMonth="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.totalMonth" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <label>Commit. Dur.</label>
+                                                        <span style="color:red;">*</span>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input class="form-control" [disabled]="isInvOther  " placeholder="Calender" name="commitmentFromDate" #commitmentFromDate="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.commitmentFromDate" [class.invalid]="commitmentFromDate.invalid && commitmentFromDate.touched"
+                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input class="form-control" [disabled]="isInvOther  " placeholder="Calender" name="commitmentToDate" #commitmentToDate="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.commitmentToDate" [class.invalid]="commitmentToDate.invalid && commitmentToDate.touched"
+                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
+
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label>Com. Tot. Mon.</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <input class="form-control" placeholder="Total Month" name="commitmentTotalMonth" id="commitmentTotalMonth" #commitmentTotalMonth="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.commitmentTotalMonth" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <label>Commitment:</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label>All SBU </label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <input class="form-control" [disabled]="isInvOther  " name="commitmentAllSBU" id="commitmentAllSBU" #commitmentAllSBU="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.commitmentAllSBU" [pattern]="numberPattern">
+                                                        <div class="invalid-feedback" *ngIf="commitmentAllSBU.errors?.pattern">Only numeric value</div>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label>%/</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label>Own SBU</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <input class="form-control" [disabled]="isInvOther  " name="commitmentOwnSBU" id="commitmentOwnSBU" #commitmentOwnSBU="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.commitmentOwnSBU" [pattern]="numberPattern">
+                                                        <div class="invalid-feedback" *ngIf="commitmentOwnSBU.errors?.pattern">Only numeric value</div>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label>%</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <label>Pay. Method</label>
+                                                    </div>
+                                                    <div class="col-md-10">
+                                                        <select class="form-control" [disabled]="isInvOther  " name="paymentMethod" id="paymentMethod" #paymentMethod="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.paymentMethod">
+                                                        
+                                                            <option  [ngValue]="null">Select Payment Method</option>
+                                                            <option value="Cash">Cash</option>
+                                                            <option value="Cheque">Cheque</option>
+                                                            <option value="DD">DD</option>
+                                                            <option value="TT">TT</option>
+                                                            <option value="PO">PO</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <label>Cheque Title</label>
+                                                    </div>
+                                                    <div class="col-md-10">
+                                                        <input class="form-control" maxlength="100" [disabled]="isInvOther  " placeholder="Cheque Title" name="chequeTitle" id="chequeTitle" #chequeTitle="ngModel" [(ngModel)]="rptInvDetailForService.investmentDetailFormData.chequeTitle">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <!-- <h6 class=""><strong>Investment Details</strong></h6> -->
+                                        </div>
+                                        <div class="col-sm-2"></div>
+                                        <div class="col-sm-2" *ngIf="isValid && !isInvOther">
+                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentDetails()"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                        </div>
+                                        <!-- <div class="col-sm-2" *ngIf="isValid">
+                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentBcds()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <div class="form-group">
+                                    <legend><strong>Targeted Products of SBU</strong></legend>
+                                    <!-- <div class="row">
+                                        <div class="col-sm-6">
+                                            <h6 class=""><strong>Targeted Products of SBU</strong></h6>
+                                        </div>
+                                        <div class="col-sm-2"></div>
+                                    </div> -->
+                                </div>
+                                <!-- <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Product</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <ng-select [virtualScroll]="true" [items]="products" bindLabel="productName" bindValue="id" placeholder="Select Product" id="productId" name="productId" #productId="ngModel" [(ngModel)]="rptInvDetailForService.investmentTargetedProdFormData.productId"
+                                                [class.invalid]="productId.invalid && productId.touched">
+                                            </ng-select>
+                                        </div>
+                                        <div class="col-md-3"></div>
+                                        <div class="col-md-2" *ngIf="isValid">
+                                            <button class="btn btn-primary btn-lg btn-block" type="button" (click)="insertInvestmentTargetedProd()"><i class="fa fa-plus"></i>&nbsp; Add</button>
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <div class="form-group">
+                                    <table class="table  table-bordered">
+                                        <tr class="HeaderRow">
+                                            <!-- <td>Product Code</td> -->
+                                            <td>Product Name</td>
+                                            <td>SBU</td>
+                                            <!-- <td></td>
+                                            <td></td> -->
+                                        </tr>
+                                        <tr *ngFor="let a of investmentTargetedProds">
+                                            <!-- <td>
+                                                {{a.productInfo.productCode}}
+                                            </td> -->
+                                            <td>
+                                                {{a.productInfo.productName}}
+                                            </td>
+                                            <td>
+                                                {{a.productInfo.sbuName}}
+                                            </td>
+                                            <!-- <td>
+                                                <input type="button" *ngIf="sbu==a.sbu" (click)="editInvestmentTargetedProd(a)" value="Edit">
+                                            </td>
+                                            <td>
+                                                <input type="button" *ngIf="sbu==a.sbu" (click)="removeInvestmentTargetedProd(a)" value="Remove">
+                                            </td> -->
+                                        </tr>
+                                    </table>
+                                </div>
+                            </fieldset>
+                            <!-- <fieldset disabled>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h6 class=""><strong>Targeted Group</strong></h6>
+                                        </div>
+                                        <div class="col-sm-2"></div>
+                                       
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <table class="table  table-bordered">
+                                        <tr class="HeaderRow">
+                                            <td>Market Group Name</td>
+                                            <td>Market Code</td>
+                                            <td>Market Name</td>
+                                            <td>SBU</td>
+                                            <td>Status</td>
+                                        </tr>
+                                        <tr *ngFor="let a of investmentTargetedGroups">
+
+                                            <td>
+                                                {{a.marketGroupMst.groupName}}
+                                            </td>
+                                            <td>
+                                                {{a.marketCode}}
+                                            </td>
+                                            <td>
+                                                {{a.marketName}}
+                                            </td>
+                                            <td>
+                                                {{a.sbuName}}
+                                            </td>
+                                            <td>
+                                                <span *ngIf="a.completionStatus === false || undefined || ''">Pending</span>
+                                                <span *ngIf="a.completionStatus === true ''">Recommended</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </fieldset> -->
+                            <fieldset disabled>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h6 class=" "><strong>Recommended By List </strong></h6>
+                                        </div>
+                                        <div class="col-sm-2"></div>
+                                        <!-- <div class="col-sm-2">
+                                            <button class="btn btn-success btn-lg btn-block" type="button"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                        </div> -->
+                                    </div>
+                                </div>
+                                <!-- <div class="form-group">
+                                    <table class="table  table-bordered">
+                                        <tr class="HeaderRow">
+                                            <td>Market Code</td>
+                                            <td>Market Name</td>
+                                            <td>Authority</td>
+                                            <td>Rec By</td>
+                                            <td>Status</td>
+                                        </tr>
+                                        <tr *ngFor="let a of investmentTargetedGroupss2">
+
+                                            <td>
+                                                {{a.marketCode}}
+                                            </td>
+                                            <td>
+                                                {{a.marketName}}
+                                            </td>
+                                            <td>
+                                                {{a.approvalAuthorityName}}
+                                            </td>
+                                            <td>
+                                                {{a.employeeName}}
+                                            </td>
+                                            <td>
+                                                {{a.recStatus}}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div> -->
+                                <div class="form-group">
+                                    <table class="table  table-bordered">
+                                        <tr class="HeaderRow">
+                                            <td>Employee Name</td>
+                                            <!-- <td>Authority</td> -->
+                                            <td>Market Code</td>
+                                            <td>Market Name</td>
+                                            <td>Territory Code</td>
+                                            <td>Territory Name</td>
+                                            <td>Region Code</td>
+                                            <td>Region Name</td>
+                                            <td>Zone Code</td>
+                                            <td>Zone Name</td>
+                                            <td>Status</td>
+                                            <td>Comments</td>
+                                        </tr>
+                                        <tr *ngFor="let a of empLocation">
+                                            <td>
+                                                {{a.employeeName}}
+                                            </td>
+                                            <!-- <td>
+                                                {{a.priority}}
+                                            </td> -->
+                                            <td>
+                                                {{a.marketCode}}
+                                            </td>
+                                            <td>
+                                                {{a.marketName}}
+                                            </td>
+                                            <td>
+                                                {{a.territoryCode}}
+                                            </td>
+                                            <td>
+                                                {{a.territoryName}}
+                                            </td>
+                                            <td>
+                                                {{a.regionCode}}
+                                            </td>
+                                            <td>
+                                                {{a.regionName}}
+                                            </td>
+                                            <td>
+                                                {{a.zoneCode}}
+                                            </td>
+                                            <td>
+                                                {{a.zoneName}}
+                                            </td>
+                                            <td>
+                                                {{a.recStatus}}
+                                            </td>
+                                            <td>
+                                                {{a.comments}}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </fieldset>
+                            <fieldset disabled>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h6 class=" "><strong>Receive Status</strong></h6>
+                                        </div>
+                                        <div class="col-sm-2"></div>
+                                    </div>
+                                </div>
+                                <!-- <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Receiving Status</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-control" id="receiveStatus" name="receiveStatus" #receiveStatus="ngModel" [(ngModel)]="rptInvDetailForService.investmentRcvCommentFormData.receiveStatus" [class.invalid]="receiveStatus.invalid && receiveStatus.touched" required>  
+                                                <option  [ngValue]="null">Pending</option>
+                                                <option  value="Received">Received</option>
+                                                <option  value="Not Received">Not Received</option>
+                                                </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Comments</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" name="comments" id="comments" #comments="ngModel" [(ngModel)]="rptInvDetailForService.investmentRcvCommentFormData.comments">
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <div class="form-group">
+                                    <table class="table  table-bordered">
+                                        <tr class="HeaderRow">
+                                            <td>Payment Reference No</td>
+                                            <td>Receive Staus</td>
+                                        </tr>
+                                        <tr *ngFor="let a of investmentRcvList">
+                                            <td>
+                                                {{a.payRefNo}}
+                                            </td>
+                                            <td>
+                                                {{a.receiveStatus}}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
+    <p style="color: black">Please Wait. </p>
+</ngx-spinner>

@@ -1,0 +1,135 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <form novalidate autocomplete="off" #form="ngForm">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h3 class="card-title">Employee Budget Report</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <fieldset>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-1">
+                                            <label>Year</label>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <input class="form-control" id="fromDate" name="fromDate" placeholder="Year" [(ngModel)]="fromDate" [bsValue]="bsValue" bsDatepicker [bsConfig]="{ containerClass: 'theme-blue', minMode:'year', adaptivePosition: true, dateInputFormat: 'YYYY' }">
+                                        </div>
+                                        <div class="col-md-1">
+                                            <label>Employee Id</label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="text" class="form-control" id="employeeId" name="employeeId" [(ngModel)]="employeeId">
+                                        </div>
+                                        <div class="col-md-1">
+                                            <label>Approval Authority</label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <!-- <ng-select [virtualScroll]="true" [items]="approvalAuthorities" bindLabel="approvalAuthorityName" bindValue="id" placeholder="Select" id="approvalAuthorityId" name="approvalAuthorityId" [(ngModel)]="approvalAuthorityId">
+                                            </ng-select> -->
+
+                                            <select class="form-control" id="approvalAuthorityId" name="approvalAuthorityId" [(ngModel)]="approvalAuthorityId">
+                                                <option  [ngValue]="0">All</option>
+                                                <option *ngFor="let a of approvalAuthorities" [value]="a.id">{{a.approvalAuthorityName}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <label>Donation</label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <select class="form-control" id="donationId" name="donationId" [(ngModel)]="donationId">
+                                                <option  [ngValue]="0">All</option>
+                                                <option *ngFor="let a of donations" [value]="a.id">{{a.donationTypeName}}</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-sm-1">
+                                            <button class="btn btn-info btn-lg btn-block" type="button" (click)="ViewDataDoc()"><i class="fa fa-eye"></i>&nbsp;View</button>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-4">
+                                        </div>
+                                        <div class="col-sm-4" *ngIf="isInvestmentInActive" style="color: red;font-weight: bold;font-size:14px;">
+                                            This Reference No is deleted!
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <br/>
+                            <div class="form-group" style="overflow: auto; max-height: 400px;" *ngIf="!isInvestmentInActive">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table  table-bordered">
+                                            <tr class="HeaderRowFixed">
+                                                <td style="width: 0;display:none;">Approval Authority ID</td>
+                                                <td>Priority</td>
+                                                <td>Employee ID</td>
+                                                <td>Employee Name</td>
+                                                <td style="width: 0;display:none;">Donation ID</td>
+                                                <td>Donation</td>
+                                                <td>Month</td>
+                                                <td>Year</td>
+                                                <td>Budget</td>
+                                                <td>Expense</td>
+                                            </tr>
+                                            <!-- <tr *ngFor="let a of reports | paginate: configs"> -->
+                                            <tr *ngFor="let a of reports | filter: searchText ">
+                                                <!-- <td>
+                                            {{a.id}}
+                                        </td> -->
+                                                <td style="width: 0;display:none;">
+                                                    {{a.approvalAuthorityId}}
+                                                </td>
+
+                                                <td>
+                                                    {{a.priority}}
+                                                </td>
+                                                <td>
+                                                    {{a.employeeId}}
+                                                </td>
+                                                <td>
+                                                    {{a.employeeName}}
+                                                </td>
+                                                <td style="width: 0;display:none;">
+                                                    {{a.donationId}}
+                                                </td>
+                                                <td>
+                                                    {{a.donationTypeName}}
+                                                </td>
+                                                <td>
+                                                    {{a.month}}
+                                                </td>
+                                                <td>
+                                                    {{a.year}}
+                                                </td>
+                                                <td>
+                                                    {{a.budget | number:'2.1-2'}}
+                                                </td>
+                                                <td>
+                                                    {{a.expense | number:'2.1-2'}}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls> -->
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
+    <p style="color: black">Please Wait. </p>
+</ngx-spinner>

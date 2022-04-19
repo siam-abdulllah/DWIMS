@@ -22,12 +22,14 @@ namespace API.Controllers
             _mapper = mapper;
             _donationRepo = donationRepo;
         }
+
         [HttpPost("insert")]
         public ActionResult<DonationToReturnDto> InsertDonation(DonationToReturnDto donationToReturnDto)
         {
             var donation = new Donation
             {
                 DonationTypeName = donationToReturnDto.DonationTypeName,
+                DonationShortName = donationToReturnDto.DonationShortName,
                 Remarks = donationToReturnDto.Remarks,
                 Status = donationToReturnDto.Status,
                 SetOn = DateTimeOffset.Now
@@ -56,17 +58,21 @@ namespace API.Controllers
                 Remarks = donationToReturnDto.Remarks
             };
         }
+     
         [HttpPost("update")]
-        public ActionResult<DonationToReturnDto> UpdateDonation(DonationToReturnDto donationToReturnDto)
+        public async Task<ActionResult<DonationToReturnDto>> UpdateDonationAsync(DonationToReturnDto donationToReturnDto)
         {
             // var user =  _donationRepo.GetByIdAsync(donationToReturnDto.Id);
             // if (user == null) return Unauthorized(new ApiResponse(401));
+            var donations = await _donationRepo.GetByIdAsync(donationToReturnDto.Id);
             var donation = new Donation
             {
                 Id = donationToReturnDto.Id,
                 DonationTypeName = donationToReturnDto.DonationTypeName,
+                DonationShortName = donationToReturnDto.DonationShortName,
                 Remarks = donationToReturnDto.Remarks,
                 Status = donationToReturnDto.Status,
+                SetOn = donations.SetOn,
                 ModifiedOn = DateTimeOffset.Now
 
         };
@@ -119,6 +125,21 @@ namespace API.Controllers
             {
 
                 throw;
+            }
+        }
+
+        [HttpGet("donationsForInvestment")]
+        public async Task<IReadOnlyList<Donation>> GetEmployeesForConfig()
+        {
+            try
+            {
+                var data = new DonationWithCommentsSpecification("Active");
+                var donation = await _donationRepo.ListAsync(data);
+                return donation;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
             }
         }
     }

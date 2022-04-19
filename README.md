@@ -16,3 +16,14 @@ dotnet ef database update -p Infrastructure -s API  -c StoreContext
 
 Test API:
 https://localhost:5001/swagger/index.html
+
+
+Add Migration DB:
+
+dotnet ef migrations add InithialCreate -p Infrastructure -s API -o Data/Migrations  -c StoreContext
+
+ 
+
+Update Database:
+
+dotnet ef database update -p Infrastructure -s API -c StoreContext

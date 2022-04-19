@@ -1,0 +1,397 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <form novalidate autocomplete="off" #form="ngForm">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h3 class="card-title">Summary Report</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <fieldset>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Donation To</label>
+                                            <span style="color:red;">*</span>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-control" id="donationTo" name="donationTo" [(ngModel)]="donationTo">
+                                                <option  [ngValue]="null">Select Donation To</option>
+                                                <option value="All">All</option>
+                                                <option value="Doctor">Doctor</option>
+                                                <option value="Institution">Institution</option>
+                                                <option value="Campaign">Campaign</option>
+                                                <option value="Bcds">Bcds</option>
+                                                <option value="Society">Society</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Total Value: </label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label style="color: red; font-weight: bold;">{{totalValue}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>From Date</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" id="fromDate" name="fromDate" placeholder="From Date" [(ngModel)]="fromDate" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>To Date</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" id="toDate" name="toDate" placeholder="To Date" [(ngModel)]="toDate" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Donation Type</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-control" id="donationId" name="donationId" [(ngModel)]="donationId">
+                                                <option  [value]="0">All</option>
+                                                <option *ngFor="let a of donations" [value]="a.id">{{a.donationTypeName}}</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <label>SBU</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-control" id="sbu" name="sbu" [(ngModel)]="sbu">
+                                            <option  [value]="">All</option>
+                                            <option *ngFor="let a of SBUs" [value]="a.sbuName">{{a.sbuName}}</option>
+                                        </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+
+                                        <div class="col-md-2">
+                                            <label *ngIf="donationTo=='Campaign' || donationTo=='Doctor'">Doctor Code</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="text" class="form-control" *ngIf="donationTo=='Campaign' || donationTo=='Doctor'" id="doctorCode" name="doctorCode" [(ngModel)]="doctorCode">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label *ngIf="donationTo=='Campaign' || donationTo=='Institution'">Institution Code</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="text" class="form-control" *ngIf="donationTo=='Campaign' || donationTo=='Institution'" id="institutionId" name="institutionId" [(ngModel)]="institutionId">
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+
+                                        <div class="col-md-2">
+                                            <label *ngIf="donationTo=='Society'">Society Name</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="text" class="form-control" *ngIf="donationTo=='Society'" id="societyName" name="societyName" [(ngModel)]="societyName">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label *ngIf="donationTo=='Bcds'">Bcds Name</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="text" class="form-control" *ngIf="donationTo=='Bcds'" id="bcdsName" name="bcdsName" [(ngModel)]="bcdsName">
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label *ngIf="donationTo=='Campaign'">Select Campaign</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-control" *ngIf="donationTo=='Campaign'" id="campaignId" name="campaignId" [(ngModel)]="campaignId">
+                                                <option  [ngValue]="0">All</option>
+                                                <option *ngFor="let a of campaignMsts" [value]="a.id">{{a.campaignName}}</option>
+                                            </select>
+
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Market Code</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="text" class="form-control" id="marketCode" name="marketCode" [(ngModel)]="marketCode">
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <button class="btn btn-info btn-lg btn-block" type="button" (click)="ViewDataDoc()"><i class="fa fa-eye"></i>&nbsp;View</button>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <button class="btn btn-info btn-lg btn-block" type="button" (click)="exportexcel()"><i class="fa fa-eye"></i>&nbsp;Excel</button>
+                                        </div>
+                                    </div>
+                                </div><span class=""></span>
+                                <div class="form-group">
+                                    <div class="col-sm-4">
+                                    </div>
+                                    <div class="col-sm-4" *ngIf="isInvestmentInActive" style="color: red;font-weight: bold;font-size:14px;">
+                                        This Reference No is deleted!
+                                    </div>
+                                </div>
+                                <!-- <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input name="filterText" class="form-control m-input Searchbox" type="text" [(ngModel)]="searchText" placeholder="Search..">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="btn btn-danger" type="button" (click)="resetSearch()"><i class="fa fa-undo"></i>&nbsp; Reset</button>
+                                        </div>
+                                    </div>
+                                </div> -->
+
+                            </fieldset>
+                            <br/>
+                            <div class="form-group" *ngIf="donationTo=='Campaign'" style="overflow: auto; max-height: 500px;">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table  table-bordered" id="excel-table">
+                                            <tr class="HeaderRowFixed">
+                                                <td>Campaign Name</td>
+                                                <td>Reference</td>
+                                                <td>Donation</td>
+                                                <td>SBU</td>
+                                                <td>Payment Freq</td>
+                                                <td>From Date</td>
+                                                <td>To Date</td>
+                                                <td>Ins. ID</td>
+                                                <td>Institute</td>
+                                                <td>Doc ID</td>
+                                                <td>Doctor</td>
+                                                <td>Approval Status</td>
+                                                <td>Approved By</td>
+                                                <td>Approved Amt</td>
+                                                <td>Depot</td>
+                                                <td>Payment Ref No</td>
+                                                <td>SAP Ref No</td>
+                                                <td>Market Code</td>
+                                                <td>Market Name</td>
+                                                <td>Territory Code</td>
+                                                <td>Territory Name</td>
+                                                <td>Region Code</td>
+                                                <td>Region Name</td>
+                                                <td>Zone Code</td>
+                                                <td>Zone Name</td>
+                                            </tr>
+                                            <tr *ngFor="let a of reports | filter: searchText ">
+                                                <td>
+                                                    {{a.campaignName}}
+                                                </td>
+                                                <td>
+                                                    {{a.referenceNo}}
+                                                </td>
+                                                <td>
+                                                    {{a.donationTypeName}}
+                                                </td>
+                                                <td>
+                                                    {{a.sbuName}}
+                                                </td>
+                                                <td>
+                                                    {{a.paymentFreq}}
+                                                </td>
+                                                <td>
+                                                    {{a.fromDate}}
+                                                </td>
+                                                <td>
+                                                    {{a.toDate}}
+                                                </td>
+                                                <td>
+                                                    {{a.institutionId}}
+                                                </td>
+                                                <td>
+                                                    {{a.institutionName}}
+                                                </td>
+                                                <td>
+                                                    {{a.doctorId}}
+                                                </td>
+                                                <td>
+                                                    {{a.doctorName}}
+                                                </td>
+                                                <td>
+                                                    {{a.recStatus}}
+                                                </td>
+                                                <td>
+                                                    {{a.approvedBy}}
+                                                </td>
+                                                <td>
+                                                    {{a.proposedAmount}}
+                                                </td>
+                                                <td>
+                                                    {{a.depotName}}
+                                                </td>
+                                                <td>
+                                                    {{a.paymentRefNo}}
+                                                </td>
+                                                <td>
+                                                    {{a.sapRefNo}}
+                                                </td>
+                                                <td>
+                                                    {{a.marketCode}}
+                                                </td>
+                                                <td>
+                                                    {{a.marketName}}
+                                                </td>
+                                                <td>
+                                                    {{a.territoryCode}}
+                                                </td>
+                                                <td>
+                                                    {{a.territoryName}}
+                                                </td>
+                                                <td>
+                                                    {{a.regionCode}}
+                                                </td>
+                                                <td>
+                                                    {{a.regionName}}
+                                                </td>
+                                                <td>
+                                                    {{a.zoneCode}}
+                                                </td>
+                                                <td>
+                                                    {{a.zoneName}}
+                                                </td>
+
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls> -->
+                            </div>
+                            <div class="form-group" *ngIf="donationTo!='Campaign'" style="overflow: auto; max-height: 500px;">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table  table-bordered" id="excel-table">
+                                            <tr class="HeaderRowFixed">
+                                                <td>Ref No</td>
+                                                <td>ID</td>
+                                                <td>Name</td>
+                                                <td>SBU</td>
+                                                <td>Initiator</td>
+                                                <td>Market</td>
+                                                <td>Territory</td>
+                                                <td>Region</td>
+                                                <td>Zone</td>
+                                                <td>Amount</td>
+                                                <td>Don Sts</td>
+                                                <td>Cmplt By</td>
+                                                <td>Inv Type</td>
+                                                <td>Inv To</td>
+                                                <td>Prop. For</td>
+                                                <td>Pmnt Type</td>
+                                                <td>Pmnt Freq.</td>
+                                                <td>From</td>
+                                                <td>To</td>
+                                                <td>Depot</td>
+                                                <td>Recv Sts</td>
+                                                <td>Recv By</td>
+                                                <td>Payment Ref.No</td>
+                                                <td>SAP Ref.No</td>
+                                            </tr>
+                                            <tr *ngFor="let a of reports | filter: searchText ">
+
+                                                <td>
+                                                    {{a.referenceNo}}
+                                                </td>
+                                                <td>
+                                                    {{a.dId}}
+                                                </td>
+                                                <td>
+                                                    {{a.name}}
+                                                </td>
+                                                <td>
+                                                    {{a.sbuName}}
+                                                </td>
+                                                <td>
+                                                    {{a.employeeName}}
+                                                </td>
+                                                <td>
+                                                    {{a.marketName}}
+                                                </td>
+                                                <td>
+                                                    {{a.territoryName}}
+                                                </td>
+                                                <td>
+                                                    {{a.regionName}}
+                                                </td>
+                                                <td>
+                                                    {{a.zoneName}}
+                                                </td>
+                                                <td>
+                                                    {{a.proposedAmount}}
+                                                </td>
+                                                <td>
+                                                    {{a.invStatus}}
+                                                </td>
+                                                <td>
+                                                    {{a.approvedBy}}
+                                                </td>
+                                                <td>
+                                                    {{a.donationTypeName}}
+                                                </td>
+                                                <td>
+                                                    {{a.donationTo}}
+                                                </td>
+                                                <td>
+                                                    {{a.proposeFor}}
+                                                </td>
+                                                <td>
+                                                    {{a.paymentMethod}}
+                                                </td>
+                                                <td>
+                                                    {{a.paymentFreq}}
+                                                </td>
+                                                <td>
+                                                    {{a.fromDate}}
+                                                </td>
+                                                <td>
+                                                    {{a.toDate}}
+                                                </td>
+                                                <td>
+                                                    {{a.depotName}}
+                                                </td>
+                                                <td>
+                                                    {{a.receiveStatus}}
+                                                </td>
+                                                <td>
+                                                    {{a.receiveBy}}
+                                                </td>
+                                                <td>
+                                                    {{a.paymentRefNo}}
+                                                </td>
+                                                <td>
+                                                    {{a.sapRefNo}}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls> -->
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
+    <p style="color: black">Please Wait. </p>
+</ngx-spinner>

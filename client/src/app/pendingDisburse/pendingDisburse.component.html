@@ -1,0 +1,90 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <!-- form start -->
+                <form novalidate autocomplete="off" #form="ngForm">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h3 class="card-title">Investment Dispatch Status Report</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body ">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input name="filterText" class="form-control m-input Searchbox" type="text" [(ngModel)]="searchText" placeholder="Search..">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button class="btn btn-danger" type="button" (click)="resetSearch()"><i class="fa fa-undo"></i>&nbsp; Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" style="overflow: auto; max-height: 250px;">
+                                <table class="table  table-bordered">
+                                    <tr class="HeaderRow ">
+                                        <td style="width: 0;display:none; ">Id</td>
+                                        <td>Payment Ref. No</td>
+                                        <td>Inv. Ref. No</td>
+                                        <td>Donation Type</td>
+                                        <td>Proposed By</td>
+                                        <td>Approved By</td>
+                                        <td>Approved Date</td>
+                                        <td>Market</td>
+                                        <td>Depot</td>
+                                        <td>Dispatch Amt</td>
+                                    </tr>
+                                    <tr *ngFor="let a of rptDepotLetter | filter: searchText ">
+                                        <td style="display:none; ">{{a.id}}</td>
+                                        <td>
+                                            {{a.payRefNo}}
+                                        </td>
+                                        <td>
+                                            {{a.referenceNo}}
+                                        </td>
+                                        <td>
+                                            {{a.donationTypeName}}
+                                        </td>
+                                        <td>
+                                            {{a.employeeName}}
+                                        </td>
+                                        <td>
+                                            {{a.approvedBy}}
+                                        </td>
+                                        <td>
+                                            {{a.approvedDate | date:'dd/MM/yyyy'}}
+                                        </td>
+                                        <td>
+                                            {{a.marketName}}
+                                        </td>
+                                        <td>
+                                            {{a.depotCode}}
+                                        </td>
+                                        <td>
+                                            {{a.dispatchAmt | number:'2.1-2'}}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <!-- <div class="card-footer ">
+                          </div> -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                </form>
+            </div>
+            <!-- /.row -->
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
+    <p style="color: black">Please Wait. </p>
+</ngx-spinner>

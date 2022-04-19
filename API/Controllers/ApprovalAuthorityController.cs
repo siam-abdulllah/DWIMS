@@ -28,7 +28,7 @@ namespace API.Controllers
             {
                 ApprovalAuthorityName = ApprovalAuthorityToReturnDto.ApprovalAuthorityName,
                 Priority = ApprovalAuthorityToReturnDto.Priority,
-                 Remarks = ApprovalAuthorityToReturnDto.Remarks,
+                Remarks = ApprovalAuthorityToReturnDto.Remarks,
                 Status = ApprovalAuthorityToReturnDto.Status
             };
             _approvalAuthorityRepo.Add(ApprovalAuthority);
@@ -55,6 +55,7 @@ namespace API.Controllers
                 Remarks = ApprovalAuthorityToReturnDto.Remarks
             };
         }
+      
         [HttpPost("update")]
         public ActionResult<ApprovalAuthorityToReturnDto> UpdateApprovalAuthority(ApprovalAuthorityToReturnDto ApprovalAuthorityToReturnDto)
         {
@@ -126,7 +127,7 @@ namespace API.Controllers
         {
             try
             {
-                var spec = new ApprovalAuthoritySpecification("A");
+                var spec = new ApprovalAuthoritySpecification("Active");
                 var totalAmtValidityDto = await _approvalAuthorityRepo.ListAsync(spec);
                 return totalAmtValidityDto;
             }

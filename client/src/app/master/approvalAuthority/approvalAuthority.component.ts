@@ -17,7 +17,7 @@ export class ApprovalAuthorityComponent implements OnInit {
   searchTerm!: ElementRef;
   genParams!: GenericParams;
   approvalAuthoritys!: IApprovalAuthority[];
-  totalCount = 0;
+  //totalCount = 0;
   //priorities =Array.from(Array(100).keys());
   priorities =Array.from({length: 100}, (_, i) => i + 1);
   constructor(public masterService: MasterService, private router: Router,
@@ -27,6 +27,7 @@ export class ApprovalAuthorityComponent implements OnInit {
     }
 
   ngOnInit() {
+    this.resetPage();
     this.getapprovalAuthority();
   }
   counter(i: number) {
@@ -36,7 +37,7 @@ export class ApprovalAuthorityComponent implements OnInit {
     this.masterService.getApprovalAuthority().subscribe(response => {
       debugger;
       this.approvalAuthoritys = response.data;
-      this.totalCount = response.count;
+      //this.totalCount = response.count;
     }, error => {
         console.log(error);
     });
@@ -77,8 +78,11 @@ export class ApprovalAuthorityComponent implements OnInit {
     this.masterService.approvalAuthorityFormData = Object.assign({}, selectedRecord);
   }
   resetForm(form: NgForm) {
-    form.form.reset();
-    this.masterService.approvalAuthorityFormData = new ApprovalAuthority();
+    form.reset();
+    this.masterService.approvalAuthorityFormData=new ApprovalAuthority();
+  }
+  resetPage() {
+   this.masterService.approvalAuthorityFormData=new ApprovalAuthority();
   }
 
    foo = new Array(45);//create a 45 element array

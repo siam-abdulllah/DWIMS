@@ -1,6 +1,6 @@
 import { DonationPagination, IDonationPagination } from './../shared/models/donationPagination';
 import { SubCampaignPagination, ISubCampaignPagination } from './../shared/models/subCampaignPagination';
-import { CampaignPagination, ICampaignPagination } from './../shared/models/campaignPagination';
+import { CampaignMstPagination, ICampaignMstPagination,CampaignDtlPagination, ICampaignDtlPagination,CampaignDtlProductPagination, ICampaignDtlProductPagination } from './../shared/models/campaignPagination';
 import { ApprovalAuthorityPagination, IApprovalAuthorityPagination } from './../shared/models/approvalAuthorityPagination';
 import { IBcdsInfo, BcdsInfo } from './../shared/models/bcdsInfo';
 import { BcdsPagination, IBcdsPagination } from './../shared/models/bcdsPagination';
@@ -8,6 +8,7 @@ import { BcdsPagination, IBcdsPagination } from './../shared/models/bcdsPaginati
 import { ISocietyInfo, SocietyInfo } from '../shared/models/societyInfo';
 import { SocietyPagination, ISocietyPagination } from './../shared/models/societyPagination';
 
+import { IClusterMstInfo, ClusterMstInfo, IClusterDtlInfo, ClusterDtlInfo } from '../shared/models/clusterInfo';
 import { IEmployeeInfo, EmployeeInfo } from '../shared/models/employeeInfo';
 import { EmployeePagination, IEmployeePagination } from './../shared/models/employeePagination';
 import { IRole, IRoleResponse } from './../shared/models/role';
@@ -15,7 +16,8 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { IDonation,Donation} from'../shared/models/donation';
 import { ISubCampaign,SubCampaign} from'../shared/models/subCampaign';
-import { ICampaign,Campaign} from'../shared/models/campaign';
+import { CampaignMst, ICampaignMst,CampaignDtl, ICampaignDtl,CampaignDtlProduct, ICampaignDtlProduct } from '../shared/models/campaign';
+
 import { IApprovalAuthority,ApprovalAuthority} from'../shared/models/approvalAuthority';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, ReplaySubject, of, from } from 'rxjs';
@@ -24,6 +26,7 @@ import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { GenericParams } from '../shared/models/genericParams';
 import { IPagination, Pagination } from '../shared/models/pagination';
+import { ClusterDtlPagination, ClusterMstPagination, IClusterDtlPagination, IClusterMstPagination } from '../shared/models/clusterMstPagination';
 
 @Injectable({
   providedIn: 'root'
@@ -34,17 +37,27 @@ export class MasterService {
   donationPagination = new DonationPagination();
   approvalAuthoritys: IApprovalAuthority[]=[];
   approvalAuthorityPagination = new ApprovalAuthorityPagination();
+  clusterMsts: IClusterMstInfo[]=[];
+  clusterMstPagination = new ClusterMstPagination();
+  clusterDtls: IClusterDtlInfo[]=[];
+  clusterDtlPagination = new ClusterDtlPagination();
   subCampaigns: ISubCampaign[]=[];
   subCampaignPagination = new SubCampaignPagination();
-  campaigns: ICampaign[]=[];
-  campaignPagination = new CampaignPagination();
+  campaignMsts: ICampaignMst[]=[];
+  campaignMstPagination = new CampaignMstPagination();
+  campaignDtls: ICampaignDtl[]=[];
+  campaignDtlProducts: ICampaignDtlProduct[]=[];
+  campaignDtlPagination = new CampaignDtlPagination();
+  campaignDtlProductPagination = new CampaignDtlProductPagination();
   
   baseUrl = environment.apiUrl;
   genParams = new GenericParams();
 
   donationFormData: Donation = new Donation();
   subCampaignFormData: SubCampaign = new SubCampaign();
-  campaignFormData: Campaign = new Campaign();
+  campaignMstFormData: CampaignMst = new CampaignMst();
+  campaignDtlFormData: CampaignDtl = new CampaignDtl();
+  campaignDtlProductFormData: CampaignDtlProduct = new CampaignDtlProduct();
   approvalAuthorityFormData: ApprovalAuthority = new ApprovalAuthority();
   
   bcdsInfo: IBcdsInfo[]= [];
@@ -58,30 +71,109 @@ export class MasterService {
   employeeInfo: IEmployeeInfo[]= [];
   employeePagination = new EmployeePagination();
   employeeFormData: EmployeeInfo = new EmployeeInfo();
+  clusterMstFormData: ClusterMstInfo = new ClusterMstInfo();
+  clusterDtlFormData: ClusterDtlInfo = new ClusterDtlInfo();
   constructor(private http: HttpClient, private router: Router) { }
 
-  getCampaign(){    
+  getGenParams(){
+    return this.genParams;
+  }
+
+   // tslint:disable-next-line: typedef
+   setGenParams(genParams: GenericParams) {
+    this.genParams = genParams;
+  }
+
+  getEmployeesCampaign(){    
+    return this.http.get(this.baseUrl + 'employee/getEmployeesCampaign');
+   
+  }
+  getSBU(){    
+    return this.http.get(this.baseUrl + 'employee/getSBU');
+  }
+  getRegion(){    
+    return this.http.get(this.baseUrl + 'employee/getRegion');
+  }
+  getBrand(sbu:string){    
+    return this.http.get(this.baseUrl + 'product/getBrand/'+sbu);
+  }
+  // getProduct(brandCode:string,sbu:string){    
+  //   return this.http.get(this.baseUrl + 'product/getProduct/'+brandCode+'/'+sbu);
+  // }
+  getProduct(){    
+    return this.http.get(this.baseUrl + 'product/getProduct');
+  }
+  getSubCampaignForCamp(){    
+    return this.http.get(this.baseUrl + 'subCampaign/subCampaignsForCamp');
+  }
+  removeDtlProduct(selectedRecord:ICampaignDtlProduct){    
+    return this.http.post(this.baseUrl + 'campaign/removeDtlProduct',selectedRecord);
+  }
+  
+  getCampaignDtl(mstId:number){ 
     let params = new HttpParams();
-    debugger;
+    
     if (this.genParams.search) {
       params = params.append('search', this.genParams.search);
     }
     params = params.append('sort', this.genParams.sort);
-    params = params.append('pageIndex', this.genParams.pageNumber.toString());
+    params = params.append('pageIndex', this.genParams.pageIndex.toString());
     params = params.append('pageSize', this.genParams.pageSize.toString());
 
-    return this.http.get<ICampaignPagination>(this.baseUrl + 'campaign/campaigns', { observe: 'response', params })
+    return this.http.get<ICampaignDtlPagination>(this.baseUrl + 'campaign/campaignDtls/'+mstId, { observe: 'response', params })
     .pipe(
       map(response => {
-        this.campaigns = [...this.campaigns, ...response.body.data]; 
-        this.campaignPagination = response.body;
-        return this.campaignPagination;
+        this.campaignDtls = [...this.campaignDtls, ...response.body.data]; 
+        this.campaignDtlPagination = response.body;
+        return this.campaignDtlPagination;
+      })
+    );   
+    
+    
+  }
+  getCampaignDtlProduct(dtlId:number){ 
+    let params = new HttpParams();
+    
+    if (this.genParams.search) {
+      params = params.append('search', this.genParams.search);
+    }
+    params = params.append('sort', this.genParams.sort);
+    params = params.append('pageIndex', this.genParams.pageIndex.toString());
+    params = params.append('pageSize', this.genParams.pageSize.toString());
+
+    return this.http.get<ICampaignDtlProductPagination>(this.baseUrl + 'campaign/campaignDtlProducts/'+dtlId, { observe: 'response', params })
+    .pipe(
+      map(response => {
+        this.campaignDtlProducts = [...this.campaignDtlProducts, ...response.body.data]; 
+        this.campaignDtlProductPagination = response.body;
+        return this.campaignDtlProductPagination;
+      })
+    );   
+    
+    
+  }
+  getCampaign(){    
+    let params = new HttpParams();
+    
+    if (this.genParams.search) {
+      params = params.append('search', this.genParams.search);
+    }
+    params = params.append('sort', this.genParams.sort);
+    params = params.append('pageIndex', this.genParams.pageIndex.toString());
+    params = params.append('pageSize', this.genParams.pageSize.toString());
+
+    return this.http.get<ICampaignMstPagination>(this.baseUrl + 'campaign/campaignMsts', { observe: 'response', params })
+    .pipe(
+      map(response => {
+        this.campaignMsts = [...this.campaignMsts, ...response.body.data]; 
+        this.campaignMstPagination = response.body;
+        return this.campaignMstPagination;
       })
     );
     
   }
-  insertCampaign() {
-    return this.http.post(this.baseUrl+ 'campaign/insert', this.campaignFormData);
+  insertCampaignMst() {
+    return this.http.post(this.baseUrl+ 'campaign/insertMst', this.campaignMstFormData);
     // return this.http.post(this.baseUrl + 'account/register', values).pipe(
     //   map((user: IUser) => {
     //     if (user) {
@@ -92,18 +184,30 @@ export class MasterService {
     //   })
     // );
   }
-  updateCampaign() {
-    return this.http.post(this.baseUrl+ 'campaign/update',  this.campaignFormData);
-}
+  insertCampaignDtl() {
+    return this.http.post(this.baseUrl+ 'campaign/insertDtl', this.campaignDtlFormData);
+  }
+  insertCampaignDtlProduct() {
+    return this.http.post(this.baseUrl+ 'campaign/insertDtlProduct', this.campaignDtlProductFormData);
+  }
+  updateCampaignMst() {
+    return this.http.post(this.baseUrl+ 'campaign/updateMst',  this.campaignMstFormData);
+  }
+  updateCampaignDtl() {
+  return this.http.post(this.baseUrl+ 'campaign/updateDtl',  this.campaignDtlFormData);
+  }
+  updateCampaignDtlProduct() {
+  return this.http.post(this.baseUrl+ 'campaign/updateDtlProduct',  this.campaignDtlProductFormData);
+  }
  
   getSubCampaign(){    
     let params = new HttpParams();
-    debugger;
+    
     if (this.genParams.search) {
       params = params.append('search', this.genParams.search);
     }
     params = params.append('sort', this.genParams.sort);
-    params = params.append('pageIndex', this.genParams.pageNumber.toString());
+    params = params.append('pageIndex', this.genParams.pageIndex.toString());
     params = params.append('pageSize', this.genParams.pageSize.toString());
 
     return this.http.get<ISubCampaignPagination>(this.baseUrl + 'subCampaign/subCampaigns', { observe: 'response', params })
@@ -117,16 +221,7 @@ export class MasterService {
     
   }
   insertSubCampaign() {
-    return this.http.post(this.baseUrl+ 'subCampaign/insert', this.subCampaignFormData);
-    // return this.http.post(this.baseUrl + 'account/register', values).pipe(
-    //   map((user: IUser) => {
-    //     if (user) {
-    //       // localStorage.setItem('token', user.token);
-    //       // this.currentUserSource.next(user);
-    //       return user;
-    //     }
-    //   })
-    // );
+    return this.http.post(this.baseUrl+ 'subCampaign/insert', this.subCampaignFormData); 
   }
   updateSubCampaign() {
     return this.http.post(this.baseUrl+ 'subCampaign/update',  this.subCampaignFormData);
@@ -134,12 +229,11 @@ export class MasterService {
 
 getDonation(){    
   let params = new HttpParams();
-  debugger;
   if (this.genParams.search) {
     params = params.append('search', this.genParams.search);
   }
   params = params.append('sort', this.genParams.sort);
-  params = params.append('pageIndex', this.genParams.pageNumber.toString());
+  params = params.append('pageIndex', this.genParams.pageIndex.toString());
   params = params.append('pageSize', this.genParams.pageSize.toString());
 
   return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
@@ -154,7 +248,6 @@ getDonation(){
 }
 insertDonation() {
   return this.http.post(this.baseUrl+ 'donation/insert', this.donationFormData);
-
 }
 updateDonation() {
   return this.http.post(this.baseUrl+ 'donation/update',  this.donationFormData);
@@ -163,12 +256,12 @@ updateDonation() {
 
 getApprovalAuthority(){    
   let params = new HttpParams();
-  debugger;
+  
   if (this.genParams.search) {
     params = params.append('search', this.genParams.search);
   }
   params = params.append('sort', this.genParams.sort);
-  params = params.append('pageIndex', this.genParams.pageNumber.toString());
+  params = params.append('pageIndex', this.genParams.pageIndex.toString());
   params = params.append('pageSize', this.genParams.pageSize.toString());
 
   return this.http.get<IApprovalAuthorityPagination>(this.baseUrl + 'ApprovalAuthority/approvalAuthorities', { observe: 'response', params })
@@ -183,22 +276,19 @@ getApprovalAuthority(){
 }
 insertApprovalAuthority() {
   return this.http.post(this.baseUrl+ 'approvalAuthority/insert', this.approvalAuthorityFormData);
-
 }
 updateApprovalAuthority() {
   return this.http.post(this.baseUrl+ 'approvalAuthority/update',  this.approvalAuthorityFormData);
 }
 
-//#region BCDS Info
-
 getBcdsList(){    
   let params = new HttpParams();
-  //debugger;
   if (this.genParams.search) {
     params = params.append('search', this.genParams.search);
   }
+  
   params = params.append('sort', this.genParams.sort);
-  params = params.append('pageIndex', this.genParams.pageNumber.toString());
+  params = params.append('pageIndex', this.genParams.pageIndex.toString());
   params = params.append('pageSize', this.genParams.pageSize.toString());
 
   return this.http.get<IBcdsPagination>(this.baseUrl + 'Bcds/GetAllBCDS', { observe: 'response', params })
@@ -219,15 +309,13 @@ updateBcds() {
   return this.http.post(this.baseUrl+ 'Bcds/ModifyBCDS',  this.bcdsFormData);
 }
 
-//#endregion
 getSocietyList(){    
   let params = new HttpParams();
-  //debugger;
   if (this.genParams.search) {
     params = params.append('search', this.genParams.search);
   }
   params = params.append('sort', this.genParams.sort);
-  params = params.append('pageIndex', this.genParams.pageNumber.toString());
+  params = params.append('pageIndex', this.genParams.pageIndex.toString());
   params = params.append('pageSize', this.genParams.pageSize.toString());
 
   return this.http.get<ISocietyPagination>(this.baseUrl + 'Society/GetAllSociety', { observe: 'response', params })
@@ -247,17 +335,14 @@ insertSociety() {
 updateSociety() {
   return this.http.post(this.baseUrl+ 'Society/ModifySociety',  this.societyFormData);
 }
-//#endregion
-
 
 getEmployeeList(){    
   let params = new HttpParams();
-  //debugger;
   if (this.genParams.search) {
     params = params.append('search', this.genParams.search);
   }
   params = params.append('sort', this.genParams.sort);
-  params = params.append('pageIndex', this.genParams.pageNumber.toString());
+  params = params.append('pageIndex', this.genParams.pageIndex.toString());
   params = params.append('pageSize', this.genParams.pageSize.toString());
 
   return this.http.get<IEmployeePagination>(this.baseUrl + 'Employee/GetAllEmployee', { observe: 'response', params })
@@ -269,6 +354,66 @@ getEmployeeList(){
     })
   );
 }
+getClusterMstList(){    
+  let params = new HttpParams();
+  
+  if (this.genParams.search) {
+    params = params.append('search', this.genParams.search);
+  }
+  params = params.append('sort', this.genParams.sort);
+  params = params.append('pageIndex', this.genParams.pageIndex.toString());
+  params = params.append('pageSize', this.genParams.pageSize.toString());
 
+  return this.http.get<IClusterMstPagination>(this.baseUrl + 'cluster/clusterMsts', { observe: 'response', params })
+  .pipe(
+    map(response => {
+      this.clusterMsts = [...this.clusterMsts, ...response.body.data]; 
+      this.clusterMstPagination = response.body;
+      return this.clusterMstPagination;
+    })
+  );
+  
+}
+getClusterDtlList(mstId:number){    
+  let params = new HttpParams();
+  
+  if (this.genParams.search) {
+    params = params.append('search', this.genParams.search);
+  }
+  params = params.append('sort', this.genParams.sort);
+  params = params.append('pageIndex', this.genParams.pageIndex.toString());
+  params = params.append('pageSize', this.genParams.pageSize.toString());
+
+  return this.http.get<IClusterDtlPagination>(this.baseUrl + 'cluster/clusterDtls/'+mstId, { observe: 'response', params })
+  .pipe(
+    map(response => {
+      this.clusterDtls = [...this.clusterDtls, ...response.body.data]; 
+      this.clusterDtlPagination = response.body;
+      return this.clusterDtlPagination;
+    })
+  );
+  
+}
+insertClusterMst() {
+  return this.http.post(this.baseUrl+ 'cluster/insertMst', this.clusterMstFormData);
+  // return this.http.post(this.baseUrl + 'account/register', values).pipe(
+  //   map((user: IUser) => {
+  //     if (user) {
+  //       // localStorage.setItem('token', user.token);
+  //       // this.currentUserSource.next(user);
+  //       return user;
+  //     }
+  //   })
+  // );
+}
+insertClusterDtl() {
+  return this.http.post(this.baseUrl+ 'cluster/insertDtl', this.clusterDtlFormData);
+}
+updateClusterMst() {
+  return this.http.post(this.baseUrl+ 'cluster/updateMst',  this.clusterMstFormData);
+}
+updateClusterDtl() {
+return this.http.post(this.baseUrl+ 'cluster/updateDtl',  this.clusterDtlFormData);
+}
 }
 

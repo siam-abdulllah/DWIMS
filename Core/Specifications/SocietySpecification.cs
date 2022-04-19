@@ -33,7 +33,9 @@ namespace Core.Specifications
         public SocietySpecification(int id)
             : base(x => x.Id == id)
         {
-            AddInclude(x => x.SocietyName);
+        }public SocietySpecification()
+            : base(x => x.Status == "Active")
+        {
         }
     }
 }

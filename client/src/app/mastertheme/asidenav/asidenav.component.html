@@ -1,9 +1,12 @@
 <!-- Main Sidebar Container -->
-<aside class="main-sidebar elevation-4 sidebar-dark-success">
+<aside class="main-sidebar elevation-4 sidebar-light-info">
     <!-- Brand Logo -->
-    <a href="/" class="brand-link">
-        <img src="/assets/adminlte/dist/img/AdminLTELogo.png" alt="User Self-Desk" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">DIDS</span>
+    <a routerLink="/portal/home" class="brand-link">
+        <img src="assets/adminlte/dist/img/compLogo.png" alt="User Self-Desk" class="brand-image img-circle elevation-3">
+
+        <b class="brand-text " style="color:white;">DIDS</b>
+        <!-- <b style="color:white;">DIDS</b> -->
+
     </a>
 
     <!-- Sidebar -->
@@ -14,86 +17,81 @@
         <img src="/assets/adminlte/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
-        <a href="#" class="d-block">Rijwan Ansari</a>
+        <a routerLink="#" class="d-block">Rijwan Ansari</a>
       </div>
     </div> -->
-
         <!-- Sidebar Menu -->
         <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column text-sm nav-legacy nav-flat" data-widget="treeview" role="menu" data-accordion="false">
+            <ul [innerHtml]="htmlToAdd" class="nav nav-pills nav-sidebar flex-column text-sm nav-legacy nav-flat" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
              with font-awesome or any other icon font library -->
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a href="/portal/home" class="nav-link">
                         <i class="nav-icon fas fa-home"></i>
                         <p>
                             Home
                         </p>
                     </a>
-                </li>
-                <li class="nav-item has-treeview menu-open">
-                    <a href="#" class="nav-link active">
+                </li> -->
+                <!-- <div [innerHtml]="htmlToAdd"></div> -->
+                <!-- <li class="nav-item has-treeview">
+                    <a href="javascript:void(0)" class="nav-link">
                         <i class="nav-icon fas fa-user"></i>
-                        <p>
-                            Master
-
+                        <p>Master
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="/portal/master/donation" class="nav-link active">
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/master/donation" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Donation</p>
 
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="/portal/master/subCampaign" class="nav-link">
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/master/subCampaign" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Sub Campaign</p>
 
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="/portal/master/campaign" class="nav-link">
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/master/campaign" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Campaign</p>
 
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="/portal/master/bcds-info" class="nav-link">
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/master/bcds-info" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Bcds Info</p>
 
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="/portal/master/employee-info" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Employee Info</p>
-
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/portal/master/society-info" class="nav-link">
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/master/society-info" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Society Info</p>
-
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="/portal/master/approvalAuthority" class="nav-link">
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/master/approvalAuthority" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Approval Authority</p>
-
+                            </a>
+                        </li>
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/cluster" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Cluster Info</p>
                             </a>
                         </li>
                     </ul>
-                </li>
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
+                </li> -->
+                <!-- <li class="nav-item has-treeview">
+                    <a href="javascript:void(0)" class="nav-link ">
                         <i class="nav-icon fas fa-user"></i>
                         <p>
                             Transaction
@@ -101,49 +99,120 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="/portal/regApproval" class="nav-link active">
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/regApproval" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Registration Approval</p>
-
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="/portal/marketGroup" class="nav-link active">
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/marketGroup" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Market Group</p>
-
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="/portal/apprAuthConfig" class="nav-link active">
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/sbu-wise-budget" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>SBU Wise Budget</p>
+                            </a>
+                        </li>
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/apprAuthConfig" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Approval Authority Config</p>
-
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="/portal/docHonAppr" class="nav-link">
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/approval-ceiling" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Doctor Honorarium Approval</p>
+                                <p>Approval Ceiling</p>
+                            </a>
+                        </li>
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/approval-time-limit" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Approval Time Limit</p>
 
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="/portal/investmentInit" class="nav-link">
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/investmentInit" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Investment Initialization</p>
-
+                            </a>
+                        </li>
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/investmentRec" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Investment Recomendation</p>
+                            </a>
+                        </li>
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/investmentApr" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Investment Approval</p>
+                            </a>
+                        </li>
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/docHonAppr" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Doctor Honorarium Approval</p>
                             </a>
                         </li>
                     </ul>
                 </li>
-
-
-
+                <li class="nav-item has-treeview">
+                    <a href="javascript:void(0)" class="nav-link">
+                        <i class="nav-icon fas fa-user"></i>
+                        <p>Report
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/rptInvestment" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Report Investment</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item has-treeview">
+                    <a href="javascript:void(0)" class="nav-link">
+                        <i class="nav-icon fas fa-user"></i>
+                        <p>Security
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/menuHead" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Menu Head</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/subMenu" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Sub Menu</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item" routerLinkActive="active">
+                            <a routerLink="/portal/menuConfig" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Menu Config</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li> -->
                 <!-- <li class="nav-header">MULTI LEVEL EXAMPLE</li>
                 <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
+                    <a routerLink="#" class="nav-link">
                         <i class="nav-icon fas fa-circle"></i>
                         <p>
                             Level 1
@@ -152,13 +221,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a routerLink="#" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Level 2</p>
                             </a>
                         </li>
                         <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link">
+                            <a routerLink="#" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>
                                     Level 2
@@ -167,19 +236,19 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a routerLink="#" class="nav-link">
                                         <i class="far fa-dot-circle nav-icon"></i>
                                         <p>Level 3</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a routerLink="#" class="nav-link">
                                         <i class="far fa-dot-circle nav-icon"></i>
                                         <p>Level 3</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a routerLink="#" class="nav-link">
                                         <i class="far fa-dot-circle nav-icon"></i>
                                         <p>Level 3</p>
                                     </a>
@@ -187,7 +256,7 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a routerLink="#" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Level 2</p>
                             </a>

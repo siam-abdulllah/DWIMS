@@ -1,0 +1,77 @@
+<!-- <section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1></h1>
+            </div>
+            <div class="col-sm-6">
+            </div>
+        </div>
+    </div>
+</section> -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <form novalidate autocomplete="off" #form="ngForm" (submit)="onSubmit(form)">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <h3 class="card-title">Menu Head</h3>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button class="btn btn-info  btn-block" type="submit" [disabled]="form.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button class="btn btn-danger  btn-block" type="button" (click)="resetForm(form)"><i class="fa fa-undo"></i>&nbsp; Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <input type="hidden" name="id" [value]="menuHeadService.menuHeadFormData.id" />
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Menu Head</label>
+                                        <span style="color:red;">*</span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input class="form-control " placeholder="Name" name="menuHeadName" #menuHeadName="ngModel" [(ngModel)]="menuHeadService.menuHeadFormData.menuHeadName" required [class.invalid]="menuHeadName.invalid && menuHeadName.touched">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Sequence</label>
+                                        <span style="color:red;">*</span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input class="form-control " placeholder="Sequence" name="menuHeadSeq" #menuHeadSeq="ngModel" [(ngModel)]="menuHeadService.menuHeadFormData.menuHeadSeq" required [class.invalid]="menuHeadSeq.invalid && menuHeadSeq.touched">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <table class="table">
+                                    <tr class="HeaderRow">
+                                        <td>Menu Head Name</td>
+                                        <td>Sequence</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr *ngFor="let a of menuHeads">
+                                        <td>
+                                            {{a.menuHeadName}}
+                                        </td>
+                                        <td>
+                                            {{a.menuHeadSeq}}
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-info  btn-block" type="button" (click)="populateForm(a)"><i class="fa fa-pen"></i>&nbsp; Edit</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

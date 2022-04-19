@@ -98,7 +98,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-         [Route("employeesForConfigByAuthId/{id}")]
+        [Route("employeesForConfigByAuthId/{id}")]
         public async Task<IReadOnlyList<ApprAuthConfig>> GetEmployees(int id)
         {
             try

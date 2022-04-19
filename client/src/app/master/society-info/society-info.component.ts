@@ -15,19 +15,28 @@ export class SocietyInfoComponent implements OnInit {
 
   @ViewChild('search', {static: false}) searchTerm: ElementRef;
   genParams: GenericParams;
+  numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
   societyinfo: ISocietyInfo[];
+  searchText = '';
+  config: any;
   totalCount = 0;
   constructor(public masterService: MasterService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit(): void {
+    this.resetPage()
     this.getSociety();
   }
 
   getSociety(){
     this.masterService.getSocietyList().subscribe(response => {
-      debugger;
+      const params = this.masterService.getGenParams();
       this.societyinfo = response.data;
       this.totalCount = response.count;
+      this.config = {
+        currentPage: params.pageIndex,
+        itemsPerPage: params.pageSize,
+        totalItems:this.totalCount,
+        };
     }, error => {
         console.log(error);
     });
@@ -40,7 +49,6 @@ export class SocietyInfoComponent implements OnInit {
     else
       this.updateSociety(form);
   }
-
 
   insertSociety(form: NgForm) {
     this.masterService.insertSociety().subscribe(
@@ -66,11 +74,37 @@ export class SocietyInfoComponent implements OnInit {
     );
   }
 
+  onPageChanged(event: any){
+    const params = this.masterService.getGenParams();
+    if (params.pageIndex !== event)
+    {
+      params.pageIndex = event;
+      this.masterService.setGenParams(params);
+      this.getSociety();
+    }
+  }
+  
+  onSearch(){
+    const params = this.masterService.getGenParams();
+    params.search = this.searchTerm.nativeElement.value;
+    params.pageIndex = 1;
+    this.masterService.setGenParams(params);
+    this.getSociety();
+  }
+
+  resetSearch(){
+    this.searchText = '';
+}
+
   populateForm(selectedRecord: ISocietyInfo) {
     this.masterService.societyFormData = Object.assign({}, selectedRecord);
   }
   resetForm(form: NgForm) {
+    this.searchText = '';
     form.form.reset();
+    this.masterService.societyFormData = new SocietyInfo();
+  }
+  resetPage() {
     this.masterService.societyFormData = new SocietyInfo();
   }
 

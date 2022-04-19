@@ -16347,16 +16347,16 @@ textarea.form-control.is-warning {
 .card-primary:not(.card-outline)>.card-header {
     /* background-color: #007bff */
     /* siam */
-    background-color: #6f6f6f
+    background-color: #007bff
 }
 
 .card-primary:not(.card-outline)>.card-header,
 .card-primary:not(.card-outline)>.card-header a {
-    color: #fff
+    color: #000;
 }
 
 .card-primary:not(.card-outline)>.card-header a.active {
-    color: #1f2d3d
+    color: #000;
 }
 
 .card-primary.card-outline {

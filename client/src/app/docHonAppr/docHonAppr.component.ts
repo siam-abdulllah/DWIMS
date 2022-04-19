@@ -1,6 +1,6 @@
-import { Campaign, ICampaign } from '../shared/models/campaign';
+
 import { SubCampaign, ISubCampaign } from '../shared/models/subCampaign';
-import {  IDocotor } from '../shared/models/docotor';
+import {  IDoctor } from '../shared/models/docotor';
 import { GenericParams } from '../shared/models/genericParams';
 import { Component, ElementRef, OnInit, ViewChild , TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
@@ -9,9 +9,12 @@ import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
+import { DoctorHonAppr, IDoctorHonAppr } from '../shared/models/doctorHonAppr';
+import { DoctorHonApprService } from '../_services/doctorHonAppr.service';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-docHonAppr',
-  templateUrl: './docHonAppr.html',
+  templateUrl: './docHonAppr.component.html',
   styles: [
   ]
 })
@@ -22,18 +25,34 @@ export class DocHonApprComponent implements OnInit {
   // genParams: GenericParams;
   // campaigns: ICampaign[]; 
   // subCampaigns: ISubCampaign[]; 
-  docotors: IDocotor[];
+  month = '';
+  fDate = '';
+  doctorHonAppr: IDoctorHonAppr[]= [];
+  doctors: IDoctor[];
   totalCount = 0;
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date = new Date();
   //constructor(public masterService: MasterService, private router: Router,
-    constructor( private router: Router,
-    private toastr: ToastrService) { }
+    constructor( private docHonApprService: DoctorHonApprService,private router: Router,
+    private toastr: ToastrService,private datePipe: DatePipe) { }
 
   ngOnInit() {
+    
+    this.resetPage();
     //this.getCampaign();
-    this.bsConfig = Object.assign({}, { containerClass: 'theme-green' }, { dateInputFormat: 'DD/MM/YYYY' });
+    this.bsConfig = Object.assign({}, { containerClass: 'theme-blue'  }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
+  }
+  changeDateInDetail(){
+    var fromDate = new Date(this.month);
+     this.fDate = this.datePipe.transform(fromDate, "MMyyyy");
+     this.docHonApprService.getDoctorHonAppr(this.fDate).subscribe(response => {
+      debugger;
+      this.doctorHonAppr = response.data;
+      this.totalCount = response.count;
+    }, error => {
+        console.log(error);
+    });
   }
   getCampaign(){
     // this.masterService.getCampaign().subscribe(response => {
@@ -75,25 +94,42 @@ export class DocHonApprComponent implements OnInit {
     // );
   }
 
-  populateForm(selectedRecord: ICampaign) {
+  populateForm() {
     //this.masterService.campaignFormData = Object.assign({}, selectedRecord);
+  }
+  
+  clickStatusDoctorHon(selectedRecord:IDoctorHonAppr) {
+    debugger;
+if(selectedRecord.id==0)
+{
+    this.docHonApprService.insertDocHonAppr(selectedRecord).subscribe(
+      res => {
+        
+        this.changeDateInDetail();
+       
+        this.toastr.success('Save successfully', 'Investment ')
+      },
+      err => { console.log(err); }
+    );
+  }
+  else{
+    this.docHonApprService.updateDocHonAppr(selectedRecord).subscribe(
+      res => {
+        
+        this.changeDateInDetail();
+       
+        this.toastr.success('Save successfully', 'Investment ')
+      },
+      err => { console.log(err); }
+    );
+  }
   }
   resetForm(form: NgForm) {
     form.form.reset();
     //this.masterService.campaignFormData = new Campaign();
   }
-  SBUs = [
-    {id: 1, name: 'Chittagong/Chattogram' },
-    {id: 2, name: 'Sonamasjid'},
-    {id: 3, name: 'Benapole'},
-    {id: 4, name: 'Mongla'},
-    {id: 5, name: 'Hili'},
-    {id: 6, name: 'Darshana'},
-    {id: 7, name: 'Shahjalal International Airport'},
-    {id: 8, name: 'Banglabandha'},
-    {id: 9, name: 'Birol'},
-    {id: 10, name: 'Rohanpur'},
-    {id: 11, name: 'Vomra'},
-    {id: 12, name: 'Burimari'}
-  ];
+  resetPage() {
+    this.docHonApprService.doctorHonApprFormData = new DoctorHonAppr();
+  }
+  
 }

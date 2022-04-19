@@ -9,6 +9,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from '../home/home.component';
+import { SuperAdminRoleGuard } from '../_guard/superAdminRole.guard';
 // import { LoginComponent } from './login/login.component';
 // import { RegisterComponent } from './register/register.component';
 
@@ -17,13 +18,13 @@ const routes: Routes = [
   // {path: 'register', component: RegisterComponent, data: {breadcrumb: 'Register User'}},
   // {path: 'register/:id', component: RegisterComponent, data: {breadcrumb: 'User Details'}},
   {path: '', component: HomeComponent, data: {breadcrumb: 'Home'} },
-  {path: 'donation', component: DonationComponent}  ,
-  {path: 'subCampaign', component: SubCampaignComponent},
-  {path: 'campaign', component: CampaignComponent} ,
-  {path: 'bcds-info', component: BcdsInfoComponent}  ,
-  {path: 'employee-info', component: EmployeeInfoComponent},
-  {path: 'society-info', component: SocietyInfoComponent}  ,
-  {path: 'approvalAuthority', component: ApprovalAuthorityComponent}    
+  {path: 'donation', component: DonationComponent, canActivate: [SuperAdminRoleGuard]}  ,
+  {path: 'subCampaign', component: SubCampaignComponent, canActivate: [SuperAdminRoleGuard]},
+  {path: 'campaign', component: CampaignComponent, canActivate: [SuperAdminRoleGuard]} ,
+  {path: 'bcds-info', component: BcdsInfoComponent, canActivate: [SuperAdminRoleGuard]}  ,
+  {path: 'employee-info', component: EmployeeInfoComponent, canActivate: [SuperAdminRoleGuard]},
+  {path: 'society-info', component: SocietyInfoComponent, canActivate: [SuperAdminRoleGuard]}  ,
+  {path: 'approvalAuthority', component: ApprovalAuthorityComponent, canActivate: [SuperAdminRoleGuard]}    
 
 ];
 

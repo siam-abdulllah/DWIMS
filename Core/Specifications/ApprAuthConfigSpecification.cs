@@ -32,6 +32,11 @@ namespace Core.Specifications
             // }
         }
 
+        public ApprAuthConfigSpecification()
+             : base(x => x.Status == "A")
+        {
+            AddInclude(x => x.Employee);
+        }
         public ApprAuthConfigSpecification(int authId)
             : base(x => x.ApprovalAuthorityId == authId && x.Status=="A")
         {
@@ -40,7 +45,7 @@ namespace Core.Specifications
         public ApprAuthConfigSpecification(int employeeId,string status)
             : base(x => x.EmployeeId == employeeId && x.Status == status)
         {
-            
+            AddInclude(x => x.ApprovalAuthority);
         }
         public ApprAuthConfigSpecification(int employeeId,int authId,string status)
             : base(x => x.EmployeeId == employeeId && x.ApprovalAuthorityId == authId && x.Status == status)

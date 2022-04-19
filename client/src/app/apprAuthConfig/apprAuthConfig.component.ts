@@ -22,22 +22,31 @@ export class ApprAuthConfigComponent implements OnInit {
   employees: IEmployee[];
   employeesForApprAuth: IEmployeeForApprAuth[];
   totalCount = 0;
+ 
   constructor(public apprAuthConfigService: ApprAuthConfigService, private router: Router,
     private toastr: ToastrService) { }
 
   ngOnInit() {
-  
+    this.resetForm();
     this.getApprovalAuthority();
     this.getEmployees();
     
   }
+  customSearchFn(term: string, item: any) {
+    term = term.toLocaleLowerCase();
+    return item.employeeSAPCode.toLocaleLowerCase().indexOf(term) > -1 || 
+    item.employeeName.toLocaleLowerCase().indexOf(term) > -1;
+ }
   resetPage(form: NgForm) {
     form.reset();
     this.apprAuthConfigService.approvalAuthConfigFormData = new ApprovalAuthConfig();
     this.employeesForApprAuth=[];
   }
+  resetForm() {
+    this.apprAuthConfigService.approvalAuthConfigFormData = new ApprovalAuthConfig();
+    this.employeesForApprAuth=[];
+  }
   getApprovalAuthConfigs(){
-
     this.apprAuthConfigService.getApprovalAuthConfigs(parseInt(this.apprAuthConfigService.approvalAuthConfigFormData.approvalAuthorityId)).subscribe(response => {
       debugger;
       this.employeesForApprAuth = response as IEmployeeForApprAuth[];

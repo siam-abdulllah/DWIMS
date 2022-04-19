@@ -1,0 +1,67 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <!-- form start -->
+                <!-- <form novalidate autocomplete="off"> -->
+                <form [formGroup]="investmentSearchForm">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h3 class="card-title">Yearly Budget Report</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <fieldset>
+                                <div class="form-group">
+                                    <div class="row">
+
+                                        <div class="col-md-1">
+                                            <label>Year</label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input class="form-control" id="from-date" placeholder="From Date" formControlName="fromDate" [bsValue]="bsValue" bsDatepicker [bsConfig]="{ minMode:'year', adaptivePosition: true, dateInputFormat: 'YYYY' }">
+                                        </div>
+
+                                        <div class="col-md-1">
+                                            <label>Donation Type</label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <select class="form-control " id="donationType" formControlName="donationType">
+                                                <option [ngValue]="null">All</option>
+                                                <option *ngFor="let a of donations" [value]="a.donationTypeName">
+                                                    {{a.donationTypeName}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <label>SBU</label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <select class="form-control " id="sbu" formControlName="sbu">
+                                                <option [ngValue]="null">All</option>
+                                                <option *ngFor="let a of SBUs" [value]="a.sbuName">{{a.sbuName}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button class="btn btn-info  btn-block" type="button" (click)="getYearlyBudgetReport()"><i class="fa fa-save"></i>&nbsp;
+                                            View</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <!-- /.card -->
+                </form>
+            </div>
+            <!-- /.row -->
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>

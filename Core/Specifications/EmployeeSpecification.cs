@@ -9,6 +9,7 @@ namespace Core.Specifications
       (string.IsNullOrEmpty(employeeparams.Search) || x.EmployeeName.ToLower().Contains(employeeparams.Search))
   )
         {
+            
             AddOrderBy(x => x.SetOn);
             ApplyPaging(employeeparams.PageSize * (employeeparams.PageIndex - 1), employeeparams.PageSize);
         }
@@ -16,7 +17,11 @@ namespace Core.Specifications
         public EmployeeSpecification(int id)
             : base(x => x.Id == id)
         {
-            AddInclude(x => x.EmployeeName);
+            //AddInclude(x => x.EmployeeName);
+        } public EmployeeSpecification(string marketCode)
+            : base(x => x.MarketCode == marketCode)
+        {
+            
         }
     }
 }

@@ -1,32 +1,34 @@
-<!-- Navbar -->
 <nav class="main-header navbar navbar-expand text-sm navbar-light">
-    <!-- Left navbar links -->
     <ul class="navbar-nav">
         <li class="nav-item">
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
-        <!-- <li class="nav-item d-none d-sm-inline-block">
-      <a href="/" class="nav-link">Home</a>
-    </li>
-    <li class="nav-item d-none d-sm-inline-block">
-      <a href="#" class="nav-link">Contact</a>
-    </li> -->
     </ul>
-
+    <div class="navbar-custom-menu-left">
+        <p class="alt_companyLogo" style="margin-bottom: 6.5px;">
+            <!-- <img src="assets/adminlte/dist/img/SquarePharmaLogo.png" style="width: 5%;"> Square Pharmaceuticals Ltd.</p> -->
+            <img src="" style="width: 5%;"> Square Pharmaceuticals Ltd.</p>
+        <!-- <p class="alt_companyLogo" style="margin-bottom: 6.5px;"> <img src="assets/adminlte/dist/img/compLogo.png">DIDS</p> -->
+        <p class="alt_systemLogo" style="margin-bottom: 6.5px;margin-left: 100.5px;">DIDS</p>
+    </div>
     <!-- SEARCH FORM -->
-    <form class="form-inline ml-3">
-        <!-- <div class="input-group input-group-sm">
-      <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-      <div class="input-group-append">
-        <button class="btn btn-navbar" type="submit">
-          <i class="fas fa-search"></i>
-        </button>
-      </div>
-    </div> -->
-    </form>
+
 
     <!-- Right navbar links -->
-    <ul class="navbar-nav ml-auto">
+    <ul class="navbar-nav ml-auto navbar-custom-empInfo-left">
+        <li class="nav-item dropdown">
+            <div class="input-group input-group-sm ml-3">
+                <p><b>Name: &nbsp;</b></p>{{employeeName}}</div>
+        </li>
+        <li class="nav-item dropdown">
+            <div class="input-group input-group-sm ml-3">
+                <p><b>Desig:&nbsp;</b></p>{{desgination}}</div>
+        </li>
+        <li class="nav-item dropdown">
+            <div class="input-group input-group-sm ml-3">
+                <p><b>SBU:&nbsp;</b></p>{{sbu}}
+            </div>
+        </li>
         <!-- <li class="nav-item dropdown">
       <a class="nav-link" data-toggle="dropdown" href="#">
         <i class="far fa-comments"></i>
@@ -112,6 +114,19 @@
       </a>
     </li> -->
     </ul>
+    <form class="form-inline ml-3 " style="color: white;">
+        <!-- <div class="input-group input-group-sm">
+          <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+          <div class="input-group-append">
+              <button class="btn btn-navbar" type="submit">
+        <i class="fas fa-search"></i>
+      </button>
+          </div>
+      </div> -->
+
+
+
+    </form>
     <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
             <!-- Messages: style can be found in dropdown.less-->
@@ -124,15 +139,16 @@
             <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <img src="assets/adminlte/dist/img/avatar5.png" class="user-image" alt="User Image" />
-                    <!-- <span class="hidden-xs">{{getUserName()}}</span> -->
+                    <!-- <span class="hidden-xs" style="color: white;">{{displayName}}</span> -->
                 </a>
                 <ul class="dropdown-menu">
                     <!-- User image -->
-                    <li class="user-header">
+                    <li class="user-header" style="background-color: #28b9da;">
                         <img src="assets/adminlte/dist/img/avatar5.png" class="img-circle" alt="User Image" />
 
                         <div style="color: white;">
-                            <!-- <b>{{getUserName()}}</b> - {{getPosition()}} -->
+                            <b>{{employeeName}}</b> - {{desgination}}
+                            <br/> SBU- {{sbu}}
                             <!-- <h4 style="color: white;margin-top: 5px;;">{{getOrganizationName()}}</h4> -->
                         </div>
                     </li>
@@ -143,9 +159,13 @@
                         <!-- <div class="pull-left">
               <a (click)="checkPermission()" class="btn btn-default btn-embossed btn-flat">Profile</a>
             </div> -->
-                        <div class="pull-right">
+                        <div class="pull-right" style="float: right;">
                             <a (click)="logout()" class="btn btn-default btn-embossed btn-flat">Sign out</a>
                         </div>
+                        <div class="pull-left">
+                            <a (click)="checkPermission()" class="btn btn-default btn-embossed btn-flat">Change Password</a>
+                        </div>
+
                     </li>
                 </ul>
             </li>

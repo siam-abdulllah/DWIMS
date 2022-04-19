@@ -242,7 +242,7 @@ th {
 
 label {
     display: inline-block;
-    margin-bottom: .5rem
+    margin-top: .2rem
 }
 
 button {
@@ -670,8 +670,8 @@ pre code {
     display: flex;
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
-    margin-right: -7.5px;
-    margin-left: -7.5px
+    /* margin-right: -7.5px;
+    margin-left: -7.5px */
 }
 
 .no-gutters {
@@ -1820,7 +1820,7 @@ pre code {
 
 .table td,
 .table th {
-    padding: .75rem;
+    padding: .35rem;
     vertical-align: top;
     border-top: 1px solid #dee2e6
 }
@@ -2305,7 +2305,7 @@ textarea.form-control {
 }
 
 .form-group {
-    margin-bottom: 1rem
+    margin-bottom: .4rem
 }
 
 .form-text {
@@ -2685,6 +2685,7 @@ textarea.form-control.is-invalid {
     font-size: 1rem;
     line-height: 1.5;
     border-radius: .25rem;
+    text-shadow: 1px 0px 1px #000;
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out
 }
 
@@ -3386,7 +3387,8 @@ fieldset:disabled a.btn {
 
 .btn-block {
     display: block;
-    width: 100%
+    width: 100%;
+    background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, .3), rgba(255, 255, 255, 0)) !important;
 }
 
 .btn-block+.btn-block {
@@ -5086,7 +5088,7 @@ input[type=submit].btn-block {
     -ms-flex: 1 1 auto;
     flex: 1 1 auto;
     min-height: 1px;
-    padding: 1.25rem
+    padding: 1.25rem;
 }
 
 .card-title {
@@ -8638,7 +8640,7 @@ button.bg-dark:hover {
 
 .mt-5,
 .my-5 {
-    margin-top: 3rem!important
+    margin-top: 8rem!important
 }
 
 .mr-5,
@@ -10784,7 +10786,7 @@ body:not(.layout-fixed).layout-navbar-fixed.text-sm .wrapper .main-sidebar .side
 }
 
 .layout-navbar-fixed .wrapper .sidebar-light-info .brand-link:not([class*=navbar]) {
-    background-color: #fff
+    background-color: #28b9da;
 }
 
 .layout-navbar-fixed .wrapper .sidebar-dark-warning .brand-link:not([class*=navbar]) {
@@ -10946,7 +10948,7 @@ body:not(.layout-fixed).layout-navbar-fixed.text-sm .wrapper .main-sidebar .side
 }
 
 .layout-navbar-fixed .wrapper .sidebar-light-info .brand-link:not([class*=navbar]) {
-    background-color: #fff
+    background-color: #28b9da;
 }
 
 .layout-navbar-fixed .wrapper .sidebar-dark-warning .brand-link:not([class*=navbar]) {
@@ -12082,9 +12084,9 @@ body.sidebar-collapse:not(.sidebar-mini-md):not(.sidebar-mini) .main-header::bef
 
 .brand-link {
     display: block;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     line-height: 1.5;
-    padding: .8125rem .5rem;
+    padding: .62rem .5rem;
     transition: width .3s ease-in-out;
     white-space: nowrap
 }
@@ -12094,9 +12096,10 @@ body.sidebar-collapse:not(.sidebar-mini-md):not(.sidebar-mini) .main-header::bef
     text-decoration: none
 }
 
-.text-sm .brand-link {
+
+/*.text-sm .brand-link {
     font-size: inherit
-}
+}*/
 
 [class*=sidebar-dark] .brand-link {
     border-bottom: 1px solid #4b545c;
@@ -12350,7 +12353,7 @@ body.sidebar-collapse:not(.sidebar-mini-md):not(.sidebar-mini) .main-header::bef
 }
 
 [class*=sidebar-light-] {
-    background-color: #fff
+    background-color: #f4f4f4
 }
 
 [class*=sidebar-light-] .user-panel a:hover {
@@ -16349,12 +16352,37 @@ textarea.form-control.is-warning {
 .card-primary:not(.card-outline)>.card-header {
     /* background-color: #007bff */
     /* siam */
-    background-color: #6f6f6f
+    background-color: #fffefe;
+    border-top: 3px solid #28b9da;
 }
 
 .card-primary:not(.card-outline)>.card-header,
 .card-primary:not(.card-outline)>.card-header a {
-    color: #fff
+    color: #000;
+    background-color: #d4f1ff;
+    /* position: fixed;
+    width: 77.8%;
+    z-index: 1; */
+}
+
+@media (min-width: 992px) {
+    .card-header.stick {
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+        width: 79.8%;
+        border-radius: 0 0 0.5em 0.5em;
+    }
+}
+
+@media (max-width: 992px) {
+    .card-header.stick {
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+        /* width: 85%;*/
+        border-radius: 0 0 0.5em 0.5em;
+    }
 }
 
 .card-primary:not(.card-outline)>.card-header a.active {
@@ -18451,8 +18479,8 @@ html.maximized-card {
 
 .card-title {
     float: left;
-    font-size: 1.1rem;
-    font-weight: 400;
+    font-size: 1.5rem;
+    font-weight: bold;
     margin: 0
 }
 
@@ -18479,7 +18507,8 @@ html.maximized-card {
 }
 
 .text-sm .card-title {
-    font-size: 1rem
+    font-size: 1.4rem;
+    font-weight: bold;
 }
 
 .text-sm .nav-link {
@@ -19661,7 +19690,8 @@ html.maximized-card {
 
 .small-box h3,
 .small-box p {
-    z-index: 5
+    z-index: 5;
+    padding-left: 15px;
 }
 
 .small-box .icon {
@@ -28509,7 +28539,7 @@ blockquote.quote-gray-dark h6 {
 }
 
 .text-xs {
-    font-size: .75rem!important
+    font-size: .7rem!important
 }
 
 .text-sm {

@@ -6,14 +6,17 @@
                     <div class="card card-primary">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-sm-8">
                                     <h3 class="card-title">Approval Authority Config</h3>
                                 </div>
-                                <div class="col-sm-3">
-                                    <button class="btn btn-info btn-lg btn-block" type="submit" [disabled]="form.invalid">Save</button>
+                                <div class="col-sm-2">
+                                    <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="form.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
                                 </div>
-                                <div class="col-sm-3">
-                                    <button type="button" class="btn btn-danger btn-lg btn-block" style="float: right;" (click)="resetPage(form)">Reset</button>
+                                <!-- <div class="col-sm-2">
+                                    <button class="btn btn-info btn-lg btn-block"><i class="fa fa-search"></i>Search</button>
+                                </div> -->
+                                <div class="col-sm-2">
+                                    <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetPage(form)"><i class="fa fa-undo"></i>Reset</button>
                                 </div>
                             </div>
                         </div>
@@ -22,13 +25,17 @@
                                 <div class="row">
                                     <div class="col-md-2">
                                         <label>Approval Authority level</label>
+                                        <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <select class="form-control form-control-lg" id="approvalAuthorityId" name="approvalAuthorityId" #approvalAuthorityId="ngModel" [(ngModel)]="apprAuthConfigService.approvalAuthConfigFormData.approvalAuthorityId" required [class.invalid]="approvalAuthorityId.invalid && approvalAuthorityId.touched"
+                                        <!-- <select class="form-control " id="approvalAuthorityId" name="approvalAuthorityId" #approvalAuthorityId="ngModel" [(ngModel)]="apprAuthConfigService.approvalAuthConfigFormData.approvalAuthorityId" required [class.invalid]="approvalAuthorityId.invalid && approvalAuthorityId.touched"
                                             (change)="getApprovalAuthConfigs()">
                                             <option  [ngValue]="null">Select Authority</option>
                                             <option *ngFor="let approvalAuthority of approvalAuthorities" [value]="approvalAuthority.id">{{approvalAuthority.approvalAuthorityName}}</option>
-                                        </select>
+                                        </select> -->
+                                        <ng-select [virtualScroll]="true" [items]="approvalAuthorities" (change)="getApprovalAuthConfigs()" bindLabel="approvalAuthorityName" bindValue="id" placeholder="Select" id="approvalAuthorityId" name="approvalAuthorityId" #approvalAuthorityId="ngModel"
+                                            [(ngModel)]="apprAuthConfigService.approvalAuthConfigFormData.approvalAuthorityId" required [class.invalid]="approvalAuthorityId.invalid && approvalAuthorityId.touched">
+                                        </ng-select>
                                     </div>
                                 </div>
                             </div>
@@ -37,19 +44,30 @@
                                     <div class="row">
                                         <div class="col-md-2">
                                             <label>Employee</label>
+                                            <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-3">
-                                            <select id="" class="form-control form-control-lg" name="employeeId" #employeeId="ngModel" [(ngModel)]="apprAuthConfigService.approvalAuthConfigFormData.employeeId" required [class.invalid]="employeeId.invalid && employeeId.touched">
+                                            <!-- <select id="" class="form-control " name="employeeId" #employeeId="ngModel" [(ngModel)]="apprAuthConfigService.approvalAuthConfigFormData.employeeId" required [class.invalid]="employeeId.invalid && employeeId.touched">
                                                 <option  [ngValue]="null">Select Employee</option>
                                                 <option *ngFor="let employe of employees" [value]="employe.id">{{employe.employeeName}}</option>
-                                            </select>
+                                            </select> -->
+                                            <ng-select [virtualScroll]="true" [items]="employees" [searchFn]="customSearchFn" bindLabel="employeeName" bindValue="id" placeholder="Select" name="employeeId" #employeeId="ngModel" [(ngModel)]="apprAuthConfigService.approvalAuthConfigFormData.employeeId"
+                                                required [class.invalid]="employeeId.invalid && employeeId.touched">
+                                                <ng-template ng-label-tmp let-item="item">
+                                                    <span [ngOptionHighlight]="search">{{ item.employeeSAPCode }} - {{ item.employeeName }}</span>
+                                                </ng-template>
+
+                                                <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                                                    <span [ngOptionHighlight]="search">{{ item.employeeSAPCode }} - {{ item.employeeName }}</span>
+                                                </ng-template>
+                                            </ng-select>
                                         </div>
                                         <div class="col-md-3"></div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <table class="table  table-bordered">
-                                        <tr>
+                                        <tr class="HeaderRow">
                                             <td>Employee</td>
                                             <td>Designation</td>
                                         </tr>

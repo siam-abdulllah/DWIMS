@@ -1,0 +1,11 @@
+@media (max-width:1200px) {
+    .alt_companyLogo>img {
+        display: none;
+    }
+}
+
+@media (max-width:200px) {
+    .alt_companyLogo {
+        display: block;
+    }
+}

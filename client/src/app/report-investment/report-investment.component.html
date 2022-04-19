@@ -1,0 +1,205 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <!-- form start -->
+                <!-- <form novalidate autocomplete="off"> -->
+                <form [formGroup]="investmentSearchForm">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h3 class="card-title">Investment Reports</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <input type="hidden" name="id" [value]="" />
+                            <div class="form-group">
+                            </div>
+                            <fieldset>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <table class="table table-bordered">
+                                                <tr class="HeaderRow">
+                                                    <td>Report Name</td>
+                                                    <td>Select</td>
+                                                </tr>
+                                                <tr *ngFor="let rpt of reports | paginate: config">
+                                                    <td>
+                                                        {{rpt.reportName}}
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-info  btn-block" type="button" (click)="viewReport(rpt.reportName)"><i class="fa fa-save"></i>&nbsp; View</button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="col-md-4">
+                                                <label>From Date</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input class="form-control" id="from-date" placeholder="From Date" formControlName="fromDate" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label>To Date</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input class="form-control" id="to-date" placeholder="To Date" formControlName="toDate" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label>Select Option</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <select class="form-control " (change)="onChangeDonationTo()" id="donationTo" formControlName="donationTo">
+                                                    <option [ngValue]="null">Select Donation To</option>
+                                                    <option value="Institution">Institution</option>
+                                                    <option value="Bcds">Bcds</option>
+                                                    <option value="Society">Society</option>
+                                                    <option value="Doctor">Doctor</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <!-- <select class="form-control " id="institutionId" formControlName="institutionId" [hidden]="visIns">
+                                                    <option [ngValue]="null">Select Institution</option>
+                                                    <option *ngFor="let a of institutions" [value]="a.id">{{a.institutionName}}</option>
+                                                </select> -->
+                                                <ng-select [virtualScroll]="true" [items]="institutions" bindLabel="institutionName" bindValue="institutionId" placeholder="Select Institution" name="institutionId" id="institutionId" formControlName="institutionId" [hidden]="visIns">
+                                                </ng-select>
+
+                                                <select class="form-control " id="societyId" formControlName="societyId" [hidden]="visSoc">
+                                                    <option [ngValue]="null">Select Society</option>
+                                                    <option *ngFor="let a of society" [value]="a.id">{{a.societyName}}</option>
+                                                </select>
+
+                                                <select class="form-control " id="bcdsId" formControlName="bcdsId" [hidden]="visBcd">
+                                                    <option [ngValue]="null">Select BCDS</option>
+                                                    <option *ngFor="let a of bcds" [value]="a.id">{{a.bcdsName}}</option>
+                                                </select>
+                                                <!-- <select class="form-control " id="doctorId" formControlName="doctorId" [hidden]="visDoc">
+                                                    <option [ngValue]="null">Select Doctor</option>
+                                                    <option *ngFor="let a of doctor" [value]="a.id">{{a.doctorName}}</option>
+                                                </select> -->
+                                                <ng-select [virtualScroll]="true" [items]="doctor" bindLabel="doctorName" [hidden]="visDoc" bindValue="doctorId" placeholder="Select Doctor" id="doctorId" name="doctorId" formControlName="doctorId">
+                                                </ng-select>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label>Select Location</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <select class="form-control " (change)="onChangeLocationType()" id="locationType" formControlName="locationType">
+                                                    <option [ngValue]="null">Select Location Type</option>
+                                                    <option value="Market">Market</option>
+                                                    <option value="Territory">Territory</option>
+                                                    <option value="Region">Region</option>
+                                                    <option value="Division">Division</option>
+                                                    <option value="Zone">Zone</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <!-- <select class="form-control " id="marketCode" formControlName="marketCode" [hidden]="visMarket">
+                                                    <option [ngValue]="null">Select Market</option>
+                                                    <option *ngFor="let a of market" [value]="a.marketCode">{{a.marketName}}</option>
+                                                </select> -->
+
+                                                <ng-select [virtualScroll]="true" [items]="market" bindLabel="marketName" bindValue="marketCode" placeholder="Select Market" name="marketCode" id="marketCode" formControlName="marketCode" [hidden]="visMarket">
+                                                </ng-select>
+
+                                                <!-- <select class="form-control " id="territoryCode" formControlName="territoryCode" [hidden]="visTerritory">
+                                                    <option [ngValue]="null">Select Territory</option>
+                                                    <option *ngFor="let a of territory" [value]="a.territoryCode">{{a.territoryName}}</option>
+                                                </select> -->
+
+                                                <ng-select [virtualScroll]="true" [items]="territory" bindLabel="territoryName" bindValue="territoryCode" placeholder="Select Territory" name="territoryCode" id="territoryCode" formControlName="territoryCode" [hidden]="visTerritory">
+                                                </ng-select>
+
+                                                <select class="form-control " id="regionCode" formControlName="regionCode" [hidden]="visRegion">
+                                                    <option [ngValue]="null">Select Region</option>
+                                                    <option *ngFor="let a of region" [value]="a.regionCode">{{a.regionName}}</option>
+                                                </select>
+
+                                                <select class="form-control " id="divisionCode" formControlName="divisionCode" [hidden]="visDivision">
+                                                    <option [ngValue]="null">Select Division</option>
+                                                    <option *ngFor="let a of division" [value]="a.divisionCode">{{a.divisionName}}</option>
+                                                </select>
+
+                                                <select class="form-control " id="zoneCode" formControlName="zoneCode" [hidden]="visZone">
+                                                    <option [ngValue]="null">Select Zone</option>
+                                                    <option *ngFor="let a of zone" [value]="a.zoneCode">{{a.zoneName}}</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label>Donation Type</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <select class="form-control " id="donationType" formControlName="donationType">
+                                                    <option [ngValue]="null">Select Donation Type</option>
+                                                    <option *ngFor="let a of donations" [value]="a.donationTypeName">
+                                                        {{a.donationTypeName}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label>SBU</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <select class="form-control " id="sbu" formControlName="sbu">
+                                                    <option [ngValue]="null">Select SBU</option>
+                                                    <option *ngFor="let a of SBUs" [value]="a.sbuName">{{a.sbuName}}</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label>Brand</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <select class="form-control " id="brandCode" formControlName="brandCode">
+                                                    <option [ngValue]="null">Select Brand</option>
+                                                    <option *ngFor="let a of products" [value]="a.donationTypeName">
+                                                        {{a.donationTypeName}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label>Campaign</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <select class="form-control " id="campaignName" formControlName="campaignName">
+                                                    <option [ngValue]="null">Select Campaign</option>
+                                                    <option *ngFor="let a of campaignMst" [value]="a.campaignName">
+                                                        {{a.campaignName}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label>Sub Campaign</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <select class="form-control " id="subCampaignName" formControlName="subCampaignName">
+                                                    <option [ngValue]="null">Select Sub Campaign</option>
+                                                    <option *ngFor="let a of subCampaigns" [value]="a.subCampaignName">
+                                                        {{a.subCampaignName}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <!-- /.card -->
+                </form>
+            </div>
+            <!-- /.row -->
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>

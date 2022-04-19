@@ -1,13 +1,21 @@
-<div class="d-flex justify-content-center mt-5">
-    <div class="col-3">
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <div class="text-center mb-4">
-          <h1 class="h3 mb-3 font-weight-normal">Login</h1>
-        </div>
+<div class="d-flex justify-content-center mt-5 logInPannel">
 
-        <app-text-input formControlName="email" [label]="'Email Address'"></app-text-input>
-        <app-text-input formControlName="password" [label]="'Password'" [type]="'password'"></app-text-input>
-<!-- 
+    <!-- <div class="col-3"> -->
+    <div class="form-group">
+        <div class="row">
+            <div class="col-4">
+            </div>
+            <div class="col-2">
+                <div style="min-width: 320px;max-width: 30%;">
+                    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                        <div class="text-center mb-4">
+                            <!-- <h1 class="h3 mb-3 font-weight-normal">Login</h1> -->
+                            <img src="assets/adminlte/dist/img/compLogoHead.png" alt="User Self-Desk" style="width: 20%;">
+
+                        </div>
+                        <app-text-input formControlName="userName" [label]="'User Name'"></app-text-input>
+                        <app-text-input formControlName="password" [label]="'Password'" [type]="'password'"></app-text-input>
+                        <!-- 
         <div class="form-label-group">
           <input formControlName="email" type="email" id="inputEmail" class="form-control" placeholder="Email Address" />
           <label for="inputEmail"> Email Address</label>
@@ -23,10 +31,21 @@
             && loginForm.get('email').errors['pattern']">
             Email address is not valid.
           </span>
-        </div> -->       
-        <button [disabled]="loginForm.invalid" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-      </form>
+        </div> -->
+                        <button [disabled]="loginForm.invalid" class="btn btn-primary btn-block" type="submit">Sign in</button>
+                        <br/>
+                        <div style="text-align: center; margin-top: 10px;">
+                            <span style="font-size: 15px; font-weight: 700">Not registered? 
+              <button type="button" class="btn btn-sm btn-success btn-register" 
+              (click)="NavigateToRegister()"><i class="fa fa-user-plus" aria-hidden="true"></i> Register</button>
+              </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
+
     <!-- <div class="col-4">
       <p>
         Form Satus: {{loginForm.status}}
@@ -42,4 +61,7 @@
       </p>
       <pre>{{loginForm.value | json}}</pre>
     </div> -->
-  </div> 
+</div>
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
+    <p style="color: black">Please Wait. </p>
+</ngx-spinner>

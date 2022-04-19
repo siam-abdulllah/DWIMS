@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using API.Extensions;
 using API.Helpers;
@@ -8,6 +9,7 @@ using Infrastructure.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,11 +32,7 @@ namespace API
             
             services.AddAutoMapper(typeof(MappingProfiles));
             services.AddControllers().AddNewtonsoftJson();
-            // services.AddDbContext<StoreContext>(x =>
-            // x.UseSqlite(_config.GetConnectionString("DefaultConnection")));
-
-            // services.AddDbContext<AppIdentityDbContext>(x =>
-            // x.UseSqlite(_config.GetConnectionString("IdentityConnection")));
+           
             
             services.AddDbContext<StoreContext>(x =>
             x.UseSqlServer(_config.GetConnectionString("DefaultConnection")));
@@ -60,6 +58,17 @@ namespace API
                     policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
                 });
             });
+            //services.Configure<FormOptions>(options =>
+            //{
+            //    options.ValueCountLimit = 10; //default 1024
+            //    options.ValueLengthLimit = int.MaxValue; //not recommended value
+            //    options.MultipartBodyLengthLimit = long.MaxValue; //not recommended value
+            //    options.MemoryBufferThreshold = Int32.MaxValue;
+            //});
+            //services.AddMvc(options =>
+            //{
+            //    options.MaxModelBindingCollectionSize = int.MaxValue;
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\DWIMS\\TestApplication\\Infrastructure\\Infrastructure.csproj": {}
+    "D:\\DWIMS\\Infrastructure\\Infrastructure.csproj": {}
   },
   "projects": {
-    "E:\\DWIMS\\TestApplication\\Core\\Core.csproj": {
+    "D:\\DWIMS\\Core\\Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\DWIMS\\TestApplication\\Core\\Core.csproj",
+        "projectUniqueName": "D:\\DWIMS\\Core\\Core.csproj",
         "projectName": "Core",
-        "projectPath": "E:\\DWIMS\\TestApplication\\Core\\Core.csproj",
-        "packagesPath": "C:\\Users\\maaz\\.nuget\\packages\\",
-        "outputPath": "E:\\DWIMS\\TestApplication\\Core\\obj\\",
+        "projectPath": "D:\\DWIMS\\Core\\Core.csproj",
+        "packagesPath": "C:\\Users\\Maaz\\.nuget\\packages\\",
+        "outputPath": "D:\\DWIMS\\Core\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\maaz\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Maaz\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -79,24 +76,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.406\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "E:\\DWIMS\\TestApplication\\Infrastructure\\Infrastructure.csproj": {
+    "D:\\DWIMS\\Infrastructure\\Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\DWIMS\\TestApplication\\Infrastructure\\Infrastructure.csproj",
+        "projectUniqueName": "D:\\DWIMS\\Infrastructure\\Infrastructure.csproj",
         "projectName": "Infrastructure",
-        "projectPath": "E:\\DWIMS\\TestApplication\\Infrastructure\\Infrastructure.csproj",
-        "packagesPath": "C:\\Users\\maaz\\.nuget\\packages\\",
-        "outputPath": "E:\\DWIMS\\TestApplication\\Infrastructure\\obj\\",
+        "projectPath": "D:\\DWIMS\\Infrastructure\\Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\Maaz\\.nuget\\packages\\",
+        "outputPath": "D:\\DWIMS\\Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\maaz\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Maaz\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -110,8 +104,8 @@
           "netstandard2.1": {
             "targetAlias": "netstandard2.1",
             "projectReferences": {
-              "E:\\DWIMS\\TestApplication\\Core\\Core.csproj": {
-                "projectPath": "E:\\DWIMS\\TestApplication\\Core\\Core.csproj"
+              "D:\\DWIMS\\Core\\Core.csproj": {
+                "projectPath": "D:\\DWIMS\\Core\\Core.csproj"
               }
             }
           }
@@ -198,7 +192,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.406\\RuntimeIdentifierGraph.json"
         }
       }
     }

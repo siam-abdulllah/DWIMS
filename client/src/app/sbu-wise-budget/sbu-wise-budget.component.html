@@ -1,0 +1,182 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <!-- form start -->
+                <form novalidate autocomplete="off" #form="ngForm" (submit)="onSubmit(form)">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-10">
+                                    <h3 class="card-title">SBU Wise Budget</h3>
+                                </div>
+                                <div class="col-sm-1">
+                                    <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="form.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                </div>
+                                <!-- <div class="col-sm-2">
+                                    <button class="btn btn-info btn-lg btn-block"><i class="fa fa-search"></i>Search</button>
+                                </div> -->
+                                <div class="col-sm-1">
+                                    <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetForm(form)"><i class="fa fa-undo"></i> Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <input type="hidden" name="id" #id="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgetFormData.id" />
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Year</label>
+                                        <span style="color:red;">*</span>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input class="form-control clickable" placeholder="Calender" name="year" [(ngModel)]="sbuWiseBudgetService.yearlyBudgetForm.year" [bsValue]="bsValue" (onHidden)="onYearchange()" bsDatepicker [bsConfig]="{ containerClass: 'theme-blue', minMode:'year', adaptivePosition: true, dateInputFormat: 'YYYY' }">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Total Budget</label>
+                                        <span style="color:red;">*</span>
+                                        <small style="color:#888889;"> numeric value</small>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input class="form-control " placeholder="Total Budget Amount" (keyup)="onTotalAmountchange()" name="totalAmount" #totalAmount="ngModel" [(ngModel)]="sbuWiseBudgetService.yearlyBudgetForm.amount" required [class.invalid]="totalAmount.invalid && totalAmount.touched"
+                                            [pattern]="numberPattern">
+                                        <div class="invalid-feedback" *ngIf="totalAmount.errors?.pattern">Only numeric value</div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Remaining Budget</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input class="form-control" placeholder="Remaining Budget Amount" name="remainingBudget" [(ngModel)]="remainingBudget" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>SBU</label>
+                                        <span style="color:red;">*</span>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <select class="form-control " id="sbu" name="sbu" #sbu="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgetFormData.sbu" required [class.invalid]="sbu.invalid && sbu.touched">
+                                        <option  [ngValue]="null">Select SBU</option>
+                                        <option *ngFor="let a of SBUs" [value]="a.sbuCode">{{a.sbuName}}</option>
+                                    </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Budget Amount</label>
+                                        <span style="color:red;">*</span>
+                                        <small style="color:#888889;"> numeric value</small>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input class="form-control " placeholder="Budget Amount" name="amount" (keyup)="onAmountchange()" #amount="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgetFormData.amount" required [class.invalid]="amount.invalid && amount.touched" [pattern]="numberPattern">
+                                        <div class="invalid-feedback" *ngIf="amount.errors?.pattern">Only numeric value</div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Donation Type</label>
+                                        <span style="color:red;">*</span>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <select class="form-control " id="donationId" name="donationId" #donationId="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgetFormData.donationId" required [class.invalid]="donationId.invalid && donationId.touched">
+                                          <option  [ngValue]="null">Select Donation Type</option>
+                                          <option *ngFor="let a of donations" [value]="a.id">{{a.donationTypeName}}</option>
+                                      </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Duration: From Date</label>
+                                        <span style="color:red;">*</span>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <!-- <input class="form-control" placeholder="Calender" name="fromDate" #fromDate="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgetFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig"> -->
+                                        <input class="form-control clickable" readonly placeholder="Calender" required name="fromDate" #fromDate="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgetFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched" (onHidden)="dateCompare()"
+                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label>To Date</label>
+                                        <span style="color:red;">*</span>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input class="form-control clickable" readonly placeholder="Calender" required name="toDate" #toDate="ngModel" [(ngModel)]="sbuWiseBudgetService.sbuwiseBudgetFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched" [bsValue]="bsValue" (onHidden)="dateCompare()"
+                                            bsDatepicker [bsConfig]="bsConfig">
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input name="filterText" class="form-control m-input Searchbox" type="text" [(ngModel)]="searchText" placeholder="Search..">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button class="btn btn-danger" type="button" (click)="resetSearch()"><i class="fa fa-undo"></i>&nbsp; Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <table class="table table-bordered">
+                                    <tr class="HeaderRow">
+                                        <td>SBU</td>
+                                        <td>Donation Type</td>
+                                        <td>From Date </td>
+                                        <td>To Date</td>
+                                        <td>Year</td>
+                                        <td>Budget Amount</td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr *ngFor="let a of sbuWiseBudgets | filter: searchText | paginate: config ">
+                                        <td>
+                                            {{a.sbuName}}
+                                        </td>
+                                        <td>
+                                            {{a.donation.donationTypeName}}
+                                        </td>
+                                        <td>
+                                            {{a.fromDate | date:'dd/MM/yyyy'}}
+                                        </td>
+                                        <td>
+                                            {{a.toDate | date:'dd/MM/yyyy'}}
+                                        </td>
+                                        <td>
+                                            {{a.year}}
+                                        </td>
+                                        <td>
+                                            {{a.amount}}
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-sm btn-embossed btn-primary" type="button" (click)="populateForm(a)"><i class="fa fa-edit"></i> Edit</button>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-sm btn-embossed btn-danger" type="button" (click)="remove(a)"><i class="fa fa-trash"></i> Remove</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls>
+                            </div>
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                </form>
+            </div>
+            <!-- /.row -->
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
+    <p style="color: black">Please Wait. </p>
+</ngx-spinner>

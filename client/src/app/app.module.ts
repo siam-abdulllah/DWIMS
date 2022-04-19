@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TopnavComponent } from './mastertheme/topnav/topnav.component';
@@ -23,8 +22,13 @@ import { PortalRoutingModule } from './portal/portal-routing.module';
 import { MasterModule } from './master/master.module';
 import { MasterRoutingModule } from './master/master-routing.module';
 import { AccountRoutingModule } from './account/account-routing.module';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { SheetJSComponent } from './sheetjs.component'
+
 @NgModule({
   declarations: [
+    SheetJSComponent,
     AppComponent,
     // TopnavComponent,
     // AsidenavComponent,
@@ -36,7 +40,9 @@ import { AccountRoutingModule } from './account/account-routing.module';
     FormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    Ng2SearchPipeModule,
     BsDatepickerModule.forRoot(),
+    ModalModule.forRoot(),
     HttpClientModule,
     AccountModule,
     PortalModule,
@@ -46,8 +52,13 @@ import { AccountRoutingModule } from './account/account-routing.module';
     MasterRoutingModule,
     NgxSpinnerModule,
     ToastrModule.forRoot({
-      positionClass :'toast-bottom-right'
+      timeOut: 5000,
+    positionClass: 'toast-bottom-right',
+    preventDuplicates: true,
+    progressBar: true,
+    closeButton: true,
     })
+
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},

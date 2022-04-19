@@ -17,18 +17,27 @@ export class DonationComponent implements OnInit {
   searchTerm!: ElementRef;
   genParams!: GenericParams;
   donations!: IDonation[];
+  config: any;
+  searchText = '';
   totalCount = 0;
   constructor(public masterService: MasterService, private router: Router,
     private toastr: ToastrService
     ) { }
 
   ngOnInit() {
+    this.resetPage();
     this.getDonation();
   }
   getDonation(){
-    this.masterService.getDonation().subscribe(response => {
+    const params = this.masterService.getGenParams();
+    this.masterService.getDonation().subscribe(response => {    
       this.donations = response.data;
       this.totalCount = response.count;
+      this.config = {
+        currentPage: params.pageIndex,
+        itemsPerPage: params.pageSize,
+        totalItems:this.totalCount,
+        };
     }, error => {
         console.log(error);
     });
@@ -47,7 +56,7 @@ export class DonationComponent implements OnInit {
         debugger;
         this.resetForm(form);
         this.getDonation();
-        this.toastr.success('Submitted successfully', 'Payment Detail Register')
+        this.toastr.success('Save successfully', 'Donation')
       },
       err => { console.log(err); }
     );
@@ -59,10 +68,28 @@ export class DonationComponent implements OnInit {
         debugger;
         this.resetForm(form);
         this.getDonation();
-       this.toastr.info('Updated successfully', 'Payment Detail Register')
+       this.toastr.info('Updated successfully', 'Donation')
       },
       err => { console.log(err); }
     );
+  }
+
+  onPageChanged(event: any){
+    const params = this.masterService.getGenParams();
+    if (params.pageIndex !== event)
+    {
+      params.pageIndex = event;
+      this.masterService.setGenParams(params);
+      this.getDonation();
+    }
+  }
+  
+  onSearch(){
+    const params = this.masterService.getGenParams();
+    params.search = this.searchTerm.nativeElement.value;
+    params.pageIndex = 1;
+    this.masterService.setGenParams(params);
+    this.getDonation();
   }
 
   populateForm(selectedRecord: IDonation) {
@@ -70,11 +97,25 @@ export class DonationComponent implements OnInit {
     this.masterService.donationFormData = Object.assign({}, selectedRecord);
   }
   resetForm(form: NgForm) {
-    debugger;
+    this.searchText = '';
     form.reset();
-    //this.masterService.donationFormData = Object.assign({},this.donations);
-    //this.masterService.donationFormData.status='Active';
-    this.masterService.donationFormData.status="Active";
   }
+  resetPage() {
+    this.masterService.donationFormData=new Donation();
+    this.config = {
+      currentPage: 1,
+      itemsPerPage: 10,
+      totalItems:50,
+      };
+  }
+
+  resetSearch(){
+    this.searchText = '';
+    this.config = {
+      currentPage: 1,
+      itemsPerPage: 10,
+      totalItems:50,
+      };
+}
 
 }

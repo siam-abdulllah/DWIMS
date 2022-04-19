@@ -69,6 +69,10 @@ namespace Core.Specifications
             : base(x => x.Id == id)
         {
             AddInclude(x => x.SubCampaignName);
+        }public SubCampaignWithCommentsSpecification(string status)
+            : base(x => x.Status == status)
+        {
+            AddInclude(x => x.SubCampaignName);
         }
     }
 }

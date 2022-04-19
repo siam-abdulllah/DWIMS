@@ -5,6 +5,7 @@ export interface IMarket {
     marketCode: string;
     status: string; 
     sbu: string;
+    sbuName: string;
     setOn: Date;
 }
  
@@ -14,5 +15,6 @@ export class Market implements IMarket {
     marketCode: string;
     status: string="Active"; 
     sbu: string;
+    sbuName: string;
     setOn: Date;
 }

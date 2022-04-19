@@ -1,10 +1,11 @@
 
-export interface IDocotor {
+export interface IDoctor {
     id: number;
     doctorName: string;
     doctorCode: string;
     doctorID: number;
     designation: string;
+    degree: string;
     year: string; 
     month: string; 
     status: string; 
@@ -12,12 +13,13 @@ export interface IDocotor {
     setOn: Date;
 }
  
-export class docotor implements IDocotor {
+export class Doctor implements IDoctor {
     id: number=0;
     doctorName: string;
     doctorCode: string;
     doctorID: number;
     designation: string;
+    degree: string;
     year: string; 
     month: string; 
     setOn: Date;

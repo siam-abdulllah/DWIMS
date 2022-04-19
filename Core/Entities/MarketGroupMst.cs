@@ -9,9 +9,10 @@ namespace Core.Entities
     {
         public string GroupName { get; set; }
         public string Status { get; set; }
-        public int EmployeeId { get; set; }
-        [ForeignKey("EmployeeId")]
-        public Employee Employee { get; set; }
+        public string MarketCode { get; set; }
+        //public int EmployeeId { get; set; }
+        //[ForeignKey("EmployeeId")]
+        //public Employee Employee { get; set; }
         [ForeignKey("MstId")]
         public virtual IEnumerable<MarketGroupDtl> MarketGroupDtls { get; set; }
     }

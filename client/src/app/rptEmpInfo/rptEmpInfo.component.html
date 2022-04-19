@@ -1,0 +1,111 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <form novalidate autocomplete="off" #form="ngForm">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h3 class="card-title">Employee Info Report</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input name="filterText" class="form-control m-input Searchbox" type="text" [(ngModel)]="searchText" placeholder="Search..">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button class="btn btn-danger" type="button" (click)="resetSearch()"><i class="fa fa-undo"></i>&nbsp; Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            <fieldset style="max-width: 94%;">
+                                <div class="form-group" style="overflow: auto; max-height: 500px; max-width: 94%;">
+                                    <table class="table  table-bordered" id="tableToExcel">
+                                        <tr class="HeaderRow">
+                                            <td>Id</td>
+                                            <!-- <td style="width: 0;display:none; ">Reference No</td> -->
+                                            <td>Active Status</td>
+                                            <td>Name</td>
+                                            <td>Designation</td>
+                                            <td>Phone</td>
+                                            <td>SBU</td>
+                                            <td>Zone Code</td>
+                                            <td>Zone Name</td>
+                                            <td>Region Code</td>
+                                            <td>Region Name</td>
+                                            <td>Territory Code</td>
+                                            <td>Territory Name</td>
+                                            <td>Market Code</td>
+                                            <td>Market Name</td>
+                                            <td>Depot</td>
+                                        </tr>
+                                        <tr *ngFor="let a of empList | filter: searchText ">
+                                            <td>{{a.id}}</td>
+                                            <!-- <td style="width: 0;display:none; ">
+                                                {{a.referenceNo}}
+                                            </td> -->
+                                            <td [ngStyle]="a.dataStatus==0 ? {'background-color': 'red', 'color': 'white'} : {}">
+                                                <span *ngIf="a.dataStatus==1"> Active  </span>
+                                                <span *ngIf="a.dataStatus==0">Inactive</span>
+                                            </td>
+                                            <td>
+                                                {{a.employeeName}}
+                                            </td>
+                                            <td>
+                                                {{a.designationName}}
+                                            </td>
+                                            <td>
+                                                {{a.phone}}
+                                            </td>
+                                            <td>
+                                                {{a.sbuName}}
+                                            </td>
+                                            <td>
+                                                {{a.zoneCode}}
+                                            </td>
+                                            <td>
+                                                {{a.zoneName}}
+                                            </td>
+                                            <td>
+                                                {{a.regionCode}}
+                                            </td>
+                                            <td>
+                                                {{a.regionName}}
+                                            </td>
+                                            <td>
+                                                {{a.territoryCode}}
+                                            </td>
+                                            <td>
+                                                {{a.territoryName}}
+                                            </td>
+                                            <td>
+                                                {{a.marketCode}}
+                                            </td>
+                                            <td>
+                                                {{a.marketName}}
+                                            </td>
+                                            <td>
+                                                {{a.depotName}}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
+    <p style="color: black">Please Wait. </p>
+</ngx-spinner>

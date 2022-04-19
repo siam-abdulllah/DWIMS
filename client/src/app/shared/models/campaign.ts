@@ -1,28 +1,67 @@
+import { ISubCampaign } from "./subCampaign";
 
-export interface ICampaign {
+export interface ICampaignMst {
     id: number;
+    campaignNo: string;
     campaignName: string;
-    SBU: string;
-    brand: string;
-    subCampaign: string;
-    budget: string;
-    startDate: string;
-    endDate: string;
-    remarks: string; 
-    status: string; 
+    sbu: string;
+    brandCode: string;
     setOn: Date;
+    employeeId: string; 
 }
  
-export class Campaign implements ICampaign {
+export class CampaignMst implements ICampaignMst {
     id: number=0;
+    campaignNo: string;
     campaignName: string;
-    SBU: string;
-    brand: string;
-    subCampaign: string;
-    budget: string;
-    startDate: string;
-    endDate: string;
-    remarks: string; 
-    status: string="Active"; 
+    sbu: string=null;
+    brandCode: string=null;
+    employeeId: string=null;
     setOn: Date;
+}
+export interface ICampaignDtl {
+    id: number;
+    mstId: number;
+    subCampaignId: number;
+    subCampaignName: string;
+    budget: string;
+    subCampStartDate: Date;
+    subCampEndDate: Date;
+    subCampaign:ISubCampaign;
+}
+ 
+export class CampaignDtl implements ICampaignDtl {
+    id: number=0;
+    mstId: number;
+    subCampaignId: number=null;
+    subCampaignName: string;
+    budget: string;
+    subCampStartDate: Date;
+    subCampEndDate: Date;
+    subCampaign:ISubCampaign;
+}
+export interface ISubCampaignRapid {
+    subCampId: number;
+    sbu: string;
+    subCampaignName: string;
+
+}
+export class SubCampaignRapid implements ISubCampaignRapid {
+    subCampId: number;
+    sbu: string;
+    subCampaignName: string;
+}
+export interface ICampaignDtlProduct {
+    id: number;
+    dtlId: number;
+    productId: number;
+    productName: string;
+    
+}
+ 
+export class CampaignDtlProduct implements ICampaignDtlProduct {
+    id: number=0;
+    dtlId: number;
+    productId: number=null;
+    productName: string;
 }

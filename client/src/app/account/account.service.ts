@@ -10,11 +10,14 @@ import { Router } from '@angular/router';
 import { IAddress } from '../shared/models/address';
 import { GenericParams } from '../shared/models/genericParams';
 import { IPagination, Pagination } from '../shared/models/pagination';
-
+import { IEmployeeInfo } from '../shared/models/employeeInfo';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { IMenuConfig, MenuConfig } from '../shared/models/menuConfig';
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
+  jwtHelper = new JwtHelperService();
   roles: IRole[] = [];
   users: IUserResponse[] = [];
   pagination = new UserPagination();
@@ -22,7 +25,7 @@ export class AccountService {
   genParams = new GenericParams();
 
   private currentUserSource = new ReplaySubject<IUser>(1);
-  
+
   currentUser$ = this.currentUserSource.asObservable();
 
   constructor(private http: HttpClient, private router: Router) { }
@@ -37,11 +40,12 @@ export class AccountService {
     let headers = new HttpHeaders();
     headers = headers.set('Authorization', `Bearer ${token}`);
 
-    return this.http.get(this.baseUrl + 'account', {headers}).pipe(
+    return this.http.get(this.baseUrl + 'account', { headers }).pipe(
       map((user: IUser) => {
         if (user) {
           localStorage.setItem('token', user.token);
           this.currentUserSource.next(user);
+
         }
       })
     );
@@ -51,13 +55,86 @@ export class AccountService {
   login(values: any) {
     return this.http.post(this.baseUrl + 'account/login', values).pipe(
       map((user: IUser) => {
-        debugger;
         if (user) {
           localStorage.setItem('token', user.token);
+          localStorage.setItem('empID', String(user.employeeId));
+          localStorage.setItem('displayName', String(user.displayName));
+          localStorage.setItem('menu', JSON.stringify(user.menuList));
           this.currentUserSource.next(user);
+          //this.setEmployeeInfo(user.employeeId);
+          //const empID = localStorage.getItem('empID');
+          //const token = localStorage.getItem('token');
+          //const r =  this.jwtHelper.decodeToken(token);
+          //alert(r);
         }
       })
     );
+  }
+  loggedIn() {
+    const token = localStorage.getItem('token');
+    return !this.jwtHelper.isTokenExpired(token);
+  }
+  getUserRole() {
+    const token = localStorage.getItem('token');
+    const r = this.jwtHelper.decodeToken(token);
+    return r.role;
+  }
+  isMenuPermitted(url: string) {
+    const menu = JSON.parse(localStorage.getItem("menu"));
+    for (let i = 0; i < menu.length; i++) {
+
+      if (menu[i].url == url) {
+        return true;
+      }
+    }
+    return false;
+  }
+  // eventPerm() {
+  //   debugger;
+  //   const token = localStorage.getItem('token');
+  //   const r =  this.jwtHelper.decodeToken(token);
+  //   var menuConf=new MenuConfig();
+  //   menuConf.roleName=r.role;
+  //     return this.http.get(this.baseUrl + 'menuConfig/menuConfigsForSecurity/'+r.role).pipe(
+  //       map((menuConfig: IMenuConfig) => {
+  //         if (menuConfig) {
+  //           localStorage.setItem('menu', JSON.stringify(menuConfig));
+  //           debugger;
+  //           // localStorage.setItem('token', user.token);
+  //           // this.currentUserSource.next(user);
+  //           return true;
+  //         }
+  //       })
+  //     );
+
+
+  // }
+  getEmployeeId() {
+    const employeeId = localStorage.getItem('empID');
+    return employeeId;
+
+  }
+  getEmployeeSbu(employeeId: number) {
+    return this.http.get(this.baseUrl + 'employee/getEmployeeSbuById/' + employeeId).pipe(
+      map((employeeInfo: IEmployeeInfo) => {
+        if (employeeInfo) {
+          return employeeInfo;
+        }
+      })
+    );
+  }
+  setEmployeeInfo(employeeId: number) {
+    return this.http.get(this.baseUrl + 'employee/getEmployeeSbuById/' + employeeId).pipe(
+      map((employeeInfo: IEmployeeInfo) => {
+        if (employeeInfo) {
+          //localStorage.setItem('employeeName', employeeInfo.employeeName);
+          //localStorage.setItem('designation', employeeInfo.employeeName);
+
+          return employeeInfo;
+        }
+      })
+    );
+
   }
 
   // tslint:disable-next-line: typedef
@@ -68,6 +145,17 @@ export class AccountService {
           // localStorage.setItem('token', user.token);
           // this.currentUserSource.next(user);
           return user;
+        }
+      })
+    );
+  }
+  employeeValidateById(employeeSAPCode: string) {
+    return this.http.get(this.baseUrl + 'employee/employeeValidateById/' + employeeSAPCode).pipe(
+      map((employeeInfo: IEmployeeInfo) => {
+        if (employeeInfo) {
+          // localStorage.setItem('token', user.token);
+          // this.currentUserSource.next(user);
+          return employeeInfo;
         }
       })
     );
@@ -96,7 +184,7 @@ export class AccountService {
   checkEmailExists(email: string) {
     return this.http.get(this.baseUrl + 'account/emailexists?email=' + email);
   }
-  
+
   // tslint:disable-next-line: typedef
   getUserAddress() {
     return this.http.get<IAddress>(this.baseUrl + 'account/address');
@@ -106,59 +194,56 @@ export class AccountService {
   updateUserAddress(address: IAddress) {
     return this.http.put<IAddress>(this.baseUrl + 'account/address', address);
   }
-  
-  getRoles(){    
+
+  getRoles() {
     return this.http.get<IRoleResponse>(this.baseUrl + 'role/getRoles', { observe: 'response' })
-    .pipe(
-      map(response => {        
-        this.roles = [...this.roles, ...response.body.data];     
-        return this.roles;
-      })
-    );
+      .pipe(
+        map(response => {
+          this.roles = [...this.roles, ...response.body.data];
+          return this.roles;
+        })
+      );
   }
 
-  getUsers(){    
+  getUsers() {
     let params = new HttpParams();
-    debugger;
     if (this.genParams.search) {
       params = params.append('search', this.genParams.search);
     }
     params = params.append('sort', this.genParams.sort);
-    params = params.append('pageIndex', this.genParams.pageNumber.toString());
+    params = params.append('pageIndex', this.genParams.pageIndex.toString());
     params = params.append('pageSize', this.genParams.pageSize.toString());
 
     return this.http.get<IUserPagination>(this.baseUrl + 'account/users', { observe: 'response', params })
-    .pipe(
-      map(response => {
-        this.users = [...this.users, ...response.body.data]; 
-        this.pagination = response.body;
-        return this.pagination;
-      })
-    );
-    
+      .pipe(
+        map(response => {
+          this.users = [...this.users, ...response.body.data];
+          this.pagination = response.body;
+          return this.pagination;
+        })
+      );
+
   }
 
-  getGenParams(){
+  getGenParams() {
     return this.genParams;
   }
-
-   // tslint:disable-next-line: typedef
-   setGenParams(genParams: GenericParams) {
+  // tslint:disable-next-line: typedef
+  setGenParams(genParams: GenericParams) {
     this.genParams = genParams;
   }
 
-  getUserById(id:any) {
+  getUserById(id: any) {
     let params = new HttpParams();
-    debugger;
     params = params.append('id', id);
     return this.http.get<IUserResponse>(this.baseUrl + 'account/getUserById', { observe: 'response', params })
-    .pipe(
-      map(response => {
-       return response.body;
-      })
-    );
+      .pipe(
+        map(response => {
+          return response.body;
+        })
+      );
 
   }
-  
+
 }
 

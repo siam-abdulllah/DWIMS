@@ -1,0 +1,339 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <!-- form start -->
+                <form [formGroup]="medDispatchForm">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h3 class="card-title">Donated Medicine Dispatch</h3>
+                                </div>
+                                <div class="col-sm-1">
+                                    <button class="btn btn-success btn-block" (click)="insertTracker()" [hidden]="isHide" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Save</button>
+                                </div>
+                                <div class="col-sm-1 ">
+                                    <button class="btn btn-danger btn-block" (click)="reset()" type="button "><i class="fa fa-undo "></i>&nbsp; Reset</button>
+                                </div>
+                                <div class="col-sm-1 ">
+                                    <button class="btn btn-info btn-block" (click)="ViewReport()" [hidden]="isValid" type="button "><i class="fa fa-save "></i>&nbsp; View</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body ">
+                            <input type="hidden" name="id" id="id" formControlName="id" />
+                            <input type="hidden" name="investmentInitId" id="investmentInitId" formControlName="investmentInitId" />
+
+                            <div class="form-group ">
+                            </div>
+
+                            <div class="form-group ">
+                                <div class="row ">
+                                    <div class="col-md-2 ">
+                                        <label>Payment Ref No</label>
+                                        <span style="color:red; ">*</span>
+                                    </div>
+                                    <div class="col-md-4 ">
+                                        <input class="form-control" id="referenceNo" style="display: none;" formControlName="referenceNo" readonly>
+                                        <input class="form-control clickable" id="payRefNo" placeholder="Please Double Click" (dblclick)="getPendingDispatch()" formControlName="payRefNo" readonly required>
+                                    </div>
+                                    <div class="col-md-2 ">
+                                        <label>Initiated By</label>
+                                    </div>
+                                    <div class="col-md-4 ">
+                                        <input class="form-control" id="employeeName" placeholder="Initiated By" formControlName="employeeName" readonly>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <div class="row ">
+                                    <div class="col-md-2 ">
+                                        <label>Doctor Name</label>
+                                    </div>
+                                    <div class="col-md-4 ">
+                                        <input class="form-control" id="doctorName" placeholder="Doctor" formControlName="doctorName" readonly>
+                                    </div>
+                                    <div class="col-md-2 ">
+                                        <label>Market</label>
+                                    </div>
+                                    <div class="col-md-4 ">
+                                        <input class="form-control" id="marketName" formControlName="marketName" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group ">
+                                <div class="row ">
+                                    <div class="col-md-2 ">
+                                        <label>Proposed Amount</label>
+                                    </div>
+                                    <div class="col-md-4 ">
+                                        <input class="form-control" id="proposeAmt" placeholder="Amount" formControlName="proposeAmt" readonly>
+                                    </div>
+                                    <div class="col-md-2 ">
+                                        <label>Donation Type</label>
+                                    </div>
+                                    <div class="col-md-4 ">
+                                        <input class="form-control" id="donationTypeName" formControlName="donationTypeName" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group ">
+                                <div class="row ">
+                                    <div class="col-md-2 ">
+                                        <label>Approved By</label>
+                                    </div>
+                                    <div class="col-md-4 ">
+                                        <input class="form-control" id="approvedBy" formControlName="approvedBy" readonly>
+                                    </div>
+                                    <div class="col-md-2 ">
+                                        <label>Approved Date</label>
+                                    </div>
+                                    <div class="col-md-4 ">
+                                        <input class="form-control" id="approvedDate" formControlName="approvedDate" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group ">
+                                <div class="row ">
+                                    <div class="col-md-2 ">
+                                        <label>SAP Ref. No</label>
+                                        <span style="color:red; ">*</span>
+                                    </div>
+                                    <div class="col-md-4 ">
+                                        <input class="form-control " id="issueReference" placeholder="Ref No" formControlName="issueReference" required>
+                                    </div>
+                                    <div class="col-md-2 ">
+                                        <label>Payment Date</label>
+                                        <span style="color:red; ">*</span>
+                                    </div>
+                                    <div class="col-md-4 ">
+                                        <input class="form-control " id="issueDate" placeholder="Payment Date" formControlName="issueDate" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group ">
+                                <div class="row ">
+                                    <div class="col-md-2 ">
+                                        <label>Dispatch Amount</label>
+                                        <span style="color:red; ">*</span>
+                                    </div>
+                                    <div class="col-md-4 ">
+                                        <input class="form-control" id="dispatchAmt" placeholder="Amount" formControlName="dispatchAmt" required readonly>
+                                    </div>
+                                    <div class="col-md-2 ">
+                                        <label>Remarks</label>
+                                    </div>
+                                    <div class="col-md-4 ">
+                                        <input class="form-control" id="remarks" formControlName="remarks">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group ">
+                                <div class="row ">
+                                    <div class="col-md-2 ">
+                                        <label>Depot Name</label>
+                                    </div>
+                                    <div class="col-md-4 ">
+                                        <input class="form-control" id="depotName" formControlName="depotName" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div [hidden]="valShow" style="background-color: cadetblue;">
+                                <br/>
+                                <div class="form-group ">
+                                    <div class="row ">
+                                        <input type="hidden" name="productId" id="productId" formControlName="productId" />
+                                        <div class="col-md-2 ">
+                                            <label>Product Name</label>
+                                        </div>
+                                        <div class="col-md-4 ">
+                                            <input class="form-control" id="productName" formControlName="productName" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group ">
+                                    <div class="row ">
+                                        <div class="col-md-2 ">
+                                            <label>Initial Amount</label>
+                                        </div>
+                                        <div class="col-md-4 ">
+                                            <input class="form-control" id="originVal" placeholder="Amount" formControlName="originVal" readonly>
+                                        </div>
+                                        <div class="col-md-2 ">
+                                            <label>Initial Qty</label>
+                                        </div>
+                                        <div class="col-md-4 ">
+                                            <input class="form-control" id="originQty" formControlName="originQty" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="row ">
+                                        <div class="col-md-2 ">
+                                            <label>Dispatch Amount</label>
+                                        </div>
+                                        <div class="col-md-4 ">
+                                            <input class="form-control" id="dispVal" placeholder="Amount" formControlName="dispVal" readonly>
+                                        </div>
+                                        <div class="col-md-2 ">
+                                            <label>Dispatch Qty</label>
+                                        </div>
+                                        <div class="col-md-4 ">
+                                            <input class="form-control" id="dispQty" formControlName="dispQty">
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary btn-lg btn-block" (click)="updateData()" type="button"><i class="fa fa-plus"></i>&nbsp; Update</button>
+                                <br/>
+                                <br/>
+                            </div>
+
+                            <div class="form-group">
+                                <table class="table table-bordered">
+                                    <tr class="HeaderRow">
+                                        <td style="display: none;">Product ID</td>
+                                        <td>Product Name</td>
+                                        <td>Invoice Qty</td>
+                                        <td>Invoice TP Vat</td>
+                                        <td>Dispatch Qty</td>
+                                        <td>Dispatch TP Vat</td>
+                                        <td>Edit</td>
+                                        <td>Remove</td>
+                                    </tr>
+                                    <tr *ngFor="let a of investmentMedicineProds">
+                                        <td style="display: none;">
+                                            {{a.productId}}
+                                        </td>
+                                        <td>
+                                            {{a.productName}}
+                                        </td>
+                                        <td>
+                                            {{a.boxQuantity}}
+                                        </td>
+                                        <td>
+                                            {{a.tpVat | number:'2.1-2'}}
+                                        </td>
+                                        <td>
+                                            {{a.dispatchQuantity}}
+                                        </td>
+                                        <td>
+                                            {{a.dispatchTpVat | number:'2.1-2'}}
+                                        </td>
+                                        <td>
+                                            <input type="button" value="Modify" (click)="modifyData(a)">
+                                        </td>
+                                        <td>
+                                            <input type="button" (click)="removeInvestmentMedicineProd(a)" value="Remove">
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <!-- <div class="card-footer ">
+                          </div> -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+
+                </form>
+            </div>
+            <!-- /.row -->
+        </div>
+    </div>
+
+
+    <!-- /.container-fluid -->
+</section>
+
+
+<ng-template #pendingListModal>
+    <div class="modal-header " style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));color: black; ">
+        <h4 class="modal-title pull-left ">Bill Payment</h4>
+        <button type="button " class="close pull-right " aria-label="Close " (click)="pendingListModalRef.hide() ">
+        <span aria-hidden="true ">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body " style="padding: 20px 30px 20px 30px; ">
+        <div class="row ">
+            <div class="col-md-12 ">
+                <div class="table-responsive " style="border: 1px solid #bed2c9; width: 100%; ">
+                    <div class="col-md-12">
+                        <input name="filterText" class="form-control m-input Searchbox" type="text" id="searchText" [(ngModel)]="searchText" name="searchText" placeholder="Search..">
+                    </div>
+                    <table class="table table-bordered table-responsive table-hover table-striped ">
+                        <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc)); ">
+                            <tr class="HeaderRow ">
+                                <td>Select</td>
+                                <td>Payment Ref No</td>
+                                <td style="width: 0;display:none; ">Reference No</td>
+                                <td>Donation Type</td>
+                                <td style="width: 0;display:none; ">Proposed For</td>
+                                <td>Doctor</td>
+                                <td>Prop.Amt</td>
+                                <td>Market</td>
+                                <td>Proposed By</td>
+                                <td>Apr By</td>
+                                <td>Apr Date</td>
+                                <td>Depot</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let a of rptDepotLetter | filter: searchText ">
+                                <td>
+                                    <button class="btn btn-sm btn-embossed btn-success " type="button " (click)="ViewData(a) " style="width: 70px; "><i class="fa fa-eye "></i>Select</button>
+                                </td>
+                                <td style="display:none; ">{{a.investmentInitId}}</td>
+                                <td>{{a.payRefNo}}</td>
+                                <td style="width: 0;display:none; ">
+                                    {{a.referenceNo}}
+                                </td>
+                                <td>
+                                    {{a.donationTypeName}}
+                                </td>
+                                <td style="width: 0;display:none; ">
+                                    {{a.proposeFor}}
+                                </td>
+                                <td>
+                                    {{a.doctorName}}
+                                </td>
+                                <td>
+                                    {{a.proposedAmount | number:'2.1-2'}}
+                                </td>
+                                <td>
+                                    {{a.marketName}}
+                                </td>
+                                <td>
+                                    {{a.employeeName}}
+                                </td>
+                                <td>
+                                    {{a.approvedBy}}
+                                </td>
+                                <td>
+                                    {{a.approvedDate | date:'dd/MM/yyyy'}}
+                                </td>
+                                <td>
+                                    {{a.depotName}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</ng-template>
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
+    <p style="color: black">Please Wait. </p>
+</ngx-spinner>

@@ -44,6 +44,20 @@ namespace API.Controllers
             return Ok(new Pagination<BcdsDto>(bscdParrams.PageIndex, bscdParrams.PageSize, totalItems, data));
      
         }
+       
+        [HttpGet("bcdsForInvestment")]
+        // [Authorize(Roles = "Owner,Administrator")]
+        // [Authorize(Policy = "DetailUserPolicy")]
+        public async Task<IReadOnlyList<Bcds>> GetBcdsForInvestment()
+        {
+           
+            var spec = new BcdsSpecificiation();
+
+            var data = await _bcdsRepo.ListAsync(spec);
+
+            return data;
+     
+        }
 
 
         [HttpPost("CreateBCDS")]

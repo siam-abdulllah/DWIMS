@@ -1,109 +1,126 @@
-<section class="content-header">
-  <div class="container-fluid">
-      <div class="row mb-2">
-          <div class="col-sm-6">
-              <h1></h1>
-          </div>
-          <div class="col-sm-6">
-          </div>
-      </div>
-  </div>
-  <!-- /.container-fluid -->
-</section>
 <section class="content">
-  <div class="container-fluid">
-      <div class="row">
-          <div class="col-sm-12">
-              <!-- form start -->
-              <form novalidate autocomplete="off" #form="ngForm" (submit)="onSubmit(form)">
-                  <!-- general form elements -->
-                  <div class="card card-primary">
-                      <div class="card-header">
-                          <div class="row">
-                              <div class="col-sm-6">
-                                  <h3 class="card-title">BCDS Info</h3>
-                              </div>
-                              <div class="col-sm-6">
-                                  <button class="btn btn-info btn-lg btn-block" type="submit" [disabled]="form.invalid">SUBMIT</button>
-                              </div>
-                          </div>
-                      </div>
-                      <!-- /.card-header -->
-                      <div class="card-body">
-                        <input type="hidden" name="id" [value]="masterService.bcdsFormData.id" />
-                        <div class="form-group">                              
-                        </div>
-
-                          <div class="form-group">
-                              <div class="row">
-                                  <div class="col-md-2">
-                                      <label>BCDS Name</label>
-                                  </div>
-                                  <div class="col-md-3">
-                                    <input class="form-control form-control-lg" placeholder="BCDS Name" name="bcdsName" #bcdsName="ngModel" [(ngModel)]="masterService.bcdsFormData.bcdsName" required [class.invalid]="bcdsName.invalid && bcdsName.touched">
-                                  </div>
-                                  <div class="col-md-2">
-                                      <label>Status</label></div>
-                                  <div class="col-md-3">
-                                      <select name="" id="" class="form-control form-control-lg" name="status" #status="ngModel" [(ngModel)]="masterService.bcdsFormData.status" required [class.invalid]="status.invalid && status.touched">
-                                        <option value="Active">Active</option>
-                                        <option value="Inactive">Inactive</option>
-                                      </select>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="form-group">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <!-- form start -->
+                <form novalidate autocomplete="off" #form="ngForm" (submit)="onSubmit(form)">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                        <div class="card-header">
                             <div class="row">
-                                <div class="col-md-2">
-                                    <label>No of Member</label></div>
-                                <div class="col-md-8">
-                                  <input class="form-control form-control-lg" placeholder="Number of Member" name="noOfMember" #noOfMember="ngModel" [(ngModel)]="masterService.bcdsFormData.noOfMember" required [class.invalid]="noOfMember.invalid && noOfMember.touched"> 
+                                <div class="col-sm-10">
+                                    <h3 class="card-title">BCDS Info</h3>
+                                </div>
+                                <div class="col-sm-1">
+                                    <button class="btn btn-success   btn-block" style="text-shadow: 3em #000;" type="submit" [disabled]="form.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                </div>
+                                <div class="col-sm-1">
+                                    <button class="btn btn-danger  btn-block" type="button" (click)="resetForm(form)"><i class="fa fa-undo"></i>&nbsp; Reset</button>
                                 </div>
                             </div>
-                          </div>
-                          <div class="form-group">
-                              <div class="row">
-                                  <div class="col-md-2">
-                                      <label>BCDS Address</label></div>
-                                  <div class="col-md-8">
-                                    <textarea class="form-control form-control-lg" placeholder="Address" name="bcdsAddress" #bcdsAddress="ngModel" [(ngModel)]="masterService.bcdsFormData.bcdsAddress" required [class.invalid]="bcdsAddress.invalid && bcdsAddress.touched"></textarea>
-                                  </div>
-                              </div>
-                          </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <input type="hidden" name="id" [value]="masterService.bcdsFormData.id" />
+                            <div class="form-group">
+                            </div>
 
-                          <div class="form-group">
-                            <table class="table">
-                              <tr>
-                                <td>BCDS Name</td>
-                                <td>Address</td>
-                                <td>No of Member</td>
-                              </tr>
-                              <tr *ngFor="let bcds of bcdsInfo">
-                                <td>
-                                  {{bcds.bcdsName}}
-                                </td>
-                                <td>
-                                  {{bcds.bcdsAddress}}
-                                </td>
-                                <td>
-                                  {{bcds.noOfMember}}
-                                </td>
-                                <td (click)="populateForm(bcds)">
-                                  Update
-                                </td>
-                              </tr>
-                            </table>
-                          </div>
-                          <!-- <div class="card-footer">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>BCDS Name</label>
+                                        <span style="color:red;">*</span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input class="form-control" maxlength="100" placeholder="BCDS Name" name="bcdsName" #bcdsName="ngModel" [(ngModel)]="masterService.bcdsFormData.bcdsName" required [class.invalid]="bcdsName.invalid && bcdsName.touched">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Status</label>
+                                        <span style="color:red;">*</span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select id="status" class="form-control " name="status" #status="ngModel" [(ngModel)]="masterService.bcdsFormData.status" required [class.invalid]="status.invalid && status.touched">
+                                          <option [ngValue]="null">Select Status</option>
+                                          <option value="Active">Active</option>
+                                        <option value="Inactive">Inactive</option>
+                                      </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>No of Member</label>
+                                        <span style="color:red;">*</span>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input class="form-control" placeholder="Number of Member" name="noOfMember" #noOfMember="ngModel" [(ngModel)]="masterService.bcdsFormData.noOfMember" required [class.invalid]="noOfMember.invalid && noOfMember.touched" [pattern]="numberPattern">
+                                        <div class="invalid-feedback" *ngIf="noOfMember.errors?.pattern">Only numeric value</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>BCDS Address</label>
+                                        <span style="color:red;">*</span>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <textarea class="form-control" maxlength="500" placeholder="Address" name="bcdsAddress" #bcdsAddress="ngModel" [(ngModel)]="masterService.bcdsFormData.bcdsAddress" required [class.invalid]="bcdsAddress.invalid && bcdsAddress.touched"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input name="filterText" class="form-control m-input Searchbox" type="text" [(ngModel)]="searchText" placeholder="Search..">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button class="btn btn-danger" type="button" (click)="resetSearch()"><i class="fa fa-undo"></i>&nbsp; Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <table class="table  table-bordered">
+                                    <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));">
+                                        <tr class="HeaderRow">
+                                            <td>BCDS Name</td>
+                                            <td>Address</td>
+                                            <td>No of Member</td>
+                                            <td></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let bcds of bcdsInfo | paginate: config | filter: searchText ">
+                                            <td>
+                                                {{bcds.bcdsName}}
+                                            </td>
+                                            <td>
+                                                {{bcds.bcdsAddress}}
+                                            </td>
+                                            <td>
+                                                {{bcds.noOfMember}}
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-info  btn-block" type="button" (click)="populateForm(bcds)"><i class="fa fa-pen"></i>&nbsp; Edit</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls>
+                            </div>
+                            <!-- <div class="card-footer">
                               Sample Demo by rijsat.com
                           </div> -->
-                      </div>
-                      <!-- /.card -->
-                  </div>
-              </form>
-          </div>
-          <!-- /.row -->
-      </div>
-  </div>
-  <!-- /.container-fluid -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                </form>
+            </div>
+            <!-- /.row -->
+        </div>
+    </div>
+    <!-- /.container-fluid -->
 </section>

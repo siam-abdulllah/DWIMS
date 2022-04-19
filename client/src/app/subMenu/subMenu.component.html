@@ -1,0 +1,102 @@
+<!-- <section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1></h1>
+            </div>
+            <div class="col-sm-6">
+            </div>
+        </div>
+    </div>
+</section> -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <form novalidate autocomplete="off" #form="ngForm" (submit)="onSubmit(form)">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <h3 class="card-title">Sub Menu</h3>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button class="btn btn-info  btn-block" type="submit" [disabled]="form.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button class="btn btn-danger  btn-block" type="button" (click)="resetForm(form)"><i class="fa fa-undo"></i>&nbsp; Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <input type="hidden" name="id" [value]="subMenuService.subMenuFormData.id" />
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Menu Head</label>
+                                        <span style="color:red;">*</span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <ng-select [virtualScroll]="true" [items]="menuHeads" bindLabel="menuHeadName" bindValue="id" (change)="getSubMenu()" placeholder="Select Menu Head" id="menuHeadId" name="menuHeadId" #menuHeadId="ngModel" [(ngModel)]="subMenuService.subMenuFormData.menuHeadId">
+                                        </ng-select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Sub Menu</label>
+                                        <span style="color:red;">*</span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input class="form-control " placeholder="Sub Menu Name" name="subMenuName" #subMenuName="ngModel" [(ngModel)]="subMenuService.subMenuFormData.subMenuName" required [class.invalid]="subMenuName.invalid && subMenuName.touched">
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>URL</label>
+                                        <span style="color:red;">*</span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input class="form-control " placeholder="URL" name="url" #url="ngModel" [(ngModel)]="subMenuService.subMenuFormData.url" required [class.invalid]="url.invalid && url.touched">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Sequence</label>
+                                        <span style="color:red;">*</span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input class="form-control " placeholder="Sequence" name="subMenuSeq" #subMenuSeq="ngModel" [(ngModel)]="subMenuService.subMenuFormData.subMenuSeq" required [class.invalid]="subMenuSeq.invalid && subMenuSeq.touched">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <table class="table">
+                                    <tr class="HeaderRow">
+                                        <td>Sub Menu </td>
+                                        <td>Sequence</td>
+                                        <td>URL</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr *ngFor="let a of subMenus">
+                                        <td>
+                                            {{a.subMenuName}}
+                                        </td>
+                                        <td>
+                                            {{a.subMenuSeq}}
+                                        </td>
+                                        <td>
+                                            {{a.url}}
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-info  btn-block" type="button" (click)="populateForm(a)"><i class="fa fa-pen"></i>&nbsp; Edit</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

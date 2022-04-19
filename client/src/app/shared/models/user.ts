@@ -1,8 +1,12 @@
+import { IMenuConfig } from "./menuConfig";
+
 export interface IUser {
     id:string;
+    employeeId: number;
     email: string;
     displayName: string;
     token: string;
+    menuList:IMenuConfig;
 }
 
 export interface IUserResponse {
@@ -13,4 +17,5 @@ export interface IUserResponse {
     emailConfirmed: string;
     token: string;
     roles:[];
+    menuList:IMenuConfig;
 }
