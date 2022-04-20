@@ -129,8 +129,13 @@ namespace Infrastructure.Data
         public DbSet<RptSummary> RptSummary { get; set; }
         public DbSet<InvestmentRapid> InvestmentRapid { get; set; }
         public DbSet<InvestmentRapidAppr> InvestmentRapidAppr { get; set; }
-        
-            public List<T> ExecSQL<T>(string query)
+        public DbSet<EmpSbuMapping> EmpSbuMapping { get; set; }
+        public DbSet<BgtYearlyTotal> BgtYearlyTotal { get; set; }
+        public DbSet<BgtSBUTotal> BgtSBUTotal { get; set; }
+        public DbSet<BgtEmployee> BgtEmployee { get; set; }
+        public DbSet<BgtOwn> BgtOwn { get; set; }
+
+        public List<T> ExecSQL<T>(string query)
         {
             using (var command = Database.GetDbConnection().CreateCommand())
             {
