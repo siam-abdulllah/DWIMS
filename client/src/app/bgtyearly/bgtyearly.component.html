@@ -1,0 +1,96 @@
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <form novalidate autocomplete="off"  #bdtyearly="ngForm">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <h3 class="card-title">Budget Yearly</h3>
+                                </div>
+                          
+                                <div class="col-sm-1">
+                                    <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]=""  ><i class="fa fa-save"></i>&nbsp; Save</button>
+                                </div>
+                                <div class="col-sm-1">
+                                    <button class="btn btn-info btn-lg btn-block" type="button" ><i class="fa fa-search" ></i>Search</button>
+                                </div>
+                                <div class="col-sm-1">
+                                    <button class="btn btn-danger btn-lg btn-block" type="button"><i class="fa fa-undo"></i>Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <div class="card-body">
+                        <fieldset style="margin-top: 10px;">
+                            <div class="form-group" style="padding: 5px;">
+                                <div class="row" style="padding: 10px;">
+                                    <div class="col-md-2">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Company Name</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" id="empName" name="empName" >
+                                    </div>
+                                    
+                                </div>
+                                <div class="row" style="padding: 10px;">
+                                    <div class="col-md-2">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Dept. Name</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <select class="form-control" name="department" >
+                                            <option  [ngValue]="null">Select Department</option>
+                                            <option value="001">Sales</option>
+                                            <option value="002">PMD</option>
+                                        </select>
+                                    </div>
+                                    
+                                </div>
+                                <div class="row" style="padding: 10px;">
+                                    <div class="col-md-2">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Budget Year</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" id="empName" name="empName" >
+                                    </div>
+                                    
+                                </div>
+                                <div class="row" style="padding: 10px;">
+                                    <div class="col-md-2">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Total Budget</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" id="empName" name="empName" >
+                                    </div>
+                                    
+                                </div>
+    
+                            </div>
+                        </fieldset>
+                    </div>
+               
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<ng-template #submissionConfirmModal style="bottom: -50px;">
+    <div class="modal-body text-center">
+        <div>
+            <h4>Do you want to save ?</h4><small>(N.B. Save Proposal Unchangeable!)</small>
+        </div>
+        <button type="button" class="btn btn-success" (click)="confirmSubmit()">Yes</button>
+        <button type="button" class="btn btn-danger" (click)="declineSubmit()">No</button>
+    </div>
+</ng-template>
