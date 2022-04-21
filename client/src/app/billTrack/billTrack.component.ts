@@ -119,7 +119,7 @@ export class BillTrackComponent implements OnInit {
         debugger;
         this.toastr.success('Data Saved successfully', 'Report Tracker')
       },
-      err => { console.log(err); }
+      err => { this.toastr.error('Data Already Exists', 'Error') }
     );
   }
 

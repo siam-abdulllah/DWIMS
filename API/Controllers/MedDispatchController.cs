@@ -78,6 +78,8 @@ namespace API.Controllers
         [HttpPost("createDispatch")]
         public ActionResult<MedicineDispatchDto> InsertDepoTracker(MedicineDispatch trackDto)
         {
+            var check = _db.MedicineDispatch.FromSqlRaw("select * from MedicineDispatch where PayRefNo = '" + trackDto.PayRefNo + "'").ToList();;
+
             string dptCode = "";
             string dptName = "";
 
@@ -89,6 +91,8 @@ namespace API.Controllers
                 dptName = depoCode.DepotName;
             }
 
+        if(check.Count() == 0)
+        {
             var bcds = new MedicineDispatch
             {
                 InvestmentInitId = trackDto.InvestmentInitId,
@@ -116,6 +120,7 @@ namespace API.Controllers
                 Id = bcds.Id,
                 InvestmentInitId = trackDto.InvestmentInitId,
                 SAPRefNo = trackDto.IssueReference,
+
                 IssueReference = trackDto.IssueReference,
                 IssueDate = trackDto.IssueDate,
                 PayRefNo = trackDto.PayRefNo,
@@ -127,6 +132,11 @@ namespace API.Controllers
                 EmployeeId = trackDto.EmployeeId,
             };
         }
+        else
+        {
+            return Ok("Data Exists");
+        }
+    }
 
 
         [HttpPost("insertMedicineDetail")]

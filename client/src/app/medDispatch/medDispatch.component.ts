@@ -171,7 +171,7 @@ export class MedDispatchComponent implements OnInit {
         this.toastr.success('Data Saved successfully', 'Medicine Dispatch') 
         this.isValid = false;
       },
-      err => { console.log(err); }
+      err => { this.toastr.error('Data Already Exists', 'Error') }
     );
   }
 
