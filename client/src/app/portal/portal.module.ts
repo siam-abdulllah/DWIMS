@@ -60,6 +60,8 @@ import { RptCampaignSummaryComponent } from './../rptCampaignSummary/rptCampaign
 import {ReportSystemSummaryComponent} from '../reportSystemSummary/reportSystemSummary.component'
 import { InvestmentFormComponent } from '../investmentForm/investmentForm.component';
 import { InvestmentRapidAprComponent } from '../investmentRapidApr/investmentRapidApr.component';
+import { BgtYearlyComponent } from '../bgtYearly/bgtyearly';
+import { BgtSbuYearlyComponent } from '../bgtSbuYearly/bgtsbuyearly';
 
 @NgModule({
   imports: [
@@ -92,6 +94,8 @@ import { InvestmentRapidAprComponent } from '../investmentRapidApr/investmentRap
     InvestmentInitComponent,
     InvestmentFormComponent,
     InvestmentRapidAprComponent,
+    BgtYearlyComponent,
+    BgtSbuYearlyComponent,
     InvestmentRecComponent,
     InvestmentAprComponent,
     InvestmentAprNoSbuComponent,

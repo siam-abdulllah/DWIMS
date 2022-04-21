@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
-                <form novalidate autocomplete="off"  #bdtyearly="ngForm">
+                <form novalidate autocomplete="off"  #bgtyearlyForm="ngForm">
                     <div class="card card-primary">
                         <div class="card-header">
                             <div class="row">
@@ -12,10 +12,10 @@
                                 </div>
                           
                                 <div class="col-sm-1">
-                                    <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]=""  ><i class="fa fa-save"></i>&nbsp; Save</button>
+                                    <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="" (click)="confirmSubmission()" [disabled]="bgtyearlyForm.invalid"  ><i class="fa fa-save"></i>&nbsp; Save</button>
                                 </div>
                                 <div class="col-sm-1">
-                                    <button class="btn btn-info btn-lg btn-block" type="button" ><i class="fa fa-search" ></i>Search</button>
+                                    <button class="btn btn-info btn-lg btn-block" type="button" (click)="getBgtYearly()"><i class="fa fa-search" ></i>Search</button>
                                 </div>
                                 <div class="col-sm-1">
                                     <button class="btn btn-danger btn-lg btn-block" type="button"><i class="fa fa-undo"></i>Reset</button>
@@ -34,7 +34,10 @@
                                         <label>Company Name</label>
                                     </div>
                                     <div class="col-md-4">
-                                        <input type="text" class="form-control" id="empName" name="empName" >
+                                        <select class="form-control" name="company" id="compId" name="compId" required  [(ngModel)]="bugetYearlyService.budgetYearly.compId">
+                                            <option  [ngValue]="0">Select Company</option>
+                                            <option value="100">Square Pharmaceuticals Limited</option>
+                                        </select>
                                     </div>
                                     
                                 </div>
@@ -45,10 +48,10 @@
                                         <label>Dept. Name</label>
                                     </div>
                                     <div class="col-md-4">
-                                        <select class="form-control" name="department" >
-                                            <option  [ngValue]="null">Select Department</option>
-                                            <option value="001">Sales</option>
-                                            <option value="002">PMD</option>
+                                        <select class="form-control" name="deptId"  id="deptId" required [(ngModel)]="bugetYearlyService.budgetYearly.deptId">
+                                            <option  [ngValue]="0">Select Department</option>
+                                            <option value="1">Sales</option>
+                                            <option value="2">PMD</option>
                                         </select>
                                     </div>
                                     
@@ -60,7 +63,8 @@
                                         <label>Budget Year</label>
                                     </div>
                                     <div class="col-md-4">
-                                        <input type="text" class="form-control" id="empName" name="empName" >
+                                        <input class="form-control" (onHidden)="onYearchange()" [ngModelOptions]="{standalone: true}" id="year" name="year"   [bsValue]="bsValue" bsDatepicker [bsConfig]="{ minMode:'year', adaptivePosition: true, dateInputFormat: 'YYYY' }" required [(ngModel)]="bugetYearlyService.budgetYearly.year">
+                                      
                                     </div>
                                     
                                 </div>
@@ -71,11 +75,11 @@
                                         <label>Total Budget</label>
                                     </div>
                                     <div class="col-md-4">
-                                        <input type="text" class="form-control" id="empName" name="empName" >
+                                        <input type="text" class="form-control"  id="totalAmount" name="totalAmount" required [(ngModel)]="bugetYearlyService.budgetYearly.totalAmount" >
                                     </div>
                                     
                                 </div>
-    
+                                       
                             </div>
                         </fieldset>
                     </div>
@@ -85,6 +89,62 @@
         </div>
     </div>
 </section>
+<ng-template #budgetYearlySearchModal>
+    <div class="modal-header" style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));color: black;">
+        <h4 class="modal-title pull-left">Budget Yearly Total</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="BudgetYearlySearchModalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" style="padding: 20px 30px 20px 30px;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-2">
+                        </div>
+                        <div class="col-md-6">
+                            <input name="filterText" class="form-control m-input Searchbox" type="text" [(ngModel)]="searchText" placeholder="Search..">
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-danger" type="button" (click)="resetSearch()"><i class="fa fa-undo"></i>&nbsp; Reset</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive" style="border: 1px solid #bed2c9; width: 100%;">
+                            <table class="table table-bordered table-responsive table-hover table-striped">
+                                <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));">
+                                    <tr class="HeaderRow">
+                                        <th scope="col" style="width: 7%">Action</th>
+                                        <th scope="col" style="width: 4%;">Company Id</th>
+                                        <th scope="col" style="width: 9%">Department Id</th>
+                                        <th scope="col" style="width: 4%">Year</th>
+                                        <th scope="col" style="width: 4%">Total Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- <tr *ngFor="let a of investmentInits | paginate: configs | filter: searchText"> -->
+                                    <tr *ngFor="let a of budgetYearly  | filter: searchText">
+                                        <td>
+                                            <button class="btn btn-sm btn-embossed btn-success" (click)="selectBgtYearly(a)"><i class="fa fa-check" aria-hidden="true"></i>Select</button>
+                                        </td>
+                                        <td>{{a.compId}}</td>
+                                        <td>{{a.deptId}}</td>
+                                        <td>{{a.year}}</td>
+                                        <td>{{a.totalAmount}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!-- <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
 <ng-template #submissionConfirmModal style="bottom: -50px;">
     <div class="modal-body text-center">
         <div>

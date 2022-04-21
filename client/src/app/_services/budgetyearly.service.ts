@@ -17,6 +17,7 @@ import { BudgetYearly, IBudgetYearly } from '../shared/models/budgetyearly';
 @Injectable({
   providedIn: 'root'
 })
+
 export class BudgetYearlyService {
   budgetYearly: BudgetYearly = new BudgetYearly();
   baseUrl = environment.apiUrl;
@@ -24,10 +25,17 @@ export class BudgetYearlyService {
 
 
   constructor(private http: HttpClient, private router: Router) { }
- 
+
+  getBudgetYearly(){    
+    debugger;
+    return this.http.get(this.baseUrl + 'BgtYearly/getBudgetYearly');
+  }
+  getGenParams(){
+    return this.genParams;
+  }
   submitBudgetYearly() {
     debugger;
-    return this.http.post(this.baseUrl + 'investmentrapid/saveInvestmentRapid', this.budgetYearly);
+    return this.http.post(this.baseUrl + 'BgtYearly/SaveBgtYearly', this.budgetYearly);
   }
  
   

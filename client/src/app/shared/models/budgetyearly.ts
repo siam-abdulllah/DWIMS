@@ -1,3 +1,4 @@
+import { NumberValueAccessor } from "@angular/forms";
 import { ICampaignDtl } from "./campaign";
 import { IDonation } from "./donation";
 import { IEmployee } from "./employee";
@@ -7,12 +8,23 @@ import { IProduct } from "./product";
 
 export interface IBudgetYearly {
     id: number;
-    EmployeeName:string;
+    compId:number;
+    deptId:number;
+    year:number;
+    totalAmount:number;
+    remarks:string;
+    enteredBy:number;
    
 }
  
 export class BudgetYearly implements IBudgetYearly {
     id: number=0;
-    EmployeeName:string;
+    compId:number=0;
+    deptId:number=0;
+    year:number;
+    totalAmount:number;
+    remarks:string;
+    enteredBy:number;
+
 }
 

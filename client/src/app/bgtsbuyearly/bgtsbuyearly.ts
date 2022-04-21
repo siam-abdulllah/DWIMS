@@ -8,12 +8,12 @@ import { Observable } from "rxjs/internal/Observable";
 import { AccountService } from "../account/account.service";
 import { BudgetYearly, IBudgetYearly } from "../shared/models/budgetyearly";
 import { IEmployeeInfo } from "../shared/models/employeeInfo";
-import { BudgetYearlyService } from "../_services/budgetyearly.service";
+import { BudgetYearlyService } from "../_services/budgetYearly.service";
 
 
 @Component({
   selector: 'app-bgtyearly',
-  templateUrl: './bgtyearly.component.html',
+  templateUrl: './bgtsbuyearly.component.html',
   styles: [
   ],
   providers: [DatePipe]
@@ -42,7 +42,19 @@ export class BgtSbuYearlyComponent implements OnInit {
   constructor(private accountService: AccountService,private router: Router,public bugetyearlyservice: BudgetYearlyService,private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe, 
     private SpinnerService: NgxSpinnerService) { }
   ngOnInit() {
- 
+    this.getEmployeeId()
+  }
+
+  getEmployeeId() {
+    this.empId = this.accountService.getEmployeeId();
+    this.userRole = this.accountService.getUserRole();
+    if (this.userRole == 'Administrator') {
+      this.isAdmin = true;
+    }
+    else {
+      this.isAdmin = false;
+    }
+    this.bugetyearlyservice.budgetYearly.enteredBy = parseInt(this.empId);
   }
   confirmSubmission() {
     debugger;

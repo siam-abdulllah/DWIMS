@@ -1,5 +1,6 @@
 import { DatePipe } from "@angular/common";
 import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from "@angular/core";
+import { NgForm } from "@angular/forms";
 import { Router } from "@angular/router";
 import { BsModalService,BsModalRef} from "ngx-bootstrap/modal";
 import { NgxSpinnerService } from "ngx-spinner";
@@ -8,7 +9,7 @@ import { Observable } from "rxjs/internal/Observable";
 import { AccountService } from "../account/account.service";
 import { BudgetYearly, IBudgetYearly } from "../shared/models/budgetyearly";
 import { IEmployeeInfo } from "../shared/models/employeeInfo";
-import { BudgetYearlyService } from "../_services/budgetyearly.service";
+import { BudgetYearlyService } from "../_services/budgetYearly.service";
 
 
 @Component({
@@ -20,13 +21,18 @@ import { BudgetYearlyService } from "../_services/budgetyearly.service";
 })
 export class BgtYearlyComponent implements OnInit {
   @ViewChild('search', { static: false }) searchTerm: ElementRef;
-  @ViewChild('investmentRapidSearchModal', { static: false }) investmentInitSearchModal: TemplateRef<any>;
+  @ViewChild('budgetYearlySearchModal', { static: false }) budgetYearlySearchModal: TemplateRef<any>;
   @ViewChild('submissionConfirmModal', { static: false }) submissionConfirmModal: TemplateRef<any>;
   submissionConfirmRef: BsModalRef;
+  BudgetYearlySearchModalRef: BsModalRef;
   bsValue: Date = new Date();
   today = new Date();
+  budgetYearly: IBudgetYearly[];
   empId: string;
   userRole:string;
+  budgetTotalForm: NgForm;
+  isValid: boolean = false;
+  searchText:string;
   empSbu:Observable<IEmployeeInfo>;
   isAdmin: boolean = false;
   dd = String(this.today.getDate()).padStart(2, '0');
@@ -39,10 +45,21 @@ export class BgtYearlyComponent implements OnInit {
     ignoreBackdropClick: true
   };
   institutionType: string;
-  constructor(private accountService: AccountService,private router: Router,public bugetyearlyservice: BudgetYearlyService,private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe, 
+  constructor(private accountService: AccountService,private router: Router,public bugetYearlyService: BudgetYearlyService,private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe, 
     private SpinnerService: NgxSpinnerService) { }
   ngOnInit() {
- 
+    this.getEmployeeId()
+  }
+  getEmployeeId() {
+    this.empId = this.accountService.getEmployeeId();
+    this.userRole = this.accountService.getUserRole();
+    if (this.userRole == 'Administrator') {
+      this.isAdmin = true;
+    }
+    else {
+      this.isAdmin = false;
+    }
+    this.bugetYearlyService.budgetYearly.enteredBy = parseInt(this.empId);
   }
   confirmSubmission() {
     debugger;
@@ -50,7 +67,7 @@ export class BgtYearlyComponent implements OnInit {
   }
   confirmSubmit() {
     this.submissionConfirmRef.hide();
-    //this.submitInvestmentForm();
+    this.submitBgtYearly();
   }
   declineSubmit() {
     this.submissionConfirmRef.hide();
@@ -65,15 +82,57 @@ export class BgtYearlyComponent implements OnInit {
 
 
   resetPageLoad() {
-    this.bugetyearlyservice.budgetYearly = new BudgetYearly();
+    this.bugetYearlyService.budgetYearly = new BudgetYearly();
   }
+  openBudgetYearlySearchModal(template: TemplateRef<any>) {
+    debugger;
+    this.BudgetYearlySearchModalRef = this.modalService.show(template, this.config);
+  }
+  getBgtYearly() {
+    debugger;
+    const params = this.bugetYearlyService.getGenParams();
+    this.SpinnerService.show();
+    this.bugetYearlyService.getBudgetYearly().subscribe(response => {
+      this.SpinnerService.hide();
+      this.budgetYearly = response as IBudgetYearly[];
+      if (this.budgetYearly.length > 0) {
+        this.openBudgetYearlySearchModal(this.budgetYearlySearchModal);
+        }
+        else {
+          this.toastr.warning('No Data Found');
+        }
+    }, error => {
+      this.SpinnerService.hide();
+      console.log(error);
+    });
+  }
+  onYearchange() {
+    debugger;
+    if (this.bugetYearlyService.budgetYearly.year != null && this.bugetYearlyService.budgetYearly.year  != undefined) {
+      var year = new Date(this.bugetYearlyService.budgetYearly.year).getFullYear();
+      this.bugetYearlyService.budgetYearly.year = year;
+    }
 
+  }
+  selectBgtYearly(selectedRecord: IBudgetYearly) {
+
+    debugger;
+    this.bugetYearlyService.budgetYearly = Object.assign({}, selectedRecord);
+    
+    this.BudgetYearlySearchModalRef.hide()
+  }
+  resetSearch() {
+    this.searchText = '';
+  }
   submitBgtYearly() {
+    debugger;
+ 
+  
       this.SpinnerService.show();
-      this.bugetyearlyservice.submitBudgetYearly().subscribe(
+      this.bugetYearlyService.submitBudgetYearly().subscribe(
         res => {
-          this.bugetyearlyservice.budgetYearly = res as IBudgetYearly;
-          this.toastr.success('Submitted successfully', 'Investment');
+          this.bugetYearlyService.budgetYearly = res as IBudgetYearly;
+          this.toastr.success('Submitted successfully', 'Budget');
           this.resetPageLoad();
         },
         err => { 

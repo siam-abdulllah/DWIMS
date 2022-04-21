@@ -46,6 +46,8 @@ import { RptEmpWiseExpComponent } from '../rptEmpWiseExp/rptEmpWiseExp.component
 import { ReportSystemSummaryComponent } from '../reportSystemSummary/reportSystemSummary.component'
 import { InvestmentFormComponent } from '../investmentForm/investmentForm.component';
 import { InvestmentRapidAprComponent } from '../investmentRapidApr/investmentRapidApr.component';
+import { BgtYearlyComponent } from '../bgtYearly/bgtyearly';
+import { BgtSbuYearlyComponent } from '../bgtSbuYearly/bgtsbuyearly';
 
 //import { RptInvestStatusComponent } from '../rptInvestmentStatus/rptInvestmentStatus.component';
 
@@ -64,6 +66,8 @@ const portalRoutes: Routes = [
         {path: 'investmentInit', component: InvestmentInitComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'investmentrapid', component: InvestmentFormComponent},
         {path: 'investmentrapidapr', component: InvestmentRapidAprComponent},
+        {path: 'budgetyearly', component: BgtYearlyComponent},
+        {path: 'budgetsbuyearly', component: BgtSbuYearlyComponent},
        {path: 'investmentRec', component: InvestmentRecComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'investmentApr', component: InvestmentAprComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'investmentAprNoSbu', component: InvestmentAprNoSbuComponent, canActivate: [SuperAdminRoleGuard]},
