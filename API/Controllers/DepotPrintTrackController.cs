@@ -11,6 +11,7 @@ using Core.Interfaces;
 using Core.Specifications;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -32,6 +33,8 @@ namespace API.Controllers
         [HttpPost("createTrackRecord")]
         public ActionResult<DepotPrintTrackDto> InsertDepoTracker(DepotPrintTrack trackDto)
         {
+            var check = _db.DepotPrintTrack.FromSqlRaw("select * from DepotPrintTrack where PayRefNo = '" + trackDto.PayRefNo + "'").ToList(); ;
+
             string dptCode = "";
             string dptName = "";
 
@@ -48,45 +51,51 @@ namespace API.Controllers
                 dptName = "";
             }
 
-            var bcds = new DepotPrintTrack
+            if (check.Count() == 0)
             {
-                InvestmentInitId = trackDto.InvestmentInitId,
-                PaymentRefNo = trackDto.PaymentRefNo,
-                SAPRefNo = trackDto.PaymentRefNo,
-                PaymentDate = trackDto.PaymentDate,
-                PayRefNo = trackDto.PayRefNo,
-                DepotId = dptCode,
-                DepotName = dptName,
-                Remarks = trackDto.Remarks,
-                SetOn = DateTimeOffset.Now,
-                EmployeeId = trackDto.EmployeeId,
-                LastPrintTime = DateTimeOffset.Now,
-                BankName = trackDto.BankName,
-                ChequeNo = trackDto.ChequeNo,
-                PrintCount = 1,
-            };
+                var bcds = new DepotPrintTrack
+                {
+                    InvestmentInitId = trackDto.InvestmentInitId,
+                    PaymentRefNo = trackDto.PaymentRefNo,
+                    SAPRefNo = trackDto.PaymentRefNo,
+                    PaymentDate = trackDto.PaymentDate,
+                    PayRefNo = trackDto.PayRefNo,
+                    DepotId = dptCode,
+                    DepotName = dptName,
+                    Remarks = trackDto.Remarks,
+                    SetOn = DateTimeOffset.Now,
+                    EmployeeId = trackDto.EmployeeId,
+                    LastPrintTime = DateTimeOffset.Now,
+                    BankName = trackDto.BankName,
+                    ChequeNo = trackDto.ChequeNo,
+                    PrintCount = 1,
+                };
 
-            _trackRepo.Add(bcds);
-            _trackRepo.Savechange();
+                _trackRepo.Add(bcds);
+                _trackRepo.Savechange();
 
-            return new DepotPrintTrackDto
+                return new DepotPrintTrackDto
+                {
+                    Id = bcds.Id,
+                    InvestmentInitId = trackDto.InvestmentInitId,
+                    PaymentRefNo = trackDto.PaymentRefNo,
+                    SAPRefNo = trackDto.PaymentRefNo,
+                    PaymentDate = trackDto.PaymentDate,
+                    PayRefNo = trackDto.PayRefNo,
+                    DepotId = trackDto.DepotId,
+                    DepotName = trackDto.DepotName,
+                    Remarks = trackDto.Remarks,
+                    EmployeeId = trackDto.EmployeeId,
+                    LastPrintTime = DateTimeOffset.Now,
+                    BankName = trackDto.BankName,
+                    ChequeNo = trackDto.ChequeNo,
+                    PrintCount = 1,
+                };
+            }
+            else
             {
-                Id = bcds.Id,
-                InvestmentInitId = trackDto.InvestmentInitId,
-                PaymentRefNo = trackDto.PaymentRefNo,
-                SAPRefNo = trackDto.PaymentRefNo,
-                PaymentDate = trackDto.PaymentDate,
-                PayRefNo = trackDto.PayRefNo,
-                DepotId = trackDto.DepotId,
-                DepotName = trackDto.DepotName,
-                Remarks = trackDto.Remarks,
-                EmployeeId = trackDto.EmployeeId,
-                LastPrintTime = DateTimeOffset.Now,
-                BankName = trackDto.BankName,
-                ChequeNo = trackDto.ChequeNo,
-                PrintCount = 1,
-            };
-
+                return Ok("Data Exists");
+            }
         }
 
     }

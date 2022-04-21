@@ -118,10 +118,9 @@ export class ChequeTrackComponent implements OnInit {
 
     this.pendingService.insertTrackReport(this.pendingService.depotPrintFormData).subscribe(
       res => {
-        debugger;
         this.toastr.success('Data Saved successfully', 'Report Tracker')
       },
-      err => { console.log(err); }
+      err => { this.toastr.error('Data Already Exists', 'Error') }
     );
   }
 
