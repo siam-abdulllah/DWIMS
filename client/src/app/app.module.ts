@@ -24,7 +24,8 @@ import { MasterRoutingModule } from './master/master-routing.module';
 import { AccountRoutingModule } from './account/account-routing.module';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
-import { SheetJSComponent } from './sheetjs.component'
+import { SheetJSComponent } from './sheetjs.component';
+
 
 @NgModule({
   declarations: [
@@ -33,7 +34,7 @@ import { SheetJSComponent } from './sheetjs.component'
     // TopnavComponent,
     // AsidenavComponent,
     // FooterComponent,
-    HomeComponent
+    HomeComponent,
   ],
   imports: [
     BrowserModule,

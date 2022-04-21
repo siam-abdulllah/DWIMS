@@ -46,6 +46,7 @@ import { RptEmpWiseExpComponent } from '../rptEmpWiseExp/rptEmpWiseExp.component
 import { ReportSystemSummaryComponent } from '../reportSystemSummary/reportSystemSummary.component'
 import { InvestmentFormComponent } from '../investmentForm/investmentForm.component';
 import { InvestmentRapidAprComponent } from '../investmentRapidApr/investmentRapidApr.component';
+import { BgtEmployeeComponent } from '../bgtEmployee/bgtEmployee.component';
 
 //import { RptInvestStatusComponent } from '../rptInvestmentStatus/rptInvestmentStatus.component';
 
@@ -90,6 +91,9 @@ const portalRoutes: Routes = [
         {path: 'rptInvDataSummary', component: ReportSystemSummaryComponent },
         {path: 'rptEmpExp', component: RptEmpWiseExpComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'changeDepot', component: ChangeDepotComponent, canActivate: [SuperAdminRoleGuard]},
+
+        {path: 'bgtEmployee', component: BgtEmployeeComponent},
+
         {path: 'paramInvestmentSummary/:param', component: ParamInvestSummaryComponent},
         //{path: 'rptInvestmentDetail', component: RptInvestmentDetailComponent},
         {path: 'rptInvestmentDetail/:id', component: RptInvestmentDetailComponent},

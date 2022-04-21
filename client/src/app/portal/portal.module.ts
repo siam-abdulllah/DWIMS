@@ -60,6 +60,7 @@ import { RptCampaignSummaryComponent } from './../rptCampaignSummary/rptCampaign
 import {ReportSystemSummaryComponent} from '../reportSystemSummary/reportSystemSummary.component'
 import { InvestmentFormComponent } from '../investmentForm/investmentForm.component';
 import { InvestmentRapidAprComponent } from '../investmentRapidApr/investmentRapidApr.component';
+import { BgtEmployeeComponent } from '../bgtEmployee/bgtEmployee.component';
 
 @NgModule({
   imports: [
@@ -128,7 +129,8 @@ import { InvestmentRapidAprComponent } from '../investmentRapidApr/investmentRap
     SubMenuComponent,
     RptEmpInfoComponent,
     MenuConfigComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    BgtEmployeeComponent,
   ],
   providers: [DatePipe]
 })
