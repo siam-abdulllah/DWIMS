@@ -116,11 +116,16 @@ export class ChequeTrackComponent implements OnInit {
     this.pendingService.depotPrintFormData.chequeNo = this.billTrackForm.value.chequeNo;
     this.pendingService.depotPrintFormData.bankName = this.billTrackForm.value.bankName;
 
+    this.SpinnerService.show();
     this.pendingService.insertTrackReport(this.pendingService.depotPrintFormData).subscribe(
       res => {
+        this.SpinnerService.hide();
         this.toastr.success('Data Saved successfully', 'Report Tracker')
       },
-      err => { this.toastr.error('Data Already Exists', 'Error') }
+      err => { 
+        this.SpinnerService.hide();
+        this.toastr.error('Data Already Exists', 'Error') 
+      }
     );
   }
 

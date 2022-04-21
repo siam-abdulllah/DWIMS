@@ -165,13 +165,19 @@ export class MedDispatchComponent implements OnInit {
     this.pendingService.medDispatchFormData.proposeAmt = this.medDispatchForm.value.proposeAmt;
 
 
+    this.SpinnerService.show();
     this.pendingService.insertDispatch(this.pendingService.medDispatchFormData).subscribe(
       res => {
         this.SaveMedicineDetail();
+        this.SpinnerService.hide();
         this.toastr.success('Data Saved successfully', 'Medicine Dispatch') 
         this.isValid = false;
       },
-      err => { this.toastr.error('Data Already Exists', 'Error') }
+
+      err => { 
+        this.SpinnerService.hide();
+        this.toastr.error('Data Already Exists', 'Error') 
+      }
     );
   }
 
