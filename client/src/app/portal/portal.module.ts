@@ -62,6 +62,8 @@ import { InvestmentFormComponent } from '../investmentForm/investmentForm.compon
 import { InvestmentRapidAprComponent } from '../investmentRapidApr/investmentRapidApr.component';
 import { BgtYearlyComponent } from '../bgtYearly/bgtyearly';
 import { BgtSbuYearlyComponent } from '../bgtSbuYearly/bgtsbuyearly';
+import { BgtEmployeeComponent } from '../bgtEmployee/bgtEmployee.component';
+
 
 @NgModule({
   imports: [
@@ -132,7 +134,8 @@ import { BgtSbuYearlyComponent } from '../bgtSbuYearly/bgtsbuyearly';
     SubMenuComponent,
     RptEmpInfoComponent,
     MenuConfigComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    BgtEmployeeComponent,
   ],
   providers: [DatePipe]
 })
