@@ -10912,24 +10912,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\rezwan\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\Maaz\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Rezwan\\DWIMS_New\\DWIMS\\API\\API.csproj",
+      "projectUniqueName": "D:\\DWIMS_Master\\API\\API.csproj",
       "projectName": "API",
-      "projectPath": "E:\\Rezwan\\DWIMS_New\\DWIMS\\API\\API.csproj",
-      "packagesPath": "C:\\Users\\rezwan\\.nuget\\packages\\",
-      "outputPath": "E:\\Rezwan\\DWIMS_New\\DWIMS\\API\\obj\\",
+      "projectPath": "D:\\DWIMS_Master\\API\\API.csproj",
+      "packagesPath": "C:\\Users\\Maaz\\.nuget\\packages\\",
+      "outputPath": "D:\\DWIMS_Master\\API\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\rezwan\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\Maaz\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -10943,8 +10938,8 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "E:\\Rezwan\\DWIMS_New\\DWIMS\\Infrastructure\\Infrastructure.csproj": {
-              "projectPath": "E:\\Rezwan\\DWIMS_New\\DWIMS\\Infrastructure\\Infrastructure.csproj"
+            "D:\\DWIMS_Master\\Infrastructure\\Infrastructure.csproj": {
+              "projectPath": "D:\\DWIMS_Master\\Infrastructure\\Infrastructure.csproj"
             }
           }
         }
@@ -11036,7 +11031,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.406\\RuntimeIdentifierGraph.json"
       }
     }
   }
