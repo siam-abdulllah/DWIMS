@@ -7779,11 +7779,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\DWIMS\\Core\\Core.csproj",
+      "projectUniqueName": "D:\\DWIMS_Master\\Core\\Core.csproj",
       "projectName": "Core",
-      "projectPath": "D:\\DWIMS\\Core\\Core.csproj",
+      "projectPath": "D:\\DWIMS_Master\\Core\\Core.csproj",
       "packagesPath": "C:\\Users\\Maaz\\.nuget\\packages\\",
-      "outputPath": "D:\\DWIMS\\Core\\obj\\",
+      "outputPath": "D:\\DWIMS_Master\\Core\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Maaz\\AppData\\Roaming\\NuGet\\NuGet.Config",
