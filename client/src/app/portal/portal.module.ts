@@ -63,6 +63,7 @@ import { InvestmentRapidAprComponent } from '../investmentRapidApr/investmentRap
 import { BgtYearlyComponent } from '../bgtYearly/bgtyearly';
 import { BgtSbuYearlyComponent } from '../bgtSbuYearly/bgtsbuyearly';
 import { BgtEmployeeComponent } from '../bgtEmployee/bgtEmployee.component';
+import { InvestmentCancelComponent } from '../investmentCancel/investmentCancel.component';
 
 
 @NgModule({
@@ -102,6 +103,7 @@ import { BgtEmployeeComponent } from '../bgtEmployee/bgtEmployee.component';
     InvestmentAprComponent,
     InvestmentAprNoSbuComponent,
     InvestmentRcvComponent,
+    InvestmentCancelComponent,
     RegApprovalComponent,
     RptDocLocMapComponent,
     ChangePasswordAllComponent,

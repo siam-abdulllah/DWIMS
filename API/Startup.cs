@@ -35,7 +35,8 @@ namespace API
            
             
             services.AddDbContext<StoreContext>(x =>
-            x.UseSqlServer(_config.GetConnectionString("DefaultConnection")));
+            x.UseSqlServer(_config.GetConnectionString("DefaultConnection"),
+            sqlServerOptions => sqlServerOptions.CommandTimeout(300)));
 
             services.AddDbContext<AppIdentityDbContext>(x =>
             x.UseSqlServer(_config.GetConnectionString("IdentityConnection")));

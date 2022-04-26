@@ -76,6 +76,8 @@
                                                 <td>ID</td>
                                                 <td>Name</td>
                                                 <td>Inv. Amount</td>
+                                                <td>Rec. Amount</td>
+                                                <td>Appr. Amount</td>
                                                 <td>From</td>
                                                 <td>To</td>
                                                 <td>Market</td>
@@ -126,6 +128,12 @@
                                                 </td>
                                                 <td>
                                                     {{a.proposedAmount}}
+                                                </td>
+                                                <td>
+                                                    {{a.recommendedAmount}}
+                                                </td>
+                                                <td>
+                                                    {{a.approvedAmount}}
                                                 </td>
                                                 <td>
                                                     {{a.fromDate| date:'dd/MM/yyyy'}}

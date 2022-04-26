@@ -1,17 +1,22 @@
 <style>
-    @media screen and (min-width: 0px) and (max-width: 450px) {
-        #longHead {
-            display: none;
-        }
+    /* .form-control:disabled,
+    .form-control[readonly] {
+        background-color: #ffffff;
+        opacity: 1;
+    } */
+    
+    select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        text-indent: 1px;
+        text-overflow: '';
     }
     
-    @media screen and (min-width: 450px) and (max-width: 4000px) {
-        #shortHead {
-            display: none;
-        }
+    .form-control {
+        color: black;
     }
 </style>
-<section class="content">
+<section class="content" id="content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
@@ -20,57 +25,61 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-sm-9">
-                                    <h3 class="card-title">Investment Approval</h3>
+                                    <h3 class="card-title">Investment Cancel</h3>
                                 </div>
                                 <div class="col-sm-1">
-                                    <button class="btn btn-success btn-block" type="submit" [disabled]="investmentCancelForm.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                    <button class="btn btn-warning btn-block" type="submit" [disabled]="investmentCancelForm.invalid"><i class="fa fa-times"></i>&nbsp; Cancel</button>
                                 </div>
                                 <div class="col-sm-1">
-                                    <button class="btn btn-info btn-block" type="button" (click)="getInvestmentApproved()"><i class="fa fa-search" ></i>Search</button>
-                                </div>
-                                <div class="col-sm-1">
-                                    <button class="btn btn-danger  btn-block" type="button" (click)="resetPage(investmentCancelForm)"><i class="fa fa-undo"></i>Reset</button>
+                                    <button class="btn btn-danger  btn-block" type="button" (click)="resetPage(investmentCancelForm)"><i class="fa fa-undo"></i>&nbsp; Reset</button>
                                 </div>
                             </div>
                         </div>
                         <div class="card-body">
-
                             <div class="form-group">
                                 <div class="row">
-                                    <div class="col-md-1">
-                                        <label>Reference</label>
-                                        <span style="color:red;">*</span>
+                                    <div class="col-md-2">
+                                        <label>Reference No</label>
                                     </div>
                                     <div class="col-md-2">
-                                        <input class="form-control" id="id" name="id" #id="ngModel" [(ngModel)]="investmentCancelService.investmentCancelFormData.id" readonly style="display: none;" required>
-                                        <input class="form-control clickable" placeholder="Please Double Click Here" (dblclick)="getInvestmentInit()" id="referenceNo" name="referenceNo" #referenceNo="ngModel" [(ngModel)]="investmentCancelService.investmentCancelFormData.referenceNo" readonly
-                                            required>
+                                        <input class="form-control" id="id" name="id" #id="ngModel" [(ngModel)]="investmentCancelService.investmentCancelFormData.id" readonly style="display: none;">
+                                        <input class="form-control" id="referenceNo" name="referenceNo" #referenceNo="ngModel" [(ngModel)]="investmentCancelService.investmentCancelFormData.referenceNo">
                                     </div>
-                                    <div class="col-md-1">
+                                    <div class="col-sm-1">
+                                        <button class="btn btn-info btn-lg btn-block" type="button" (click)="ViewDataDoc()"><i class="fa fa-eye"></i>&nbsp;View</button>
+                                    </div>
+                                    <div class="col-md-2">
                                         <label>Propose For</label>
                                     </div>
-                                    <div class="col-md-2">
-                                        <input class="form-control" id="proposeFor" name="proposeFor" #proposeFor="ngModel" [(ngModel)]="investmentCancelService.investmentCancelFormData.proposeFor" readonly>
-                                    </div>
-                                    <div class="col-md-1">
-                                        <label>Donation Type</label>
-                                    </div>
-                                    <div class="col-md-2"> <select class="form-control" [disabled]=true id="donationId" name="donationId" #donationId="ngModel" [(ngModel)]="investmentCancelService.investmentCancelFormData.donationId">
-                                                <option  [ngValue]="null">Select Donation Type</option>
-                                                <option *ngFor="let a of donations" [value]="a.id">{{a.donationTypeName}}</option>
-                                            </select>
-                                    </div>
-                                    <div class="col-md-1">
-                                        <label>Donation To</label>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <input class="form-control" id="donationTo" name="donationTo" #donationTo="ngModel" [(ngModel)]="investmentCancelService.investmentCancelFormData.donationTo" readonly>
+                                    <div class="col-md-3">
+                                        <input class="form-control" id="proposeFor" [disabled]="true" name="proposeFor" #proposeFor="ngModel" [(ngModel)]="investmentCancelService.investmentCancelFormData.proposeFor" required [class.invalid]="proposeFor.invalid && proposeFor.touched" readonly>
                                     </div>
                                 </div>
-
                             </div>
-
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Donation Type</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select class="form-control" [disabled]="true" id="donationId" name="donationId" #donationId="ngModel" [(ngModel)]="investmentCancelService.investmentCancelFormData.donationId" required [class.invalid]="donationId.invalid && donationId.touched" readonly>
+                                            <option *ngFor="let a of donations" [value]="a.id">{{a.donationTypeName}}</option>
+                                            <!-- <option value="Donation">Donation</option>
+                                            <option value="Gift">Gift</option>
+                                            <option value="Honorarium">Honorarium</option> -->
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Donation To</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input class="form-control" [disabled]="true" id="donationTo" name="donationTo" #donationTo="ngModel" [(ngModel)]="investmentCancelService.investmentCancelFormData.donationTo" required [class.invalid]="donationTo.invalid && donationTo.touched" readonly>
+                                    </div>
+                                </div>
+                            </div>
                             <fieldset *ngIf="investmentCancelService.investmentCancelFormData.donationTo=='Doctor'">
+                                <!-- <legend>Doctor Profile</legend> -->
+
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-sm-6">
@@ -166,6 +175,13 @@
                                         <div class="col-sm-6">
                                             <h6 class=" "><strong>Institution Profile</strong></h6>
                                         </div>
+                                        <!-- <div class="col-sm-2"></div>
+                                        <div class="col-sm-2" *ngIf="isValid">
+                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentInstitution()"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                        </div>
+                                        <div class="col-sm-2" *ngIf="isValid">
+                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentInstitution()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
+                                        </div> -->
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -224,6 +240,14 @@
                                         <div class="col-sm-6">
                                             <h6 class=" "><strong>Campaign Info</strong></h6>
                                         </div>
+                                        <!-- <div class="col-sm-2"></div>
+                                        <div class="col-sm-2" *ngIf="isValid">
+                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentCampaign()"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                        </div>
+                                        <div class="col-sm-2" *ngIf="isValid">
+                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentCampaign()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
+                                        </div> -->
+
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -267,37 +291,20 @@
                                             <input class="form-control" name="doctorName" id="doctorName" #doctorName="ngModel" [(ngModel)]="investmentCancelService.investmentCampaignFormData.doctorName" readonly>
                                         </div>
                                         <div class="col-md-2">
-                                            <label>Doctor ID</label>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <input class="form-control" name="doctorId" id="doctorId" #doctorId="ngModel" [(ngModel)]="investmentCancelService.investmentCampaignFormData.doctorId" readonly>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="row">
-
-                                        <div class="col-md-2">
-                                            <label>Institution Name</label>
+                                            <label>Institution Id</label>
                                         </div>
                                         <div class="col-md-3">
                                             <input class="form-control" name="institutionName" id="institutionName" #institutionName="ngModel" [(ngModel)]="investmentCancelService.investmentCampaignFormData.institutionName" readonly>
                                         </div>
-                                        <div class="col-md-2">
-                                            <label> Institution ID</label>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <input class="form-control" name="institutionId" id="institutionId" #institutionId="ngModel" [(ngModel)]="investmentCancelService.investmentCampaignFormData.institutionId" readonly>
-                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <div class="form-group">
                                         <table class="table  table-bordered">
                                             <tr class="HeaderRow">
                                                 <td>Product Code</td>
                                                 <td>Product Name</td>
-                                                <!-- <td></td> -->
+                                                <td></td>
                                             </tr>
                                             <tr *ngFor="let a of campaignDtlProducts">
                                                 <td>
@@ -306,13 +313,13 @@
                                                 <td>
                                                     {{a.productInfo.productName}}
                                                 </td>
-                                                <!-- <td>
+                                                <td>
                                                     Details
-                                                </td> -->
+                                                </td>
                                             </tr>
                                         </table>
                                     </div>
-                                </div>
+                                </div> -->
                             </fieldset>
                             <fieldset *ngIf="investmentCancelService.investmentCancelFormData.donationTo=='Bcds'">
                                 <div class="form-group">
@@ -320,6 +327,13 @@
                                         <div class="col-sm-6">
                                             <h6 class=" "><strong>BCDS</strong></h6>
                                         </div>
+                                        <!-- <div class="col-sm-2"></div>
+                                        <div class="col-sm-2" *ngIf="isValid">
+                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentBcds()"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                        </div>
+                                        <div class="col-sm-2" *ngIf="isValid">
+                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentBcds()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
+                                        </div> -->
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -361,6 +375,13 @@
                                         <div class="col-sm-6">
                                             <h6 class=" "><strong>Society</strong></h6>
                                         </div>
+                                        <!-- <div class="col-sm-2"></div>
+                                        <div class="col-sm-2" *ngIf="isValid">
+                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentSociety()"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                        </div>
+                                        <div class="col-sm-2" *ngIf="isValid">
+                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentSociety()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
+                                        </div> -->
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -396,185 +417,22 @@
                                     </div>
                                 </div>
                             </fieldset>
-                            <fieldset *ngIf="investmentCancelService.investmentCancelFormData.donationId==4">
-                                <div class="form-group">
-                                    <legend>Add Donated Medicine</legend>
-                                </div>
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <label>Product</label>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <ng-select [virtualScroll]="true" [items]="medicineProducts" bindLabel="productName" bindValue="id" placeholder="Select Product" id="productId" name="productId" #productId="ngModel" [(ngModel)]="investmentCancelService.investmentMedicineProdFormData.productId"
-                                                [class.invalid]="productId.invalid && productId.touched">
-                                            </ng-select>
-                                        </div>
-                                        <div class="col-md-1">
-                                            <label>Quantity</label>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <input class="form-control" [disabled]="isInvOther && !isAdmin" placeholder="Box Quantity" name="boxQuantity" id="boxQuantity" #boxQuantity="ngModel" [(ngModel)]="investmentCancelService.investmentMedicineProdFormData.boxQuantity" [pattern]="numberPattern">
-                                            <div class="invalid-feedback" *ngIf="boxQuantity.errors?.pattern">Only numeric value</div>
-                                        </div>
-                                        <div class="col-md-2" *ngIf="isValid && !isInvOther ">
-                                            <button class="btn btn-primary btn-lg btn-block" type="button" (click)="insertInvestmentMedicineProd()"><i class="fa fa-plus"></i>&nbsp; Add</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <table class="table table-bordered">
-                                        <tr class="HeaderRow">
-                                            <td>Product Name</td>
-                                            <td>Box Quantity</td>
-                                            <td>TP Vat</td>
-                                            <td></td>
-                                        </tr>
-                                        <tr *ngFor="let a of investmentMedicineProds">
-                                            <td>
-                                                {{a.medicineProduct.productName}}
-                                            </td>
-                                            <td>
-                                                {{a.boxQuantity}}
-                                            </td>
-                                            <td>
-                                                {{a.tpVat}}
-                                            </td>
-                                            <td>
-                                                <input type="button" *ngIf="sbu==this.investmentCancelService.investmentCancelFormData.sbu" (click)="removeInvestmentMedicineProd(a)" value="Remove">
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </fieldset>
-                            <fieldset>
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <h6 class=" "><strong>Investment Details &nbsp;&nbsp; &nbsp;&nbsp;<b style="color: rgb(255, 81, 0);">Donation Type: {{donationName}}</b></strong></h6>
-                                            <h6> </h6>
-                                        </div>
-                                        <div class="col-sm-2"></div>
-                                    </div>
-                                </div>
-                                <div class="form-group" *ngIf="isBudgetVisible">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <table class="table  table-bordered" style="font-weight: bold;font-size: 12px;">
-                                                    <tr id="longHead">
-                                                        <td>
-                                                            Trns. Limit
-                                                        </td>
-                                                        <td>
-                                                            {{budgetCeiling.amountPerTransacion}}
-                                                        </td>
-                                                        <td>
-                                                            Ceiling/ month
-                                                        </td>
-                                                        <td>
-                                                            {{budgetCeiling.amountPerMonth}}
-                                                        </td>
-                                                        <td>
-                                                            Current Spend
-                                                        </td>
-                                                        <td style="color: red;">
-                                                            {{budgetCeiling.monthlyExpense}}
-                                                        </td>
-                                                        <td>
-                                                            Rem. Amt.
-                                                        </td>
-                                                        <td style="color: green;">
-                                                            {{budgetCeiling.monthlyRemaining}}
-                                                        </td>
+                            <fieldset disabled>
+                                <h6><strong>Investment Details</strong></h6>
 
-                                                    </tr>
-                                                    <tr id="shortHead">
-                                                        <td>
-                                                            Trns. Limit
-                                                        </td>
-                                                        <td>
-                                                            {{budgetCeiling.amountPerTransacion}}
-                                                        </td>
-                                                        <td>
-                                                            CLG./ month
-                                                        </td>
-                                                        <td>
-                                                            {{budgetCeiling.amountPerMonth}}
-                                                        </td>
-                                                        <td>
-                                                            Curr. Spend
-                                                        </td>
-                                                        <td style="color: red;">
-                                                            {{budgetCeiling.monthlyExpense}}
-                                                        </td>
-                                                        <td>
-                                                            Rem. Amt.
-                                                        </td>
-                                                        <td style="color: green;">
-                                                            {{budgetCeiling.monthlyRemaining}}
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group" *ngIf="isBudgetForCampaignVisible">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <table class="table  table-bordered" style="font-weight: bold;font-size: 12px;">
-                                                    <tr id="longHead">
-                                                        <td>
-                                                            Budget
-                                                        </td>
-                                                        <td>
-                                                            {{budgetCeilingForCampaign.campaignBudget}}
-                                                        </td>
-                                                        <td>
-                                                            Current Spend
-                                                        </td>
-                                                        <td style="color: red;">
-                                                            {{budgetCeilingForCampaign.totalExpense}}
-                                                        </td>
-                                                        <td>
-                                                            Rem. Amt.
-                                                        </td>
-                                                        <td style="color: green;">
-                                                            {{budgetCeilingForCampaign.totalRemaining}}
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="form-group">
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <!--<div class="col-md-6">
                                             <div class="form-group">
                                                 <table class="table  table-bordered">
-                                                    <tr id="longHead" class="HeaderRow">
-                                                        <td>Invest Type</td>
-                                                        <td>Amount</td>
-                                                        <td>Commitment All</td>
-                                                        <td>Commitment Own</td>
-                                                        <td>Share All</td>
-                                                        <td>Share Own</td>
+                                                    <tr class="HeaderRow">
+                                                        <td>Investment</td>
+                                                        <td>Commitment-All</td>
+                                                        <td>Commitment-Own</td>
+                                                        <td>Share-All</td>
+                                                        <td>Share-Own</td>
                                                     </tr>
-                                                    <tr id="shortHead" class="HeaderRow">
-                                                        <td>Inv Type</td>
-                                                        <td>Amt</td>
-                                                        <td>Cmmt All</td>
-                                                        <td>Cmmt Own</td>
-                                                        <td>Share All</td>
-                                                        <td>Share Own</td>
-                                                    </tr>
-                                                    <tr *ngFor="let a of lastFiveInvestmentDetail">
-                                                        <td>
-                                                            {{a.donationShortName}}
-                                                        </td>
+                                                    <tr *ngFor="let a of investmentDetailsOld">
                                                         <td>
                                                             {{a.investmentAmount}}
                                                         </td>
@@ -591,18 +449,18 @@
                                                             {{a.prescribedSharePrcnt}}
                                                         </td>
                                                     </tr>
-                                                </table>
+                                                </table> 
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
+                                        </div>-->
+                                        <div class="col-md-12">
                                             <div class="form-group">
                                                 <div class="row">
                                                     <div class="col-md-2">
                                                         <label>Prop. Inv.</label>
-                                                        <span style="color:red;">*</span>
+
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" [disabled]="(isInvOther && !isAdmin) || investmentCancelService.investmentCancelFormData.donationId==4" required name="proposedAmount" placeholder="Amount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.proposedAmount"
+                                                        <input class="form-control" [disabled]="(isInvOther ) || investmentCancelService.investmentCancelFormData.donationId==4" placeholder="Amount" name="proposedAmount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.proposedAmount"
                                                             [pattern]="numberPattern">
                                                         <div class="invalid-feedback" *ngIf="proposedAmount.errors?.pattern">Only numeric value</div>
                                                     </div>
@@ -612,10 +470,10 @@
                                                 <div class="row">
                                                     <div class="col-md-2">
                                                         <label>Purpose</label>
-                                                        <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" required name="purpose" id="purpose" #purpose="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.purpose">
+                                                        <input class="form-control" [disabled]="isInvOther" placeholder="Purpose" name="purpose" id="purpose" #purpose="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.purpose" maxLength="500">
+                                                        <div class="invalid-feedback" *ngIf="purpose.errors?.maxLength">Maximum 500 Character long</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -623,11 +481,10 @@
                                                 <div class="row">
                                                     <div class="col-md-2">
                                                         <label>Payment Freq</label>
-                                                        <span style="color:red;">*</span>
+
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <select class="form-control" [disabled]="isInvOther && !isAdmin" id="paymentFreq" name="paymentFreq" #paymentFreq="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.paymentFreq" [class.invalid]="paymentFreq.invalid && paymentFreq.touched">
-                                                            <option  [ngValue]="null">Select Payment Freq</option>
+                                                        <select class="form-control" [disabled]="isInvOther  " id="paymentFreq" name="paymentFreq" #paymentFreq="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.paymentFreq" [class.invalid]="paymentFreq.invalid && paymentFreq.touched">
                                                             <option value="Monthly">Monthly</option>
                                                             <option value="Quarterly">Quarterly</option>
                                                             <option value="Half Yearly">Half Yearly</option>
@@ -640,15 +497,16 @@
                                                 <div class="row">
                                                     <div class="col-md-2">
                                                         <label>Payment Dur.</label>
-                                                        <span style="color:red;">*</span>
+
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" placeholder="Calender" (onHidden)="changeDateInDetail()" name="fromDate" #fromDate="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched"
-                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentCancelForm)" [minDate]="minDate" [maxDate]="maxDate">
+                                                        <input class="form-control" [disabled]="isInvOther  " placeholder="Calender" name="fromDate" #fromDate="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched" [bsValue]="bsValue"
+                                                            bsDatepicker [bsConfig]="bsConfig">
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" placeholder="Calender" (onHidden)="changeDateInDetail()" name="toDate" #toDate="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched"
-                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentCancelForm)" [minDate]="minDate" [maxDate]="maxDate">
+                                                        <input class="form-control" [disabled]="isInvOther  " placeholder="Calender" name="toDate" #toDate="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched" [bsValue]="bsValue" bsDatepicker
+                                                            [bsConfig]="bsConfig">
+
                                                     </div>
                                                     <div class="col-md-2">
                                                         <label>Pay. Tot. Mon.</label>
@@ -662,17 +520,15 @@
                                                 <div class="row">
                                                     <div class="col-md-2">
                                                         <label>Commit. Dur.</label>
-                                                        <span style="color:red;">*</span>
+
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" placeholder="Calender" (onHidden)="changeCommitmentDateInDetail()" name="commitmentFromDate" #commitmentFromDate="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.commitmentFromDate"
-                                                            [class.invalid]="commitmentFromDate.invalid && commitmentFromDate.touched" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCommitmentCompare(investmentCancelForm)" [minDate]="minDate"
-                                                            [maxDate]="maxDate">
+                                                        <input class="form-control" [disabled]="isInvOther  " placeholder="Calender" name="commitmentFromDate" #commitmentFromDate="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.commitmentFromDate" [class.invalid]="commitmentFromDate.invalid && commitmentFromDate.touched"
+                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" placeholder="Calender" (onHidden)="changeCommitmentDateInDetail()" name="commitmentToDate" #commitmentToDate="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.commitmentToDate"
-                                                            [class.invalid]="commitmentToDate.invalid && commitmentToDate.touched" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCommitmentCompare(investmentCancelForm)" [minDate]="minDate"
-                                                            [maxDate]="maxDate">
+                                                        <input class="form-control" [disabled]="isInvOther  " placeholder="Calender" name="commitmentToDate" #commitmentToDate="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.commitmentToDate" [class.invalid]="commitmentToDate.invalid && commitmentToDate.touched"
+                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig">
 
                                                     </div>
                                                     <div class="col-md-2">
@@ -692,7 +548,7 @@
                                                         <label>All SBU </label>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" name="commitmentAllSBU" id="commitmentAllSBU" #commitmentAllSBU="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.commitmentAllSBU" [pattern]="numberPattern">
+                                                        <input class="form-control" [disabled]="isInvOther  " name="commitmentAllSBU" id="commitmentAllSBU" #commitmentAllSBU="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.commitmentAllSBU" [pattern]="numberPattern">
                                                         <div class="invalid-feedback" *ngIf="commitmentAllSBU.errors?.pattern">Only numeric value</div>
                                                     </div>
                                                     <div class="col-md-1">
@@ -702,7 +558,7 @@
                                                         <label>Own SBU</label>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" name="commitmentOwnSBU" id="commitmentOwnSBU" #commitmentOwnSBU="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.commitmentOwnSBU" [pattern]="numberPattern">
+                                                        <input class="form-control" [disabled]="isInvOther  " name="commitmentOwnSBU" id="commitmentOwnSBU" #commitmentOwnSBU="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.commitmentOwnSBU" [pattern]="numberPattern">
                                                         <div class="invalid-feedback" *ngIf="commitmentOwnSBU.errors?.pattern">Only numeric value</div>
                                                     </div>
                                                     <div class="col-md-1">
@@ -713,12 +569,10 @@
                                             <div class="form-group">
                                                 <div class="row">
                                                     <div class="col-md-2">
-                                                        <label>Payment Method</label>
+                                                        <label>Pay. Method</label>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <select class="form-control" (change)="onPaymentMethod()" [disabled]="isInvOther && !isAdmin" name="paymentMethod" id="paymentMethod" #paymentMethod="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.paymentMethod">
-                                                        
-                                                            <option  [ngValue]="null">Select Payment Method</option>
+                                                        <select class="form-control" [disabled]="isInvOther  " name="paymentMethod" id="paymentMethod" #paymentMethod="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.paymentMethod">
                                                             <option value="Cash">Cash</option>
                                                             <option value="Cheque">Cheque</option>
                                                             <option value="DD">DD</option>
@@ -731,100 +585,150 @@
                                             <div class="form-group">
                                                 <div class="row">
                                                     <div class="col-md-2">
-                                                        <label>Depot</label>
-                                                        <span style="color:red;" *ngIf="isDepotRequire">*</span>
-                                                    </div>
-                                                    <div class="col-md-10">
-                                                        <ng-select [virtualScroll]="true" [disabled]="(isInvOther && !isAdmin) || !isDepotRequire" [items]="depots" bindLabel="depotName" bindValue="depotCode" placeholder="Select Depot" name="depotCode" id="depotCode" #depotCode="ngModel" [(ngModel)]="investmentCancelService.investmentDepotFormData.depotCode">
-                                                        </ng-select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="row">
-                                                    <div class="col-md-2">
                                                         <label>Cheque Title</label>
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" maxlength="100" [disabled]="isInvOther && !isAdmin" name="chequeTitle" id="chequeTitle" #chequeTitle="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.chequeTitle">
+                                                        <input class="form-control" maxlength="100" [disabled]="isInvOther  " placeholder="Cheque Title" name="chequeTitle" id="chequeTitle" #chequeTitle="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.chequeTitle">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <!-- <h6 class=""><strong>Investment Details</strong></h6> -->
+                                        </div>
+                                        <div class="col-sm-2"></div>
+                                        <div class="col-sm-2" *ngIf="isValid && !isInvOther">
+                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentDetails()"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                        </div>
+                                        <!-- <div class="col-sm-2" *ngIf="isValid">
+                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentBcds()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
+                                        </div> -->
                                     </div>
                                 </div>
                             </fieldset>
                             <fieldset>
                                 <div class="form-group">
-                                    <div class="row">
+                                    <legend><strong>Targeted Products of SBU</strong></legend>
+                                    <!-- <div class="row">
                                         <div class="col-sm-6">
-                                            <h6 class=" "><strong>Targeted Products of SBU</strong></h6>
+                                            <h6 class=""><strong>Targeted Products of SBU</strong></h6>
                                         </div>
                                         <div class="col-sm-2"></div>
-
-                                    </div>
+                                    </div> -->
                                 </div>
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-2">
                                             <label>Product</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <!-- <select class="form-control " id="productId" name="productId" #productId="ngModel" [(ngModel)]="investmentCancelService.investmentTargetedProdFormData.productId" [class.invalid]="productId.invalid && productId.touched">
-                                                <option  [ngValue]="null">Select Product</option>
-                                                <option *ngFor="let product of products" [value]="product.id">{{product.productName}}</option>
-                                            </select> -->
                                             <ng-select [virtualScroll]="true" [items]="products" bindLabel="productName" bindValue="id" placeholder="Select Product" id="productId" name="productId" #productId="ngModel" [(ngModel)]="investmentCancelService.investmentTargetedProdFormData.productId"
                                                 [class.invalid]="productId.invalid && productId.touched">
                                             </ng-select>
                                         </div>
                                         <div class="col-md-3"></div>
-                                        <div class="col-md-2">
-                                            <button class="btn btn-primary btn-lg btn-block" type="button" (click)="addInvestmentTargetedProd()"><i class="fa fa-plus"></i>&nbsp; Add</button>
-
+                                        <div class="col-md-2" *ngIf="isValid">
+                                            <button class="btn btn-primary btn-lg btn-block" type="button" (click)="insertInvestmentTargetedProd()"><i class="fa fa-plus"></i>&nbsp; Add</button>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="form-group">
                                     <table class="table  table-bordered">
                                         <tr class="HeaderRow">
+                                            <!-- <td>Product Code</td> -->
                                             <td>Product Name</td>
                                             <td>SBU</td>
-                                            <td></td>
+                                            <!-- <td></td>
+                                            <td></td> -->
                                         </tr>
                                         <tr *ngFor="let a of investmentTargetedProds">
+                                            <!-- <td>
+                                                {{a.productInfo.productCode}}
+                                            </td> -->
                                             <td>
                                                 {{a.productInfo.productName}}
                                             </td>
                                             <td>
                                                 {{a.productInfo.sbuName}}
                                             </td>
+                                            <!-- <td>
+                                                <input type="button" *ngIf="sbu==a.sbu" (click)="editInvestmentTargetedProd(a)" value="Edit">
+                                            </td>
                                             <td>
                                                 <input type="button" *ngIf="sbu==a.sbu" (click)="removeInvestmentTargetedProd(a)" value="Remove">
-                                            </td>
+                                            </td> -->
                                         </tr>
                                     </table>
                                 </div>
                             </fieldset>
-                            <fieldset>
+                            <!-- <fieldset disabled>
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-sm-6">
-                                            <h6 class=" "><strong>Targeted Group</strong></h6>
+                                            <h6 class=""><strong>Targeted Group</strong></h6>
                                         </div>
                                         <div class="col-sm-2"></div>
-                                        <div class="col-sm-4"> <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="getSummaryDetail()" style="width: 100px;"><i class="fa fa-eye"></i>View Detail</button></div>
+                                       
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <table class="table  table-bordered">
                                         <tr class="HeaderRow">
+                                            <td>Market Group Name</td>
                                             <td>Market Code</td>
                                             <td>Market Name</td>
-                                            <td>Authority</td>
+                                            <td>SBU</td>
                                             <td>Status</td>
                                         </tr>
                                         <tr *ngFor="let a of investmentTargetedGroups">
+
+                                            <td>
+                                                {{a.marketGroupMst.groupName}}
+                                            </td>
+                                            <td>
+                                                {{a.marketCode}}
+                                            </td>
+                                            <td>
+                                                {{a.marketName}}
+                                            </td>
+                                            <td>
+                                                {{a.sbuName}}
+                                            </td>
+                                            <td>
+                                                <span *ngIf="a.completionStatus === false || undefined || ''">Pending</span>
+                                                <span *ngIf="a.completionStatus === true ''">Recommended</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </fieldset> -->
+                            <fieldset disabled>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h6 class=" "><strong>Recommended By List </strong></h6>
+                                        </div>
+                                        <div class="col-sm-2"></div>
+                                        <!-- <div class="col-sm-2">
+                                            <button class="btn btn-success btn-lg btn-block" type="button"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                        </div> -->
+                                    </div>
+                                </div>
+                                <!-- <div class="form-group">
+                                    <table class="table  table-bordered">
+                                        <tr class="HeaderRow">
+                                            <td>Market Code</td>
+                                            <td>Market Name</td>
+                                            <td>Authority</td>
+                                            <td>Rec By</td>
+                                            <td>Status</td>
+                                        </tr>
+                                        <tr *ngFor="let a of investmentTargetedGroupss2">
+
                                             <td>
                                                 {{a.marketCode}}
                                             </td>
@@ -835,176 +739,159 @@
                                                 {{a.approvalAuthorityName}}
                                             </td>
                                             <td>
+                                                {{a.employeeName}}
+                                            </td>
+                                            <td>
                                                 {{a.recStatus}}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div> -->
+                                <div class="form-group">
+                                    <table class="table  table-bordered">
+                                        <tr class="HeaderRow">
+                                            <td>Employee Name</td>
+                                            <!-- <td>Authority</td> -->
+                                            <td>Market Code</td>
+                                            <td>Market Name</td>
+                                            <td>Territory Code</td>
+                                            <td>Territory Name</td>
+                                            <td>Region Code</td>
+                                            <td>Region Name</td>
+                                            <td>Zone Code</td>
+                                            <td>Zone Name</td>
+                                            <td>Status</td>
+                                            <td>Comments</td>
+                                        </tr>
+                                        <tr *ngFor="let a of empLocation">
+                                            <td>
+                                                {{a.employeeName}}
+                                            </td>
+                                            <!-- <td>
+                                                {{a.priority}}
+                                            </td> -->
+                                            <td>
+                                                {{a.marketCode}}
+                                            </td>
+                                            <td>
+                                                {{a.marketName}}
+                                            </td>
+                                            <td>
+                                                {{a.territoryCode}}
+                                            </td>
+                                            <td>
+                                                {{a.territoryName}}
+                                            </td>
+                                            <td>
+                                                {{a.regionCode}}
+                                            </td>
+                                            <td>
+                                                {{a.regionName}}
+                                            </td>
+                                            <td>
+                                                {{a.zoneCode}}
+                                            </td>
+                                            <td>
+                                                {{a.zoneName}}
+                                            </td>
+                                            <td>
+                                                {{a.recStatus}}
+                                            </td>
+                                            <td>
+                                                {{a.comments}}
                                             </td>
                                         </tr>
                                     </table>
                                 </div>
                             </fieldset>
-                            <fieldset>
+                            <fieldset disabled>
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-sm-6">
-                                            <h6 class=" "><strong>Approval</strong></h6>
+                                            <h6 class=" "><strong>Approval Detail</strong></h6>
                                         </div>
                                         <div class="col-sm-2"></div>
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <table class="table  table-bordered">
+                                        <tr class="HeaderRow">
+                                            <td>Month</td>
+                                            <td>Year</td>
+                                            <td>Amount</td>
+                                            <td>Pay. Ref No</td>
+
+                                        </tr>
+                                        <tr *ngFor="let a of apprDetail">
+                                            <td>
+                                                {{a.month}}
+                                            </td>
+                                            <td>
+                                                {{a.year}}
+                                            </td>
+                                            <td>
+                                                {{a.amount}}
+                                            </td>
+                                            <td>
+                                                {{a.paymentRefNo}}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </fieldset>
+                            <fieldset disabled>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h6 class=" "><strong>Receive Status</strong></h6>
+                                        </div>
+                                        <div class="col-sm-2"></div>
+                                    </div>
+                                </div>
+                                <!-- <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-2">
-                                            <label>Approval Status</label>
+                                            <label>Receiving Status</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <select class="form-control" id="recStatus" name="recStatus" #recStatus="ngModel" [(ngModel)]="investmentCancelService.investmentCancelCommentFormData.recStatus" [class.invalid]="recStatus.invalid && recStatus.touched" required>  
-                                                <option  [ngValue]="null">Select Status</option>
-                                                <option *ngIf=" !isInvOther || isAdmin" value="Approved">Approved</option>
-                                                <option *ngIf="!isInvOther || isAdmin" value="Not Approved">Not Approved</option>
-                                                <option  value="Recommended">Recommended</option>
-                                                <option  value="Not Recommended">Not Recommended</option>
+                                            <select class="form-control" id="receiveStatus" name="receiveStatus" #receiveStatus="ngModel" [(ngModel)]="investmentCancelService.investmentRcvCommentFormData.receiveStatus" [class.invalid]="receiveStatus.invalid && receiveStatus.touched" required>  
+                                                <option  [ngValue]="null">Pending</option>
+                                                <option  value="Received">Received</option>
+                                                <option  value="Not Received">Not Received</option>
                                                 </select>
                                         </div>
                                         <div class="col-md-2">
                                             <label>Comments</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <input class="form-control" name="comments" id="comments" #comments="ngModel" [(ngModel)]="investmentCancelService.investmentCancelCommentFormData.comments">
+                                            <input class="form-control" name="comments" id="comments" #comments="ngModel" [(ngModel)]="investmentCancelService.investmentRcvCommentFormData.comments">
                                         </div>
                                     </div>
+                                </div> -->
+                                <div class="form-group">
+                                    <table class="table  table-bordered">
+                                        <tr class="HeaderRow">
+                                            <td>Payment Reference No</td>
+                                            <td>Receive Staus</td>
+                                        </tr>
+                                        <tr *ngFor="let a of investmentRcvList">
+                                            <td>
+                                                {{a.payRefNo}}
+                                            </td>
+                                            <td>
+                                                {{a.receiveStatus}}
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </div>
-
                             </fieldset>
                         </div>
                     </div>
                 </form>
-
             </div>
         </div>
     </div>
 </section>
-<ng-template #investmentInitSearchModal>
-    <div class="modal-header" style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));color: black;">
-        <h4 class="modal-title pull-left">Investment</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="InvestmentInitSearchModalRef.hide()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body" style="padding: 20px 30px 20px 30px;">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-2">
-                        </div>
-                        <div class="col-md-6">
-                            <input name="filterText" class="form-control m-input Searchbox" type="text" [(ngModel)]="searchText" placeholder="Search..">
-                        </div>
-                        <div class="col-md-3">
-                            <button class="btn btn-danger" type="button" (click)="resetSearch()"><i class="fa fa-undo"></i>&nbsp; Reset</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="table-responsive" style="border: 1px solid #bed2c9; width: 100%;">
-                            <table class="table table-bordered table-responsive table-hover table-striped">
-                                <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));">
-                                    <tr class="HeaderRow">
-                                        <th scope="col" style="width: 7%">Action</th>
-                                        <th scope="col" style="width: 0;display:none;">Id</th>
-                                        <th scope="col" style="width: 9%">Reference No</th>
-                                        <th scope="col" style="width: 8%">Propose For</th>
-                                        <th scope="col" style="width: 8%">Inv. Type</th>
-                                        <th scope="col" style="width: 8%">Market</th>
-                                        <th scope="col" style="width: 8%">Donation To</th>
-                                        <th scope="col" style="width: 8%" [hidden]="!remainingSBUShow">Remaining SBU</th>
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let a of investmentInits | filter: searchText">
-                                        <td>
-                                            <button class="btn btn-sm btn-embossed btn-success" (click)="selectInvestmentInit(a)"><i class="fa fa-check" aria-hidden="true"></i>Select</button>
-                                        </td>
-                                        <td style="display:none;">{{a.id}}</td>
-                                        <td>{{a.referenceNo}}</td>
-                                        <td>{{a.proposeFor}}</td>
-                                        <td>{{a.donation.donationTypeName}}</td>
-                                        <td>{{a.marketName}}</td>
-                                        <td>{{a.donationTo}}</td>
-                                        <td [hidden]="!remainingSBUShow">{{a.remainingSBU}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</ng-template>
-<ng-template #investmentCancelSearchModal>
-    <div class="modal-header" style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));color: black;">
-        <h4 class="modal-title pull-left">Investment Approval</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="investmentCancelSearchModalRef.hide()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body" style="padding: 20px 30px 20px 30px;">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-2">
-                        </div>
-                        <div class="col-md-6">
-                            <input name="filterText" class="form-control m-input Searchbox" type="text" [(ngModel)]="searchText" placeholder="Search..">
-                        </div>
-                        <div class="col-md-3">
-                            <button class="btn btn-danger" type="button" (click)="resetSearch()"><i class="fa fa-undo"></i>&nbsp; Reset</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="table-responsive" style="border: 1px solid #bed2c9; width: 100%;">
-                            <table class="table table-bordered table-responsive table-hover table-striped">
-                                <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));">
-                                    <tr class="HeaderRow">
-                                        <th scope="col" style="width: 7%">Action</th>
-                                        <th scope="col" style="width: 0;display:none;">Id</th>
-                                        <th scope="col" style="width: 9%">Reference No</th>
-                                        <th scope="col" style="width: 8%">Propose For</th>
-                                        <th scope="col" style="width: 8%">Inv. Type</th>
-                                        <th scope="col" style="width: 8%">Market</th>
-                                        <th scope="col" style="width: 8%">Donation To</th>
-                                        <!-- <th scope="col" style="width: 8%" [hidden]="!userRole=='M'">Remaining SBU</th> -->
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let a of investmentInits  | filter: searchText">
-                                        <td>
-                                            <button class="btn btn-sm btn-embossed btn-success" (click)="selectinvestmentCancel(a)"><i class="fa fa-check" aria-hidden="true"></i>Select</button>
-
-                                        </td>
-                                        <td style="display:none;">{{a.id}}</td>
-                                        <td>{{a.referenceNo}}</td>
-                                        <td>{{a.proposeFor}}</td>
-                                        <td>{{a.donation.donationTypeName}}</td>
-                                        <td>{{a.marketName}}</td>
-                                        <td>{{a.donationTo}}</td>
-                                        <!-- <td [hidden]="!userRole=='M'">{{a.remainingSBU}}</td> -->
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <!-- <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls> -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</ng-template>
 <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
     <p style="color: black">Please Wait. </p>
 </ngx-spinner>

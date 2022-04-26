@@ -50,6 +50,7 @@ import { InvestmentRapidAprComponent } from '../investmentRapidApr/investmentRap
 import { BgtYearlyComponent } from '../bgtYearly/bgtyearly';
 import { BgtSbuYearlyComponent } from '../bgtSbuYearly/bgtsbuyearly';
 import { BgtEmployeeComponent } from '../bgtEmployee/bgtEmployee.component';
+import { InvestmentCancelComponent } from '../investmentCancel/investmentCancel.component';
 
 
 //import { RptInvestStatusComponent } from '../rptInvestmentStatus/rptInvestmentStatus.component';
@@ -71,10 +72,12 @@ const portalRoutes: Routes = [
         {path: 'investmentrapidapr', component: InvestmentRapidAprComponent},
         {path: 'budgetyearly', component: BgtYearlyComponent},
         {path: 'budgetsbuyearly', component: BgtSbuYearlyComponent},
-       {path: 'investmentRec', component: InvestmentRecComponent, canActivate: [SuperAdminRoleGuard]},
+        {path: 'investmentRec', component: InvestmentRecComponent, canActivate: [SuperAdminRoleGuard]},
+        {path: 'investmentRec', component: InvestmentRecComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'investmentApr', component: InvestmentAprComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'investmentAprNoSbu', component: InvestmentAprNoSbuComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'investmentRcv', component: InvestmentRcvComponent, canActivate: [SuperAdminRoleGuard]},
+        {path: 'investmentCancel', component: InvestmentCancelComponent},
         {path: 'marketGroup', component: MarketGroupComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'regApproval', component: RegApprovalComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'sbu-wise-budget', component: SbuWiseBudgetComponent, canActivate: [SuperAdminRoleGuard]},
@@ -97,9 +100,7 @@ const portalRoutes: Routes = [
         {path: 'rptInvDataSummary', component: ReportSystemSummaryComponent },
         {path: 'rptEmpExp', component: RptEmpWiseExpComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'changeDepot', component: ChangeDepotComponent, canActivate: [SuperAdminRoleGuard]},
-
         {path: 'bgtEmployee', component: BgtEmployeeComponent},
-
         {path: 'paramInvestmentSummary/:param', component: ParamInvestSummaryComponent},
         //{path: 'rptInvestmentDetail', component: RptInvestmentDetailComponent},
         {path: 'rptInvestmentDetail/:id', component: RptInvestmentDetailComponent},

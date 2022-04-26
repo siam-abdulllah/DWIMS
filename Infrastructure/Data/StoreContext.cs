@@ -15,7 +15,9 @@ namespace Infrastructure.Data
     {
         public StoreContext(DbContextOptions<StoreContext> options) : base(options)
         {
+            
         }
+
         public DbSet<Post> Post { get; set; }
         public DbSet<PostComments> PostComments { get; set; }
         public DbSet<Donation> Donation { get; set; }
@@ -81,6 +83,8 @@ namespace Infrastructure.Data
         public DbSet<RptSBUWiseExpSummart> RptSBUWiseExpSummart { get; set; }
         [NotMapped]
         public DbSet<RptInvestmentSummary> RptInvestmentSummary { get; set; } 
+        [NotMapped]
+        public DbSet<RptInvestmentSummaryInd> RptInvestmentSummaryInd { get; set; } 
         [NotMapped]
         public DbSet<LastFiveInvestmentInfo> LastFiveInvestmentInfo { get; set; }
         [NotMapped]

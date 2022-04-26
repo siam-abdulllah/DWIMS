@@ -2553,6 +2553,7 @@ namespace API.Controllers
                 var empData = await _employeeRepo.GetByIdAsync(empId);
                 var spec = new ApprAuthConfigSpecification(empId, "A");
                 var apprAuthConfig = await _apprAuthConfigRepo.GetEntityWithSpec(spec);
+                isComplete = true;
                 if (investmenAprForOwnSBUInsert.InvestmentRecComment.RecStatus == "Approved")
                 {
                     List<SqlParameter> parms = new List<SqlParameter>
@@ -2707,6 +2708,7 @@ namespace API.Controllers
                 }
                 else
                 {
+                    isComplete = false;
                     var alreadyDetailTrackerExistSpec = new InvestmentDetailTrackerSpecification(investmenAprForOwnSBUInsert.InvestmentApr.InvestmentInitId);
                     var alreadyDetailTrackerExistInvestmentAprList = await _investmentDetailTrackerRepo.ListAsync(alreadyDetailTrackerExistSpec);
                     if (alreadyDetailTrackerExistInvestmentAprList.Count > 0)
@@ -2842,6 +2844,7 @@ namespace API.Controllers
                 var apprAuthConfig = await _apprAuthConfigRepo.GetEntityWithSpec(spec);
                 if (investmenAprForOwnSBUInsert.InvestmentRecComment.RecStatus == "Approved")
                 {
+                    isComplete = true;
                     List<SqlParameter> parms = new List<SqlParameter>
                     {
                         new SqlParameter("@SBU", sbu),
@@ -2994,6 +2997,7 @@ namespace API.Controllers
                 }
                 else
                 {
+                    isComplete = false;
                     var alreadyDetailTrackerExistSpec = new InvestmentDetailTrackerSpecification(investmenAprForOwnSBUInsert.InvestmentApr.InvestmentInitId);
                     var alreadyDetailTrackerExistInvestmentAprList = await _investmentDetailTrackerRepo.ListAsync(alreadyDetailTrackerExistSpec);
                     if (alreadyDetailTrackerExistInvestmentAprList.Count > 0)
