@@ -169,10 +169,20 @@ export class InvestmentAprComponent implements OnInit {
       this.getInvestmentMedicineProd();
     }
     this.getInvestmentTargetedProd();
+<<<<<<< Updated upstream
     if (this.userRole != 'GPM') {
       this.getInvestmentTargetedGroup();
     }
     if (this.sbu == this.investmentAprService.investmentAprFormData.sbu) {
+=======
+    //this.getInvestmentTargetedGroup();
+    this.getInvestmentTargetedGroupStatus();
+    this.getInvestmentDetailTracker();
+
+    this.getinvestmentRcvComment();
+
+    if (parseInt(this.empId) == this.investmentCancelService.investmentCancelFormData.employeeId) {
+>>>>>>> Stashed changes
       this.isInvOther = false;
       this.isValid = true;
       if (this.investmentAprService.investmentAprFormData.donationTo != 'Campaign') {
@@ -594,6 +604,7 @@ export class InvestmentAprComponent implements OnInit {
       console.log(error);
     });
   }
+<<<<<<< Updated upstream
   getInvestmentAprProducts() {
     this.investmentAprService.getInvestmentAprProducts(this.investmentAprService.investmentAprFormData.id, this.sbu).subscribe(response => {
       var data = response as IInvestmentTargetedProd[];
@@ -606,6 +617,28 @@ export class InvestmentAprComponent implements OnInit {
     }, error => {
       console.log(error);
     });
+=======
+  getInvestmentDetailTracker() {
+    this.investmentCancelService.getInvestmentDetailTracker(this.investmentCancelService.investmentCancelFormData.id).subscribe(response => {
+      var data = response as IInvestmentDetailTracker[];
+      //debugger;
+      if (data !== undefined) {
+        debugger;
+        this.apprDetail = data;
+      }
+
+    }, error => {
+      console.log(error);
+    });
+  }
+  getEmployeeId() {
+    this.empId = this.accountService.getEmployeeId();
+    this.userRole = this.accountService.getUserRole();
+    this.investmentCancelService.investmentCancelFormData.employeeId = parseInt(this.empId);
+    this.getMarketGroupMsts();
+    this.getEmployeeSbu();
+
+>>>>>>> Stashed changes
   }
   getInvestmentTargetedGroup() {
     this.investmentAprService.getInvestmentTargetedGroups(this.investmentAprService.investmentAprFormData.id, parseInt(this.empId)).subscribe(response => {

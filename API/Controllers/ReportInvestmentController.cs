@@ -1969,6 +1969,26 @@ namespace API.Controllers
             {
                 throw ex;
             }
+        } 
+        [HttpGet]
+        [Route("investmentDetailTracker/{investmentInitId}")]
+        public async Task<IReadOnlyList<InvestmentDetailTracker>> GetinvestmentDetailTracker(int investmentInitId)
+        {
+            try
+            {
+                string qry = " SELECT [Id],[DataStatus],[SetOn],[ModifiedOn],[InvestmentInitId],[EmployeeId],[Month],[Year],[FromDate],[ToDate],[ApprovedAmount],[PaidStatus],[DonationId],[PaymentRefNo]" +
+                    " FROM[DIDS].[dbo].[InvestmentDetailTracker] " +
+                " WHERE InvestmentInitId = " + investmentInitId + " " +
+                " ";
+
+                var results = _db.InvestmentDetailTracker.FromSqlRaw(qry).ToList();
+
+                return results;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
         }
 
         [HttpGet]

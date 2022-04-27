@@ -113,6 +113,10 @@ export class InvestmentCancelService {
   getInvestmentTargetedGroups(investmentInitId: number, empId: number) {
     return this.http.get(this.baseUrl + 'InvestmentRec/investmentTargetedGroups/' + investmentInitId + '/' + empId);
   }
+  getInvestmentDetailTracker(investmentInitId: number) {
+    //return this.http.get(this.baseUrl + 'investment/investmentTargetedGroups/'+investmentInitId);
+    return this.http.get(this.baseUrl + 'ReportInvestment/investmentDetailTracker/' + investmentInitId);
+  }
   getInvestmentInstitutions(investmentInitId: number) {
     return this.http.get(this.baseUrl + 'investment/investmentInstitutions/' + investmentInitId).toPromise();
   }

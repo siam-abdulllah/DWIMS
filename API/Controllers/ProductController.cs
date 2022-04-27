@@ -202,7 +202,7 @@ namespace API.Controllers
                 {
                     using (OracleCommand objCmd = new OracleCommand())
                     {
-                        objCmd.CommandText = "SELECT PRODUCT_CODE, PRODUCT_NAME,SORGA_CODE FROM ESOS_PRD.VW_DIDS_PRODUCTS WHERE to_char(ENTRY_DATE,'MM') = '03' AND PRODUCT_STATUS='A' ";
+                        objCmd.CommandText = "SELECT PRODUCT_CODE, PRODUCT_NAME,SORGA_CODE FROM ESOS_PRD.VW_DIDS_PRODUCTS WHERE  PRODUCT_STATUS='A' ";
                         objCmd.Connection = _db;
                         _db.Open();
                         objCmd.ExecuteNonQuery();
@@ -233,7 +233,7 @@ namespace API.Controllers
                         con.Close();
                     }
                 }
-                //var resultSp = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InsertNewInstitution");
+                var resultSp = _dbContext.Database.ExecuteSqlRaw("EXECUTE [dbo].[SP_InsertNewProd]");
 
             }
             catch (System.Exception ex)
@@ -249,11 +249,11 @@ namespace API.Controllers
             try
             {
                 DataTable dt = new DataTable();
-                using (var _db = new OracleConnection("Data Source=(DESCRIPTION =(ADDRESS_LIST =(ADDRESS = (PROTOCOL = TCP)(HOST =172.16.189.11)(PORT = 1521))(ADDRESS = (PROTOCOL = TCP)(HOST =172.16.189.12)(PORT = 1521))(ADDRESS = (PROTOCOL = TCP)(HOST =172.16.148.11)(PORT = 1521)))(CONNECT_DATA =(SID = ESODB)(SERVER = DEDICATED)));User Id=DIDS_INFO;Password=dids2202"))
+                using (var _db = new OracleConnection("Data Source=(DESCRIPTION =(ADDRESS_LIST =(ADDRESS = (PROTOCOL = TCP)(HOST =172.16.189.11)(PORT = 1522)))(CONNECT_DATA =(SERVICE_NAME=ESODB.SQUAREGROUP.COM)(SERVER = DEDICATED)));User Id=DIDS_INFO;Password=dids2202"))
                 {
                     using (OracleCommand objCmd = new OracleCommand())
                     {
-                        objCmd.CommandText = "SELECT PRODUCT_CODE, PRODUCT_NAME,ENTRY_DATE FROM ESOS_PRD.VW_DIDS_PRODUCTS WHERE to_char(ENTRY_DATE,'MM') = '03'";
+                        objCmd.CommandText = "SELECT PRODUCT_CODE, PRODUCT_NAME, PACK_SIZE, PRODUCT_STATUS, UNIT_TP, UNIT_VAT, SORGA_CODE,ENTRY_DATE FROM ESOS_PRD.VW_DIDS_PRODUCTS WHERE   PRODUCT_STATUS='A' ";
                         objCmd.Connection = _db;
                         _db.Open();
                         objCmd.ExecuteNonQuery();
@@ -276,18 +276,20 @@ namespace API.Controllers
                         sqlBulkCopy.DestinationTableName = "dbo.MedicineProductTemp";
 
                         //[OPTIONAL]: Map the Excel columns with that of the database table.
-                        sqlBulkCopy.ColumnMappings.Add("INSTI_CODE", "InstitutionCode");
-                        sqlBulkCopy.ColumnMappings.Add("MARKET_CODE", "MarketCode");
-                        sqlBulkCopy.ColumnMappings.Add("MARKET_NAME", "MarketName");
-                        sqlBulkCopy.ColumnMappings.Add("STATUS", "Status");
-                        sqlBulkCopy.ColumnMappings.Add("SBU_UNIT", "SBU");
+                        sqlBulkCopy.ColumnMappings.Add("PRODUCT_CODE", "ProductCode");
+                        sqlBulkCopy.ColumnMappings.Add("PRODUCT_NAME", "ProductName");
+                        sqlBulkCopy.ColumnMappings.Add("PACK_SIZE", "PackSize");
+                        sqlBulkCopy.ColumnMappings.Add("PRODUCT_STATUS", "Status");
+                        sqlBulkCopy.ColumnMappings.Add("UNIT_TP", "UnitTp");
+                        sqlBulkCopy.ColumnMappings.Add("UNIT_VAT", "UnitVat");
+                        sqlBulkCopy.ColumnMappings.Add("SORGA_CODE", "SorgaCode");
 
                         con.Open();
                         sqlBulkCopy.WriteToServer(dt);
                         con.Close();
                     }
                 }
-                var resultSp = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InsertNewInstitutionMarket");
+                var resultSp = _dbContext.Database.ExecuteSqlRaw("EXECUTE [dbo].[SP_InsertNewProdMed]");
 
             }
             catch (System.Exception ex)
