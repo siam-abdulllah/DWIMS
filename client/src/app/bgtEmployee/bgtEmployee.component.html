@@ -31,77 +31,116 @@
 
                                 <div class="form-group ">
                                     <div class="row ">
-                                        <div class="col-md-2 ">
+                                        <div class="col-md-1 ">
                                             <label>Company Name</label>
                                         </div>
-                                        <div class="col-md-4 ">
+                                        <div class="col-md-3 ">
                                             <input class="form-control" value="Square Pharmaceuticals Ltd." readonly>
                                         </div>
-                                        <div class="col-md-2 ">
+                                        <div class="col-md-1 ">
                                             <label>Department</label>
                                         </div>
-                                        <div class="col-md-4 ">
+                                        <div class="col-md-3 ">
                                             <select class="form-control" id="deptId" formControlName="deptId" required>
                                         <option [ngValue]="null">Select Department</option>
                                         <option [ngValue]="001">Sales</option>
                                         <option [ngValue]="002">PMD</option>
                                     </select>
                                         </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group ">
-                                    <div class="row ">
-                                        <div class="col-md-2 ">
-                                            <label>Year</label>
-                                        </div>
-                                        <div class="col-md-4 ">
-                                            <input class="form-control" id="year" name="year" placeholder="Select Year" formControlName="year" [bsValue]="bsValue" bsDatepicker [bsConfig]="{  containerClass: 'theme-blue', minMode:'year', adaptivePosition: true, dateInputFormat: 'YYYY' }">
-                                        </div>
-                                        <div class="col-md-2 ">
-                                            <label>Authorize Level</label>
-                                        </div>
-                                        <div class="col-md-4 ">
-                                            <select class="form-control" id="authId" formControlName="authId">
-                                            <option  [ngValue]="0">All</option>
-                                            <option *ngFor="let a of approvalAuthorities" [value]="a.id">{{a.approvalAuthorityName}}</option>
-                                        </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group ">
-                                    <div class="row ">
-                                        <div class="col-md-2 ">
+                                        <div class="col-md-1 ">
                                             <label>SBU</label>
                                         </div>
-                                        <div class="col-md-4 ">
+                                        <div class="col-md-3 ">
                                             <select class="form-control" id="sbu" formControlName="sbu">
                                             <option  [ngValue]="0">All</option>
                                             <option *ngFor="let a of SBUs" [value]="a.id">{{a.sbuName}}</option>
                                         </select>
                                         </div>
-                                        <div class="col-md-2 ">
-                                            <label>Amount</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group ">
+                                    <div class="row ">
+                                        <div class="col-md-1 ">
+                                            <label>Year</label>
                                         </div>
-                                        <div class="col-md-4 ">
-                                            <input class="form-control" id="amount" name="amount" formControlName="amount">
+                                        <div class="col-md-3 ">
+                                            <input class="form-control" id="year" name="year" placeholder="Select Year" formControlName="year" (onHidden)="getDeptSbuWiseBudgetAmt()" [bsValue]="bsValue" bsDatepicker [bsConfig]="{  containerClass: 'theme-blue', minMode:'year', adaptivePosition: true, dateInputFormat: 'YYYY' }">
+                                        </div>
+                                        <div class="col-md-1 ">
+                                            <label>SBU Total Budget</label>
+                                        </div>
+                                        <div class="col-md-3 ">
+                                            <input class="form-control" id="sbuTotalBudget" name="sbuTotalBudget" formControlName="sbuTotalBudget" readonly>
+                                        </div>
+                                        <div class="col-md-1 ">
+                                            <label>Prev. Allocated</label>
+                                        </div>
+                                        <div class="col-md-3 ">
+                                            <input class="form-control" id="prevAllocate" name="prevAllocate" formControlName="prevAllocate" readonly>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="form-group ">
                                     <div class="row ">
-                                        <div class="col-md-2 ">
+                                        <div class="col-md-1 ">
+                                            <label>Authorize Level</label>
+                                        </div>
+                                        <div class="col-md-3 ">
+                                            <select class="form-control" id="authId" formControlName="authId">
+                                            <option *ngFor="let a of approvalAuthorities" [value]="a.id">{{a.approvalAuthorityName}}</option>
+                                        </select>
+                                        </div>
+                                        <div class="col-md-1 ">
+                                            <label>Total Person</label>
+                                        </div>
+                                        <div class="col-md-3 ">
+                                            <input class="form-control" id="ttlPerson" name="ttlPerson" formControlName="ttlPerson" readonly>
+                                        </div>
+
+                                        <div class="col-md-1 ">
+                                            <label>Total Amount</label>
+                                        </div>
+                                        <div class="col-md-3 ">
+                                            <input class="form-control" id="ttlAmount" name="ttlAmount" formControlName="ttlAmount">
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group ">
+                                    <div class="row ">
+
+                                        <div class="col-md-1 ">
                                             <label>Segment</label>
                                         </div>
-                                        <div class="col-md-4 ">
+                                        <div class="col-md-3 ">
                                             <select class="form-control" id="segment" formControlName="segment" required>
                                         <option value="Monthly">Monthly</option>
                                         <option value="Yearly">Yearly</option>
                                     </select>
                                         </div>
 
+                                        <div class="col-md-1 ">
+                                            <label>Total Allocated</label>
+                                        </div>
+                                        <div class="col-md-3 ">
+                                            <input class="form-control" id="ttlAllocate" name="ttlAllocate" formControlName="ttlAllocate" readonly>
+                                        </div>
+
+                                        <div class="col-md-1 ">
+                                            <label>Remaining</label>
+                                        </div>
+                                        <div class="col-md-3 ">
+                                            <input class="form-control" id="remaining" name="remaining" formControlName="remaining" readonly>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="row ">
                                         <div class="col-md-2 ">
                                             <input type="checkbox" id="permEdit" formControlName="permEdit" value="1">
                                             <label for="permEdit"> Can Edit</label>

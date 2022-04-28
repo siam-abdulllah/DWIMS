@@ -1,11 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild, TemplateRef } from '@angular/core';
-import { environment } from '../../environments/environment';
 import 'jspdf-autotable';
 import * as jsPDF from 'jspdf';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
-import { IrptDepotLetter } from '../shared/models/rptDepotLetter';
-import { IrptDepotLetterSearch, rptDepotLetterSearch } from '../shared/models/rptInvestSummary';
 import { ToastrService } from 'ngx-toastr';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -14,9 +11,6 @@ import { GenericParams } from '../shared/models/genericParams';
 import { AccountService } from '../account/account.service';
 import { DatePipe } from '@angular/common';
 import { BgtEmployeeService } from '../_services/bgtEmployee.service';
-import { DepotPrintTrack,IDepotPrintTrack } from '../shared/models/depotPrintTrack';
-import { IInvestmentMedicineProd, InvestmentMedicineProd } from '../shared/models/investment';
-import { IMedicineDispatchDtl, MedicineDispatchDtl, IMedDispSearch } from '../shared/models/medDispatch';
 import { IApprovalAuthority } from '../shared/models/approvalAuthority';
 import { ISBU } from '../shared/models/sbu';
 
@@ -54,14 +48,47 @@ export class BgtEmployeeComponent implements OnInit {
       year: new FormControl('', [Validators.required]),
       authId: new FormControl('', [Validators.required]),
       sbu: new FormControl('', [Validators.required]),
-      amount: new FormControl(''),
+      ttlAmount: new FormControl(''),
       segment: new FormControl(''),
       permEdit: new FormControl(''),
       permView: new FormControl(''),
       donationId: new FormControl(''),
       donationAmount: new FormControl(''),
       amtLimit: new FormControl(''),
+      sbuTotalBudget: new FormControl(''),
+      ttlAllocate: new FormControl(''),
+      prevAllocate: new FormControl(''),
+      ttlPerson: new FormControl(''),
+      remaining: new FormControl(''),
     });
+  }
+
+  getDeptSbuWiseBudgetAmt()
+  {
+    if(this.bgtEmployee.value.deptId == "" || this.bgtEmployee.value.deptId == null)
+    {
+      this.toastr.error('Select Department');
+      this.bgtEmployee.patchValue({
+        year: "",
+      });
+      return;
+    }
+
+    if(this.bgtEmployee.value.sbu == "" || this.bgtEmployee.value.sbu == null)
+    {
+      this.toastr.error('Select SBU');
+      this.bgtEmployee.patchValue({
+        year: "",
+      });
+      return;
+    }
+
+    // this.bgtService.getDeptSbuWiseBudgetAmt().subscribe(response => {
+    //   this.approvalAuthorities = response as IApprovalAuthority[];
+    //  }, error => {
+    //     console.log(error);
+    //  });
+
   }
 
   getApprovalAuthority(){
@@ -288,13 +315,18 @@ openPendingListModal(template: TemplateRef<any>) {
       year: "",
       authId: "",
       sbu: "",
-      amount: "",
+      ttlAmount: "",
       segment: "",
-      permEdit: "",
+      permEdit:"",
       permView: "",
       donationId: "",
       donationAmount: "",
       amtLimit: "",
+      sbuTotalBudget: "",
+      ttlAllocate: "",
+      prevAllocate: "",
+      ttlPerson: "",
+      remaining: "",
     });
   }
 

@@ -47,6 +47,9 @@ export class BgtEmployeeService {
     return this.http.get(this.baseUrl + 'employee/getSBU');
   }
 
+  getDeptSbuWiseBudgetAmt(){    
+    //return this.http.get(this.baseUrl + 'approvalAuthority/approvalAuthoritiesForConfig');
+  }
 
 
 }
