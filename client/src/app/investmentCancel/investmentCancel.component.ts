@@ -170,6 +170,7 @@ export class InvestmentCancelComponent implements OnInit {
 
     }
     this.getInvestmentDetails();
+    this.getInvestmentDetailTracker();
     this.getInvestmentTargetedProd();
     //this.getInvestmentTargetedGroup();
     this.getInvestmentTargetedGroupStatus();
@@ -263,6 +264,21 @@ export class InvestmentCancelComponent implements OnInit {
         this.convertedDate = this.datePipe.transform(data.fromDate, 'ddMMyyyy');
         //this.getLastFiveInvestment(this.investmentCancelService.investmentCancelFormData.marketCode, this.convertedDate);
 
+      } else {
+       // this.toastr.warning('No Data Found', 'Investment');
+      }
+    }, error => {
+      console.log(error);
+    });
+  }
+  getInvestmentDetailTracker() {
+    this.investmentCancelService.getInvestmentDetailTracker(this.investmentCancelService.investmentDetailFormData.investmentInitId).subscribe(response => {
+      var data = response as IInvestmentDetailTracker[];
+      if (data !== undefined) {
+        debugger;
+        this.apprDetail= data;
+        
+        
       } else {
        // this.toastr.warning('No Data Found', 'Investment');
       }
@@ -914,19 +930,13 @@ export class InvestmentCancelComponent implements OnInit {
 export interface IInvestmentDetailTracker {
   id: number;
   investmentInitId: number;
-  chequeTitle: string;
-  paymentMethod: string;
-  paymentFreq: string;
-  commitmentAllSBU: string;
-  commitmentOwnSBU: string;
-  shareAllSBU: string;
-  shareOwnSBU: string;
-  totalMonth: number;
-  commitmentTotalMonth: number;
-  proposedAmount: string;
-  purpose: string;
+  employeeId: number;
+  donationId: number;
+  month: string;
+  year: string;
+  approvedAmount: string;
+  paidStatus: string;
+  paymentRefNo: string;
   fromDate: Date;
   toDate: Date;
-  commitmentFromDate: any;
-  commitmentToDate: any;
 }

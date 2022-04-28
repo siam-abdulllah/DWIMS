@@ -155,6 +155,9 @@ export class InvestmentCancelService {
   getInvestmentDetails(investmentInitId: number, empId: number, userRole: string) {
     return this.http.get(this.baseUrl + 'reportInvestment/investmentDetailsForSummary/' + investmentInitId + '/' + empId + '/' + userRole);
   }
+  getInvestmentDetailTracker(investmentInitId: number) {
+    return this.http.get(this.baseUrl + 'reportInvestment/investmentDetailTracker/' + investmentInitId);
+  }
   getInvestmentInit(id: number) {
     let params = new HttpParams();
     if (this.genParams.search) {

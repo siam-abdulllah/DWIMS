@@ -126,7 +126,7 @@
                                             <label>Institution</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <input class="form-control" name="designation" readonly id="institutionId" name="institutionId" #institutionId="ngModel" [(ngModel)]="investmentCancelService.investmentDoctorFormData.institutionId">
+                                            <input class="form-control" name="institutionName" readonly id="institutionName" name="institutionName" #institutionId="ngModel" [(ngModel)]="investmentCancelService.investmentDoctorFormData.institutionName">
                                         </div>
                                         <div class="col-md-2">
                                             <label>Doctor Category</label>
@@ -422,36 +422,6 @@
 
                                 <div class="form-group">
                                     <div class="row">
-                                        <!--<div class="col-md-6">
-                                            <div class="form-group">
-                                                <table class="table  table-bordered">
-                                                    <tr class="HeaderRow">
-                                                        <td>Investment</td>
-                                                        <td>Commitment-All</td>
-                                                        <td>Commitment-Own</td>
-                                                        <td>Share-All</td>
-                                                        <td>Share-Own</td>
-                                                    </tr>
-                                                    <tr *ngFor="let a of investmentDetailsOld">
-                                                        <td>
-                                                            {{a.investmentAmount}}
-                                                        </td>
-                                                        <td>
-                                                            {{a.comtSharePrcntAll}}
-                                                        </td>
-                                                        <td>
-                                                            {{a.comtSharePrcnt}}
-                                                        </td>
-                                                        <td>
-                                                            {{a.prescribedSharePrcntAll}}
-                                                        </td>
-                                                        <td>
-                                                            {{a.prescribedSharePrcnt}}
-                                                        </td>
-                                                    </tr>
-                                                </table> 
-                                            </div>
-                                        </div>-->
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <div class="row">
@@ -639,73 +609,20 @@
                                 <div class="form-group">
                                     <table class="table  table-bordered">
                                         <tr class="HeaderRow">
-                                            <!-- <td>Product Code</td> -->
                                             <td>Product Name</td>
                                             <td>SBU</td>
-                                            <!-- <td></td>
-                                            <td></td> -->
                                         </tr>
                                         <tr *ngFor="let a of investmentTargetedProds">
-                                            <!-- <td>
-                                                {{a.productInfo.productCode}}
-                                            </td> -->
                                             <td>
                                                 {{a.productInfo.productName}}
                                             </td>
                                             <td>
                                                 {{a.productInfo.sbuName}}
                                             </td>
-                                            <!-- <td>
-                                                <input type="button" *ngIf="sbu==a.sbu" (click)="editInvestmentTargetedProd(a)" value="Edit">
-                                            </td>
-                                            <td>
-                                                <input type="button" *ngIf="sbu==a.sbu" (click)="removeInvestmentTargetedProd(a)" value="Remove">
-                                            </td> -->
                                         </tr>
                                     </table>
                                 </div>
                             </fieldset>
-                            <!-- <fieldset disabled>
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <h6 class=""><strong>Targeted Group</strong></h6>
-                                        </div>
-                                        <div class="col-sm-2"></div>
-                                       
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <table class="table  table-bordered">
-                                        <tr class="HeaderRow">
-                                            <td>Market Group Name</td>
-                                            <td>Market Code</td>
-                                            <td>Market Name</td>
-                                            <td>SBU</td>
-                                            <td>Status</td>
-                                        </tr>
-                                        <tr *ngFor="let a of investmentTargetedGroups">
-
-                                            <td>
-                                                {{a.marketGroupMst.groupName}}
-                                            </td>
-                                            <td>
-                                                {{a.marketCode}}
-                                            </td>
-                                            <td>
-                                                {{a.marketName}}
-                                            </td>
-                                            <td>
-                                                {{a.sbuName}}
-                                            </td>
-                                            <td>
-                                                <span *ngIf="a.completionStatus === false || undefined || ''">Pending</span>
-                                                <span *ngIf="a.completionStatus === true ''">Recommended</span>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </fieldset> -->
                             <fieldset disabled>
                                 <div class="form-group">
                                     <div class="row">
@@ -713,45 +630,12 @@
                                             <h6 class=" "><strong>Recommended By List </strong></h6>
                                         </div>
                                         <div class="col-sm-2"></div>
-                                        <!-- <div class="col-sm-2">
-                                            <button class="btn btn-success btn-lg btn-block" type="button"><i class="fa fa-save"></i>&nbsp; Save</button>
-                                        </div> -->
                                     </div>
                                 </div>
-                                <!-- <div class="form-group">
-                                    <table class="table  table-bordered">
-                                        <tr class="HeaderRow">
-                                            <td>Market Code</td>
-                                            <td>Market Name</td>
-                                            <td>Authority</td>
-                                            <td>Rec By</td>
-                                            <td>Status</td>
-                                        </tr>
-                                        <tr *ngFor="let a of investmentTargetedGroupss2">
-
-                                            <td>
-                                                {{a.marketCode}}
-                                            </td>
-                                            <td>
-                                                {{a.marketName}}
-                                            </td>
-                                            <td>
-                                                {{a.approvalAuthorityName}}
-                                            </td>
-                                            <td>
-                                                {{a.employeeName}}
-                                            </td>
-                                            <td>
-                                                {{a.recStatus}}
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div> -->
                                 <div class="form-group">
                                     <table class="table  table-bordered">
                                         <tr class="HeaderRow">
                                             <td>Employee Name</td>
-                                            <!-- <td>Authority</td> -->
                                             <td>Market Code</td>
                                             <td>Market Name</td>
                                             <td>Territory Code</td>
@@ -824,13 +708,13 @@
                                         </tr>
                                         <tr *ngFor="let a of apprDetail">
                                             <td>
-                                                {{a.month}}
+                                                {{a.month | date: 'MMMM'}}
                                             </td>
                                             <td>
                                                 {{a.year}}
                                             </td>
                                             <td>
-                                                {{a.amount}}
+                                                {{a.approvedAmount}}
                                             </td>
                                             <td>
                                                 {{a.paymentRefNo}}

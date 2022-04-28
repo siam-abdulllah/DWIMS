@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\DWIMS_Master\\Infrastructure\\Infrastructure.csproj": {}
+    "D:\\DWIMS\\Infrastructure\\Infrastructure.csproj": {}
   },
   "projects": {
-    "D:\\DWIMS_Master\\Core\\Core.csproj": {
+    "D:\\DWIMS\\Core\\Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\DWIMS_Master\\Core\\Core.csproj",
+        "projectUniqueName": "D:\\DWIMS\\Core\\Core.csproj",
         "projectName": "Core",
-        "projectPath": "D:\\DWIMS_Master\\Core\\Core.csproj",
+        "projectPath": "D:\\DWIMS\\Core\\Core.csproj",
         "packagesPath": "C:\\Users\\Maaz\\.nuget\\packages\\",
-        "outputPath": "D:\\DWIMS_Master\\Core\\obj\\",
+        "outputPath": "D:\\DWIMS\\Core\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Maaz\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -80,14 +80,14 @@
         }
       }
     },
-    "D:\\DWIMS_Master\\Infrastructure\\Infrastructure.csproj": {
+    "D:\\DWIMS\\Infrastructure\\Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\DWIMS_Master\\Infrastructure\\Infrastructure.csproj",
+        "projectUniqueName": "D:\\DWIMS\\Infrastructure\\Infrastructure.csproj",
         "projectName": "Infrastructure",
-        "projectPath": "D:\\DWIMS_Master\\Infrastructure\\Infrastructure.csproj",
+        "projectPath": "D:\\DWIMS\\Infrastructure\\Infrastructure.csproj",
         "packagesPath": "C:\\Users\\Maaz\\.nuget\\packages\\",
-        "outputPath": "D:\\DWIMS_Master\\Infrastructure\\obj\\",
+        "outputPath": "D:\\DWIMS\\Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Maaz\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -104,8 +104,8 @@
           "netstandard2.1": {
             "targetAlias": "netstandard2.1",
             "projectReferences": {
-              "D:\\DWIMS_Master\\Core\\Core.csproj": {
-                "projectPath": "D:\\DWIMS_Master\\Core\\Core.csproj"
+              "D:\\DWIMS\\Core\\Core.csproj": {
+                "projectPath": "D:\\DWIMS\\Core\\Core.csproj"
               }
             }
           }

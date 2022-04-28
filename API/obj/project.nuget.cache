@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ApRi80npAMWny+RBEKJzNaLp9uWkNReK/tyZOBrNkZpt1L6VDdhVmGbZZhbd51cbCEkg5NhdQYLC20Wn7zQQoA==",
+  "dgSpecHash": "aAsUi2e6xZMePKvZcDLozm5fNHzbnWDAQ1jSSY9vCbxlCISHlNdYpOMyhuOE5hGbvk5vOFzuM0m1teOFhCmygQ==",
   "success": true,
-  "projectFilePath": "D:\\DWIMS_Master\\API\\API.csproj",
+  "projectFilePath": "D:\\DWIMS\\API\\API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Maaz\\.nuget\\packages\\automapper\\10.0.0\\automapper.10.0.0.nupkg.sha512",
     "C:\\Users\\Maaz\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\8.0.1\\automapper.extensions.microsoft.dependencyinjection.8.0.1.nupkg.sha512",

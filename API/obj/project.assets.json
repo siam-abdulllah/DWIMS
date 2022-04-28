@@ -10917,11 +10917,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\DWIMS_Master\\API\\API.csproj",
+      "projectUniqueName": "D:\\DWIMS\\API\\API.csproj",
       "projectName": "API",
-      "projectPath": "D:\\DWIMS_Master\\API\\API.csproj",
+      "projectPath": "D:\\DWIMS\\API\\API.csproj",
       "packagesPath": "C:\\Users\\Maaz\\.nuget\\packages\\",
-      "outputPath": "D:\\DWIMS_Master\\API\\obj\\",
+      "outputPath": "D:\\DWIMS\\API\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Maaz\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -10938,8 +10938,8 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "D:\\DWIMS_Master\\Infrastructure\\Infrastructure.csproj": {
-              "projectPath": "D:\\DWIMS_Master\\Infrastructure\\Infrastructure.csproj"
+            "D:\\DWIMS\\Infrastructure\\Infrastructure.csproj": {
+              "projectPath": "D:\\DWIMS\\Infrastructure\\Infrastructure.csproj"
             }
           }
         }
