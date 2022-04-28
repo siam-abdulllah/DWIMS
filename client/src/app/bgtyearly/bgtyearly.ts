@@ -49,6 +49,7 @@ export class BgtYearlyComponent implements OnInit {
     private SpinnerService: NgxSpinnerService) { }
   ngOnInit() {
     this.getEmployeeId()
+    this.getTotalExpense()
   }
   getEmployeeId() {
     this.empId = this.accountService.getEmployeeId();
@@ -101,6 +102,17 @@ export class BgtYearlyComponent implements OnInit {
         else {
           this.toastr.warning('No Data Found');
         }
+    }, error => {
+      this.SpinnerService.hide();
+      console.log(error);
+    });
+  }
+  getTotalExpense() {
+    debugger;
+
+    this.SpinnerService.show();
+    this.bugetYearlyService.getTotalExpense().subscribe(response => {
+    
     }, error => {
       this.SpinnerService.hide();
       console.log(error);

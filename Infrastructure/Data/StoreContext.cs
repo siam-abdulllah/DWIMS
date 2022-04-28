@@ -109,6 +109,8 @@ namespace Infrastructure.Data
         [NotMapped]
         public DbSet<RptMedDisp> RptMedDisp { get; set; }
         [NotMapped]
+        public DbSet<TotalExpense> TotalExpense { get; set; }
+        [NotMapped]
         public DbSet<InvestmentRcvPending> InvestmentRcvPending { get; set; }
         [NotMapped]
         public DbSet<ChangeDepotSearch> ChangeDepotSearch { get; set; }
@@ -129,6 +131,8 @@ namespace Infrastructure.Data
         [NotMapped]
 
         public DbSet<SystemSummary> SystemSummary { get; set; }
+        [NotMapped]
+        public DbSet<PipeLineExpense> PipeLineExpense { get; set; }
 
         public DbSet<RptSummary> RptSummary { get; set; }
         public DbSet<InvestmentRapid> InvestmentRapid { get; set; }

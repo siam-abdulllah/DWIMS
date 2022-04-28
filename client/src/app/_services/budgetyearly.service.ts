@@ -30,6 +30,10 @@ export class BudgetYearlyService {
     debugger;
     return this.http.get(this.baseUrl + 'BgtYearly/getBudgetYearly');
   }
+  getTotalExpense(){    
+    debugger;
+    return this.http.get(this.baseUrl + 'BgtYearly/getTotalExpense');
+  }
   getGenParams(){
     return this.genParams;
   }

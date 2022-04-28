@@ -14,6 +14,10 @@ export interface IBudgetYearly {
     totalAmount:number;
     remarks:string;
     enteredBy:number;
+    newAmount:any;
+    totalExpense:any;
+    totalPipeline:any;
+    totalRemaining:any;
    
 }
  
@@ -26,6 +30,10 @@ export class BudgetYearly implements IBudgetYearly {
     totalAmount:number;
     remarks:string;
     enteredBy:number;
+    newAmount:any;
+    totalExpense:any;
+    totalPipeline:any;
+    totalRemaining:any;
 
 }
 
@@ -68,7 +76,7 @@ export interface ISbuDetails {
     sbuCode:string;
     sbuAmount:number;
     newAmount:any;
-    expense:number;
+    expense:any;
     pipeLine:any;
     remaining:any;
 }

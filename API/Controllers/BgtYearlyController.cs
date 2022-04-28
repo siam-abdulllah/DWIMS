@@ -49,7 +49,7 @@ namespace API.Controllers
             {
                 CompId = setBgtDto.CompId,
                 Year = setBgtDto.Year,
-                TotalAmount = setBgtDto.TotalAmount,
+                TotalAmount = setBgtDto.NewAmount,
                 DeptId = setBgtDto.DeptId,
                 SetOn = DateTimeOffset.Now,
                 ModifiedOn = DateTimeOffset.Now,
@@ -83,6 +83,32 @@ namespace API.Controllers
 
                 List<BgtYearlyTotal> bgtList = _dbContext.BgtYearlyTotal.FromSqlRaw(qry).ToList();
                 return bgtList;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpGet("getTotalExpense")]
+        public long GetTotalExpense()
+        {
+            try
+            {
+                string qry = "";
+
+                qry = string.Format(@"SELECT e.*,ISNULL(Round(SUM(e.ApprovedAmount),0), 0) TotalExpense
+
+                                        FROM InvestmentDetailTracker e
+
+                                        INNER JOIN InvestmentInit c ON c.Id = e.InvestmentInitId
+
+                                        WHERE  C.ProposeFor='Others'
+
+                                        AND e.Year=2022");
+                TotalExpense dsResult = _dbContext.ExecSQL<TotalExpense>(qry).ToList().FirstOrDefault();
+             
+                return 0;
             }
             catch (System.Exception ex)
             {

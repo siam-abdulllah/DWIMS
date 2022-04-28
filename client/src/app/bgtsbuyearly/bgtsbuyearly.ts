@@ -10,7 +10,7 @@ import { BudgetSbuYearly, BudgetYearly, IBudgetSbuYearly, IBudgetYearly, IPipeli
 import { IEmployeeInfo } from "../shared/models/employeeInfo";
 import { ISBU } from "../shared/models/sbu";
 import { BudgetSbuYearlyService } from "../_services/budgetSbuYearly.service";
-import { BudgetYearlyService } from "../_services/budgetyearly.service";
+
 
 
 @Component({
@@ -124,7 +124,7 @@ export class BgtSbuYearlyComponent implements OnInit {
           debugger;
           var RemainingBudget = parseInt(this.bugetSbuYearlyService.budgetSbuYearly.totalBudget)-  parseInt(this.totalBudget)
           this.bugetSbuYearlyService.budgetSbuYearly.remainingBudget = RemainingBudget;
-          //this.getAllPipeLineExpenseList();
+          this.getAllPipeLineExpenseList();
         },
         err => { 
           console.log(err); 
@@ -134,11 +134,12 @@ export class BgtSbuYearlyComponent implements OnInit {
   getAllPipeLineExpenseList()
   {
 
-    this.sbuDetails =[];
+   
       this.SpinnerService.show();
       debugger;
       this.bugetSbuYearlyService.getAllPipelineExpenseList(this.bugetSbuYearlyService.budgetSbuYearly.deptId,this.bugetSbuYearlyService.budgetSbuYearly.compId,this.bugetSbuYearlyService.budgetSbuYearly.year).subscribe(
         res => {
+          debugger;
           this.pipelineList = res as IPipelineDetails[];
           for(var i =0;i<this.sbuDetails.length;i++)
           {
@@ -147,6 +148,7 @@ export class BgtSbuYearlyComponent implements OnInit {
               if(this.sbuDetails[i].sbuCode == this.pipelineList[j].sbuCode)
               {
                 this.sbuDetails[i].pipeLine = this.pipelineList[j].pipeline;
+                this.sbuDetails[i].remaining = parseInt(this.sbuDetails[i].expense) - parseInt(this.pipelineList[j].pipeline)
               }
             }
           }

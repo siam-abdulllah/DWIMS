@@ -76,7 +76,7 @@ namespace API.Controllers
         }
 
         [HttpGet("getAllPipelineExpenseList/{deptId}/{compId}/{year}")]
-        public async Task<List<InvestmentRecVM>> GetAllPipeLineExpenseListAsync(int deptId, int compId, int year)
+        public async Task<List<PipeLineExpense>> GetAllPipeLineExpenseListAsync(int deptId, int compId, int year)
         {
             try
             {
@@ -92,36 +92,28 @@ namespace API.Controllers
                 }
                 string qry = "";
 
-                qry = string.Format(@"SELECT SUM(ProposedAmount) Pipeline
-                                    ,sb.SBUName
-                                    ,sb.SBUCode
-                                    FROM InvestmentRec A
-                                    INNER JOIN InvestmentRecComment B ON A.InvestmentInitId = B.InvestmentInitId
-                                    AND A.EmployeeId = B.EmployeeId
-                                    INNER JOIN InvestmentInit C ON a.InvestmentInitId = C.Id
-                                    INNER JOIN SBU sb ON C.SBU = sb.SBUCode
-
-                                    WHERE C.DataStatus = 1
-                                    AND C.ProposeFor='{0}'
-                                    AND Year(A.ToDate)={1}
-                                    AND RecStatus NOT IN (
-                                    'Approved'
-                                    ,'Not Approved'
-                                    ,'Cancelled'
-                                    )
-                                    AND A.Id IN (
-                                    SELECT MAX(ir.Id) AS Expr1
-                                    FROM dbo.InvestmentRec AS ir
-                                    WHERE (ir.InvestmentInitId = c.Id)
-                                    )
-                                    GROUP BY sb.SBUName
-                                    ,sb.SBUCode", ProposeFor, year);
+                qry = string.Format(@"SELECT CAST(ROW_NUMBER() OVER (ORDER BY SBUCode) AS INT)  AS Id ,1 AS DataStatus,SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,Pipeline,SBUName,SBUCode FROM (
+                                        SELECT Round(SUM(ProposedAmount),0) Pipeline ,                               
+                                        sb.SBUName                                  
+                                        ,sb.SBUCode                               
+                                        FROM InvestmentRec A                                    
+                                        INNER JOIN InvestmentRecComment B ON A.InvestmentInitId = B.InvestmentInitId                        
+                                        AND A.EmployeeId = B.EmployeeId                                   
+                                        INNER JOIN InvestmentInit C ON a.InvestmentInitId = C.Id                         
+                                        INNER JOIN SBU sb ON C.SBU = sb.SBUCode                           
+                                        WHERE C.DataStatus = 1                                  
+                                        AND C.ProposeFor='{0}'                                  
+                                        AND Year(A.ToDate)={1}                                  
+                                        AND RecStatus NOT IN ('Approved' ,'Not Approved','Cancelled') AND A.Id IN (                                
+                                        SELECT MAX(ir.Id) AS Expr1                                 
+                                        FROM dbo.InvestmentRec AS ir                                   
+                                        WHERE (ir.InvestmentInitId = c.Id) )                                
+                                        GROUP BY sb.SBUName                                  
+                                        ,sb.SBUCode) A", ProposeFor, year);
 
 
-
-                List<InvestmentRecVM> dsResult = _dbContext.ExecSQL<InvestmentRecVM>(qry).ToList();
-
-
+                var results = _dbContext.PipeLineExpense.FromSqlRaw(qry).ToList();
+                List<PipeLineExpense> dsResult = _dbContext.ExecSQL<PipeLineExpense>(qry).ToList();
                 return dsResult;
             }
             catch (System.Exception ex)

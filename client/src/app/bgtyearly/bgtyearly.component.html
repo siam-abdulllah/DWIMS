@@ -72,10 +72,54 @@
                                     <div class="col-md-2">
                                     </div>
                                     <div class="col-md-2">
-                                        <label>Total Budget</label>
+                                        <label>Budget Amount</label>
                                     </div>
                                     <div class="col-md-4">
-                                        <input type="text" class="form-control"  id="totalAmount" name="totalAmount" required [(ngModel)]="bugetYearlyService.budgetYearly.totalAmount" >
+                                        <input type="text" class="form-control"  id="totalAmount" name="totalAmount" readonly [(ngModel)]="bugetYearlyService.budgetYearly.totalAmount" >
+                                    </div>
+                                    
+                                </div>
+                                <div class="row" style="padding: 10px;">
+                                    <div class="col-md-2">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Total Expense</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control"  id="totalExpense" name="totalExpense" readonly [(ngModel)]="bugetYearlyService.budgetYearly.totalExpense" >
+                                    </div>
+                                    
+                                </div>
+                                <div class="row" style="padding: 10px;">
+                                    <div class="col-md-2">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Total Pipeline</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control"  id="totalPipeline" name="totalPipeline" readonly [(ngModel)]="bugetYearlyService.budgetYearly.totalPipeline" >
+                                    </div>
+                                    
+                                </div>
+                                <div class="row" style="padding: 10px;">
+                                    <div class="col-md-2">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Total Remaining</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control"  id="totalRemaining" name="totalRemaining" readonly [(ngModel)]="bugetYearlyService.budgetYearly.totalRemaining" >
+                                    </div>
+                                    
+                                </div>
+                                <div class="row" style="padding: 10px;">
+                                    <div class="col-md-2">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>New Amount</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control"  id="newAmount" name="newAmount" required [(ngModel)]="bugetYearlyService.budgetYearly.newAmount" >
                                     </div>
                                     
                                 </div>

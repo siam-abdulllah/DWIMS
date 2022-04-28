@@ -23,4 +23,5 @@ namespace Core.Entities
         public string PaidStatus { get; set; }
         public string PaymentRefNo { get; set; }
     }
+  
 }
