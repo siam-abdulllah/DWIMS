@@ -6,9 +6,11 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from "rxjs/internal/Observable";
 import { AccountService } from "../account/account.service";
-import { BudgetYearly, IBudgetYearly } from "../shared/models/budgetyearly";
+import { BudgetSbuYearly, BudgetYearly, IBudgetSbuYearly, IBudgetYearly, IPipelineDetails, ISbuDetails, SbuDetails } from "../shared/models/budgetyearly";
 import { IEmployeeInfo } from "../shared/models/employeeInfo";
-import { BudgetYearlyService } from "../_services/budgetYearly.service";
+import { ISBU } from "../shared/models/sbu";
+import { BudgetSbuYearlyService } from "../_services/budgetSbuYearly.service";
+import { BudgetYearlyService } from "../_services/budgetyearly.service";
 
 
 @Component({
@@ -27,6 +29,13 @@ export class BgtSbuYearlyComponent implements OnInit {
   today = new Date();
   empId: string;
   userRole:string;
+  totalSbuBudget:any;
+  totalBudget:any;
+  SBUs: ISBU[];
+  bgtYearlyTotal: BudgetYearly;
+  bgtSbuYearlyList: IBudgetSbuYearly[];
+  pipelineList: IPipelineDetails[];
+  sbuDetails:ISbuDetails[];
   empSbu:Observable<IEmployeeInfo>;
   isAdmin: boolean = false;
   dd = String(this.today.getDate()).padStart(2, '0');
@@ -39,22 +48,30 @@ export class BgtSbuYearlyComponent implements OnInit {
     ignoreBackdropClick: true
   };
   institutionType: string;
-  constructor(private accountService: AccountService,private router: Router,public bugetyearlyservice: BudgetYearlyService,private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe, 
+  constructor(private accountService: AccountService,private router: Router,public bugetSbuYearlyService: BudgetSbuYearlyService,private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe, 
     private SpinnerService: NgxSpinnerService) { }
   ngOnInit() {
-    this.getEmployeeId()
+      this.getSBU()
+    
+      this.sbuDetails = []
   }
-
-  getEmployeeId() {
-    this.empId = this.accountService.getEmployeeId();
-    this.userRole = this.accountService.getUserRole();
-    if (this.userRole == 'Administrator') {
-      this.isAdmin = true;
-    }
-    else {
-      this.isAdmin = false;
-    }
-    this.bugetyearlyservice.budgetYearly.enteredBy = parseInt(this.empId);
+  getSBU() {
+    this.bugetSbuYearlyService.getSBU().subscribe(response => {
+      this.SBUs = response as ISBU[];
+    }, error => {
+      console.log(error);
+    });
+  }
+  getYearlyBudget() {
+   debugger;
+    this.bugetSbuYearlyService.getYearlyBudget(this.bugetSbuYearlyService.budgetSbuYearly.deptId).subscribe(response => {
+      this.bgtYearlyTotal = response as BudgetYearly;
+      this.bugetSbuYearlyService.budgetSbuYearly.year = this.bgtYearlyTotal.year;
+      this.bugetSbuYearlyService.budgetSbuYearly.totalBudget = this.bgtYearlyTotal.totalAmount;
+      this.getAllSbuBgtList();
+    }, error => {
+      console.log(error);
+    });
   }
   confirmSubmission() {
     debugger;
@@ -62,7 +79,7 @@ export class BgtSbuYearlyComponent implements OnInit {
   }
   confirmSubmit() {
     this.submissionConfirmRef.hide();
-    //this.submitInvestmentForm();
+    this.submitBgtYearly();
   }
   declineSubmit() {
     this.submissionConfirmRef.hide();
@@ -77,15 +94,101 @@ export class BgtSbuYearlyComponent implements OnInit {
 
 
   resetPageLoad() {
-    this.bugetyearlyservice.budgetYearly = new BudgetYearly();
+    this.bugetSbuYearlyService.budgetSbuYearly = new BudgetSbuYearly();
+    this.sbuDetails = [];
   }
+  getAllSbuBgtList()
+  {
 
+    this.sbuDetails =[];
+      this.SpinnerService.show();
+      debugger;
+      this.bugetSbuYearlyService.getAllSbuBgtList(this.bugetSbuYearlyService.budgetSbuYearly.deptId,this.bugetSbuYearlyService.budgetSbuYearly.compId,this.bugetSbuYearlyService.budgetSbuYearly.year).subscribe(
+        res => {
+          this.bgtSbuYearlyList = res as IBudgetSbuYearly[];
+          this.totalBudget =0;
+          for(var i=0;i<this.bgtSbuYearlyList.length;i++)
+          {
+             let sbu = new SbuDetails();
+     
+             sbu.sbuAmount = this.bgtSbuYearlyList[i].sbuAmount;
+             sbu.sbuName = this.bgtSbuYearlyList[i].sbuName;
+             sbu.sbuCode = this.bgtSbuYearlyList[i].sbuCode;
+             sbu.newAmount = this.bgtSbuYearlyList[i].sbuAmount;
+             sbu.expense = this.bgtSbuYearlyList[i].expense;
+             this.sbuDetails.push(sbu);
+             const total = parseInt(this.totalBudget);
+             const next = parseInt(this.bgtSbuYearlyList[i].sbuAmount);
+             this.totalBudget = total+next;
+          }
+          debugger;
+          var RemainingBudget = parseInt(this.bugetSbuYearlyService.budgetSbuYearly.totalBudget)-  parseInt(this.totalBudget)
+          this.bugetSbuYearlyService.budgetSbuYearly.remainingBudget = RemainingBudget;
+          //this.getAllPipeLineExpenseList();
+        },
+        err => { 
+          console.log(err); 
+        }
+      );
+  }
+  getAllPipeLineExpenseList()
+  {
+
+    this.sbuDetails =[];
+      this.SpinnerService.show();
+      debugger;
+      this.bugetSbuYearlyService.getAllPipelineExpenseList(this.bugetSbuYearlyService.budgetSbuYearly.deptId,this.bugetSbuYearlyService.budgetSbuYearly.compId,this.bugetSbuYearlyService.budgetSbuYearly.year).subscribe(
+        res => {
+          this.pipelineList = res as IPipelineDetails[];
+          for(var i =0;i<this.sbuDetails.length;i++)
+          {
+            for(var j =0;j<this.pipelineList.length;j++)
+            {
+              if(this.sbuDetails[i].sbuCode == this.pipelineList[j].sbuCode)
+              {
+                this.sbuDetails[i].pipeLine = this.pipelineList[j].pipeline;
+              }
+            }
+          }
+        },
+        err => { 
+          console.log(err); 
+        }
+      );
+  }
   submitBgtYearly() {
       this.SpinnerService.show();
-      this.bugetyearlyservice.submitBudgetYearly().subscribe(
+      debugger;
+      this.bugetSbuYearlyService.budgetSbuYearly.sbuDetailsList = this.sbuDetails;
+      this.totalSbuBudget= 0;
+      var flag = 0;
+      for(var i=0;i<this.sbuDetails.length;i++)
+      {
+         if(this.sbuDetails[i].newAmount < this.sbuDetails[i].expense)
+         {
+          flag = 1;
+         }
+        const num1 = parseInt(this.totalSbuBudget);
+        const num2 = parseInt(this.sbuDetails[i].newAmount);
+        this.totalSbuBudget = num1+num2;
+      }
+      if(flag==1)
+      {
+        this.toastr.warning('Budget can not be lower then expense!');
+        this.SpinnerService.hide();
+        return;
+      }
+      console.log(this.totalSbuBudget);
+      if(this.totalSbuBudget > this.bugetSbuYearlyService.budgetSbuYearly.totalBudget)
+      {
+        this.toastr.warning('Budget limit has exceeded!');
+        this.SpinnerService.hide();
+        return;
+      }
+      this.bugetSbuYearlyService.submitSbuBudgetYearly().subscribe(
         res => {
-          this.bugetyearlyservice.budgetYearly = res as IBudgetYearly;
-          this.toastr.success('Submitted successfully', 'Investment');
+          this.bugetSbuYearlyService.budgetSbuYearly = res as IBudgetSbuYearly;
+          this.toastr.success('Submitted successfully', 'Sbu Budget');
           this.resetPageLoad();
         },
         err => { 
