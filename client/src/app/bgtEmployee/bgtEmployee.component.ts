@@ -9,10 +9,11 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from "ngx-spinner";
 import { GenericParams } from '../shared/models/genericParams';
 import { AccountService } from '../account/account.service';
-import { DatePipe } from '@angular/common';
+import { DatePipe, getLocaleDateTimeFormat } from '@angular/common';
 import { BgtEmployeeService } from '../_services/bgtEmployee.service';
 import { IApprovalAuthority } from '../shared/models/approvalAuthority';
 import { ISBU } from '../shared/models/sbu';
+import { DATE } from 'ngx-bootstrap/chronos/units/constants';
 
 @Component({
   selector: 'bgtEmployee',
@@ -83,12 +84,66 @@ export class BgtEmployeeComponent implements OnInit {
       return;
     }
 
-    // this.bgtService.getDeptSbuWiseBudgetAmt().subscribe(response => {
-    //   this.approvalAuthorities = response as IApprovalAuthority[];
-    //  }, error => {
-    //     console.log(error);
-    //  });
+    var yr = new Date(this.bgtEmployee.value.year);
+    yr.getFullYear();
 
+    this.bgtService.getDeptSbuWiseBudgetAmt(this.bgtEmployee.value.deptId, this.bgtEmployee.value.sbu, yr.getFullYear()).subscribe(response => {    
+      this.bgtEmployee.patchValue({
+        sbuTotalBudget: response[0].count,
+      });
+      
+     }, error => {
+        console.log(error);
+     });
+  }
+
+  getAuthPersonCount()
+  {
+    if(this.bgtEmployee.value.authId == "" || this.bgtEmployee.value.authId == null)
+    {
+      this.toastr.error('Select Authorization Level');
+      return;
+    }
+
+    this.bgtService.getAuthPersonCount(this.bgtEmployee.value.authId).subscribe(response => {    
+      this.bgtEmployee.patchValue({
+        ttlPerson: response[0].count,
+      });
+      
+     }, error => {
+        console.log(error);
+     });
+  }
+
+
+  getAllocatedAmount()
+  {
+
+    if(this.bgtEmployee.value.segment == "" || this.bgtEmployee.value.segment == null)
+    {
+      this.toastr.error('Select Segmentation');
+      return;
+    }
+
+    if(this.bgtEmployee.value.segment == "Monthly")
+    {
+      const d = new Date();
+      
+      var remMonth = 12 - d.getMonth() - 1;
+      var ttlAloc = this.bgtEmployee.value.ttlPerson * this.bgtEmployee.value.ttlAmount * remMonth;
+
+      this.bgtEmployee.patchValue({
+        ttlAllocate: ttlAloc,
+      });
+    }
+    else if(this.bgtEmployee.value.segment == "Yearly")
+    {
+      var ttlAloc = this.bgtEmployee.value.ttlPerson * this.bgtEmployee.value.ttlAmount;
+
+      this.bgtEmployee.patchValue({
+        ttlAllocate: ttlAloc,
+      });
+    }
   }
 
   getApprovalAuthority(){

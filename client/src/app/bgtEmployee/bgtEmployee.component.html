@@ -52,8 +52,7 @@
                                         </div>
                                         <div class="col-md-3 ">
                                             <select class="form-control" id="sbu" formControlName="sbu">
-                                            <option  [ngValue]="0">All</option>
-                                            <option *ngFor="let a of SBUs" [value]="a.id">{{a.sbuName}}</option>
+                                            <option *ngFor="let a of SBUs" [value]="a.sbuCode">{{a.sbuName}}</option>
                                         </select>
                                         </div>
                                     </div>
@@ -88,7 +87,7 @@
                                             <label>Authorize Level</label>
                                         </div>
                                         <div class="col-md-3 ">
-                                            <select class="form-control" id="authId" formControlName="authId">
+                                            <select class="form-control" id="authId" formControlName="authId" (change)="getAuthPersonCount()">
                                             <option *ngFor="let a of approvalAuthorities" [value]="a.id">{{a.approvalAuthorityName}}</option>
                                         </select>
                                         </div>
@@ -117,7 +116,7 @@
                                             <label>Segment</label>
                                         </div>
                                         <div class="col-md-3 ">
-                                            <select class="form-control" id="segment" formControlName="segment" required>
+                                            <select class="form-control" id="segment" formControlName="segment" (change)="getAllocatedAmount()" required>
                                         <option value="Monthly">Monthly</option>
                                         <option value="Yearly">Yearly</option>
                                     </select>

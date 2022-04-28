@@ -47,8 +47,12 @@ export class BgtEmployeeService {
     return this.http.get(this.baseUrl + 'employee/getSBU');
   }
 
-  getDeptSbuWiseBudgetAmt(){    
-    //return this.http.get(this.baseUrl + 'approvalAuthority/approvalAuthoritiesForConfig');
+  getDeptSbuWiseBudgetAmt(deptId: any, sbu: string, year: any ){    
+    return this.http.get(this.baseUrl + 'bgtEmployee/getDeptSBUBudget/'+deptId+'/'+sbu+'/'+year);
+  }
+
+  getAuthPersonCount(authId: any ){    
+    return this.http.get(this.baseUrl + 'bgtEmployee/getAuthPersonCount/'+authId);
   }
 
 
