@@ -1,4 +1,6 @@
-﻿namespace Core.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Core.Entities
 {
     public class BgtYearlyTotal : BaseEntity
     {
@@ -8,5 +10,7 @@
         public long TotalAmount { get; set; }
         public string Remarks { get; set; }
         public int EnteredBy { get; set; }
+        [NotMapped]
+        public int NewAmount { get; set; }
     }
 }

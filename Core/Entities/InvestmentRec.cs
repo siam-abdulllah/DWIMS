@@ -26,4 +26,10 @@ namespace Core.Entities
         public bool? CompletionStatus { get; set; }
         public int Priority { get; set; }
     }
+    public class InvestmentRecVM: InvestmentRec
+    {
+        public double Pipeline { get; set; }
+        public string SBUName { get; set; }
+        public string SBUCode { get; set; }
+    }
 }
