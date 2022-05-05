@@ -63,6 +63,7 @@ import { InvestmentRapidAprComponent } from '../investmentRapidApr/investmentRap
 import { BgtYearlyComponent } from '../bgtYearly/bgtyearly';
 import { BgtSbuYearlyComponent } from '../bgtSbuYearly/bgtsbuyearly';
 import { BgtEmployeeComponent } from '../bgtEmployee/bgtEmployee.component';
+import { BgtOwnComponent } from '../bgtOwn/bgtOwn.component';
 import { InvestmentCancelComponent } from '../investmentCancel/investmentCancel.component';
 
 
@@ -138,6 +139,7 @@ import { InvestmentCancelComponent } from '../investmentCancel/investmentCancel.
     MenuConfigComponent,
     ChangePasswordComponent,
     BgtEmployeeComponent,
+    BgtOwnComponent,
   ],
   providers: [DatePipe]
 })
