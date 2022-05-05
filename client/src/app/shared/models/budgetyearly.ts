@@ -24,10 +24,10 @@ export interface IBudgetYearly {
 export class BudgetYearly implements IBudgetYearly {
     
     id: number=0;
-    compId:number=0;
+    compId:number=100;
     deptId:number=0;
-    year:number;
-    totalAmount:number;
+    year:number =2022;
+    totalAmount:any;
     remarks:string;
     enteredBy:number;
     newAmount:any;
