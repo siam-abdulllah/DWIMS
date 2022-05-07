@@ -8,8 +8,13 @@ namespace Core.Entities
         public int Count { get; set; }
     }
 
-    public class CountDouble : BaseEntity
+    public class CountLong : BaseEntity
     {
         public long Count { get; set; }
+    }
+
+    public class CountDouble : BaseEntity
+    {
+        public double Count { get; set; }
     }
 }

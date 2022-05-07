@@ -8,18 +8,13 @@
                     <div class="card card-primary">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-sm-9">
+                                <div class="col-sm-11">
                                     <h3 class="card-title">Role Wise Budget Distribution</h3>
                                 </div>
-                                <div class="col-sm-1">
-                                    <button class="btn btn-success btn-block" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Save</button>
-                                </div>
+
                                 <div class="col-sm-1 ">
                                     <button class="btn btn-danger btn-block" (click)="reset()" type="button "><i class="fa fa-undo "></i>&nbsp; Reset</button>
                                 </div>
-                                <!-- <div class="col-sm-1 ">
-                                    <button class="btn btn-info btn-block" (click)="ViewReport()" [hidden]="isValid" type="button "><i class="fa fa-save "></i>&nbsp; View</button>
-                                </div> -->
                             </div>
                         </div>
                         <!-- /.card-header -->
@@ -43,8 +38,8 @@
                                         <div class="col-md-3 ">
                                             <select class="form-control" id="deptId" formControlName="deptId" required>
                                         <option [ngValue]="null">Select Department</option>
-                                        <option [ngValue]="001">Sales</option>
-                                        <option [ngValue]="002">PMD</option>
+                                        <option [ngValue]="1">Sales</option>
+                                        <option [ngValue]="2">PMD</option>
                                     </select>
                                         </div>
                                         <div class="col-md-1 ">

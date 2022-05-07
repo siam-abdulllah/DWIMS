@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { GenericParams } from '../shared/models/genericParams';
 import { InvestmentMedicineProd } from '../shared/models/investmentRec';
-import { MedicineDispatch, MedicineDispatchDtl} from '../shared/models/medDispatch';
+import { BgtEmpInsertDto} from '../shared/models/bgtEmployee';
 
 
 
@@ -18,10 +18,8 @@ import { MedicineDispatch, MedicineDispatchDtl} from '../shared/models/medDispat
 })
 export class BgtEmployeeService {
 
-  medDispatchFormData: MedicineDispatch = new MedicineDispatch();
-  investmentMedicineProdFormData: InvestmentMedicineProd = new InvestmentMedicineProd();
+  bgtEmpFormData: BgtEmpInsertDto = new BgtEmpInsertDto();
   rptDepotLetter: IrptDepotLetterSearch[]=[];
-  medDispDtl: MedicineDispatchDtl = new MedicineDispatchDtl();
   pagination = new DepotLetterSearchPagination();
  
 
@@ -40,7 +38,7 @@ export class BgtEmployeeService {
   }
 
   getApprovalAuthority(){    
-    return this.http.get(this.baseUrl + 'approvalAuthority/approvalAuthoritiesForConfig');
+    return this.http.get(this.baseUrl + 'bgtEmployee/approvalAuthoritiesForConfig');
   }
   
   getSBU(){    
@@ -60,5 +58,8 @@ export class BgtEmployeeService {
     return this.http.get(this.baseUrl + 'bgtEmployee/getAuthPersonCount/'+authId+'/'+sbu);
   }
 
+  insertBgtEmp(bgtEmpFormData: any) {
+    return this.http.post(this.baseUrl+ 'bgtEmployee/insertBgtEmployee', bgtEmpFormData);
+  }
 
 }

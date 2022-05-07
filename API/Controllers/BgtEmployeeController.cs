@@ -1,6 +1,8 @@
-﻿using Core.Entities;
+﻿using API.Dtos;
+using Core.Entities;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,8 +20,24 @@ namespace API.Controllers
             _dbContext = dbContext;
         }
 
+
+          [HttpGet("approvalAuthoritiesForConfig")]
+        public async Task<IReadOnlyList<ApprovalAuthority>> GetApprovalAuthorities()
+        {
+            try
+            {
+                var result = _dbContext.ApprovalAuthority.FromSqlRaw("select * from ApprovalAuthority where ApprovalAuthorityName = 'GPM' OR Priority > 2").ToList();
+                return result;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
         [HttpGet("getDeptSBUBudget/{deptId}/{sbu}/{year}")]
-        public ActionResult<IReadOnlyList<CountDouble>> GetDeptSBUWiseBudget(int deptId, string sbu, int year)
+        public ActionResult<IReadOnlyList<CountLong>> GetDeptSBUWiseBudget(int deptId, string sbu, int year)
         {
             try
             {
@@ -31,7 +49,7 @@ namespace API.Controllers
                     " and [Year] = '"+ year  + "' " +
                     " and DataStatus = 1 ";
 
-                var result = _dbContext.CountDouble.FromSqlRaw(qry).ToList();
+                var result = _dbContext.CountLong.FromSqlRaw(qry).ToList();
 
                 return result;
             }
@@ -43,7 +61,7 @@ namespace API.Controllers
 
 
         [HttpGet("getPrevAlloc/{deptId}/{sbu}/{year}")]
-        public ActionResult<IReadOnlyList<CountDouble>> GetPreviousAllocated(int deptId, string sbu, int year)
+        public ActionResult<IReadOnlyList<CountLong>> GetPreviousAllocated(int deptId, string sbu, int year)
         {
             try
             {
@@ -55,7 +73,7 @@ namespace API.Controllers
                     " and [Year] = '"+ year  + "' " +
                     " and DataStatus = 1 ";
 
-                var result = _dbContext.CountDouble.FromSqlRaw(qry).ToList();
+                var result = _dbContext.CountLong.FromSqlRaw(qry).ToList();
 
                 return result;
             }
@@ -89,5 +107,31 @@ namespace API.Controllers
         }
 
 
+        [HttpPost("insertBgtEmployee")]
+        public async Task<Int32> BgtEmpInsert(BgtEmpInsertDto dto)
+        {
+            try
+            {
+                List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                        new SqlParameter("@DeptId", dto.DeptId),
+                        new SqlParameter("@Year", dto.Year),
+                        new SqlParameter("@SBU ", dto.SBU),
+                        new SqlParameter("@AuthId", dto.AuthId),
+                        new SqlParameter("@Amount", dto.Amount),
+                        new SqlParameter("@Segment", dto.Segment),
+                        new SqlParameter("@PermView", dto.PermView),
+                        new SqlParameter("@PermEdit", dto.PermEdit),
+                        new SqlParameter("@EnteredBy", dto.EnteredBy),
+                    };
+
+                var results = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtEmployeeInsert] @DeptId, @Year, @SBU , @AuthId, @Amount, @Segment, @PermView, @PermEdit, @EnteredBy", parms.ToArray());
+                return results;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

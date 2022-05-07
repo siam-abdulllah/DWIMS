@@ -185,6 +185,9 @@ export class BgtEmployeeComponent implements OnInit {
     
     this.getSBU();
     this.getApprovalAuthority();
+
+    this.bgtEmployee.value.permEdit = true;
+    this.bgtEmployee.value.permView = true;
   }
 
   getEmployeeId() {
@@ -193,8 +196,6 @@ export class BgtEmployeeComponent implements OnInit {
   }
 
   insertbgtEmployee() {
-
-alert(this.bgtEmployee.value.permEdit);
 
     if(this.bgtEmployee.value.remaining < 0)
     {
@@ -223,47 +224,27 @@ alert(this.bgtEmployee.value.permEdit);
       return;
     }
 
+    var yr = new Date(this.bgtEmployee.value.year);
+    
 
-    // this.pendingService.medDispatchFormData.investmentInitId = this.medDispatchForm.value.investmentInitId;
-    // this.pendingService.medDispatchFormData.issueReference = this.medDispatchForm.value.issueReference;
-    // this.pendingService.medDispatchFormData.issueDate = this.medDispatchForm.value.issueDate;
-    // this.pendingService.medDispatchFormData.sapRefNo = this.medDispatchForm.value.issueReference;
-    // this.pendingService.medDispatchFormData.payRefNo = this.medDispatchForm.value.payRefNo;
-    // this.pendingService.medDispatchFormData.depotName = "";
-    // this.pendingService.medDispatchFormData.depotCode = "";
-    // this.pendingService.medDispatchFormData.employeeId = parseInt(this.empId);
-    // this.pendingService.medDispatchFormData.remarks = this.medDispatchForm.value.remarks;
-    // this.pendingService.medDispatchFormData.dispatchAmt = this.medDispatchForm.value.dispatchAmt;
-    // this.pendingService.medDispatchFormData.proposeAmt = this.medDispatchForm.value.proposeAmt;
+    this.bgtService.bgtEmpFormData.deptId = this.bgtEmployee.value.deptId;
+    this.bgtService.bgtEmpFormData.year = yr.getFullYear();
+    this.bgtService.bgtEmpFormData.sbu = this.bgtEmployee.value.sbu;
+    this.bgtService.bgtEmpFormData.authId = this.bgtEmployee.value.authId;
+    this.bgtService.bgtEmpFormData.amount = this.bgtEmployee.value.ttlAmount;
+    this.bgtService.bgtEmpFormData.segment = this.bgtEmployee.value.segment;
+    this.bgtService.bgtEmpFormData.permEdit = this.bgtEmployee.value.permEdit;
+    this.bgtService.bgtEmpFormData.permView = this.bgtEmployee.value.permView;
+    this.bgtService.bgtEmpFormData.enteredBy = parseInt(this.empId);
 
-
-    // this.pendingService.insertDispatch(this.pendingService.medDispatchFormData).subscribe(
-    //   res => {
-    //     this.SaveMedicineDetail();
-    //     this.toastr.success('Data Saved successfully', 'Medicine Dispatch') 
-    //     this.isValid = false;
-    //   },
-    //   err => { console.log(err); }
-    // );
+    this.bgtService.insertBgtEmp(this.bgtService.bgtEmpFormData).subscribe(
+      res => {
+        this.toastr.success('Master Budget Data Saved successfully', 'Budget Dispatch') 
+        this.isValid = false;
+      },
+      err => { console.log(err); }
+    );
   }
-
-  // modifyData(selectedRecord: IMedicineDispatchDtl)
-  // {
-  //   this.valShow = false;
-  //   this.isHide = true;
-  //   this.medDispatchForm.patchValue({
-  //     productName: selectedRecord.productName,
-  //     productId: selectedRecord.productId,
-  //     originVal:  selectedRecord.tpVat,
-  //     originQty: selectedRecord.boxQuantity,
-  //     dispVal:  selectedRecord.dispatchTpVat,
-  //     dispQty:  selectedRecord.dispatchQuantity,
-  //     // formControlName2: myValue2 (can be omitted)
-  //   });
-
-  //   const index = this.investmentMedicineProds.indexOf(selectedRecord);
-  //   this.investmentMedicineProds.splice(index, 1);
-  // }
 
   private formatDate(date) {
     const d = new Date(date);
@@ -274,105 +255,6 @@ alert(this.bgtEmployee.value.permEdit);
     if (day.length < 2) day = '0' + day;
     return [day, month, year ].join('-');
   }
-
-  // ViewData(selectedRecord: IMedDispSearch)
-  // {
-  //   this.medDispatchForm.patchValue({
-  //     payRefNo: selectedRecord.payRefNo,
-  //     referenceNo: selectedRecord.referenceNo,
-  //     employeeName: selectedRecord.employeeName,
-  //     doctorName:  selectedRecord.doctorName,
-  //     donationTypeName: selectedRecord.donationTypeName,
-  //     marketName:  selectedRecord.marketName,
-  //     proposeAmt:  selectedRecord.proposedAmount,
-  //     investmentInitId:  selectedRecord.investmentInitId,
-  //     approvedBy:  selectedRecord.approvedBy,
-  //     approvedDate:  this.formatDate(selectedRecord.approvedDate),
-  //     depotName: selectedRecord.depotName,
-  //     // formControlName2: myValue2 (can be omitted)
-  //   });
-  //   this.isValid = true;
-  //   this.isHide = false;
-    
-  //   this.getInvestmentMedicineProd();
-  //   this.pendingListModalRef.hide();
-  // }
-
-
-// updateData()
-// {
-//   debugger;
-//   if(this.medDispatchForm.value.dispQty == null || this.medDispatchForm.value.dispQty == 0)
-//   {
-//     this.toastr.warning('Invalid Quantity', 'Medicine Dispatch');
-//     return;
-//   }
-//   if(this.medDispatchForm.value.dispQty > this.medDispatchForm.value.originQty)
-//   {
-//     this.toastr.warning('Dispatch Quantity Can not be greater than Initial Quantity', 'Medicine Dispatch');
-//     return;
-//   }
-
-//   this.medDispatchForm.value.dispatchTpVat = (this.medDispatchForm.value.originVal / this.medDispatchForm.value.originQty * this.medDispatchForm.value.dispQty);
-
-//   let data = new MedicineDispatchDtl();
-//   data.id = 0;
-//   data.investmentInitId = this.medDispatchForm.value.investmentInitId;
-//   data.employeeId = parseInt(this.empId);
-//   data.productId = this.medDispatchForm.value.productId;
-//   data.productName = this.medDispatchForm.value.productName;
-//   data.boxQuantity = this.medDispatchForm.value.originQty;
-//   data.tpVat = this.medDispatchForm.value.originVal;
-//   data.dispatchQuantity = this.medDispatchForm.value.dispQty;
-//   data.dispatchTpVat = (this.medDispatchForm.value.originVal / this.medDispatchForm.value.originQty * this.medDispatchForm.value.dispQty);
-//   this.investmentMedicineProds.push(data);
-
-  
-//   if ( this.investmentMedicineProds.length>0) {
-//     let sum=0;
-//     for (let i = 0; i < this.investmentMedicineProds.length; i++) {
-//       sum=sum+this.investmentMedicineProds[i].dispatchTpVat;
-//     }
-//     this.medDispatchForm.patchValue({
-//       dispatchAmt: sum.toLocaleString(),
-//     });
-//   }
-//   else {
-//     this.medDispatchForm.patchValue({
-//       dispatchAmt: '0',
-//     });
-//     this.investmentMedicineProds =[];
-//   }
-
-//   this.valShow = true;
-//   this.isHide = false;
-// }
-
-  // removeInvestmentMedicineProd(selectedRecord: IMedicineDispatchDtl) {
-  //   var c = confirm("Are you sure you want to delete that?");
-  //   if (c == true) {
-  //       const index = this.investmentMedicineProds.indexOf(selectedRecord);
-  //       this.investmentMedicineProds.splice(index, 1);
-
-  //       if ( this.investmentMedicineProds.length>0) {
-  //         let sum=0;
-  //         for (let i = 0; i < this.investmentMedicineProds.length; i++) {
-  //           sum=sum+this.investmentMedicineProds[i].dispatchTpVat;
-  //         }
-  
-  //         this.medDispatchForm.patchValue({
-  //           dispatchAmt: sum.toLocaleString(),
-  //         });
-  
-  //       }
-  //       else {
-  //         this.medDispatchForm.patchValue({
-  //           dispatchAmt: '0',
-  //         });
-  //         this.investmentMedicineProds =[];
-  //       }
-  //   }
-// }
 
   resetSearch(){
     this.searchText = '';

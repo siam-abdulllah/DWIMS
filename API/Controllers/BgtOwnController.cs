@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace API.Controllers
 {
-    public class BgtEmployeeController : BaseApiController
+    public class BgtOwnController : BaseApiController
     {
         private readonly StoreContext _dbContext;
 
-        public BgtEmployeeController( StoreContext dbContext)
+        public BgtOwnController( StoreContext dbContext)
         {
             _dbContext = dbContext;
         }
