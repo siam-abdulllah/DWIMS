@@ -24,7 +24,7 @@ export interface IBudgetYearly {
 export class BudgetYearly implements IBudgetYearly {
     
     id: number=0;
-    compId:number=100;
+    compId:number=1000;
     deptId:number=0;
     year:number =2022;
     totalAmount:any;
@@ -56,7 +56,7 @@ export interface IBudgetSbuYearly {
  
 export class BudgetSbuYearly implements IBudgetSbuYearly {
     id: number=0;
-    compId:number=100;
+    compId:number=1000;
     deptId:number=0;
     year:number;
     sbuCode:string=null;

@@ -9,28 +9,44 @@ using Infrastructure.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
 
 namespace API.Controllers
 {
     public class EmployeeController : BaseApiController
     {
         private readonly IGenericRepository<Employee> _employeeRepo;
+        private readonly IGenericRepository<EmpSbuMapping> _empSbuMappingRepo;
         private readonly IGenericIdentityRepository<AppUser> _userRepo;
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
         private readonly StoreContext _db;
         public EmployeeController(IGenericRepository<Employee> employeeRepo, IGenericIdentityRepository<AppUser> userRepo, UserManager<AppUser> userManager, StoreContext db,
-        IMapper mapper)
+        IMapper mapper, IGenericRepository<EmpSbuMapping> empSbuMappingRepo)
         {
             _mapper = mapper;
             _employeeRepo = employeeRepo;
             _userRepo = userRepo;
             _userManager = userManager;
             _db = db;
+            _empSbuMappingRepo = empSbuMappingRepo;
         }
       
         [HttpGet("employeesForConfig")]
         public async Task<IReadOnlyList<Employee>> GetEmployeesForConfig()
+        {
+            try
+            {
+                var employee = await _employeeRepo.ListAllAsync();
+                return employee;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpGet("employeesForSbuMapping")]
+        public async Task<IReadOnlyList<Employee>> GetEmployeesForSbuMapping()
         {
             try
             {
@@ -415,6 +431,91 @@ namespace API.Controllers
                               ).Distinct().ToList();
                 //var mappedMarket = _mapper.Map<IReadOnlyList<Employee>, IReadOnlyList<MarketDto>>(market);
                 return region;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpPost("SaveEmpSbuMapping")]
+        public ActionResult<EmpSbuMappingDto> SaveEmpSbuMapping(EmpSbuMappingDto empSbuMappingDto)
+        {
+            //#region Updating existing Entry
+            var qry = string.Format(@"select * from EmpSbuMapping where EmployeeId = {0}
+                                    and SBU = {1} and DataStatus=1", 
+                                    empSbuMappingDto.EmployeeId, empSbuMappingDto.SBU);
+
+            List<EmpSbuMapping> existingRecord = _db.ExecSQL<EmpSbuMapping>(qry).ToList();
+            var empMapping = new EmpSbuMapping();
+            if (existingRecord == null || existingRecord.Count == 0)
+            {
+                #region Insert New Budget
+                //string bgtYear = setBgtDto.Year.ToString("yyyy");
+                empMapping = new EmpSbuMapping
+                {
+                    CompId = empSbuMappingDto.CompId,
+                    SBU = empSbuMappingDto.SBU,
+                    SBUName = empSbuMappingDto.SBUName,
+                    DeptId = empSbuMappingDto.DeptId,
+                    SetOn = DateTimeOffset.Now,
+                    ModifiedOn = DateTimeOffset.Now,
+                    DataStatus = 1,
+                    EmployeeId = empSbuMappingDto.EmployeeId
+
+                };
+
+                _empSbuMappingRepo.Add(empMapping);
+                _empSbuMappingRepo.Savechange();
+                #endregion
+          
+            }
+            return new EmpSbuMappingDto
+            {
+                Id = empMapping.Id,
+                DeptId = empMapping.DeptId,
+                EmployeeId = empMapping.EmployeeId,
+                SBU = empMapping.SBU,
+                CompId = empMapping.CompId
+
+            };
+        }
+        [HttpPost("removeEmpSbuMapping")]
+        public async Task<IActionResult> RemoveEmpSbuMappingAsync(EmpSbuMappingDto empSbuMappingDto)
+        {
+            #region Updating existing Entry
+            try
+            {
+                var empSbuMapping = await _empSbuMappingRepo.GetByIdAsync(empSbuMappingDto.Id);
+                if (empSbuMapping != null)
+                {
+                    empSbuMapping.DataStatus = 0;
+
+                    _empSbuMappingRepo.Update(empSbuMapping);
+                    _empSbuMappingRepo.Savechange();
+                    return Ok("Succsessfuly Deleted!!!");
+                }
+                return NotFound();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            #endregion
+     
+        }
+        [HttpGet]
+        [Route("getEmpSbuMappingList/{deptID}")]
+        public IReadOnlyList<EmpSbuMappingVM> GetEmpSbuMappingList(int deptID)
+        {
+            try
+            {
+                 var qry = string.Format(@" select em.*,emp.EmployeeName from EmpSbuMapping em
+                                            left join employee emp on emp.Id = em.EmployeeId
+                                            where em.DeptId={0} and em.DataStatus=1", deptID);
+
+                List<EmpSbuMappingVM> dsResult = _db.ExecSQL<EmpSbuMappingVM>(qry).ToList();
+                return dsResult;
             }
             catch (System.Exception ex)
             {
