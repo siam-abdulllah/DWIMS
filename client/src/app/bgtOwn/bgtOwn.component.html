@@ -66,7 +66,7 @@
                                 <div class="form-group ">
                                     <div class="row ">
                                         <div class="col-md-1 ">
-                                            <label>Company Name</label>
+                                            <label>Comp. Name</label>
                                         </div>
                                         <div class="col-md-5 ">
                                             <input class="form-control" value="Square Pharmaceuticals Ltd." readonly>
@@ -147,19 +147,84 @@
                                             <input type="checkbox" id="permView" formControlName="permView" value="1">
                                             <label for="permView"> Can View</label>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="form-group ">
-                                    <div class="row ">
-                                        <div class="col-md-11">
+                                        <div class="col-md-6 ">
                                         </div>
                                         <div class="col-md-1">
                                             <button class="btn btn-success btn-block" (click)="insertbgtOwn()" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Save</button>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group ">
+                                    <div class="row ">
+                                        <div class="col-md-11">
+                                        </div>
+
+                                    </div>
+                                </div>
                             </fieldset>
                         </div>
+                        <fieldset>
+                            <div class="form-group ">
+                                <div class="row ">
+                                    <div class="col-md-1 ">
+                                    </div>
+                                    <div class="col-md-1 ">
+                                        <label>Donation</label>
+                                    </div>
+                                    <div class="col-md-2 ">
+                                        <select class="form-control" id="donationId" formControlName="donationId">
+                                        <option *ngFor="let a of donations" [value]="a.Id">{{a.donationTypeName}}</option>
+                                    </select>
+                                    </div>
+
+                                    <div class="col-md-1 ">
+                                        <label>Amount</label>
+                                    </div>
+                                    <div class="col-md-2 ">
+                                        <input class="form-control" id="donationAmt" formControlName="donationAmt">
+                                    </div>
+                                    <div class="col-md-1 ">
+                                        <label>Trans Limit</label>
+                                    </div>
+                                    <div class="col-md-2 ">
+                                        <input class="form-control" id="transLimit" formControlName="transLimit">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button class="btn btn-success btn-block" (click)="insertbgtOwn()" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Save Details</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <div class="row ">
+                                    <div class="col-md-10">
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <table class="table  table-bordered">
+                                    <tr class="HeaderRow">
+                                        <td>Donation Type</td>
+                                        <td>Amount Per Transtion </td>
+                                        <td>Total Amount</td>
+                                        <td>Total Expense</td>
+                                        <td>Total Pipeline</td>
+                                    </tr>
+                                    <!-- <tr *ngFor="let a of investmentTargetedProds">
+                                        <td>
+                                            {{a.productInfo.productName}}
+                                        </td>
+                                        <td>
+                                            {{a.productInfo.sbuName}}
+                                        </td>
+                                        <td>
+                                            <input type="button" *ngIf="sbu==a.sbu" (click)="removeInvestmentTargetedProd(a)" value="Remove">
+                                        </td>
+                                    </tr> -->
+                                </table>
+                            </div>
+                        </fieldset>
+
                         <!-- /.card -->
                     </div>
 

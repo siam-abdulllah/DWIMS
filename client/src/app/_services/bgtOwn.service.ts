@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { GenericParams } from '../shared/models/genericParams';
 import { InvestmentMedicineProd } from '../shared/models/investmentRec';
 import { MedicineDispatch, MedicineDispatchDtl} from '../shared/models/medDispatch';
+import { BgtEmpInsertDto } from '../shared/models/bgtEmployee';
 
 
 
@@ -17,7 +18,7 @@ import { MedicineDispatch, MedicineDispatchDtl} from '../shared/models/medDispat
   providedIn: 'root'
 })
 export class BgtOwnService {
-
+  bgtEmpFormData: BgtEmpInsertDto = new BgtEmpInsertDto();
   medDispatchFormData: MedicineDispatch = new MedicineDispatch();
   investmentMedicineProdFormData: InvestmentMedicineProd = new InvestmentMedicineProd();
   rptDepotLetter: IrptDepotLetterSearch[]=[];
@@ -73,6 +74,10 @@ export class BgtOwnService {
   getAuthPersonCount(authId: any ){    
     return this.http.get(this.baseUrl + 'BgtOwn/getAuthPersonCount/'+authId);
   }
-
-
+  getDonations() {
+    return this.http.get(this.baseUrl + 'donation/donationsForInvestment');
+  }
+  insertBgtEmp(bgtEmpFormData: any) {
+    return this.http.post(this.baseUrl+ 'bgtEmployee/insertBgtEmployee', bgtEmpFormData);
+  }
 }

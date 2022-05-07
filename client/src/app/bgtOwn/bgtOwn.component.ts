@@ -16,6 +16,7 @@ import { ISBU } from '../shared/models/sbu';
 import { DATE } from 'ngx-bootstrap/chronos/units/constants';
 import { IEmployeeInfo } from '../shared/models/employeeInfo';
 import { IEmployee } from '../shared/models/employee';
+import { IDonation } from '../shared/models/donation';
 
 @Component({
   selector: 'bgtOwn',
@@ -42,6 +43,7 @@ export class BgtOwnComponent implements OnInit {
   config: any;
   totalCount = 0;
   userRole: any;
+  donations: IDonation[];
   constructor(public bgtService: BgtOwnService, private SpinnerService: NgxSpinnerService, private modalService: BsModalService, private accountService: AccountService,
     private router: Router, private toastr: ToastrService, private datePipe: DatePipe,) {
   }
@@ -120,6 +122,9 @@ export class BgtOwnComponent implements OnInit {
       authId: new FormControl({ value: '', disabled: true }, [Validators.required]),
       sbu: new FormControl('', [Validators.required]),
       totalAmount: new FormControl(''),
+      donationId: new FormControl(''),
+      donationAmt: new FormControl(''),
+      transLimit: new FormControl(''),
       totalExpense: new FormControl(''),
       totalPipeline: new FormControl(''),
       segment: new FormControl(''),
@@ -132,7 +137,7 @@ export class BgtOwnComponent implements OnInit {
   }
 
   getDeptSbuWiseBudgetAmt() {
-    // if (this.bgtOwn.value.deptId == "" || this.bgtOwn.value.deptId == null) {
+    // if (this.bgtOwn.getRawValue().deptId == "" || this.bgtOwn.getRawValue().deptId == null) {
     //   this.toastr.error('Select Department');
     //   this.bgtOwn.patchValue({
     //     year: "",
@@ -157,7 +162,7 @@ export class BgtOwnComponent implements OnInit {
     var yr = new Date(this.bgtOwn.value.year);
     yr.getFullYear();
 
-    this.bgtService.getEmpWiseBgt(this.bgtOwn.value.employee, this.bgtOwn.value.sbu,yr.getFullYear(),1000,this.bgtOwn.value.deptId).subscribe(response => {
+    this.bgtService.getEmpWiseBgt(this.bgtOwn.value.employee, this.bgtOwn.value.sbu,yr.getFullYear(),1000,this.bgtOwn.getRawValue().deptId).subscribe(response => {
       debugger;
       this.bgtOwn.patchValue({
         segment: response[0].segment,
@@ -179,14 +184,14 @@ export class BgtOwnComponent implements OnInit {
     }, error => {
       console.log(error);
     });
-  //   this.bgtService.getEmpWiseTotPipe(this.bgtOwn.value.employee, this.bgtOwn.value.sbu,yr.getFullYear(),1000,this.bgtOwn.value.deptId).subscribe(response => {
-  //     debugger;
-  //     this.bgtOwn.patchValue({
-  //       totalExpense:response[0].count
-  //     });
-  //   }, error => {
-  //     console.log(error);
-  //   });
+    this.bgtService.getEmpWiseTotPipe(this.bgtOwn.value.employee, this.bgtOwn.value.sbu,yr.getFullYear(),1000,this.bgtOwn.getRawValue().deptId).subscribe(response => {
+      debugger;
+      this.bgtOwn.patchValue({
+        totalPipeline:response[0].count
+      });
+    }, error => {
+      console.log(error);
+    });
   }
 
   getAuthPersonCount() {
@@ -253,11 +258,18 @@ export class BgtOwnComponent implements OnInit {
     this.createbgtOwnForm();
     this.reset();
     this.getEmployeeId();
-
-    
+    this.getEmployee();
+    this.getSBU();
     this.getApprovalAuthority();
+    this.getDonation();
   }
-
+  getDonation() {
+    this.bgtService.getDonations().subscribe(response => {
+      this.donations = response as IDonation[];
+    }, error => {
+      console.log(error);
+    });
+  }
   getEmployeeId() {
     this.empId = this.accountService.getEmployeeId();
     this.userRole = this.accountService.getUserRole();
@@ -271,51 +283,100 @@ export class BgtOwnComponent implements OnInit {
     });
   }
 
+  // insertbgtOwn() {
+
+  //   alert(this.bgtOwn.value.permEdit);
+
+  //   if (this.bgtOwn.getRawValue().deptId == "" || this.bgtOwn.getRawValue().deptId == null) {
+  //     this.toastr.error('Select Department');
+  //     return;
+  //   }
+  //   if (this.bgtOwn.value.sbu == "" || this.bgtOwn.value.sbu == null) {
+  //     this.toastr.error('Select SBU');
+  //     return;
+  //   }
+  //   if (this.bgtOwn.value.year == "" || this.bgtOwn.value.year == null) {
+  //     this.toastr.error('Enter Year');
+  //     return;
+  //   }
+  //   if (this.bgtOwn.value.amount == "" || this.bgtOwn.value.amount == null) {
+  //     this.toastr.error('Amount Can not be 0');
+  //     return;
+  //   }
+
+
+  //   // this.pendingService.medDispatchFormData.investmentInitId = this.medDispatchForm.value.investmentInitId;
+  //   // this.pendingService.medDispatchFormData.issueReference = this.medDispatchForm.value.issueReference;
+  //   // this.pendingService.medDispatchFormData.issueDate = this.medDispatchForm.value.issueDate;
+  //   // this.pendingService.medDispatchFormData.sapRefNo = this.medDispatchForm.value.issueReference;
+  //   // this.pendingService.medDispatchFormData.payRefNo = this.medDispatchForm.value.payRefNo;
+  //   // this.pendingService.medDispatchFormData.depotName = "";
+  //   // this.pendingService.medDispatchFormData.depotCode = "";
+  //   // this.pendingService.medDispatchFormData.employeeId = parseInt(this.empId);
+  //   // this.pendingService.medDispatchFormData.remarks = this.medDispatchForm.value.remarks;
+  //   // this.pendingService.medDispatchFormData.dispatchAmt = this.medDispatchForm.value.dispatchAmt;
+  //   // this.pendingService.medDispatchFormData.proposeAmt = this.medDispatchForm.value.proposeAmt;
+
+
+  //   // this.pendingService.insertDispatch(this.pendingService.medDispatchFormData).subscribe(
+  //   //   res => {
+  //   //     this.SaveMedicineDetail();
+  //   //     this.toastr.success('Data Saved successfully', 'Medicine Dispatch') 
+  //   //     this.isValid = false;
+  //   //   },
+  //   //   err => { console.log(err); }
+  //   // );
+  // }
   insertbgtOwn() {
 
-    alert(this.bgtOwn.value.permEdit);
+    if(this.bgtOwn.value.remaining < 0)
+    {
+      this.toastr.error('There is not enough budget left to be allocated');
+      return;
+    }
 
-    if (this.bgtOwn.value.deptId == "" || this.bgtOwn.value.deptId == null) {
+    if(this.bgtOwn.value.deptId == "" || this.bgtOwn.value.deptId == null)
+    {
       this.toastr.error('Select Department');
       return;
     }
-    if (this.bgtOwn.value.sbu == "" || this.bgtOwn.value.sbu == null) {
+    if(this.bgtOwn.value.sbu == "" || this.bgtOwn.value.sbu == null)
+    {
       this.toastr.error('Select SBU');
       return;
     }
-    if (this.bgtOwn.value.year == "" || this.bgtOwn.value.year == null) {
+    if(this.bgtOwn.value.year == "" || this.bgtOwn.value.year == null)
+    {
       this.toastr.error('Enter Year');
       return;
     }
-    if (this.bgtOwn.value.amount == "" || this.bgtOwn.value.amount == null) {
+    if(this.bgtOwn.value.ttlAmount == "" || this.bgtOwn.value.ttlAmount == null)
+    {
       this.toastr.error('Amount Can not be 0');
       return;
     }
 
+    var yr = new Date(this.bgtOwn.value.year);
+    
 
-    // this.pendingService.medDispatchFormData.investmentInitId = this.medDispatchForm.value.investmentInitId;
-    // this.pendingService.medDispatchFormData.issueReference = this.medDispatchForm.value.issueReference;
-    // this.pendingService.medDispatchFormData.issueDate = this.medDispatchForm.value.issueDate;
-    // this.pendingService.medDispatchFormData.sapRefNo = this.medDispatchForm.value.issueReference;
-    // this.pendingService.medDispatchFormData.payRefNo = this.medDispatchForm.value.payRefNo;
-    // this.pendingService.medDispatchFormData.depotName = "";
-    // this.pendingService.medDispatchFormData.depotCode = "";
-    // this.pendingService.medDispatchFormData.employeeId = parseInt(this.empId);
-    // this.pendingService.medDispatchFormData.remarks = this.medDispatchForm.value.remarks;
-    // this.pendingService.medDispatchFormData.dispatchAmt = this.medDispatchForm.value.dispatchAmt;
-    // this.pendingService.medDispatchFormData.proposeAmt = this.medDispatchForm.value.proposeAmt;
+    this.bgtService.bgtEmpFormData.deptId = this.bgtOwn.value.deptId;
+    this.bgtService.bgtEmpFormData.year = yr.getFullYear();
+    this.bgtService.bgtEmpFormData.sbu = this.bgtOwn.value.sbu;
+    this.bgtService.bgtEmpFormData.authId = this.bgtOwn.value.authId;
+    this.bgtService.bgtEmpFormData.amount = this.bgtOwn.value.ttlAmount;
+    this.bgtService.bgtEmpFormData.segment = this.bgtOwn.value.segment;
+    this.bgtService.bgtEmpFormData.permEdit = this.bgtOwn.value.permEdit;
+    this.bgtService.bgtEmpFormData.permView = this.bgtOwn.value.permView;
+    this.bgtService.bgtEmpFormData.enteredBy = parseInt(this.empId);
 
-
-    // this.pendingService.insertDispatch(this.pendingService.medDispatchFormData).subscribe(
-    //   res => {
-    //     this.SaveMedicineDetail();
-    //     this.toastr.success('Data Saved successfully', 'Medicine Dispatch') 
-    //     this.isValid = false;
-    //   },
-    //   err => { console.log(err); }
-    // );
+    this.bgtService.insertBgtEmp(this.bgtService.bgtEmpFormData).subscribe(
+      res => {
+        this.toastr.success('Master Budget Data Saved successfully', 'Budget Dispatch') 
+        //this.btnShow = false;
+      },
+      err => { console.log(err); }
+    );
   }
-
   // modifyData(selectedRecord: IMedicineDispatchDtl)
   // {
   //   this.valShow = false;
@@ -354,8 +415,7 @@ export class BgtOwnComponent implements OnInit {
   }
 
   reset() {
-    this.getEmployee();
-    this.getSBU();
+   
     this.isValid = true;
     this.valShow = true;
     this.isHide = false;
@@ -364,6 +424,9 @@ export class BgtOwnComponent implements OnInit {
       year: "",
       authId: "",
       sbu: "",
+      donationId: "",
+      donationAmt: "",
+      transLimit: "",
       totalAmount: "",
       totalExpense: "",
       totalPipeline: "",
