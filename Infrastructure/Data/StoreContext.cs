@@ -147,6 +147,7 @@ namespace Infrastructure.Data
         [NotMapped]
         public DbSet<CountDouble> CountDouble { get; set; }
 
+
         public List<T> ExecSQL<T>(string query)
         {
             using (var command = Database.GetDbConnection().CreateCommand())

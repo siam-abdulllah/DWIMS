@@ -15,6 +15,7 @@ import { IApprovalAuthority } from '../shared/models/approvalAuthority';
 import { ISBU } from '../shared/models/sbu';
 import { DATE } from 'ngx-bootstrap/chronos/units/constants';
 import { IEmployeeInfo } from '../shared/models/employeeInfo';
+import { IEmployee } from '../shared/models/employee';
 
 @Component({
   selector: 'bgtOwn',
@@ -22,7 +23,7 @@ import { IEmployeeInfo } from '../shared/models/employeeInfo';
 })
 export class BgtOwnComponent implements OnInit {
 
-  @ViewChild('search', {static: false}) searchTerm: ElementRef;
+  @ViewChild('search', { static: false }) searchTerm: ElementRef;
   @ViewChild('pendingListModal', { static: false }) pendingListModal: TemplateRef<any>;
   pendingListModalRef: BsModalRef;
   bsConfig: Partial<BsDatepickerConfig>;
@@ -41,61 +42,112 @@ export class BgtOwnComponent implements OnInit {
   config: any;
   totalCount = 0;
   userRole: any;
-  constructor(public bgtService: BgtOwnService, private SpinnerService: NgxSpinnerService, private modalService: BsModalService, private accountService: AccountService, 
-     private router: Router, private toastr: ToastrService, private datePipe: DatePipe,) {
-   }
-   customSearchFnEmp(term: string, item: any) {
+  constructor(public bgtService: BgtOwnService, private SpinnerService: NgxSpinnerService, private modalService: BsModalService, private accountService: AccountService,
+    private router: Router, private toastr: ToastrService, private datePipe: DatePipe,) {
+  }
+  customSearchFnEmp(term: string, item: any) {
     term = term.toLocaleLowerCase();
     return item.employeeSAPCode.toLocaleLowerCase().indexOf(term) > -1 ||
       item.employeeName.toLocaleLowerCase().indexOf(term) > -1;
   }
   onChangeEmployee() {
-    
+    this.bgtService.getEmpWiseData(this.bgtOwn.value.employee).subscribe(response => {
+      var data = response as IApprovalAuthority[];
+      this.bgtOwn.patchValue({
+        authId: data[0].id,
+      });
+    }, error => {
+      console.log(error);
+    });
+    this.bgtService.getEmpWiseSBU(this.bgtOwn.value.employee).subscribe(response => {
+      this.SBUs = response as ISBU[];
+    }, error => {
+      console.log(error);
+    });
+    debugger;
+    for (let index = 0; index < this.employees.length; index++) {
+      if (this.bgtOwn.value.employee == this.employees[index].id) {
+        if (this.employees[index].departmentName == 'Sales') {
+          this.bgtOwn.patchValue({
+            deptId: 1,
+          });
+        }
+        else if (this.employees[index].departmentName == 'PMD') {
+          this.bgtOwn.patchValue({
+            deptId: 2,
+          });
+        }
+      }
+    }
+    // this.bgtService.getEmpWiseBgt(this.bgtOwn.value.employee).subscribe(response => {    
+    //   this.employees=response as IEmployeeInfo[];
+
+
+    //  }, error => {
+    //     console.log(error);
+    //  });
   }
   onChangeSBU() {
-    this.bgtService.getSbuWiseEmp(this.bgtOwn.value.sbu).subscribe(response => {    
+    // for (let index = 0; index < this.employees.length; index++) {
+    //   if (this.bgtOwn.value.employee == this.employees[index].id) {
+    //     if (this.employees[index].departmentName == 'Sales') {
+    //       this.bgtOwn.patchValue({
+    //         deptId: 1,
+    //       });
+    //     }
+    //     else if (this.employees[index].departmentName == 'PMD') {
+    //       this.bgtOwn.patchValue({
+    //         deptId: 2,
+    //       });
+    //     }
+    //   }
+    // }
+    //this.bgtService.getSbuWiseEmp(this.bgtOwn.value.sbu).subscribe(response => {
+     // this.employees = response as IEmployeeInfo[];
       // this.bgtOwn.patchValue({
       //   sbuTotalBudget: response[0].count,
       // });
-      
-     }, error => {
-        console.log(error);
-     });
+
+    //}, error => {
+    //  console.log(error);
+    //});
+
   }
-   createbgtOwnForm() {
+  createbgtOwnForm() {
     this.bgtOwn = new FormGroup({
-      deptId: new FormControl('', [Validators.required]),
+      deptId: new FormControl({ value: '', disabled: true }, [Validators.required]),
       year: new FormControl('', [Validators.required]),
-      authId: new FormControl('', [Validators.required]),
-      sbu: new FormControl('1021', [Validators.required]),
+      authId: new FormControl({ value: '', disabled: true }, [Validators.required]),
+      sbu: new FormControl('', [Validators.required]),
       totalAmount: new FormControl(''),
       totalExpense: new FormControl(''),
       totalPipeline: new FormControl(''),
       segment: new FormControl(''),
       permEdit: new FormControl(''),
       permView: new FormControl(''),
-      donationId: new FormControl(''),
-      donationAmount: new FormControl(''),
-      amtLimit: new FormControl(''),
       prevAllocate: new FormControl(''),
       remaining: new FormControl(''),
-      employee: new FormControl(9999),
+      employee: new FormControl(''),
     });
   }
 
-  getDeptSbuWiseBudgetAmt()
-  {
-    if(this.bgtOwn.value.deptId == "" || this.bgtOwn.value.deptId == null)
-    {
-      this.toastr.error('Select Department');
+  getDeptSbuWiseBudgetAmt() {
+    // if (this.bgtOwn.value.deptId == "" || this.bgtOwn.value.deptId == null) {
+    //   this.toastr.error('Select Department');
+    //   this.bgtOwn.patchValue({
+    //     year: "",
+    //   });
+    //   return;
+    // }
+    if (this.bgtOwn.value.sbu == "" || this.bgtOwn.value.sbu == null) {
+      this.toastr.error('Select SBU');
       this.bgtOwn.patchValue({
         year: "",
       });
       return;
     }
-    if(this.bgtOwn.value.sbu == "" || this.bgtOwn.value.sbu == null)
-    {
-      this.toastr.error('Select SBU');
+    if (this.bgtOwn.value.employee == "" || this.bgtOwn.value.employee == null) {
+      this.toastr.error('Select employee');
       this.bgtOwn.patchValue({
         year: "",
       });
@@ -105,48 +157,65 @@ export class BgtOwnComponent implements OnInit {
     var yr = new Date(this.bgtOwn.value.year);
     yr.getFullYear();
 
-    this.bgtService.getDeptSbuWiseBudgetAmt(this.bgtOwn.value.deptId, this.bgtOwn.value.sbu, yr.getFullYear()).subscribe(response => {    
-      // this.bgtOwn.patchValue({
-      //   sbuTotalBudget: response[0].count,
-      // });
-      
-     }, error => {
-        console.log(error);
-     });
+    this.bgtService.getEmpWiseBgt(this.bgtOwn.value.employee, this.bgtOwn.value.sbu,yr.getFullYear(),1000,this.bgtOwn.value.deptId).subscribe(response => {
+      debugger;
+      this.bgtOwn.patchValue({
+        segment: response[0].segment,
+        prevAllocate: response[0].amount,
+        totalAmount: response[0].amount,
+        remaining: this.bgtOwn.value.prevAllocate-this.bgtOwn.value.totalAmount,
+        permEdit: response[0].permEdit,
+        permView: response[0].permView,
+      });
+    }, error => {
+      console.log(error);
+    });
+    debugger;
+    this.bgtService.getEmpWiseTotExp(this.bgtOwn.value.employee, this.bgtOwn.value.sbu,yr.getFullYear(),1000,this.bgtOwn.getRawValue().deptId).subscribe(response => {
+      debugger;
+      this.bgtOwn.patchValue({
+        totalExpense:response[0].count
+      });
+    }, error => {
+      console.log(error);
+    });
+  //   this.bgtService.getEmpWiseTotPipe(this.bgtOwn.value.employee, this.bgtOwn.value.sbu,yr.getFullYear(),1000,this.bgtOwn.value.deptId).subscribe(response => {
+  //     debugger;
+  //     this.bgtOwn.patchValue({
+  //       totalExpense:response[0].count
+  //     });
+  //   }, error => {
+  //     console.log(error);
+  //   });
   }
 
-  getAuthPersonCount()
-  {
-    if(this.bgtOwn.value.authId == "" || this.bgtOwn.value.authId == null)
-    {
+  getAuthPersonCount() {
+    if (this.bgtOwn.value.authId == "" || this.bgtOwn.value.authId == null) {
       this.toastr.error('Select Authorization Level');
       return;
     }
 
-    this.bgtService.getAuthPersonCount(this.bgtOwn.value.authId).subscribe(response => {    
+    this.bgtService.getAuthPersonCount(this.bgtOwn.value.authId).subscribe(response => {
       // this.bgtOwn.patchValue({
       //   ttlPerson: response[0].count,
       // });
-      
-     }, error => {
-        console.log(error);
-     });
+
+    }, error => {
+      console.log(error);
+    });
   }
 
 
-  getAllocatedAmount()
-  {
+  getAllocatedAmount() {
 
-    if(this.bgtOwn.value.segment == "" || this.bgtOwn.value.segment == null)
-    {
+    if (this.bgtOwn.value.segment == "" || this.bgtOwn.value.segment == null) {
       this.toastr.error('Select Segmentation');
       return;
     }
 
-    if(this.bgtOwn.value.segment == "Monthly")
-    {
+    if (this.bgtOwn.value.segment == "Monthly") {
       const d = new Date();
-      
+
       var remMonth = 12 - d.getMonth() - 1;
       // var ttlAloc = this.bgtOwn.value.ttlPerson * this.bgtOwn.value.ttlAmount * remMonth;
 
@@ -154,8 +223,7 @@ export class BgtOwnComponent implements OnInit {
       //   ttlAllocate: ttlAloc,
       // });
     }
-    else if(this.bgtOwn.value.segment == "Yearly")
-    {
+    else if (this.bgtOwn.value.segment == "Yearly") {
       // var ttlAloc = this.bgtOwn.value.ttlPerson * this.bgtOwn.value.ttlAmount;
 
       // this.bgtOwn.patchValue({
@@ -164,12 +232,12 @@ export class BgtOwnComponent implements OnInit {
     }
   }
 
-  getApprovalAuthority(){
+  getApprovalAuthority() {
     this.bgtService.getApprovalAuthority().subscribe(response => {
       this.approvalAuthorities = response as IApprovalAuthority[];
-     }, error => {
-        console.log(error);
-     });
+    }, error => {
+      console.log(error);
+    });
   }
 
   getSBU() {
@@ -185,8 +253,8 @@ export class BgtOwnComponent implements OnInit {
     this.createbgtOwnForm();
     this.reset();
     this.getEmployeeId();
+
     
-    this.getSBU();
     this.getApprovalAuthority();
   }
 
@@ -194,28 +262,32 @@ export class BgtOwnComponent implements OnInit {
     this.empId = this.accountService.getEmployeeId();
     this.userRole = this.accountService.getUserRole();
   }
+  getEmployee() {
+    this.bgtService.getAllEmp().subscribe(response => {
+      this.employees = response as IEmployeeInfo[];
+
+    }, error => {
+      console.log(error);
+    });
+  }
 
   insertbgtOwn() {
 
-alert(this.bgtOwn.value.permEdit);
+    alert(this.bgtOwn.value.permEdit);
 
-    if(this.bgtOwn.value.deptId == "" || this.bgtOwn.value.deptId == null)
-    {
+    if (this.bgtOwn.value.deptId == "" || this.bgtOwn.value.deptId == null) {
       this.toastr.error('Select Department');
       return;
     }
-    if(this.bgtOwn.value.sbu == "" || this.bgtOwn.value.sbu == null)
-    {
+    if (this.bgtOwn.value.sbu == "" || this.bgtOwn.value.sbu == null) {
       this.toastr.error('Select SBU');
       return;
     }
-    if(this.bgtOwn.value.year == "" || this.bgtOwn.value.year == null)
-    {
+    if (this.bgtOwn.value.year == "" || this.bgtOwn.value.year == null) {
       this.toastr.error('Enter Year');
       return;
     }
-    if(this.bgtOwn.value.amount == "" || this.bgtOwn.value.amount == null)
-    {
+    if (this.bgtOwn.value.amount == "" || this.bgtOwn.value.amount == null) {
       this.toastr.error('Amount Can not be 0');
       return;
     }
@@ -269,19 +341,21 @@ alert(this.bgtOwn.value.permEdit);
     const year = d.getFullYear();
     if (month.length < 2) month = '0' + month;
     if (day.length < 2) day = '0' + day;
-    return [day, month, year ].join('-');
+    return [day, month, year].join('-');
   }
 
-  
-  resetSearch(){
-    this.searchText = '';
-}
 
-openPendingListModal(template: TemplateRef<any>) {
-  this.pendingListModalRef = this.modalService.show(template, this.config);
-}
+  resetSearch() {
+    this.searchText = '';
+  }
+
+  openPendingListModal(template: TemplateRef<any>) {
+    this.pendingListModalRef = this.modalService.show(template, this.config);
+  }
 
   reset() {
+    this.getEmployee();
+    this.getSBU();
     this.isValid = true;
     this.valShow = true;
     this.isHide = false;
@@ -289,19 +363,16 @@ openPendingListModal(template: TemplateRef<any>) {
       deptId: "",
       year: "",
       authId: "",
-      sbu: "1021",
+      sbu: "",
       totalAmount: "",
       totalExpense: "",
       totalPipeline: "",
       segment: "",
-      permEdit:"",
+      permEdit: "",
       permView: "",
-      donationId: "",
-      donationAmount: "",
-      amtLimit: "",
       prevAllocate: "",
       remaining: "",
-      employee: 9999,
+      employee: "",
     });
   }
 
