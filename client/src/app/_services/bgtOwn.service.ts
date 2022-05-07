@@ -42,16 +42,32 @@ export class BgtOwnService {
   getApprovalAuthority(){    
     return this.http.get(this.baseUrl + 'approvalAuthority/approvalAuthoritiesForConfig');
   }
-  
   getSBU(){    
     return this.http.get(this.baseUrl + 'employee/getSBU');
   }
-
   getDeptSbuWiseBudgetAmt(deptId: any, sbu: string, year: any ){    
     return this.http.get(this.baseUrl + 'BgtOwn/getDeptSBUBudget/'+deptId+'/'+sbu+'/'+year);
   }
+  getAllEmp(){    
+    return this.http.get(this.baseUrl + 'BgtOwn/getAllEmp');
+  }
   getSbuWiseEmp(sbu: any ){    
     return this.http.get(this.baseUrl + 'BgtOwn/getSbuWiseEmp/'+sbu);
+  }
+  getEmpWiseData(employeeId: any ){    
+    return this.http.get(this.baseUrl + 'BgtOwn/getEmpWiseData/'+employeeId);
+  }
+  getEmpWiseSBU(employeeId: any ){    
+    return this.http.get(this.baseUrl + 'BgtOwn/getEmpWiseSBU/'+employeeId);
+  }
+  getEmpWiseBgt(employeeId: any, sbu: string , year: any,compId:any,deptId:any ){    
+    return this.http.get(this.baseUrl + 'BgtOwn/getEmpWiseBgt/'+employeeId+'/'+sbu+'/'+year+'/'+compId+'/'+deptId);
+  }
+  getEmpWiseTotExp(employeeId: any, sbu: string , year: any,compId:any,deptId:any  ){    
+    return this.http.get(this.baseUrl + 'BgtOwn/getEmpWiseTotExp/'+employeeId+'/'+sbu+'/'+year+'/'+compId+'/'+deptId);
+  }
+  getEmpWiseTotPipe(employeeId: any, sbu: string , year: any ,compId:any,deptId:any ){    
+    return this.http.get(this.baseUrl + 'BgtOwn/getEmpWiseTotPipe/'+employeeId+'/'+sbu+'/'+year+'/'+compId+'/'+deptId);
   }
 
   getAuthPersonCount(authId: any ){    

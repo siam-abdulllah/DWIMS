@@ -28,14 +28,6 @@
                                 <div class="form-group ">
                                     <div class="row ">
                                         <div class="col-md-1 ">
-                                            <label>SBU</label>
-                                        </div>
-                                        <div class="col-md-3 ">
-                                            <select class="form-control" id="sbu" formControlName="sbu" (change)="onChangeSBU()">
-                                            <option *ngFor="let a of SBUs" [value]="a.sbuCode">{{a.sbuName}}</option>
-                                        </select>
-                                        </div>
-                                        <div class="col-md-1 ">
                                             <label>Employee</label>
                                         </div>
                                         <div class="col-md-3 ">
@@ -52,11 +44,21 @@
                                         </select> -->
                                         </div>
                                         <div class="col-md-1 ">
+                                            <label>SBU</label>
+                                        </div>
+                                        <div class="col-md-3 ">
+                                            <select class="form-control" id="sbu" formControlName="sbu" (change)="onChangeSBU()">
+                                            <option  value="">Select SBU</option>
+                                            <option *ngFor="let a of SBUs" [value]="a.sbuCode">{{a.sbuName}}</option>
+                                        </select>
+                                        </div>
+
+                                        <div class="col-md-1 ">
                                             <label>Authorize Level</label>
                                         </div>
                                         <div class="col-md-3 ">
-                                            <select class="form-control" id="authId" formControlName="authId" (change)="getAuthPersonCount()">
-                                        <option *ngFor="let a of approvalAuthorities" [value]="a.id">{{a.approvalAuthorityName}}</option>
+                                            <select class="form-control" id="authId" formControlName="authId" ng-readonly>
+                                                <option *ngFor="let a of approvalAuthorities" [value]="a.id">{{a.approvalAuthorityName}}</option>
                                     </select>
                                         </div>
                                     </div>
@@ -73,10 +75,9 @@
                                             <label>Department</label>
                                         </div>
                                         <div class="col-md-5 ">
-                                            <select class="form-control" id="deptId" formControlName="deptId" required>
-                                                <option [ngValue]="null">Select Department</option>
-                                                <option [ngValue]="001">Sales</option>
-                                                <option [ngValue]="002">PMD</option>
+                                            <select class="form-control" id="deptId" formControlName="deptId">
+                                                <option [value]=1>Sales</option>
+                                                <option [value]=2>PMD</option>
                                             </select>
                                         </div>
                                     </div>
