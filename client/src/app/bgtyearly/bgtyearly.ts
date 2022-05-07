@@ -49,7 +49,7 @@ export class BgtYearlyComponent implements OnInit {
     private SpinnerService: NgxSpinnerService) { }
   ngOnInit() {
     this.getEmployeeId()
-    this.getTotalExpense()
+
   }
   getEmployeeId() {
     this.empId = this.accountService.getEmployeeId();
@@ -111,8 +111,47 @@ export class BgtYearlyComponent implements OnInit {
     debugger;
 
     this.SpinnerService.show();
-    this.bugetYearlyService.getTotalExpense().subscribe(response => {
+    this.bugetYearlyService.getTotalExpense(this.bugetYearlyService.budgetYearly.deptId,this.bugetYearlyService.budgetYearly.year).subscribe(response => {
+     this.bugetYearlyService.budgetYearly.totalExpense = response;
+    }, error => {
+      this.SpinnerService.hide();
+      console.log(error);
+    });
+  }
+  getTotalBudget() {
+    debugger;
+
+    this.SpinnerService.show();
+    this.bugetYearlyService.getBudgetAmount(this.bugetYearlyService.budgetYearly.deptId,this.bugetYearlyService.budgetYearly.year).subscribe(response => {
+     this.bugetYearlyService.budgetYearly.totalAmount = response as number;
+    }, error => {
+      this.SpinnerService.hide();
+      console.log(error);
+    });
+  }
+  LoadForm()
+  {
+
+    this.getTotalExpense()
+    this.getTotalPipeline()
+    this.getTotalBudget()
+    setTimeout(() => {
+      if(parseInt(this.bugetYearlyService.budgetYearly.totalAmount)>(parseInt(this.bugetYearlyService.budgetYearly.totalExpense)+ parseInt(this.bugetYearlyService.budgetYearly.totalPipeline)))
+      {
+        this.bugetYearlyService.budgetYearly.totalRemaining = parseInt(this.bugetYearlyService.budgetYearly.totalAmount) -  (parseInt(this.bugetYearlyService.budgetYearly.totalExpense)+ parseInt(this.bugetYearlyService.budgetYearly.totalPipeline));
+      }
+      else{
+        this.bugetYearlyService.budgetYearly.totalRemaining = 0;
+      }
     
+    }, 3000);
+  }
+  getTotalPipeline() {
+    debugger;
+
+    this.SpinnerService.show();
+    this.bugetYearlyService.getTotalPipeline(this.bugetYearlyService.budgetYearly.deptId,this.bugetYearlyService.budgetYearly.year).subscribe(response => {
+     this.bugetYearlyService.budgetYearly.totalPipeline = response;
     }, error => {
       this.SpinnerService.hide();
       console.log(error);
@@ -130,7 +169,7 @@ export class BgtYearlyComponent implements OnInit {
 
     debugger;
     this.bugetYearlyService.budgetYearly = Object.assign({}, selectedRecord);
-    
+    this.LoadForm()
     this.BudgetYearlySearchModalRef.hide()
   }
   resetSearch() {

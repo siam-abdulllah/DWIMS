@@ -48,7 +48,7 @@
                                         <label>Dept. Name</label>
                                     </div>
                                     <div class="col-md-4">
-                                        <select class="form-control" name="deptId"  id="deptId" required [(ngModel)]="bugetYearlyService.budgetYearly.deptId">
+                                        <select class="form-control" name="deptId"  id="deptId" required [(ngModel)]="bugetYearlyService.budgetYearly.deptId" (change)="LoadForm()">
                                             <option  [ngValue]="0">Select Department</option>
                                             <option value="1">Sales</option>
                                             <option value="2">PMD</option>

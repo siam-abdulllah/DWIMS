@@ -51,6 +51,7 @@ import { BgtYearlyComponent } from '../bgtYearly/bgtyearly';
 import { BgtSbuYearlyComponent } from '../bgtSbuYearly/bgtsbuyearly';
 import { BgtEmployeeComponent } from '../bgtEmployee/bgtEmployee.component';
 import { InvestmentCancelComponent } from '../investmentCancel/investmentCancel.component';
+import { BgtOwnComponent } from '../bgtOwn/bgtOwn.component';
 
 
 //import { RptInvestStatusComponent } from '../rptInvestmentStatus/rptInvestmentStatus.component';
@@ -101,6 +102,7 @@ const portalRoutes: Routes = [
         {path: 'rptEmpExp', component: RptEmpWiseExpComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'changeDepot', component: ChangeDepotComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'bgtEmployee', component: BgtEmployeeComponent},
+        {path: 'bgtOwn', component: BgtOwnComponent},
         {path: 'paramInvestmentSummary/:param', component: ParamInvestSummaryComponent},
         //{path: 'rptInvestmentDetail', component: RptInvestmentDetailComponent},
         {path: 'rptInvestmentDetail/:id', component: RptInvestmentDetailComponent},

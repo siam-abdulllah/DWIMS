@@ -30,9 +30,17 @@ export class BudgetYearlyService {
     debugger;
     return this.http.get(this.baseUrl + 'BgtYearly/getBudgetYearly');
   }
-  getTotalExpense(){    
+  getTotalExpense(deptId:number,year:number){    
     debugger;
-    return this.http.get(this.baseUrl + 'BgtYearly/getTotalExpense');
+    return this.http.get(this.baseUrl + 'BgtYearly/getTotalExpense/'+deptId+'/'+year);
+  }
+  getTotalPipeline(deptId:number,year:number){    
+    debugger;
+    return this.http.get(this.baseUrl + 'BgtYearly/getTotalPipeLine/'+deptId+'/'+year);
+  }
+  getBudgetAmount(deptId:number,year:number){    
+    debugger;
+    return this.http.get(this.baseUrl + 'BgtYearly/getBudgetAmount/'+deptId+'/'+year);
   }
   getGenParams(){
     return this.genParams;

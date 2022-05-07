@@ -1,4 +1,5 @@
 ﻿using API.Dtos;
+using API.Extensions;
 using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
@@ -7,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -90,25 +93,127 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("getTotalExpense")]
-        public long GetTotalExpense()
+        [HttpGet("getTotalExpense/{deptId}/{year}")]
+        public double GetTotalExpense(int deptId,int year)
         {
+            string ProposeFor = "";
+            if (deptId == 1)
+            {
+                ProposeFor = "Others";
+            }
+            else if (deptId == 2)
+            {
+                ProposeFor = "BrandCampaign";
+            }
             try
             {
                 string qry = "";
 
-                qry = string.Format(@"SELECT e.*,ISNULL(Round(SUM(e.ApprovedAmount),0), 0) TotalExpense
+                qry = string.Format(@"SELECT ISNULL(Round(SUM(e.ApprovedAmount),0), 0) Expense
 
                                         FROM InvestmentDetailTracker e
 
                                         INNER JOIN InvestmentInit c ON c.Id = e.InvestmentInitId
 
-                                        WHERE  C.ProposeFor='Others'
+                                        WHERE  C.ProposeFor='{0}'
 
-                                        AND e.Year=2022");
-                TotalExpense dsResult = _dbContext.ExecSQL<TotalExpense>(qry).ToList().FirstOrDefault();
-             
-                return 0;
+                                        AND e.Year={1}", ProposeFor,year);
+    
+                DataTable dt = _dbContext.DataTable(qry);
+                TotalExpense expense = new TotalExpense();
+                
+                   expense = (from DataRow row in dt.Rows
+                    select new TotalExpense
+                    {
+                        Expense = row["Expense"]!= null ? Convert.ToInt64(row["Expense"]):0,
+                      
+                    }).ToList().FirstOrDefault();
+                return expense.Expense;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpGet("getTotalPipeLine/{deptId}/{year}")]
+        public double GetTotalPipeLine(int deptId,int year)
+        {
+            string ProposeFor = "";
+            if (deptId == 1)
+            {
+                ProposeFor = "Others";
+            }
+            else if (deptId == 2)
+            {
+                ProposeFor = "BrandCampaign";
+            }
+            try
+            {
+                string qry = "";
+
+                qry = string.Format(@"SELECT Pipeline FROM (
+
+                                    SELECT Round(SUM(ProposedAmount),0) Pipeline 
+                                    FROM InvestmentRec A                                   
+
+                                    INNER JOIN InvestmentRecComment B ON A.InvestmentInitId = B.InvestmentInitId                       
+
+                                    AND A.EmployeeId = B.EmployeeId                                  
+
+                                    INNER JOIN InvestmentInit C ON a.InvestmentInitId = C.Id                        
+
+                                    WHERE C.DataStatus = 1                                 
+
+                                    AND C.ProposeFor='{0}'                                 
+
+                                    AND Year(A.ToDate)={1}                                 
+
+                                    AND RecStatus NOT IN ('Approved' ,'Not Approved','Cancelled') AND A.Id IN (                               
+
+                                    SELECT MAX(ir.Id) AS Expr1                                
+
+                                    FROM dbo.InvestmentRec AS ir                                  
+
+                                    WHERE (ir.InvestmentInitId = c.Id) )                               
+
+                                    ) A
+
+                                    ", ProposeFor,year);
+
+                DataTable dt = _dbContext.DataTable(qry);
+                TotalPipeLine pipeLine = new TotalPipeLine();
+
+                pipeLine = (from DataRow row in dt.Rows
+                           select new TotalPipeLine
+                           {
+                               PipeLine = row["PipeLine"] != null ? Convert.ToInt64(row["PipeLine"]) : 0,
+
+                           }).ToList().FirstOrDefault();
+                return pipeLine.PipeLine;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpGet("getBudgetAmount/{deptId}/{year}")]
+        public double GetBudgetAmount(int deptId, int year)
+        {
+          
+            try
+            {
+                string qry = "";
+
+                qry = string.Format(@"select * from BgtYearlyTotal where DataStatus = 1 and  DeptId = {0} and Year = {1}", deptId, year);
+
+                BgtYearlyTotal bgtyearly = _dbContext.BgtYearlyTotal.FromSqlRaw(qry).ToList().FirstOrDefault();
+                long TotalBudget = 0;
+                if(bgtyearly != null)
+                {
+                    TotalBudget = bgtyearly.TotalAmount;
+                }
+                return TotalBudget;
             }
             catch (System.Exception ex)
             {

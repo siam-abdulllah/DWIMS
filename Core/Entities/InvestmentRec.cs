@@ -39,4 +39,10 @@ namespace Core.Entities
         public double Expense { get; set; }
      
     }
+    public class TotalPipeLine : BaseEntity
+    {
+
+        public double PipeLine { get; set; }
+
+    }
 }

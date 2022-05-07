@@ -1,0 +1,256 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <!-- form start -->
+                <form [formGroup]="bgtOwn">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h3 class="card-title">Employee Wise Budget Distribution</h3>
+                                </div>
+                                <div class="col-sm-1">
+                                    <button class="btn btn-success btn-block" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Save</button>
+                                </div>
+                                <div class="col-sm-1 ">
+                                    <button class="btn btn-danger btn-block" (click)="reset()" type="button "><i class="fa fa-undo "></i>&nbsp; Reset</button>
+                                </div>
+                                <!-- <div class="col-sm-1 ">
+                                    <button class="btn btn-info btn-block" (click)="ViewReport()" [hidden]="isValid" type="button "><i class="fa fa-save "></i>&nbsp; View</button>
+                                </div> -->
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body ">
+                            <fieldset>
+                                <div class="form-group ">
+                                    <div class="row ">
+                                        <div class="col-md-1 ">
+                                            <label>SBU</label>
+                                        </div>
+                                        <div class="col-md-3 ">
+                                            <select class="form-control" id="sbu" formControlName="sbu" (change)="onChangeSBU()">
+                                            <option *ngFor="let a of SBUs" [value]="a.sbuCode">{{a.sbuName}}</option>
+                                        </select>
+                                        </div>
+                                        <div class="col-md-1 ">
+                                            <label>Employee</label>
+                                        </div>
+                                        <div class="col-md-3 ">
+                                            <ng-select [virtualScroll]="true" [items]="employees" [searchFn]="customSearchFnEmp" bindLabel="employeeName" bindValue="employeeSAPCode" placeholder="Select Employee" (change)="onChangeEmployee()" id="employee" formControlName="employee">
+                                                <ng-template ng-label-tmp let-item="item">
+                                                    <span [ngOptionHighlight]="search">{{ item.employeeSAPCode}} - {{ item.employeeName}}</span>
+                                                </ng-template>
+                                                <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                                                    <span [ngOptionHighlight]="search">{{ item.employeeSAPCode}} - {{ item.employeeName }}</span>
+                                                </ng-template>
+                                            </ng-select>
+                                            <!-- <select class="form-control" id="employee" formControlName="employee">
+                                            <option *ngFor="let a of employees" [value]="a.id">{{a.employeeName}}</option>
+                                        </select> -->
+                                        </div>
+                                        <div class="col-md-1 ">
+                                            <label>Authorize Level</label>
+                                        </div>
+                                        <div class="col-md-3 ">
+                                            <select class="form-control" id="authId" formControlName="authId" (change)="getAuthPersonCount()">
+                                        <option *ngFor="let a of approvalAuthorities" [value]="a.id">{{a.approvalAuthorityName}}</option>
+                                    </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="row ">
+                                        <div class="col-md-1 ">
+                                            <label>Company Name</label>
+                                        </div>
+                                        <div class="col-md-5 ">
+                                            <input class="form-control" value="Square Pharmaceuticals Ltd." readonly>
+                                        </div>
+                                        <div class="col-md-1 ">
+                                            <label>Department</label>
+                                        </div>
+                                        <div class="col-md-5 ">
+                                            <select class="form-control" id="deptId" formControlName="deptId" required>
+                                                <option [ngValue]="null">Select Department</option>
+                                                <option [ngValue]="001">Sales</option>
+                                                <option [ngValue]="002">PMD</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="row ">
+                                        <div class="col-md-1 ">
+                                            <label>Year</label>
+                                        </div>
+                                        <div class="col-md-2 ">
+                                            <input class="form-control" id="year" name="year" placeholder="Select Year" formControlName="year" (onHidden)="getDeptSbuWiseBudgetAmt()" [bsValue]="bsValue" bsDatepicker [bsConfig]="{  containerClass: 'theme-blue', minMode:'year', adaptivePosition: true, dateInputFormat: 'YYYY' }">
+                                        </div>
+                                        <div class="col-md-1 ">
+                                            <label>Prev. Allocated</label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input class="form-control" id="prevAllocate" name="prevAllocate" formControlName="prevAllocate" readonly>
+                                        </div>
+                                        <div class="col-md-1 ">
+                                            <label>Total Expense</label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input class="form-control" id="totalExpense" name="totalExpense" formControlName="totalExpense" readonly>
+                                        </div>
+                                        <div class="col-md-1 ">
+                                            <label>Total Pipeline</label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input class="form-control" id="totalPipeline" name="totalPipeline" formControlName="totalPipeline" readonly>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="row ">
+                                        <div class="col-md-1 ">
+                                            <label>Segment</label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <select class="form-control" id="segment" formControlName="segment" (change)="getAllocatedAmount()" required>
+                                                <option value="Monthly">Monthly</option>
+                                                <option value="Yearly">Yearly</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-1 ">
+                                            <label>Total Amount</label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input class="form-control" id="totalAmount" name="totalAmount" formControlName="totalAmount">
+                                        </div>
+                                        <div class="col-md-1 ">
+                                            <label>Remaining</label>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input class="form-control" id="remaining" name="remaining" formControlName="remaining" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="row ">
+                                        <div class="col-md-2 ">
+                                            <input type="checkbox" id="permEdit" formControlName="permEdit" value="1">
+                                            <label for="permEdit"> Can Edit</label>
+                                        </div>
+
+                                        <div class="col-md-2 ">
+                                            <input type="checkbox" id="permView" formControlName="permView" value="1">
+                                            <label for="permView"> Can View</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="row ">
+                                        <div class="col-md-11">
+                                        </div>
+                                        <div class="col-md-1">
+                                            <button class="btn btn-success btn-block" (click)="insertbgtOwn()" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <!-- /.card -->
+                    </div>
+
+                </form>
+            </div>
+            <!-- /.row -->
+        </div>
+    </div>
+
+
+    <!-- /.container-fluid -->
+</section>
+
+
+<ng-template #pendingListModal>
+    <div class="modal-header " style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));color: black; ">
+        <h4 class="modal-title pull-left ">Bill Payment</h4>
+        <button type="button " class="close pull-right " aria-label="Close " (click)="pendingListModalRef.hide() ">
+        <span aria-hidden="true ">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body " style="padding: 20px 30px 20px 30px; ">
+        <div class="row ">
+            <div class="col-md-12 ">
+                <div class="table-responsive " style="border: 1px solid #bed2c9; width: 100%; ">
+                    <div class="col-md-12">
+                        <input name="filterText" class="form-control m-input Searchbox" type="text" id="searchText" [(ngModel)]="searchText" name="searchText" placeholder="Search..">
+                    </div>
+                    <table class="table table-bordered table-responsive table-hover table-striped ">
+                        <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc)); ">
+                            <tr class="HeaderRow ">
+                                <td>Select</td>
+                                <td>Payment Ref No</td>
+                                <td style="width: 0;display:none; ">Reference No</td>
+                                <td>Donation Type</td>
+                                <td style="width: 0;display:none; ">Proposed For</td>
+                                <td>Doctor</td>
+                                <td>Prop.Amt</td>
+                                <td>Market</td>
+                                <td>Proposed By</td>
+                                <td>Apr By</td>
+                                <td>Apr Date</td>
+                                <td>Depot</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let a of rptDepotLetter | filter: searchText ">
+                                <td>
+                                    <button class="btn btn-sm btn-embossed btn-success " type="button " (click)="ViewData(a) " style="width: 70px; "><i class="fa fa-eye "></i>Select</button>
+                                </td>
+                                <td style="display:none; ">{{a.investmentInitId}}</td>
+                                <td>{{a.payRefNo}}</td>
+                                <td style="width: 0;display:none; ">
+                                    {{a.referenceNo}}
+                                </td>
+                                <td>
+                                    {{a.donationTypeName}}
+                                </td>
+                                <td style="width: 0;display:none; ">
+                                    {{a.proposeFor}}
+                                </td>
+                                <td>
+                                    {{a.doctorName}}
+                                </td>
+                                <td>
+                                    {{a.proposedAmount | number:'2.1-2'}}
+                                </td>
+                                <td>
+                                    {{a.marketName}}
+                                </td>
+                                <td>
+                                    {{a.employeeName}}
+                                </td>
+                                <td>
+                                    {{a.approvedBy}}
+                                </td>
+                                <td>
+                                    {{a.approvedDate | date:'dd/MM/yyyy'}}
+                                </td>
+                                <td>
+                                    {{a.depotName}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</ng-template>
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
+    <p style="color: black">Please Wait. </p>
+</ngx-spinner>
