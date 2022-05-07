@@ -142,6 +142,8 @@ namespace Infrastructure.Data
         public DbSet<BgtSBUTotal> BgtSBUTotal { get; set; }
         public DbSet<BgtEmployee> BgtEmployee { get; set; }
         public DbSet<BgtOwn> BgtOwn { get; set; }
+        [NotMapped]
+        public DbSet<CountDouble> CountDouble { get; set; }
 
         public List<T> ExecSQL<T>(string query)
         {

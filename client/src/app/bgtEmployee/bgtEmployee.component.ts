@@ -87,14 +87,24 @@ export class BgtEmployeeComponent implements OnInit {
     var yr = new Date(this.bgtEmployee.value.year);
     yr.getFullYear();
 
-    this.bgtService.getDeptSbuWiseBudgetAmt(this.bgtEmployee.value.deptId, this.bgtEmployee.value.sbu, yr.getFullYear()).subscribe(response => {    
+    this.bgtService.getDeptSbuWiseBudgetAmt(this.bgtEmployee.value.deptId, this.bgtEmployee.value.sbu, yr.getFullYear()).subscribe(response => {
+        this.bgtEmployee.patchValue({
+          sbuTotalBudget: response[0].count,
+        });    
+     }, error => {
+        console.log(error);
+     });
+
+
+     this.bgtService.getPrevAllocate(this.bgtEmployee.value.deptId, this.bgtEmployee.value.sbu, yr.getFullYear()).subscribe(response => {    
       this.bgtEmployee.patchValue({
-        sbuTotalBudget: response[0].count,
+        prevAllocate: response[0].count,
       });
       
      }, error => {
         console.log(error);
      });
+
   }
 
   getAuthPersonCount()
@@ -105,7 +115,7 @@ export class BgtEmployeeComponent implements OnInit {
       return;
     }
 
-    this.bgtService.getAuthPersonCount(this.bgtEmployee.value.authId).subscribe(response => {    
+    this.bgtService.getAuthPersonCount(this.bgtEmployee.value.authId, this.bgtEmployee.value.sbu).subscribe(response => {    
       this.bgtEmployee.patchValue({
         ttlPerson: response[0].count,
       });
@@ -144,6 +154,11 @@ export class BgtEmployeeComponent implements OnInit {
         ttlAllocate: ttlAloc,
       });
     }
+
+    var rem = this.bgtEmployee.value.sbuTotalBudget - this.bgtEmployee.value.ttlAllocate - this.bgtEmployee.value.prevAllocate;
+    this.bgtEmployee.patchValue({
+      remaining: rem,
+    });
   }
 
   getApprovalAuthority(){
@@ -181,6 +196,12 @@ export class BgtEmployeeComponent implements OnInit {
 
 alert(this.bgtEmployee.value.permEdit);
 
+    if(this.bgtEmployee.value.remaining < 0)
+    {
+      this.toastr.error('There is not enough budget left to be allocated');
+      return;
+    }
+
     if(this.bgtEmployee.value.deptId == "" || this.bgtEmployee.value.deptId == null)
     {
       this.toastr.error('Select Department');
@@ -196,7 +217,7 @@ alert(this.bgtEmployee.value.permEdit);
       this.toastr.error('Enter Year');
       return;
     }
-    if(this.bgtEmployee.value.amount == "" || this.bgtEmployee.value.amount == null)
+    if(this.bgtEmployee.value.ttlAmount == "" || this.bgtEmployee.value.ttlAmount == null)
     {
       this.toastr.error('Amount Can not be 0');
       return;
