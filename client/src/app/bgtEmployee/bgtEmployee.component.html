@@ -149,7 +149,10 @@
 
                                 <div class="form-group ">
                                     <div class="row ">
-                                        <div class="col-md-11">
+                                        <div class="col-md-10">
+                                        </div>
+                                        <div class="col-md-1">
+                                            <button class="btn btn-info btn-block" [hidden]="btnShow" (click)="showDetails()" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Add Details</button>
                                         </div>
                                         <div class="col-md-1">
                                             <button class="btn btn-success btn-block" (click)="insertbgtEmployee()" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Save</button>
@@ -157,55 +160,49 @@
                                     </div>
                                 </div>
                             </fieldset>
+                            <br/>
 
-                            <!-- <div class="form-group">
-                                <table class="table table-bordered">
-                                    <tr class="HeaderRow">
-                                        <td style="display: none;">Product ID</td>
-                                        <td>Product Name</td>
-                                        <td>Invoice Qty</td>
-                                        <td>Invoice TP Vat</td>
-                                        <td>Dispatch Qty</td>
-                                        <td>Dispatch TP Vat</td>
-                                        <td>Edit</td>
-                                        <td>Remove</td>
-                                    </tr>
-                                    <tr *ngFor="let a of investmentMedicineProds">
-                                        <td style="display: none;">
-                                            {{a.productId}}
-                                        </td>
-                                        <td>
-                                            {{a.productName}}
-                                        </td>
-                                        <td>
-                                            {{a.boxQuantity}}
-                                        </td>
-                                        <td>
-                                            {{a.tpVat | number:'2.1-2'}}
-                                        </td>
-                                        <td>
-                                            {{a.dispatchQuantity}}
-                                        </td>
-                                        <td>
-                                            {{a.dispatchTpVat | number:'2.1-2'}}
-                                        </td>
-                                        <td>
-                                            <input type="button" value="Modify" (click)="modifyData(a)">
-                                        </td>
-                                        <td>
-                                            <input type="button" (click)="removeInvestmentMedicineProd(a)" value="Remove">
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div> -->
+                            <div [hidden]="valShow" style="background-color: cadetblue;">
+                                <div class="form-group ">
+                                    <div class="row ">
+                                        <div class="col-md-1 ">
+                                            <label>Donation</label>
+                                        </div>
+                                        <div class="col-md-3 ">
+                                            <select class="form-control" id="donationId" formControlName="donationId">
+                                            <option *ngFor="let a of donations" [value]="a.Id">{{a.donationTypeName}}</option>
+                                        </select>
+                                        </div>
 
+                                        <div class="col-md-1 ">
+                                            <label>Amount</label>
+                                        </div>
+                                        <div class="col-md-3 ">
+                                            <input class="form-control" id="donationAmt" formControlName="donationAmt">
+                                        </div>
+                                        <div class="col-md-1 ">
+                                            <label>Trans Limit</label>
+                                        </div>
+                                        <div class="col-md-3 ">
+                                            <input class="form-control" id="transLimit" formControlName="transLimit">
+                                        </div>
 
-                            <!-- <div class="card-footer ">
-                          </div> -->
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="row ">
+                                        <div class="col-md-10">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button class="btn btn-success btn-block" (click)="insertbgtEmployee()" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Save Details</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
                         <!-- /.card -->
                     </div>
-
                 </form>
             </div>
             <!-- /.row -->
@@ -217,84 +214,7 @@
 </section>
 
 
-<ng-template #pendingListModal>
-    <div class="modal-header " style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));color: black; ">
-        <h4 class="modal-title pull-left ">Bill Payment</h4>
-        <button type="button " class="close pull-right " aria-label="Close " (click)="pendingListModalRef.hide() ">
-        <span aria-hidden="true ">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body " style="padding: 20px 30px 20px 30px; ">
-        <div class="row ">
-            <div class="col-md-12 ">
-                <div class="table-responsive " style="border: 1px solid #bed2c9; width: 100%; ">
-                    <div class="col-md-12">
-                        <input name="filterText" class="form-control m-input Searchbox" type="text" id="searchText" [(ngModel)]="searchText" name="searchText" placeholder="Search..">
-                    </div>
-                    <table class="table table-bordered table-responsive table-hover table-striped ">
-                        <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc)); ">
-                            <tr class="HeaderRow ">
-                                <td>Select</td>
-                                <td>Payment Ref No</td>
-                                <td style="width: 0;display:none; ">Reference No</td>
-                                <td>Donation Type</td>
-                                <td style="width: 0;display:none; ">Proposed For</td>
-                                <td>Doctor</td>
-                                <td>Prop.Amt</td>
-                                <td>Market</td>
-                                <td>Proposed By</td>
-                                <td>Apr By</td>
-                                <td>Apr Date</td>
-                                <td>Depot</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let a of rptDepotLetter | filter: searchText ">
-                                <td>
-                                    <button class="btn btn-sm btn-embossed btn-success " type="button " (click)="ViewData(a) " style="width: 70px; "><i class="fa fa-eye "></i>Select</button>
-                                </td>
-                                <td style="display:none; ">{{a.investmentInitId}}</td>
-                                <td>{{a.payRefNo}}</td>
-                                <td style="width: 0;display:none; ">
-                                    {{a.referenceNo}}
-                                </td>
-                                <td>
-                                    {{a.donationTypeName}}
-                                </td>
-                                <td style="width: 0;display:none; ">
-                                    {{a.proposeFor}}
-                                </td>
-                                <td>
-                                    {{a.doctorName}}
-                                </td>
-                                <td>
-                                    {{a.proposedAmount | number:'2.1-2'}}
-                                </td>
-                                <td>
-                                    {{a.marketName}}
-                                </td>
-                                <td>
-                                    {{a.employeeName}}
-                                </td>
-                                <td>
-                                    {{a.approvedBy}}
-                                </td>
-                                <td>
-                                    {{a.approvedDate | date:'dd/MM/yyyy'}}
-                                </td>
-                                <td>
-                                    {{a.depotName}}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
 
-
-</ng-template>
 <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
     <p style="color: black">Please Wait. </p>
 </ngx-spinner>

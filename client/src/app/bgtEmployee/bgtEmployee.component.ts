@@ -14,6 +14,7 @@ import { BgtEmployeeService } from '../_services/bgtEmployee.service';
 import { IApprovalAuthority } from '../shared/models/approvalAuthority';
 import { ISBU } from '../shared/models/sbu';
 import { DATE } from 'ngx-bootstrap/chronos/units/constants';
+import { IDonation } from '../shared/models/donation';
 
 @Component({
   selector: 'bgtEmployee',
@@ -25,6 +26,7 @@ export class BgtEmployeeComponent implements OnInit {
   @ViewChild('pendingListModal', { static: false }) pendingListModal: TemplateRef<any>;
   pendingListModalRef: BsModalRef;
   bsConfig: Partial<BsDatepickerConfig>;
+  donations: IDonation[];
   bsValue: Date = new Date();
   bgtEmployee: FormGroup;
   empId: string;
@@ -32,7 +34,7 @@ export class BgtEmployeeComponent implements OnInit {
   approvalAuthorities: IApprovalAuthority[];
   SBUs: ISBU[];
   numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
-  isValid: boolean = true;
+  btnShow: boolean = true;
   valShow: boolean = true;
   isHide: boolean = false;
   searchText = '';
@@ -105,6 +107,14 @@ export class BgtEmployeeComponent implements OnInit {
         console.log(error);
      });
 
+  }
+
+  getDonation() {
+    this.bgtService.getDonations().subscribe(response => {
+      this.donations = response as IDonation[];
+    }, error => {
+      console.log(error);
+    });
   }
 
   getAuthPersonCount()
@@ -182,12 +192,10 @@ export class BgtEmployeeComponent implements OnInit {
     this.createbgtEmployeeForm();
     this.reset();
     this.getEmployeeId();
-    
+
+    this.getDonation();
     this.getSBU();
     this.getApprovalAuthority();
-
-    this.bgtEmployee.value.permEdit = true;
-    this.bgtEmployee.value.permView = true;
   }
 
   getEmployeeId() {
@@ -240,7 +248,7 @@ export class BgtEmployeeComponent implements OnInit {
     this.bgtService.insertBgtEmp(this.bgtService.bgtEmpFormData).subscribe(
       res => {
         this.toastr.success('Master Budget Data Saved successfully', 'Budget Dispatch') 
-        this.isValid = false;
+        this.btnShow = false;
       },
       err => { console.log(err); }
     );
@@ -260,12 +268,18 @@ export class BgtEmployeeComponent implements OnInit {
     this.searchText = '';
 }
 
+showDetails()
+{
+  this.valShow= false;
+  
+}
+
 openPendingListModal(template: TemplateRef<any>) {
   this.pendingListModalRef = this.modalService.show(template, this.config);
 }
 
   reset() {
-    this.isValid = true;
+    this.btnShow = true;
     this.valShow = true;
     this.isHide = false;
     this.bgtEmployee.setValue({

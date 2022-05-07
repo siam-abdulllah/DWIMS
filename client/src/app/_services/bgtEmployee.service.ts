@@ -37,6 +37,10 @@ export class BgtEmployeeService {
     this.genParams = genParams;
   }
 
+  getDonations() {
+    return this.http.get(this.baseUrl + 'donation/donationsForInvestment');
+  }
+
   getApprovalAuthority(){    
     return this.http.get(this.baseUrl + 'bgtEmployee/approvalAuthoritiesForConfig');
   }
@@ -53,6 +57,7 @@ export class BgtEmployeeService {
     return this.http.get(this.baseUrl + 'bgtEmployee/getPrevAlloc/'+deptId+'/'+sbu+'/'+year);
   }
 
+ 
 
   getAuthPersonCount(authId: any, sbu: string ){    
     return this.http.get(this.baseUrl + 'bgtEmployee/getAuthPersonCount/'+authId+'/'+sbu);
