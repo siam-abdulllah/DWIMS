@@ -193,6 +193,24 @@ namespace API.Controllers
             {
                 throw ex;
             }
+        } 
+        [HttpGet("getDonWiseBgt/{employeeId}/{sbu}/{year}/{compId}/{deptId}/{donationId}")]
+        public IReadOnlyList<BgtOwn> GetDonWiseBgt(int employeeId, string sbu, int year, int compId, int deptId, int donationId)
+        {
+            try
+            {
+                string qry = "SELECT [Id],[DataStatus],[SetOn],[ModifiedOn],[CompId],[DeptId],[Year],[Month],[EmployeeId],[SBU]," +
+                    "[DonationId],[Amount],[AmtLimit],[Segment],[Remarks],[EnteredBy]" +
+                    " FROM BgtOwn WHERE [DataStatus]=1 AND [DonationId]=" + donationId + " AND [EmployeeId]=" + employeeId + " AND [SBU]='" + sbu + "' AND [CompId]=" + compId + " AND [DeptId]=" + deptId + " " +
+                    " AND [Month]=Month(GETDATE()) AND [Year]=" + year;
+
+                var results = _dbContext.BgtOwn.FromSqlRaw(qry).ToList();
+                return results;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
         }
 
         [HttpGet("getEmpWiseTotPipe/{employeeId}/{sbu}/{year}/{compId}/{deptId}")]

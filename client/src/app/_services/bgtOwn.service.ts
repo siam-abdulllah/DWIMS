@@ -67,6 +67,9 @@ export class BgtOwnService {
   getEmpWiseTotExp(employeeId: any, sbu: string , year: any,compId:any,deptId:any  ){    
     return this.http.get(this.baseUrl + 'BgtOwn/getEmpWiseTotExp/'+employeeId+'/'+sbu+'/'+year+'/'+compId+'/'+deptId);
   }
+  getDonWiseBgt(employeeId: any, sbu: string , year: any,compId:any,deptId:any,donationId:any  ){    
+    return this.http.get(this.baseUrl + 'BgtOwn/getDonWiseBgt/'+employeeId+'/'+sbu+'/'+year+'/'+compId+'/'+deptId+'/'+donationId);
+  }
   getEmpWiseTotPipe(employeeId: any, sbu: string , year: any ,compId:any,deptId:any ){    
     return this.http.get(this.baseUrl + 'BgtOwn/getEmpWiseTotPipe/'+employeeId+'/'+sbu+'/'+year+'/'+compId+'/'+deptId);
   }

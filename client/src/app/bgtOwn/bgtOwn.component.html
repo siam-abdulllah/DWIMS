@@ -11,11 +11,13 @@
                                 <div class="col-sm-9">
                                     <h3 class="card-title">Employee Wise Budget Distribution</h3>
                                 </div>
-                                <div class="col-sm-1">
-                                    <button class="btn btn-success btn-block" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Save</button>
-                                </div>
+                                <!-- <div class="col-sm-1">
+                                    <button class="btn btn-success btn-block" style=" text-shadow: 3em #000; "><i
+                                            class="fa fa-save "></i>&nbsp; Save</button>
+                                </div> -->
                                 <div class="col-sm-1 ">
-                                    <button class="btn btn-danger btn-block" (click)="reset()" type="button "><i class="fa fa-undo "></i>&nbsp; Reset</button>
+                                    <button class="btn btn-danger btn-block" (click)="reset()" type="button "><i
+                                            class="fa fa-undo "></i>&nbsp; Reset</button>
                                 </div>
                                 <!-- <div class="col-sm-1 ">
                                     <button class="btn btn-info btn-block" (click)="ViewReport()" [hidden]="isValid" type="button "><i class="fa fa-save "></i>&nbsp; View</button>
@@ -33,10 +35,12 @@
                                         <div class="col-md-3 ">
                                             <ng-select [virtualScroll]="true" [items]="employees" [searchFn]="customSearchFnEmp" bindLabel="employeeName" bindValue="employeeSAPCode" placeholder="Select Employee" (change)="onChangeEmployee()" id="employee" formControlName="employee">
                                                 <ng-template ng-label-tmp let-item="item">
-                                                    <span [ngOptionHighlight]="search">{{ item.employeeSAPCode}} - {{ item.employeeName}}</span>
+                                                    <span [ngOptionHighlight]="search">{{ item.employeeSAPCode}} - {{
+                                                        item.employeeName}}</span>
                                                 </ng-template>
                                                 <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
-                                                    <span [ngOptionHighlight]="search">{{ item.employeeSAPCode}} - {{ item.employeeName }}</span>
+                                                    <span [ngOptionHighlight]="search">{{ item.employeeSAPCode}} - {{
+                                                        item.employeeName }}</span>
                                                 </ng-template>
                                             </ng-select>
                                             <!-- <select class="form-control" id="employee" formControlName="employee">
@@ -48,9 +52,10 @@
                                         </div>
                                         <div class="col-md-3 ">
                                             <select class="form-control" id="sbu" formControlName="sbu" (change)="onChangeSBU()">
-                                            <option  value="">Select SBU</option>
-                                            <option *ngFor="let a of SBUs" [value]="a.sbuCode">{{a.sbuName}}</option>
-                                        </select>
+                                                <option value="">Select SBU</option>
+                                                <option *ngFor="let a of SBUs" [value]="a.sbuCode">{{a.sbuName}}
+                                                </option>
+                                            </select>
                                         </div>
 
                                         <div class="col-md-1 ">
@@ -58,8 +63,9 @@
                                         </div>
                                         <div class="col-md-3 ">
                                             <select class="form-control" id="authId" formControlName="authId" ng-readonly>
-                                                <option *ngFor="let a of approvalAuthorities" [value]="a.id">{{a.approvalAuthorityName}}</option>
-                                    </select>
+                                                <option *ngFor="let a of approvalAuthorities" [value]="a.id">
+                                                    {{a.approvalAuthorityName}}</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -150,7 +156,8 @@
                                         <div class="col-md-6 ">
                                         </div>
                                         <div class="col-md-1">
-                                            <button class="btn btn-success btn-block" (click)="insertbgtOwn()" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Save</button>
+                                            <button class="btn btn-success btn-block" (click)="insertbgtOwn()" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp;
+                                                Save</button>
                                         </div>
                                     </div>
                                 </div>
@@ -166,22 +173,35 @@
                         <fieldset>
                             <div class="form-group ">
                                 <div class="row ">
-                                    <div class="col-md-1 ">
-                                    </div>
+
                                     <div class="col-md-1 ">
                                         <label>Donation</label>
                                     </div>
                                     <div class="col-md-2 ">
-                                        <select class="form-control" id="donationId" formControlName="donationId">
-                                        <option *ngFor="let a of donations" [value]="a.Id">{{a.donationTypeName}}</option>
-                                    </select>
+                                        <select class="form-control" id="donationId" formControlName="donationId" (change)="onChangeDonation()">
+                                            <option  [value]="">Select Donation</option>
+                                            <option *ngFor="let a of donations" [value]="a.id">{{a.donationTypeName}}
+                                            </option>
+                                        </select>
                                     </div>
-
                                     <div class="col-md-1 ">
-                                        <label>Amount</label>
+                                        <label>Expense</label>
                                     </div>
                                     <div class="col-md-2 ">
-                                        <input class="form-control" id="donationAmt" formControlName="donationAmt">
+                                        <input class="form-control" id="donationExp" formControlName="donationExp">
+                                    </div>
+                                    <div class="col-md-1 ">
+                                        <label>Pipeline</label>
+                                    </div>
+                                    <div class="col-md-2 ">
+                                        <input class="form-control" id="donationPipeLine" formControlName="donationPipeLine">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <div class="row ">
+
+                                    <div class="col-md-3 ">
                                     </div>
                                     <div class="col-md-1 ">
                                         <label>Trans Limit</label>
@@ -189,8 +209,22 @@
                                     <div class="col-md-2 ">
                                         <input class="form-control" id="transLimit" formControlName="transLimit">
                                     </div>
+                                    <div class="col-md-1 ">
+                                        <label>Amount</label>
+                                    </div>
+                                    <div class="col-md-2 ">
+                                        <input class="form-control" id="donationAmt" formControlName="donationAmt">
+                                    </div>
+
+                                    <!-- <div class="col-md-1 ">
+                                        <label>Remainig</label>
+                                    </div>
+                                    <div class="col-md-2 ">
+                                        <input class="form-control" id="donationRemain" formControlName="donationRemain">
+                                    </div> -->
                                     <div class="col-md-2">
-                                        <button class="btn btn-success btn-block" (click)="insertbgtOwn()" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Save Details</button>
+                                        <button class="btn btn-success btn-block" (click)="insertbgtOwn()" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Save
+                                            Details</button>
                                     </div>
                                 </div>
                             </div>
@@ -208,7 +242,8 @@
                                     <tr *ngFor="let a of bgtOwns">
                                         <td>
                                             <select class="form-control" [(ngModel)]="a.donationId" [ngModelOptions]="{standalone: true}">
-                                                <option *ngFor="let a of donations" [value]="a.id">{{a.donationTypeName}}</option>
+                                                <option *ngFor="let a of donations" [value]="a.id">
+                                                    {{a.donationTypeName}}</option>
                                             </select>
                                             <!-- {{a.donationId}} -->
                                         </td>
@@ -253,8 +288,8 @@
     <div class="modal-header " style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));color: black; ">
         <h4 class="modal-title pull-left ">Bill Payment</h4>
         <button type="button " class="close pull-right " aria-label="Close " (click)="pendingListModalRef.hide() ">
-        <span aria-hidden="true ">&times;</span>
-      </button>
+            <span aria-hidden="true ">&times;</span>
+        </button>
     </div>
     <div class="modal-body " style="padding: 20px 30px 20px 30px; ">
         <div class="row ">
@@ -283,7 +318,8 @@
                         <tbody>
                             <tr *ngFor="let a of rptDepotLetter | filter: searchText ">
                                 <td>
-                                    <button class="btn btn-sm btn-embossed btn-success " type="button " (click)="ViewData(a) " style="width: 70px; "><i class="fa fa-eye "></i>Select</button>
+                                    <button class="btn btn-sm btn-embossed btn-success " type="button " (click)="ViewData(a) " style="width: 70px; "><i
+                                            class="fa fa-eye "></i>Select</button>
                                 </td>
                                 <td style="display:none; ">{{a.investmentInitId}}</td>
                                 <td>{{a.payRefNo}}</td>
