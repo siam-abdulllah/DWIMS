@@ -8,8 +8,7 @@ import { IUser, IUserResponse } from '../shared/models/user';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { GenericParams } from '../shared/models/genericParams';
-import { InvestmentMedicineProd } from '../shared/models/investmentRec';
-import { BgtEmpInsertDto} from '../shared/models/bgtEmployee';
+import { BgtEmpInsertDto, BgtOwnInsertDto} from '../shared/models/bgtEmployee';
 
 
 
@@ -19,6 +18,7 @@ import { BgtEmpInsertDto} from '../shared/models/bgtEmployee';
 export class BgtEmployeeService {
 
   bgtEmpFormData: BgtEmpInsertDto = new BgtEmpInsertDto();
+  bgtOwnFormData: BgtOwnInsertDto = new BgtOwnInsertDto();
   rptDepotLetter: IrptDepotLetterSearch[]=[];
   pagination = new DepotLetterSearchPagination();
  
@@ -66,5 +66,10 @@ export class BgtEmployeeService {
   insertBgtEmp(bgtEmpFormData: any) {
     return this.http.post(this.baseUrl+ 'bgtEmployee/insertBgtEmployee', bgtEmpFormData);
   }
+
+  insertBgtOwn(bgtOwnFormData: any) {
+    return this.http.post(this.baseUrl+ 'bgtEmployee/insertBgtOwn', bgtOwnFormData);
+  }
+
 
 }

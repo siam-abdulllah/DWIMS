@@ -63,6 +63,9 @@ export class BgtEmployeeComponent implements OnInit {
       prevAllocate: new FormControl(''),
       ttlPerson: new FormControl(''),
       remaining: new FormControl(''),
+
+      donationAmt: new FormControl(''),
+      transLimit: new FormControl(''),
     });
   }
 
@@ -254,6 +257,30 @@ export class BgtEmployeeComponent implements OnInit {
     );
   }
 
+
+  insertBgtOwn()
+  {
+    var yr = new Date(this.bgtEmployee.value.year);
+    
+    this.bgtService.bgtOwnFormData.deptId = this.bgtEmployee.value.deptId;
+    this.bgtService.bgtOwnFormData.year = yr.getFullYear();
+    this.bgtService.bgtOwnFormData.sbu = this.bgtEmployee.value.sbu;
+    this.bgtService.bgtOwnFormData.authId = this.bgtEmployee.value.authId;
+    this.bgtService.bgtOwnFormData.amount = this.bgtEmployee.value.donationAmt;
+    this.bgtService.bgtOwnFormData.segment = this.bgtEmployee.value.segment;
+    this.bgtService.bgtOwnFormData.amtLimit = this.bgtEmployee.value.amtLimit;
+    this.bgtService.bgtOwnFormData.donationId = this.bgtEmployee.value.donationId;
+    this.bgtService.bgtOwnFormData.enteredBy = parseInt(this.empId);
+
+    this.bgtService.insertBgtOwn(this.bgtService.bgtOwnFormData).subscribe(
+      res => {
+        this.toastr.success('Budget Configuration Data Saved successfully', 'Budget Dispatch') 
+        this.btnShow = false;
+      },
+      err => { console.log(err); }
+    );
+  }
+
   private formatDate(date) {
     const d = new Date(date);
     let month = '' + (d.getMonth() + 1);
@@ -299,6 +326,8 @@ openPendingListModal(template: TemplateRef<any>) {
       prevAllocate: "",
       ttlPerson: "",
       remaining: "",
+      donationAmt:"",
+      transLimit: "",
     });
   }
 

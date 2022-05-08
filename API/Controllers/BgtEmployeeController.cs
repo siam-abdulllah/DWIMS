@@ -133,5 +133,33 @@ namespace API.Controllers
                 throw ex;
             }
         }
+
+
+         [HttpPost("insertBgtOwn")]
+        public async Task<Int32> BgtOwnInsert(BgtOwnInsertDto dto)
+        {
+            try
+            {
+                List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                        new SqlParameter("@DeptId", dto.DeptId),
+                        new SqlParameter("@Year", dto.Year),
+                        new SqlParameter("@SBU ", dto.SBU),
+                        new SqlParameter("@AuthId", dto.AuthId),
+                        new SqlParameter("@Amount", dto.Amount),
+                        new SqlParameter("@AmtLimit", dto.Amount),
+                        new SqlParameter("@Segment", dto.Segment),
+                        new SqlParameter("@EnteredBy", dto.EnteredBy),
+                        new SqlParameter("@DonationId", dto.DonationId),
+                    };
+
+                var results = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtEmployeeInsert] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId", parms.ToArray());
+                return results;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
