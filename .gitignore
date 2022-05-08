@@ -85,3 +85,6 @@ Infrastructure/obj/Infrastructure.csproj.nuget.g.props
 Infrastructure/obj/project.assets.json
 Infrastructure/obj/project.nuget.cache
 .vs/ShalimAhmed/v16/.suo
+.vs/ShalimAhmed/DesignTimeBuild/.dtbcache.v2
+.vs/ShalimAhmed/v16/.suo
+*.json

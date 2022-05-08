@@ -135,6 +135,8 @@ export class BgtOwnComponent implements OnInit {
       remaining: new FormControl(''),
       employee: new FormControl(''),
     });
+
+    
   }
 
   getDeptSbuWiseBudgetAmt() {
@@ -196,6 +198,7 @@ export class BgtOwnComponent implements OnInit {
     this.bgtService.getEmpOwnBgt(this.bgtOwn.value.employee, this.bgtOwn.value.sbu,yr.getFullYear(),1000,this.bgtOwn.getRawValue().deptId).subscribe(response => {
       debugger;
     this.bgtOwns=response as IBgtOwn[];
+    
     }, error => {
       console.log(error);
     });
@@ -335,7 +338,9 @@ export class BgtOwnComponent implements OnInit {
   //   // );
   // }
   insertbgtOwn() {
-
+debugger;
+  var a =this.bgtOwns;
+  return false;
     if(this.bgtOwn.value.remaining < 0)
     {
       this.toastr.error('There is not enough budget left to be allocated');
