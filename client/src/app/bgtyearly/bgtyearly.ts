@@ -148,7 +148,6 @@ export class BgtYearlyComponent implements OnInit {
   }
   getTotalPipeline() {
     debugger;
-
     this.SpinnerService.show();
     this.bugetYearlyService.getTotalPipeline(this.bugetYearlyService.budgetYearly.deptId,this.bugetYearlyService.budgetYearly.year).subscribe(response => {
      this.bugetYearlyService.budgetYearly.totalPipeline = response;
