@@ -303,7 +303,7 @@ export class InvestmentRapidAprComponent implements OnInit {
         data.investmentInitId = this.investmentFormService.investmentTargetedProdFormData.investmentInitId;
         data.sbu = this.investmentFormService.investmentFormData.sbu;
         data.employeeId = this.investmentFormService.investmentMedicineProdFormData.employeeId;
-      
+        productData = new Product();
             productData.productName=this.campaignDtlProducts[i].productInfo.productName;
             productData.productCode=this.campaignDtlProducts[i].productInfo.productCode;
             productData.sbu=this.campaignDtlProducts[i].productInfo.sbu;

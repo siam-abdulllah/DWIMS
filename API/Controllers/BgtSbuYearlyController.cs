@@ -60,7 +60,7 @@ namespace API.Controllers
                                     LEFT JOIN BgtSBUTotal bs ON bs.SBU = sb.SbuCode
                                     AND bs.DeptId = {1}
                                     AND bs.DataStatus = 1
-                                    WHERE bs.CompId = {2}",year, deptId, compId);
+                                    AND bs.CompId = {2}",year, deptId, compId);
                 
 
 

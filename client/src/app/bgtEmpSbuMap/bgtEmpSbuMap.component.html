@@ -8,15 +8,13 @@
                     <div class="card card-primary">
                         <div class="card-header">
                             <div class="row">
+                            
                                 <div class="col-sm-10">
-                                    <h3 class="card-title">SBU Wise Yearly Budget</h3>
+                                    <h3 class="card-title">Employee SBU Relation</h3>
                                 </div>
                                 <div class="col-sm-1">
-                                    <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="bgtsbuForm.invalid" (click)="confirmSubmission()"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                    <button class="btn btn-success btn-lg btn-block" type="submit" (click)="confirmSubmission()" [disabled]="bgtsbuForm.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
                                 </div>
-                                <!-- <div class="col-sm-2">
-                                    <button class="btn btn-info btn-lg btn-block"><i class="fa fa-search"></i>Search</button>
-                                </div> -->
                                 <div class="col-sm-1">
                                     <button class="btn btn-danger btn-lg btn-block" type="button" ><i class="fa fa-undo"></i> Reset</button>
                                 </div>
@@ -31,63 +29,57 @@
                                         <label>Company Name</label>
                                     </div>
                                     <div class="col-md-2">
-                                        <select class="form-control" name="company" id="compId" name="compId" required  [(ngModel)]="bugetSbuYearlyService.budgetSbuYearly.compId" readonly>
+                                        <select class="form-control" name="company" id="compId" name="compId" [(ngModel)]="budgetEmpSbuMapService.budgetSbuMap.compId"  readonly>
                                             <option  [ngValue]="0">Select Company</option>
                                             <option value="1000">Square Pharmaceuticals Limited</option>
                                         </select>
                                     </div>
-                                    <div class="col-md-2">
-                                        <label>Year</label>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <input class="form-control" placeholder="Year" name="Year" [(ngModel)]="bugetSbuYearlyService.budgetSbuYearly.year"  readonly >
-                                    </div>
-                                    <div class="col-md-2">
-                                        <label>Total Budget</label>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <input class="form-control " placeholder="Total Budget Amount" name="totalAmount"  [(ngModel)]="bugetSbuYearlyService.budgetSbuYearly.totalBudget" 
-                                        readonly >
-                                    </div>
-                                   
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row">
                                     <div class="col-md-1">
                                         <label>Dept. Name</label>
                                         <span style="color:red;">*</span> 
                                     </div>
                                     <div class="col-md-2">
-                                        <select class="form-control" name="department" (change)="getYearlyBudget()" [(ngModel)]="bugetSbuYearlyService.budgetSbuYearly.deptId" >
+                                        <select class="form-control" name="department" (change)="getEmpSbuMappingList()"  [(ngModel)]="budgetEmpSbuMapService.budgetSbuMap.deptId" >
                                             <option  [ngValue]="0">Select Department</option>
                                             <option value="1">Sales</option>
                                             <option value="2">PMD</option>
                                         </select>
                                     </div>
-                                    <div class="col-md-2">
-                                        <label>Remaining Budget</label>
+                                    <div class="col-md-1">
+                                        <label>Employee</label>
                                     </div>
                                     <div class="col-md-2">
-                                        <input class="form-control" placeholder="Remaining Budget Amount" name="remainingBudget" [(ngModel)]="bugetSbuYearlyService.budgetSbuYearly.remainingBudget" readonly>
+                                        <ng-select [virtualScroll]="true" [items]="employees"  bindLabel="employeeName" bindValue="id"   placeholder="Select" name="employee" [(ngModel)]="budgetEmpSbuMapService.budgetSbuMap.employeeId"
+                                        required >
+                                            <ng-template ng-label-tmp let-item="item">
+                                                <span [ngOptionHighlight]="search">{{ item.employeeSAPCode }} - {{ item.employeeName }}</span>
+                                            </ng-template>
+
+                                            <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                                                <span [ngOptionHighlight]="search">{{ item.employeeSAPCode }} - {{ item.employeeName }}</span>
+                                            </ng-template>
+                                        </ng-select>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <label>SBU</label>
                                     </div>
                                     <div class="col-md-2">
-                                        <label>Remarks</label>
+                                        <select class="form-control " id="sbu"  name="sbu" required  [(ngModel)]="budgetEmpSbuMapService.budgetSbuMap.sbu">
+                                            <option  [ngValue]="null">Select SBU</option>
+                                            <option *ngFor="let a of SBUs" [value]="a.sbuCode">{{a.sbuName}}</option>
+                                        </select>
                                     </div>
-                                    <div class="col-md-2">
-                                        <input class="form-control" placeholder="Remarks" name="Remarks" [(ngModel)]="bugetSbuYearlyService.budgetSbuYearly.remarks">
-                                    </div>
+                            
+                                   
                                 </div>
-                              
                             </div>
-                        
                             <br/>
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-2">
                                     </div>
                                     <div class="col-md-6">
-                                        <input name="filterText" class="form-control m-input Searchbox" type="text"  placeholder="Search..">
+                                        <input name="filterText" class="form-control m-input Searchbox" type="text" [(ngModel)]="searchText"  placeholder="Search..">
                                     </div>
                                     <div class="col-md-3">
                                         <button class="btn btn-danger" type="button" ><i class="fa fa-undo"></i>&nbsp; Reset</button>
@@ -98,33 +90,25 @@
                             <div class="form-group">
                                 <table class="table table-bordered">
                                     <tr class="HeaderRow">
-                                        <td>SBU Name</td>
-                                        <td>Budget Amount</td>
-                                        <td>Expense</td>
-                                        <td>Pipeline</td>
-                                        <td>Remaining</td>
-                                        <td>New Amount</td>
-                              
+                                        <td>Employee ID</td>
+                                        <td>Employee Name</td>
+                                        <td>Assigned SBU</td>
+                                        <td>Action</td>
                                     </tr>
-                                    <tr *ngFor="let a of sbuDetails">
+                                    <tr *ngFor="let a of budgetSbuMapList  | filter: searchText">
                                         <td>
-                                          {{a.sbuName}}
+                                            {{a.employeeId}} 
                                         </td>
                                         <td>
-                                            {{a.sbuAmount}}
+                                            {{a.employeeName}} 
                                         </td>
                                         <td>
-                                            {{a.expense}}
+                                            {{a.sbuName}} 
                                         </td>
                                         <td>
-                                            {{a.pipeLine}}
+                                            <input type="button"  (click)="removeSbuMapping(a)"  value="Remove"> 
                                         </td>
-                                        <td>
-                                            {{a.remaining}}
-                                        </td>
-                                        <td>
-                                            <input class="form-control ng-valid ng-touched ng-dirty" type="text" placeholder="New Amount" name="{{a.newAmount}}" #newAmount="ngModel" [(ngModel)]="a.newAmount">
-                                        </td>
+                                      
                                     </tr>
                                 </table>
                     
