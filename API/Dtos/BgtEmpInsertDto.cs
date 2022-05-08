@@ -27,8 +27,3 @@ namespace API.Dtos
         public int DonationId { get; set; }
     }
 }
-
-
-
-, @EnteredBy INT
-, @DonationId INT
