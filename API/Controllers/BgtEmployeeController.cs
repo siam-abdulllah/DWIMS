@@ -147,13 +147,13 @@ namespace API.Controllers
                         new SqlParameter("@SBU ", dto.SBU),
                         new SqlParameter("@AuthId", dto.AuthId),
                         new SqlParameter("@Amount", dto.Amount),
-                        new SqlParameter("@AmtLimit", dto.Amount),
+                        new SqlParameter("@AmtLimit", dto.AmtLimit),
                         new SqlParameter("@Segment", dto.Segment),
                         new SqlParameter("@EnteredBy", dto.EnteredBy),
                         new SqlParameter("@DonationId", dto.DonationId),
                     };
 
-                var results = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtEmployeeInsert] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId", parms.ToArray());
+                var results = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsert] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId", parms.ToArray());
                 return results;
             }
             catch (Exception ex)

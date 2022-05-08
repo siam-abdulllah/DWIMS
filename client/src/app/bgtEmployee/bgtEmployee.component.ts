@@ -268,7 +268,7 @@ export class BgtEmployeeComponent implements OnInit {
     this.bgtService.bgtOwnFormData.authId = this.bgtEmployee.value.authId;
     this.bgtService.bgtOwnFormData.amount = this.bgtEmployee.value.donationAmt;
     this.bgtService.bgtOwnFormData.segment = this.bgtEmployee.value.segment;
-    this.bgtService.bgtOwnFormData.amtLimit = this.bgtEmployee.value.amtLimit;
+    this.bgtService.bgtOwnFormData.amtLimit = this.bgtEmployee.value.transLimit;
     this.bgtService.bgtOwnFormData.donationId = this.bgtEmployee.value.donationId;
     this.bgtService.bgtOwnFormData.enteredBy = parseInt(this.empId);
 
