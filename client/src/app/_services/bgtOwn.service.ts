@@ -70,7 +70,9 @@ export class BgtOwnService {
   getEmpWiseTotPipe(employeeId: any, sbu: string , year: any ,compId:any,deptId:any ){    
     return this.http.get(this.baseUrl + 'BgtOwn/getEmpWiseTotPipe/'+employeeId+'/'+sbu+'/'+year+'/'+compId+'/'+deptId);
   }
-
+  getEmpOwnBgt(employeeId: any, sbu: string , year: any ,compId:any,deptId:any ){    
+    return this.http.get(this.baseUrl + 'BgtOwn/getEmpOwnBgt/'+employeeId+'/'+sbu+'/'+year+'/'+compId+'/'+deptId);
+  }
   getAuthPersonCount(authId: any ){    
     return this.http.get(this.baseUrl + 'BgtOwn/getAuthPersonCount/'+authId);
   }

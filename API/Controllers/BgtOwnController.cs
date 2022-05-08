@@ -144,8 +144,8 @@ namespace API.Controllers
         {
             try
             {
-                string qry = "SELECT A.[Id], A.[DataStatus],A.[SetOn],A.[ModifiedOn],SBUCode,SBUName,Remarks " +
-                    " FROM [DIDS].[dbo].[EmpSbuMapping] A INNER JOIN SBU B ON A.SBU = B.SBUCode" +
+                string qry = "SELECT A.[Id], A.[DataStatus],A.[SetOn],A.[ModifiedOn],SBU SBUCode,SBUName,NULL Remarks " +
+                    " FROM [DIDS].[dbo].[EmpSbuMapping] A " +
                     " WHERE A.DataStatus=1 AND  A.EmployeeId=" + employeeId;
 
 
@@ -169,6 +169,24 @@ namespace API.Controllers
 
 
                 var results = _dbContext.BgtEmployee.FromSqlRaw(qry).ToList();
+                return results;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        } 
+        [HttpGet("getEmpOwnBgt/{employeeId}/{sbu}/{year}/{compId}/{deptId}")]
+        public IReadOnlyList<BgtOwn> GetEmpOwnBgt(int employeeId, string sbu, int year, int compId, int deptId)
+        {
+            try
+            {
+                string qry = "SELECT [Id],[DataStatus],[SetOn],[ModifiedOn],[CompId],[DeptId],[Year],[Month],[EmployeeId],[SBU]," +
+                    "[DonationId],[Amount],[AmtLimit],[Segment],[Remarks],[EnteredBy]" +
+                    " FROM BgtOwn WHERE [DataStatus]=1 AND [EmployeeId]=" + employeeId + " AND [SBU]='" + sbu + "' AND [CompId]=" + compId + " AND [DeptId]=" + deptId + " " +
+                    " AND [Month]=Month(GETDATE()) AND [Year]=" + year;
+
+                var results = _dbContext.BgtOwn.FromSqlRaw(qry).ToList();
                 return results;
             }
             catch (System.Exception ex)

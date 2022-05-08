@@ -44,6 +44,7 @@ export class BgtOwnComponent implements OnInit {
   totalCount = 0;
   userRole: any;
   donations: IDonation[];
+  bgtOwns: IBgtOwn[];
   constructor(public bgtService: BgtOwnService, private SpinnerService: NgxSpinnerService, private modalService: BsModalService, private accountService: AccountService,
     private router: Router, private toastr: ToastrService, private datePipe: DatePipe,) {
   }
@@ -163,7 +164,6 @@ export class BgtOwnComponent implements OnInit {
     yr.getFullYear();
 
     this.bgtService.getEmpWiseBgt(this.bgtOwn.value.employee, this.bgtOwn.value.sbu,yr.getFullYear(),1000,this.bgtOwn.getRawValue().deptId).subscribe(response => {
-      debugger;
       this.bgtOwn.patchValue({
         segment: response[0].segment,
         prevAllocate: response[0].amount,
@@ -175,7 +175,7 @@ export class BgtOwnComponent implements OnInit {
     }, error => {
       console.log(error);
     });
-    debugger;
+    
     this.bgtService.getEmpWiseTotExp(this.bgtOwn.value.employee, this.bgtOwn.value.sbu,yr.getFullYear(),1000,this.bgtOwn.getRawValue().deptId).subscribe(response => {
       debugger;
       this.bgtOwn.patchValue({
@@ -184,11 +184,18 @@ export class BgtOwnComponent implements OnInit {
     }, error => {
       console.log(error);
     });
+
     this.bgtService.getEmpWiseTotPipe(this.bgtOwn.value.employee, this.bgtOwn.value.sbu,yr.getFullYear(),1000,this.bgtOwn.getRawValue().deptId).subscribe(response => {
       debugger;
       this.bgtOwn.patchValue({
         totalPipeline:response[0].count
       });
+    }, error => {
+      console.log(error);
+    });
+    this.bgtService.getEmpOwnBgt(this.bgtOwn.value.employee, this.bgtOwn.value.sbu,yr.getFullYear(),1000,this.bgtOwn.getRawValue().deptId).subscribe(response => {
+      debugger;
+    this.bgtOwns=response as IBgtOwn[];
     }, error => {
       console.log(error);
     });
@@ -358,7 +365,6 @@ export class BgtOwnComponent implements OnInit {
 
     var yr = new Date(this.bgtOwn.value.year);
     
-
     this.bgtService.bgtEmpFormData.deptId = this.bgtOwn.value.deptId;
     this.bgtService.bgtEmpFormData.year = yr.getFullYear();
     this.bgtService.bgtEmpFormData.sbu = this.bgtOwn.value.sbu;
@@ -415,7 +421,6 @@ export class BgtOwnComponent implements OnInit {
   }
 
   reset() {
-   
     this.isValid = true;
     this.valShow = true;
     this.isHide = false;
@@ -437,6 +442,22 @@ export class BgtOwnComponent implements OnInit {
       remaining: "",
       employee: "",
     });
+    this.bgtOwns=[];
   }
 
+}
+export interface IBgtOwn {
+    compId :number;
+    deptId :number;
+    year :number;
+    month :number;
+    employeeId :number;
+    SBU :string;
+    donationId :number;
+    amount :any;
+    amtLimit :any;
+    segment :string;
+    newAmount:any;
+    expense:any;
+    pipeLine:any;
 }
