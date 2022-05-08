@@ -207,8 +207,8 @@
                                     </tr>
                                     <tr *ngFor="let a of bgtOwns">
                                         <td>
-                                            <select class="form-control" id="donationId" name="{{a.donationId}}" #donationId="ngModel" [(ngModel)]="a.donationId">
-                                                <option *ngFor="let a of donations" [value]="a.Id">{{a.donationTypeName}}</option>
+                                            <select class="form-control" [(ngModel)]="a.donationId" [ngModelOptions]="{standalone: true}">
+                                                <option *ngFor="let a of donations" [value]="a.id">{{a.donationTypeName}}</option>
                                             </select>
                                             <!-- {{a.donationId}} -->
                                         </td>
@@ -228,7 +228,7 @@
                                             {{a.remaining}}
                                         </td>
                                         <td>
-                                            <input class="form-control ng-valid ng-touched ng-dirty" type="text" placeholder="New Amount" name="{{a.newAmount}}" #newAmount="ngModel" [(ngModel)]="a.newAmount">
+                                            <input class="form-control ng-valid ng-touched ng-dirty" type="text" placeholder="New Amount" [(ngModel)]="a.newAmount" [ngModelOptions]="{standalone: true}">
                                         </td>
                                     </tr>
                                 </table>
