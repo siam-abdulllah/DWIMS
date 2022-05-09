@@ -44,6 +44,7 @@ export class BgtOwnComponent implements OnInit {
   totalCount = 0;
   userRole: any;
   donations: IDonation[];
+  bgtOwns: IBgtOwn[];
   constructor(public bgtService: BgtOwnService, private SpinnerService: NgxSpinnerService, private modalService: BsModalService, private accountService: AccountService,
     private router: Router, private toastr: ToastrService, private datePipe: DatePipe,) {
   }
@@ -115,6 +116,80 @@ export class BgtOwnComponent implements OnInit {
     //});
 
   }
+  onChangeDonation() {
+    debugger;
+    if (this.bgtOwn.value.sbu == "" || this.bgtOwn.value.sbu == null) {
+      this.toastr.error('Select SBU');
+      this.bgtOwn.patchValue({
+        donationId: "",
+      });
+      return;
+    }
+    if (this.bgtOwn.value.employee == "" || this.bgtOwn.value.employee == null) {
+      this.toastr.error('Select employee');
+      this.bgtOwn.patchValue({
+        donationId: "",
+      });
+      return;
+    }
+    if (this.bgtOwn.value.year == "" || this.bgtOwn.value.year == null) {
+      this.toastr.error('Select year');
+      this.bgtOwn.patchValue({
+        donationId: "",
+      });
+      return;
+    }
+for (let i = 0; i < this.bgtOwns.length; i++) {
+  if(this.bgtOwns[i].donationId==this.bgtOwn.value.donationId)
+  {
+    this.toastr.error('Donation already existed');
+    this.bgtOwn.patchValue({
+      donationId: "",
+    });
+    return;
+  }
+}
+    var yr = new Date(this.bgtOwn.value.year);
+    yr.getFullYear();
+
+    this.bgtService.getDonWiseBgt(this.bgtOwn.value.employee, this.bgtOwn.value.sbu,yr.getFullYear(),1000,this.bgtOwn.getRawValue().deptId, this.bgtOwn.value.donationId).subscribe(response => {
+      this.bgtOwn.patchValue({
+        transLimit: response[0].amtLimit,
+        donationAmt: response[0].Amount,
+        // totalAmount: response[0].amount,
+        // donationRemain: this.bgtOwn.value.prevAllocate-this.bgtOwn.value.totalAmount,
+       
+      });
+    }, error => {
+      console.log(error);
+    });
+    
+    this.bgtService.getEmpWiseTotExp(this.bgtOwn.value.employee, this.bgtOwn.value.sbu,yr.getFullYear(),1000,this.bgtOwn.getRawValue().deptId).subscribe(response => {
+      debugger;
+      this.bgtOwn.patchValue({
+        totalExpense:response[0].count
+      });
+    }, error => {
+      console.log(error);
+    });
+
+    this.bgtService.getEmpWiseTotPipe(this.bgtOwn.value.employee, this.bgtOwn.value.sbu,yr.getFullYear(),1000,this.bgtOwn.getRawValue().deptId).subscribe(response => {
+      debugger;
+      this.bgtOwn.patchValue({
+        totalPipeline:response[0].count
+      });
+    }, error => {
+      console.log(error);
+    });
+    this.bgtService.getEmpOwnBgt(this.bgtOwn.value.employee, this.bgtOwn.value.sbu,yr.getFullYear(),1000,this.bgtOwn.getRawValue().deptId).subscribe(response => {
+      debugger;
+    this.bgtOwns=response as IBgtOwn[];
+    
+    }, error => {
+      console.log(error);
+    });
+
+  }
   createbgtOwnForm() {
     this.bgtOwn = new FormGroup({
       deptId: new FormControl({ value: '', disabled: true }, [Validators.required]),
@@ -127,6 +202,9 @@ export class BgtOwnComponent implements OnInit {
       transLimit: new FormControl(''),
       totalExpense: new FormControl(''),
       totalPipeline: new FormControl(''),
+      donationExp: new FormControl({ value: '', disabled: true },),
+      donationPipeLine: new FormControl({ value: '', disabled: true },),
+      donationRemain: new FormControl({ value: '', disabled: true },),
       segment: new FormControl(''),
       permEdit: new FormControl(''),
       permView: new FormControl(''),
@@ -134,6 +212,8 @@ export class BgtOwnComponent implements OnInit {
       remaining: new FormControl(''),
       employee: new FormControl(''),
     });
+
+    
   }
 
   getDeptSbuWiseBudgetAmt() {
@@ -163,7 +243,6 @@ export class BgtOwnComponent implements OnInit {
     yr.getFullYear();
 
     this.bgtService.getEmpWiseBgt(this.bgtOwn.value.employee, this.bgtOwn.value.sbu,yr.getFullYear(),1000,this.bgtOwn.getRawValue().deptId).subscribe(response => {
-      debugger;
       this.bgtOwn.patchValue({
         segment: response[0].segment,
         prevAllocate: response[0].amount,
@@ -175,7 +254,7 @@ export class BgtOwnComponent implements OnInit {
     }, error => {
       console.log(error);
     });
-    debugger;
+    
     this.bgtService.getEmpWiseTotExp(this.bgtOwn.value.employee, this.bgtOwn.value.sbu,yr.getFullYear(),1000,this.bgtOwn.getRawValue().deptId).subscribe(response => {
       debugger;
       this.bgtOwn.patchValue({
@@ -184,11 +263,19 @@ export class BgtOwnComponent implements OnInit {
     }, error => {
       console.log(error);
     });
+
     this.bgtService.getEmpWiseTotPipe(this.bgtOwn.value.employee, this.bgtOwn.value.sbu,yr.getFullYear(),1000,this.bgtOwn.getRawValue().deptId).subscribe(response => {
       debugger;
       this.bgtOwn.patchValue({
         totalPipeline:response[0].count
       });
+    }, error => {
+      console.log(error);
+    });
+    this.bgtService.getEmpOwnBgt(this.bgtOwn.value.employee, this.bgtOwn.value.sbu,yr.getFullYear(),1000,this.bgtOwn.getRawValue().deptId).subscribe(response => {
+      debugger;
+    this.bgtOwns=response as IBgtOwn[];
+    
     }, error => {
       console.log(error);
     });
@@ -328,7 +415,9 @@ export class BgtOwnComponent implements OnInit {
   //   // );
   // }
   insertbgtOwn() {
-
+debugger;
+  var a =this.bgtOwns;
+  return false;
     if(this.bgtOwn.value.remaining < 0)
     {
       this.toastr.error('There is not enough budget left to be allocated');
@@ -358,7 +447,6 @@ export class BgtOwnComponent implements OnInit {
 
     var yr = new Date(this.bgtOwn.value.year);
     
-
     this.bgtService.bgtEmpFormData.deptId = this.bgtOwn.value.deptId;
     this.bgtService.bgtEmpFormData.year = yr.getFullYear();
     this.bgtService.bgtEmpFormData.sbu = this.bgtOwn.value.sbu;
@@ -415,7 +503,6 @@ export class BgtOwnComponent implements OnInit {
   }
 
   reset() {
-   
     this.isValid = true;
     this.valShow = true;
     this.isHide = false;
@@ -430,6 +517,9 @@ export class BgtOwnComponent implements OnInit {
       totalAmount: "",
       totalExpense: "",
       totalPipeline: "",
+      donationExp:  "",
+      donationPipeLine:  "",
+      donationRemain:  "",
       segment: "",
       permEdit: "",
       permView: "",
@@ -437,6 +527,22 @@ export class BgtOwnComponent implements OnInit {
       remaining: "",
       employee: "",
     });
+    this.bgtOwns=[];
   }
 
+}
+export interface IBgtOwn {
+    compId :number;
+    deptId :number;
+    year :number;
+    month :number;
+    employeeId :number;
+    SBU :string;
+    donationId :number;
+    amount :any;
+    amtLimit :any;
+    segment :string;
+    newAmount:any;
+    expense:any;
+    pipeLine:any;
 }
