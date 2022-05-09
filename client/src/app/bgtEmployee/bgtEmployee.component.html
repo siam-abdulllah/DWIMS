@@ -19,9 +19,6 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body ">
-                            <!-- <input type="hidden" name="id" id="id" formControlName="id" />
-                            <input type="hidden" name="investmentInitId" id="investmentInitId" formControlName="investmentInitId" /> -->
-
                             <fieldset>
 
                                 <div class="form-group ">
@@ -33,7 +30,8 @@
                                             <input class="form-control" value="Square Pharmaceuticals Ltd." readonly>
                                         </div>
                                         <div class="col-md-1 ">
-                                            <label>Department</label>
+                                            <label>Department  <div class="invalid-feedback" *ngIf="bgtEmployee.controls.deptId.errors?.required">*</div> </label>
+
                                         </div>
                                         <div class="col-md-3 ">
                                             <select class="form-control" id="deptId" formControlName="deptId" required>
@@ -41,9 +39,10 @@
                                         <option [ngValue]="1">Sales</option>
                                         <option [ngValue]="2">PMD</option>
                                     </select>
+
                                         </div>
                                         <div class="col-md-1 ">
-                                            <label>SBU</label>
+                                            <label>SBU <div class="invalid-feedback" *ngIf="bgtEmployee.controls.sbu.errors?.required">*</div>  </label>
                                         </div>
                                         <div class="col-md-3 ">
                                             <select class="form-control" id="sbu" formControlName="sbu">
@@ -56,7 +55,7 @@
                                 <div class="form-group ">
                                     <div class="row ">
                                         <div class="col-md-1 ">
-                                            <label>Year</label>
+                                            <label>Year <div class="invalid-feedback" *ngIf="bgtEmployee.controls.year.errors?.required">*</div>  </label>
                                         </div>
                                         <div class="col-md-3 ">
                                             <input class="form-control" id="year" name="year" placeholder="Select Year" formControlName="year" (onHidden)="getDeptSbuWiseBudgetAmt()" [bsValue]="bsValue" bsDatepicker [bsConfig]="{  containerClass: 'theme-blue', minMode:'year', adaptivePosition: true, dateInputFormat: 'YYYY' }">
@@ -79,7 +78,7 @@
                                 <div class="form-group ">
                                     <div class="row ">
                                         <div class="col-md-1 ">
-                                            <label>Authorize Level</label>
+                                            <label>Authorize Level<div class="invalid-feedback" *ngIf="bgtEmployee.controls.authId.errors?.required">*</div>  </label>
                                         </div>
                                         <div class="col-md-3 ">
                                             <select class="form-control" id="authId" formControlName="authId" (change)="getAuthPersonCount()">
@@ -97,7 +96,8 @@
                                             <label>Total Amount</label>
                                         </div>
                                         <div class="col-md-3 ">
-                                            <input class="form-control" id="ttlAmount" name="ttlAmount" formControlName="ttlAmount">
+                                            <input class="form-control" id="ttlAmount" name="ttlAmount" formControlName="ttlAmount" [pattern]="numberPattern">
+                                            <div class="invalid-feedback" *ngIf="bgtEmployee.controls.ttlAmount.errors?.pattern">Only numeric value</div>
                                         </div>
 
 
@@ -108,7 +108,7 @@
                                     <div class="row ">
 
                                         <div class="col-md-1 ">
-                                            <label>Segment</label>
+                                            <label>Segment <div class="invalid-feedback" *ngIf="bgtEmployee.controls.segment.errors?.required">*</div>  </label>
                                         </div>
                                         <div class="col-md-3 ">
                                             <select class="form-control" id="segment" formControlName="segment" (change)="getAllocatedAmount()" required>
@@ -152,7 +152,7 @@
                                         <div class="col-md-10">
                                         </div>
                                         <div class="col-md-1">
-                                            <button class="btn btn-info btn-block" [hidden]="btnShow" (click)="showDetails()" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Add Details</button>
+                                            <button class="btn btn-info btn-block" [hidden]="btnShow" (click)="showDetails()" [disabled]="!bgtEmployee.valid" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Add Details</button>
                                         </div>
                                         <div class="col-md-1">
                                             <button class="btn btn-success btn-block" (click)="insertbgtEmployee()" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Save</button>
@@ -179,13 +179,15 @@
                                             <label>Amount</label>
                                         </div>
                                         <div class="col-md-3 ">
-                                            <input class="form-control" id="donationAmt" formControlName="donationAmt">
+                                            <input class="form-control" id="donationAmt" formControlName="donationAmt" [pattern]="numberPattern">
+                                            <div class="invalid-feedback" *ngIf="bgtEmployee.controls.donationAmt.errors?.pattern">Only numeric value</div>
                                         </div>
                                         <div class="col-md-1 ">
                                             <label>Trans Limit</label>
                                         </div>
                                         <div class="col-md-3 ">
-                                            <input class="form-control" id="transLimit" formControlName="transLimit">
+                                            <input class="form-control" id="transLimit" formControlName="transLimit" [pattern]="numberPattern">
+                                            <div class="invalid-feedback" *ngIf="bgtEmployee.controls.transLimit.errors?.pattern">Only numeric value</div>
                                         </div>
 
                                     </div>

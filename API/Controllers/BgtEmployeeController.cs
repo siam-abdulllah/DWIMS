@@ -67,7 +67,7 @@ namespace API.Controllers
             {
                 string qry = "";
 
-                qry = " select 1 as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, ISNULL(SUM(Amount), 0) Count from BgtEmployee " +
+                qry = " select 1 as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, ISNULL(SUM(Amount), 0) Count from BgtOwn " +
                     " where DeptId = "+ deptId + " " +
                     " and SBU = '"+ sbu + "' " +
                     " and [Year] = '"+ year  + "' " +

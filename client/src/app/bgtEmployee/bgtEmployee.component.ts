@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild, TemplateRef } from '@angular/
 import 'jspdf-autotable';
 import * as jsPDF from 'jspdf';
 import { Router } from '@angular/router';
-import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, Validators  } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -42,30 +42,50 @@ export class BgtEmployeeComponent implements OnInit {
   totalCount = 0;
   userRole: any;
   constructor(public bgtService: BgtEmployeeService, private SpinnerService: NgxSpinnerService, private modalService: BsModalService, private accountService: AccountService, 
-     private router: Router, private toastr: ToastrService, private datePipe: DatePipe,) {
+     private router: Router, private toastr: ToastrService, private datePipe: DatePipe, public _formBuilder: FormBuilder) {
    }
 
    createbgtEmployeeForm() {
-    this.bgtEmployee = new FormGroup({
-      deptId: new FormControl('', [Validators.required]),
-      year: new FormControl('', [Validators.required]),
-      authId: new FormControl('', [Validators.required]),
-      sbu: new FormControl('', [Validators.required]),
-      ttlAmount: new FormControl(''),
-      segment: new FormControl(''),
-      permEdit: new FormControl(''),
-      permView: new FormControl(''),
-      donationId: new FormControl(''),
-      donationAmount: new FormControl(''),
-      amtLimit: new FormControl(''),
-      sbuTotalBudget: new FormControl(''),
-      ttlAllocate: new FormControl(''),
-      prevAllocate: new FormControl(''),
-      ttlPerson: new FormControl(''),
-      remaining: new FormControl(''),
+    // this.bgtEmployee = new FormGroup({
+      this.bgtEmployee = this._formBuilder.group({
+      // deptId: new FormControl('', [Validators.required]),
+      // year: new FormControl('', [Validators.required]),
+      // authId: new FormControl('', [Validators.required]),
+      // sbu: new FormControl('', [Validators.required]),
+      // ttlAmount: new FormControl('', [Validators.pattern('^[0-9]+(.[0-9]{1,10})?$')]),
+      // segment: new FormControl(''),
+      // permEdit: new FormControl(''),
+      // permView: new FormControl(''),
+      // donationId: new FormControl(''),
+      // donationAmount: new FormControl(''),
+      // amtLimit: new FormControl(''),
+      // sbuTotalBudget: new FormControl(''),
+      // ttlAllocate: new FormControl(''),
+      // prevAllocate: new FormControl(''),
+      // ttlPerson: new FormControl(''),
+      // remaining: new FormControl(''),
+      // donationAmt: new FormControl(''),
+      // transLimit: new FormControl(''),
 
-      donationAmt: new FormControl(''),
-      transLimit: new FormControl(''),
+
+      deptId: ['', Validators.required],
+      year: ['', Validators.required],
+      authId: ['', Validators.required],
+      sbu: ['', Validators.required],
+      ttlAmount: ['', Validators.pattern('^[0-9]+(.[0-9]{1,10})?$')],
+      segment: [''],
+      permEdit: [''],
+      permView: [''],
+      donationId: [''],
+      donationAmount: [''],
+      amtLimit: [''],
+      sbuTotalBudget: [''],
+      ttlAllocate: [''],
+      prevAllocate: [''],
+      ttlPerson: [''],
+      remaining: [''],
+      donationAmt: [''],
+      transLimit: [''],
     });
   }
 
