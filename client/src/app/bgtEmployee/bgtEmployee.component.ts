@@ -109,6 +109,11 @@ export class BgtEmployeeComponent implements OnInit {
       return;
     }
 
+    if(this.bgtEmployee.value.year == "" || this.bgtEmployee.value.year == null)
+    {
+      return;
+    }
+
     var yr = new Date(this.bgtEmployee.value.year);
     yr.getFullYear();
 
@@ -152,7 +157,8 @@ export class BgtEmployeeComponent implements OnInit {
       this.bgtEmployee.patchValue({
         ttlPerson: response[0].count,
       });
-      
+
+      this.getAllocatedAmount();
      }, error => {
         console.log(error);
      });
@@ -165,6 +171,12 @@ export class BgtEmployeeComponent implements OnInit {
     if(this.bgtEmployee.value.segment == "" || this.bgtEmployee.value.segment == null)
     {
       this.toastr.error('Select Segmentation');
+      return;
+    }
+
+    if(this.bgtEmployee.value.ttlAmount == "" || this.bgtEmployee.value.ttlAmount == null)
+    {
+      this.toastr.error('Enter Amount');
       return;
     }
 
@@ -210,7 +222,14 @@ export class BgtEmployeeComponent implements OnInit {
     });
   }
 
-
+  resetSegment()
+  {
+    this.bgtEmployee.patchValue({
+      remaining: "",
+      segment: "",
+      ttlAllocate: "",
+    });
+  }
   ngOnInit() {
     this.createbgtEmployeeForm();
     this.reset();
@@ -271,7 +290,7 @@ export class BgtEmployeeComponent implements OnInit {
     this.bgtService.insertBgtEmp(this.bgtService.bgtEmpFormData).subscribe(
       res => {
         this.toastr.success('Master Budget Data Saved successfully', 'Budget Dispatch') 
-        this.btnShow = false;
+        this.valShow = false;
       },
       err => { console.log(err); }
     );
@@ -280,6 +299,23 @@ export class BgtEmployeeComponent implements OnInit {
 
   insertBgtOwn()
   {
+
+    if(this.bgtEmployee.value.donationId == "" || this.bgtEmployee.value.donationId == null)
+    {
+      this.toastr.error('Select Donation Type');
+      return;
+    }
+    if(this.bgtEmployee.value.donationAmt == "" || this.bgtEmployee.value.donationAmt == null)
+    {
+      this.toastr.error('Enter Donation Amount');
+      return;
+    }
+    if(this.bgtEmployee.value.transLimit == "" || this.bgtEmployee.value.transLimit == null)
+    {
+      this.toastr.error('Enter Transaction Limit');
+      return;
+    }
+
     var yr = new Date(this.bgtEmployee.value.year);
     
     this.bgtService.bgtOwnFormData.deptId = this.bgtEmployee.value.deptId;
@@ -315,11 +351,6 @@ export class BgtEmployeeComponent implements OnInit {
     this.searchText = '';
 }
 
-showDetails()
-{
-  this.valShow= false;
-  
-}
 
 openPendingListModal(template: TemplateRef<any>) {
   this.pendingListModalRef = this.modalService.show(template, this.config);

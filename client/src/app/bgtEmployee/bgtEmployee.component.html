@@ -34,7 +34,7 @@
 
                                         </div>
                                         <div class="col-md-3 ">
-                                            <select class="form-control" id="deptId" formControlName="deptId" required>
+                                            <select class="form-control" id="deptId" formControlName="deptId" (change)="getDeptSbuWiseBudgetAmt()" required>
                                         <option [ngValue]="null">Select Department</option>
                                         <option [ngValue]="1">Sales</option>
                                         <option [ngValue]="2">PMD</option>
@@ -45,7 +45,7 @@
                                             <label>SBU <div class="invalid-feedback" *ngIf="bgtEmployee.controls.sbu.errors?.required">*</div>  </label>
                                         </div>
                                         <div class="col-md-3 ">
-                                            <select class="form-control" id="sbu" formControlName="sbu">
+                                            <select class="form-control" id="sbu" formControlName="sbu" (change)="getDeptSbuWiseBudgetAmt()">
                                             <option *ngFor="let a of SBUs" [value]="a.sbuCode">{{a.sbuName}}</option>
                                         </select>
                                         </div>
@@ -82,7 +82,7 @@
                                         </div>
                                         <div class="col-md-3 ">
                                             <select class="form-control" id="authId" formControlName="authId" (change)="getAuthPersonCount()">
-                                            <option *ngFor="let a of approvalAuthorities" [value]="a.id">{{a.approvalAuthorityName}}</option>
+                                            <option *ngFor="let a of approvalAuthorities" [value]="a.id">{{a.approvalAuthorityName+ ' - ' +  a.remarks}}</option>
                                         </select>
                                         </div>
                                         <div class="col-md-1 ">
@@ -96,7 +96,7 @@
                                             <label>Total Amount</label>
                                         </div>
                                         <div class="col-md-3 ">
-                                            <input class="form-control" id="ttlAmount" name="ttlAmount" formControlName="ttlAmount" [pattern]="numberPattern">
+                                            <input class="form-control" id="ttlAmount" name="ttlAmount" (change)="resetSegment()" formControlName="ttlAmount" [pattern]="numberPattern">
                                             <div class="invalid-feedback" *ngIf="bgtEmployee.controls.ttlAmount.errors?.pattern">Only numeric value</div>
                                         </div>
 
@@ -128,7 +128,7 @@
                                             <label>Remaining</label>
                                         </div>
                                         <div class="col-md-3 ">
-                                            <input class="form-control" id="remaining" name="remaining" formControlName="remaining" style="color: red; font-weight: bold;" readonly>
+                                            <input class="form-control" id="remaining" name="remaining" formControlName="remaining" [ngClass]=" bgtEmployee.controls.remaining.value >= 0 ? '': 'bg-danger'" readonly>
                                         </div>
 
                                     </div>
@@ -149,11 +149,9 @@
 
                                 <div class="form-group ">
                                     <div class="row ">
-                                        <div class="col-md-10">
+                                        <div class="col-md-11">
                                         </div>
-                                        <div class="col-md-1">
-                                            <button class="btn btn-info btn-block" [hidden]="btnShow" (click)="showDetails()" [disabled]="!bgtEmployee.valid" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Add Details</button>
-                                        </div>
+
                                         <div class="col-md-1">
                                             <button class="btn btn-success btn-block" (click)="insertbgtEmployee()" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Save</button>
                                         </div>
