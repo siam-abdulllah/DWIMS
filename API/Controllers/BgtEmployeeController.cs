@@ -26,7 +26,7 @@ namespace API.Controllers
         {
             try
             {
-                var result = _dbContext.ApprovalAuthority.FromSqlRaw("select * from ApprovalAuthority where ApprovalAuthorityName = 'GPM' OR Priority > 2").ToList();
+                var result = _dbContext.ApprovalAuthority.FromSqlRaw("select * from ApprovalAuthority where ApprovalAuthorityName = 'GPM' OR Priority > 2 ORDER by Priority").ToList();
                 return result;
             }
             catch (System.Exception ex)
