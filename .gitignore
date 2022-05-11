@@ -112,3 +112,7 @@ Infrastructure/obj/Infrastructure.csproj.nuget.g.props
 Infrastructure/obj/Infrastructure.csproj.nuget.g.targets
 Infrastructure/obj/project.assets.json
 Infrastructure/obj/project.nuget.cache
+*.v2
+*.cache
+*.editorconfig
+*.json
