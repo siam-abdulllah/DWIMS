@@ -22,6 +22,7 @@ namespace API.Controllers
         private readonly IGenericRepository<ReportConfig> _rptConfitRepo;
         private readonly IGenericRepository<ReportInvestmentInfo> _investRepo;
         private readonly IGenericRepository<InvestmentDetail> _investmentDetailRepo;
+        private readonly IGenericRepository<InvestmentDetailTracker> _investmentDetailTrackerRepo;
         private readonly IGenericRepository<InvestmentInit> _investmentInitRepo;
         private readonly IGenericRepository<InvestmentTargetedGroup> _investmentTargetedGroupRepo;
         private readonly IGenericRepository<InvestmentRecComment> _investmentRecCommentRepo;
@@ -30,14 +31,18 @@ namespace API.Controllers
         private readonly IMapper _mapper;
         private readonly IGenericRepository<InvestmentRec> _investmentRecRepo;
 
-        public ReportInvestmentController(IGenericRepository<ReportInvestmentInfo> investRepo, IGenericRepository<InvestmentTargetedGroup> investmentTargetedGroupRepo, IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<ApprovalAuthority> approvalAuthorityRepo, IGenericRepository<InvestmentRecComment> investmentRecCommentRepo,
+        public ReportInvestmentController(IGenericRepository<ReportInvestmentInfo> investRepo, IGenericRepository<InvestmentTargetedGroup> investmentTargetedGroupRepo,
+            IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<ApprovalAuthority> approvalAuthorityRepo, 
+            IGenericRepository<InvestmentRecComment> investmentRecCommentRepo,
              IGenericRepository<ApprAuthConfig> apprAuthConfigRepo, IGenericRepository<ReportConfig> rptConfitRepo, IMapper mapper,
-            IGenericRepository<InvestmentRec> investmentRecRepo, StoreContext db, IGenericRepository<InvestmentDetail> investmentDetailRepo)
+            IGenericRepository<InvestmentRec> investmentRecRepo, StoreContext db, IGenericRepository<InvestmentDetail> investmentDetailRepo, 
+            IGenericRepository<InvestmentDetailTracker> investmentDetailTrackerRepo)
         {
             _mapper = mapper;
             _investRepo = investRepo;
             _rptConfitRepo = rptConfitRepo;
             _investmentDetailRepo = investmentDetailRepo;
+            _investmentDetailTrackerRepo = investmentDetailTrackerRepo;
             _investmentInitRepo = investmentInitRepo;
             _investmentTargetedGroupRepo = investmentTargetedGroupRepo;
             _investmentRecCommentRepo = investmentRecCommentRepo;
@@ -2314,6 +2319,33 @@ namespace API.Controllers
                 throw ex;
             }
         }
+
+        [HttpPost("removeInvestmentDetalTracker/{id}")]
+        public async Task<IActionResult> RemoveInvestmentDetalTracker(int id)
+        {
+            try
+            {
+                //var response = new HttpResponseMessage();
+                var alreadyExistSpec = new InvestmentDetailTrackerSpecification(id);
+                var alreadyExistInvestmentDetailTrackerList = await _investmentDetailTrackerRepo.ListAsync(alreadyExistSpec);
+                if (alreadyExistInvestmentDetailTrackerList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentDetailTrackerList)
+                    {
+                        _investmentDetailTrackerRepo.Delete(v);
+                        _investmentDetailTrackerRepo.Savechange();
+                    }
+
+                    return Ok("Succsessfuly Deleted!!!");
+                }
+                return NotFound();
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
 
     }
 }

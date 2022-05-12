@@ -2,7 +2,7 @@ import { InvestmentAprPagination, IInvestmentAprPagination } from '../shared/mod
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import {
-  InvestmentApr, IInvestmentApr, InvestmentInit, IInvestmentInit,
+  InvestmentApr, IInvestmentApr,
   InvestmentTargetedProd, IInvestmentTargetedProd, InvestmentTargetedGroup, IInvestmentTargetedGroup, InvestmentAprComment, IInvestmentAprComment, InvestmentInitForApr
 } from '../shared/models/investmentApr';
 import { InvestmentDoctor, IInvestmentDoctor, InvestmentInstitution, IInvestmentInstitution, InvestmentCampaign, IInvestmentCampaign } from '../shared/models/investmentApr';
@@ -37,7 +37,7 @@ export class InvestmentCancelService {
   investmentCampaignFormData: InvestmentCampaign = new InvestmentCampaign();
   investmentBcdsFormData: InvestmentBcds = new InvestmentBcds();
   investmentSocietyFormData: InvestmentSociety = new InvestmentSociety();
-  investmentRcvFormData: InvestmentInit = new InvestmentInit();
+  //investmentRcvFormData: InvestmentInit = new InvestmentInit();
   baseUrl = environment.apiUrl;
   genParams = new GenericParams();
 
@@ -159,23 +159,53 @@ export class InvestmentCancelService {
     return this.http.get(this.baseUrl + 'reportInvestment/investmentDetailTracker/' + investmentInitId);
   }
   getInvestmentInit(id: number) {
-    let params = new HttpParams();
-    if (this.genParams.search) {
-      params = params.append('search', this.genParams.search);
-    }
-    params = params.append('sort', this.genParams.sort);
-    params = params.append('pageIndex', this.genParams.pageIndex.toString());
-    params = params.append('pageSize', this.genParams.pageSize.toString());
-    return this.http.get<IInvestmentInitPagination>(this.baseUrl + 'reportInvestment/investmentInits/' + id, { observe: 'response', params })
-      //return this.http.get<IDonationPagination>(this.baseUrl + 'donation/donations', { observe: 'response', params })
-      .pipe(
-        map(response => {
-          this.investmentInits = [...this.investmentInits, ...response.body.data];
-          this.investmentInitPagination = response.body;
-          return this.investmentInitPagination;
-        })
-      );
+    return this.http.get(this.baseUrl + 'reportInvestment/investmentInits/' + id);
   }
+  // removeInvestmentDetal(id: number) {
+  //   return this.http.post(this.baseUrl + 'reportInvestment/removeInvestmentDetal/' + id,
+  //   { responseType: 'text' });
+  // }
+  removeInvestmentDetal(id: number) {
+    return this.http.post(this.baseUrl + 'reportInvestment/removeInvestmentDetal', id,
+      { responseType: 'text' });
+  }
+}
+export interface IInvestmentInit {
+  id: number;
+  dataStatus: number;
+  referenceNo: string;
+  proposeFor: string;
+  donationTypeName: string;
+  donationTo: string;
+  marketCode: string;
+  sbu: string;
+  employeeId: number;
+  employee: IEmployee;
+  setOn: Date;
+}
+export class InvestmentInit implements IInvestmentInit {
+  id: number = 0;
+  dataStatus: number;
+  referenceNo: string;
+  proposeFor: string = null;
+  donationTypeName: string;
+  
+  donationTo: string = null;
+  marketCode: string;
+  sbu: string;
+  employeeId: number;
+  employee: IEmployee;
+  setOn: Date;
+}
+export interface IEmployee {
+  id: number;
+  employeeName: string;
+  employeeCode: string;
+  SBU: string;
+  designationName: string;
+  remarks: string;
+  status: string;
+
 }
 
 

@@ -36,6 +36,7 @@
                             </div>
                         </div>
                         <div class="card-body">
+                            <p ng-show="investmentInit.dataStatus==0" style="color:red ;">This Investment has been Inactive</p>
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-2">
@@ -46,7 +47,7 @@
                                         <input class="form-control" id="referenceNo" name="referenceNo" #referenceNo="ngModel" [(ngModel)]="investmentCancelService.investmentCancelFormData.referenceNo">
                                     </div>
                                     <div class="col-sm-1">
-                                        <button class="btn btn-info btn-lg btn-block" type="button" (click)="ViewDataDoc()"><i class="fa fa-eye"></i>&nbsp;View</button>
+                                        <button class="btn btn-info btn-lg btn-block" type="button" (click)="ViewData()"><i class="fa fa-eye"></i>&nbsp;View</button>
                                     </div>
                                     <div class="col-md-2">
                                         <label>Propose For</label>
@@ -62,12 +63,8 @@
                                         <label>Donation Type</label>
                                     </div>
                                     <div class="col-md-3">
-                                        <select class="form-control" [disabled]="true" id="donationId" name="donationId" #donationId="ngModel" [(ngModel)]="investmentCancelService.investmentCancelFormData.donationId" required [class.invalid]="donationId.invalid && donationId.touched" readonly>
-                                            <option *ngFor="let a of donations" [value]="a.id">{{a.donationTypeName}}</option>
-                                            <!-- <option value="Donation">Donation</option>
-                                            <option value="Gift">Gift</option>
-                                            <option value="Honorarium">Honorarium</option> -->
-                                        </select>
+                                        <input class="form-control" [disabled]="true" id="donationTypeName" name="donationTypeName" #donationTypeName="ngModel" [(ngModel)]="investmentCancelService.investmentCancelFormData.donationTypeName" required [class.invalid]="donationTo.invalid && donationTo.touched"
+                                            readonly>
                                     </div>
                                     <div class="col-md-2">
                                         <label>Donation To</label>
@@ -430,8 +427,7 @@
 
                                                     </div>
                                                     <div class="col-md-10">
-                                                        <input class="form-control" [disabled]="(isInvOther ) || investmentCancelService.investmentCancelFormData.donationId==4" placeholder="Amount" name="proposedAmount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.proposedAmount"
-                                                            [pattern]="numberPattern">
+                                                        <input class="form-control" placeholder="Amount" name="proposedAmount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentCancelService.investmentDetailFormData.proposedAmount" [pattern]="numberPattern">
                                                         <div class="invalid-feedback" *ngIf="proposedAmount.errors?.pattern">Only numeric value</div>
                                                     </div>
                                                 </div>
