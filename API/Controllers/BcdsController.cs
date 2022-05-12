@@ -9,6 +9,7 @@ using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -24,7 +25,7 @@ namespace API.Controllers
             _mapper = mapper;
             _bcdsRepo = bcdsRepo;
         }   
-
+        [Authorize]
         [HttpGet("GetAllBCDS")]
         // [Authorize(Roles = "Owner,Administrator")]
         // [Authorize(Policy = "DetailUserPolicy")]

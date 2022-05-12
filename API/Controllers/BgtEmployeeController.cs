@@ -22,7 +22,7 @@ namespace API.Controllers
 
 
           [HttpGet("approvalAuthoritiesForConfig")]
-        public async Task<IReadOnlyList<ApprovalAuthority>> GetApprovalAuthorities()
+        public IReadOnlyList<ApprovalAuthority> GetApprovalAuthorities()
         {
             try
             {
@@ -108,7 +108,7 @@ namespace API.Controllers
 
 
         [HttpPost("insertBgtEmployee")]
-        public async Task<Int32> BgtEmpInsert(BgtEmpInsertDto dto)
+        public Int32 BgtEmpInsert(BgtEmpInsertDto dto)
         {
             try
             {
@@ -136,7 +136,7 @@ namespace API.Controllers
 
 
          [HttpPost("insertBgtOwn")]
-        public async Task<Int32> BgtOwnInsert(BgtOwnInsertDto dto)
+        public Int32 BgtOwnInsert(BgtOwnInsertDto dto)
         {
             try
             {

@@ -66,7 +66,7 @@ namespace API.Controllers
         }
 
         [HttpGet("getAllEmp")]
-        public async Task<IReadOnlyList<Employee>> GetAllEmp()
+        public IReadOnlyList<Employee> GetAllEmp()
         {
             try
             {

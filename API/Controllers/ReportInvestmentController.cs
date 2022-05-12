@@ -1974,7 +1974,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("investmentTargetedGroups/{investmentInitId}")]
-        public async Task<IReadOnlyList<InvestmentTargetGroupSQL>> GetInvestmentTargetedGroups(int investmentInitId)
+        public IReadOnlyList<InvestmentTargetGroupSQL> GetInvestmentTargetedGroups(int investmentInitId)
         {
             try
             {
@@ -2013,7 +2013,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("rptInvestDepo/{referenceNo}")]
-        public async Task<IReadOnlyList<RptDepotLetter>> ReportDepotLetter(string referenceNo)
+        public IReadOnlyList<RptDepotLetter> ReportDepotLetter(string referenceNo)
         {
             try
             {
@@ -2215,7 +2215,7 @@ namespace API.Controllers
         }
 
         [HttpGet("campaignMsts")]
-        public async Task<IReadOnlyList<CampaignMst>> GetCampaignMst()
+        public IReadOnlyList<CampaignMst> GetCampaignMst()
         {
             try
             {
@@ -2296,7 +2296,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("investmentDetailTracker/{investmentInitId}")]
-        public async Task<IReadOnlyList<InvestmentDetailTracker>> GetinvestmentDetailTracker(int investmentInitId)
+        public IReadOnlyList<InvestmentDetailTracker> GetinvestmentDetailTracker(int investmentInitId)
         {
             try
             {

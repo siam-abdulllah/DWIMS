@@ -140,7 +140,7 @@ namespace API.Controllers
 
 
         [HttpPost("insertMedicineDetail")]
-        public async Task<IActionResult> InsertMedDtl(List<MedicineDispatchDtl> dt)
+        public IActionResult InsertMedDtl(List<MedicineDispatchDtl> dt)
         {
             try
             {
@@ -172,7 +172,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("pendingDispatch/{empId}/{userRole}")]
-        public async Task<IReadOnlyList<MedDispSearch>> PendingForDispatch(int empId, string userRole)
+        public IReadOnlyList<MedDispSearch> PendingForDispatch(int empId, string userRole)
         {
             try
             {

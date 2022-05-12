@@ -338,7 +338,7 @@ namespace API.Controllers
         }
 
         [HttpGet("employeesForRapid")]
-        public async Task<IReadOnlyList<Employee>> GetEmployeesForRapid()
+        public IReadOnlyList<Employee> GetEmployeesForRapid()
         {
             List<Employee> empList = new List<Employee>();
             try
@@ -469,7 +469,7 @@ namespace API.Controllers
         }
 
         [HttpGet("getRapidSubCampaigns/{sbu}")]
-        public async Task<IReadOnlyList<SubCampainDtl>> GetRapidSubCampaigns(string sbu)
+        public IReadOnlyList<SubCampainDtl> GetRapidSubCampaigns(string sbu)
         {
             try
             {

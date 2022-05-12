@@ -31,20 +31,20 @@ namespace API.Controllers
      
 
         [HttpGet("getAllSbuBgtList/{deptId}/{compId}/{year}")]
-        public async Task<List<SBUVM>> GetAllSbuBgtListAsync(int deptId,int compId,int year)
+        public List<SBUVM> GetAllSbuBgtListAsync(int deptId,int compId,int year)
         {
             try
             {
-                string statusQuery = "";
-                string ProposeFor = "";
-                if(deptId == 1)
-                {
-                    ProposeFor = "Others";
-                }
-                else if(deptId == 2)
-                {
-                    ProposeFor = "BrandCampaign";
-                }
+                //string statusQuery = "";
+                // string ProposeFor = "";
+                // if(deptId == 1)
+                // {
+                //     ProposeFor = "Others";
+                // }
+                // else if(deptId == 2)
+                // {
+                //     ProposeFor = "BrandCampaign";
+                // }
                 string qry = "";
               
                 qry = string.Format(@"SELECT sb.*
@@ -76,11 +76,11 @@ namespace API.Controllers
         }
 
         [HttpGet("getAllPipelineExpenseList/{deptId}/{compId}/{year}")]
-        public async Task<List<PipeLineExpense>> GetAllPipeLineExpenseListAsync(int deptId, int compId, int year)
+        public List<PipeLineExpense> GetAllPipeLineExpenseListAsync(int deptId, int compId, int year)
         {
             try
             {
-                string statusQuery = "";
+                // string statusQuery = "";
                 string ProposeFor = "";
                 if (deptId == 1)
                 {
@@ -139,7 +139,7 @@ namespace API.Controllers
             }
         }
         [HttpPost("SaveSbuBgtYearly")]
-        public async Task<ActionResult<BgtSbuYearlyTotalDto>> SaveSbuBgtYearlyAsync(BgtSbuYearlyTotalDto setSbuBgtDto)
+        public ActionResult<BgtSbuYearlyTotalDto> SaveSbuBgtYearlyAsync(BgtSbuYearlyTotalDto setSbuBgtDto)
         {
 
             string qry = "";

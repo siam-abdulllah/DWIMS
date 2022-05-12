@@ -34,7 +34,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("invListForDepotChange/{empId}/{userRole}")]
-        public async Task<IReadOnlyList<ChangeDepotSearch>> ListForDepotChange(int empId, string userRole)
+        public IReadOnlyList<ChangeDepotSearch> ListForDepotChange(int empId, string userRole)
         {
             try
             {

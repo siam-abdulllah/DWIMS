@@ -85,7 +85,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("pendingChqForPrint/{empId}")]
-        public async Task<IReadOnlyList<RptChequePrintSearch>> ReportChequeDepotLetter(int empId)
+        public IReadOnlyList<RptChequePrintSearch> ReportChequeDepotLetter(int empId)
         {
             try
             {
