@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
-                <form novalidate autocomplete="off" #bgtyearlyForm="ngForm">
+                <form novalidate autocomplete="off"  #bgtyearlyForm="ngForm">
                     <div class="card card-primary">
                         <div class="card-header">
                             <div class="row">
@@ -26,6 +26,19 @@
                     </div>
                     <div class="card-body">
                         <fieldset style="margin-top: 10px;">
+                            <div class="updateamount" style="display: flex;">
+                                <div (click)="isNewChecked()">
+                                    <input id="newAmount" type="radio"  name="amount"  [(ngModel)]="newAmountShow" value="New Amount"ng-value="true">
+                                      <label for="newAmount">New Amount</label><br>
+                                </div>
+                                <div (click)="isAddChecked()" style="margin-left: 10px;">
+                                    <input id="addAmount" type="radio"  name="amount" [(ngModel)]="addAmountShow" value="Add Amount"ng-value="true">
+                                      <label for="addAmount">Add Amount</label><br>
+                                </div>
+                           
+                            </div>
+                           
+                           
                             <div class="form-group" style="padding: 5px;">
                                 <div class="row" style="padding: 10px;">
                                     <div class="col-md-2">
@@ -48,8 +61,8 @@
                                         <label>Dept. Name</label>
                                     </div>
                                     <div class="col-md-4">
-                                        <select class="form-control" name="deptId"  id="deptId" required [(ngModel)]="bugetYearlyService.budgetYearly.deptId" (change)="LoadForm()">
-                                            <option  [ngValue]="0">Select Department</option>
+                                        <select class="form-control" name="deptId"  id="deptId" required [(ngModel)]="bugetYearlyService.budgetYearly.deptId"  (change)="LoadForm()">
+                                            <!-- <option  [ngValue]="0">Select Department</option> -->
                                             <option value="1">Sales</option>
                                             <option value="2">PMD</option>
                                         </select>
@@ -108,18 +121,30 @@
                                         <label>Total Remaining</label>
                                     </div>
                                     <div class="col-md-4">
-                                        <input type="text" class="form-control"  id="totalRemaining" name="totalRemaining" readonly [(ngModel)]="bugetYearlyService.budgetYearly.totalRemaining" >
+                                        <input type="text" class="form-control"  id="totalRemaining" name="totalRemaining" readonly [(ngModel)]="bugetYearlyService.budgetYearly.totalRemaining" [ngClass]="{'text-danger' : bugetYearlyService.budgetYearly.totalRemaining<0}">
+                                       
                                     </div>
                                     
                                 </div>
-                                <div class="row" style="padding: 10px;">
+                                <div  [hidden]="!addAmountShow" class="row" style="padding: 10px;">
+                                    <div class="col-md-2">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Add Amount</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control"  id="addAmount" name="addAmount"  ng-required="!addAmountShow" [(ngModel)]="bugetYearlyService.budgetYearly.addAmount" [disabled]="bugetYearlyService.budgetYearly.year != this.yyyy">
+                                    </div>
+                                    
+                                </div>
+                                <div [hidden]="!newAmountShow" class="row" style="padding: 10px;">
                                     <div class="col-md-2">
                                     </div>
                                     <div class="col-md-2">
                                         <label>New Amount</label>
                                     </div>
                                     <div class="col-md-4">
-                                        <input type="text" class="form-control"  id="newAmount" name="newAmount" required [(ngModel)]="bugetYearlyService.budgetYearly.newAmount" >
+                                        <input type="text" class="form-control"  id="newAmount" name="newAmount" ng-required="!newAmountShow" [(ngModel)]="bugetYearlyService.budgetYearly.newAmount" [disabled]="bugetYearlyService.budgetYearly.year != this.yyyy">
                                     </div>
                                     
                                 </div>

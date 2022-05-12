@@ -28,8 +28,8 @@ export class BudgetSbuYearlyService {
   getSBU(){    
     return this.http.get(this.baseUrl + 'employee/getSBU');
   }
-  getYearlyBudget(deptId:number){    
-    return this.http.get(this.baseUrl + 'BgtSbuYearly/getYearlyBudget/'+deptId);
+  getYearlyBudget(deptId:number,year:number){    
+    return this.http.get(this.baseUrl + 'BgtSbuYearly/getYearlyBudget/'+deptId+'/'+year);
   }
   getAllSbuBgtList(deptId:number,compId:number,year:number) {
     debugger;

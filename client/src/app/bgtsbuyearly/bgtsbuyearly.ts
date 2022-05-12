@@ -27,10 +27,12 @@ export class BgtSbuYearlyComponent implements OnInit {
   submissionConfirmRef: BsModalRef;
   bsValue: Date = new Date();
   today = new Date();
+
   empId: string;
   userRole:string;
   totalSbuBudget:any;
   totalBudget:any;
+  deptId: any;
   SBUs: ISBU[];
   bgtYearlyTotal: BudgetYearly;
   bgtSbuYearlyList: IBudgetSbuYearly[];
@@ -52,7 +54,7 @@ export class BgtSbuYearlyComponent implements OnInit {
     private SpinnerService: NgxSpinnerService) { }
   ngOnInit() {
       this.getSBU()
-    
+      this.bugetSbuYearlyService.budgetSbuYearly.year = 2022;
       this.sbuDetails = []
   }
   getSBU() {
@@ -63,10 +65,19 @@ export class BgtSbuYearlyComponent implements OnInit {
     });
   }
   getYearlyBudget() {
-   debugger;
-    this.bugetSbuYearlyService.getYearlyBudget(this.bugetSbuYearlyService.budgetSbuYearly.deptId).subscribe(response => {
+    debugger;
+    if(typeof(this.bugetSbuYearlyService.budgetSbuYearly.year) == 'undefined')
+    {
+      this.bugetSbuYearlyService.budgetSbuYearly.year = 2022;
+    }
+ 
+    if (this.bugetSbuYearlyService.budgetSbuYearly.year != null && this.bugetSbuYearlyService.budgetSbuYearly.year  != undefined && typeof(this.bugetSbuYearlyService.budgetSbuYearly.year)  != 'number') {
+      var year = new Date(this.bugetSbuYearlyService.budgetSbuYearly.year).getFullYear();
+      this.bugetSbuYearlyService.budgetSbuYearly.year = year;
+    }
+    this.bugetSbuYearlyService.getYearlyBudget(this.bugetSbuYearlyService.budgetSbuYearly.deptId,this.bugetSbuYearlyService.budgetSbuYearly.year).subscribe(response => {
       this.bgtYearlyTotal = response as BudgetYearly;
-      this.bugetSbuYearlyService.budgetSbuYearly.year = this.bgtYearlyTotal.year;
+
       this.bugetSbuYearlyService.budgetSbuYearly.totalBudget = this.bgtYearlyTotal.totalAmount;
       this.getAllSbuBgtList();
     }, error => {
@@ -99,7 +110,7 @@ export class BgtSbuYearlyComponent implements OnInit {
   }
   getAllSbuBgtList()
   {
-
+  
     this.sbuDetails =[];
       this.SpinnerService.show();
       debugger;
@@ -107,20 +118,24 @@ export class BgtSbuYearlyComponent implements OnInit {
         res => {
           this.bgtSbuYearlyList = res as IBudgetSbuYearly[];
           this.totalBudget =0;
-          for(var i=0;i<this.bgtSbuYearlyList.length;i++)
+          if(this.bgtSbuYearlyList != null)
           {
-             let sbu = new SbuDetails();
-     
-             sbu.sbuAmount = this.bgtSbuYearlyList[i].sbuAmount;
-             sbu.sbuName = this.bgtSbuYearlyList[i].sbuName;
-             sbu.sbuCode = this.bgtSbuYearlyList[i].sbuCode;
-             sbu.newAmount = this.bgtSbuYearlyList[i].sbuAmount;
-             sbu.expense = this.bgtSbuYearlyList[i].expense;
-             this.sbuDetails.push(sbu);
-             const total = parseInt(this.totalBudget);
-             const next = parseInt(this.bgtSbuYearlyList[i].sbuAmount);
-             this.totalBudget = total+next;
+            for(var i=0;i<this.bgtSbuYearlyList.length;i++)
+            {
+               let sbu = new SbuDetails();
+       
+               sbu.sbuAmount = this.bgtSbuYearlyList[i].sbuAmount;
+               sbu.sbuName = this.bgtSbuYearlyList[i].sbuName;
+               sbu.sbuCode = this.bgtSbuYearlyList[i].sbuCode;
+               sbu.newAmount = this.bgtSbuYearlyList[i].sbuAmount;
+               sbu.expense = this.bgtSbuYearlyList[i].expense;
+               this.sbuDetails.push(sbu);
+               const total = parseInt(this.totalBudget);
+               const next = parseInt(this.bgtSbuYearlyList[i].sbuAmount);
+               this.totalBudget = total+next;
+            }
           }
+        
           debugger;
           var RemainingBudget = parseInt(this.bugetSbuYearlyService.budgetSbuYearly.totalBudget)-  parseInt(this.totalBudget)
           this.bugetSbuYearlyService.budgetSbuYearly.remainingBudget = RemainingBudget;
@@ -148,7 +163,7 @@ export class BgtSbuYearlyComponent implements OnInit {
               if(this.sbuDetails[i].sbuCode == this.pipelineList[j].sbuCode)
               {
                 this.sbuDetails[i].pipeLine = this.pipelineList[j].pipeline;
-                this.sbuDetails[i].remaining = parseInt(this.sbuDetails[i].expense) - parseInt(this.pipelineList[j].pipeline)
+                this.sbuDetails[i].remaining = parseInt(this.sbuDetails[i].sbuAmount) -(parseInt(this.sbuDetails[i].expense) + parseInt(this.pipelineList[j].pipeline))
               }
             }
           }

@@ -31,20 +31,21 @@ namespace API.Controllers
      
 
         [HttpGet("getAllSbuBgtList/{deptId}/{compId}/{year}")]
-        public List<SBUVM> GetAllSbuBgtListAsync(int deptId,int compId,int year)
+        public async Task<List<SBUVM>> GetAllSbuBgtListAsync(int deptId,int compId,int year)
         {
+            List<SBUVM> dsResult = new List<SBUVM>();
             try
             {
-                //string statusQuery = "";
-                // string ProposeFor = "";
-                // if(deptId == 1)
-                // {
-                //     ProposeFor = "Others";
-                // }
-                // else if(deptId == 2)
-                // {
-                //     ProposeFor = "BrandCampaign";
-                // }
+                string statusQuery = "";
+                string ProposeFor = "";
+                if(deptId == 1)
+                {
+                    ProposeFor = "Others";
+                }
+                else if(deptId == 2)
+                {
+                    ProposeFor = "BrandCampaign";
+                }
                 string qry = "";
               
                 qry = string.Format(@"SELECT sb.*
@@ -53,34 +54,38 @@ namespace API.Controllers
                                     SELECT ISNULL(Round(SUM(ApprovedAmount),0), 0)
                                     FROM InvestmentDetailTracker e
                                     INNER JOIN InvestmentInit c ON c.Id = e.InvestmentInitId
-                                    WHERE c.SBU = SB.SBUCode AND C.ProposeFor='BrandCampaign'
+                                    WHERE c.SBU = SB.SBUCode AND C.ProposeFor='{3}'
                                     AND e.Year={0}
                                     ) Expense
                                     FROM SBU sb
                                     LEFT JOIN BgtSBUTotal bs ON bs.SBU = sb.SbuCode
                                     AND bs.DeptId = {1}
                                     AND bs.DataStatus = 1
-                                    AND bs.CompId = {2}",year, deptId, compId);
+                                    AND bs.CompId = {2}
+                                    AND bs.Year = {0}",year, deptId, compId,ProposeFor);
                 
 
 
-                List<SBUVM> dsResult = _dbContext.ExecSQL<SBUVM>(qry).ToList();
-           
+                dsResult = _dbContext.ExecSQL<SBUVM>(qry).ToList();
+                if(dsResult == null)
+                {
+                    dsResult = new List<SBUVM>();
+                }
             
                 return dsResult;
             }
             catch (System.Exception ex)
             {
-                throw ex;
+                return dsResult;
             }
         }
 
         [HttpGet("getAllPipelineExpenseList/{deptId}/{compId}/{year}")]
-        public List<PipeLineExpense> GetAllPipeLineExpenseListAsync(int deptId, int compId, int year)
+        public async Task<List<PipeLineExpense>> GetAllPipeLineExpenseListAsync(int deptId, int compId, int year)
         {
             try
             {
-                // string statusQuery = "";
+                string statusQuery = "";
                 string ProposeFor = "";
                 if (deptId == 1)
                 {
@@ -121,25 +126,31 @@ namespace API.Controllers
                 throw ex;
             }
         }
-        [HttpGet("getYearlyBudget/{deptId}")]
-        public BgtYearlyTotal GetBudgetYearly(int deptId)
+        [HttpGet("getYearlyBudget/{deptId}/{year}")]
+        public BgtYearlyTotal GetBudgetYearly(int deptId,int year)
         {
+            BgtYearlyTotal bgt = new BgtYearlyTotal();
             try
             {
+               
                 string qry = "";
 
-                qry = string.Format(@" select * from BgtYearlyTotal where DataStatus=1 and DeptId={0}",deptId);
+                qry = string.Format(@" select * from BgtYearlyTotal where DataStatus=1 and DeptId={0} and year={1}",deptId,year);
 
-               BgtYearlyTotal bgt = _dbContext.BgtYearlyTotal.FromSqlRaw(qry).ToList().FirstOrDefault();
+                 bgt = _dbContext.BgtYearlyTotal.FromSqlRaw(qry).ToList().FirstOrDefault();
+                if(bgt == null)
+                {
+                    bgt = new BgtYearlyTotal();
+                }
                 return bgt;
             }
             catch (System.Exception ex)
             {
-                throw ex;
+                return bgt;
             }
         }
         [HttpPost("SaveSbuBgtYearly")]
-        public ActionResult<BgtSbuYearlyTotalDto> SaveSbuBgtYearlyAsync(BgtSbuYearlyTotalDto setSbuBgtDto)
+        public async Task<ActionResult<BgtSbuYearlyTotalDto>> SaveSbuBgtYearlyAsync(BgtSbuYearlyTotalDto setSbuBgtDto)
         {
 
             string qry = "";

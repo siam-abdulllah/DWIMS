@@ -13,6 +13,7 @@ namespace API.Dtos
         public int Year { get; set; }
         public long TotalAmount { get; set; }
         public long NewAmount { get; set; }
+        public long AddAmount { get; set; }
         public string Remarks { get; set; }
         public int EnteredBy { get; set; }
         public DateTimeOffset SetOn { get; set; }

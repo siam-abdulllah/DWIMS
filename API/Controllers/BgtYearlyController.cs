@@ -32,38 +32,57 @@ namespace API.Controllers
         [HttpPost("SaveBgtYearly")]
         public ActionResult<BgtYearlyTotalDto> SaveBgtYearly(BgtYearlyTotalDto setBgtDto)
         {
-            #region Updating existing Entry
-            string qry = "";
-            qry = string.Format(@" select * from BgtYearlyTotal where DeptId={0}",setBgtDto.DeptId);
-            List<BgtYearlyTotal> bgtList = _dbContext.BgtYearlyTotal.FromSqlRaw(qry).ToList();
-            if(bgtList != null && bgtList.Count>0)
+            BgtYearlyTotal bgt = new BgtYearlyTotal();
+            if (setBgtDto.AddAmount > 0)
             {
-                foreach(var item in bgtList)
+                #region Update Existing Amount
+                string qry = "";
+                qry = string.Format(@" select * from BgtYearlyTotal where DeptId={0} and DataStatus = 1", setBgtDto.DeptId);
+                bgt = _dbContext.BgtYearlyTotal.FromSqlRaw(qry).ToList().FirstOrDefault();
+                if(bgt != null)
                 {
-                    item.DataStatus = 0;
-                    _dbContext.BgtYearlyTotal.Update(item);
+                    bgt.TotalAmount = bgt.TotalAmount + setBgtDto.AddAmount;
+                    _dbContext.BgtYearlyTotal.Update(bgt);
                     _dbContext.SaveChanges();
                 }
+                #endregion
             }
-            #endregion
-            #region Insert New Budget
-            //string bgtYear = setBgtDto.Year.ToString("yyyy");
-            var bgt = new BgtYearlyTotal
+            else
             {
-                CompId = setBgtDto.CompId,
-                Year = setBgtDto.Year,
-                TotalAmount = setBgtDto.NewAmount,
-                DeptId = setBgtDto.DeptId,
-                SetOn = DateTimeOffset.Now,
-                ModifiedOn = DateTimeOffset.Now,
-                DataStatus = 1,
-                EnteredBy = setBgtDto.EnteredBy
+                #region Updating existing Entry
+                string qry = "";
+                qry = string.Format(@" select * from BgtYearlyTotal where DeptId={0}", setBgtDto.DeptId);
+                List<BgtYearlyTotal> bgtList = _dbContext.BgtYearlyTotal.FromSqlRaw(qry).ToList();
+                if (bgtList != null && bgtList.Count > 0)
+                {
+                    foreach (var item in bgtList)
+                    {
+                        item.DataStatus = 0;
+                        _dbContext.BgtYearlyTotal.Update(item);
+                        _dbContext.SaveChanges();
+                    }
+                }
+                #endregion
+                #region Insert New Budget
+                //string bgtYear = setBgtDto.Year.ToString("yyyy");
+                bgt = new BgtYearlyTotal
+                {
+                    CompId = setBgtDto.CompId,
+                    Year = setBgtDto.Year,
+                    TotalAmount = setBgtDto.NewAmount,
+                    DeptId = setBgtDto.DeptId,
+                    SetOn = DateTimeOffset.Now,
+                    ModifiedOn = DateTimeOffset.Now,
+                    DataStatus = 1,
+                    EnteredBy = setBgtDto.EnteredBy
 
-            };
+                };
 
-            _bgtYearlyRepo.Add(bgt);
-            _bgtYearlyRepo.Savechange();
-            #endregion
+                _bgtYearlyRepo.Add(bgt);
+                _bgtYearlyRepo.Savechange();
+                #endregion
+            }
+
             return new BgtYearlyTotalDto
             {
                 Id = bgt.Id,
@@ -183,7 +202,7 @@ namespace API.Controllers
 
                 DataTable dt = _dbContext.DataTable(qry);
                 TotalPipeLine pipeLine = new TotalPipeLine();
-
+                
                 pipeLine = (from DataRow row in dt.Rows
                            select new TotalPipeLine
                            {
@@ -194,7 +213,7 @@ namespace API.Controllers
             }
             catch (System.Exception ex)
             {
-                throw ex;
+                return 0;
             }
         }
         [HttpGet("getBudgetAmount/{deptId}/{year}")]

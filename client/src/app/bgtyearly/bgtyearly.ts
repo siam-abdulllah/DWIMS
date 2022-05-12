@@ -27,8 +27,11 @@ export class BgtYearlyComponent implements OnInit {
   BudgetYearlySearchModalRef: BsModalRef;
   bsValue: Date = new Date();
   today = new Date();
+  addAmountShow:boolean=false;
+  newAmountShow:boolean=true;
   budgetYearly: IBudgetYearly[];
   empId: string;
+  deptId: any;
   userRole:string;
   budgetTotalForm: NgForm;
   isValid: boolean = false;
@@ -50,6 +53,16 @@ export class BgtYearlyComponent implements OnInit {
   ngOnInit() {
     this.getEmployeeId()
 
+  }
+  isAddChecked(){
+     this.addAmountShow = true;
+     this.newAmountShow = false;
+     this.bugetYearlyService.budgetYearly.newAmount = 0;
+  }
+  isNewChecked(){
+    this.addAmountShow = false;
+    this.newAmountShow = true;
+    this.bugetYearlyService.budgetYearly.addAmount = 0;
   }
   getEmployeeId() {
     this.empId = this.accountService.getEmployeeId();
@@ -136,18 +149,15 @@ export class BgtYearlyComponent implements OnInit {
     this.getTotalPipeline()
     this.getTotalBudget()
     setTimeout(() => {
-      if(parseInt(this.bugetYearlyService.budgetYearly.totalAmount)>(parseInt(this.bugetYearlyService.budgetYearly.totalExpense)+ parseInt(this.bugetYearlyService.budgetYearly.totalPipeline)))
-      {
+     
         this.bugetYearlyService.budgetYearly.totalRemaining = parseInt(this.bugetYearlyService.budgetYearly.totalAmount) -  (parseInt(this.bugetYearlyService.budgetYearly.totalExpense)+ parseInt(this.bugetYearlyService.budgetYearly.totalPipeline));
-      }
-      else{
-        this.bugetYearlyService.budgetYearly.totalRemaining = 0;
-      }
+    
     
     }, 3000);
   }
   getTotalPipeline() {
     debugger;
+
     this.SpinnerService.show();
     this.bugetYearlyService.getTotalPipeline(this.bugetYearlyService.budgetYearly.deptId,this.bugetYearlyService.budgetYearly.year).subscribe(response => {
      this.bugetYearlyService.budgetYearly.totalPipeline = response;
@@ -162,6 +172,7 @@ export class BgtYearlyComponent implements OnInit {
       var year = new Date(this.bugetYearlyService.budgetYearly.year).getFullYear();
       this.bugetYearlyService.budgetYearly.year = year;
     }
+    this.LoadForm();
 
   }
   selectBgtYearly(selectedRecord: IBudgetYearly) {
@@ -176,19 +187,58 @@ export class BgtYearlyComponent implements OnInit {
   }
   submitBgtYearly() {
     debugger;
+    var newAmount = this.bugetYearlyService.budgetYearly.newAmount;
+    var totalExpense = parseInt(this.bugetYearlyService.budgetYearly.totalExpense);
+    var totalPipeline = parseInt(this.bugetYearlyService.budgetYearly.totalPipeline);
+    var addAmount = parseInt(this.bugetYearlyService.budgetYearly.addAmount);
+    var totalAmount = parseInt(this.bugetYearlyService.budgetYearly.totalAmount);
+    if(newAmount != '' && newAmount >0)
+    {
+      if((newAmount > totalExpense+ totalPipeline))
+      {
+        this.SpinnerService.show();
+        this.bugetYearlyService.submitBudgetYearly().subscribe(
+          res => {
+            this.bugetYearlyService.budgetYearly = res as IBudgetYearly;
+            this.toastr.success('Submitted successfully', 'Budget');
+            this.resetPageLoad();
+          },
+          err => { 
+            console.log(err); 
+          }
+        );
+      }
+      else{
+        this.toastr.warning('Budget can not be lower then expense!');
+        this.SpinnerService.hide();
+        return;
+      }
+    }
+    else if(addAmount>0)
+    {
+      if((totalAmount+addAmount  > totalExpense+ totalPipeline))
+      {
+        this.SpinnerService.show();
+        this.bugetYearlyService.submitBudgetYearly().subscribe(
+          res => {
+            this.bugetYearlyService.budgetYearly = res as IBudgetYearly;
+            this.toastr.success('Submitted successfully', 'Budget');
+            this.resetPageLoad();
+          },
+          err => { 
+            console.log(err); 
+          }
+        );
+      }
+      else{
+        this.toastr.warning('Budget can not be lower then expense!');
+        this.SpinnerService.hide();
+        return;
+      }
+    }
  
   
-      this.SpinnerService.show();
-      this.bugetYearlyService.submitBudgetYearly().subscribe(
-        res => {
-          this.bugetYearlyService.budgetYearly = res as IBudgetYearly;
-          this.toastr.success('Submitted successfully', 'Budget');
-          this.resetPageLoad();
-        },
-        err => { 
-          console.log(err); 
-        }
-      );
+      
   }
 }
 
