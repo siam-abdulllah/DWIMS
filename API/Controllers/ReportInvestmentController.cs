@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Net;
+using API.Errors;
 
 namespace API.Controllers
 {
@@ -32,10 +34,10 @@ namespace API.Controllers
         private readonly IGenericRepository<InvestmentRec> _investmentRecRepo;
 
         public ReportInvestmentController(IGenericRepository<ReportInvestmentInfo> investRepo, IGenericRepository<InvestmentTargetedGroup> investmentTargetedGroupRepo,
-            IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<ApprovalAuthority> approvalAuthorityRepo, 
+            IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<ApprovalAuthority> approvalAuthorityRepo,
             IGenericRepository<InvestmentRecComment> investmentRecCommentRepo,
              IGenericRepository<ApprAuthConfig> apprAuthConfigRepo, IGenericRepository<ReportConfig> rptConfitRepo, IMapper mapper,
-            IGenericRepository<InvestmentRec> investmentRecRepo, StoreContext db, IGenericRepository<InvestmentDetail> investmentDetailRepo, 
+            IGenericRepository<InvestmentRec> investmentRecRepo, StoreContext db, IGenericRepository<InvestmentDetail> investmentDetailRepo,
             IGenericRepository<InvestmentDetailTracker> investmentDetailTrackerRepo)
         {
             _mapper = mapper;
@@ -1710,7 +1712,7 @@ namespace API.Controllers
             //" LEFT JOIN InvestmentDoctor ind ON a.Id=ind.InvestmentInitId " +
             //" LEFT JOIN DoctorInfo dc ON ind.DoctorId=dc.Id" +
             //" Where 1=1 ";
-            string qry = "SELECT * FROM [DIDS].[dbo].[InvestmentSummaryVW] WHERE 1=1";
+            string qry = "SELECT * FROM  [dbo].[InvestmentSummaryVW] WHERE 1=1";
 
             if (!string.IsNullOrEmpty(referenceNo) && referenceNo != "undefined")
             {
@@ -1727,7 +1729,8 @@ namespace API.Controllers
             var results = _db.RptInvestmentSummaryInd.FromSqlRaw(qry).ToList();
 
             return results;
-        } [HttpGet]
+        }
+        [HttpGet]
         [Route("getInvestmentSummaryCancel/{referenceNo}")]
         public ActionResult<IReadOnlyList<RptInvestmentSummary>> GetInvestmentSummaryCancel(string referenceNo)
         {
@@ -1758,7 +1761,7 @@ namespace API.Controllers
             //" LEFT JOIN InvestmentDoctor ind ON a.Id=ind.InvestmentInitId " +
             //" LEFT JOIN DoctorInfo dc ON ind.DoctorId=dc.Id" +
             //" Where 1=1 ";
-            string qry = "SELECT * FROM [DIDS].[dbo].[InvestmentSummaryVW] WHERE 1=1";
+            string qry = "SELECT * FROM [dbo].[InvestmentSummaryVW] WHERE 1=1";
 
             if (!string.IsNullOrEmpty(referenceNo) && referenceNo != "undefined")
             {
@@ -1897,7 +1900,7 @@ namespace API.Controllers
 
             string qry = "SELECT [Id], [EmployeeSAPCode], [EmployeeName], [DesignationName], [SBU], [SBUName], [MarketCode], [MarketName], " +
                 " [TerritoryCode], [TerritoryName], [RegionCode], [RegionName], [ZoneCode], [ZoneName], [MarketGroupCode], [MarketGroupName]" +
-                " FROM [DIDS].[dbo].[Employee] WHERE 1 = 1 ";
+                " FROM  [dbo].[Employee] WHERE 1 = 1 ";
 
             if (!string.IsNullOrEmpty(search.MarketCode))
             {
@@ -2306,7 +2309,7 @@ namespace API.Controllers
             try
             {
                 string qry = " SELECT [Id],[DataStatus],[SetOn],[ModifiedOn],[InvestmentInitId],[EmployeeId],[Month],[Year],[FromDate],[ToDate],[ApprovedAmount],[PaidStatus],[DonationId],[PaymentRefNo]" +
-                    " FROM[DIDS].[dbo].[InvestmentDetailTracker] " +
+                    " FROM  [dbo].[InvestmentDetailTracker] " +
                 " WHERE InvestmentInitId = " + investmentInitId + " " +
                 " ";
 
@@ -2320,25 +2323,41 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost("removeInvestmentDetalTracker/{id}")]
-        public async Task<IActionResult> RemoveInvestmentDetalTracker(int id)
+        [HttpGet("removeInvestmentDetalTracker/{id}/{empId}")]
+        public IActionResult RemoveInvestmentDetalTracker(int id, int empId)
         {
             try
             {
-                //var response = new HttpResponseMessage();
-                var alreadyExistSpec = new InvestmentDetailTrackerSpecification(id);
-                var alreadyExistInvestmentDetailTrackerList = await _investmentDetailTrackerRepo.ListAsync(alreadyExistSpec);
-                if (alreadyExistInvestmentDetailTrackerList.Count > 0)
-                {
-                    foreach (var v in alreadyExistInvestmentDetailTrackerList)
+                List<SqlParameter> parms = new List<SqlParameter>
                     {
-                        _investmentDetailTrackerRepo.Delete(v);
-                        _investmentDetailTrackerRepo.Savechange();
-                    }
-
-                    return Ok("Succsessfuly Deleted!!!");
+                        new SqlParameter("@ID", id),
+                        new SqlParameter("@EID", empId),
+                        new SqlParameter("@IPADD", GetIPAddress()),
+                        new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
+                    };
+                var result = _db.Database.ExecuteSqlRaw("EXECUTE SP_InvApprIndividualDelete @ID,@EID,@IPADD,@r out", parms.ToArray());
+                if (parms[4].Value.ToString() != "True")
+                {
+                    return BadRequest(new ApiResponse(400, parms[7].Value.ToString()));
                 }
-                return NotFound();
+
+                //var alreadyExistInvestmentDetailTracker = await _investmentDetailTrackerRepo.GetByIdAsync(id);
+                ////var alreadyExistInvestmentDetailTrackerList = await _investmentDetailTrackerRepo.ListAsync(alreadyExistSpec);
+                ////if (alreadyExistInvestmentDetailTrackerList.Count > 0)
+                //if (alreadyExistInvestmentDetailTracker.InvestmentInitId != null)
+                //{
+                //    var alreadyExistSpec = new InvestmentDetailTrackerSpecification(id);
+
+                //    var alreadyExistInvestmentDetailTrackerList = await _investmentDetailTrackerRepo.ListAsync(alreadyExistSpec);
+                //    //foreach (var v in alreadyExistInvestmentDetailTrackerList)
+                //    //{
+
+                //    _investmentDetailTrackerRepo.Delete(alreadyExistInvestmentDetailTracker);
+                //    _investmentDetailTrackerRepo.Savechange();
+                //    //}
+
+                return Ok("Succsessfuly Deleted!!!");
+
             }
             catch (System.Exception ex)
             {
@@ -2346,6 +2365,23 @@ namespace API.Controllers
             }
         }
 
+        [HttpPost]
+        public string GetIPAddress()
+        {
+            IPAddress ip;
+            var headers = Request.Headers.ToList();
+            if (headers.Exists((kvp) => kvp.Key == "X-Forwarded-For"))
+            {
+                var header = headers.First((kvp) => kvp.Key == "X-Forwarded-For").Value.ToString();
+                ip = IPAddress.Parse(header.Remove(header.IndexOf(':')));
+            }
+            else
+            {
+                ip = Request.HttpContext.Connection.RemoteIpAddress;
+            }
+
+            return ip.ToString();
+        }
 
     }
 }

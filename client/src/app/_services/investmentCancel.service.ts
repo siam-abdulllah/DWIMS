@@ -44,7 +44,7 @@ export class InvestmentCancelService {
 
   constructor(private http: HttpClient, private router: Router) { }
   GetInvestmentSummarySingleDoc(referenceNo: string){ 
-    debugger;
+  
     if(referenceNo==undefined || referenceNo=="")
     {
       referenceNo="undefined";
@@ -165,9 +165,8 @@ export class InvestmentCancelService {
   //   return this.http.post(this.baseUrl + 'reportInvestment/removeInvestmentDetal/' + id,
   //   { responseType: 'text' });
   // }
-  removeInvestmentDetal(id: number) {
-    return this.http.post(this.baseUrl + 'reportInvestment/removeInvestmentDetal', id,
-      { responseType: 'text' });
+  removeInvestmentDetail(id: number,empId:number) {
+    return this.http.get(this.baseUrl + 'reportInvestment/removeInvestmentDetalTracker/'+id+'/'+empId);
   }
 }
 export interface IInvestmentInit {

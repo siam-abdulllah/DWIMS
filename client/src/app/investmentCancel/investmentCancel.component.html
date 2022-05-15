@@ -36,7 +36,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <p ng-show="investmentInit.dataStatus==0" style="color:red ;">This Investment has been Inactive</p>
+                            <p [hidden]="true" style="color:red ;">This Investment has been Inactive</p>
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-2">
@@ -684,7 +684,7 @@
                                     </table>
                                 </div>
                             </fieldset>
-                            <fieldset disabled>
+                            <fieldset>
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-sm-6">
@@ -700,11 +700,12 @@
                                             <td>Year</td>
                                             <td>Amount</td>
                                             <td>Pay. Ref No</td>
+                                            <td></td>
 
                                         </tr>
                                         <tr *ngFor="let a of apprDetail">
                                             <td>
-                                                {{a.month | date: 'MMMM'}}
+                                                {{a.month}}
                                             </td>
                                             <td>
                                                 {{a.year}}
@@ -714,6 +715,10 @@
                                             </td>
                                             <td>
                                                 {{a.paymentRefNo}}
+                                            </td>
+                                            <td>
+                                                <!-- <input type="button" (click)="removeInvestmentDetail(a)" value="Remove"> -->
+                                                <button class="btn btn-danger btn-block" type="button" (click)="removeInvestmentDetail(a)"><i class="fa fa-trash"></i>&nbsp; Remove</button>
                                             </td>
                                         </tr>
                                     </table>

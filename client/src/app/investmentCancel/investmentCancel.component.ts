@@ -585,7 +585,8 @@ export class InvestmentCancelComponent implements OnInit {
       {
       //  this.isDeleted=true;
       }
-      this.investmentCancelService.investmentCancelFormData.id = this.investmentInit[0].id;
+      debugger;
+       this.investmentCancelService.investmentCancelFormData.id = this.investmentInit[0].id;
         this.investmentCancelService.investmentCancelFormData.proposeFor = this.investmentInit[0].proposeFor;
         this.investmentCancelService.investmentCancelFormData.referenceNo = this.investmentInit[0].referenceNo;
         this.investmentCancelService.investmentCancelFormData.donationTo = this.investmentInit[0].donationTo;
@@ -596,21 +597,22 @@ export class InvestmentCancelComponent implements OnInit {
       console.log(error);
     });
   }
-  removeInvestmentDetal(selectedRecord: IInvestmentDetailTracker) {
+  removeInvestmentDetail(selectedRecord: IInvestmentDetailTracker) {
     
     var c = confirm("Are you sure you want to delete that?");
     if (c == true) {
       this.SpinnerService.show();
       debugger;
       //this.investmentCancelService.removeInvestmentDetal(selectedRecord.id).subscribe(
-      this.investmentCancelService.removeInvestmentDetal(selectedRecord.id).subscribe(
+      this.investmentCancelService.removeInvestmentDetail(selectedRecord.id,parseInt(this.empId) ).subscribe(
         res => {
+          var message=res as string;
           //this.isDonationValid=false;
           //this.investmentInitService.investmentMedicineProdFormData = new InvestmentMedicineProd();
           
           this.getInvestmentDetailTracker();
           this.SpinnerService.hide();
-          this.toastr.success(res);
+          this.toastr.success(message);
         },
         err => {
           this.SpinnerService.hide();
