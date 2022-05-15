@@ -119,3 +119,9 @@ Infrastructure/obj/project.nuget.cache
 .vs/ShalimAhmed/v16/.suo
 API/bin/Debug/netcoreapp3.1/API.deps.json
 API/bin/Debug/netcoreapp3.1/API.runtimeconfig.dev.json
+.vs/ShalimAhmed/config/applicationhost.config
+.vs/ShalimAhmed/DesignTimeBuild/.dtbcache.v2
+.vs/ShalimAhmed/v16/.suo
+API/appsettings.Development.json
+API/obj/Debug/netcoreapp3.1/API.assets.cache
+API/obj/Debug/netcoreapp3.1/project.razor.json
