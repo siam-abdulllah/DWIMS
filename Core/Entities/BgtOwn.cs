@@ -6,8 +6,10 @@
         public int DeptId { get; set; }
         public int Year { get; set; }
         public int Month { get; set; }
-        public int EmployeeId { get; set; }
+        public int AuthId { get; set; }
+        public string Code { get; set; }
         public string SBU { get; set; }
+        public string CompoCode { get; set; }
         public int DonationId { get; set; }
         public long Amount { get; set; }
         public long AmtLimit { get; set; }
