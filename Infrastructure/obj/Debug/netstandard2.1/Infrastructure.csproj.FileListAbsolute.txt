@@ -158,3 +158,16 @@ E:\Rezwan\DWIMS_New\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure
 E:\Rezwan\DWIMS_New\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.csproj.CopyComplete
 E:\Rezwan\DWIMS_New\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.dll
 E:\Rezwan\DWIMS_New\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.pdb
+E:\Rezwan\DIDS\DWIMS\Infrastructure\bin\Debug\netstandard2.1\Infrastructure.deps.json
+E:\Rezwan\DIDS\DWIMS\Infrastructure\bin\Debug\netstandard2.1\Infrastructure.dll
+E:\Rezwan\DIDS\DWIMS\Infrastructure\bin\Debug\netstandard2.1\Infrastructure.pdb
+E:\Rezwan\DIDS\DWIMS\Infrastructure\bin\Debug\netstandard2.1\Core.dll
+E:\Rezwan\DIDS\DWIMS\Infrastructure\bin\Debug\netstandard2.1\Core.pdb
+E:\Rezwan\DIDS\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.csproj.AssemblyReference.cache
+E:\Rezwan\DIDS\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+E:\Rezwan\DIDS\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.AssemblyInfoInputs.cache
+E:\Rezwan\DIDS\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.AssemblyInfo.cs
+E:\Rezwan\DIDS\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.csproj.CoreCompileInputs.cache
+E:\Rezwan\DIDS\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.csproj.CopyComplete
+E:\Rezwan\DIDS\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.dll
+E:\Rezwan\DIDS\DWIMS\Infrastructure\obj\Debug\netstandard2.1\Infrastructure.pdb

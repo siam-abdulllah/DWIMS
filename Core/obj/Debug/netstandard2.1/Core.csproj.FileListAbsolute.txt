@@ -119,3 +119,13 @@ E:\Rezwan\DWIMS_New\DWIMS\Core\obj\Debug\netstandard2.1\Core.AssemblyInfo.cs
 E:\Rezwan\DWIMS_New\DWIMS\Core\obj\Debug\netstandard2.1\Core.csproj.CoreCompileInputs.cache
 E:\Rezwan\DWIMS_New\DWIMS\Core\obj\Debug\netstandard2.1\Core.dll
 E:\Rezwan\DWIMS_New\DWIMS\Core\obj\Debug\netstandard2.1\Core.pdb
+E:\Rezwan\DIDS\DWIMS\Core\bin\Debug\netstandard2.1\Core.deps.json
+E:\Rezwan\DIDS\DWIMS\Core\bin\Debug\netstandard2.1\Core.dll
+E:\Rezwan\DIDS\DWIMS\Core\bin\Debug\netstandard2.1\Core.pdb
+E:\Rezwan\DIDS\DWIMS\Core\obj\Debug\netstandard2.1\Core.csproj.AssemblyReference.cache
+E:\Rezwan\DIDS\DWIMS\Core\obj\Debug\netstandard2.1\Core.GeneratedMSBuildEditorConfig.editorconfig
+E:\Rezwan\DIDS\DWIMS\Core\obj\Debug\netstandard2.1\Core.AssemblyInfoInputs.cache
+E:\Rezwan\DIDS\DWIMS\Core\obj\Debug\netstandard2.1\Core.AssemblyInfo.cs
+E:\Rezwan\DIDS\DWIMS\Core\obj\Debug\netstandard2.1\Core.csproj.CoreCompileInputs.cache
+E:\Rezwan\DIDS\DWIMS\Core\obj\Debug\netstandard2.1\Core.dll
+E:\Rezwan\DIDS\DWIMS\Core\obj\Debug\netstandard2.1\Core.pdb
