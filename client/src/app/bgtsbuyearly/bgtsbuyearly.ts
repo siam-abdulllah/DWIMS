@@ -6,7 +6,7 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from "rxjs/internal/Observable";
 import { AccountService } from "../account/account.service";
-import { BudgetSbuYearly, BudgetYearly, IBudgetSbuYearly, IBudgetYearly, IPipelineDetails, ISbuDetails, SbuDetails } from "../shared/models/budgetyearly";
+import { BudgetSbuYearly, BudgetYearly, IApprovalAuthDetails, IBudgetSbuYearly, IBudgetYearly, IPipelineDetails, ISbuDetails, SbuDetails } from "../shared/models/budgetyearly";
 import { IEmployeeInfo } from "../shared/models/employeeInfo";
 import { ISBU } from "../shared/models/sbu";
 import { BudgetSbuYearlyService } from "../_services/budgetSbuYearly.service";
@@ -22,12 +22,12 @@ import { BudgetSbuYearlyService } from "../_services/budgetSbuYearly.service";
 })
 export class BgtSbuYearlyComponent implements OnInit {
   @ViewChild('search', { static: false }) searchTerm: ElementRef;
-  @ViewChild('investmentRapidSearchModal', { static: false }) investmentInitSearchModal: TemplateRef<any>;
+  @ViewChild('authDetailsModal', { static: false }) authDetailsModal: TemplateRef<any>;
   @ViewChild('submissionConfirmModal', { static: false }) submissionConfirmModal: TemplateRef<any>;
   submissionConfirmRef: BsModalRef;
   bsValue: Date = new Date();
   today = new Date();
-
+  AuthDetailsModalRef: BsModalRef;
   empId: string;
   userRole:string;
   totalSbuBudget:any;
@@ -36,9 +36,11 @@ export class BgtSbuYearlyComponent implements OnInit {
   SBUs: ISBU[];
   bgtYearlyTotal: BudgetYearly;
   bgtSbuYearlyList: IBudgetSbuYearly[];
+  ApprovalAuthDetails:IApprovalAuthDetails[];
   pipelineList: IPipelineDetails[];
   sbuDetails:ISbuDetails[];
   empSbu:Observable<IEmployeeInfo>;
+  sbuIndividualAmount:any;
   isAdmin: boolean = false;
   dd = String(this.today.getDate()).padStart(2, '0');
   mm = String(this.today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -60,6 +62,25 @@ export class BgtSbuYearlyComponent implements OnInit {
   getSBU() {
     this.bugetSbuYearlyService.getSBU().subscribe(response => {
       this.SBUs = response as ISBU[];
+    }, error => {
+      console.log(error);
+    });
+  }
+  openBudgetYearlySearchModal(template: TemplateRef<any>) {
+    this.AuthDetailsModalRef = this.modalService.show(template, this.config);
+  }
+  getApprovalAuth(SbuName:string,sbuAmount:any) {
+    this.sbuIndividualAmount = sbuAmount
+    this.bugetSbuYearlyService.getAppAuthDetails(SbuName).subscribe(response => {
+      debugger;
+      this.ApprovalAuthDetails = response as IApprovalAuthDetails[];
+      if (this.ApprovalAuthDetails.length > 0) {
+        this.openBudgetYearlySearchModal(this.authDetailsModal);
+        }
+        else {
+          this.toastr.warning('No Data Found');
+        }
+        this.SpinnerService.hide();
     }, error => {
       console.log(error);
     });
@@ -108,6 +129,29 @@ export class BgtSbuYearlyComponent implements OnInit {
     this.bugetSbuYearlyService.budgetSbuYearly = new BudgetSbuYearly();
     this.sbuDetails = [];
   }
+  UpdateSbuDetails(id:number,newAmount:any,expense:any)
+  {
+    debugger;
+    this.bugetSbuYearlyService.budgetSbuYearly.id = id;
+    this.bugetSbuYearlyService.budgetSbuYearly.sbuAmount = newAmount;
+    if(newAmount < expense)
+    {
+      this.toastr.warning('Budget can not be lower then expense!');
+    }
+    else{
+      this.bugetSbuYearlyService.updateSbuBudgetYearly().subscribe(
+        res => {
+          this.bugetSbuYearlyService.budgetSbuYearly = res as IBudgetSbuYearly;
+          this.toastr.success('Updated successfully', 'Sbu Budget');
+          this.resetPageLoad();
+        },
+        err => { 
+          console.log(err); 
+        }
+      );
+    }
+   
+  }
   getAllSbuBgtList()
   {
   
@@ -127,7 +171,8 @@ export class BgtSbuYearlyComponent implements OnInit {
                sbu.sbuAmount = this.bgtSbuYearlyList[i].sbuAmount;
                sbu.sbuName = this.bgtSbuYearlyList[i].sbuName;
                sbu.sbuCode = this.bgtSbuYearlyList[i].sbuCode;
-               sbu.newAmount = this.bgtSbuYearlyList[i].sbuAmount;
+               sbu.bgtSbuId = this.bgtSbuYearlyList[i].bgtSbuId;
+               sbu.newAmount = 0;
                sbu.expense = this.bgtSbuYearlyList[i].expense;
                this.sbuDetails.push(sbu);
                const total = parseInt(this.totalBudget);

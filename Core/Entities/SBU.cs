@@ -13,6 +13,7 @@ namespace Core.Entities
     public class SBUVM : SBU
     {
         public Int64 SBUAmount { get; set; }
+        public int BgtSbuId { get; set; }
         public double Expense { get; set; }
     }
 }

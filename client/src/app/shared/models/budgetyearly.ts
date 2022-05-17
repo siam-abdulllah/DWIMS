@@ -41,6 +41,7 @@ export class BudgetYearly implements IBudgetYearly {
 
 export interface IBudgetSbuYearly {
     id: number;
+    bgtSbuId:number;
     compId:number;
     deptId:number;
     year:number;
@@ -58,6 +59,7 @@ export interface IBudgetSbuYearly {
  
 export class BudgetSbuYearly implements IBudgetSbuYearly {
     id: number=0;
+    bgtSbuId:number;
     compId:number=1000;
     deptId:number=0;
     year:number;
@@ -74,6 +76,7 @@ export class BudgetSbuYearly implements IBudgetSbuYearly {
 }
 
 export interface ISbuDetails {
+    bgtSbuId:number;
     sbuName:string;
     sbuCode:string;
     sbuAmount:any;
@@ -83,6 +86,7 @@ export interface ISbuDetails {
     remaining:any;
 }
 export class SbuDetails implements ISbuDetails {
+    bgtSbuId:number;
     sbuName:string;
     sbuCode:string;
     sbuAmount:any;
@@ -102,6 +106,23 @@ export class PipelineDetails implements IPipelineDetails {
     sbuName:string;
     sbuCode:string;
     pipeline:any;
+}
+
+export interface IApprovalAuthDetails {
+    remarks:string;
+    totalPerson:number;
+    priority:number;
+    expense:any;
+    totalAmount:any;
+    newAmount:any
+}
+export class ApprovalAuthDetails implements IApprovalAuthDetails {
+    remarks:string;
+    totalPerson:number;
+    priority:number;
+    expense:any;
+    totalAmount:any;
+    newAmount:any
 }
 
 

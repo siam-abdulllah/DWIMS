@@ -133,7 +133,8 @@ namespace Infrastructure.Data
         public DbSet<SystemSummary> SystemSummary { get; set; }
         [NotMapped]
         public DbSet<PipeLineExpense> PipeLineExpense { get; set; }
-
+        [NotMapped]
+        public DbSet<AppAuthDetails> AppAuthDetails { get; set; }
         public DbSet<RptSummary> RptSummary { get; set; }
         public DbSet<InvestmentRapid> InvestmentRapid { get; set; }
         public DbSet<InvestmentRapidAppr> InvestmentRapidAppr { get; set; }
