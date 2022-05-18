@@ -57,7 +57,9 @@ export class BgtEmployeeService {
     return this.http.get(this.baseUrl + 'bgtEmployee/getPrevAlloc/'+deptId+'/'+sbu+'/'+year);
   }
 
- 
+  getSBUWiseDonationLocation(donationId: any, deptId: any, year: any, authId: any ){    
+    return this.http.get(this.baseUrl + 'bgtEmployee/getSBUWiseDonationLocation/'+donationId+'/'+deptId+'/'+year+'/'+authId);
+  }
 
   getAuthPersonCount(authId: any, sbu: string ){    
     return this.http.get(this.baseUrl + 'bgtEmployee/getAuthPersonCount/'+authId+'/'+sbu);

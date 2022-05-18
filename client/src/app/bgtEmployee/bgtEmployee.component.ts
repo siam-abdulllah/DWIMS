@@ -9,7 +9,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from "ngx-spinner";
 import { GenericParams } from '../shared/models/genericParams';
 import { AccountService } from '../account/account.service';
-import { DatePipe, getLocaleDateTimeFormat } from '@angular/common';
+import { CurrencyPipe,DatePipe, getLocaleDateTimeFormat } from '@angular/common';
 import { BgtEmployeeService } from '../_services/bgtEmployee.service';
 import { IApprovalAuthority } from '../shared/models/approvalAuthority';
 import { ISBU } from '../shared/models/sbu';
@@ -37,6 +37,7 @@ export class BgtEmployeeComponent implements OnInit {
   btnShow: boolean = true;
   valShow: boolean = true;
   isHide: boolean = false;
+  sbuData:ISbuData[];
   searchText = '';
   config: any;
   totalCount = 0;
@@ -86,6 +87,9 @@ export class BgtEmployeeComponent implements OnInit {
       remaining: [''],
       donationAmt: [''],
       transLimit: [''],
+
+      grdAmount: [''],
+      grdLimit: [''],
     });
   }
 
@@ -145,24 +149,24 @@ export class BgtEmployeeComponent implements OnInit {
     });
   }
 
-  getAuthPersonCount()
-  {
-    if(this.bgtEmployee.value.authId == "" || this.bgtEmployee.value.authId == null)
-    {
-      this.toastr.error('Select Authorization Level');
-      return;
-    }
+  // getAuthPersonCount()
+  // {
+  //   if(this.bgtEmployee.value.authId == "" || this.bgtEmployee.value.authId == null)
+  //   {
+  //     this.toastr.error('Select Authorization Level');
+  //     return;
+  //   }
 
-    this.bgtService.getAuthPersonCount(this.bgtEmployee.value.authId, this.bgtEmployee.value.sbu).subscribe(response => {    
-      this.bgtEmployee.patchValue({
-        ttlPerson: response[0].count,
-      });
+  //   this.bgtService.getAuthPersonCount(this.bgtEmployee.value.authId, this.bgtEmployee.value.sbu).subscribe(response => {    
+  //     this.bgtEmployee.patchValue({
+  //       ttlPerson: response[0].count,
+  //     });
 
-      this.getAllocatedAmount();
-     }, error => {
-        console.log(error);
-     });
-  }
+  //     this.getAllocatedAmount();
+  //    }, error => {
+  //       console.log(error);
+  //    });
+  // }
 
 
   getAllocatedAmount()
@@ -230,6 +234,7 @@ export class BgtEmployeeComponent implements OnInit {
       ttlAllocate: "",
     });
   }
+  
   ngOnInit() {
     this.createbgtEmployeeForm();
     this.reset();
@@ -337,6 +342,72 @@ export class BgtEmployeeComponent implements OnInit {
     );
   }
 
+
+  generateData()
+  {
+
+    //alert(this.bgtEmployee.value.donationId +"," + this.bgtEmployee.value.)
+
+    if(this.bgtEmployee.value.deptId == "" || this.bgtEmployee.value.deptId == null)
+    {
+      this.toastr.error('Select Department');
+      return;
+    }
+
+    if(this.bgtEmployee.value.year == "" || this.bgtEmployee.value.year == null)
+    {
+      this.toastr.error('Select Year');
+      return;
+    }
+
+    if(this.bgtEmployee.value.donationId == "" || this.bgtEmployee.value.donationId == null)
+    {
+      this.toastr.error('Select Donation Type');
+      return;
+    }
+
+    if(this.bgtEmployee.value.authId == "" || this.bgtEmployee.value.authId == null)
+    {
+      this.toastr.error('Select Authorization Level');
+      return;
+    }
+
+    var yr = new Date(this.bgtEmployee.value.year);
+    this.bgtService.getSBUWiseDonationLocation(this.bgtEmployee.value.donationId,this.bgtEmployee.value.deptId,yr.getFullYear(),this.bgtEmployee.value.authId).subscribe(
+      res => {
+        this.sbuData = res as ISbuData[];
+      },
+      err => { console.log(err); }
+    );
+
+  }
+
+  saveData()
+  {
+
+    for(var i=0;i<this.sbuData.length;i++)
+    {
+      alert(this.sbuData[i].sbu +"," + this.sbuData[i].amount);
+    }
+
+  }
+
+
+  getTotal(index: number)
+  {
+    if(this.bgtEmployee.value.segment == "Monthly")
+    {
+      const d = new Date();     
+      var remMonth = 12 - d.getMonth() - 1;
+      this.sbuData[index].ttlAmt = this.sbuData[index].totalPerson * this.sbuData[index].amount * remMonth;
+    }
+    else if(this.bgtEmployee.value.segment == "Yearly")
+    {
+      this.sbuData[index].ttlAmt = this.sbuData[index].totalPerson * this.sbuData[index].amount;
+    }
+
+  }
+
   private formatDate(date) {
     const d = new Date(date);
     let month = '' + (d.getMonth() + 1);
@@ -379,7 +450,24 @@ openPendingListModal(template: TemplateRef<any>) {
       remaining: "",
       donationAmt:"",
       transLimit: "",
+      grdAmount: "",
+      grdLimit: "",
     });
   }
 
+}
+
+interface ISbuData {
+  sbu: string;
+  sbuAmount: number | null;
+  expense: number | null;
+  year: number;
+  approvalAuthorityName: string;
+  donationId: number | null;
+  donationTypeName: string;
+  authId: number;
+  totalPerson: number;
+  amount: number;
+  limit: number;
+  ttlAmt: number;
 }

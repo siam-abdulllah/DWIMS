@@ -39,7 +39,7 @@ namespace API.Controllers
                     " ProposedAmount, EmployeeName, MarketName, InvestmentInitId, DId, DoctorName, ApprovedDate, ApprovedBy FROM ( " +
  
               " Select DISTINCT dtl.id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn,  SYSDATETIMEOFFSET() AS ModifiedOn, a.ProposeFor, dtl.PaymentRefNo 'PayRefNo', " +
-              " a.DonationTo, depo.DepotCode, d.DonationTypeName,   dtl.ApprovedAmount   ProposedAmount, e.EmployeeName, e.MarketName, dtl.InvestmentInitId, " +
+              " a.DonationTo, depo.DepotCode, d.DonationTypeName,   dtl.ApprovedAmount   ProposedAmount, e.EmployeeName, a.MarketName, dtl.InvestmentInitId, " +
               " CASE WHEN a.donationto = 'Doctor' THEN (SELECT DISTINCT DoctorId  FROM   investmentdoctor x  INNER JOIN doctorinfo y ON x.doctorid = y.id WHERE x.investmentinitid = a.id)  " +
               " WHEN a.donationto = 'Institution' THEN (SELECT DISTINCT InstitutionId FROM  investmentinstitution x INNER JOIN institutioninfo y ON x.institutionid = y.id WHERE x.investmentinitid = a.id)  " +
               " WHEN a.donationto = 'Campaign' THEN (SELECT DISTINCT y.MstId  FROM   investmentcampaign x INNER JOIN campaigndtl y  ON x.campaigndtlid = y.id  INNER JOIN [dbo].[subcampaign] C  ON y.subcampaignid = C.id  WHERE x.investmentinitid = a.id)  " +
@@ -93,7 +93,7 @@ namespace API.Controllers
                     " ProposedAmount, EmployeeName, MarketName, InvestmentInitId, DId, DoctorName, ApprovedDate, ApprovedBy FROM ( " + 
                 
                  " Select  DISTINCT dtl.Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn,  SYSDATETIMEOFFSET() AS ModifiedOn,  a.ProposeFor, dtl.PaymentRefNo PayRefNo, " +
-                " a.DonationTo, a.SBUName, inDetail.ChequeTitle, depo.DepotCode, d.DonationTypeName,   dtl.ApprovedAmount   ProposedAmount, e.EmployeeName, e.MarketName, dtl.InvestmentInitId, " +
+                " a.DonationTo, a.SBUName, inDetail.ChequeTitle, depo.DepotCode, d.DonationTypeName,   dtl.ApprovedAmount   ProposedAmount, e.EmployeeName, a.MarketName, dtl.InvestmentInitId, " +
                 " CASE WHEN a.donationto = 'Doctor' THEN (SELECT DoctorId  FROM   investmentdoctor x  INNER JOIN doctorinfo y ON x.doctorid = y.id WHERE x.investmentinitid = a.id)  " +
                 " WHEN a.donationto = 'Institution' THEN (SELECT InstitutionId FROM  investmentinstitution x INNER JOIN institutioninfo y ON x.institutionid = y.id WHERE x.investmentinitid = a.id)  " +
                 " WHEN a.donationto = 'Campaign' THEN (SELECT y.MstId  FROM   investmentcampaign x INNER JOIN campaigndtl y  ON x.campaigndtlid = y.id  INNER JOIN [dbo].[subcampaign] C  ON y.subcampaignid = C.id  WHERE x.investmentinitid = a.id)  " +

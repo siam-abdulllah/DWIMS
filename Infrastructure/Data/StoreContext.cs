@@ -147,6 +147,9 @@ namespace Infrastructure.Data
         [NotMapped]
         public DbSet<CountDouble> CountDouble { get; set; }
 
+        [NotMapped]
+        public DbSet<BgtEmployeeLocationWiseSBUExp> BgtEmployeeLocationWiseSBUExp { get; set; }
+
 
         public List<T> ExecSQL<T>(string query)
         {

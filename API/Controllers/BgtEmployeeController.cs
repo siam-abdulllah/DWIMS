@@ -107,6 +107,30 @@ namespace API.Controllers
         }
 
 
+
+        [HttpGet("getSBUWiseDonationLocation/{donationId}/{deptId}/{year}/{authId}")]
+        public ActionResult<IReadOnlyList<BgtEmployeeLocationWiseSBUExp>> GetTotalAuthPerson(int donationId, int deptId, int year ,int authId)
+        {
+            try
+            {
+                List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                        new SqlParameter("@DonationId ", donationId),
+                        new SqlParameter("@DeptId", deptId),
+                        new SqlParameter("@Year", year),
+                        new SqlParameter("@AuthId", authId),
+                    };
+
+                var results = _dbContext.BgtEmployeeLocationWiseSBUExp.FromSqlRaw("EXECUTE [SP_BgtGetSBUWiseLocation] @DonationId, @DeptId, @Year, @AuthId", parms.ToArray()).ToList();
+                return results;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
         [HttpPost("insertBgtEmployee")]
         public Int32 BgtEmpInsert(BgtEmpInsertDto dto)
         {
