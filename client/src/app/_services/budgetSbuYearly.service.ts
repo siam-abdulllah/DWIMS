@@ -31,6 +31,9 @@ export class BudgetSbuYearlyService {
   getYearlyBudget(deptId:number,year:number){    
     return this.http.get(this.baseUrl + 'BgtSbuYearly/getYearlyBudget/'+deptId+'/'+year);
   }
+  getAppAuthDetails(sbuName:string){    
+    return this.http.get(this.baseUrl + 'BgtSbuYearly/getAppAuthDetails/'+sbuName);
+  }
   getAllSbuBgtList(deptId:number,compId:number,year:number) {
     debugger;
     return this.http.get(this.baseUrl + 'BgtSbuYearly/getAllSbuBgtList/'+deptId+'/'+compId+'/'+year);
@@ -42,6 +45,10 @@ export class BudgetSbuYearlyService {
   getAllPipelineExpenseList(deptId:number,compId:number,year:number) {
     debugger;
     return this.http.get(this.baseUrl + 'BgtSbuYearly/getAllPipelineExpenseList/'+deptId+'/'+compId+'/'+year);
+  }
+  updateSbuBudgetYearly() {
+    debugger;
+    return this.http.post(this.baseUrl + 'BgtSbuYearly/updateSbuBudgetYearly', this.budgetSbuYearly);
   }
   submitSbuBudgetYearly() {
     debugger;

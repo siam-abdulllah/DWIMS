@@ -33,6 +33,16 @@ namespace Core.Entities
         public string SBUName { get; set; }
         public string SBUCode { get; set; }
     }
+
+    public class AppAuthDetails : BaseEntity
+    {
+        public string Remarks { get; set; }
+        public int Priority { get; set; }
+        public int TotalPerson { get; set; }
+        public int Expense { get; set; }
+        public int NewAmount { get; set; }
+        public int TotalAmount { get; set; }
+    }
     public class TotalExpense : BaseEntity
     {
 

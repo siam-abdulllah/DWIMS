@@ -50,6 +50,7 @@ namespace API.Controllers
               
                 qry = string.Format(@"SELECT sb.*
                                     ,bs.SBUAmount
+                                    ,bs.Id BgtSbuId
                                     ,(
                                     SELECT ISNULL(Round(SUM(ApprovedAmount),0), 0)
                                     FROM InvestmentDetailTracker e
@@ -119,6 +120,30 @@ namespace API.Controllers
 
                 var results = _dbContext.PipeLineExpense.FromSqlRaw(qry).ToList();
                 List<PipeLineExpense> dsResult = _dbContext.ExecSQL<PipeLineExpense>(qry).ToList();
+                return dsResult;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpGet("GetAppAuthDetails/{sbuName}")]
+        public async Task<List<AppAuthDetails>> GetAppAuthDetails(string sbuName)
+        {
+            try
+            {
+                string qry = "";
+
+                qry = string.Format(@"select CAST(ROW_NUMBER() OVER (ORDER BY Priority) AS INT)  AS Id ,1 AS DataStatus,SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,aa.Priority,
+                                     aa.Remarks,0 as Expense,0 as TotalAmount,0 as NewAmount, (select COUNT(*) from ApprAuthConfig ac
+                                    left join EmpSbuMapping emp on emp.Id = ac.EmployeeId
+                                    where ac.ApprovalAuthorityId = aa.Priority and emp.SBUName = '{0}' and emp.DataStatus = 1) TotalPerson
+                                    from ApprovalAuthority aa where Priority in (3,4,5,6,7)", sbuName);
+
+
+                var results = _dbContext.AppAuthDetails.FromSqlRaw(qry).ToList();
+                List<AppAuthDetails> dsResult = _dbContext.ExecSQL<AppAuthDetails>(qry).ToList();
                 return dsResult;
             }
             catch (System.Exception ex)
@@ -199,6 +224,29 @@ namespace API.Controllers
                 SBU = setSbuBgtDto.SBU
             };
         }
-
+        [HttpPost("updateSbuBudgetYearly")]
+        public async Task<ActionResult<BgtSbuYearlyTotalDto>> UpdateSbuBudgetYearly(BgtSbuYearlyTotalDto setSbuBgtDto)
+        {
+            BgtSBUTotal sbuTotal = new BgtSBUTotal();
+            sbuTotal = await _bgtSbuRepo.GetByIdAsync(setSbuBgtDto.Id);
+            if(sbuTotal != null)
+            {
+                sbuTotal.SBUAmount = setSbuBgtDto.SBUAmount;
+                sbuTotal.ModifiedOn = DateTime.Now;
+                _bgtSbuRepo.Update(sbuTotal);
+                _bgtSbuRepo.Savechange();
+            }
+            return new BgtSbuYearlyTotalDto
+            {
+                Id = sbuTotal.Id,
+                DeptId = sbuTotal.DeptId,
+                SBUAmount = sbuTotal.SBUAmount,
+                Year = setSbuBgtDto.Year,
+                CompId = sbuTotal.CompId,
+                SBU = setSbuBgtDto.SBU
+            };
+      
+        }
+        
     }
 }
