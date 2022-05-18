@@ -2,7 +2,7 @@ import { DatePipe } from "@angular/common";
 import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { Router } from "@angular/router";
-import { BsModalService,BsModalRef} from "ngx-bootstrap/modal";
+import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from "rxjs/internal/Observable";
@@ -31,15 +31,16 @@ export class BgtEmpSbuMapComponent implements OnInit {
   BudgetYearlySearchModalRef: BsModalRef;
   bsValue: Date = new Date();
   today = new Date();
+  serials = Array.from({ length: 100 }, (_, i) => i + 1);
   budgetSbuMapList: IBudgetEmpSbuMap[];
   employees: IEmployee[];
   SBUs: ISBU[];
   empId: string;
-  userRole:string;
+  userRole: string;
   budgetTotalForm: NgForm;
   isValid: boolean = false;
-  searchText:string;
-  empSbu:Observable<IEmployeeInfo>;
+  searchText: string;
+  empSbu: Observable<IEmployeeInfo>;
   isAdmin: boolean = false;
   dd = String(this.today.getDate()).padStart(2, '0');
   mm = String(this.today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -51,22 +52,26 @@ export class BgtEmpSbuMapComponent implements OnInit {
     ignoreBackdropClick: true
   };
   institutionType: string;
-  constructor(private accountService: AccountService,private router: Router,public budgetEmpSbuMapService: BudgetEmpSbuMapervice,private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe, 
+  constructor(private accountService: AccountService, private router: Router, public budgetEmpSbuMapService: BudgetEmpSbuMapervice, private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe,
     private SpinnerService: NgxSpinnerService) { }
   ngOnInit() {
     // this.getEmployeeId()
     this.getEmployees()
     this.getSBU()
   }
-
-  getEmployees(){
+  customSearchFnEmp(term: string, item: any) {
+    term = term.toLocaleLowerCase();
+    return item.employeeSAPCode.toLocaleLowerCase().indexOf(term) > -1 ||
+      item.employeeName.toLocaleLowerCase().indexOf(term) > -1;
+  }
+  getEmployees() {
     this.budgetEmpSbuMapService.getEmployees().subscribe(response => {
       debugger;
       this.employees = response as IEmployee[];
-    //   this.totalCount = response.count;
-     }, error => {
-        console.log(error);
-     });
+      //   this.totalCount = response.count;
+    }, error => {
+      console.log(error);
+    });
   }
   getSBU() {
     this.budgetEmpSbuMapService.getSBU().subscribe(response => {
@@ -93,7 +98,7 @@ export class BgtEmpSbuMapComponent implements OnInit {
   }
   confirmSubmit() {
     this.submissionConfirmRef.hide();
-     this.submitBgtSbuMap();
+    this.submitBgtSbuMap();
   }
   declineSubmit() {
     this.submissionConfirmRef.hide();
@@ -109,7 +114,7 @@ export class BgtEmpSbuMapComponent implements OnInit {
 
   resetPageLoad() {
     this.budgetEmpSbuMapService.budgetSbuMap = new BudgetEmpSbuMap();
-    this.budgetSbuMapList=[];
+    this.budgetSbuMapList = [];
   }
   // openBudgetYearlySearchModal(template: TemplateRef<any>) {
   //   debugger;
@@ -169,7 +174,7 @@ export class BgtEmpSbuMapComponent implements OnInit {
   //     else{
   //       this.bugetYearlyService.budgetYearly.totalRemaining = 0;
   //     }
-    
+
   //   }, 3000);
   // }
   // getTotalPipeline() {
@@ -201,37 +206,73 @@ export class BgtEmpSbuMapComponent implements OnInit {
   // resetSearch() {
   //   this.searchText = '';
   // }
-  getEmpSbuMappingList()
-  {
-    debugger;
-    this.budgetEmpSbuMapService.getEmpSbuMappingList(this.budgetEmpSbuMapService.budgetSbuMap.deptId).subscribe(response => {
-
-      var data = response as IBudgetEmpSbuMap[];
-      if (data !== undefined) {
-        this.budgetSbuMapList = data;
-
+  getEmpSbuMappingListByDept() {
+    if (this.budgetEmpSbuMapService.budgetSbuMap.sbu == null || this.budgetEmpSbuMapService.budgetSbuMap.sbu == "" || this.budgetEmpSbuMapService.budgetSbuMap.sbu == undefined) {
+      if (this.budgetEmpSbuMapService.budgetSbuMap.deptId != null && this.budgetEmpSbuMapService.budgetSbuMap.deptId != 0 && this.budgetEmpSbuMapService.budgetSbuMap.deptId != undefined) {
+        this.budgetEmpSbuMapService.getEmpSbuMappingListByDept(this.budgetEmpSbuMapService.budgetSbuMap.deptId).subscribe(response => {
+          var data = response as IBudgetEmpSbuMap[];
+          if (data !== undefined) {
+            this.budgetSbuMapList = data;
+          }
+        }, error => {
+          console.log(error);
+        });
       }
-      else {
-        //this.toastr.warning('No Data Found', 'Investment');
+    }
+    else {
+      if (this.budgetEmpSbuMapService.budgetSbuMap.deptId != null && this.budgetEmpSbuMapService.budgetSbuMap.deptId != 0 && this.budgetEmpSbuMapService.budgetSbuMap.deptId != undefined) {
+        this.budgetEmpSbuMapService.getEmpSbuMappingList(this.budgetEmpSbuMapService.budgetSbuMap.deptId, this.budgetEmpSbuMapService.budgetSbuMap.sbu).subscribe(response => {
+          var data = response as IBudgetEmpSbuMap[];
+          if (data !== undefined) {
+            this.budgetSbuMapList = data;
+          }
+        }, error => {
+          console.log(error);
+
+        });
       }
+    }
+  }
+  getEmpSbuMappingListBySbu() {
+    if (this.budgetEmpSbuMapService.budgetSbuMap.deptId == null || this.budgetEmpSbuMapService.budgetSbuMap.deptId == 0 || this.budgetEmpSbuMapService.budgetSbuMap.deptId == undefined) {
+      if (this.budgetEmpSbuMapService.budgetSbuMap.sbu != null && this.budgetEmpSbuMapService.budgetSbuMap.sbu != "" && this.budgetEmpSbuMapService.budgetSbuMap.sbu != undefined) {
+        this.budgetEmpSbuMapService.getEmpSbuMappingListBySbu(this.budgetEmpSbuMapService.budgetSbuMap.sbu).subscribe(response => {
+          var data = response as IBudgetEmpSbuMap[];
+          if (data !== undefined) {
+            this.budgetSbuMapList = data;
+          }
+        }, error => {
+          console.log(error);
+        });
+      }
+    }
+    else {
+      if (this.budgetEmpSbuMapService.budgetSbuMap.sbu != null && this.budgetEmpSbuMapService.budgetSbuMap.sbu != "" && this.budgetEmpSbuMapService.budgetSbuMap.sbu != undefined) {
 
-    }, error => {
-      console.log(error);
+        this.budgetEmpSbuMapService.getEmpSbuMappingList(this.budgetEmpSbuMapService.budgetSbuMap.deptId, this.budgetEmpSbuMapService.budgetSbuMap.sbu).subscribe(response => {
+          var data = response as IBudgetEmpSbuMap[];
+          if (data !== undefined) {
+            this.budgetSbuMapList = data;
+          }
+        }, error => {
+          console.log(error);
 
-    });
+        });
+      }
+    }
   }
   removeSbuMapping(selectedRecord: IBudgetEmpSbuMap) {
     debugger;
     var c = confirm("Are you sure you want to delete that?");
     if (c == true) {
-     
+
       this.SpinnerService.show();
       debugger;
       this.budgetEmpSbuMapService.removeEmpSbuMapping(selectedRecord).subscribe(
         res => {
           this.SpinnerService.hide();
           this.toastr.success(res);
-          this.getEmpSbuMappingList();
+          this.getEmpSbuMappingListByDept();
         },
         err => {
           this.SpinnerService.hide();
@@ -242,7 +283,7 @@ export class BgtEmpSbuMapComponent implements OnInit {
   }
   submitBgtSbuMap() {
     debugger;
- 
+
     for (let i = 0; i < this.SBUs.length; i++) {
       debugger;
       if (this.SBUs[i].sbuCode == this.budgetEmpSbuMapService.budgetSbuMap.sbu) {
@@ -250,24 +291,23 @@ export class BgtEmpSbuMapComponent implements OnInit {
         break;
       }
     }
-      this.SpinnerService.show();
-      this.budgetEmpSbuMapService.SaveEmpSbuMapping().subscribe(
-        res => {
-          this.budgetEmpSbuMapService.budgetSbuMap = res as IBudgetEmpSbuMap;
-          if(this.budgetEmpSbuMapService.budgetSbuMap.id > 0)
-          {
-            this.toastr.success('Submitted successfully', 'Sbu Map');
+    this.SpinnerService.show();
+    this.budgetEmpSbuMapService.SaveEmpSbuMapping().subscribe(
+      res => {
+        this.budgetEmpSbuMapService.budgetSbuMap = res as IBudgetEmpSbuMap;
+        if (this.budgetEmpSbuMapService.budgetSbuMap.id > 0) {
+          this.toastr.success('Submitted successfully', 'Sbu Map');
 
-          }
-          else{
-            this.toastr.warning('Deta already exist!', 'Sbu Map');
-          }
-          this.resetPageLoad();
-        },
-        err => { 
-          console.log(err); 
         }
-      );
+        else {
+          this.toastr.warning('Deta already exist!', 'Sbu Map');
+        }
+        this.resetPageLoad();
+      },
+      err => {
+        console.log(err);
+      }
+    );
   }
 }
 

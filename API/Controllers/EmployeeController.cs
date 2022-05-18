@@ -443,8 +443,8 @@ namespace API.Controllers
         {
             //#region Updating existing Entry
             var qry = string.Format(@"select * from EmpSbuMapping where EmployeeId = {0}
-                                    and SBU = {1} and DataStatus=1", 
-                                    empSbuMappingDto.EmployeeId, empSbuMappingDto.SBU);
+                                    and SBU = {1} and Serial = {1} and DataStatus=1", 
+                                    empSbuMappingDto.EmployeeId, empSbuMappingDto.SBU, empSbuMappingDto.Serial);
 
             List<EmpSbuMapping> existingRecord = _db.ExecSQL<EmpSbuMapping>(qry).ToList();
             var empMapping = new EmpSbuMapping();
@@ -461,7 +461,9 @@ namespace API.Controllers
                     SetOn = DateTimeOffset.Now,
                     ModifiedOn = DateTimeOffset.Now,
                     DataStatus = 1,
-                    EmployeeId = empSbuMappingDto.EmployeeId
+                    EmployeeId = empSbuMappingDto.EmployeeId,
+                    TagCode = empSbuMappingDto.SBUName + empSbuMappingDto.Serial,
+                    Serial = empSbuMappingDto.Serial,
 
                 };
 
@@ -504,9 +506,47 @@ namespace API.Controllers
             #endregion
      
         }
+       
         [HttpGet]
-        [Route("getEmpSbuMappingList/{deptID}")]
-        public IReadOnlyList<EmpSbuMappingVM> GetEmpSbuMappingList(int deptID)
+        [Route("getEmpSbuMappingList/{deptID}/{sbu}")]
+        public IReadOnlyList<EmpSbuMappingVM> GetEmpSbuMappingList(int deptID,string sbu)
+        {
+            try
+            {
+                 var qry = string.Format(@" select em.*,emp.EmployeeName from EmpSbuMapping em
+                                            left join employee emp on emp.Id = em.EmployeeId
+                                            where em.DeptId={0} and em.SBU={1} and em.DataStatus=1", deptID,sbu);
+
+                List<EmpSbuMappingVM> dsResult = _db.ExecSQL<EmpSbuMappingVM>(qry).ToList();
+                return dsResult;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+       
+        [HttpGet]
+        [Route("getEmpSbuMappingListBySbu/{sbu}")]
+        public IReadOnlyList<EmpSbuMappingVM> GetEmpSbuMappingListBySbu(string sbu)
+        {
+            try
+            {
+                var qry = string.Format(@" select em.*,emp.EmployeeName from EmpSbuMapping em
+                                            left join employee emp on emp.Id = em.EmployeeId
+                                            where em.SBU={0} and em.DataStatus=1", sbu);
+
+                List<EmpSbuMappingVM> dsResult = _db.ExecSQL<EmpSbuMappingVM>(qry).ToList();
+                return dsResult;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpGet]
+        [Route("getEmpSbuMappingListByDept/{deptID}")]
+        public IReadOnlyList<EmpSbuMappingVM> GetEmpSbuMappingListByDept(int deptID)
         {
             try
             {

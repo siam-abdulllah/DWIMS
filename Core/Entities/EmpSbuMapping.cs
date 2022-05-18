@@ -7,6 +7,8 @@
         public int EmployeeId { get; set; }
         public string SBU { get; set; }
         public string SBUName { get; set; }
+        public int Serial { get; set; }
+        public string TagCode { get; set; }
     }
     public class EmpSbuMappingVM : EmpSbuMapping
     {

@@ -32,9 +32,14 @@ export class BudgetEmpSbuMapervice {
     return this.http.get(this.baseUrl + 'employee/getSBU');
   }
 
-  getEmpSbuMappingList(deptId:number) {
-    debugger;
-    return this.http.get(this.baseUrl + 'employee/getEmpSbuMappingList/'+deptId);
+  getEmpSbuMappingListByDept(deptId:number) {
+    return this.http.get(this.baseUrl + 'employee/getEmpSbuMappingListByDept/'+deptId);
+  }
+  getEmpSbuMappingListBySbu(sbu:string) {
+    return this.http.get(this.baseUrl + 'employee/getEmpSbuMappingListBySbu/'+sbu);
+  }
+  getEmpSbuMappingList(deptId:number,sbu:string) {
+    return this.http.get(this.baseUrl + 'employee/getEmpSbuMappingList/'+deptId+'/'+sbu);
   }
   removeEmpSbuMapping(selectedRecord:BudgetEmpSbuMap) {
     return this.http.post(this.baseUrl + 'employee/removeEmpSbuMapping', selectedRecord,

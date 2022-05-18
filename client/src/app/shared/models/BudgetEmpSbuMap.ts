@@ -13,7 +13,9 @@ export interface IBudgetEmpSbuMap {
     compId:number;
     employeeName:string;
     sbuName:string;
-    sbu:string;
+    sbu:string; 
+    tagCode:string;
+    serial: number;
 }
  
 export class BudgetEmpSbuMap implements IBudgetEmpSbuMap {
@@ -25,6 +27,8 @@ export class BudgetEmpSbuMap implements IBudgetEmpSbuMap {
     deptId:number=0;
     compId:number=1000;
     sbu:string=null;
+    tagCode:string=null;
+    serial: number=0;
 }
 
 
