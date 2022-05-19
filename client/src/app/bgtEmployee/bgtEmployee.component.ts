@@ -37,7 +37,7 @@ export class BgtEmployeeComponent implements OnInit {
   btnShow: boolean = true;
   valShow: boolean = true;
   isHide: boolean = false;
-  sbuData:ISbuData[];
+  sbuData:SbuData[];
   searchText = '';
   config: any;
   totalCount = 0;
@@ -372,6 +372,18 @@ export class BgtEmployeeComponent implements OnInit {
       return;
     }
 
+    if(this.bgtEmployee.value.deptId == 1 && this.bgtEmployee.value.authId == 8)
+    {
+      this.toastr.error('Wrong Department / Authorization Combination');
+      return;
+    }
+
+    if(this.bgtEmployee.value.deptId == 2 && this.bgtEmployee.value.authId != 8)
+    {
+      this.toastr.error('Wrong Department / Authorization Combination');
+      return;
+    }
+
     var yr = new Date(this.bgtEmployee.value.year);
     this.bgtService.getSBUWiseDonationLocation(this.bgtEmployee.value.donationId,this.bgtEmployee.value.deptId,yr.getFullYear(),this.bgtEmployee.value.authId).subscribe(
       res => {
@@ -385,10 +397,37 @@ export class BgtEmployeeComponent implements OnInit {
   saveData()
   {
 
+    var ListData = [];
+
     for(var i=0;i<this.sbuData.length;i++)
     {
-      alert(this.sbuData[i].sbu +"," + this.sbuData[i].amount);
+      //alert(this.sbuData[i].sbu +"," + this.sbuData[i].amount);
+
+      var yr = new Date(this.bgtEmployee.value.year);
+    
+      this.bgtService.bgtOwnFormData.deptId = this.bgtEmployee.value.deptId;
+      this.bgtService.bgtOwnFormData.year = yr.getFullYear();
+      this.bgtService.bgtOwnFormData.sbu = this.sbuData[i].sbu;
+      this.bgtService.bgtOwnFormData.authId = this.bgtEmployee.value.authId;
+      this.bgtService.bgtOwnFormData.amount = this.sbuData[i].amount;
+      this.bgtService.bgtOwnFormData.segment = this.bgtEmployee.value.segment;
+      this.bgtService.bgtOwnFormData.amtLimit = this.sbuData[i].limit;
+      this.bgtService.bgtOwnFormData.donationId = this.sbuData[i].donationId;
+      this.bgtService.bgtOwnFormData.enteredBy = parseInt(this.empId);
+
+      ListData.push(this.bgtService.bgtOwnFormData);
     }
+
+
+      this.bgtService.insertBgtOwnList(ListData).subscribe(
+        res => {
+          this.toastr.success('Budget Distributed successfully', 'Budget Distribution') 
+          this.btnShow = false;
+        },
+        err => { console.log(err); }
+      );
+
+  
 
   }
 
@@ -471,3 +510,18 @@ interface ISbuData {
   limit: number;
   ttlAmt: number;
 }
+
+export class SbuData implements ISbuData {
+  sbu: string;
+  sbuAmount: number | null;
+  expense: number | null;
+  year: number;
+  approvalAuthorityName: string;
+  donationId: number | null;
+  donationTypeName: string;
+  authId: number;
+  totalPerson: number;
+  amount: number;
+  limit: number;
+  ttlAmt: number;
+} 

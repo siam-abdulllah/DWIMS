@@ -9,6 +9,8 @@ import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { GenericParams } from '../shared/models/genericParams';
 import { BgtEmpInsertDto, BgtOwnInsertDto} from '../shared/models/bgtEmployee';
+import { SbuData} from '../bgtEmployee/bgtEmployee.component';
+
 
 
 
@@ -22,7 +24,7 @@ export class BgtEmployeeService {
   rptDepotLetter: IrptDepotLetterSearch[]=[];
   pagination = new DepotLetterSearchPagination();
  
-
+  sbuData:SbuData[] = [];
   roles: IRole[] = [];
   baseUrl = environment.apiUrl;
   genParams = new GenericParams();
@@ -73,5 +75,9 @@ export class BgtEmployeeService {
     return this.http.post(this.baseUrl+ 'bgtEmployee/insertBgtOwn', bgtOwnFormData);
   }
 
+
+  insertBgtOwnList(sbuData:any) {
+    return this.http.post(this.baseUrl+ 'bgtEmployee/insertBgtOwn', sbuData);
+  }
 
 }
