@@ -131,18 +131,27 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("GetAppAuthDetails/{sbuCode}")]
-        public async Task<List<AppAuthDetails>> GetAppAuthDetails(string sbuCode)
+        [HttpGet("GetAppAuthDetails/{sbuCode}/{deptId}")]
+        public async Task<List<AppAuthDetails>> GetAppAuthDetails(string sbuCode,int deptId)
         {
             try
             {
                 string qry = "";
+                string filterQry = "";
+                if(deptId == 1)
+                {
+                    filterQry = " where aa.Id in (3,4,5,6,7)";
+                }
+                else
+                {
+                    filterQry = " where aa.Id = 8";
+                }
 
                 qry = string.Format(@"select  CAST(ROW_NUMBER() OVER (ORDER BY Priority) AS INT)  AS Id,aa.Id as AuthId,1 AS DataStatus,SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,aa.Priority,
                                      aa.Remarks Authority,0 as Expense,0 as Amount,0 as NewAmount, (select COUNT(*) from ApprAuthConfig ac
                                     left join EmpSbuMapping emp on emp.EmployeeId = ac.EmployeeId
                                     where ac.ApprovalAuthorityId = aa.Id and emp.SBU = '{0}' and emp.DataStatus = 1) NoOfEmployee
-                                    from ApprovalAuthority aa where Priority in (3,4,5,6,7)", sbuCode);
+                                    from ApprovalAuthority aa {1}", sbuCode, filterQry);
 
 
                 var results = _dbContext.AppAuthDetails.FromSqlRaw(qry).ToList();
@@ -255,7 +264,7 @@ namespace API.Controllers
                         {
                             _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtEmployeeInsertDSM] @DeptId, @Year, @SBU , @AuthId, @Amount, @PermView, @PermEdit, @EnteredBy", parms.ToArray());
                         }
-                        else if (bgtEmp.AuthId == 4 || bgtEmp.AuthId == 6)
+                        else if (bgtEmp.AuthId == 4 || bgtEmp.AuthId == 6 || bgtEmp.AuthId == 8)
                         {
                            
                             _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtEmployeeInsert] @DeptId, @Year, @SBU , @AuthId, @Amount, @PermView, @PermEdit, @EnteredBy", parms.ToArray());

@@ -100,7 +100,7 @@ export class BgtSbuYearlyComponent implements OnInit {
       {
       
      
-        this.bugetSbuYearlyService.getAppAuthDetails(SbuCode).subscribe(response => {
+        this.bugetSbuYearlyService.getAppAuthDetails(SbuCode,this.bugetSbuYearlyService.budgetSbuYearly.deptId).subscribe(response => {
           debugger;
           this.approvalAuthDetails = response as IApprovalAuthDetails[];
     
