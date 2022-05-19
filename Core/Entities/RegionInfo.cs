@@ -10,6 +10,8 @@ namespace Core.Entities
         public string SBUName { get; set; }
         public string RegionCode { get; set; }
         public string RegionName { get; set; }
+        public int Serial { get; set; }
+        public string TagCode { get; set; }
 
     }
 }

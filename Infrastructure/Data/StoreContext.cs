@@ -146,6 +146,7 @@ namespace Infrastructure.Data
         public DbSet<MarketInfo> MarketInfo { get; set; }
         public DbSet<TerritoryInfo> TerritoryInfo { get; set; }
         public DbSet<RegionInfo> RegionInfo { get; set; }
+        public DbSet<BgtEmployeeDetail> BgtEmployeeDetail { get; set; }
         public DbSet<ZoneInfo> ZoneInfo { get; set; }
         [NotMapped]
         public DbSet<CountLong> CountLong { get; set; }

@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 import { GenericParams } from '../shared/models/genericParams';
 import { InvestmentMedicineProd } from '../shared/models/investmentRec';
 import { MedicineDispatch, MedicineDispatchDtl} from '../shared/models/medDispatch';
-import { BgtEmpInsertDto } from '../shared/models/bgtEmployee';
+//import { BgtEmpInsertDto } from '../shared/models/bgtEmployee';
 
 
 
@@ -18,7 +18,7 @@ import { BgtEmpInsertDto } from '../shared/models/bgtEmployee';
   providedIn: 'root'
 })
 export class BgtOwnService {
-  bgtEmpFormData: BgtEmpInsertDto = new BgtEmpInsertDto();
+  bgtEmpFormData: BgtEmpDetailInsertDto = new BgtEmpDetailInsertDto();
   medDispatchFormData: MedicineDispatch = new MedicineDispatch();
   investmentMedicineProdFormData: InvestmentMedicineProd = new InvestmentMedicineProd();
   rptDepotLetter: IrptDepotLetterSearch[]=[];
@@ -61,11 +61,11 @@ export class BgtOwnService {
   getEmpWiseSBU(employeeId: any ){    
     return this.http.get(this.baseUrl + 'BgtOwn/getEmpWiseSBU/'+employeeId);
   }
-  getEmpWiseBgt(employeeId: any, sbu: string , year: any,compId:any,deptId:any ){    
-    return this.http.get(this.baseUrl + 'BgtOwn/getEmpWiseBgt/'+employeeId+'/'+sbu+'/'+year+'/'+compId+'/'+deptId);
+  getEmpWiseBgt(employeeId: any, sbu: string , year: any,compId:any,deptId:any,authId:any  ){    
+    return this.http.get(this.baseUrl + 'BgtOwn/getEmpWiseBgt/'+employeeId+'/'+sbu+'/'+year+'/'+compId+'/'+deptId+'/'+authId);
   }
-  getEmpWiseTotExp(employeeId: any, sbu: string , year: any,compId:any,deptId:any  ){    
-    return this.http.get(this.baseUrl + 'BgtOwn/getEmpWiseTotExp/'+employeeId+'/'+sbu+'/'+year+'/'+compId+'/'+deptId);
+  getEmpWiseTotExp(employeeId: any, sbu: string , year: any,compId:any,deptId:any ,authId:any  ){    
+    return this.http.get(this.baseUrl + 'BgtOwn/getEmpWiseTotExp/'+employeeId+'/'+sbu+'/'+year+'/'+compId+'/'+deptId+'/'+authId);
   }
   getDonWiseBgt(employeeId: any, sbu: string , year: any,compId:any,deptId:any,donationId:any  ){    
     return this.http.get(this.baseUrl + 'BgtOwn/getDonWiseBgt/'+employeeId+'/'+sbu+'/'+year+'/'+compId+'/'+deptId+'/'+donationId);
@@ -73,8 +73,8 @@ export class BgtOwnService {
   getEmpWiseTotPipe(employeeId: any, sbu: string , year: any ,compId:any,deptId:any ){    
     return this.http.get(this.baseUrl + 'BgtOwn/getEmpWiseTotPipe/'+employeeId+'/'+sbu+'/'+year+'/'+compId+'/'+deptId);
   }
-  getEmpOwnBgt(employeeId: any, sbu: string , year: any ,compId:any,deptId:any ){    
-    return this.http.get(this.baseUrl + 'BgtOwn/getEmpOwnBgt/'+employeeId+'/'+sbu+'/'+year+'/'+compId+'/'+deptId);
+  getEmpOwnBgt(employeeId: any, sbu: string , year: any ,compId:any,deptId:any ,authId:any  ){    
+    return this.http.get(this.baseUrl + 'BgtOwn/getEmpOwnBgt/'+employeeId+'/'+sbu+'/'+year+'/'+compId+'/'+deptId+'/'+authId);
   }
   getAuthPersonCount(authId: any ){    
     return this.http.get(this.baseUrl + 'BgtOwn/getAuthPersonCount/'+authId);
@@ -83,6 +83,35 @@ export class BgtOwnService {
     return this.http.get(this.baseUrl + 'donation/donationsForInvestment');
   }
   insertBgtEmp(bgtEmpFormData: any) {
-    return this.http.post(this.baseUrl+ 'bgtEmployee/insertBgtEmployee', bgtEmpFormData);
+    return this.http.post(this.baseUrl+ 'BgtOwn/insertBgtEmployeeDetail', bgtEmpFormData);
   }
+  insertBgtOwn(bgtOwnFormData: any) {
+    return this.http.post(this.baseUrl+ 'BgtOwn/insertBgtOwnDetail', bgtOwnFormData);
+  }
+}
+export interface IBgtEmpDetailInsertDto {
+  compId: number;
+  deptId: number;
+  year: number;
+  sbu: string;
+  authId: number;
+  employeeId: number;
+  amount: number;
+  segment: string;
+  permEdit: any;
+  permView: any;
+  enteredBy: number;
+}
+export class BgtEmpDetailInsertDto implements IBgtEmpDetailInsertDto {
+  compId: number;
+  deptId: number;
+  year: number;
+  sbu: string;
+  authId: number;
+  employeeId: number;
+  amount: number;
+  segment: string;
+  permEdit: any;
+  permView: any;
+  enteredBy: number;
 }

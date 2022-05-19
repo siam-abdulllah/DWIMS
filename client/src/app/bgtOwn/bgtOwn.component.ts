@@ -35,6 +35,8 @@ export class BgtOwnComponent implements OnInit {
   approvalAuthorities: IApprovalAuthority[];
   SBUs: ISBU[];
   employees: IEmployeeInfo[];
+  regions: IRegion[];
+  zones: IZone[];
   numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
   isValid: boolean = true;
   valShow: boolean = true;
@@ -48,10 +50,30 @@ export class BgtOwnComponent implements OnInit {
   constructor(public bgtService: BgtOwnService, private SpinnerService: NgxSpinnerService, private modalService: BsModalService, private accountService: AccountService,
     private router: Router, private toastr: ToastrService, private datePipe: DatePipe,) {
   }
+  amountCal() {
+    debugger;
+    if (this.bgtOwn.value.totalAmount != 0 && this.bgtOwn.value.totalAmount != "" || this.bgtOwn.value.totalAmount != undefined) {
+      //this.bgtOwn.value.remaining=this.bgtOwn.value.prevAllocate-this.bgtOwn.value.totalAmount
+      this.bgtOwn.patchValue({
+        remaining: parseInt(this.bgtOwn.value.prevAllocate) - parseInt(this.bgtOwn.value.totalAmount),
+      });
+    }
+  }
   customSearchFnEmp(term: string, item: any) {
     term = term.toLocaleLowerCase();
     return item.employeeSAPCode.toLocaleLowerCase().indexOf(term) > -1 ||
       item.employeeName.toLocaleLowerCase().indexOf(term) > -1;
+  }
+  onChangeAuthority() {
+    if (this.bgtOwn.value.authId == 3) {
+
+    }
+    else if (this.bgtOwn.value.authId == 4) {
+
+    }
+    else {
+
+    }
   }
   onChangeEmployee() {
     this.bgtService.getEmpWiseData(this.bgtOwn.value.employee).subscribe(response => {
@@ -106,10 +128,10 @@ export class BgtOwnComponent implements OnInit {
     //   }
     // }
     //this.bgtService.getSbuWiseEmp(this.bgtOwn.value.sbu).subscribe(response => {
-     // this.employees = response as IEmployeeInfo[];
-      // this.bgtOwn.patchValue({
-      //   sbuTotalBudget: response[0].count,
-      // });
+    // this.employees = response as IEmployeeInfo[];
+    // this.bgtOwn.patchValue({
+    //   sbuTotalBudget: response[0].count,
+    // });
 
     //}, error => {
     //  console.log(error);
@@ -139,52 +161,54 @@ export class BgtOwnComponent implements OnInit {
       });
       return;
     }
-for (let i = 0; i < this.bgtOwns.length; i++) {
-  if(this.bgtOwns[i].donationId==this.bgtOwn.value.donationId)
-  {
-    this.toastr.error('Donation already existed');
-    this.bgtOwn.patchValue({
-      donationId: "",
-    });
-    return;
-  }
-}
+    for (let i = 0; i < this.bgtOwns.length; i++) {
+      if (this.bgtOwns[i].donationId == this.bgtOwn.value.donationId) {
+        this.toastr.error('Donation already existed');
+        this.bgtOwn.patchValue({
+          donationId: "",
+        });
+        return;
+      }
+    }
     var yr = new Date(this.bgtOwn.value.year);
     yr.getFullYear();
 
-    this.bgtService.getDonWiseBgt(this.bgtOwn.value.employee, this.bgtOwn.value.sbu,yr.getFullYear(),1000,this.bgtOwn.getRawValue().deptId, this.bgtOwn.value.donationId).subscribe(response => {
+    this.bgtService.getDonWiseBgt(this.bgtOwn.value.employee, this.bgtOwn.value.sbu, yr.getFullYear(), 1000, this.bgtOwn.getRawValue().deptId, this.bgtOwn.value.donationId).subscribe(response => {
       this.bgtOwn.patchValue({
         transLimit: response[0].amtLimit,
         donationAmt: response[0].Amount,
         // totalAmount: response[0].amount,
         // donationRemain: this.bgtOwn.value.prevAllocate-this.bgtOwn.value.totalAmount,
-       
-      });
-    }, error => {
-      console.log(error);
-    });
-    
-    this.bgtService.getEmpWiseTotExp(this.bgtOwn.value.employee, this.bgtOwn.value.sbu,yr.getFullYear(),1000,this.bgtOwn.getRawValue().deptId).subscribe(response => {
-      debugger;
-      this.bgtOwn.patchValue({
-        totalExpense:response[0].count
+
       });
     }, error => {
       console.log(error);
     });
 
-    this.bgtService.getEmpWiseTotPipe(this.bgtOwn.value.employee, this.bgtOwn.value.sbu,yr.getFullYear(),1000,this.bgtOwn.getRawValue().deptId).subscribe(response => {
+    this.bgtService.getEmpWiseTotExp(this.bgtOwn.value.employee, this.bgtOwn.value.sbu, yr.getFullYear(), 1000, this.bgtOwn.getRawValue().deptId, this.bgtOwn.getRawValue().authId).subscribe(response => {
       debugger;
       this.bgtOwn.patchValue({
-        totalPipeline:response[0].count
+        totalExpense: response[0].count
       });
     }, error => {
       console.log(error);
     });
-    this.bgtService.getEmpOwnBgt(this.bgtOwn.value.employee, this.bgtOwn.value.sbu,yr.getFullYear(),1000,this.bgtOwn.getRawValue().deptId).subscribe(response => {
+
+    // this.bgtService.getEmpWiseTotPipe(this.bgtOwn.value.employee, this.bgtOwn.value.sbu,yr.getFullYear(),1000,this.bgtOwn.getRawValue().deptId).subscribe(response => {
+    //   debugger;
+    //   this.bgtOwn.patchValue({
+    //     totalPipeline:response[0].count
+    //   });
+    // }, error => {
+    //   console.log(error);
+    // });
+    this.bgtService.getEmpOwnBgt(this.bgtOwn.value.employee, this.bgtOwn.value.sbu, yr.getFullYear(), 1000, this.bgtOwn.getRawValue().deptId, this.bgtOwn.getRawValue().authId).subscribe(response => {
       debugger;
-    this.bgtOwns=response as IBgtOwn[];
-    
+      this.bgtOwns = response as IBgtOwn[];
+      for (let i = 0; i < this.bgtOwns.length; i++) {
+        this.bgtOwns[i].newAmount = this.bgtOwns[i].amount;
+        this.bgtOwns[i].newAmountLimit = this.bgtOwns[i].amtLimit;
+      }
     }, error => {
       console.log(error);
     });
@@ -213,7 +237,7 @@ for (let i = 0; i < this.bgtOwns.length; i++) {
       employee: new FormControl(''),
     });
 
-    
+
   }
 
   getDeptSbuWiseBudgetAmt() {
@@ -241,41 +265,44 @@ for (let i = 0; i < this.bgtOwns.length; i++) {
 
     var yr = new Date(this.bgtOwn.value.year);
     yr.getFullYear();
-
-    this.bgtService.getEmpWiseBgt(this.bgtOwn.value.employee, this.bgtOwn.value.sbu,yr.getFullYear(),1000,this.bgtOwn.getRawValue().deptId).subscribe(response => {
+    debugger;
+    this.bgtService.getEmpWiseBgt(this.bgtOwn.value.employee, this.bgtOwn.value.sbu, yr.getFullYear(), 1000, this.bgtOwn.getRawValue().deptId, this.bgtOwn.getRawValue().authId).subscribe(response => {
       this.bgtOwn.patchValue({
-        segment: response[0].segment,
+        // segment: response[0].segment,
         prevAllocate: response[0].amount,
         totalAmount: response[0].amount,
-        remaining: this.bgtOwn.value.prevAllocate-this.bgtOwn.value.totalAmount,
+        remaining: this.bgtOwn.value.prevAllocate - this.bgtOwn.value.totalAmount,
         permEdit: response[0].permEdit,
         permView: response[0].permView,
       });
     }, error => {
       console.log(error);
     });
-    
-    this.bgtService.getEmpWiseTotExp(this.bgtOwn.value.employee, this.bgtOwn.value.sbu,yr.getFullYear(),1000,this.bgtOwn.getRawValue().deptId).subscribe(response => {
-      debugger;
-      this.bgtOwn.patchValue({
-        totalExpense:response[0].count
-      });
-    }, error => {
-      console.log(error);
-    });
 
-    this.bgtService.getEmpWiseTotPipe(this.bgtOwn.value.employee, this.bgtOwn.value.sbu,yr.getFullYear(),1000,this.bgtOwn.getRawValue().deptId).subscribe(response => {
+    // this.bgtService.getEmpWiseTotExp(this.bgtOwn.value.employee, this.bgtOwn.value.sbu,yr.getFullYear(),1000,this.bgtOwn.getRawValue().deptId,this.bgtOwn.getRawValue().authId).subscribe(response => {
+    //   debugger;
+    //   this.bgtOwn.patchValue({
+    //     totalExpense:response[0].count
+    //   });
+    // }, error => {
+    //   console.log(error);
+    // });
+
+    // this.bgtService.getEmpWiseTotPipe(this.bgtOwn.value.employee, this.bgtOwn.value.sbu,yr.getFullYear(),1000,this.bgtOwn.getRawValue().deptId).subscribe(response => {
+    //   debugger;
+    //   this.bgtOwn.patchValue({
+    //     totalPipeline:response[0].count
+    //   });
+    // }, error => {
+    //   console.log(error);
+    // });
+    this.bgtService.getEmpOwnBgt(this.bgtOwn.value.employee, this.bgtOwn.value.sbu, yr.getFullYear(), 1000, this.bgtOwn.getRawValue().deptId, this.bgtOwn.getRawValue().authId).subscribe(response => {
       debugger;
-      this.bgtOwn.patchValue({
-        totalPipeline:response[0].count
-      });
-    }, error => {
-      console.log(error);
-    });
-    this.bgtService.getEmpOwnBgt(this.bgtOwn.value.employee, this.bgtOwn.value.sbu,yr.getFullYear(),1000,this.bgtOwn.getRawValue().deptId).subscribe(response => {
-      debugger;
-    this.bgtOwns=response as IBgtOwn[];
-    
+      this.bgtOwns = response as IBgtOwn[];
+      for (let i = 0; i < this.bgtOwns.length; i++) {
+        this.bgtOwns[i].newAmount = this.bgtOwns[i].amount;
+        this.bgtOwns[i].newAmountLimit = this.bgtOwns[i].amtLimit;
+      }
     }, error => {
       console.log(error);
     });
@@ -300,28 +327,28 @@ for (let i = 0; i < this.bgtOwns.length; i++) {
 
   getAllocatedAmount() {
 
-    if (this.bgtOwn.value.segment == "" || this.bgtOwn.value.segment == null) {
-      this.toastr.error('Select Segmentation');
-      return;
-    }
+    // if (this.bgtOwn.value.segment == "" || this.bgtOwn.value.segment == null) {
+    //   this.toastr.error('Select Segmentation');
+    //   return;
+    // }
 
-    if (this.bgtOwn.value.segment == "Monthly") {
-      const d = new Date();
+    //if (this.bgtOwn.value.segment == "Monthly") {
+    // const d = new Date();
 
-      var remMonth = 12 - d.getMonth() - 1;
-      // var ttlAloc = this.bgtOwn.value.ttlPerson * this.bgtOwn.value.ttlAmount * remMonth;
+    // var remMonth = 12 - d.getMonth() - 1;
+    // var ttlAloc = this.bgtOwn.value.ttlPerson * this.bgtOwn.value.ttlAmount * remMonth;
 
-      // this.bgtOwn.patchValue({
-      //   ttlAllocate: ttlAloc,
-      // });
-    }
-    else if (this.bgtOwn.value.segment == "Yearly") {
-      // var ttlAloc = this.bgtOwn.value.ttlPerson * this.bgtOwn.value.ttlAmount;
+    // this.bgtOwn.patchValue({
+    //   ttlAllocate: ttlAloc,
+    // });
+    //}
+    //else if (this.bgtOwn.value.segment == "Yearly") {
+    // var ttlAloc = this.bgtOwn.value.ttlPerson * this.bgtOwn.value.ttlAmount;
 
-      // this.bgtOwn.patchValue({
-      //   ttlAllocate: ttlAloc,
-      // });
-    }
+    // this.bgtOwn.patchValue({
+    //   ttlAllocate: ttlAloc,
+    // });
+    //}
   }
 
   getApprovalAuthority() {
@@ -414,56 +441,132 @@ for (let i = 0; i < this.bgtOwns.length; i++) {
   //   //   err => { console.log(err); }
   //   // );
   // }
-  insertbgtOwn() {
-debugger;
-  var a =this.bgtOwns;
-  return false;
-    if(this.bgtOwn.value.remaining < 0)
-    {
-      this.toastr.error('There is not enough budget left to be allocated');
-      return;
-    }
+  insertbgtEmpDetail() {
+    debugger;
+    var a = this.bgtOwns;
+    // if(this.bgtOwn.value.remaining <= 0)
+    // {
+    //   this.toastr.error('There is not enough budget left to be allocated');
+    //   return;
+    // }
 
-    if(this.bgtOwn.value.deptId == "" || this.bgtOwn.value.deptId == null)
-    {
+    if (this.bgtOwn.getRawValue().deptId == "" || this.bgtOwn.getRawValue().deptId == null) {
       this.toastr.error('Select Department');
       return;
     }
-    if(this.bgtOwn.value.sbu == "" || this.bgtOwn.value.sbu == null)
-    {
+    if (this.bgtOwn.value.sbu == "" || this.bgtOwn.value.sbu == null) {
       this.toastr.error('Select SBU');
       return;
     }
-    if(this.bgtOwn.value.year == "" || this.bgtOwn.value.year == null)
-    {
+    if (this.bgtOwn.value.year == "" || this.bgtOwn.value.year == null) {
       this.toastr.error('Enter Year');
       return;
     }
-    if(this.bgtOwn.value.ttlAmount == "" || this.bgtOwn.value.ttlAmount == null)
-    {
+    if (this.bgtOwn.value.totalAmount == "" || this.bgtOwn.value.totalAmount == null) {
       this.toastr.error('Amount Can not be 0');
       return;
     }
 
     var yr = new Date(this.bgtOwn.value.year);
-    
-    this.bgtService.bgtEmpFormData.deptId = this.bgtOwn.value.deptId;
+
+    this.bgtService.bgtEmpFormData.compId = 1000;
+    this.bgtService.bgtEmpFormData.deptId = this.bgtOwn.getRawValue().deptId;
     this.bgtService.bgtEmpFormData.year = yr.getFullYear();
     this.bgtService.bgtEmpFormData.sbu = this.bgtOwn.value.sbu;
-    this.bgtService.bgtEmpFormData.authId = this.bgtOwn.value.authId;
-    this.bgtService.bgtEmpFormData.amount = this.bgtOwn.value.ttlAmount;
-    this.bgtService.bgtEmpFormData.segment = this.bgtOwn.value.segment;
+    this.bgtService.bgtEmpFormData.authId = this.bgtOwn.getRawValue().authId;
+    this.bgtService.bgtEmpFormData.amount = this.bgtOwn.value.totalAmount;
+    this.bgtService.bgtEmpFormData.employeeId = this.bgtOwn.value.employee;
     this.bgtService.bgtEmpFormData.permEdit = this.bgtOwn.value.permEdit;
     this.bgtService.bgtEmpFormData.permView = this.bgtOwn.value.permView;
     this.bgtService.bgtEmpFormData.enteredBy = parseInt(this.empId);
 
     this.bgtService.insertBgtEmp(this.bgtService.bgtEmpFormData).subscribe(
       res => {
-        this.toastr.success('Master Budget Data Saved successfully', 'Budget Dispatch') 
-        //this.btnShow = false;
+        this.toastr.success('Master Budget Data Saved successfully', 'Budget Dispatch')
+
       },
       err => { console.log(err); }
     );
+  }
+  insertbgtOwnDetail() {
+    debugger;
+
+    if (this.bgtOwn.value.donationId != "" && this.bgtOwn.value.donationId != null && this.bgtOwn.value.donationId != undefined) {
+      for (let i = 0; i < this.bgtOwns.length; i++) {
+        if (this.bgtOwns[i].donationId == this.bgtOwn.value.donationId) {
+          this.toastr.error('Donation already existed');
+          this.bgtOwn.patchValue({
+            donationId: "",
+          });
+          return;
+        }
+      }
+      // if(this.bgtOwn.value.remaining <= 0)
+      // {
+      //   this.toastr.error('There is not enough budget left to be allocated');
+      //   return;
+      // }
+
+      if (this.bgtOwn.getRawValue().deptId == "" || this.bgtOwn.getRawValue().deptId == null) {
+        this.toastr.error('Select Department');
+        return;
+      }
+      if (this.bgtOwn.value.sbu == "" || this.bgtOwn.value.sbu == null) {
+        this.toastr.error('Select SBU');
+        return;
+      }
+      if (this.bgtOwn.value.year == "" || this.bgtOwn.value.year == null) {
+        this.toastr.error('Enter Year');
+        return;
+      }
+      if (this.bgtOwn.value.totalAmount == "" || this.bgtOwn.value.totalAmount == null) {
+        this.toastr.error('Amount Can not be 0');
+        return;
+      }
+      if (this.bgtOwn.value.transLimit == "" || this.bgtOwn.value.transLimit == null || this.bgtOwn.value.transLimit == undefined) {
+        this.toastr.error('Please Insert Transation Limit');
+        return;
+      }
+      if (this.bgtOwn.value.donationAmt == "" || this.bgtOwn.value.donationAmt == null || this.bgtOwn.value.donationAmt == undefined) {
+        this.toastr.error('Please Insert Donation Amount');
+        return;
+      }
+      debugger;
+      var yr = new Date(this.bgtOwn.value.year);
+      //yr.getFullYear();
+      let data = new BgtOwn();
+      data.compId = 1000;
+      data.deptId = this.bgtOwn.getRawValue().deptId;
+      data.authId = this.bgtOwn.getRawValue().authId;
+      data.year = yr.getFullYear();
+      data.SBU = this.bgtOwn.value.sbu;
+      data.donationId = this.bgtOwn.value.donationId;
+      data.employeeId = this.bgtOwn.value.employee;
+      data.amount = this.bgtOwn.value.donationAmt;
+      data.amtLimit = this.bgtOwn.value.transLimit;
+      data.segment = this.bgtOwn.value.segment;
+      //this.bgtOwns.push(data);
+      this.bgtOwns.push({ compId: 1000, deptId: this.bgtOwn.getRawValue().deptId, authId: this.bgtOwn.getRawValue().authId, year: yr.getFullYear(), SBU: this.bgtOwn.value.sbu, donationId: this.bgtOwn.value.donationId, employeeId: this.bgtOwn.value.employee,enteredBy: parseInt(this.empId), amount: this.bgtOwn.value.donationAmt, amtLimit: this.bgtOwn.value.transLimit, segment: this.bgtOwn.value.segment, month: 0, newAmount: this.bgtOwn.value.donationAmt, newAmountLimit: this.bgtOwn.value.transLimit, expense: 0, pipeLine: 0 });
+    }
+    for (let i = 0; i < this.bgtOwns.length; i++) {
+      this.bgtOwns[i].employeeId = this.bgtOwn.value.employee;
+      this.bgtOwns[i].amount = this.bgtOwns[i].newAmount;
+      this.bgtOwns[i].amtLimit = this.bgtOwns[i].newAmountLimit;
+    }
+    this.bgtService.insertBgtOwn(this.bgtOwns).subscribe(
+      res => {
+        this.toastr.success('Detail Budget Data Saved successfully', 'Budget Dispatch')
+
+      },
+      err => {
+        debugger;
+        console.log(err);
+        alert(err);
+      }
+    );
+
+
+
   }
   // modifyData(selectedRecord: IMedicineDispatchDtl)
   // {
@@ -517,9 +620,9 @@ debugger;
       totalAmount: "",
       totalExpense: "",
       totalPipeline: "",
-      donationExp:  "",
-      donationPipeLine:  "",
-      donationRemain:  "",
+      donationExp: "",
+      donationPipeLine: "",
+      donationRemain: "",
       segment: "",
       permEdit: "",
       permView: "",
@@ -527,22 +630,63 @@ debugger;
       remaining: "",
       employee: "",
     });
-    this.bgtOwns=[];
+    this.bgtOwns = [];
   }
-
+  tranCal(selectedRecord: IBgtOwn) {
+    selectedRecord.amount = selectedRecord.newAmount;
+  }
 }
 export interface IBgtOwn {
-    compId :number;
-    deptId :number;
-    year :number;
-    month :number;
-    employeeId :number;
-    SBU :string;
-    donationId :number;
-    amount :any;
-    amtLimit :any;
-    segment :string;
-    newAmount:any;
-    expense:any;
-    pipeLine:any;
+  compId: number;
+  deptId: number;
+  authId: number;
+  year: number;
+  month: number;
+  employeeId: number;
+  enteredBy: number;
+  SBU: string;
+  donationId: number;
+  amount: any;
+  amtLimit: any;
+  segment: string;
+  newAmount: any;
+  newAmountLimit: any;
+  expense: any;
+  pipeLine: any;
+}
+export class BgtOwn implements IBgtOwn {
+  compId: number;
+  deptId: number;
+  authId: number;
+  year: number;
+  month: number;
+  employeeId: number;
+  enteredBy: number;
+  SBU: string;
+  donationId: number;
+  amount: any;
+  amtLimit: any;
+  segment: string;
+  newAmount: any;
+  newAmountLimit: any;
+  expense: any;
+  pipeLine: any;
+}
+export interface IRegion {
+
+  sBU: string;
+  sBUName: string;
+  regionCode: string;
+  regionName: any;
+  serial: any;
+  tagCode: any;
+}
+export interface IZone {
+
+  sBU: string;
+  sBUName: string;
+  zoneCode: string;
+  zoneName: any;
+  serial: any;
+  tagCode: any;
 }

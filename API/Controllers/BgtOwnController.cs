@@ -1,7 +1,9 @@
-﻿using Core.Entities;
+﻿using API.Dtos;
+using Core.Entities;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,11 +16,13 @@ namespace API.Controllers
     {
         private readonly StoreContext _dbContext;
         private readonly IGenericRepository<Employee> _employeeRepo;
-        public BgtOwnController(StoreContext dbContext, IGenericRepository<Employee> employeeRepo)
+        private readonly IGenericRepository<BgtEmployeeDetail> _employeeDetailRepo;
+        public BgtOwnController(StoreContext dbContext, IGenericRepository<Employee> employeeRepo, IGenericRepository<BgtEmployeeDetail> employeeDetailRepo)
 
         {
             _dbContext = dbContext;
             _employeeRepo = employeeRepo;
+            _employeeDetailRepo = employeeDetailRepo;
         }
 
         [HttpGet("getDeptSBUBudget/{deptId}/{sbu}/{year}")]
@@ -157,34 +161,47 @@ namespace API.Controllers
                 throw ex;
             }
         }
-        [HttpGet("getEmpWiseBgt/{employeeId}/{sbu}/{year}/{compId}/{deptId}")]
-        public IReadOnlyList<BgtEmployee> GetEmpWiseBgt(int employeeId, string sbu, int year, int compId, int deptId)
+        [HttpGet("getEmpWiseBgt/{employeeId}/{sbu}/{year}/{compId}/{deptId}/{authId}")]
+        public IReadOnlyList<BgtEmployeeDetail> GetEmpWiseBgt(int employeeId, string sbu, int year, int compId, int deptId, int authId)
         {
             try
             {
-                string qry = "SELECT  [Id],[DataStatus],[SetOn],[ModifiedOn] ,[CompId],[DeptId] ," +
-                    "[Year],[SBU],[EmployeeId],[AuthId],[Amount] ,[Segment],[PermEdit],[PermView]," +
-                    "[PermAmt],[PermDonation],[Remarks],[EnteredBy] FROM [DIDS].[dbo].[BgtEmployee]" +
-                    " WHERE [DataStatus]=1 AND [EmployeeId]=" + employeeId + " AND [SBU]='" + sbu + "' AND [CompId]=" + compId + " AND [DeptId]=" + deptId + " AND [Year]=" + year;
+                //string qry = "SELECT  [Id],[DataStatus],[SetOn],[ModifiedOn] ,[CompId],[DeptId] ," +
+                //    "[Year],[SBU],[EmployeeId],[AuthId],[Amount] ,[Segment],[PermEdit],[PermView]," +
+                //    "[PermAmt],[PermDonation],[Remarks],[EnteredBy] FROM [DIDS].[dbo].[BgtEmployee]" +
+                //    " WHERE [DataStatus]=1 AND [EmployeeId]=" + employeeId + " AND [SBU]='" + sbu + "' AND [CompId]=" + compId + " AND [DeptId]=" + deptId + " AND [Year]=" + year;
+
+                string qry = "SELECT A.[Id] , A.[DataStatus] ,A.[SetOn] ,A.[ModifiedOn] ,A.[CompId] ,A.[DeptId] ,A.[Year] " +
+                    " ,A.[SBU] ,A.[AuthId] ,A.[Code] ,A.[CompoCode] ,A.[Amount] ,A.[PermEdit] ,A.[PermView] ,A.[PermAmt] " +
+                    ",A.[PermDonation] ,A.[Remarks] ,A.[EnteredBy] FROM BgtEmployeeDetail A INNER JOIN EmpSbuMapping B ON A.Code = B.TagCode " +
+                    " WHERE B.EmployeeId =" + employeeId + " AND B.SBU = '" + sbu + "'  AND B.DeptId = " + deptId + " " +
+                    " AND B.CompId = " + compId + " AND A.AuthId = " + authId + "  AND A.DataStatus = 1 " +
+                    " ";
 
 
-                var results = _dbContext.BgtEmployee.FromSqlRaw(qry).ToList();
+                var results = _dbContext.BgtEmployeeDetail.FromSqlRaw(qry).ToList();
                 return results;
             }
             catch (System.Exception ex)
             {
                 throw ex;
             }
-        } 
-        [HttpGet("getEmpOwnBgt/{employeeId}/{sbu}/{year}/{compId}/{deptId}")]
-        public IReadOnlyList<BgtOwn> GetEmpOwnBgt(int employeeId, string sbu, int year, int compId, int deptId)
+        }
+        [HttpGet("getEmpOwnBgt/{employeeId}/{sbu}/{year}/{compId}/{deptId}/{authId}")]
+        public IReadOnlyList<BgtOwn> GetEmpOwnBgt(int employeeId, string sbu, int year, int compId, int deptId, int authId)
         {
             try
             {
-                string qry = "SELECT [Id],[DataStatus],[SetOn],[ModifiedOn],[CompId],[DeptId],[Year],[Month],[EmployeeId],[SBU]," +
-                    "[DonationId],[Amount],[AmtLimit],[Segment],[Remarks],[EnteredBy]" +
-                    " FROM BgtOwn WHERE [DataStatus]=1 AND [EmployeeId]=" + employeeId + " AND [SBU]='" + sbu + "' AND [CompId]=" + compId + " AND [DeptId]=" + deptId + " " +
-                    " AND [Month]=Month(GETDATE()) AND [Year]=" + year;
+                //string qry = "SELECT [Id],[DataStatus],[SetOn],[ModifiedOn],[CompId],[DeptId],[Year],[Month],[EmployeeId],[SBU]," +
+                //    "[DonationId],[Amount],[AmtLimit],[Segment],[Remarks],[EnteredBy]" +
+                //    " FROM BgtOwn WHERE [DataStatus]=1 AND [EmployeeId]=" + employeeId + " AND [SBU]='" + sbu + "' AND [CompId]=" + compId + " AND [DeptId]=" + deptId + " " +
+                //    " AND [Month]=Month(GETDATE()) AND [Year]=" + year;
+                string qry = "SELECT A.[Id] , A.[DataStatus] ,A.[SetOn] ,A.[ModifiedOn] ,A.[CompId] ,A.[DeptId] ,A.[Year] ,A.[Month] ,A.[SBU] " +
+                  " ,A.[DonationId] ,A.[Amount] ,A.[AmtLimit] ,A.[Segment] ,A.[Remarks] ,A.[EnteredBy] ,A.[AuthId] ,A.[Code] ,A.[CompoCode] " +
+                  " FROM BgtOwn A INNER JOIN EmpSbuMapping B ON A.Code = B.TagCode " +
+                  " WHERE B.EmployeeId =" + employeeId + " AND B.SBU = '" + sbu + "'  AND B.DeptId = " + deptId + " " +
+                  " AND B.CompId = " + compId + " AND A.AuthId = " + authId + "  AND A.DataStatus = 1 " +
+                  " AND A.Month = Month(GETDATE()) AND [Year]=" + year;
 
                 var results = _dbContext.BgtOwn.FromSqlRaw(qry).ToList();
                 return results;
@@ -193,16 +210,25 @@ namespace API.Controllers
             {
                 throw ex;
             }
-        } 
+        }
+
         [HttpGet("getDonWiseBgt/{employeeId}/{sbu}/{year}/{compId}/{deptId}/{donationId}")]
-        public IReadOnlyList<BgtOwn> GetDonWiseBgt(int employeeId, string sbu, int year, int compId, int deptId, int donationId)
+        public IReadOnlyList<BgtOwn> GetDonWiseBgt(int employeeId, string sbu, int year, int compId, int deptId, int donationId, int authId)
         {
             try
             {
-                string qry = "SELECT [Id],[DataStatus],[SetOn],[ModifiedOn],[CompId],[DeptId],[Year],[Month],[EmployeeId],[SBU]," +
-                    "[DonationId],[Amount],[AmtLimit],[Segment],[Remarks],[EnteredBy]" +
-                    " FROM BgtOwn WHERE [DataStatus]=1 AND [DonationId]=" + donationId + " AND [EmployeeId]=" + employeeId + " AND [SBU]='" + sbu + "' AND [CompId]=" + compId + " AND [DeptId]=" + deptId + " " +
-                    " AND [Month]=Month(GETDATE()) AND [Year]=" + year;
+                //string qry = "SELECT [Id],[DataStatus],[SetOn],[ModifiedOn],[CompId],[DeptId],[Year],[Month],[EmployeeId],[SBU]," +
+                //    "[DonationId],[Amount],[AmtLimit],[Segment],[Remarks],[EnteredBy]" +
+                //    " FROM BgtOwn WHERE [DataStatus]=1 AND [DonationId]=" + donationId + " AND [EmployeeId]=" + employeeId + " AND [SBU]='" + sbu + "' AND [CompId]=" + compId + " AND [DeptId]=" + deptId + " " +
+                //    " AND [Month]=Month(GETDATE()) AND [Year]=" + year;
+
+                string qry = "SELECT A.[Id] , A.[DataStatus] ,A.[SetOn] ,A.[ModifiedOn] ,A.[CompId] ,A.[DeptId] ,A.[Year] ,A.[Month] ,A.[SBU] " +
+                 " ,A.[DonationId] ,A.[Amount] ,A.[AmtLimit] ,A.[Segment] ,A.[Remarks] ,A.[EnteredBy] ,A.[AuthId] ,A.[Code] ,A.[CompoCode] " +
+                 " FROM BgtOwn A INNER JOIN EmpSbuMapping B ON A.Code = B.TagCode " +
+                 " WHERE B.EmployeeId =" + employeeId + " AND B.SBU = '" + sbu + "'  AND B.DeptId = " + deptId + " " +
+                 " AND B.CompId = " + compId + " AND A.AuthId = " + authId + " AND A.[DonationId]=" + donationId + "  AND A.DataStatus = 1 AND B.DataStatus = 1  " +
+                 " AND A.Month = Month(GETDATE()) AND [Year]=" + year;
+
 
                 var results = _dbContext.BgtOwn.FromSqlRaw(qry).ToList();
                 return results;
@@ -251,5 +277,120 @@ namespace API.Controllers
                 throw ex;
             }
         }
+
+        [HttpPost("insertBgtEmployeeDetail")]
+        public ActionResult<BgtEmpDetailInsert> BgtEmpInsertDetail(BgtEmpDetailInsert dto)
+        {
+            try
+            {
+                string qry = "SELECT A.[Id] , A.[DataStatus] ,A.[SetOn] ,A.[ModifiedOn] ,A.[CompId] ,A.[DeptId] ,A.[Year] " +
+                       " ,A.[SBU] ,A.[AuthId] ,A.[Code] ,A.[CompoCode] ,A.[Amount] ,A.[PermEdit] ,A.[PermView] ,A.[PermAmt] " +
+                       ",A.[PermDonation] ,A.[Remarks] ,A.[EnteredBy] FROM BgtEmployeeDetail A INNER JOIN EmpSbuMapping B ON A.Code = B.TagCode " +
+                       " WHERE  A.Year =" + dto.Year + " AND B.EmployeeId =" + dto.EmployeeId + " AND B.SBU = '" + dto.SBU + "'  AND B.DeptId = " + dto.DeptId + " " +
+                       " AND B.CompId = " + dto.CompId + " AND A.AuthId = " + dto.AuthId + "  AND A.DataStatus = 1 " +
+                       " ";
+
+
+                var results = _dbContext.BgtEmployeeDetail.FromSqlRaw(qry).ToList();
+                if (results.Count > 0)
+                {
+                    foreach (var v in results)
+                    {
+
+                        v.DataStatus = 0;
+                        v.ModifiedOn = DateTimeOffset.Now;
+                        _employeeDetailRepo.Update(v);
+                        _employeeDetailRepo.Savechange();
+                    }
+
+                }
+                var bgtEmployeeDetail = new BgtEmployeeDetail();
+                bgtEmployeeDetail = new BgtEmployeeDetail
+                {
+                    SetOn = DateTimeOffset.Now,
+                    ModifiedOn = DateTimeOffset.Now,
+                    DataStatus = 1,
+                    CompId = dto.CompId,
+                    DeptId = dto.DeptId,
+                    Year = dto.Year,
+                    SBU = dto.SBU,
+                    AuthId = dto.AuthId,
+                    Code = results[0].Code,
+                    CompoCode = results[0].CompoCode,
+                    Amount = dto.Amount,
+                    PermEdit = dto.PermEdit,
+                    PermView = dto.PermView,
+
+
+                };
+
+                _employeeDetailRepo.Add(bgtEmployeeDetail);
+                _employeeDetailRepo.Savechange();
+
+                return new BgtEmpDetailInsert
+                {
+
+                    CompId = bgtEmployeeDetail.CompId,
+                    DeptId = bgtEmployeeDetail.DeptId,
+                    Year = bgtEmployeeDetail.Year,
+                    SBU = bgtEmployeeDetail.SBU,
+                    AuthId = bgtEmployeeDetail.AuthId,
+                    Amount = bgtEmployeeDetail.Amount,
+                    PermEdit = bgtEmployeeDetail.PermEdit,
+                    PermView = bgtEmployeeDetail.PermView,
+
+
+                };
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpPost("insertBgtOwnDetail")]
+        public Int32 BgtOwnDetail(List<BgtOwnDetailInsert> bgtOwnDetailInsert)
+        {
+            try
+            {
+                var result = 0;
+                foreach (var item in bgtOwnDetailInsert)
+                {
+                    List<SqlParameter> parms = new List<SqlParameter>
+                        {
+                            new SqlParameter("@DeptId", item.DeptId),
+                            new SqlParameter("@Year", item.Year),
+                            new SqlParameter("@SBU ", item.SBU),
+                            new SqlParameter("@AuthId", item.AuthId),
+                            new SqlParameter("@Amount", item.Amount),
+                            new SqlParameter("@AmtLimit", item.AmtLimit),
+                            new SqlParameter("@Segment", item.Segment),
+                            new SqlParameter("@EnteredBy", item.EnteredBy),
+                            new SqlParameter("@DonationId", item.DonationId),
+                            new SqlParameter("@EmployeeId", item.EmployeeId),
+                        };
+                    if (item.AuthId == 3)
+                    {
+                        result= _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsertSingleRSM] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId, @EmployeeId", parms.ToArray());
+                    }
+                    else if (item.AuthId == 5)
+                    {
+                        result = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsertSingleDSM] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId, @EmployeeId", parms.ToArray());
+                    }
+                    else
+                    {
+                        result = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsertSingle] @DeptId, @Year, @SBU , @AuthId, @Amount,  @AmtLimit, @Segment, @EnteredBy, @DonationId, @EmployeeId", parms.ToArray());
+                    }
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+           
+        }
+
+
+
     }
 }

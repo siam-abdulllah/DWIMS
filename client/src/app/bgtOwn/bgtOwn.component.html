@@ -29,6 +29,45 @@
                             <fieldset>
                                 <div class="form-group ">
                                     <div class="row ">
+                                        <!-- <div class="col-md-1 ">
+                                            <label>Authorize Level</label>
+                                        </div>
+                                        <div class="col-md-3 ">
+                                            <select class="form-control" id="authId" formControlName="authId" (change)="onChangeAuthority()">
+                                                <option *ngFor="let a of approvalAuthorities" [value]="a.id">
+                                                    {{a.approvalAuthorityName-a.remarks}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-1 ">
+                                            <label>Region</label>
+                                        </div>
+                                        <div class="col-md-3 ">
+                                            <ng-select [virtualScroll]="true" [items]="regions" [searchFn]="customSearchFnRegion" bindLabel="regionName" bindValue="regionCode" placeholder="Select Region" (change)="onChangeRegion()" id="region" formControlName="region">
+                                                <ng-template ng-label-tmp let-item="item">
+                                                    <span [ngOptionHighlight]="search">{{ item.regionCode}} - {{
+                                                        item.regionName}}</span>
+                                                </ng-template>
+                                                <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                                                    <span [ngOptionHighlight]="search">{{ item.regionCode}} - {{
+                                                        item.regionName }}</span>
+                                                </ng-template>
+                                            </ng-select>
+                                        </div>
+                                        <div class="col-md-1 ">
+                                            <label>Devision</label>
+                                        </div>
+                                        <div class="col-md-3 ">
+                                            <ng-select [virtualScroll]="true" [items]="zones" [searchFn]="customSearchFnZone" bindLabel="zoneName" bindValue="zoneCode" placeholder="Select Zone" (change)="onChangeZone()" id="zone" formControlName="zone">
+                                                <ng-template ng-label-tmp let-item="item">
+                                                    <span [ngOptionHighlight]="search">{{ item.zoneCode}} - {{
+                                                        item.zoneName}}</span>
+                                                </ng-template>
+                                                <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
+                                                    <span [ngOptionHighlight]="search">{{ item.zoneCode}} - {{
+                                                        item.zoneName }}</span>
+                                                </ng-template>
+                                            </ng-select>
+                                        </div> -->
                                         <div class="col-md-1 ">
                                             <label>Employee</label>
                                         </div>
@@ -57,16 +96,16 @@
                                                 </option>
                                             </select>
                                         </div>
-
                                         <div class="col-md-1 ">
                                             <label>Authorize Level</label>
                                         </div>
                                         <div class="col-md-3 ">
-                                            <select class="form-control" id="authId" formControlName="authId" ng-readonly>
+                                            <select class="form-control" id="authId" formControlName="authId" (change)="onChangeAuthority()" ng-readonly>
                                                 <option *ngFor="let a of approvalAuthorities" [value]="a.id">
-                                                    {{a.approvalAuthorityName}}</option>
+                                                    {{a.approvalAuthorityName}}-{{a.remarks}}</option>
                                             </select>
                                         </div>
+
                                     </div>
                                 </div>
                                 <div class="form-group ">
@@ -108,18 +147,18 @@
                                         <div class="col-md-2">
                                             <input class="form-control" id="totalExpense" name="totalExpense" formControlName="totalExpense" readonly>
                                         </div>
-                                        <div class="col-md-1 ">
+                                        <!-- <div class="col-md-1 ">
                                             <label>Total Pipeline</label>
                                         </div>
                                         <div class="col-md-2">
                                             <input class="form-control" id="totalPipeline" name="totalPipeline" formControlName="totalPipeline" readonly>
-                                        </div>
+                                        </div> -->
 
                                     </div>
                                 </div>
                                 <div class="form-group ">
                                     <div class="row ">
-                                        <div class="col-md-1 ">
+                                        <!-- <div class="col-md-1 ">
                                             <label>Segment</label>
                                         </div>
                                         <div class="col-md-2">
@@ -127,12 +166,12 @@
                                                 <option value="Monthly">Monthly</option>
                                                 <option value="Yearly">Yearly</option>
                                             </select>
-                                        </div>
+                                        </div> -->
                                         <div class="col-md-1 ">
                                             <label>Total Amount</label>
                                         </div>
                                         <div class="col-md-2">
-                                            <input class="form-control" id="totalAmount" name="totalAmount" formControlName="totalAmount">
+                                            <input class="form-control" id="totalAmount" name="totalAmount" formControlName="totalAmount" (keyup)="amountCal()">
                                         </div>
                                         <div class="col-md-1 ">
                                             <label>Remaining</label>
@@ -156,7 +195,7 @@
                                         <div class="col-md-6 ">
                                         </div>
                                         <div class="col-md-1">
-                                            <button class="btn btn-success btn-block" (click)="insertbgtOwn()" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp;
+                                            <button class="btn btn-success btn-block" (click)="insertbgtEmpDetail()" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp;
                                                 Save</button>
                                         </div>
                                     </div>
@@ -201,7 +240,14 @@
                             <div class="form-group ">
                                 <div class="row ">
 
-                                    <div class="col-md-3 ">
+                                    <div class="col-md-1 ">
+                                        <label>Segment</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <select class="form-control" id="segment" formControlName="segment" required>
+                                                <option value="Monthly">Monthly</option>
+                                                <option value="Yearly">Yearly</option>
+                                            </select>
                                     </div>
                                     <div class="col-md-1 ">
                                         <label>Trans Limit</label>
@@ -223,7 +269,7 @@
                                         <input class="form-control" id="donationRemain" formControlName="donationRemain">
                                     </div> -->
                                     <div class="col-md-2">
-                                        <button class="btn btn-success btn-block" (click)="insertbgtOwn()" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Save
+                                        <button class="btn btn-success btn-block" (click)="insertbgtOwnDetail()" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Save
                                             Details</button>
                                     </div>
                                 </div>
@@ -236,8 +282,9 @@
                                         <td>Amount Per Transtion </td>
                                         <td>Total Amount</td>
                                         <td>Total Expense</td>
-                                        <td>Total Pipeline</td>
-                                        <td>Remaining</td>
+                                        <td>Segment</td>
+                                        <td>New Transaction Limit</td>
+                                        <td>New Amount</td>
                                     </tr>
                                     <tr *ngFor="let a of bgtOwns">
                                         <td>
@@ -257,14 +304,18 @@
                                             {{a.expense}}
                                         </td>
                                         <td>
-                                            {{a.pipeLine}}
+                                            {{a.segment}}
                                         </td>
-                                        <td>
+                                        <!-- <td>
                                             {{a.remaining}}
+                                        </td> -->
+                                        <td>
+                                            <input class="form-control ng-valid ng-touched ng-dirty" type="text" placeholder="New Transation Limit" [(ngModel)]="a.newAmountLimit" [ngModelOptions]="{standalone: true}">
                                         </td>
                                         <td>
                                             <input class="form-control ng-valid ng-touched ng-dirty" type="text" placeholder="New Amount" [(ngModel)]="a.newAmount" [ngModelOptions]="{standalone: true}">
                                         </td>
+
                                     </tr>
                                 </table>
                             </div>

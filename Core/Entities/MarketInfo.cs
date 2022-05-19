@@ -9,7 +9,9 @@ namespace Core.Entities
         public string SBU { get; set; }
         public string SBUName { get; set; }
         public string MarketCode { get; set; }
-        public string MarketName { get; set; } 
-        
+        public string MarketName { get; set; }
+        public int Serial { get; set; }
+        public string TagCode { get; set; }
+
     }
 }
