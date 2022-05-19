@@ -143,6 +143,10 @@ namespace Infrastructure.Data
         public DbSet<BgtSBUTotal> BgtSBUTotal { get; set; }
         public DbSet<BgtEmployee> BgtEmployee { get; set; }
         public DbSet<BgtOwn> BgtOwn { get; set; }
+        public DbSet<MarketInfo> MarketInfo { get; set; }
+        public DbSet<TerritoryInfo> TerritoryInfo { get; set; }
+        public DbSet<RegionInfo> RegionInfo { get; set; }
+        public DbSet<ZoneInfo> ZoneInfo { get; set; }
         [NotMapped]
         public DbSet<CountLong> CountLong { get; set; }
         [NotMapped]
