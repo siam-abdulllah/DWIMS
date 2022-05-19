@@ -36,12 +36,13 @@ namespace Core.Entities
 
     public class AppAuthDetails : BaseEntity
     {
-        public string Remarks { get; set; }
+        public string Authority { get; set; }
         public int Priority { get; set; }
-        public int TotalPerson { get; set; }
+        public int AuthId { get; set; }
+        public int NoOfEmployee { get; set; }
         public int Expense { get; set; }
         public int NewAmount { get; set; }
-        public int TotalAmount { get; set; }
+        public int Amount { get; set; }
     }
     public class TotalExpense : BaseEntity
     {

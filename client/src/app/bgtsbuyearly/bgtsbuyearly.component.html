@@ -135,7 +135,7 @@
                                             <button class="btn btn-success btn-lg btn-block" [disabled]="bugetSbuYearlyService.budgetSbuYearly.year != this.yyyy" (click)="UpdateSbuDetails(a.bgtSbuId,a.newAmount,a.expense)"  ><i class="fa fa-save"></i>&nbsp; Update</button>
                                         </td>
                                         <td>
-                                            <button class="btn btn-success btn-lg btn-block" [disabled]="bugetSbuYearlyService.budgetSbuYearly.year != this.yyyy" (click)="getApprovalAuth(a.sbuName,a.sbuAmount)"  ><i class="fa fa-save"></i>&nbsp; View</button>
+                                            <button class="btn btn-success btn-lg btn-block" [disabled]="bugetSbuYearlyService.budgetSbuYearly.year != this.yyyy" (click)="getApprovalAuth(a.sbuName,a.sbuCode,a.sbuAmount)"  ><i class="fa fa-save"></i>&nbsp; View</button>
                                         </td>
                                     </tr>
                                 </table>
@@ -171,10 +171,11 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="col-md-4">
+                            <h6>Sbu: {{SbuName}}</h6>
                             <h6>Total Budget: {{sbuIndividualAmount}}</h6>
                         </div>
                         <div class="col-md-2" style="float:right; margin-bottom: 10px;">     
-                            <button class="btn btn-success btn-lg btn-block" ><i class="fa fa-save"></i>&nbsp; Save</button>
+                            <button class="btn btn-success btn-lg btn-block" (click)="saveAuthSbuDetails()" ><i class="fa fa-save"></i>&nbsp; Save</button>
                         </div>
                         <div class="table-responsive" style="border: 1px solid #bed2c9; width: 100%;">
                             <table class="table table-bordered table-responsive table-hover table-striped">
@@ -186,21 +187,32 @@
                                         <th scope="col" style="width: 4%">Expense</th>
                                         <th scope="col" style="width: 4%">Total Amount</th>
                                         <th scope="col" style="width: 4%">New Amount</th>
+                                        <th scope="col" style="width: 4%">Can View</th>
+                                        <th scope="col" style="width: 4%">Can Edit</th>
+                                        <th scope="col" style="width: 4%">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <!-- <tr *ngFor="let a of investmentInits | paginate: configs | filter: searchText"> -->
-                                    <tr *ngFor="let a of ApprovalAuthDetails  | filter: searchText">
+                                    <tr *ngFor="let a of approvalAuthDetails  | filter: searchText">
                                         <td>
                                             {{a.priority}}
                                         </td>
-                                        <td>{{a.remarks}}</td>
-                                        <td>{{a.totalPerson}}</td>
+                                        <td>{{a.authority}}</td>
+                                        <td>{{a.noOfEmployee}}</td>
                                         <td>{{a.expense}}</td>
-                                        <td>{{a.totalAmount}}</td>
+                                        <td>{{a.amount}}</td>
                                         <td>
-                                      
                                             <input class="form-control ng-valid ng-touched ng-dirty" type="text" placeholder="New Amount"   id="sbuDetails" name="a.newAmount"  #newAmount="ngModel"  [(ngModel)]="a.newAmount">
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" id="canEdit" [(ngModel)]="a.permView"/>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" id="canView" [(ngModel)]="a.permEdit"/>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-success btn-lg btn-block" [disabled]="bugetSbuYearlyService.budgetSbuYearly.year != this.yyyy || a.amount == 0" (click)="UpdateAppAuthDetails(a.id,a.newAmount,a.expense)"  ><i class="fa fa-save"></i>&nbsp; Update</button>
                                         </td>
                                     </tr>
                                 </tbody>

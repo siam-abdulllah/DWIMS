@@ -17,8 +17,6 @@
         public string Remarks { get; set; }
         public int EnteredBy { get; set; }
     }
-
-
     public class BgtEmployeeLocationWiseSBUExp
     {
         public int Id { get; set; }
@@ -34,5 +32,11 @@
         public int TotalPerson { get; set; }
         public int Amount { get; set; }
         public int Limit { get; set; }
+    }
+    public class BgtEmployeeVM:BgtEmployee
+    {
+        public string Authority { get; set; }
+        public int Priority { get; set; }
+
     }
 }

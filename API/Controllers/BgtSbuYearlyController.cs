@@ -4,6 +4,7 @@ using Core.Entities;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -16,16 +17,18 @@ namespace API.Controllers
     public class BgtSbuYearlyController : BaseApiController
     {
         private readonly IGenericRepository<BgtSBUTotal> _bgtSbuRepo;
+        private readonly IGenericRepository<BgtEmployee> _bgtEmployee;
         private readonly IGenericRepository<SBU> _sbuRepo;
         private readonly IMapper _mapper;
         private readonly StoreContext _dbContext;
-        public BgtSbuYearlyController(IGenericRepository<BgtSBUTotal> bgtSbuRepo, IGenericRepository<SBU> sbuRepo,
+        public BgtSbuYearlyController(IGenericRepository<BgtSBUTotal> bgtSbuRepo, IGenericRepository<BgtEmployee> bgtEmployee, IGenericRepository<SBU> sbuRepo,
         IMapper mapper, StoreContext dbContext)
         {
             _mapper = mapper;
             _bgtSbuRepo = bgtSbuRepo;
             _dbContext = dbContext;
             _sbuRepo = sbuRepo;
+            _bgtEmployee = bgtEmployee;
         }
 
      
@@ -128,18 +131,18 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("GetAppAuthDetails/{sbuName}")]
-        public async Task<List<AppAuthDetails>> GetAppAuthDetails(string sbuName)
+        [HttpGet("GetAppAuthDetails/{sbuCode}")]
+        public async Task<List<AppAuthDetails>> GetAppAuthDetails(string sbuCode)
         {
             try
             {
                 string qry = "";
 
-                qry = string.Format(@"select CAST(ROW_NUMBER() OVER (ORDER BY Priority) AS INT)  AS Id ,1 AS DataStatus,SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,aa.Priority,
-                                     aa.Remarks,0 as Expense,0 as TotalAmount,0 as NewAmount, (select COUNT(*) from ApprAuthConfig ac
-                                    left join EmpSbuMapping emp on emp.Id = ac.EmployeeId
-                                    where ac.ApprovalAuthorityId = aa.Priority and emp.SBUName = '{0}' and emp.DataStatus = 1) TotalPerson
-                                    from ApprovalAuthority aa where Priority in (3,4,5,6,7)", sbuName);
+                qry = string.Format(@"select  CAST(ROW_NUMBER() OVER (ORDER BY Priority) AS INT)  AS Id,aa.Id as AuthId,1 AS DataStatus,SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,aa.Priority,
+                                     aa.Remarks Authority,0 as Expense,0 as Amount,0 as NewAmount, (select COUNT(*) from ApprAuthConfig ac
+                                    left join EmpSbuMapping emp on emp.EmployeeId = ac.EmployeeId
+                                    where ac.ApprovalAuthorityId = aa.Id and emp.SBU = '{0}' and emp.DataStatus = 1) NoOfEmployee
+                                    from ApprovalAuthority aa where Priority in (3,4,5,6,7)", sbuCode);
 
 
                 var results = _dbContext.AppAuthDetails.FromSqlRaw(qry).ToList();
@@ -174,6 +177,110 @@ namespace API.Controllers
                 return bgt;
             }
         }
+
+        [HttpGet("getBudgetEmpForSbu/{sbu}/{deptId}/{year}/{compId}")]
+        public List<BgtEmployeeVM> GetBudgetEmpForSbu(string sbu,int deptId, int year,int compId)
+        {
+            BgtYearlyTotal bgt = new BgtYearlyTotal();
+            List<BgtEmployeeVM> bgtEmpList = new List<BgtEmployeeVM>();
+            try
+            {
+
+                string qry = string.Format(@" select be.*,aa.Remarks Authority,aa.Priority from BgtEmployee be 
+									left join ApprovalAuthority aa on aa.Id = be.AuthId
+									where be.Sbu = '{0}' and  be.DeptId={1} and be.Year = {2} and be.compId={3} and be.DataStatus = 1", sbu, deptId, year,compId);
+             
+                bgtEmpList = _dbContext.ExecSQL<BgtEmployeeVM>(qry).ToList();
+                return bgtEmpList;
+            }
+            catch (System.Exception ex)
+            {
+                return bgtEmpList;
+            }
+        }
+        [HttpPost("saveAuthSbuDetails")]
+        public async Task<ActionResult<BgtEmployeeDto>> SaveAuthSbuDetails(BgtEmployeeModel model)
+        {
+            List<BgtEmployee> bgtEmpList = new List<BgtEmployee>();
+            BgtEmployee bgtEmp = new BgtEmployee();
+            try
+            {
+                string qry = string.Format(@" select * from BgtEmployee where  DeptId={0} and Sbu = '{1}' and Year = {2}", model.DeptId,model.SBUCode,model.Year);
+                bgtEmpList = _dbContext.BgtEmployee.FromSqlRaw(qry).ToList();
+             
+                if (bgtEmpList != null && bgtEmpList.Count>0)
+                {
+                    foreach (var item in bgtEmpList)
+                    {
+                        item.DataStatus = 0;
+                        _bgtEmployee.Update(item);
+                        _bgtEmployee.Savechange();
+                    }
+                }
+               if(model.bgtEmpList != null && model.bgtEmpList.Count > 0)
+                {
+                    foreach (var item in model.bgtEmpList)
+                    {
+                        bgtEmp = new BgtEmployee();
+                        bgtEmp.Amount = item.NewAmount;
+                        bgtEmp.DeptId = model.DeptId;
+                        bgtEmp.CompId = model.CompId;
+                        bgtEmp.Year = model.Year;
+                        bgtEmp.SBU = model.SBUCode;
+                        bgtEmp.AuthId = item.AuthId;
+                        bgtEmp.NoOfEmployee = item.NoOfEmployee;
+                        bgtEmp.ModifiedOn = DateTime.Now;
+                        bgtEmp.EnteredBy = item.EnteredBy;
+                        bgtEmp.PermView = item.PermView;
+                        bgtEmp.PermEdit = item.PermEdit;
+                        _bgtEmployee.Add(bgtEmp);
+                        _bgtEmployee.Savechange();
+                        var Amount = bgtEmp.Amount / bgtEmp.NoOfEmployee;
+                        List<SqlParameter> parms = new List<SqlParameter>
+                        {
+                            new SqlParameter("@DeptId", bgtEmp.DeptId),
+                            new SqlParameter("@Year", bgtEmp.Year),
+                            new SqlParameter("@SBU ", bgtEmp.SBU),
+                            new SqlParameter("@AuthId", bgtEmp.AuthId),
+                            new SqlParameter("@Amount", Amount),
+                            new SqlParameter("@PermView", bgtEmp.PermView),
+                            new SqlParameter("@PermEdit", bgtEmp.PermEdit),
+                            new SqlParameter("@EnteredBy", bgtEmp.EnteredBy),
+                        };
+                        if(item.AuthId == 3)
+                        {
+                            _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtEmployeeInsertRSM] @DeptId, @Year, @SBU , @AuthId, @Amount, @PermView, @PermEdit, @EnteredBy", parms.ToArray());
+                        }
+                        else if(item.AuthId == 5)
+                        {
+                            _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtEmployeeInsertDSM] @DeptId, @Year, @SBU , @AuthId, @Amount, @PermView, @PermEdit, @EnteredBy", parms.ToArray());
+                        }
+                        else if (bgtEmp.AuthId == 4 || bgtEmp.AuthId == 6)
+                        {
+                           
+                            _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtEmployeeInsert] @DeptId, @Year, @SBU , @AuthId, @Amount, @PermView, @PermEdit, @EnteredBy", parms.ToArray());
+                        }
+                       
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            
+
+            return new BgtEmployeeDto
+            {
+                Id = bgtEmp.Id,
+                DeptId = bgtEmp.DeptId,
+                Amount = bgtEmp.Amount,
+                Year = bgtEmp.Year,
+                CompId = bgtEmp.CompId,
+                SBU = bgtEmp.SBU
+            };
+        }
+
         [HttpPost("SaveSbuBgtYearly")]
         public async Task<ActionResult<BgtSbuYearlyTotalDto>> SaveSbuBgtYearlyAsync(BgtSbuYearlyTotalDto setSbuBgtDto)
         {
@@ -212,6 +319,7 @@ namespace API.Controllers
 
                     _bgtSbuRepo.Add(sbuTotal);
                     _bgtSbuRepo.Savechange();
+
                 }
             }
             return new BgtSbuYearlyTotalDto
@@ -247,6 +355,56 @@ namespace API.Controllers
             };
       
         }
-        
+
+        [HttpPost("updateBgtEmployee")]
+        public async Task<ActionResult<BgtEmployeeDto>> UpdateBgtEmployee(BgtEmployeeDto setBgtEmpDto)
+        {
+            BgtEmployee bgtEmp = new BgtEmployee();
+            bgtEmp = await _bgtEmployee.GetByIdAsync(setBgtEmpDto.Id);
+            if (bgtEmp != null)
+            {
+                bgtEmp.Amount = setBgtEmpDto.Amount;
+                bgtEmp.ModifiedOn = DateTime.Now;
+                _bgtEmployee.Update(bgtEmp);
+                _bgtEmployee.Savechange();
+
+                var Amount = bgtEmp.Amount / bgtEmp.NoOfEmployee;
+                List<SqlParameter> parms = new List<SqlParameter>
+                        {
+                            new SqlParameter("@DeptId", bgtEmp.DeptId),
+                            new SqlParameter("@Year", bgtEmp.Year),
+                            new SqlParameter("@SBU ", bgtEmp.SBU),
+                            new SqlParameter("@AuthId", bgtEmp.AuthId),
+                            new SqlParameter("@Amount", Amount),
+                            new SqlParameter("@PermView", bgtEmp.PermView),
+                            new SqlParameter("@PermEdit", bgtEmp.PermEdit),
+                            new SqlParameter("@EnteredBy", bgtEmp.EnteredBy),
+                        };
+                if (bgtEmp.AuthId == 3)
+                {
+                    _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtEmployeeInsertRSM] @DeptId, @Year, @SBU , @AuthId, @Amount, @PermView, @PermEdit, @EnteredBy", parms.ToArray());
+                }
+                else if (bgtEmp.AuthId == 5)
+                {
+                    _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtEmployeeInsertDSM] @DeptId, @Year, @SBU , @AuthId, @Amount, @PermView, @PermEdit, @EnteredBy", parms.ToArray());
+                }
+                else if(bgtEmp.AuthId == 4 || bgtEmp.AuthId == 6)
+                {
+                    _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtEmployeeInsert] @DeptId, @Year, @SBU , @AuthId, @Amount, @PermView, @PermEdit, @EnteredBy", parms.ToArray());
+                }
+
+            }
+            return new BgtEmployeeDto
+            {
+                Id = bgtEmp.Id,
+                DeptId = bgtEmp.DeptId,
+                Amount = bgtEmp.Amount,
+                Year = bgtEmp.Year,
+                CompId = bgtEmp.CompId,
+                SBU = bgtEmp.SBU
+            };
+
+        }
+
     }
 }

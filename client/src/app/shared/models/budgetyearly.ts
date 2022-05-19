@@ -109,21 +109,60 @@ export class PipelineDetails implements IPipelineDetails {
 }
 
 export interface IApprovalAuthDetails {
-    remarks:string;
-    totalPerson:number;
+    id:number;
+    authority:string;
+    authId:number;
+    noOfEmployee:number;
     priority:number;
     expense:any;
-    totalAmount:any;
-    newAmount:any
+    amount:any;
+    newAmount:any;
+    deptId:number;
+    sbu:string;
+    sbuCode:string;
+    year:number;
+    compId:number;
+    permView:boolean;
+    permEdit:boolean;
+    enteredBy : string;
 }
 export class ApprovalAuthDetails implements IApprovalAuthDetails {
-    remarks:string;
-    totalPerson:number;
+    id:number;
+    authority:string;
+    authId:number;
+    noOfEmployee:number;
     priority:number;
     expense:any;
-    totalAmount:any;
-    newAmount:any
+    amount:any;
+    newAmount:any;
+    deptId:number;
+    sbu:string;
+    sbuCode:string;
+    year:number;
+    compId:number;
+    permView:boolean;
+    permEdit:boolean;
+    enteredBy : string;
 }
+
+export interface IApprovalAuthDetailsModel {
+    deptId:number;
+    sbu:string;
+    year:number;
+    compId:number;
+    bgtEmpList : ApprovalAuthDetails[];
+}
+export class ApprovalAuthDetailsModel implements IApprovalAuthDetailsModel {
+ 
+    deptId:number;
+    sbu:string;
+    sbuCode:string;
+    year:number;
+    compId:number;
+    bgtEmpList : ApprovalAuthDetails[];
+}
+
+
 
 
 

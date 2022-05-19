@@ -12,13 +12,15 @@ import { BehaviorSubject, ReplaySubject, of, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { GenericParams } from '../shared/models/genericParams';
-import { BudgetSbuYearly, BudgetYearly, IBudgetYearly, SbuDetails } from '../shared/models/budgetyearly';
+import { ApprovalAuthDetails, ApprovalAuthDetailsModel, BudgetSbuYearly, BudgetYearly, IBudgetYearly, SbuDetails } from '../shared/models/budgetyearly';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BudgetSbuYearlyService {
   budgetSbuYearly: BudgetSbuYearly = new BudgetSbuYearly();
+  budgetEmployee: ApprovalAuthDetails = new ApprovalAuthDetails();
+  approvalAuthDetailsModel: ApprovalAuthDetailsModel = new ApprovalAuthDetailsModel();
   sbuDetailsYearly: SbuDetails = new SbuDetails();
   baseUrl = environment.apiUrl;
   genParams = new GenericParams();
@@ -31,9 +33,13 @@ export class BudgetSbuYearlyService {
   getYearlyBudget(deptId:number,year:number){    
     return this.http.get(this.baseUrl + 'BgtSbuYearly/getYearlyBudget/'+deptId+'/'+year);
   }
-  getAppAuthDetails(sbuName:string){    
-    return this.http.get(this.baseUrl + 'BgtSbuYearly/getAppAuthDetails/'+sbuName);
+  getAppAuthDetails(sbuCode:string){    
+    return this.http.get(this.baseUrl + 'BgtSbuYearly/getAppAuthDetails/'+sbuCode);
   }
+  getbgtEmployeeForSbu(sbuName:string,deptId:number,year:number,comId:number){    
+    return this.http.get(this.baseUrl + 'BgtSbuYearly/getBudgetEmpForSbu/'+sbuName+'/'+deptId+'/'+year+'/'+comId);
+  }
+  
   getAllSbuBgtList(deptId:number,compId:number,year:number) {
     debugger;
     return this.http.get(this.baseUrl + 'BgtSbuYearly/getAllSbuBgtList/'+deptId+'/'+compId+'/'+year);
@@ -49,6 +55,14 @@ export class BudgetSbuYearlyService {
   updateSbuBudgetYearly() {
     debugger;
     return this.http.post(this.baseUrl + 'BgtSbuYearly/updateSbuBudgetYearly', this.budgetSbuYearly);
+  }
+  updateBgtEmployee() {
+    debugger;
+    return this.http.post(this.baseUrl + 'BgtSbuYearly/updateBgtEmployee', this.budgetEmployee);
+  }
+  saveAuthSbuDetails() {
+    debugger;
+    return this.http.post(this.baseUrl + 'BgtSbuYearly/saveAuthSbuDetails', this.approvalAuthDetailsModel);
   }
   submitSbuBudgetYearly() {
     debugger;
