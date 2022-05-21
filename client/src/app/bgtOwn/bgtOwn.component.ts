@@ -47,6 +47,9 @@ export class BgtOwnComponent implements OnInit {
   userRole: any;
   donations: IDonation[];
   bgtOwns: IBgtOwn[];
+  isAdmin: boolean = false;
+  isEdit: boolean = true;
+  isView: boolean = true;
   constructor(public bgtService: BgtOwnService, private SpinnerService: NgxSpinnerService, private modalService: BsModalService, private accountService: AccountService,
     private router: Router, private toastr: ToastrService, private datePipe: DatePipe,) {
   }
@@ -319,6 +322,26 @@ export class BgtOwnComponent implements OnInit {
     yr.getFullYear();
     var sum = 0;
     this.bgtService.getEmpWiseBgt(this.bgtOwn.value.employee, this.bgtOwn.value.sbu, yr.getFullYear(), 1000, this.bgtOwn.getRawValue().deptId, this.bgtOwn.getRawValue().authId).subscribe(response => {
+     if(this.userRole== 'Administrator')
+     {
+      this.isEdit=true;
+      this.isView=true;
+     }
+     else{
+       debugger;
+      if(response[0].permEdit==true)
+      {
+        this.isEdit=true;}
+      else{
+        this.isEdit=false;
+      }
+      if(response[0].permView==true)
+      {
+        this.isView=true;}
+      else{
+        this.isView=false;}
+     }
+     debugger;
       this.bgtOwn.patchValue({
         prevAllocate: response[0].amount,
         permEdit: response[0].permEdit,
@@ -465,11 +488,22 @@ export class BgtOwnComponent implements OnInit {
   getEmployeeId() {
     this.empId = this.accountService.getEmployeeId();
     this.userRole = this.accountService.getUserRole();
+    
   }
   getEmployee() {
     this.bgtService.getAllEmp().subscribe(response => {
       this.employees = response as IEmployeeInfo[];
-
+      if (this.userRole == 'Administrator') {
+        this.isAdmin = true;
+      }
+      else{
+        this.bgtOwn.patchValue({
+          employee: this.empId,
+        });
+        this.onChangeEmployee();
+        this.isAdmin = false;
+  
+      }
     }, error => {
       console.log(error);
     });
@@ -520,16 +554,16 @@ export class BgtOwnComponent implements OnInit {
   //   // );
   // }
   insertbgtEmpDetail() {
-    debugger;
     //var a = this.bgtOwns;
     // if(this.bgtOwn.value.remaining <= 0)
     // {
     //   this.toastr.error('There is not enough budget left to be allocated');
     //   return;
     // }
-    if (this.bgtOwn.value.remaining < 0) {
-      this.toastr.warning('Donation wise budget can not be greater than total budget')
-    }
+    // if (this.bgtOwn.value.remaining < 0) {
+    //   this.toastr.warning('Donation wise budget can not be greater than total budget');
+    //   return;
+    // }
     if (this.bgtOwn.getRawValue().deptId == "" || this.bgtOwn.getRawValue().deptId == null) {
       this.toastr.error('Select Department');
       return;
@@ -542,7 +576,7 @@ export class BgtOwnComponent implements OnInit {
       this.toastr.error('Enter Year');
       return;
     }
-    if (this.bgtOwn.value.totalAmount == "" || this.bgtOwn.value.totalAmount == null) {
+    if (this.bgtOwn.getRawValue().totalAmount == "" || this.bgtOwn.getRawValue().totalAmount == null) {
       this.toastr.error('Amount Can not be 0');
       return;
     }
@@ -552,7 +586,7 @@ export class BgtOwnComponent implements OnInit {
     this.bgtService.bgtEmpFormData.year = yr.getFullYear();
     this.bgtService.bgtEmpFormData.sbu = this.bgtOwn.value.sbu;
     this.bgtService.bgtEmpFormData.authId = this.bgtOwn.getRawValue().authId;
-    this.bgtService.bgtEmpFormData.amount = this.bgtOwn.value.totalAmount;
+    this.bgtService.bgtEmpFormData.amount = this.bgtOwn.getRawValue().totalAmount;
     this.bgtService.bgtEmpFormData.employeeId = this.bgtOwn.value.employee;
     this.bgtService.bgtEmpFormData.permEdit = this.bgtOwn.value.permEdit;
     this.bgtService.bgtEmpFormData.permView = this.bgtOwn.value.permView;
@@ -566,6 +600,10 @@ export class BgtOwnComponent implements OnInit {
     );
   }
   insertbgtOwnDetail() {
+    // if (this.bgtOwn.value.remaining < 0) {
+    //   this.toastr.warning('Donation wise budget can not be greater than total budget');
+    //   return;
+    // }
     if (this.bgtOwn.value.donationId != "" && this.bgtOwn.value.donationId != null && this.bgtOwn.value.donationId != undefined) {
       for (let i = 0; i < this.bgtOwns.length; i++) {
         if (this.bgtOwns[i].donationId == this.bgtOwn.value.donationId) {
@@ -609,7 +647,7 @@ export class BgtOwnComponent implements OnInit {
         this.toastr.error('Enter Year');
         return;
       }
-      if (this.bgtOwn.value.totalAmount == "" || this.bgtOwn.value.totalAmount == null) {
+      if (this.bgtOwn.getRawValue().totalAmount == "" || this.bgtOwn.getRawValue().totalAmount == null) {
         this.toastr.error('Amount Can not be 0');
         return;
       }
@@ -696,6 +734,7 @@ export class BgtOwnComponent implements OnInit {
   }
 
   reset() {
+    this.isAdmin = false;
     this.isValid = true;
     this.valShow = true;
     this.isHide = false;

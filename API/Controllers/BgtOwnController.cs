@@ -201,7 +201,7 @@ namespace API.Controllers
                   " FROM BgtOwn A INNER JOIN EmpSbuMapping B ON A.Code = B.TagCode " +
                   " WHERE B.EmployeeId =" + employeeId + " AND B.SBU = '" + sbu + "'  AND B.DeptId = " + deptId + " " +
                   " AND B.CompId = " + compId + " AND A.AuthId = " + authId + "  AND A.DataStatus = 1 " +
-                  " AND A.Month = Month(GETDATE()) AND [Year]=" + year;
+                  " AND ( A.Month = Month(GETDATE()) OR A.Month=0)  AND [Year]=" + year;
 
                 var results = _dbContext.BgtOwn.FromSqlRaw(qry).ToList();
               
@@ -229,7 +229,7 @@ namespace API.Controllers
                  " FROM BgtOwn A INNER JOIN EmpSbuMapping B ON A.Code = B.TagCode " +
                  " WHERE B.EmployeeId =" + employeeId + " AND B.SBU = '" + sbu + "'  AND B.DeptId = " + deptId + " " +
                  " AND B.CompId = " + compId + " AND A.AuthId = " + authId + " AND A.[DonationId]=" + donationId + "  AND A.DataStatus = 1 AND B.DataStatus = 1  " +
-                 " AND A.Month = Month(GETDATE()) AND [Year]=" + year;
+                 " AND ( A.Month = Month(GETDATE()) OR A.Month=0)  AND [Year]=" + year;
 
 
                 var results = _dbContext.BgtOwn.FromSqlRaw(qry).ToList();
@@ -270,10 +270,11 @@ namespace API.Controllers
                     {
                         new SqlParameter("@EID", employeeId),
                         new SqlParameter("@Year", year),
+                         new SqlParameter("@SBU", sbu),
 
                     };
 
-                var results = _dbContext.CountDouble.FromSqlRaw("EXECUTE [SP_InvestmentExpByEmp] @EID, @Year", parms.ToArray()).ToList();
+                var results = _dbContext.CountDouble.FromSqlRaw("EXECUTE [SP_InvestmentExpByEmp] @EID, @Year,@SBU", parms.ToArray()).ToList();
                 return results;
 
 
@@ -293,10 +294,11 @@ namespace API.Controllers
                     {
                         new SqlParameter("@EID", employeeId),
                         new SqlParameter("@Year", year),
+                         new SqlParameter("@SBU", sbu),
 
                     };
 
-                var results = _dbContext.DonWiseExpByEmp.FromSqlRaw("EXECUTE [SP_InvestmentDonWiseExpByEmp] @EID, @Year", parms.ToArray()).ToList();
+                var results = _dbContext.DonWiseExpByEmp.FromSqlRaw("EXECUTE [SP_InvestmentDonWiseExpByEmp] @EID, @Year,@SBU", parms.ToArray()).ToList();
                 return results;
 
 
@@ -407,6 +409,10 @@ namespace API.Controllers
                     else if (item.AuthId == 5)
                     {
                         result = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsertSingleDSM] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId, @EmployeeId", parms.ToArray());
+                    }
+                    else if (item.AuthId == 8)//for ONLY GPM
+                    {
+                        result = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsertSinglePMD] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId, @EmployeeId", parms.ToArray());
                     }
                     else
                     {

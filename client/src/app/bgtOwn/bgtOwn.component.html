@@ -72,7 +72,7 @@
                                             <label>Employee</label>
                                         </div>
                                         <div class="col-md-3 ">
-                                            <ng-select [virtualScroll]="true" [items]="employees" [searchFn]="customSearchFnEmp" bindLabel="employeeName" bindValue="employeeSAPCode" placeholder="Select Employee" (change)="onChangeEmployee()" id="employee" formControlName="employee">
+                                            <ng-select [virtualScroll]="true" [items]="employees" [searchFn]="customSearchFnEmp" bindLabel="employeeName" bindValue="employeeSAPCode" placeholder="Select Employee" (change)="onChangeEmployee()" id="employee" formControlName="employee" ng-readonly="isAdmin">
                                                 <ng-template ng-label-tmp let-item="item">
                                                     <span [ngOptionHighlight]="search">{{ item.employeeSAPCode}} - {{
                                                         item.employeeName}}</span>
@@ -247,8 +247,6 @@
                             </div>
                             <div class="form-group ">
                                 <div class="row ">
-
-
                                     <div class="col-md-1 ">
                                         <label>Trans Limit</label>
                                     </div>
@@ -276,8 +274,7 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="form-group">
+                            <div class="form-group" *ngIf="isView">
                                 <table class="table  table-bordered">
                                     <tr class="HeaderRow">
                                         <td>Donation Type</td>
