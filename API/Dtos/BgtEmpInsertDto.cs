@@ -21,7 +21,7 @@ namespace API.Dtos
         public string SBU { get; set; }
         public int AuthId { get; set; }
         public long Amount { get; set; }
-        public long AmtLimit { get; set; }
+        public long Limit { get; set; }
         public string Segment { get; set; }
         public int EnteredBy { get; set; }
         public int DonationId { get; set; }

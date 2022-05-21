@@ -161,6 +161,8 @@ namespace API.Controllers
         //public Int32 BgtOwnInsert(BgtOwnInsertDto dto)
         public Int32 BgtOwnInsert(List<BgtOwnInsertDto> dto)
         {
+            var results = 0;
+            
             foreach(var a in dto)
             {
                 try
@@ -172,7 +174,7 @@ namespace API.Controllers
                         new SqlParameter("@SBU ", a.SBU),
                         new SqlParameter("@AuthId", a.AuthId),
                         new SqlParameter("@Amount", a.Amount),
-                        new SqlParameter("@AmtLimit", a.AmtLimit),
+                        new SqlParameter("@AmtLimit", a.Limit),
                         new SqlParameter("@Segment", a.Segment),
                         new SqlParameter("@EnteredBy", a.EnteredBy),
                         new SqlParameter("@DonationId", a.DonationId),
@@ -180,32 +182,30 @@ namespace API.Controllers
 
                     if (a.AuthId == 8)   // GPM
                     {
-                        var results = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsertPMD] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId", parms.ToArray());
-                        return results;
+                        results = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsertPMD] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId", parms.ToArray());                  
                     }
 
                     if (a.AuthId == 3)   // RSM
                     {
-                        var results = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsertRSM] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId", parms.ToArray());
-                        return results;
+                        results = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsertRSM] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId", parms.ToArray());
                     }
                     if (a.AuthId == 5)    // DSM
                     {
-                        var results = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsertDSM] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId", parms.ToArray());
-                        return results;
+                        results = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsertDSM] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId", parms.ToArray());
                     }
                     else    // Management
                     {
-                        var results = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsert] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId", parms.ToArray());
-                        return results;
+                        results = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsert] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId", parms.ToArray());
                     }
+
+                   
                 }
                 catch (Exception ex)
                 {
                     throw ex;
                 }
             }
-            return 0;
+             return results;
         }
     }
 }
