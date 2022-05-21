@@ -132,7 +132,9 @@ namespace Infrastructure.Data
 
         public DbSet<SystemSummary> SystemSummary { get; set; }
         [NotMapped]
-        public DbSet<PipeLineExpense> PipeLineExpense { get; set; }
+        public DbSet<PipeLineExpense> PipeLineExpense { get; set; }  
+        [NotMapped]
+        public DbSet<AuthExpense> AuthExpense { get; set; }
         [NotMapped]
         public DbSet<AppAuthDetails> AppAuthDetails { get; set; }
         public DbSet<RptSummary> RptSummary { get; set; }
@@ -151,7 +153,9 @@ namespace Infrastructure.Data
         [NotMapped]
         public DbSet<CountLong> CountLong { get; set; }
         [NotMapped]
-        public DbSet<CountDouble> CountDouble { get; set; }
+        public DbSet<CountDouble> CountDouble { get; set; } 
+        [NotMapped]
+        public DbSet<DonWiseExpByEmp> DonWiseExpByEmp { get; set; }
 
         [NotMapped]
         public DbSet<BgtEmployeeLocationWiseSBUExp> BgtEmployeeLocationWiseSBUExp { get; set; }

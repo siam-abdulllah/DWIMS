@@ -108,6 +108,17 @@ export class PipelineDetails implements IPipelineDetails {
     pipeline:any;
 }
 
+export interface IAuthExpense {
+    remarks:string;
+    expense:any;
+
+ 
+}
+export class AuthExpense implements IAuthExpense {
+    remarks:string;
+    expense:any;
+}
+
 export interface IApprovalAuthDetails {
     id:number;
     authority:string;

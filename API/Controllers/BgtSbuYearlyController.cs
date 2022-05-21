@@ -208,14 +208,16 @@ namespace API.Controllers
             }
         }        
         [HttpGet("getAllAuthExpenseList/{sbu}/{deptId}/{year}/{compId}")]
-        public List<BgtEmployeeVM> GetAllAuthExpenseList(string sbu,int deptId, int year,int compId)
+        public List<AuthExpense> GetAllAuthExpenseList(string sbu,int deptId, int year,int compId)
         {
             BgtYearlyTotal bgt = new BgtYearlyTotal();
-            List<BgtEmployeeVM> bgtEmpList = new List<BgtEmployeeVM>();
+            List<AuthExpense> bgtEmpList = new List<AuthExpense>();
             try
             {
 
-                string qry = string.Format(@" SELECT  DISTINCT SUM(A.ApprovedAmount) Expense,D.Remarks
+                string qry = string.Format(@" SELECT  DISTINCT  CAST(ROW_NUMBER() OVER (ORDER BY  D.Remarks) AS INT)  AS Id,
+                                                1 AS DataStatus,SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,
+                                                SUM(A.ApprovedAmount) Expense,D.Remarks
                                                 FROM InvestmentDetailTracker A
                                                 INNER JOIN InvestmentRecComment B ON A.InvestmentInitId = B.InvestmentInitId
                                                 AND A.EmployeeId = B.EmployeeId 
@@ -228,10 +230,14 @@ namespace API.Controllers
                                                 AND E.DataStatus=1
                                                 AND C.Status='A'
                                                 And B.SBU = '{0}'
+                                                And D.DeptId = '{1}'
+                                                And A.Year = '{2}'
+                                                And D.CompId = '{3}'
                                                 GROUP BY D.Remarks", sbu, deptId, year,compId);
-             
-                bgtEmpList = _dbContext.ExecSQL<BgtEmployeeVM>(qry).ToList();
-                return bgtEmpList;
+
+                var results = _dbContext.AuthExpense.FromSqlRaw(qry).ToList();
+                List<AuthExpense> dsResult = _dbContext.ExecSQL<AuthExpense>(qry).ToList();
+                return dsResult;
             }
             catch (System.Exception ex)
             {

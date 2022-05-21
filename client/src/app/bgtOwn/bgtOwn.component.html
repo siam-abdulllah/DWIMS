@@ -171,7 +171,7 @@
                                             <label>New Allocated</label>
                                         </div>
                                         <div class="col-md-2">
-                                            <input class="form-control" id="totalAmount" name="totalAmount" formControlName="totalAmount" (keyup)="amountCal()">
+                                            <input class="form-control" id="totalAmount" name="totalAmount" formControlName="totalAmount">
                                         </div>
                                         <div class="col-md-1 ">
                                             <label>Remaining</label>
@@ -218,17 +218,25 @@
                                     </div>
                                     <div class="col-md-2 ">
                                         <select class="form-control" id="donationId" formControlName="donationId" (change)="onChangeDonation()">
-                                            <option  [value]="">Select Donation</option>
                                             <option *ngFor="let a of donations" [value]="a.id">{{a.donationTypeName}}
                                             </option>
                                         </select>
                                     </div>
                                     <div class="col-md-1 ">
+                                        <label>Segment</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <select class="form-control" id="segment" formControlName="segment" required>
+                                                <option value="Monthly">Monthly</option>
+                                                <option value="Yearly">Yearly</option>
+                                            </select>
+                                    </div>
+                                    <!-- <div class="col-md-1 ">
                                         <label>Expense</label>
                                     </div>
                                     <div class="col-md-2 ">
                                         <input class="form-control" id="donationExp" formControlName="donationExp">
-                                    </div>
+                                    </div> -->
                                     <!-- <div class="col-md-1 ">
                                         <label>Pipeline</label>
                                     </div>
@@ -240,15 +248,7 @@
                             <div class="form-group ">
                                 <div class="row ">
 
-                                    <div class="col-md-1 ">
-                                        <label>Segment</label>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <select class="form-control" id="segment" formControlName="segment" required>
-                                                <option value="Monthly">Monthly</option>
-                                                <option value="Yearly">Yearly</option>
-                                            </select>
-                                    </div>
+
                                     <div class="col-md-1 ">
                                         <label>Trans Limit</label>
                                     </div>
@@ -259,7 +259,7 @@
                                         <label>Amount</label>
                                     </div>
                                     <div class="col-md-2 ">
-                                        <input class="form-control" id="donationAmt" formControlName="donationAmt">
+                                        <input class="form-control" id="donationAmt" formControlName="donationAmt" (keyup)="amountCal()">
                                     </div>
 
                                     <!-- <div class="col-md-1 ">
@@ -268,6 +268,8 @@
                                     <div class="col-md-2 ">
                                         <input class="form-control" id="donationRemain" formControlName="donationRemain">
                                     </div> -->
+                                    <div class="col-md-3">
+                                    </div>
                                     <div class="col-md-2">
                                         <button class="btn btn-success btn-block" (click)="insertbgtOwnDetail()" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Save
                                             Details</button>
