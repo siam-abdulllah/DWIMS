@@ -1,6 +1,4 @@
 import { Component, ElementRef, OnInit, ViewChild, TemplateRef } from '@angular/core';
-import 'jspdf-autotable';
-import * as jsPDF from 'jspdf';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, FormBuilder, Validators  } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -13,7 +11,6 @@ import { CurrencyPipe,DatePipe, getLocaleDateTimeFormat } from '@angular/common'
 import { BgtEmployeeService } from '../_services/bgtEmployee.service';
 import { IApprovalAuthority } from '../shared/models/approvalAuthority';
 import { ISBU } from '../shared/models/sbu';
-import { DATE } from 'ngx-bootstrap/chronos/units/constants';
 import { IDonation } from '../shared/models/donation';
 
 @Component({
@@ -68,7 +65,6 @@ export class BgtEmployeeComponent implements OnInit {
       // remaining: new FormControl(''),
       // donationAmt: new FormControl(''),
       // transLimit: new FormControl(''),
-
 
       deptId: ['', Validators.required],
       year: ['', Validators.required],
@@ -214,7 +210,6 @@ export class BgtEmployeeComponent implements OnInit {
 
     var yr = new Date(this.bgtEmployee.value.year);
     
-
     this.bgtService.bgtEmpFormData.deptId = this.bgtEmployee.value.deptId;
     this.bgtService.bgtEmpFormData.year = yr.getFullYear();
     this.bgtService.bgtEmpFormData.sbu = this.bgtEmployee.value.sbu;
@@ -233,48 +228,6 @@ export class BgtEmployeeComponent implements OnInit {
       err => { console.log(err); }
     );
   }
-
-
-  insertBgtOwn()
-  {
-
-    if(this.bgtEmployee.value.donationId == "" || this.bgtEmployee.value.donationId == null)
-    {
-      this.toastr.error('Select Donation Type');
-      return;
-    }
-    if(this.bgtEmployee.value.donationAmt == "" || this.bgtEmployee.value.donationAmt == null)
-    {
-      this.toastr.error('Enter Donation Amount');
-      return;
-    }
-    if(this.bgtEmployee.value.transLimit == "" || this.bgtEmployee.value.transLimit == null)
-    {
-      this.toastr.error('Enter Transaction Limit');
-      return;
-    }
-
-    var yr = new Date(this.bgtEmployee.value.year);
-    
-    this.bgtService.bgtOwnFormData.deptId = this.bgtEmployee.value.deptId;
-    this.bgtService.bgtOwnFormData.year = yr.getFullYear();
-    this.bgtService.bgtOwnFormData.sbu = this.bgtEmployee.value.sbu;
-    this.bgtService.bgtOwnFormData.authId = this.bgtEmployee.value.authId;
-    this.bgtService.bgtOwnFormData.amount = this.bgtEmployee.value.donationAmt;
-    this.bgtService.bgtOwnFormData.segment = this.bgtEmployee.value.segment;
-    this.bgtService.bgtOwnFormData.amtLimit = this.bgtEmployee.value.transLimit;
-    this.bgtService.bgtOwnFormData.donationId = this.bgtEmployee.value.donationId;
-    this.bgtService.bgtOwnFormData.enteredBy = parseInt(this.empId);
-
-    this.bgtService.insertBgtOwn(this.bgtService.bgtOwnFormData).subscribe(
-      res => {
-        this.toastr.success('Budget Configuration Data Saved successfully', 'Budget Dispatch') 
-        this.btnShow = false;
-      },
-      err => { console.log(err); }
-    );
-  }
-
 
   generateData()
   {
@@ -328,9 +281,6 @@ export class BgtEmployeeComponent implements OnInit {
 
   saveData()
   {
-
-    var ListData = [];
-
     for(var i=0;i<this.sbuData.length;i++)
     {
       var yr = new Date(this.bgtEmployee.value.year);
@@ -351,7 +301,6 @@ export class BgtEmployeeComponent implements OnInit {
 
       //ListData.push(this.bgtService.bgtOwnFormData);
     }
-
 
       this.bgtService.insertBgtOwnList(this.sbuData).subscribe(
         res => {

@@ -51,10 +51,6 @@ export class BgtEmployeeService {
     return this.http.get(this.baseUrl + 'employee/getSBU');
   }
 
-  getDeptSbuWiseBudgetAmt(deptId: any, sbu: string, year: any ){    
-    return this.http.get(this.baseUrl + 'bgtEmployee/getDeptSBUBudget/'+deptId+'/'+sbu+'/'+year);
-  }
-
   getSBUWiseDonationLocation(donationId: any, deptId: any, year: any, authId: any ){    
     return this.http.get(this.baseUrl + 'bgtEmployee/getSBUWiseDonationLocation/'+donationId+'/'+deptId+'/'+year+'/'+authId);
   }
@@ -62,11 +58,6 @@ export class BgtEmployeeService {
   insertBgtEmp(bgtEmpFormData: any) {
     return this.http.post(this.baseUrl+ 'bgtEmployee/insertBgtEmployee', bgtEmpFormData);
   }
-
-  insertBgtOwn(bgtOwnFormData: any) {
-    return this.http.post(this.baseUrl+ 'bgtEmployee/insertBgtOwn', bgtOwnFormData);
-  }
-
 
   insertBgtOwnList(sbuData:any) {
     return this.http.post(this.baseUrl+ 'bgtEmployee/insertBgtOwn', sbuData);
