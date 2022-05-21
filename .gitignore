@@ -125,3 +125,4 @@ API/bin/Debug/netcoreapp3.1/API.runtimeconfig.dev.json
 API/appsettings.Development.json
 API/obj/Debug/netcoreapp3.1/API.assets.cache
 API/obj/Debug/netcoreapp3.1/project.razor.json
+API/appsettings.Development.json
