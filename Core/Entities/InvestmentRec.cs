@@ -59,7 +59,7 @@ namespace Core.Entities
 
     public class AuthExpense : BaseEntity
     {
-        public double Remarks { get; set; }
+        public string Remarks { get; set; }
         public double Expense { get; set; }
 
     }
