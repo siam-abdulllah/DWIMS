@@ -11,6 +11,8 @@ namespace Core.Entities
         public string Remarks { get; set; }
         public string Status { get; set; }
         public int Priority { get; set; }
+        public int? DeptId { get; set; }
+        public int? CompId { get; set; }
 
     }
 }

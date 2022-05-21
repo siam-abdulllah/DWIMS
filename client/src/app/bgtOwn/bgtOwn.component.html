@@ -133,10 +133,10 @@
                                             <label>Year</label>
                                         </div>
                                         <div class="col-md-2 ">
-                                            <input class="form-control" id="year" name="year" placeholder="Select Year" formControlName="year" (onHidden)="getDeptSbuWiseBudgetAmt()" [bsValue]="bsValue" bsDatepicker [bsConfig]="{  containerClass: 'theme-blue', minMode:'year', adaptivePosition: true, dateInputFormat: 'YYYY' }">
+                                            <input class="form-control" id="year" name="year" placeholder="Select Year" formControlName="year" (onHidden)="onChangeYear()" [bsValue]="bsValue" bsDatepicker [bsConfig]="{  containerClass: 'theme-blue', minMode:'year', adaptivePosition: true, dateInputFormat: 'YYYY' }">
                                         </div>
                                         <div class="col-md-1 ">
-                                            <label>Prev. Allocated</label>
+                                            <label>Total Budget</label>
                                         </div>
                                         <div class="col-md-2">
                                             <input class="form-control" id="prevAllocate" name="prevAllocate" formControlName="prevAllocate" readonly>
@@ -168,7 +168,7 @@
                                             </select>
                                         </div> -->
                                         <div class="col-md-1 ">
-                                            <label>Total Amount</label>
+                                            <label>New Allocated</label>
                                         </div>
                                         <div class="col-md-2">
                                             <input class="form-control" id="totalAmount" name="totalAmount" formControlName="totalAmount" (keyup)="amountCal()">
@@ -229,12 +229,12 @@
                                     <div class="col-md-2 ">
                                         <input class="form-control" id="donationExp" formControlName="donationExp">
                                     </div>
-                                    <div class="col-md-1 ">
+                                    <!-- <div class="col-md-1 ">
                                         <label>Pipeline</label>
                                     </div>
                                     <div class="col-md-2 ">
                                         <input class="form-control" id="donationPipeLine" formControlName="donationPipeLine">
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                             <div class="form-group ">
@@ -288,7 +288,7 @@
                                     </tr>
                                     <tr *ngFor="let a of bgtOwns">
                                         <td>
-                                            <select class="form-control" [(ngModel)]="a.donationId" [ngModelOptions]="{standalone: true}">
+                                            <select class="form-control" [(ngModel)]="a.donationId" [ngModelOptions]="{standalone: true}" [disabled]="true">
                                                 <option *ngFor="let a of donations" [value]="a.id">
                                                     {{a.donationTypeName}}</option>
                                             </select>
@@ -313,14 +313,16 @@
                                             <input class="form-control ng-valid ng-touched ng-dirty" type="text" placeholder="New Transation Limit" [(ngModel)]="a.newAmountLimit" [ngModelOptions]="{standalone: true}">
                                         </td>
                                         <td>
-                                            <input class="form-control ng-valid ng-touched ng-dirty" type="text" placeholder="New Amount" [(ngModel)]="a.newAmount" [ngModelOptions]="{standalone: true}">
+                                            <input class="form-control ng-valid ng-touched ng-dirty" type="text" placeholder="New Amount" [(ngModel)]="a.newAmount" [ngModelOptions]="{standalone: true}" (keyup)="donAmountCal(a)">
                                         </td>
 
                                     </tr>
                                 </table>
                             </div>
                         </fieldset>
-
+                        <br>
+                        <br><br>
+                        <br>
                         <!-- /.card -->
                     </div>
 
