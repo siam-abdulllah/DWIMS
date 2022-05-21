@@ -321,7 +321,7 @@ export class BgtEmployeeComponent implements OnInit {
       var remMonth = 12 - d.getMonth();
       var ttl = selectedRow.totalPerson * selectedRow.amount * remMonth;
       var rem = selectedRow.sbuAmount + selectedRow.donationTypeAllocated - selectedRow.expense -selectedRow.totalAllocated - ttl;
-      if(rem > 0)
+      if(rem >= 0)
       {
         selectedRow.ttlAmt = ttl;
       }
@@ -338,7 +338,7 @@ export class BgtEmployeeComponent implements OnInit {
       var ttl = selectedRow.totalPerson * selectedRow.amount;
       var rem = selectedRow.sbuAmount + selectedRow.donationTypeAllocated - selectedRow.expense -selectedRow.totalAllocated - ttl;
     
-      if(rem > 0)
+      if(rem >= 0)
       {
         selectedRow.ttlAmt = ttl;
       }
