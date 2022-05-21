@@ -375,7 +375,7 @@ export class BgtSbuYearlyComponent implements OnInit {
     var totalAllowcatedAuthbudget = 0;
     for(var i=0;i<this.approvalAuthDetails.length;i++)
     {
-       if(this.approvalAuthDetails[i].newAmount< this.approvalAuthDetails[i].expense)
+       if(this.approvalAuthDetails[i].newAmount< this.approvalAuthDetails[i].expense  || this.approvalAuthDetails[i].newAmount == undefined)
        {
         flag = 1;
        }
@@ -413,7 +413,7 @@ export class BgtSbuYearlyComponent implements OnInit {
       var flag = 0;
       for(var i=0;i<this.sbuDetails.length;i++)
       {
-         if(this.sbuDetails[i].newAmount < this.sbuDetails[i].expense)
+         if(this.sbuDetails[i].newAmount < this.sbuDetails[i].expense ||this.sbuDetails[i].newAmount == undefined)
          {
           flag = 1;
          }
