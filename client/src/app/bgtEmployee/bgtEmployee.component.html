@@ -79,33 +79,6 @@
 
                                 <div class="form-group ">
                                     <div class="row ">
-                                        <!--                                        
-                                        <div class="col-md-1 ">
-                                            <label>SBU <div class="invalid-feedback" *ngIf="bgtEmployee.controls.sbu.errors?.required">*</div>  </label>
-                                        </div>
-                                        <div class="col-md-3 ">
-                                            <select class="form-control" id="sbu" formControlName="sbu" (change)="getDeptSbuWiseBudgetAmt()">
-                                            <option *ngFor="let a of SBUs" [value]="a.sbuCode">{{a.sbuName}}</option>
-                                        </select>
-                                        </div> -->
-
-                                        <!-- <div class="col-md-1 ">
-                                            <label>SBU Total Budget</label>
-                                        </div>
-                                        <div class="col-md-3 ">
-                                            <input class="form-control" id="sbuTotalBudget" name="sbuTotalBudget" formControlName="sbuTotalBudget" readonly>
-                                        </div>
-                                        <div class="col-md-1 ">
-                                            <label>Prev. Allocated</label>
-                                        </div>
-                                        <div class="col-md-3 ">
-                                            <input class="form-control" id="prevAllocate" name="prevAllocate" formControlName="prevAllocate" readonly>
-                                        </div> -->
-                                    </div>
-                                </div>
-
-                                <div class="form-group ">
-                                    <div class="row ">
                                         <div class="col-md-1 ">
                                             <label>Authorize Level<div class="invalid-feedback" *ngIf="bgtEmployee.controls.authId.errors?.required">*</div>  </label>
                                         </div>
@@ -164,7 +137,7 @@
                                         <td style="width: 0;display:none; ">DonationId</td>
                                         <td>Total Allo.</td>
                                         <td>Inv. Type</td>
-                                        <td>Prev Allo.</td>
+                                        <td>{{donationTypeName}} Allo.</td>
                                         <td>Amount / Person ({{bgtEmployee.controls.segment.value}})</td>
                                         <td>Limit</td>
                                         <td>Segment</td>
@@ -188,13 +161,14 @@
                                             {{a.totalPerson}}
                                         </td>
                                         <td style="width: 0;display:none; ">
+                                            <!-- {{bgtEmployee.controls.donationId.value}} -->
                                             {{a.donationId}}
                                         </td>
                                         <td>
                                             {{a.totalAllocated | number}}
                                         </td>
                                         <td>
-                                            {{a.donationTypeName}}
+                                            {{donationTypeName}}
                                         </td>
                                         <td>
                                             {{a.donationTypeAllocated| number}}
@@ -239,13 +213,9 @@
                 </form>
             </div>
         </div>
-
-
     </div>
     <!-- /.container-fluid -->
 </section>
-
-
 
 <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
     <p style="color: black">Please Wait. </p>

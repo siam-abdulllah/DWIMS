@@ -83,29 +83,6 @@ namespace API.Controllers
             }
         }
 
-
-        [HttpGet("getAuthPersonCount/{authId}/{sbu}")]
-        public ActionResult<IReadOnlyList<CountInt>> GetTotalAuthPerson(int authId, string sbu)
-        {
-            try
-            {
-                string qry = "";
-
-                qry = " select 1 as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, count(*) Count from ApprAuthConfig a " +
-                      " left join Employee b on a.EmployeeId = b.Id " + 
-                      " where a.ApprovalAuthorityId = "+ authId + " " + 
-                      " and b.SBU = '"+ sbu + "' and b.DataStatus = 1 ";
-
-                var result = _dbContext.CountInt.FromSqlRaw(qry).ToList();
-
-                return result;
-            }
-            catch (System.Exception ex)
-            {
-                throw ex;
-            }
-        }
-
         [HttpGet("getSBUWiseDonationLocation/{donationId}/{deptId}/{year}/{authId}")]
         public ActionResult<IReadOnlyList<BgtEmployeeLocationWiseSBUExp>> GetTotalAuthPerson(int donationId, int deptId, int year ,int authId)
         {

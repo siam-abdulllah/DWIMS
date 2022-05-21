@@ -37,6 +37,7 @@ export class BgtEmployeeComponent implements OnInit {
   btnShow: boolean = true;
   valShow: boolean = true;
   isHide: boolean = false;
+  donationTypeName: string;
   sbuData:SbuData[];
   searchText = '';
   config: any;
@@ -93,54 +94,6 @@ export class BgtEmployeeComponent implements OnInit {
     });
   }
 
-  getDeptSbuWiseBudgetAmt()
-  {
-    if(this.bgtEmployee.value.deptId == "" || this.bgtEmployee.value.deptId == null)
-    {
-      this.toastr.error('Select Department');
-      this.bgtEmployee.patchValue({
-        year: "",
-      });
-      return;
-    }
-
-    if(this.bgtEmployee.value.sbu == "" || this.bgtEmployee.value.sbu == null)
-    {
-      this.toastr.error('Select SBU');
-      this.bgtEmployee.patchValue({
-        year: "",
-      });
-      return;
-    }
-
-    if(this.bgtEmployee.value.year == "" || this.bgtEmployee.value.year == null)
-    {
-      return;
-    }
-
-    var yr = new Date(this.bgtEmployee.value.year);
-    yr.getFullYear();
-
-    this.bgtService.getDeptSbuWiseBudgetAmt(this.bgtEmployee.value.deptId, this.bgtEmployee.value.sbu, yr.getFullYear()).subscribe(response => {
-        this.bgtEmployee.patchValue({
-          sbuTotalBudget: response[0].count,
-        });    
-     }, error => {
-        console.log(error);
-     });
-
-
-     this.bgtService.getPrevAllocate(this.bgtEmployee.value.deptId, this.bgtEmployee.value.sbu, yr.getFullYear()).subscribe(response => {    
-      this.bgtEmployee.patchValue({
-        prevAllocate: response[0].count,
-      });
-      
-     }, error => {
-        console.log(error);
-     });
-
-  }
-
   getDonation() {
     this.bgtService.getDonations().subscribe(response => {
       this.donations = response as IDonation[];
@@ -148,26 +101,6 @@ export class BgtEmployeeComponent implements OnInit {
       console.log(error);
     });
   }
-
-  // getAuthPersonCount()
-  // {
-  //   if(this.bgtEmployee.value.authId == "" || this.bgtEmployee.value.authId == null)
-  //   {
-  //     this.toastr.error('Select Authorization Level');
-  //     return;
-  //   }
-
-  //   this.bgtService.getAuthPersonCount(this.bgtEmployee.value.authId, this.bgtEmployee.value.sbu).subscribe(response => {    
-  //     this.bgtEmployee.patchValue({
-  //       ttlPerson: response[0].count,
-  //     });
-
-  //     this.getAllocatedAmount();
-  //    }, error => {
-  //       console.log(error);
-  //    });
-  // }
-
 
   getAllocatedAmount()
   {
@@ -345,9 +278,6 @@ export class BgtEmployeeComponent implements OnInit {
 
   generateData()
   {
-
-    //alert(this.bgtEmployee.value.donationId +"," + this.bgtEmployee.value.)
-
     if(this.bgtEmployee.value.deptId == "" || this.bgtEmployee.value.deptId == null)
     {
       this.toastr.error('Select Department');
@@ -384,6 +314,8 @@ export class BgtEmployeeComponent implements OnInit {
       return;
     }
 
+    this.donationTypeName = this.donations.filter(v => v.id == this.bgtEmployee.get('donationId').value)[0].donationTypeName;
+
     var yr = new Date(this.bgtEmployee.value.year);
     this.bgtService.getSBUWiseDonationLocation(this.bgtEmployee.value.donationId,this.bgtEmployee.value.deptId,yr.getFullYear(),this.bgtEmployee.value.authId).subscribe(
       res => {
@@ -401,11 +333,10 @@ export class BgtEmployeeComponent implements OnInit {
 
     for(var i=0;i<this.sbuData.length;i++)
     {
-      //alert(this.sbuData[i].sbu +"," + this.sbuData[i].amount);
-
       var yr = new Date(this.bgtEmployee.value.year);
     
       this.sbuData[i].deptId = this.bgtEmployee.value.deptId;
+      this.sbuData[i].donationId = this.bgtEmployee.value.donationId;
       this.sbuData[i].segment = this.bgtEmployee.value.segment;
       this.sbuData[i].year = yr.getFullYear();
       this.sbuData[i].enteredBy = parseInt(this.empId);
@@ -437,9 +368,6 @@ export class BgtEmployeeComponent implements OnInit {
     debugger;
     if(this.bgtEmployee.value.segment == "Monthly")
     {
-
-      var a = selectedRow;
-
       const d = new Date();     
       var remMonth = 12 - d.getMonth();
       var ttl = selectedRow.totalPerson * selectedRow.amount * remMonth;
@@ -455,7 +383,6 @@ export class BgtEmployeeComponent implements OnInit {
         this.toastr.error('Insuficient Budget', 'Budget Distribution');
         return;
       }
-    
     }
     else if(this.bgtEmployee.value.segment == "Yearly")
     {
@@ -474,19 +401,6 @@ export class BgtEmployeeComponent implements OnInit {
         return;
       }
     }
-
-  
-
-  }
-
-  private formatDate(date) {
-    const d = new Date(date);
-    let month = '' + (d.getMonth() + 1);
-    let day = '' + d.getDate();
-    const year = d.getFullYear();
-    if (month.length < 2) month = '0' + month;
-    if (day.length < 2) day = '0' + day;
-    return [day, month, year ].join('-');
   }
 
   resetSearch(){
@@ -524,8 +438,9 @@ openPendingListModal(template: TemplateRef<any>) {
       grdAmount: "",
       grdLimit: "",
     });
-  }
 
+    this.sbuData = [];
+  }
 }
 
 interface ISbuData {
