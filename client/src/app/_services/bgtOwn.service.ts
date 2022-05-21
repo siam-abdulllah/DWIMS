@@ -65,7 +65,10 @@ export class BgtOwnService {
     return this.http.get(this.baseUrl + 'BgtOwn/getEmpWiseBgt/'+employeeId+'/'+sbu+'/'+year+'/'+compId+'/'+deptId+'/'+authId);
   }
   getEmpWiseTotExp(employeeId: any, sbu: string , year: any,compId:any,deptId:any ,authId:any  ){    
-    return this.http.get(this.baseUrl + 'BgtOwn/getEmpWiseTotExp/'+employeeId+'/'+sbu+'/'+year+'/'+compId+'/'+deptId+'/'+authId);
+    return this.http.get(this.baseUrl + 'BgtOwn/getEmpWiseTotExp/'+employeeId+'/'+sbu+'/'+year+'/'+compId+'/'+deptId);
+  }
+  getEmpDonWiseTotExp(employeeId: any, sbu: string , year: any,compId:any,deptId:any ,authId:any  ){    
+    return this.http.get(this.baseUrl + 'BgtOwn/getEmpDonWiseTotExp/'+employeeId+'/'+sbu+'/'+year+'/'+compId+'/'+deptId);
   }
   getDonWiseBgt(employeeId: any, sbu: string , year: any,compId:any,deptId:any,donationId:any  ){    
     return this.http.get(this.baseUrl + 'BgtOwn/getDonWiseBgt/'+employeeId+'/'+sbu+'/'+year+'/'+compId+'/'+deptId+'/'+donationId);

@@ -131,7 +131,7 @@ namespace API.Controllers
             try
             {
                 string qry = "SELECT DISTINCT A.[Id], A.[DataStatus],A.[SetOn],A.[ModifiedOn],A.[ApprovalAuthorityName],A.[Remarks],A.[Status]," +
-                    " A.[Priority] FROM ApprovalAuthority A INNER JOIN ApprAuthConfig B ON A.Id = B.ApprovalAuthorityId INNER JOIN Employee C ON B.EmployeeId = C.Id" +
+                    " A.[Priority],A.[CompId],A.[DeptId] FROM ApprovalAuthority A INNER JOIN ApprAuthConfig B ON A.Id = B.ApprovalAuthorityId INNER JOIN Employee C ON B.EmployeeId = C.Id" +
                     " WHERE C.DataStatus=1 AND (A.ApprovalAuthorityName = 'GPM' OR A.Priority > 2) AND C.Id=" + employeeId;
 
 
@@ -204,6 +204,8 @@ namespace API.Controllers
                   " AND A.Month = Month(GETDATE()) AND [Year]=" + year;
 
                 var results = _dbContext.BgtOwn.FromSqlRaw(qry).ToList();
+              
+             
                 return results;
             }
             catch (System.Exception ex)
@@ -239,44 +241,74 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("getEmpWiseTotPipe/{employeeId}/{sbu}/{year}/{compId}/{deptId}")]
-        public IReadOnlyList<BgtEmployee> GetEmpWiseTotExp(int employeeId, string sbu, int year, int compId, int deptId)
-        {
-            try
-            {
-                string qry = "SELECT  [Id],[DataStatus],[SetOn],[ModifiedOn] ,[CompId],[DeptId] ," +
-                    "[Year],[SBU],[EmployeeId],[AuthId],[Amount] ,[Segment],[PermEdit],[PermView]," +
-                    "[PermAmt],[PermDonation],[Remarks],[EnteredBy] FROM [DIDS].[dbo].[BgtEmployee]" +
-                    " WHERE [DataStatus]=1 AND [EmployeeId]=" + employeeId + " AND [SBU]='" + sbu + "' AND [CompId]=" + compId + " AND [DeptId]=" + deptId + " AND [Year]=" + year;
+        //[HttpGet("getEmpWiseTotPipe/{employeeId}/{sbu}/{year}/{compId}/{deptId}")]
+        //public IReadOnlyList<BgtEmployee> GetEmpWiseTotExp(int employeeId, string sbu, int year, int compId, int deptId)
+        //{
+        //    try
+        //    {
+        //        string qry = "SELECT  [Id],[DataStatus],[SetOn],[ModifiedOn] ,[CompId],[DeptId] ," +
+        //            "[Year],[SBU],[EmployeeId],[AuthId],[Amount] ,[Segment],[PermEdit],[PermView]," +
+        //            "[PermAmt],[PermDonation],[Remarks],[EnteredBy] FROM [DIDS].[dbo].[BgtEmployee]" +
+        //            " WHERE [DataStatus]=1 AND [EmployeeId]=" + employeeId + " AND [SBU]='" + sbu + "' AND [CompId]=" + compId + " AND [DeptId]=" + deptId + " AND [Year]=" + year;
 
 
-                var results = _dbContext.BgtEmployee.FromSqlRaw(qry).ToList();
-                return results;
-            }
-            catch (System.Exception ex)
-            {
-                throw ex;
-            }
-        }
+        //        var results = _dbContext.BgtEmployee.FromSqlRaw(qry).ToList();
+        //        return results;
+        //    }
+        //    catch (System.Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
+
         [HttpGet("getEmpWiseTotExp/{employeeId}/{sbu}/{year}/{compId}/{deptId}")]
-        public IReadOnlyList<CountDouble> GetEmpWiseTotPipe(int employeeId, string sbu, int year, int compId, int deptId)
+        public ActionResult<IReadOnlyList<CountDouble>> GetEmpWiseTotExp(int employeeId, string sbu, int year, int compId, int deptId)
         {
             try
             {
-                string qry = "SELECT  1  AS Id ,1 AS DataStatus,SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn," +
-                    " ISNULL(SUM(ApprovedAmount), 0) Count FROM [DIDS].[dbo].[InvestmentDetailTracker]  " +
-                    " A INNER JOIN [DIDS].[dbo].[InvestmentRecComment] B ON A.InvestmentInitId=B.InvestmentInitId AND A.EmployeeId=B.EmployeeId" +
-                    " WHERE A.[DataStatus]=1 AND A.[EmployeeId]=" + employeeId + " AND B.[SBU]='" + sbu + "' AND  A.Month<=Month(GETDATE()) AND A.[Year]=" + year;
+                List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                        new SqlParameter("@EID", employeeId),
+                        new SqlParameter("@Year", year),
 
+                    };
 
-                var results = _dbContext.CountDouble.FromSqlRaw(qry).ToList();
+                var results = _dbContext.CountDouble.FromSqlRaw("EXECUTE [SP_InvestmentExpByEmp] @EID, @Year", parms.ToArray()).ToList();
                 return results;
+
+
             }
             catch (System.Exception ex)
             {
                 throw ex;
             }
         }
+
+      [HttpGet("getEmpDonWiseTotExp/{employeeId}/{sbu}/{year}/{compId}/{deptId}")]
+        public ActionResult<IReadOnlyList<DonWiseExpByEmp>> GetEmpDonWiseTotExp(int employeeId, string sbu, int year, int compId, int deptId)
+        {
+            try
+            {
+                List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                        new SqlParameter("@EID", employeeId),
+                        new SqlParameter("@Year", year),
+
+                    };
+
+                var results = _dbContext.DonWiseExpByEmp.FromSqlRaw("EXECUTE [SP_InvestmentDonWiseExpByEmp] @EID, @Year", parms.ToArray()).ToList();
+                return results;
+
+
+
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+     
 
         [HttpPost("insertBgtEmployeeDetail")]
         public ActionResult<BgtEmpDetailInsert> BgtEmpInsertDetail(BgtEmpDetailInsert dto)
@@ -370,7 +402,7 @@ namespace API.Controllers
                         };
                     if (item.AuthId == 3)
                     {
-                        result= _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsertSingleRSM] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId, @EmployeeId", parms.ToArray());
+                        result = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsertSingleRSM] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId, @EmployeeId", parms.ToArray());
                     }
                     else if (item.AuthId == 5)
                     {
@@ -387,7 +419,7 @@ namespace API.Controllers
             {
                 throw ex;
             }
-           
+
         }
 
 

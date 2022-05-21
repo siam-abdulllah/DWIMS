@@ -17,4 +17,9 @@ namespace Core.Entities
     {
         public double Count { get; set; }
     }
+    public class DonWiseExpByEmp : BaseEntity
+    {
+        public int DonationId { get; set; }
+        public double Count { get; set; }
+    }
 }
