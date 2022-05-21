@@ -106,8 +106,9 @@
                                         <td>Expense</td>
                                         <td>Pipeline</td>
                                         <td>Remaining</td>
-                                        <td>New Amount</td>
-                                        <td colspan="2">Action</td>
+                                        <td>New Amount (Yearly)</td>
+                                        <td >Action</td>
+                                        <td >Approval Authority Wise Budget Distribution</td>
                                     </tr>
                                     <tr *ngFor="let a of sbuDetails; let index = index">
                                         <td>
@@ -135,7 +136,7 @@
                                             <button class="btn btn-success btn-lg btn-block" [disabled]="bugetSbuYearlyService.budgetSbuYearly.year != this.yyyy" (click)="UpdateSbuDetails(a.bgtSbuId,a.newAmount,a.expense)"  ><i class="fa fa-save"></i>&nbsp; Update</button>
                                         </td>
                                         <td>
-                                            <button class="btn btn-success btn-lg btn-block" [disabled]="bugetSbuYearlyService.budgetSbuYearly.year != this.yyyy" (click)="getApprovalAuth(a.sbuName,a.sbuCode,a.sbuAmount)"  ><i class="fa fa-save"></i>&nbsp; View</button>
+                                            <button class="btn btn-success btn-lg btn-block" [disabled]="bugetSbuYearlyService.budgetSbuYearly.year != this.yyyy" (click)="getApprovalAuth(a.sbuName,a.sbuCode,a.sbuAmount)" style="width: 100px;" ><i class="fa fa-save"></i>&nbsp; Distribution</button>
                                         </td>
                                     </tr>
                                 </table>
@@ -173,6 +174,8 @@
                         <div class="col-md-4">
                             <h6>Sbu: {{SbuName}}</h6>
                             <h6>Total Budget: {{sbuIndividualAmount}}</h6>
+                            <h6>Allowcated Budget: {{allowcatedBudget}}</h6>
+                            <h6>Remaining Budget: {{remainingBudget}}</h6>
                         </div>
                         <div class="col-md-2" style="float:right; margin-bottom: 10px;">     
                             <button class="btn btn-success btn-lg btn-block" (click)="saveAuthSbuDetails()" ><i class="fa fa-save"></i>&nbsp; Save</button>
@@ -181,14 +184,14 @@
                             <table class="table table-bordered table-responsive table-hover table-striped">
                                 <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));">
                                     <tr class="HeaderRow">
-                                        <th scope="col" style="width: 7%">Layer</th>
-                                        <th scope="col" style="width: 4%;">Approval Auth</th>
-                                        <th scope="col" style="width: 9%">Total Person</th>
-                                        <th scope="col" style="width: 4%">Expense</th>
-                                        <th scope="col" style="width: 4%">Total Amount</th>
+                                        <th scope="col" style="width: 1%">Layer</th>
+                                        <th scope="col" style="width: 1%;">Approval Auth</th>
+                                        <th scope="col" style="width: 1%">Total Person</th>
+                                        <th scope="col" style="width: 3%">Expense</th>
+                                        <th scope="col" style="width: 3%">Total Amount (yearly)</th>
                                         <th scope="col" style="width: 4%">New Amount</th>
-                                        <th scope="col" style="width: 4%">Can View</th>
-                                        <th scope="col" style="width: 4%">Can Edit</th>
+                                        <th scope="col" style="width: 1%">Can View</th>
+                                        <th scope="col" style="width: 1%">Can Edit</th>
                                         <th scope="col" style="width: 4%">Action</th>
                                     </tr>
                                 </thead>
@@ -212,7 +215,7 @@
                                             <input type="checkbox" id="canView" [(ngModel)]="a.permEdit"/>
                                         </td>
                                         <td>
-                                            <button class="btn btn-success btn-lg btn-block" [disabled]="bugetSbuYearlyService.budgetSbuYearly.year != this.yyyy || a.amount == 0" (click)="UpdateAppAuthDetails(a.id,a.newAmount,a.expense)"  ><i class="fa fa-save"></i>&nbsp; Update</button>
+                                            <button class="btn btn-success btn-lg btn-block" [disabled]="bugetSbuYearlyService.budgetSbuYearly.year != this.yyyy || a.amount == 0" (click)="UpdateAppAuthDetails(a.id,a.newAmount,a.expense,a.permView,a.permEdit)"  ><i class="fa fa-save"></i>&nbsp; Update</button>
                                         </td>
                                     </tr>
                                 </tbody>

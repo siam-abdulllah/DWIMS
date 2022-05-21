@@ -56,4 +56,11 @@ namespace Core.Entities
         public double PipeLine { get; set; }
 
     }
+
+    public class AuthExpense : BaseEntity
+    {
+        public double Remarks { get; set; }
+        public double Expense { get; set; }
+
+    }
 }

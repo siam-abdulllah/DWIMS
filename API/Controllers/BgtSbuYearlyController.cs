@@ -206,6 +206,37 @@ namespace API.Controllers
             {
                 return bgtEmpList;
             }
+        }        
+        [HttpGet("getAllAuthExpenseList/{sbu}/{deptId}/{year}/{compId}")]
+        public List<BgtEmployeeVM> GetAllAuthExpenseList(string sbu,int deptId, int year,int compId)
+        {
+            BgtYearlyTotal bgt = new BgtYearlyTotal();
+            List<BgtEmployeeVM> bgtEmpList = new List<BgtEmployeeVM>();
+            try
+            {
+
+                string qry = string.Format(@" SELECT  DISTINCT SUM(A.ApprovedAmount) Expense,D.Remarks
+                                                FROM InvestmentDetailTracker A
+                                                INNER JOIN InvestmentRecComment B ON A.InvestmentInitId = B.InvestmentInitId
+                                                AND A.EmployeeId = B.EmployeeId 
+                                                INNER JOIN ApprAuthConfig C ON A.EmployeeId=C.EmployeeId
+                                                INNER JOIN ApprovalAuthority D ON C.ApprovalAuthorityId=D.Id
+                                                INNER JOIN InvestmentInit E ON A.InvestmentInitId=E.id
+                                                WHERE B.CompletionStatus = 1
+                                                AND B.RecStatus = 'Approved'
+                                                AND B.CompletionStatus=1
+                                                AND E.DataStatus=1
+                                                AND C.Status='A'
+                                                And B.SBU = '{0}'
+                                                GROUP BY D.Remarks", sbu, deptId, year,compId);
+             
+                bgtEmpList = _dbContext.ExecSQL<BgtEmployeeVM>(qry).ToList();
+                return bgtEmpList;
+            }
+            catch (System.Exception ex)
+            {
+                return bgtEmpList;
+            }
         }
         [HttpPost("saveAuthSbuDetails")]
         public async Task<ActionResult<BgtEmployeeDto>> SaveAuthSbuDetails(BgtEmployeeModel model)
@@ -373,6 +404,8 @@ namespace API.Controllers
             if (bgtEmp != null)
             {
                 bgtEmp.Amount = setBgtEmpDto.Amount;
+                bgtEmp.PermEdit = setBgtEmpDto.PermEdit;
+                bgtEmp.PermView = setBgtEmpDto.PermView;
                 bgtEmp.ModifiedOn = DateTime.Now;
                 _bgtEmployee.Update(bgtEmp);
                 _bgtEmployee.Savechange();

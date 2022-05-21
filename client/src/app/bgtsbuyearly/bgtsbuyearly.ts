@@ -31,7 +31,9 @@ export class BgtSbuYearlyComponent implements OnInit {
   empId: string;
   userRole:string;
   totalSbuBudget:any;
+  allowcatedBudget:any;
   totalBudget:any;
+  remainingBudget:any;
   deptId: any;
   SBUs: ISBU[];
   bgtYearlyTotal: BudgetYearly;
@@ -61,6 +63,7 @@ export class BgtSbuYearlyComponent implements OnInit {
       this.getEmployeeId()
       this.bugetSbuYearlyService.budgetSbuYearly.year = 2022;
       this.sbuDetails = []
+
   }
   getSBU() {
     this.bugetSbuYearlyService.getSBU().subscribe(response => {
@@ -92,9 +95,12 @@ export class BgtSbuYearlyComponent implements OnInit {
     this.sbuIndividualAmount = sbuAmount;
     this.SbuName = SbuName;
     this.SbuCode = SbuCode;
+    this.allowcatedBudget = 0;
+    this.remainingBudget = 0;
     this.bugetSbuYearlyService.getbgtEmployeeForSbu(SbuCode, this.bugetSbuYearlyService.budgetSbuYearly.deptId, this.bugetSbuYearlyService.budgetSbuYearly.year,
       this.bugetSbuYearlyService.budgetSbuYearly.compId).subscribe(response => {
       debugger;
+  
       this.approvalAuthDetails = response as IApprovalAuthDetails[];
       if(this.approvalAuthDetails == null || this.approvalAuthDetails.length == 0)
       {
@@ -105,6 +111,7 @@ export class BgtSbuYearlyComponent implements OnInit {
           this.approvalAuthDetails = response as IApprovalAuthDetails[];
     
           if (this.approvalAuthDetails.length > 0) {
+
             for(var i=0;i<this.approvalAuthDetails.length;i++)
             {
               this.approvalAuthDetails[i].deptId = this.bugetSbuYearlyService.budgetSbuYearly.deptId;
@@ -122,6 +129,14 @@ export class BgtSbuYearlyComponent implements OnInit {
           console.log(error);
         });
       }
+      else{
+        for(var i=0;i<this.approvalAuthDetails.length;i++)
+        {
+          this.allowcatedBudget = this.allowcatedBudget + this.approvalAuthDetails[i].amount;
+        }
+     
+      }
+      this.remainingBudget =  this.sbuIndividualAmount - this.allowcatedBudget;
       this.openBudgetYearlySearchModal(this.authDetailsModal);
     }, error => {
       console.log(error);
@@ -194,10 +209,12 @@ export class BgtSbuYearlyComponent implements OnInit {
     }
    
   }
-  UpdateAppAuthDetails(id:number,newAmount:any,expense:any)
+  UpdateAppAuthDetails(id:number,newAmount:any,expense:any,canView:any,canEdit:any)
   {
     this.bugetSbuYearlyService.budgetEmployee.id = id;
     this.bugetSbuYearlyService.budgetEmployee.amount = newAmount;
+    this.bugetSbuYearlyService.budgetEmployee.permEdit = canEdit;
+    this.bugetSbuYearlyService.budgetEmployee.permView = canView;
     if(newAmount == 0 ||newAmount== undefined ||newAmount== '' )
     {
       this.toastr.warning('Budget can not be zero!');
@@ -205,9 +222,30 @@ export class BgtSbuYearlyComponent implements OnInit {
       return;
     }
     debugger;
+    var totalAllowcatedAuthbudget= 0;
+    var flag = 0;
+    for(var i=0;i<this.approvalAuthDetails.length;i++)
+    {
+       var num2 = 0;
+       if(this.approvalAuthDetails[i].id == id)
+       {
+         num2 = parseInt(this.approvalAuthDetails[i].amount);
+       }
+       else{
+         num2 = parseInt(newAmount);
+       }
+         
+         totalAllowcatedAuthbudget = totalAllowcatedAuthbudget+num2;
+    }
+    if(totalAllowcatedAuthbudget> this.sbuIndividualAmount)
+    {
+      this.toastr.warning('Budget can not be greater then total amount.');
+      return;
+    }
       this.bugetSbuYearlyService.updateBgtEmployee().subscribe(
         res => {
           this.bugetSbuYearlyService.budgetEmployee = res as IApprovalAuthDetails;
+          this.getApprovalAuth(this.SbuName,this.SbuCode,this.sbuIndividualAmount)
           this.toastr.success('Updated successfully', 'Sbu Budget');
      
         },
@@ -272,7 +310,32 @@ export class BgtSbuYearlyComponent implements OnInit {
               if(this.sbuDetails[i].sbuCode == this.pipelineList[j].sbuCode)
               {
                 this.sbuDetails[i].pipeLine = this.pipelineList[j].pipeline;
-                this.sbuDetails[i].remaining = parseInt(this.sbuDetails[i].sbuAmount) -(parseInt(this.sbuDetails[i].expense) + parseInt(this.pipelineList[j].pipeline))
+                this.sbuDetails[i].remaining = parseInt(this.sbuDetails[i].sbuAmount) -(parseInt(this.sbuDetails[i].expense))
+              }
+            }
+          }
+        },
+        err => { 
+          console.log(err); 
+        }
+      );
+  }
+  getAllAuthWiseExpenseList()
+  {
+      this.SpinnerService.show();
+      debugger;
+      this.bugetSbuYearlyService.getAllPipelineExpenseList(this.bugetSbuYearlyService.budgetSbuYearly.deptId,this.bugetSbuYearlyService.budgetSbuYearly.compId,this.bugetSbuYearlyService.budgetSbuYearly.year).subscribe(
+        res => {
+          debugger;
+          this.pipelineList = res as IPipelineDetails[];
+          for(var i =0;i<this.sbuDetails.length;i++)
+          {
+            for(var j =0;j<this.pipelineList.length;j++)
+            {
+              if(this.sbuDetails[i].sbuCode == this.pipelineList[j].sbuCode)
+              {
+                this.sbuDetails[i].pipeLine = this.pipelineList[j].pipeline;
+                this.sbuDetails[i].remaining = parseInt(this.sbuDetails[i].sbuAmount) -(parseInt(this.sbuDetails[i].expense))
               }
             }
           }
@@ -292,15 +355,20 @@ export class BgtSbuYearlyComponent implements OnInit {
     this.bugetSbuYearlyService.approvalAuthDetailsModel.bgtEmpList = this.approvalAuthDetails;
 
     var flag = 0;
+    var totalAllowcatedAuthbudget = 0;
     for(var i=0;i<this.approvalAuthDetails.length;i++)
     {
        if(this.approvalAuthDetails[i].newAmount == 0 ||this.approvalAuthDetails[i].newAmount == undefined ||this.approvalAuthDetails[i].newAmount == '' )
        {
         flag = 1;
        }
-      // const num1 = parseInt(this.totalSbuBudget);
-      // const num2 = parseInt(this.sbuDetails[i].newAmount);
-      // this.totalSbuBudget = num1+num2;
+        const num2 = parseInt(this.approvalAuthDetails[i].newAmount);
+        totalAllowcatedAuthbudget = totalAllowcatedAuthbudget+num2;
+    }
+    if(totalAllowcatedAuthbudget> this.sbuIndividualAmount)
+    {
+      this.toastr.warning('Budget can not be greater then total amount.');
+      return;
     }
     if(flag==1)
     {
@@ -311,6 +379,7 @@ export class BgtSbuYearlyComponent implements OnInit {
     this.bugetSbuYearlyService.saveAuthSbuDetails().subscribe(
       res => {
         //this.bugetSbuYearlyService.budgetSbuYearly = res as IBudgetSbuYearly;
+        this.getApprovalAuth(this.SbuName,this.SbuCode,this.sbuIndividualAmount)
         this.toastr.success('Submitted successfully', 'Sbu Budget');
       
       },
