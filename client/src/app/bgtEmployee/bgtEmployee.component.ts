@@ -405,45 +405,77 @@ export class BgtEmployeeComponent implements OnInit {
 
       var yr = new Date(this.bgtEmployee.value.year);
     
-      this.bgtService.bgtOwnFormData.deptId = this.bgtEmployee.value.deptId;
-      this.bgtService.bgtOwnFormData.year = yr.getFullYear();
-      this.bgtService.bgtOwnFormData.sbu = this.sbuData[i].sbu;
-      this.bgtService.bgtOwnFormData.authId = this.bgtEmployee.value.authId;
-      this.bgtService.bgtOwnFormData.amount = this.sbuData[i].amount;
-      this.bgtService.bgtOwnFormData.segment = this.bgtEmployee.value.segment;
-      this.bgtService.bgtOwnFormData.amtLimit = this.sbuData[i].limit;
-      this.bgtService.bgtOwnFormData.donationId = this.sbuData[i].donationId;
-      this.bgtService.bgtOwnFormData.enteredBy = parseInt(this.empId);
+      this.sbuData[i].deptId = this.bgtEmployee.value.deptId;
+      this.sbuData[i].segment = this.bgtEmployee.value.segment;
+      this.sbuData[i].year = yr.getFullYear();
+      this.sbuData[i].enteredBy = parseInt(this.empId);
 
-      ListData.push(this.bgtService.bgtOwnFormData);
+      // this.bgtService.bgtOwnFormData.sbu = this.sbuData[i].sbu;
+      // this.bgtService.bgtOwnFormData.authId = this.bgtEmployee.value.authId;
+      // this.bgtService.bgtOwnFormData.amount = this.sbuData[i].amount;
+
+      // this.bgtService.bgtOwnFormData.amtLimit = this.sbuData[i].limit;
+      // this.bgtService.bgtOwnFormData.donationId = this.sbuData[i].donationId;
+      // this.bgtService.bgtOwnFormData.enteredBy = parseInt(this.empId);
+
+      //ListData.push(this.bgtService.bgtOwnFormData);
     }
 
 
-      this.bgtService.insertBgtOwnList(ListData).subscribe(
+      this.bgtService.insertBgtOwnList(this.sbuData).subscribe(
         res => {
           this.toastr.success('Budget Distributed successfully', 'Budget Distribution') 
           this.btnShow = false;
         },
         err => { console.log(err); }
       );
-
-  
-
   }
 
 
-  getTotal(index: number)
+  getTotal(selectedRow: ISbuData)
   {
+    debugger;
     if(this.bgtEmployee.value.segment == "Monthly")
     {
+
+      var a = selectedRow;
+
       const d = new Date();     
-      var remMonth = 12 - d.getMonth() - 1;
-      this.sbuData[index].ttlAmt = this.sbuData[index].totalPerson * this.sbuData[index].amount * remMonth;
+      var remMonth = 12 - d.getMonth();
+      var ttl = selectedRow.totalPerson * selectedRow.amount * remMonth;
+      var rem = selectedRow.sbuAmount + selectedRow.donationTypeAllocated - selectedRow.expense -selectedRow.totalAllocated - ttl;
+      if(rem > 0)
+      {
+        selectedRow.ttlAmt = ttl;
+      }
+      else
+      {
+        selectedRow.amount = 0;
+        selectedRow.ttlAmt = 0;
+        this.toastr.error('Insuficient Budget', 'Budget Distribution');
+        return;
+      }
+    
     }
     else if(this.bgtEmployee.value.segment == "Yearly")
     {
-      this.sbuData[index].ttlAmt = this.sbuData[index].totalPerson * this.sbuData[index].amount;
+      var ttl = selectedRow.totalPerson * selectedRow.amount;
+      var rem = selectedRow.sbuAmount + selectedRow.donationTypeAllocated - selectedRow.expense -selectedRow.totalAllocated - ttl;
+    
+      if(rem > 0)
+      {
+        selectedRow.ttlAmt = ttl;
+      }
+      else
+      {
+        selectedRow.amount = 0;
+        selectedRow.ttlAmt = 0;
+        this.toastr.error('Insuficient Budget', 'Budget Distribution');
+        return;
+      }
     }
+
+  
 
   }
 
@@ -501,6 +533,8 @@ interface ISbuData {
   sbuAmount: number | null;
   expense: number | null;
   year: number;
+  segment: string;
+  deptId: string;
   approvalAuthorityName: string;
   donationId: number | null;
   donationTypeName: string;
@@ -509,6 +543,9 @@ interface ISbuData {
   amount: number;
   limit: number;
   ttlAmt: number;
+  donationTypeAllocated : number;
+  totalAllocated: number;
+  enteredBy: number;
 }
 
 export class SbuData implements ISbuData {
@@ -516,6 +553,8 @@ export class SbuData implements ISbuData {
   sbuAmount: number | null;
   expense: number | null;
   year: number;
+  segment: string;
+  deptId: string;
   approvalAuthorityName: string;
   donationId: number | null;
   donationTypeName: string;
@@ -524,4 +563,7 @@ export class SbuData implements ISbuData {
   amount: number;
   limit: number;
   ttlAmt: number;
+  donationTypeAllocated : number;
+  totalAllocated: number;
+  enteredBy: number;
 } 

@@ -1,3 +1,28 @@
+<style>
+    .CellWithComment {
+        position: relative;
+    }
+    
+    .CellComment {
+        visibility: hidden;
+        width: auto;
+        position: absolute;
+        z-index: 100;
+        text-align: Left;
+        opacity: 0.4;
+        transition: opacity 2s;
+        border-radius: 6px;
+        background-color: rgb(9, 242, 250);
+        padding: 3px;
+        top: -30px;
+        left: 0px;
+    }
+    
+    .CellWithComment:hover span.CellComment {
+        visibility: visible;
+        opacity: 1;
+    }
+</style>
 <section class="content">
     <div class="container-fluid">
         <div class="row">
@@ -109,19 +134,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group ">
-                                    <div class="row ">
-                                        <div class="col-md-2 ">
-                                            <input type="checkbox" id="permEdit" formControlName="permEdit" value="1">
-                                            <label for="permEdit"> Can Edit</label>
-                                        </div>
-
-                                        <div class="col-md-2 ">
-                                            <input type="checkbox" id="permView" formControlName="permView" value="1">
-                                            <label for="permView"> Can View</label>
-                                        </div>
-                                    </div>
-                                </div>
 
                                 <div class="form-group ">
                                     <div class="row ">
@@ -145,24 +157,29 @@
                                 <table class="table  table-bordered">
                                     <tr class="HeaderRow">
                                         <td>SBU</td>
-                                        <td>SBU Budget</td>
-                                        <td>SBU Expense</td>
-                                        <td>Approval Auth</td>
-                                        <td>Total Approver</td>
+                                        <td>Auth Budget</td>
+                                        <td>Auth Expense</td>
+                                        <td>Authority</td>
+                                        <td>Total Appr.</td>
                                         <td style="width: 0;display:none; ">DonationId</td>
-                                        <td>Donation Type</td>
-                                        <td>Amount</td>
+                                        <td>Total Allo.</td>
+                                        <td>Inv. Type</td>
+                                        <td>Prev Allo.</td>
+                                        <td>Amount / Person ({{bgtEmployee.controls.segment.value}})</td>
                                         <td>Limit</td>
                                         <td>Segment</td>
-                                        <td>Total</td>
+                                        <td class="CellWithComment">New Allocated
+                                            <span class="CellComment">"For Monthly = Total Person X Rest Month of the Year X Amount
+                                                For Yearly = Total Person X Amount"</span>
+                                        </td>
                                     </tr>
                                     <tr *ngFor="let a of sbuData; let index = index">
                                         <td>{{a.sbu}}</td>
                                         <td>
-                                            {{a.sbuAmount | number:'2.1-2'}}
+                                            {{a.sbuAmount | number}}
                                         </td>
                                         <td>
-                                            {{a.expense | number:'2.1-2'}}
+                                            {{a.expense | number}}
                                         </td>
                                         <td>
                                             {{a.approvalAuthorityName}}
@@ -174,19 +191,32 @@
                                             {{a.donationId}}
                                         </td>
                                         <td>
+                                            {{a.totalAllocated | number}}
+                                        </td>
+                                        <td>
                                             {{a.donationTypeName}}
                                         </td>
                                         <td>
-                                            <input class="form-control" type="text" placeholder="Amount" name="{{a.amount}}" (change)="getTotal(index)" formControlName="grdAmount" id="sbuData" name="sbuData{{index}}" [(ngModel)]="sbuData[index].amount">
+                                            {{a.donationTypeAllocated| number}}
+                                        </td>
+                                        <!-- <td>
+                                            <input class="form-control" type="text" placeholder="Amount" name="{{a.amount}}" (change)="getTotal(a)" formControlName="grdAmount" id="sbuData" name="sbuData{{index}}" [(ngModel)]="sbuData[index].amount">
                                         </td>
                                         <td>
                                             <input class="form-control" type="text" placeholder="Limit" name="{{a.limit}}" formControlName="grdLimit" id="sbuData" name="sbuData{{index}}" [(ngModel)]="sbuData[index].limit">
+                                        </td> -->
+
+                                        <td>
+                                            <input class="form-control ng-valid ng-touched ng-dirty" type="text" placeholder="Amount" [(ngModel)]="a.amount" [ngModelOptions]="{standalone: true}" (keyup)="getTotal(a)">
+                                        </td>
+                                        <td>
+                                            <input class="form-control ng-valid ng-touched ng-dirty" type="text" placeholder="Limit" [(ngModel)]="a.limit" [ngModelOptions]="{standalone: true}">
                                         </td>
                                         <td>
                                             {{bgtEmployee.controls.segment.value}}
                                         </td>
                                         <td>
-                                            {{a.ttlAmt | number:'2.1-2'}}
+                                            {{a.ttlAmt | number}}
                                         </td>
                                     </tr>
                                 </table>

@@ -32,6 +32,8 @@
         public int TotalPerson { get; set; }
         public int Amount { get; set; }
         public int Limit { get; set; }
+        public long? DonationTypeAllocated { get; set; }
+        public long? TotalAllocated { get; set; }
     }
     public class BgtEmployeeVM:BgtEmployee
     {
