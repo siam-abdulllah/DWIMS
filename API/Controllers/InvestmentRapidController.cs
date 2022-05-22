@@ -281,8 +281,8 @@ namespace API.Controllers
                         }
                     }
                     InvestmentRecDepot invRecDepot = new InvestmentRecDepot();
-                    if (investmentRapidDto.investmentMedicineProd != null && investmentRapidDto.investmentMedicineProd.Count>0)
-                    {
+                    //if (investmentRapidDto.investmentMedicineProd != null && investmentRapidDto.investmentMedicineProd.Count>0)
+                    //{
                         invRecDepot = new InvestmentRecDepot
                         {
                             //ReferenceNo = investmentRecDto.ReferenceNo,
@@ -295,7 +295,7 @@ namespace API.Controllers
                         };
                         _investmentRecDepotRepo.Add(invRecDepot);
                         _investmentRecDepotRepo.Savechange();
-                    }
+                    //}
            
                 }
                 #endregion
