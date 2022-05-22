@@ -29,24 +29,25 @@ namespace API.Controllers
         private readonly IGenericRepository<InvestmentDetailTracker> _investmentDetailTrackerRepo;
         private readonly IGenericRepository<Employee> _employeeRepo;
         private readonly IGenericRepository<InvestmentRecComment> _investmentRecCommentRepo;
+        private readonly IGenericRepository<InvestmentRec> _investmentRecRepo;
         private readonly IGenericRepository<ApprAuthConfig> _appAuthConfigRepo;
         private readonly IGenericRepository<ApprovalAuthority> _approvalAuthorityRepo;
         private readonly IMapper _mapper;
         private readonly StoreContext _dbContext;
 
 
-        public InvestmentRapidController(IMapper mapper, IGenericRepository<InvestmentInit> investmentInitRepo,IGenericRepository<InvestmentRapid> investmentRapidRepo,
+        public InvestmentRapidController(IMapper mapper, IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<InvestmentRapid> investmentRapidRepo,
             IGenericRepository<InvestmentRapidAppr> InvestmentRapidApprRepo, IGenericRepository<InvestmentDetailTracker> investmentDetailTrackerRepo,
-        IGenericRepository<MedicineProduct> medicineProductRepo, IGenericRepository<InvestmentRecDepot> investmentRecDepotRepo,IGenericRepository<InvestmentMedicineProd> investmentMedicineProdRepo,
+        IGenericRepository<MedicineProduct> medicineProductRepo, IGenericRepository<InvestmentRecDepot> investmentRecDepotRepo, IGenericRepository<InvestmentMedicineProd> investmentMedicineProdRepo,
         IGenericRepository<InvestmentRecProducts> investmentRecProductsRepo, IGenericRepository<InvestmentRecComment> investmentRecCommentRepo,
-        IGenericRepository<ProductInfo> productInfoRepo, IGenericRepository<ApprAuthConfig> appAuthConfigRepo, IGenericRepository<Employee> employeeRepo, 
-        IGenericRepository<ApprovalAuthority> approvalAuthorityRepo, StoreContext dbContext)
+        IGenericRepository<ProductInfo> productInfoRepo, IGenericRepository<ApprAuthConfig> appAuthConfigRepo, IGenericRepository<Employee> employeeRepo,
+        IGenericRepository<ApprovalAuthority> approvalAuthorityRepo, IGenericRepository<InvestmentRec> investmentRecRepo, StoreContext dbContext)
         {
             _mapper = mapper;
             _investmentRapidRepo = investmentRapidRepo;
             _InvestmentRapidApprRepo = InvestmentRapidApprRepo;
             _investmentInitRepo = investmentInitRepo;
-             _dbContext = dbContext;
+            _dbContext = dbContext;
             _medicineProductRepo = medicineProductRepo;
             _productInfoRepo = productInfoRepo;
             _investmentRecDepotRepo = investmentRecDepotRepo;
@@ -57,6 +58,7 @@ namespace API.Controllers
             _employeeRepo = employeeRepo;
             _approvalAuthorityRepo = approvalAuthorityRepo;
             _appAuthConfigRepo = appAuthConfigRepo;
+            _investmentRecRepo = investmentRecRepo;
         }
         
         [HttpPost("saveInvestmentRapid")]
@@ -368,7 +370,7 @@ namespace API.Controllers
                     {
                         complitionStatus = true;
                     }
-                    var invRec = new InvestmentRecComment
+                    var invRecComment = new InvestmentRecComment
                     {
                         InvestmentInitId = investmentForm.InvestmentInitId,
                         SBU = emp.SBU,
@@ -387,11 +389,47 @@ namespace API.Controllers
                         RecStatus = investmentRapidDto.ApprovedStatus,
                         CompletionStatus = complitionStatus,
                         Priority = appAuth.Priority,
-                        EmployeeId = emp.Id
+                        EmployeeId = emp.Id,
+                        SetOn = DateTime.Now
 
                     };
-                    _investmentRecCommentRepo.Add(invRec);
+                    _investmentRecCommentRepo.Add(invRecComment);
                     _investmentRecCommentRepo.Savechange();
+                    #endregion
+                    #region Insert Into Investment Rec
+                    var alreadyExistRecSpec = new InvestmentRecSpecification((int)investmentForm.InvestmentInitId, emp.Id);
+                    var alreadyExistInvestmentAprList = await _investmentRecRepo.ListAsync(alreadyExistRecSpec);
+                    if (alreadyExistInvestmentAprList.Count > 0)
+                    {
+                        foreach (var v in alreadyExistInvestmentAprList)
+                        {
+                            _investmentRecRepo.Delete(v);
+                            _investmentRecRepo.Savechange();
+                        }
+                    }
+                    var invRec = new InvestmentRec
+                    {
+                        InvestmentInitId = investmentForm.InvestmentInitId,
+                        ProposedAmount = investmentForm.ProposedAmount,
+                        //Purpose = investmenAprForOwnSBUInsert.InvestmentApr.Purpose,
+                        PaymentFreq = "Yearly",
+                        //CommitmentAllSBU = investmenAprForOwnSBUInsert.InvestmentApr.CommitmentAllSBU,
+                        //CommitmentOwnSBU = investmenAprForOwnSBUInsert.InvestmentApr.CommitmentOwnSBU,
+                        FromDate = DateTime.Now,
+                        ToDate = DateTime.Now,
+                        CommitmentFromDate = DateTime.Now,
+                        CommitmentToDate = DateTime.Now,
+                        TotalMonth = 1,
+                        CommitmentTotalMonth = 1,
+                        PaymentMethod = investmentForm.PaymentMethod,
+                        ChequeTitle = investmentForm.ChequeTitle,
+                        EmployeeId = emp.Id,
+                        Priority = appAuth.Priority,
+                        CompletionStatus = true,
+                        SetOn = DateTimeOffset.Now
+                    };
+                    _investmentRecRepo.Add(invRec);
+                    _investmentRecRepo.Savechange();
                     #endregion
                     invRapidApr.InvestmentInitId = investmentInit.Id;
                         invRapidApr.InvestmentRapidId = investmentForm.Id;
