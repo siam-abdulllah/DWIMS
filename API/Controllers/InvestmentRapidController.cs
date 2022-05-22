@@ -27,7 +27,10 @@ namespace API.Controllers
         private readonly IGenericRepository<InvestmentRecProducts> _investmentRecProductsRepo;
         private readonly IGenericRepository<InvestmentRecDepot> _investmentRecDepotRepo;
         private readonly IGenericRepository<InvestmentDetailTracker> _investmentDetailTrackerRepo;
-
+        private readonly IGenericRepository<Employee> _employeeRepo;
+        private readonly IGenericRepository<InvestmentRecComment> _investmentRecCommentRepo;
+        private readonly IGenericRepository<ApprAuthConfig> _appAuthConfigRepo;
+        private readonly IGenericRepository<ApprovalAuthority> _approvalAuthorityRepo;
         private readonly IMapper _mapper;
         private readonly StoreContext _dbContext;
 
@@ -35,7 +38,9 @@ namespace API.Controllers
         public InvestmentRapidController(IMapper mapper, IGenericRepository<InvestmentInit> investmentInitRepo,IGenericRepository<InvestmentRapid> investmentRapidRepo,
             IGenericRepository<InvestmentRapidAppr> InvestmentRapidApprRepo, IGenericRepository<InvestmentDetailTracker> investmentDetailTrackerRepo,
         IGenericRepository<MedicineProduct> medicineProductRepo, IGenericRepository<InvestmentRecDepot> investmentRecDepotRepo,IGenericRepository<InvestmentMedicineProd> investmentMedicineProdRepo,
-        IGenericRepository<InvestmentRecProducts> investmentRecProductsRepo, IGenericRepository<ProductInfo> productInfoRepo, StoreContext dbContext)
+        IGenericRepository<InvestmentRecProducts> investmentRecProductsRepo, IGenericRepository<InvestmentRecComment> investmentRecCommentRepo,
+        IGenericRepository<ProductInfo> productInfoRepo, IGenericRepository<ApprAuthConfig> appAuthConfigRepo, IGenericRepository<Employee> employeeRepo, 
+        IGenericRepository<ApprovalAuthority> approvalAuthorityRepo, StoreContext dbContext)
         {
             _mapper = mapper;
             _investmentRapidRepo = investmentRapidRepo;
@@ -48,6 +53,10 @@ namespace API.Controllers
             _investmentMedicineProdRepo = investmentMedicineProdRepo;
             _investmentRecProductsRepo = investmentRecProductsRepo;
             _investmentDetailTrackerRepo = investmentDetailTrackerRepo;
+            _investmentRecCommentRepo = investmentRecCommentRepo;
+            _employeeRepo = employeeRepo;
+            _approvalAuthorityRepo = approvalAuthorityRepo;
+            _appAuthConfigRepo = appAuthConfigRepo;
         }
         
         [HttpPost("saveInvestmentRapid")]
@@ -55,8 +64,12 @@ namespace API.Controllers
         {
             try
             {
+             
                 #region Save On Investment Init
                 InvestmentInit investmentInit = new InvestmentInit();
+                ApprovalAuthority appAuth = new ApprovalAuthority();
+                Employee emp = new Employee();
+                ApprAuthConfig authConfig  = new ApprAuthConfig();
                 investmentInit = await _investmentInitRepo.GetByIdAsync(investmentRapidDto.InvestmentInitId);
                 if(investmentInit != null)
                 {
@@ -96,10 +109,11 @@ namespace API.Controllers
                     var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentRefNoInsert @IID,@r out", parms.ToArray());
                     investmentInit.ReferenceNo = parms[1].Value.ToString();
                 }
-              
+
                 #endregion
 
                 #region Save On Investment Rapid
+   
                 InvestmentRapid investmentForm = new InvestmentRapid();
                 InvestmentRapidAppr invRapidApr = new InvestmentRapidAppr();
                          investmentForm = await _investmentRapidRepo.GetByIdAsync(investmentRapidDto.Id);
@@ -123,13 +137,14 @@ namespace API.Controllers
                     _investmentRapidRepo.Update(investmentForm);
                     _investmentRapidRepo.Savechange();
 
+               
                     string qry = string.Format(@"select * from InvestmentRapidAppr where InvestmentRapidId = {0}", investmentForm.Id);
                     invRapidApr = _dbContext.InvestmentRapidAppr.FromSqlRaw(qry).ToList().FirstOrDefault();
                     if (invRapidApr != null)
                     {
                         invRapidApr.InvestmentInitId = investmentInit.Id;
                         invRapidApr.InvestmentRapidId = investmentForm.Id;
-                        invRapidApr.ApprovedBy = investmentForm.InitiatorId;
+                
                         invRapidApr.ApprovalRemarks = investmentRapidDto.Approval;
                         invRapidApr.ApprovedStatus = investmentRapidDto.ApprovedStatus;
                         invRapidApr.ApprovalAuthId = investmentRapidDto.ApprovalAuthId;
@@ -152,11 +167,24 @@ namespace API.Controllers
                     investmentForm = _mapper.Map<InvestmentRapid>(investmentRapidDto);
                     _investmentRapidRepo.Add(investmentForm);
                     _investmentRapidRepo.Savechange();
+                 #region Get Auth Id
+                int ApprovedBy = investmentRapidDto.ApprovalAuthId;
+                authConfig = await _appAuthConfigRepo.GetByIdAsync(investmentRapidDto.ApprovalAuthId);
+                if (authConfig != null)
+                {
+                    appAuth = await _approvalAuthorityRepo.GetByIdAsync(authConfig.ApprovalAuthorityId);
+                    investmentRapidDto.ApprovalAuthId = appAuth.Id;
+                }
+                else
+                {
+                    investmentRapidDto.ApprovalAuthId = 0;
+                }
 
+                #endregion
                     invRapidApr = new InvestmentRapidAppr();
                     invRapidApr.InvestmentInitId = investmentInit.Id;
                     invRapidApr.InvestmentRapidId = investmentForm.Id;
-                    invRapidApr.ApprovedBy = investmentForm.InitiatorId;
+                    invRapidApr.ApprovedBy = ApprovedBy;
                     invRapidApr.ApprovalRemarks = investmentRapidDto.Approval;
                     invRapidApr.ApprovedStatus = investmentRapidDto.ApprovedStatus;
                     invRapidApr.ApprovalAuthId = investmentRapidDto.ApprovalAuthId;
@@ -278,21 +306,21 @@ namespace API.Controllers
                 {
                     if(investmentRapidDto.ApprovedStatus == "Approved")
                     {
-                        List<SqlParameter> parms = new List<SqlParameter>
-                            {
-                            new SqlParameter("@SBU", investmentForm.SBU),
-                            new SqlParameter("@DID", investmentForm.Type),
-                            new SqlParameter("@EID", invRapidApr.ApprovalAuthId),
-                            new SqlParameter("@IID", investmentForm.InvestmentInitId),
-                            new SqlParameter("@PRAMOUNT", investmentForm.ProposedAmount),
-                            new SqlParameter("@ASTATUS", investmentRapidDto.ApprovedStatus),
-                            new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
-                            };
-                        var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheck @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
-                        if (parms[6].Value.ToString() != "True")
-                        {
-                            return BadRequest(new ApiResponse(400, parms[6].Value.ToString()));
-                        }
+                        //List<SqlParameter> parms = new List<SqlParameter>
+                        //    {
+                        //    new SqlParameter("@SBU", investmentForm.SBU),
+                        //    new SqlParameter("@DID", investmentForm.Type),
+                        //    new SqlParameter("@EID", invRapidApr.ApprovalAuthId),
+                        //    new SqlParameter("@IID", investmentForm.InvestmentInitId),
+                        //    new SqlParameter("@PRAMOUNT", investmentForm.ProposedAmount),
+                        //    new SqlParameter("@ASTATUS", investmentRapidDto.ApprovedStatus),
+                        //    new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
+                        //    };
+                        //var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheck @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
+                        //if (parms[6].Value.ToString() != "True")
+                        //{
+                        //    return BadRequest(new ApiResponse(400, parms[6].Value.ToString()));
+                        //}
                         var invDT = new InvestmentDetailTracker
                         {
                             InvestmentInitId = investmentForm.InvestmentInitId,
@@ -308,10 +336,56 @@ namespace API.Controllers
                         };
                         _investmentDetailTrackerRepo.Add(invDT);
                         _investmentDetailTrackerRepo.Savechange();
+
+                     
                     }
-                        invRapidApr.InvestmentInitId = investmentInit.Id;
+                    
+                    #region Insert Into Rec Comment
+           
+                    emp = await _employeeRepo.GetByIdAsync(invRapidApr.ApprovedBy);
+                    var investmentRecCmntSpec = new InvestmentRecCommentSpecification((int)investmentForm.InvestmentInitId, emp.Id);
+                    var investmentRecCmnts = await _investmentRecCommentRepo.ListAsync(investmentRecCmntSpec);
+                    if (investmentRecCmnts.Count > 0)
+                    {
+                        foreach (var v in investmentRecCmnts)
+                        {
+                            _investmentRecCommentRepo.Delete(v);
+                            _investmentRecCommentRepo.Savechange();
+                        }
+                    }
+                    bool complitionStatus = false;
+                    if(investmentRapidDto.ApprovedStatus == "Approved")
+                    {
+                        complitionStatus = true;
+                    }
+                    var invRec = new InvestmentRecComment
+                    {
+                        InvestmentInitId = investmentForm.InvestmentInitId,
+                        SBU = emp.SBU,
+                        SBUName = emp.SBUName,
+                        ZoneCode = emp.ZoneCode,
+                        ZoneName = emp.ZoneName,
+                        RegionName = emp.RegionName,
+                        RegionCode = emp.RegionCode,
+                        TerritoryCode = emp.TerritoryCode,
+                        TerritoryName = emp.TerritoryName,
+                        MarketCode = emp.MarketCode,
+                        MarketName = emp.MarketName,
+                        MarketGroupCode = emp.MarketGroupCode,
+                        MarketGroupName = emp.MarketGroupName,
+                        Comments = investmentForm.Remarks,
+                        RecStatus = investmentRapidDto.ApprovedStatus,
+                        CompletionStatus = complitionStatus,
+                        Priority = appAuth.Priority,
+                        EmployeeId = emp.Id
+
+                    };
+                    _investmentRecCommentRepo.Add(invRec);
+                    _investmentRecCommentRepo.Savechange();
+                    #endregion
+                    invRapidApr.InvestmentInitId = investmentInit.Id;
                         invRapidApr.InvestmentRapidId = investmentForm.Id;
-                        invRapidApr.ApprovedBy = investmentForm.InitiatorId;
+                  
                         invRapidApr.ApprovalRemarks = investmentRapidDto.Approval;
                         invRapidApr.ApprovedStatus = investmentRapidDto.ApprovedStatus;
                         invRapidApr.ModifiedOn = DateTime.Now;
@@ -383,7 +457,7 @@ namespace API.Controllers
                                         left join Donation d on IR.Type = d.Id
                                         left join InvestmentRapidAppr IRA on IR.Id = IRA.InvestmentRapidId
 									    left join InvestmentDetailTracker IT on IT.InvestmentInitId = IR.InvestmentInitId
-                                        where  IRA.ApprovalAuthId={0}{1}", employeeId,statusQuery);
+                                        where  IRA.ApprovedBy={0}{1}", employeeId,statusQuery);
                 }
 
 

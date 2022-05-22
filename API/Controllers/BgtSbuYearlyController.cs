@@ -436,7 +436,7 @@ namespace API.Controllers
                 {
                     _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtEmployeeInsertDSM] @DeptId, @Year, @SBU , @AuthId, @Amount, @PermView, @PermEdit, @EnteredBy", parms.ToArray());
                 }
-                else if(bgtEmp.AuthId == 4 || bgtEmp.AuthId == 6)
+                else if(bgtEmp.AuthId == 4 || bgtEmp.AuthId == 6 || bgtEmp.AuthId == 8)
                 {
                     _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtEmployeeInsert] @DeptId, @Year, @SBU , @AuthId, @Amount, @PermView, @PermEdit, @EnteredBy", parms.ToArray());
                 }
