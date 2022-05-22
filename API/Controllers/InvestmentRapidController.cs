@@ -321,6 +321,16 @@ namespace API.Controllers
                         //{
                         //    return BadRequest(new ApiResponse(400, parms[6].Value.ToString()));
                         //}
+                        var alreadyDetailTrackerExistSpec = new InvestmentDetailTrackerSpecification(investmentForm.InvestmentInitId);
+                        var alreadyDetailTrackerExistInvestmentAprList = await _investmentDetailTrackerRepo.ListAsync(alreadyDetailTrackerExistSpec);
+                        if (alreadyDetailTrackerExistInvestmentAprList.Count > 0)
+                        {
+                            foreach (var v in alreadyDetailTrackerExistInvestmentAprList)
+                            {
+                                _investmentDetailTrackerRepo.Delete(v);
+                                _investmentDetailTrackerRepo.Savechange();
+                            }
+                        }
                         var invDT = new InvestmentDetailTracker
                         {
                             InvestmentInitId = investmentForm.InvestmentInitId,
