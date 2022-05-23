@@ -47,6 +47,7 @@ export class BgtSbuYearlyComponent implements OnInit {
   sbuIndividualAmount:any;
   SbuName:string;
   SbuCode:string;
+  expense:any;
   isAdmin: boolean = false;
   dd = String(this.today.getDate()).padStart(2, '0');
   mm = String(this.today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -63,6 +64,7 @@ export class BgtSbuYearlyComponent implements OnInit {
   ngOnInit() {
       this.getSBU()
       this.getEmployeeId()
+
       this.bugetSbuYearlyService.budgetSbuYearly.year = 2022;
       this.sbuDetails = []
 
@@ -93,12 +95,13 @@ export class BgtSbuYearlyComponent implements OnInit {
       console.log(error);
     });
   }
-  getApprovalAuth(SbuName:string,SbuCode:string,sbuAmount:any) {
+  getApprovalAuth(SbuName:string,SbuCode:string,sbuAmount:any,expense:any) {
     this.getAllAuthWiseExpenseList(SbuCode, this.bugetSbuYearlyService.budgetSbuYearly.deptId, this.bugetSbuYearlyService.budgetSbuYearly.year,
       this.bugetSbuYearlyService.budgetSbuYearly.compId)
     this.sbuIndividualAmount = sbuAmount;
     this.SbuName = SbuName;
     this.SbuCode = SbuCode;
+    this.expense = expense;
     this.allowcatedBudget = 0;
     this.remainingBudget = 0;
 
@@ -251,8 +254,9 @@ export class BgtSbuYearlyComponent implements OnInit {
     }
       this.bugetSbuYearlyService.updateBgtEmployee().subscribe(
         res => {
+          this.AuthDetailsModalRef.hide()
           this.bugetSbuYearlyService.budgetEmployee = res as IApprovalAuthDetails;
-          this.getApprovalAuth(this.SbuName,this.SbuCode,this.sbuIndividualAmount)
+          this.getApprovalAuth(this.SbuName,this.SbuCode,this.sbuIndividualAmount,this.expense)
           this.toastr.success('Updated successfully', 'Sbu Budget');
      
         },
@@ -270,6 +274,7 @@ export class BgtSbuYearlyComponent implements OnInit {
       this.bugetSbuYearlyService.getAllSbuBgtList(this.bugetSbuYearlyService.budgetSbuYearly.deptId,this.bugetSbuYearlyService.budgetSbuYearly.compId,this.bugetSbuYearlyService.budgetSbuYearly.year).subscribe(
         res => {
           this.bgtSbuYearlyList = res as IBudgetSbuYearly[];
+     
           this.totalBudget =0;
           if(this.bgtSbuYearlyList != null)
           {
@@ -283,23 +288,36 @@ export class BgtSbuYearlyComponent implements OnInit {
                sbu.bgtSbuId = this.bgtSbuYearlyList[i].bgtSbuId;
                sbu.newAmount = 0;
                sbu.expense = this.bgtSbuYearlyList[i].expense;
+               sbu.totalAlowcated =  this.bgtSbuYearlyList[i].totalAllowcated;
                this.sbuDetails.push(sbu);
                const total = parseInt(this.totalBudget);
                const next = parseInt(this.bgtSbuYearlyList[i].sbuAmount);
                this.totalBudget = total+next;
             }
           }
-        
+        setTimeout(() => {
           debugger;
-          var RemainingBudget = parseInt(this.bugetSbuYearlyService.budgetSbuYearly.totalBudget)-  parseInt(this.totalBudget)
-          this.bugetSbuYearlyService.budgetSbuYearly.remainingBudget = RemainingBudget;
-          this.getAllPipeLineExpenseList();
+          this.bugetSbuYearlyService.getTotalExpense(this.bugetSbuYearlyService.budgetSbuYearly.deptId,this.bugetSbuYearlyService.budgetSbuYearly.year).subscribe(response => {
+            this.bugetSbuYearlyService.budgetSbuYearly.totalExpense = response; 
+            var RemainingBudget = parseInt(this.bugetSbuYearlyService.budgetSbuYearly.totalBudget)-  (this.bugetSbuYearlyService.budgetSbuYearly.totalExpense)
+            this.bugetSbuYearlyService.budgetSbuYearly.remainingBudget = RemainingBudget;
+           }, error => {
+      
+             console.log(error);
+           });
+           this.getAllPipeLineExpenseList();
+        }, 1000);
+         
+    
         },
         err => { 
           console.log(err); 
         }
       );
   }
+
+
+
   getAllPipeLineExpenseList()
   {
 
@@ -320,7 +338,7 @@ export class BgtSbuYearlyComponent implements OnInit {
              
               }
             }
-            this.sbuDetails[i].remaining = parseInt(this.sbuDetails[i].sbuAmount) -(parseInt(this.sbuDetails[i].expense))
+            this.sbuDetails[i].remaining = parseInt(this.sbuDetails[i].sbuAmount) -(parseInt(this.sbuDetails[i].expense) + parseInt(this.sbuDetails[i].totalAlowcated) )
           }
         },
         err => { 
@@ -347,10 +365,10 @@ export class BgtSbuYearlyComponent implements OnInit {
                   {
                     this.approvalAuthDetails[i].expense = this.authExpenseList[j].expense
                   }
-                  else{
-                    this.approvalAuthDetails[i].expense = 0;
-                  }
-                 
+               }
+               if( this.approvalAuthDetails[i].expense == '' ||this.approvalAuthDetails[i].expense == undefined)
+               {
+                  this.approvalAuthDetails[i].expense =0;
                }
                this.authTotalExpense = this.authTotalExpense+this.approvalAuthDetails[i].expense ;
              }
@@ -382,7 +400,7 @@ export class BgtSbuYearlyComponent implements OnInit {
         const num2 = parseInt(this.approvalAuthDetails[i].newAmount);
         totalAllowcatedAuthbudget = totalAllowcatedAuthbudget+num2;
     }
-    if(totalAllowcatedAuthbudget> this.sbuIndividualAmount)
+    if(totalAllowcatedAuthbudget> (this.sbuIndividualAmount- this.expense))
     {
       this.toastr.warning('Budget limit has exceeded!');
       return;
@@ -396,7 +414,8 @@ export class BgtSbuYearlyComponent implements OnInit {
     this.bugetSbuYearlyService.saveAuthSbuDetails().subscribe(
       res => {
         //this.bugetSbuYearlyService.budgetSbuYearly = res as IBudgetSbuYearly;
-        this.getApprovalAuth(this.SbuName,this.SbuCode,this.sbuIndividualAmount)
+        this.AuthDetailsModalRef.hide()
+        this.getApprovalAuth(this.SbuName,this.SbuCode,this.sbuIndividualAmount,this.expense)
         this.toastr.success('Submitted successfully', 'Sbu Budget');
       
       },
@@ -428,7 +447,7 @@ export class BgtSbuYearlyComponent implements OnInit {
         return;
       }
       console.log(this.totalSbuBudget);
-      if(this.totalSbuBudget > this.bugetSbuYearlyService.budgetSbuYearly.totalBudget)
+      if(this.totalSbuBudget > (this.bugetSbuYearlyService.budgetSbuYearly.totalBudget - this.bugetSbuYearlyService.budgetSbuYearly.totalExpense))
       {
         this.toastr.warning('Budget limit has exceeded!');
         this.SpinnerService.hide();

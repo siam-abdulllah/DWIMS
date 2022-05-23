@@ -50,9 +50,11 @@ export interface IBudgetSbuYearly {
     sbuAmount:any;
     remarks:string;
     enteredBy:number;
-    totalBudget:number;
-    remainingBudget:number;
-    expense:number;
+    totalBudget:any;
+    remainingBudget:any;
+    expense:any;
+    totalAllowcated:any;
+    totalExpense:any;
     sbuDetailsList:ISbuDetails[];
    
 }
@@ -69,8 +71,10 @@ export class BudgetSbuYearly implements IBudgetSbuYearly {
     remarks:string;
     enteredBy:number;
     totalBudget:any;
-    remainingBudget:number;
-    expense:number;
+    remainingBudget:any;
+    expense:any;
+    totalAllowcated:any;
+    totalExpense:any;
     sbuDetailsList:ISbuDetails[];
 
 }
@@ -83,6 +87,7 @@ export interface ISbuDetails {
     newAmount:any;
     expense:any;
     pipeLine:any;
+    totalAlowcated:any;
     remaining:any;
 }
 export class SbuDetails implements ISbuDetails {
@@ -92,6 +97,7 @@ export class SbuDetails implements ISbuDetails {
     sbuAmount:any;
     newAmount:any;
     expense:number;
+    totalAlowcated:any;
     pipeLine:any;
     remaining:any;
 }

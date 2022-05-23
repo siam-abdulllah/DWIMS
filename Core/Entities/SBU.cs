@@ -15,5 +15,6 @@ namespace Core.Entities
         public Int64 SBUAmount { get; set; }
         public int BgtSbuId { get; set; }
         public double Expense { get; set; }
+        public double TotalAllowcated { get; set; }
     }
 }

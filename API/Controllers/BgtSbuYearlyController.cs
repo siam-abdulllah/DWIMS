@@ -51,22 +51,22 @@ namespace API.Controllers
                 }
                 string qry = "";
               
-                qry = string.Format(@"SELECT sb.*
-                                    ,bs.SBUAmount
-                                    ,bs.Id BgtSbuId
-                                    ,(
-                                    SELECT ISNULL(Round(SUM(ApprovedAmount),0), 0)
+                qry = string.Format(@"SELECT sb.*, bs.SBUAmount
+                                    ,bs.Id BgtSbuId,(
+                                    SELECT ISNULL(Round(SUM(ApprovedAmount), 0), 0)
                                     FROM InvestmentDetailTracker e
                                     INNER JOIN InvestmentInit c ON c.Id = e.InvestmentInitId
-                                    WHERE c.SBU = SB.SBUCode AND C.ProposeFor='{3}'
-                                    AND e.Year={0}
-                                    ) Expense
+                                    WHERE c.SBU = SB.SBUCode
+                                    AND C.ProposeFor = '{3}'
+                                    AND e.Year = {0}
+                                    ) Expense,
+                                    (select SUM(Amount) from BgtEmployee where DeptId =1 and SBU = sb.SBUCode) TotalAllowcated
                                     FROM SBU sb
                                     LEFT JOIN BgtSBUTotal bs ON bs.SBU = sb.SbuCode
                                     AND bs.DeptId = {1}
                                     AND bs.DataStatus = 1
                                     AND bs.CompId = {2}
-                                    AND bs.Year = {0}",year, deptId, compId,ProposeFor);
+                                    AND bs.Year = {0}", year, deptId, compId,ProposeFor);
                 
 
 
@@ -215,20 +215,21 @@ namespace API.Controllers
             try
             {
 
-                string qry = string.Format(@" SELECT  DISTINCT  CAST(ROW_NUMBER() OVER (ORDER BY  D.Remarks) AS INT)  AS Id,
+                string qry = string.Format(@" SELECT   DISTINCT  CAST(ROW_NUMBER() OVER (ORDER BY  D.Remarks) AS INT)  AS Id,
                                                 1 AS DataStatus,SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,
-                                                SUM(A.ApprovedAmount) Expense,D.Remarks
+                                                ISNULL(Round(SUM(ApprovedAmount), 0), 0) Expense,D.Remarks
                                                 FROM InvestmentDetailTracker A
                                                 INNER JOIN InvestmentRecComment B ON A.InvestmentInitId = B.InvestmentInitId
-                                                AND A.EmployeeId = B.EmployeeId 
-                                                INNER JOIN ApprAuthConfig C ON A.EmployeeId=C.EmployeeId
-                                                INNER JOIN ApprovalAuthority D ON C.ApprovalAuthorityId=D.Id
-                                                INNER JOIN InvestmentInit E ON A.InvestmentInitId=E.id
+                                                AND A.EmployeeId = B.EmployeeId
+                                                INNER JOIN InvestmentInit F ON F.Id = A.InvestmentInitId
+                                                --INNER JOIN ApprAuthConfig C ON A.EmployeeId = C.EmployeeId
+                                                INNER JOIN ApprovalAuthority D ON B.Priority = D.Priority
                                                 WHERE B.CompletionStatus = 1
                                                 AND B.RecStatus = 'Approved'
-                                                AND B.CompletionStatus=1
-                                                AND E.DataStatus=1
-                                                AND C.Status='A'
+                                                AND B.CompletionStatus = 1
+                                                AND F.DataStatus = 1
+                                                --AND C.STATUS = 'A'
+
                                                 And B.SBU = '{0}'
                                                 And D.DeptId = '{1}'
                                                 And A.Year = '{2}'

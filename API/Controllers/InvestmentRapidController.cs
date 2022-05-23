@@ -36,18 +36,18 @@ namespace API.Controllers
         private readonly StoreContext _dbContext;
 
 
-        public InvestmentRapidController(IMapper mapper, IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<InvestmentRapid> investmentRapidRepo,
+        public InvestmentRapidController(IMapper mapper, IGenericRepository<InvestmentInit> investmentInitRepo,IGenericRepository<InvestmentRapid> investmentRapidRepo,
             IGenericRepository<InvestmentRapidAppr> InvestmentRapidApprRepo, IGenericRepository<InvestmentDetailTracker> investmentDetailTrackerRepo,
-        IGenericRepository<MedicineProduct> medicineProductRepo, IGenericRepository<InvestmentRecDepot> investmentRecDepotRepo, IGenericRepository<InvestmentMedicineProd> investmentMedicineProdRepo,
+        IGenericRepository<MedicineProduct> medicineProductRepo, IGenericRepository<InvestmentRecDepot> investmentRecDepotRepo,IGenericRepository<InvestmentMedicineProd> investmentMedicineProdRepo,
         IGenericRepository<InvestmentRecProducts> investmentRecProductsRepo, IGenericRepository<InvestmentRecComment> investmentRecCommentRepo,
-        IGenericRepository<ProductInfo> productInfoRepo, IGenericRepository<ApprAuthConfig> appAuthConfigRepo, IGenericRepository<Employee> employeeRepo,
+        IGenericRepository<ProductInfo> productInfoRepo, IGenericRepository<ApprAuthConfig> appAuthConfigRepo, IGenericRepository<Employee> employeeRepo, 
         IGenericRepository<ApprovalAuthority> approvalAuthorityRepo, IGenericRepository<InvestmentRec> investmentRecRepo, StoreContext dbContext)
         {
             _mapper = mapper;
             _investmentRapidRepo = investmentRapidRepo;
             _InvestmentRapidApprRepo = InvestmentRapidApprRepo;
             _investmentInitRepo = investmentInitRepo;
-            _dbContext = dbContext;
+             _dbContext = dbContext;
             _medicineProductRepo = medicineProductRepo;
             _productInfoRepo = productInfoRepo;
             _investmentRecDepotRepo = investmentRecDepotRepo;

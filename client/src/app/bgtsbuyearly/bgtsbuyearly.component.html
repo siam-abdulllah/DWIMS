@@ -90,6 +90,7 @@
                                         <td>Budget Amount</td>
                                         <td>No Of Layer</td>
                                         <td>Expense</td>
+                                        <td>Total Allowcated</td>
                                         <td>Pipeline</td>
                                         <td>Remaining</td>
                                         <td>New Amount (Yearly)</td>
@@ -110,8 +111,12 @@
                                             {{a.expense | number: '1.0-0'}}
                                         </td>
                                         <td>
+                                            {{a.totalAlowcated | number: '1.0-0'}}
+                                        </td>
+                                        <td>
                                             {{a.pipeLine | number: '1.0-0'}}
                                         </td>
+                                     
                                         <td>
                                             {{a.remaining | number: '1.0-0'}}
                                         </td>
@@ -119,10 +124,10 @@
                                             <input class="form-control ng-valid ng-touched ng-dirty" type="text" placeholder="New Amount" name="{{a.newAmount}}"  id="sbuDetails" name="sbuDetails{{index}}"  #newAmount="ngModel"  [(ngModel)]="sbuDetails[index].newAmount" [disabled]="bugetSbuYearlyService.budgetSbuYearly.year != this.yyyy">
                                         </td>
                                         <td>
-                                            <button class="btn btn-success btn-lg btn-block" [disabled]="bugetSbuYearlyService.budgetSbuYearly.year != this.yyyy" (click)="UpdateSbuDetails(a.bgtSbuId,a.newAmount,a.expense)"  ><i class="fa fa-save"></i>&nbsp; Update</button>
+                                            <button class="btn btn-success btn-lg btn-block" [disabled]="bugetSbuYearlyService.budgetSbuYearly.year != this.yyyy" (click)="UpdateSbuDetails(a.bgtSbuId,a.newAmount,a.expense)" [disabled]="bugetSbuYearlyService.budgetSbuYearly.year != this.yyyy || a.sbuAmount == 0" ><i class="fa fa-save"></i>&nbsp; Update</button>
                                         </td>
                                         <td>
-                                            <button class="btn btn-success btn-lg btn-block" [disabled]="bugetSbuYearlyService.budgetSbuYearly.year != this.yyyy" (click)="getApprovalAuth(a.sbuName,a.sbuCode,a.sbuAmount)" style="width: 100px;" ><i class="fa fa-save"></i>&nbsp; Distribution</button>
+                                            <button class="btn btn-success btn-lg btn-block" [disabled]="bugetSbuYearlyService.budgetSbuYearly.year != this.yyyy" (click)="getApprovalAuth(a.sbuName,a.sbuCode,a.sbuAmount,a.expense)" style="width: 100px;" ><i class="fa fa-save"></i>&nbsp; Distribution</button>
                                         </td>
                                     </tr>
                                 </table>
@@ -161,7 +166,8 @@
                             <h6>Sbu: {{SbuName}}</h6>
                             <h6>Total Budget: {{sbuIndividualAmount | number: '1.0-0'}}</h6>
                             <h6>Allowcated Budget: {{allowcatedBudget | number: '1.0-0'}}</h6>
-                            <h6>Remaining Budget: {{remainingBudget | number: '1.0-0'}}</h6>
+                            <h6>Total Expense: {{expense | number: '1.0-0'}}</h6>
+                            <h6>Remaining Budget: {{sbuIndividualAmount -(allowcatedBudget+expense) | number: '1.0-0'}}</h6>
                         </div>
                         <div class="col-md-2" style="float:right; margin-bottom: 10px;">     
                             <button class="btn btn-success btn-lg btn-block" (click)="saveAuthSbuDetails()" ><i class="fa fa-save"></i>&nbsp; Save</button>
