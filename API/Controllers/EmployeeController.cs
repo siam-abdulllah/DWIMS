@@ -230,6 +230,19 @@ namespace API.Controllers
                 throw ex;
             }
         }
+        [HttpGet("getInitiatorName/{employeeId}")]
+        public async Task<ActionResult<Employee>> GetInitiatorName(int employeeId)
+        {
+            try
+            {
+                var data = await _employeeRepo.GetByIdAsync(employeeId);
+                return data;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
    
         [HttpGet("employeeForApproval")]
         public async Task<IReadOnlyList<RegApprovalDto>> GetEmployeeForApproval()

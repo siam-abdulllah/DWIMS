@@ -288,7 +288,7 @@ export class InvestmentFormComponent implements OnInit {
     }
     this.investmentFormService.investmentMedicineProdFormData.employeeId = parseInt(this.empId);
     this.investmentFormService.investmentTargetedProdFormData.employeeId = parseInt(this.empId);
-    this.investmentFormService.investmentFormData.InitiatorId = parseInt(this.empId);
+    this.investmentFormService.investmentFormData.initiatorId = parseInt(this.empId);
    
   }
   onChangeSubCampaignInCamp() {
@@ -413,7 +413,7 @@ export class InvestmentFormComponent implements OnInit {
         this.investmentFormService.investmentTargetedProdFormData.sbu = this.products[i].sbu;
       }
     }
-    if (this.isSubmitted == true && parseInt(this.empId) == this.investmentFormService.investmentFormData.InitiatorId) {
+    if (this.isSubmitted == true && parseInt(this.empId) == this.investmentFormService.investmentFormData.initiatorId) {
       this.toastr.warning("Investment already submitted");
       return false;
     }
@@ -496,7 +496,7 @@ export class InvestmentFormComponent implements OnInit {
       }
     }
 
-    if (this.isSubmitted == true && parseInt(this.empId) == this.investmentFormService.investmentFormData.InitiatorId) {
+    if (this.isSubmitted == true && parseInt(this.empId) == this.investmentFormService.investmentFormData.initiatorId) {
       this.toastr.warning("Investment already submitted");
       return false;
     }

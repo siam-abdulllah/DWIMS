@@ -149,7 +149,7 @@ namespace API.Controllers
             try
             {
                 string qry = "SELECT A.[Id], A.[DataStatus],A.[SetOn],A.[ModifiedOn],SBU SBUCode,SBUName,NULL Remarks " +
-                    " FROM [DIDS].[dbo].[EmpSbuMapping] A " +
+                    " FROM [dbo].[EmpSbuMapping] A " +
                     " WHERE A.DataStatus=1 AND  A.EmployeeId=" + employeeId;
 
 
@@ -168,7 +168,7 @@ namespace API.Controllers
             {
                 //string qry = "SELECT  [Id],[DataStatus],[SetOn],[ModifiedOn] ,[CompId],[DeptId] ," +
                 //    "[Year],[SBU],[EmployeeId],[AuthId],[Amount] ,[Segment],[PermEdit],[PermView]," +
-                //    "[PermAmt],[PermDonation],[Remarks],[EnteredBy] FROM [DIDS].[dbo].[BgtEmployee]" +
+                //    "[PermAmt],[PermDonation],[Remarks],[EnteredBy] FROM  [dbo].[BgtEmployee]" +
                 //    " WHERE [DataStatus]=1 AND [EmployeeId]=" + employeeId + " AND [SBU]='" + sbu + "' AND [CompId]=" + compId + " AND [DeptId]=" + deptId + " AND [Year]=" + year;
 
                 string qry = "SELECT A.[Id] , A.[DataStatus] ,A.[SetOn] ,A.[ModifiedOn] ,A.[CompId] ,A.[DeptId] ,A.[Year] " +
@@ -253,7 +253,7 @@ namespace API.Controllers
         //    {
         //        string qry = "SELECT  [Id],[DataStatus],[SetOn],[ModifiedOn] ,[CompId],[DeptId] ," +
         //            "[Year],[SBU],[EmployeeId],[AuthId],[Amount] ,[Segment],[PermEdit],[PermView]," +
-        //            "[PermAmt],[PermDonation],[Remarks],[EnteredBy] FROM [DIDS].[dbo].[BgtEmployee]" +
+        //            "[PermAmt],[PermDonation],[Remarks],[EnteredBy] FROM [dbo].[BgtEmployee]" +
         //            " WHERE [DataStatus]=1 AND [EmployeeId]=" + employeeId + " AND [SBU]='" + sbu + "' AND [CompId]=" + compId + " AND [DeptId]=" + deptId + " AND [Year]=" + year;
 
 

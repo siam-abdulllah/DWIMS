@@ -23,7 +23,7 @@
                                             <label>Employee</label>
                                         </div>
                                         <div class="col-md-3 ">
-                                            <ng-select [virtualScroll]="true" [items]="employees" [searchFn]="customSearchFnEmp" bindLabel="employeeName" bindValue="employeeSAPCode" placeholder="Select Employee" (change)="onChangeEmployee()" id="employee" formControlName="employee" ng-readonly="isAdmin">
+                                            <ng-select [virtualScroll]="true" [items]="employees" [searchFn]="customSearchFnEmp" bindLabel="employeeName" bindValue="employeeSAPCode" placeholder="Select Employee" (change)="onChangeEmployee()" id="employee" formControlName="employee" [readonly]="!isAdmin">
                                                 <ng-template ng-label-tmp let-item="item">
                                                     <span [ngOptionHighlight]="search">{{ item.employeeSAPCode}} - {{
                                                         item.employeeName}}</span>
@@ -82,7 +82,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group ">
-                                    <div class="row ">
+                                    <div class="row " *ngIf="isEdit">
                                         <div class="col-md-1 ">
                                             <label>Total Budget</label>
                                         </div>
@@ -116,13 +116,13 @@
                                             <label for="permEdit"> Can Edit</label>
                                         </div>
                                         <div class="col-md-2 ">
-                                            <input type="checkbox" id="permView" formControlName="permView" value="1">
+                                            <input [readonly]="!isAdmin" type="checkbox" id="permView" formControlName="permView" value="1">
                                             <label for="permView"> Can View</label>
                                         </div>
                                         <div class="col-md-6 ">
                                         </div>
                                         <div class="col-md-1">
-                                            <button class="btn btn-success btn-block" (click)="insertbgtEmpDetail()" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp;
+                                            <button *ngIf="isAdmin" class="btn btn-success btn-block" (click)="insertbgtEmpDetail()" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp;
                                                 Save</button>
                                         </div>
                                     </div>
@@ -137,7 +137,7 @@
                         </div>
                         <fieldset>
                             <div class="form-group ">
-                                <div class="row ">
+                                <div class="row " *ngIf="isEdit">
                                     <div class="col-md-1 ">
                                         <label>Donation</label>
                                     </div>
@@ -169,7 +169,7 @@
                                         <input class="form-control" id="donationAmt" formControlName="donationAmt" (keyup)="amountCal()">
                                     </div>
                                     <div class="col-md-2">
-                                        <button class="btn btn-success btn-block" (click)="insertBgtOwnDetail()" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Save
+                                        <button *ngIf="isEdit" class="btn btn-success btn-block" (click)="insertBgtOwnDetail()" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Save
                                             Details</button>
                                     </div>
                                 </div>

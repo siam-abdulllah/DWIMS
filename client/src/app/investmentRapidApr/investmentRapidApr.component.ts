@@ -106,6 +106,7 @@ export class InvestmentRapidAprComponent implements OnInit {
   isBudgetVisible: boolean;
   isBudgetForCampaignVisible: boolean;
   budgetCeilingForCampaign: IBudgetCeilingForCampaign;
+  initiatorName: any;
   constructor(private accountService: AccountService, public investmentFormService: InvestmentFormService,
    private router: Router,private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe, 
     private SpinnerService: NgxSpinnerService) { }
@@ -218,14 +219,13 @@ export class InvestmentRapidAprComponent implements OnInit {
     this.donationName=''; 
     this.isBudgetForCampaignVisible=false;
     this.isBudgetVisible=false;
+    this.initiatorName='';
   }
   resetSearch() {
     this.searchText = '';
   }
   selectInvestmentRapid(selectedRecord: IInvestmentForm) {
-
-    debugger
-
+    debugger;
     this.investmentFormService.investmentFormData = Object.assign({}, selectedRecord);
     this.donationName=selectedRecord.donationTypeName;
     if(selectedRecord.subCampaignId>0){
@@ -247,13 +247,17 @@ export class InvestmentRapidAprComponent implements OnInit {
           console.log(error);
         });
      }
-     
     this.getInvestmentRecProd()
     this.getProduct()
     this.isDonationValid = true;
-  
-
     this.isValid = true;
+    this.investmentFormService.getInitiatorName(selectedRecord.initiatorId).subscribe(response => {
+    var data = response as Employee;
+    this.initiatorName = data.employeeName;
+
+    }, error => {
+      console.log(error);
+    });
     this.InvestmentInitSearchModalRef.hide()
   }
   getEmployees(){
@@ -286,7 +290,7 @@ export class InvestmentRapidAprComponent implements OnInit {
       this.isAdmin = false;
     }
     this.investmentFormService.investmentMedicineProdFormData.employeeId = parseInt(this.empId);
-    this.investmentFormService.investmentFormData.InitiatorId = parseInt(this.empId);
+    this.investmentFormService.investmentFormData.initiatorId = parseInt(this.empId);
    
   }
   getInvestmentRecProd()
@@ -428,7 +432,7 @@ export class InvestmentRapidAprComponent implements OnInit {
         this.investmentFormService.investmentTargetedProdFormData.sbu = this.products[i].sbu;
       }
     }
-    if (this.isSubmitted == true && parseInt(this.empId) == this.investmentFormService.investmentFormData.InitiatorId) {
+    if (this.isSubmitted == true && parseInt(this.empId) == this.investmentFormService.investmentFormData.initiatorId) {
       this.toastr.warning("Investment already submitted");
       return false;
     }
@@ -510,7 +514,7 @@ export class InvestmentRapidAprComponent implements OnInit {
         }
       }
     }
-    if (this.isSubmitted == true && parseInt(this.empId) == this.investmentFormService.investmentFormData.InitiatorId) {
+    if (this.isSubmitted == true && parseInt(this.empId) == this.investmentFormService.investmentFormData.initiatorId) {
       this.toastr.warning("Investment already submitted");
       return false;
     }

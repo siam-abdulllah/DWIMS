@@ -80,7 +80,7 @@ namespace API.Controllers
                 }
                 else {
                      qry = "SELECT CAST('1' AS INT) AS Id ,1 AS DataStatus , SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(A.Id) Count " +
-                        " FROM[DIDS].[dbo].[InvestmentRecComment] A" +
+                        " FROM [dbo].[InvestmentRecComment] A" +
                         " WHere RecStatus = 'Approved' AND CompletionStatus = 1 AND NOT EXISTS (SELECT InvestmentInitId FROM InvestmentRecv WHERE InvestmentInitId=A.InvestmentInitId) AND EmployeeId=" + empCode;
                 }
                    

@@ -52,6 +52,11 @@ export class InvestmentFormService {
       return this.http.get(this.baseUrl + 'product/getProductForInvestment/' + sbu);
     
   }
+  getInitiatorName(employeeId: any) {
+  
+      return this.http.get(this.baseUrl + 'employee/getInitiatorName/' + employeeId);
+    
+  }
   getMedicineProduct() {
       return this.http.get(this.baseUrl + 'product/getMedicineProductForInvestment');
   }
