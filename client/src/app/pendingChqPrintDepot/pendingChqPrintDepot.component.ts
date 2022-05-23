@@ -172,8 +172,8 @@ export class PendingChqPrintDepotComponent implements OnInit {
     pdf.text('We hope and believe that you will be able to keep good relationship with the mentioned '+ r[0].donationTo+' by using this opportunity.' , 65, 330)
 
     pdf.text('With best wishes' , 85, 380)
-    pdf.text('Approved By' , 640, 380)
-    pdf.text( r[0].depotName , 600, 400)
+    // pdf.text('Approved By' , 640, 380)
+    // pdf.text( r[0].depotName , 600, 400)
 
 
     var pageContent = function (data) {

@@ -7,7 +7,9 @@ namespace Core.Entities
     {
         public int InvestmentInitId { get; set; }
         public int ProductId { get; set; }
+        public string ProductCode { get; set; }
         public string ProductName { get; set; }
+        public string SBU { get; set; }
         public int? EmployeeId { get; set; }
         public double TpVat { get; set; }
         public int BoxQuantity { get; set; }

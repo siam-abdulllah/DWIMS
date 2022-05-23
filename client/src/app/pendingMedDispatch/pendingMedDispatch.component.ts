@@ -66,10 +66,12 @@ export class PendingMedDispatchComponent implements OnInit {
         this.investmentMedicineProds = data;
         let row: any[] = [];
         let rowD: any[] = [];
-        let col = ['Medicine Name', 'Quantity [Box]', 'Amount'];
+        let col = ['Code', 'Medicine Name', 'SBU' ,'Quantity [Box]', 'Amount'];
         for (const a of this.investmentMedicineProds) {
           //row.push('Product');
+          row.push(a.productCode);
           row.push(a.productName);
+          row.push(a.sbu);
           row.push(a.dispatchQuantity);
           row.push((a.dispatchTpVat).toLocaleString());
           rowD.push(row);

@@ -38,6 +38,8 @@ export interface IMedicineDispatchDtl {
     boxQuantity : number;
     dispatchQuantity : number;
     dispatchTpVat : number;
+    sbu : string;
+    productCode : string;
 }
 
 export class MedicineDispatchDtl implements IMedicineDispatchDtl {
@@ -50,6 +52,8 @@ export class MedicineDispatchDtl implements IMedicineDispatchDtl {
     boxQuantity : number;
     dispatchQuantity : number;
     dispatchTpVat : number;
+    sbu : string;
+    productCode : string;
 }
 
 

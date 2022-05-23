@@ -40,7 +40,7 @@ namespace API.Controllers
             try
             {
                 var t = _db.MedicineDispatchDtl.FromSqlRaw("select CAST(ROW_NUMBER() OVER (ORDER BY (SELECT 1)) AS INT) AS Id,  " +
-                " 1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.InvestmentInitId, a.ProductId, b.ProductName,a.EmployeeId, a.BoxQuantity, a.TpVat, a.BoxQuantity 'DispatchQuantity', a.TpVat 'DispatchTpVat' from[dbo].[InvestmentMedicineProd] a left join MedicineProduct b on a.ProductId = b.Id where a.InvestmentInitId='" + investmentInitId + "' ").ToList();
+                " 1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.InvestmentInitId, a.ProductId, b.ProductName, b.ProductCode, b.SorgaCode SBU,a.EmployeeId, a.BoxQuantity, a.TpVat, a.BoxQuantity 'DispatchQuantity', a.TpVat 'DispatchTpVat' from[dbo].[InvestmentMedicineProd] a left join MedicineProduct b on a.ProductId = b.Id where a.InvestmentInitId='" + investmentInitId + "' ").ToList();
                 return t;
             }
             catch (System.Exception ex)
@@ -180,13 +180,14 @@ namespace API.Controllers
                 var empData = _db.Employee.FromSqlRaw(empQry).ToList();
 
                 string qry = " Select  DISTINCT CAST(ROW_NUMBER() OVER (ORDER BY dtl.Id) AS INT)  AS Id, 1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn,  SYSDATETIMEOFFSET() AS ModifiedOn, a.ProposeFor,  dtl.PaymentRefNo PayRefNo, depo.DepotName, dtl.InvestmentInitId, " +
-              " a.DonationTo, depo.DepotCode, d.DonationTypeName,   dtl.ApprovedAmount  ProposedAmount, e.EmployeeName, a.MarketName, ir.SetOn 'ApprovedDate', aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy', " +
+              " a.DonationTo, depo.DepotCode, d.DonationTypeName,   dtl.ApprovedAmount  ProposedAmount, e.EmployeeName, ISNULL(a.MarketName, '') MarketName, ir.SetOn 'ApprovedDate', aprBy.EmployeeName + ',' + aprBy.DesignationName  'ApprovedBy', " +
               " CASE  " +
               " WHEN a.donationto = 'Doctor' THEN (SELECT doctorname  FROM   investmentdoctor x  INNER JOIN doctorinfo y ON x.doctorid = y.id WHERE  x.investmentinitid = a.id) " +
               " WHEN a.donationto = 'Institution' THEN (SELECT institutionname FROM  investmentinstitution x INNER JOIN institutioninfo y ON x.institutionid = y.id WHERE x.investmentinitid = a.id) " +            
               " WHEN a.donationto = 'Campaign' THEN (SELECT  dc.DoctorName  + ',' + subcampaignname FROM   investmentcampaign x INNER JOIN campaigndtl y  ON x.campaigndtlid = y.id  INNER JOIN [dbo].[subcampaign] C  ON y.subcampaignid = C.id INNER JOIN DoctorInfo dc on x.DoctorId = dc.Id   WHERE  x.investmentinitid = a.id) " +
               " WHEN a.donationto = 'Bcds' THEN (SELECT bcdsname   FROM   investmentbcds x  INNER JOIN bcds y   ON x.bcdsid = y.id   WHERE  x.investmentinitid = a.id) " +
-              " WHEN a.donationto = 'Society' THEN (SELECT societyname FROM   investmentsociety x INNER JOIN society y ON x.societyid = y.id WHERE  x.investmentinitid = a.id) END  DoctorName " +
+              " WHEN a.donationto = 'Society' THEN (SELECT societyname FROM   investmentsociety x INNER JOIN society y ON x.societyid = y.id WHERE  x.investmentinitid = a.id) " +
+              " ELSE a.donationto END  DoctorName " +
               " from InvestmentInit a " +
               " inner join InvestmentRecComment ir on a.Id = ir.InvestmentInitId  " +
               " inner join InvestmentDetailTracker dtl on dtl.InvestmentInitId = a.Id " +
@@ -197,8 +198,6 @@ namespace API.Controllers
         
               " where a.DataStatus= 1 AND  ir.RecStatus = 'Approved' AND inDetail.PaymentMethod = 'Cash' " +
               " AND a.DonationId = 4 AND  ir.EmployeeId = inDetail.EmployeeId " +
-              //" AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
-              //" AND  ir.InvestmentInitId not in (SELECT InvestmentInitId FROM MedicineDispatch) ";
               " AND dtl.PaymentRefNo not in (SELECT PayRefNo FROM medicinedispatch where PayRefNo is not null) ";
                 if (userRole != "Administrator")
                 {
