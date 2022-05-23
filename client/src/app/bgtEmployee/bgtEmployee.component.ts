@@ -1,13 +1,13 @@
 import { Component, ElementRef, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormControl, FormGroup, FormBuilder, Validators  } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from "ngx-spinner";
 import { GenericParams } from '../shared/models/genericParams';
 import { AccountService } from '../account/account.service';
-import { CurrencyPipe,DatePipe, getLocaleDateTimeFormat } from '@angular/common';
+import { CurrencyPipe, DatePipe, getLocaleDateTimeFormat } from '@angular/common';
 import { BgtEmployeeService } from '../_services/bgtEmployee.service';
 import { IApprovalAuthority } from '../shared/models/approvalAuthority';
 import { ISBU } from '../shared/models/sbu';
@@ -19,7 +19,7 @@ import { IDonation } from '../shared/models/donation';
 })
 export class BgtEmployeeComponent implements OnInit {
 
-  @ViewChild('search', {static: false}) searchTerm: ElementRef;
+  @ViewChild('search', { static: false }) searchTerm: ElementRef;
   @ViewChild('pendingListModal', { static: false }) pendingListModal: TemplateRef<any>;
   pendingListModalRef: BsModalRef;
   bsConfig: Partial<BsDatepickerConfig>;
@@ -32,21 +32,19 @@ export class BgtEmployeeComponent implements OnInit {
   SBUs: ISBU[];
   numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
   btnShow: boolean = true;
-  valShow: boolean = true;
-  isHide: boolean = false;
   donationTypeName: string;
-  sbuData:SbuData[];
+  sbuData: SbuData[];
   searchText = '';
   config: any;
   totalCount = 0;
   userRole: any;
-  constructor(public bgtService: BgtEmployeeService, private SpinnerService: NgxSpinnerService, private modalService: BsModalService, private accountService: AccountService, 
-     private router: Router, private toastr: ToastrService, private datePipe: DatePipe, public _formBuilder: FormBuilder) {
-   }
+  constructor(public bgtService: BgtEmployeeService, private SpinnerService: NgxSpinnerService, private modalService: BsModalService, private accountService: AccountService,
+    private router: Router, private toastr: ToastrService, private datePipe: DatePipe, public _formBuilder: FormBuilder) {
+  }
 
-   createbgtEmployeeForm() {
+  createbgtEmployeeForm() {
     // this.bgtEmployee = new FormGroup({
-      this.bgtEmployee = this._formBuilder.group({
+    this.bgtEmployee = this._formBuilder.group({
       // deptId: new FormControl('', [Validators.required]),
       // year: new FormControl('', [Validators.required]),
       // authId: new FormControl('', [Validators.required]),
@@ -98,25 +96,21 @@ export class BgtEmployeeComponent implements OnInit {
     });
   }
 
-  getAllocatedAmount()
-  {
+  getAllocatedAmount() {
 
-    if(this.bgtEmployee.value.segment == "" || this.bgtEmployee.value.segment == null)
-    {
+    if (this.bgtEmployee.value.segment == "" || this.bgtEmployee.value.segment == null) {
       this.toastr.error('Select Segmentation');
       return;
     }
 
-    if(this.bgtEmployee.value.ttlAmount == "" || this.bgtEmployee.value.ttlAmount == null)
-    {
+    if (this.bgtEmployee.value.ttlAmount == "" || this.bgtEmployee.value.ttlAmount == null) {
       this.toastr.error('Enter Amount');
       return;
     }
 
-    if(this.bgtEmployee.value.segment == "Monthly")
-    {
+    if (this.bgtEmployee.value.segment == "Monthly") {
       const d = new Date();
-      
+
       var remMonth = 12 - d.getMonth() - 1;
       var ttlAloc = this.bgtEmployee.value.ttlPerson * this.bgtEmployee.value.ttlAmount * remMonth;
 
@@ -124,8 +118,7 @@ export class BgtEmployeeComponent implements OnInit {
         ttlAllocate: ttlAloc,
       });
     }
-    else if(this.bgtEmployee.value.segment == "Yearly")
-    {
+    else if (this.bgtEmployee.value.segment == "Yearly") {
       var ttlAloc = this.bgtEmployee.value.ttlPerson * this.bgtEmployee.value.ttlAmount;
 
       this.bgtEmployee.patchValue({
@@ -139,12 +132,12 @@ export class BgtEmployeeComponent implements OnInit {
     });
   }
 
-  getApprovalAuthority(){
+  getApprovalAuthority() {
     this.bgtService.getApprovalAuthority().subscribe(response => {
       this.approvalAuthorities = response as IApprovalAuthority[];
-     }, error => {
-        console.log(error);
-     });
+    }, error => {
+      console.log(error);
+    });
   }
 
   getSBU() {
@@ -155,15 +148,14 @@ export class BgtEmployeeComponent implements OnInit {
     });
   }
 
-  resetSegment()
-  {
+  resetSegment() {
     this.bgtEmployee.patchValue({
       remaining: "",
       segment: "",
       ttlAllocate: "",
     });
   }
-  
+
   ngOnInit() {
     this.createbgtEmployeeForm();
     this.reset();
@@ -181,35 +173,30 @@ export class BgtEmployeeComponent implements OnInit {
 
   insertbgtEmployee() {
 
-    if(this.bgtEmployee.value.remaining < 0)
-    {
+    if (this.bgtEmployee.value.remaining < 0) {
       this.toastr.error('There is not enough budget left to be allocated');
       return;
     }
 
-    if(this.bgtEmployee.value.deptId == "" || this.bgtEmployee.value.deptId == null)
-    {
+    if (this.bgtEmployee.value.deptId == "" || this.bgtEmployee.value.deptId == null) {
       this.toastr.error('Select Department');
       return;
     }
-    if(this.bgtEmployee.value.sbu == "" || this.bgtEmployee.value.sbu == null)
-    {
+    if (this.bgtEmployee.value.sbu == "" || this.bgtEmployee.value.sbu == null) {
       this.toastr.error('Select SBU');
       return;
     }
-    if(this.bgtEmployee.value.year == "" || this.bgtEmployee.value.year == null)
-    {
+    if (this.bgtEmployee.value.year == "" || this.bgtEmployee.value.year == null) {
       this.toastr.error('Enter Year');
       return;
     }
-    if(this.bgtEmployee.value.ttlAmount == "" || this.bgtEmployee.value.ttlAmount == null)
-    {
+    if (this.bgtEmployee.value.ttlAmount == "" || this.bgtEmployee.value.ttlAmount == null) {
       this.toastr.error('Amount Can not be 0');
       return;
     }
 
     var yr = new Date(this.bgtEmployee.value.year);
-    
+
     this.bgtService.bgtEmpFormData.deptId = this.bgtEmployee.value.deptId;
     this.bgtService.bgtEmpFormData.year = yr.getFullYear();
     this.bgtService.bgtEmpFormData.sbu = this.bgtEmployee.value.sbu;
@@ -222,47 +209,39 @@ export class BgtEmployeeComponent implements OnInit {
 
     this.bgtService.insertBgtEmp(this.bgtService.bgtEmpFormData).subscribe(
       res => {
-        this.toastr.success('Master Budget Data Saved successfully', 'Budget Dispatch') 
-        this.valShow = false;
+        this.toastr.success('Master Budget Data Saved successfully', 'Budget Dispatch')
       },
       err => { console.log(err); }
     );
   }
 
-  generateData()
-  {
-    if(this.bgtEmployee.value.deptId == "" || this.bgtEmployee.value.deptId == null)
-    {
+  generateData() {
+    if (this.bgtEmployee.value.deptId == "" || this.bgtEmployee.value.deptId == null) {
       this.toastr.error('Select Department');
       return;
     }
 
-    if(this.bgtEmployee.value.year == "" || this.bgtEmployee.value.year == null)
-    {
+    if (this.bgtEmployee.value.year == "" || this.bgtEmployee.value.year == null) {
       this.toastr.error('Select Year');
       return;
     }
 
-    if(this.bgtEmployee.value.donationId == "" || this.bgtEmployee.value.donationId == null)
-    {
+    if (this.bgtEmployee.value.donationId == "" || this.bgtEmployee.value.donationId == null) {
       this.toastr.error('Select Donation Type');
       return;
     }
 
-    if(this.bgtEmployee.value.authId == "" || this.bgtEmployee.value.authId == null)
-    {
+    if (this.bgtEmployee.value.authId == "" || this.bgtEmployee.value.authId == null) {
       this.toastr.error('Select Authorization Level');
       return;
     }
 
-    if(this.bgtEmployee.value.deptId == 1 && this.bgtEmployee.value.authId == 8)
-    {
+    if (this.bgtEmployee.value.deptId == 1 && this.bgtEmployee.value.authId == 8) {
       this.toastr.error('Wrong Department / Authorization Combination');
       return;
     }
 
-    if(this.bgtEmployee.value.deptId == 2 && this.bgtEmployee.value.authId != 8)
-    {
+    if (this.bgtEmployee.value.deptId == 2 && this.bgtEmployee.value.authId != 8) {
       this.toastr.error('Wrong Department / Authorization Combination');
       return;
     }
@@ -270,80 +249,75 @@ export class BgtEmployeeComponent implements OnInit {
     this.donationTypeName = this.donations.filter(v => v.id == this.bgtEmployee.get('donationId').value)[0].donationTypeName;
 
     var yr = new Date(this.bgtEmployee.value.year);
-    this.bgtService.getSBUWiseDonationLocation(this.bgtEmployee.value.donationId,this.bgtEmployee.value.deptId,yr.getFullYear(),this.bgtEmployee.value.authId).subscribe(
+    this.bgtService.getSBUWiseDonationLocation(this.bgtEmployee.value.donationId, this.bgtEmployee.value.deptId, yr.getFullYear(), this.bgtEmployee.value.authId).subscribe(
       res => {
         this.sbuData = res as ISbuData[];
+        this.btnShow = false;
       },
       err => { console.log(err); }
     );
-
   }
 
-  saveData()
-  {
-    for(var i=0;i<this.sbuData.length;i++)
-    {
+  saveData() {
+    if (this.sbuData.length == 0) {
+      this.toastr.error('No Data to Save');
+      return;
+    }
+
+    for (var i = 0; i < this.sbuData.length; i++) {
+      if(this.sbuData[i].expense > this.sbuData[i].ttlAmt)
+      {
+            this.toastr.error('Insufficient allocation for SBU: '+ this.sbuData[i].sbu);
+            return;
+      }
+    }
+
+    for (var i = 0; i < this.sbuData.length; i++) {
       var yr = new Date(this.bgtEmployee.value.year);
-    
+
       this.sbuData[i].deptId = this.bgtEmployee.value.deptId;
       this.sbuData[i].donationId = this.bgtEmployee.value.donationId;
       this.sbuData[i].segment = this.bgtEmployee.value.segment;
       this.sbuData[i].year = yr.getFullYear();
       this.sbuData[i].enteredBy = parseInt(this.empId);
-
-      // this.bgtService.bgtOwnFormData.sbu = this.sbuData[i].sbu;
-      // this.bgtService.bgtOwnFormData.authId = this.bgtEmployee.value.authId;
-      // this.bgtService.bgtOwnFormData.amount = this.sbuData[i].amount;
-
-      // this.bgtService.bgtOwnFormData.amtLimit = this.sbuData[i].limit;
-      // this.bgtService.bgtOwnFormData.donationId = this.sbuData[i].donationId;
-      // this.bgtService.bgtOwnFormData.enteredBy = parseInt(this.empId);
-
-      //ListData.push(this.bgtService.bgtOwnFormData);
     }
 
-      this.bgtService.insertBgtOwnList(this.sbuData).subscribe(
-        res => {
-          this.toastr.success('Budget Distributed successfully', 'Budget Distribution') 
-          this.btnShow = false;
-        },
-        err => { console.log(err); }
-      );
+    this.bgtService.insertBgtOwnList(this.sbuData).subscribe(
+      res => {
+        this.toastr.success('Budget Distributed successfully', 'Budget Distribution')
+        this.btnShow = false;
+      },
+      err => { console.log(err); }
+    );
   }
 
 
-  getTotal(selectedRow: ISbuData)
-  {
+  getTotal(selectedRow: ISbuData) {
     debugger;
-    if(this.bgtEmployee.value.segment == "Monthly")
-    {
-      const d = new Date();     
+    if (this.bgtEmployee.value.segment == "Monthly") {
+      const d = new Date();
       var remMonth = 12 - d.getMonth();
       var ttl = selectedRow.totalPerson * selectedRow.amount * remMonth;
-      var rem = selectedRow.sbuAmount + selectedRow.donationTypeAllocated - selectedRow.expense -selectedRow.totalAllocated - ttl;
-      if(rem >= 0)
-      {
+
+      var rem = selectedRow.sbuAmount + selectedRow.donationTypeAllocated - selectedRow.expense - selectedRow.totalAllocated - ttl;
+      if (rem >= 0) {
         selectedRow.ttlAmt = ttl;
       }
-      else
-      {
+      else {
         selectedRow.amount = 0;
         selectedRow.ttlAmt = 0;
         this.toastr.error('Insuficient Budget', 'Budget Distribution');
         return;
       }
     }
-    else if(this.bgtEmployee.value.segment == "Yearly")
-    {
+    else if (this.bgtEmployee.value.segment == "Yearly") {
       var ttl = selectedRow.totalPerson * selectedRow.amount;
-      var rem = selectedRow.sbuAmount + selectedRow.donationTypeAllocated - selectedRow.expense -selectedRow.totalAllocated - ttl;
-    
-      if(rem >= 0)
-      {
+      var rem = selectedRow.sbuAmount + selectedRow.donationTypeAllocated - selectedRow.expense - selectedRow.totalAllocated - ttl;
+
+      if (rem >= 0) {
         selectedRow.ttlAmt = ttl;
       }
-      else
-      {
+      else {
         selectedRow.amount = 0;
         selectedRow.ttlAmt = 0;
         this.toastr.error('Insuficient Budget', 'Budget Distribution');
@@ -352,19 +326,17 @@ export class BgtEmployeeComponent implements OnInit {
     }
   }
 
-  resetSearch(){
+  resetSearch() {
     this.searchText = '';
-}
+  }
 
 
-openPendingListModal(template: TemplateRef<any>) {
-  this.pendingListModalRef = this.modalService.show(template, this.config);
-}
+  openPendingListModal(template: TemplateRef<any>) {
+    this.pendingListModalRef = this.modalService.show(template, this.config);
+  }
 
   reset() {
     this.btnShow = true;
-    this.valShow = true;
-    this.isHide = false;
     this.bgtEmployee.setValue({
       deptId: "",
       year: "",
@@ -372,7 +344,7 @@ openPendingListModal(template: TemplateRef<any>) {
       sbu: "",
       ttlAmount: "",
       segment: "",
-      permEdit:"",
+      permEdit: "",
       permView: "",
       donationId: "",
       donationAmount: "",
@@ -382,7 +354,7 @@ openPendingListModal(template: TemplateRef<any>) {
       prevAllocate: "",
       ttlPerson: "",
       remaining: "",
-      donationAmt:"",
+      donationAmt: "",
       transLimit: "",
       grdAmount: "",
       grdLimit: "",
@@ -407,7 +379,7 @@ interface ISbuData {
   amount: number;
   limit: number;
   ttlAmt: number;
-  donationTypeAllocated : number;
+  donationTypeAllocated: number;
   totalAllocated: number;
   enteredBy: number;
 }
@@ -427,7 +399,7 @@ export class SbuData implements ISbuData {
   amount: number;
   limit: number;
   ttlAmt: number;
-  donationTypeAllocated : number;
+  donationTypeAllocated: number;
   totalAllocated: number;
   enteredBy: number;
 } 

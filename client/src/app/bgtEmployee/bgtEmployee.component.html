@@ -118,7 +118,7 @@
                                         </div> -->
 
                                         <div class="col-md-2">
-                                            <button class="btn btn-success btn-block" (click)="generateData()" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Generate Data</button>
+                                            <button class="btn btn-info btn-block" (click)="generateData()" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Generate Data</button>
                                         </div>
                                     </div>
                                 </div>
@@ -202,7 +202,7 @@
                                     </div>
 
                                     <div class="col-md-2">
-                                        <button class="btn btn-success btn-block" (click)="saveData()" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Save</button>
+                                        <button class="btn btn-success btn-block" (click)="saveData()" [hidden]="btnShow" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Save</button>
                                     </div>
                                 </div>
                             </div>
