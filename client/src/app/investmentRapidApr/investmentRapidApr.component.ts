@@ -29,6 +29,8 @@ import { BreadcrumbModule } from 'xng-breadcrumb';
 import { IMedicineProduct, MedicineProduct } from '../shared/models/medicineProduct';
 import { IDepotInfo } from '../shared/models/depotInfo';
 import { ISBU } from '../shared/models/sbu';
+import { IBudgetCeiling } from '../shared/models/budgetCeiling';
+import { IBudgetCeilingForCampaign } from '../shared/models/budgetCeilingForCampaign';
 @Component({
   selector: 'app-investmentRapidApr',
   templateUrl: './investmentRapidApr.component.html',
@@ -45,6 +47,7 @@ export class InvestmentRapidAprComponent implements OnInit {
   convertedDate: string;
   empId: string;
   searchText = '';
+  donationName: string;
   //configs: any;
   minDate: Date;
   maxDate: Date;
@@ -99,6 +102,10 @@ export class InvestmentRapidAprComponent implements OnInit {
     ignoreBackdropClick: true
   };
   institutionType: string;
+  budgetCeiling: IBudgetCeiling;
+  isBudgetVisible: boolean;
+  isBudgetForCampaignVisible: boolean;
+  budgetCeilingForCampaign: IBudgetCeilingForCampaign;
   constructor(private accountService: AccountService, public investmentFormService: InvestmentFormService,
    private router: Router,private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe, 
     private SpinnerService: NgxSpinnerService) { }
@@ -140,6 +147,7 @@ export class InvestmentRapidAprComponent implements OnInit {
     this.investmentFormService.getRapidSubCampaigns(this.investmentFormService.investmentFormData.sbu).subscribe(response => {
       debugger;
       this.subCampaignRapid = response as ISubCampaignRapid[];
+      debugger;
     }, error => {
       console.log(error);
     });
@@ -207,7 +215,9 @@ export class InvestmentRapidAprComponent implements OnInit {
     this.investmentFormService.investmentFormData = new InvestmentForm();
     this.investmentMedicineProds = [];
     this.investmentTargetedProds =[];
-
+    this.donationName=''; 
+    this.isBudgetForCampaignVisible=false;
+    this.isBudgetVisible=false;
   }
   resetSearch() {
     this.searchText = '';
@@ -217,6 +227,13 @@ export class InvestmentRapidAprComponent implements OnInit {
     debugger
 
     this.investmentFormService.investmentFormData = Object.assign({}, selectedRecord);
+    this.donationName=selectedRecord.donationTypeName;
+    if(selectedRecord.subCampaignId>0){
+      this.getBudgetForCampaign();
+    }
+    else {
+      this.getBudget();
+    }
     this.getCampain();
      this.investmentFormService.investmentFormData.proposalDateStr =this.datePipe.transform(selectedRecord.propsalDate, 'dd/MM/YYYY');
      if(this.investmentFormService.investmentFormData.type=='4')
@@ -230,6 +247,7 @@ export class InvestmentRapidAprComponent implements OnInit {
           console.log(error);
         });
      }
+     
     this.getInvestmentRecProd()
     this.getProduct()
     this.isDonationValid = true;
@@ -653,8 +671,24 @@ export class InvestmentRapidAprComponent implements OnInit {
       ignoreBackdropClick: true
     });
   }
-
-
+  getBudget() {
+    this.investmentFormService.getBudget(this.investmentFormService.investmentFormData.sbu, parseInt(this.empId), parseInt(this.investmentFormService.investmentFormData.type)).subscribe(response => {
+      this.budgetCeiling = response[0] as IBudgetCeiling;
+      this.isBudgetVisible = true;
+      this.isBudgetForCampaignVisible = false;
+    }, error => {
+      console.log(error);
+    });
+  }
+  getBudgetForCampaign() {
+    this.investmentFormService.getBudgetForCampaign(this.investmentFormService.investmentFormData.sbu, parseInt(this.empId), parseInt(this.investmentFormService.investmentFormData.type), this.investmentFormService.investmentFormData.subCampaignId).subscribe(response => {
+      this.budgetCeilingForCampaign = response[0] as IBudgetCeilingForCampaign;
+      this.isBudgetVisible = false;
+      this.isBudgetForCampaignVisible = true;
+    }, error => {
+      console.log(error);
+    });
+  }
 }
 export interface ICampaignDtlProductRapid {
   id: number;

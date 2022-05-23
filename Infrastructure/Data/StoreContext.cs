@@ -53,6 +53,7 @@ namespace Infrastructure.Data
         public DbSet<InvestmentInitForApr> InvestmentInitForApr { get; set; }
         [NotMapped]
         public DbSet<BudgetCeilingForCampaign> BudgetCeilingForCampaign { get; set; }
+       
         public DbSet<InvestmentInit> InvestmentInit { get; set; }
         public DbSet<InvestmentInstitution> InvestmentInstitution { get; set; }
         public DbSet<InvestmentSociety> InvestmentSociety { get; set; }
@@ -156,6 +157,8 @@ namespace Infrastructure.Data
         public DbSet<CountDouble> CountDouble { get; set; } 
         [NotMapped]
         public DbSet<DonWiseExpByEmp> DonWiseExpByEmp { get; set; }
+        [NotMapped]
+        public DbSet<BgtOwnTotal> BgtOwnTotal { get; set; }
 
         [NotMapped]
         public DbSet<BgtEmployeeLocationWiseSBUExp> BgtEmployeeLocationWiseSBUExp { get; set; }

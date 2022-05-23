@@ -27,6 +27,13 @@ export class InvestmentFormService {
 
 
   constructor(private http: HttpClient, private router: Router) { }
+  getBudget(sbu: string, empID: number, donationId: number) {
+    return this.http.get(this.baseUrl + 'approvalCeiling/getBudgetCeiling/' + empID + '/' + sbu + '/' + donationId);
+  }
+  getBudgetForCampaign(sbu: string, empID: number, donationId: number, campaignDtlId: number) {
+    debugger;
+    return this.http.get(this.baseUrl + 'approvalCeiling/getBudgetCeilingForCampaign/' + empID + '/' + sbu + '/' + donationId + '/' + campaignDtlId);
+  }
   getDepot() {
     return this.http.get(this.baseUrl + 'employee/depotForInvestment');
   }
@@ -175,7 +182,5 @@ insertInvestmentMedicineProd() {
     debugger;
     return this.http.post(this.baseUrl + 'investmentrapid/saveInvestmentRapid', this.investmentFormData);
   }
- 
-  
 }
 

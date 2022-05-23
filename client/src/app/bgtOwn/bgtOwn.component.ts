@@ -86,10 +86,10 @@ export class BgtOwnComponent implements OnInit {
         }
         this.bgtOwn.patchValue({
           totalAmount: sum + parseFloat(this.bgtOwn.value.donationAmt),
-          remaining: this.bgtOwn.value.prevAllocate - (sum + parseFloat(this.bgtOwn.value.donationAmt)+parseFloat(this.bgtOwn.value.totalExpense))
+          remaining: this.bgtOwn.value.prevAllocate - (sum + parseFloat(this.bgtOwn.value.donationAmt) + parseFloat(this.bgtOwn.value.totalExpense))
         });
         this.bgtOwn.patchValue({
-          remaining: parseFloat(this.bgtOwn.value.prevAllocate) - (parseFloat(this.bgtOwn.getRawValue().totalAmount)+parseFloat(this.bgtOwn.value.totalExpense)),
+          remaining: parseFloat(this.bgtOwn.value.prevAllocate) - (parseFloat(this.bgtOwn.getRawValue().totalAmount) + parseFloat(this.bgtOwn.value.totalExpense)),
         });
         if (this.bgtOwn.value.remaining < 0) {
           this.toastr.warning('Donation wise budget can not be greater than total budget');
@@ -102,43 +102,62 @@ export class BgtOwnComponent implements OnInit {
           }
           this.bgtOwn.patchValue({
             totalAmount: sum,
-            remaining: this.bgtOwn.value.prevAllocate - (sum+parseFloat(this.bgtOwn.value.totalExpense))
+            remaining: this.bgtOwn.value.prevAllocate - (sum + parseFloat(this.bgtOwn.value.totalExpense))
           });
         }
       }
     }
-      else {
-        this.toastr.warning('Please select donation first');
-        this.bgtOwn.patchValue({
-          donationAmt: 0,
-        });
-      }
+    else {
+      this.toastr.warning('Please select donation first');
+      this.bgtOwn.patchValue({
+        donationAmt: 0,
+      });
+    }
   }
   donAmountCal(selectedRecord: IBgtOwn) {
     debugger;
     if (selectedRecord.newAmount != 0 && selectedRecord.newAmount != "" || selectedRecord.newAmount != undefined) {
+
       var sum = 0;
-      for (let i = 0; i < this.bgtOwns.length; i++) {
-        sum = sum + parseFloat(this.bgtOwns[i].newAmount);
+      if (selectedRecord.segment == 'Monthly') {
+        const d = new Date();
+        var remMonth = 12 - d.getMonth();
+        selectedRecord.totalAmount = selectedRecord.newAmount * remMonth;
+        for (let i = 0; i < this.bgtOwns.length; i++) {
+          sum = sum + parseFloat(this.bgtOwns[i].totalAmount);
+        }
+        this.bgtOwn.patchValue({
+          //totalAmount: (sum - parseFloat(selectedRecord.amount))+ parseFloat(selectedRecord.newAmount),
+          totalAmount: sum,
+          remaining: this.bgtOwn.value.prevAllocate - (sum + parseFloat(this.bgtOwn.value.totalExpense))
+        });
       }
-      this.bgtOwn.patchValue({
-        //totalAmount: (sum - parseFloat(selectedRecord.amount))+ parseFloat(selectedRecord.newAmount),
-        totalAmount: sum,
-        remaining: this.bgtOwn.value.prevAllocate - (sum+parseFloat(this.bgtOwn.value.totalExpense))
-      });
+      else {
+        selectedRecord.totalAmount = selectedRecord.newAmount;
+        for (let i = 0; i < this.bgtOwns.length; i++) {
+          sum = sum + parseFloat(this.bgtOwns[i].totalAmount);
+        }
+        this.bgtOwn.patchValue({
+          totalAmount: sum,
+          remaining: this.bgtOwn.value.prevAllocate - (sum + parseFloat(this.bgtOwn.value.totalExpense))
+        });
+      }
+
+
       //var a=this.bgtOwn.getRawValue().totalAmount;
       //this.bgtOwn.value.totalAmount = (this.bgtOwn.value.totalAmount - selectedRecord.amount) + selectedRecord.newAmount
       //this.bgtOwn.value.remaining = this.bgtOwn.value.prevAllocate - this.bgtOwn.value.totalAmount
       if (this.bgtOwn.value.remaining < 0) {
         this.toastr.warning('Donation wise budget can not be greater than total budget');
         selectedRecord.newAmount = 0;
+        selectedRecord.totalAmount = selectedRecord.newAmount;
         sum = 0;
         for (let i = 0; i < this.bgtOwns.length; i++) {
-          sum = sum + parseFloat(this.bgtOwns[i].newAmount);
+          sum = sum + parseFloat(this.bgtOwns[i].totalAmount);
         }
         this.bgtOwn.patchValue({
           totalAmount: sum,
-          remaining: this.bgtOwn.value.prevAllocate - (sum+parseFloat(this.bgtOwn.value.totalExpense))
+          remaining: this.bgtOwn.value.prevAllocate - (sum + parseFloat(this.bgtOwn.value.totalExpense))
         });
       }
     }
@@ -322,55 +341,51 @@ export class BgtOwnComponent implements OnInit {
     yr.getFullYear();
     var sum = 0;
     this.bgtService.getEmpWiseBgt(this.bgtOwn.value.employee, this.bgtOwn.value.sbu, yr.getFullYear(), 1000, this.bgtOwn.getRawValue().deptId, this.bgtOwn.getRawValue().authId).subscribe(response => {
-     if(this.userRole== 'Administrator')
-     {
-      this.isEdit=true;
-      this.isView=true;
-     }
-     else{
-       debugger;
-      if(response[0].permEdit==true)
-      {
-        this.isEdit=true;}
-      else{
-        this.isEdit=false;
+      if (this.userRole == 'Administrator') {
+        this.isEdit = true;
+        this.isView = true;
       }
-      if(response[0].permView==true)
-      {
-        this.isView=true;}
-      else{
-        this.isView=false;}
-     }
-     debugger;
+      else {
+        if (response[0].permEdit == true) {
+          this.isEdit = true;
+        }
+        else {
+          this.isEdit = false;
+        }
+        if (response[0].permView == true) {
+          this.isView = true;
+        }
+        else {
+          this.isView = false;
+        }
+      }
       this.bgtOwn.patchValue({
         prevAllocate: response[0].amount,
         permEdit: response[0].permEdit,
         permView: response[0].permView,
       });
       this.bgtService.getEmpOwnBgt(this.bgtOwn.value.employee, this.bgtOwn.value.sbu, yr.getFullYear(), 1000, this.bgtOwn.getRawValue().deptId, this.bgtOwn.getRawValue().authId).subscribe(response => {
-        
         this.bgtOwns = response as IBgtOwn[];
         for (let i = 0; i < this.bgtOwns.length; i++) {
           this.bgtOwns[i].newAmount = this.bgtOwns[i].amount;
           this.bgtOwns[i].newAmountLimit = this.bgtOwns[i].amtLimit;
-          sum = sum + parseFloat(this.bgtOwns[i].newAmount);
+          sum = sum + parseFloat(this.bgtOwns[i].totalAmount);
         }
         this.bgtService.getEmpDonWiseTotExp(this.bgtOwn.value.employee, this.bgtOwn.value.sbu, yr.getFullYear(), 1000, this.bgtOwn.getRawValue().deptId, this.bgtOwn.getRawValue().authId).subscribe(response => {
           var data = response as IDonWiseExpByEmp[];
           debugger;
           for (let i = 0; i < this.bgtOwns.length; i++) {
             for (let j = 0; j < data.length; j++) {
-            if(this.bgtOwns[i].donationId==data[j].donationId)
-              {
-                this.bgtOwns[i].expense=data[j].count;
+              if (this.bgtOwns[i].donationId == data[j].donationId) {
+                this.bgtOwns[i].expense = data[j].count;
               }
             }
           }
-         
+
         }, error => {
           console.log(error);
         });
-        
+
       }, error => {
         console.log(error);
       });
@@ -380,7 +395,7 @@ export class BgtOwnComponent implements OnInit {
         });
         this.bgtOwn.patchValue({
           totalAmount: sum,
-          remaining: this.bgtOwn.value.prevAllocate - (sum+parseFloat(this.bgtOwn.value.totalExpense)),
+          remaining: this.bgtOwn.value.prevAllocate - (sum + parseFloat(this.bgtOwn.value.totalExpense)),
         });
       }, error => {
         console.log(error);
@@ -488,7 +503,7 @@ export class BgtOwnComponent implements OnInit {
   getEmployeeId() {
     this.empId = this.accountService.getEmployeeId();
     this.userRole = this.accountService.getUserRole();
-    
+
   }
   getEmployee() {
     this.bgtService.getAllEmp().subscribe(response => {
@@ -496,13 +511,13 @@ export class BgtOwnComponent implements OnInit {
       if (this.userRole == 'Administrator') {
         this.isAdmin = true;
       }
-      else{
+      else {
         this.bgtOwn.patchValue({
           employee: this.empId,
         });
         this.onChangeEmployee();
         this.isAdmin = false;
-  
+
       }
     }, error => {
       console.log(error);
@@ -599,11 +614,7 @@ export class BgtOwnComponent implements OnInit {
       err => { console.log(err); }
     );
   }
-  insertbgtOwnDetail() {
-    // if (this.bgtOwn.value.remaining < 0) {
-    //   this.toastr.warning('Donation wise budget can not be greater than total budget');
-    //   return;
-    // }
+  insertBgtOwnDetail() {
     if (this.bgtOwn.value.donationId != "" && this.bgtOwn.value.donationId != null && this.bgtOwn.value.donationId != undefined) {
       for (let i = 0; i < this.bgtOwns.length; i++) {
         if (this.bgtOwns[i].donationId == this.bgtOwn.value.donationId) {
@@ -614,26 +625,18 @@ export class BgtOwnComponent implements OnInit {
           return;
         }
       }
-      if(this.bgtOwn.value.transLimit == 0 || this.bgtOwn.value.transLimit == "" || this.bgtOwn.value.transLimit == null || this.bgtOwn.value.transLimit == undefined)
-      {
+      if (this.bgtOwn.value.transLimit == 0 || this.bgtOwn.value.transLimit == "" || this.bgtOwn.value.transLimit == null || this.bgtOwn.value.transLimit == undefined) {
         this.toastr.error('Please insert transaction limit');
-         return;
+        return;
       }
-      if(this.bgtOwn.value.donationAmt == 0 || this.bgtOwn.value.donationAmt == "" || this.bgtOwn.value.donationAmt == null || this.bgtOwn.value.donationAmt == undefined)
-      {
+      if (this.bgtOwn.value.donationAmt == 0 || this.bgtOwn.value.donationAmt == "" || this.bgtOwn.value.donationAmt == null || this.bgtOwn.value.donationAmt == undefined) {
         this.toastr.error('Please insert transaction limit');
-         return;
+        return;
       }
-      if(this.bgtOwn.value.segment == 0 || this.bgtOwn.value.segment == "" || this.bgtOwn.value.segment == null || this.bgtOwn.value.segment == undefined)
-      {
+      if (this.bgtOwn.value.segment == 0 || this.bgtOwn.value.segment == "" || this.bgtOwn.value.segment == null || this.bgtOwn.value.segment == undefined) {
         this.toastr.error('Please insert transaction limit');
-         return;
+        return;
       }
-      // if(this.bgtOwn.value.remaining <= 0)
-      // {
-      //   this.toastr.error('There is not enough budget left to be allocated');
-      //   return;
-      // }
 
       if (this.bgtOwn.getRawValue().deptId == "" || this.bgtOwn.getRawValue().deptId == null) {
         this.toastr.error('Select Department');
@@ -661,7 +664,6 @@ export class BgtOwnComponent implements OnInit {
       }
       debugger;
       var yr = new Date(this.bgtOwn.value.year);
-      //yr.getFullYear();
       let data = new BgtOwn();
       data.compId = 1000;
       data.deptId = this.bgtOwn.getRawValue().deptId;
@@ -674,7 +676,7 @@ export class BgtOwnComponent implements OnInit {
       data.amtLimit = this.bgtOwn.value.transLimit;
       data.segment = this.bgtOwn.value.segment;
       //this.bgtOwns.push(data);
-      this.bgtOwns.push({ compId: 1000, deptId: this.bgtOwn.getRawValue().deptId, authId: this.bgtOwn.getRawValue().authId, year: yr.getFullYear(), SBU: this.bgtOwn.value.sbu, donationId: this.bgtOwn.value.donationId, employeeId: this.bgtOwn.value.employee, enteredBy: parseFloat(this.empId), amount: this.bgtOwn.value.donationAmt, amtLimit: this.bgtOwn.value.transLimit, segment: this.bgtOwn.value.segment, month: 0, newAmount: this.bgtOwn.value.donationAmt, newAmountLimit: this.bgtOwn.value.transLimit, expense: 0, pipeLine: 0 });
+      this.bgtOwns.push({ compId: 1000, deptId: this.bgtOwn.getRawValue().deptId, authId: this.bgtOwn.getRawValue().authId, year: yr.getFullYear(), SBU: this.bgtOwn.value.sbu, donationId: this.bgtOwn.value.donationId, employeeId: this.bgtOwn.value.employee, enteredBy: parseFloat(this.empId), amount: this.bgtOwn.value.donationAmt, amtLimit: this.bgtOwn.value.transLimit, segment: this.bgtOwn.value.segment, month: 0, newAmount: this.bgtOwn.value.donationAmt, newAmountLimit: this.bgtOwn.value.transLimit, expense: 0, pipeLine: 0, totalAmount: 0 });
     }
     for (let i = 0; i < this.bgtOwns.length; i++) {
       this.bgtOwns[i].employeeId = this.bgtOwn.value.employee;
@@ -780,6 +782,7 @@ export interface IBgtOwn {
   segment: string;
   newAmount: any;
   newAmountLimit: any;
+  totalAmount: any;
   expense: any;
   pipeLine: any;
 }
@@ -798,6 +801,7 @@ export class BgtOwn implements IBgtOwn {
   segment: string;
   newAmount: any;
   newAmountLimit: any;
+  totalAmount: any;
   expense: any;
   pipeLine: any;
 }

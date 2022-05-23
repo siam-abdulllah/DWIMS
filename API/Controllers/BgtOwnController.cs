@@ -188,7 +188,7 @@ namespace API.Controllers
             }
         }
         [HttpGet("getEmpOwnBgt/{employeeId}/{sbu}/{year}/{compId}/{deptId}/{authId}")]
-        public IReadOnlyList<BgtOwn> GetEmpOwnBgt(int employeeId, string sbu, int year, int compId, int deptId, int authId)
+        public List<BgtOwnTotal> GetEmpOwnBgt(int employeeId, string sbu, int year, int compId, int deptId, int authId)
         {
             try
             {
@@ -198,14 +198,17 @@ namespace API.Controllers
                 //    " AND [Month]=Month(GETDATE()) AND [Year]=" + year;
                 string qry = "SELECT A.[Id] , A.[DataStatus] ,A.[SetOn] ,A.[ModifiedOn] ,A.[CompId] ,A.[DeptId] ,A.[Year] ,A.[Month] ,A.[SBU] " +
                   " ,A.[DonationId] ,A.[Amount] ,A.[AmtLimit] ,A.[Segment] ,A.[Remarks] ,A.[EnteredBy] ,A.[AuthId] ,A.[Code] ,A.[CompoCode] " +
+                  ",(SELECT isnull(sum(ISNULL(C.[Amount], 0)), 0) FROM BgtOwn C WHERE C.SBU = A.SBU AND C.CompoCode = A.CompoCode" +
+                  " AND C.DeptId = A.DeptId AND C.CompId = A.CompId AND C.AuthId = A.AuthId AND C.DataStatus = 1 AND C.DonationId = A.DonationId" +
+                  " AND C.[Year] = A.[Year]) TotalAmount" +
                   " FROM BgtOwn A INNER JOIN EmpSbuMapping B ON A.Code = B.TagCode " +
                   " WHERE B.EmployeeId =" + employeeId + " AND B.SBU = '" + sbu + "'  AND B.DeptId = " + deptId + " " +
                   " AND B.CompId = " + compId + " AND A.AuthId = " + authId + "  AND A.DataStatus = 1 " +
                   " AND ( A.Month = Month(GETDATE()) OR A.Month=0)  AND [Year]=" + year;
 
-                var results = _dbContext.BgtOwn.FromSqlRaw(qry).ToList();
-              
-             
+                var results = _dbContext.BgtOwnTotal.FromSqlRaw(qry).ToList();
+                
+
                 return results;
             }
             catch (System.Exception ex)
@@ -215,7 +218,7 @@ namespace API.Controllers
         }
 
         [HttpGet("getDonWiseBgt/{employeeId}/{sbu}/{year}/{compId}/{deptId}/{donationId}")]
-        public IReadOnlyList<BgtOwn> GetDonWiseBgt(int employeeId, string sbu, int year, int compId, int deptId, int donationId, int authId)
+        public List<BgtOwnTotal> GetDonWiseBgt(int employeeId, string sbu, int year, int compId, int deptId, int donationId, int authId)
         {
             try
             {
@@ -232,7 +235,9 @@ namespace API.Controllers
                  " AND ( A.Month = Month(GETDATE()) OR A.Month=0)  AND [Year]=" + year;
 
 
-                var results = _dbContext.BgtOwn.FromSqlRaw(qry).ToList();
+                //var results = _dbContext.BgtOwn.FromSqlRaw(qry).ToList();
+                var results = _dbContext.ExecSQL<BgtOwnTotal>(qry).ToList();
+
                 return results;
             }
             catch (System.Exception ex)
