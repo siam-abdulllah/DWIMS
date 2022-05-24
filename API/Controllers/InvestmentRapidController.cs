@@ -529,7 +529,7 @@ namespace API.Controllers
                 string qry = "";
                 if (from == "init")
                 {
-                    qry = string.Format(@" Select  IR.*,IRA.ApprovalAuthId,d.DonationTypeName,IRA.ApprovedStatus,IRA.ApprovalRemarks as Approval  from InvestmentRapid IR 
+                    qry = string.Format(@" Select  IR.*,IRA.ApproveBy ApprovalAuthId,d.DonationTypeName,IRA.ApprovedStatus,IRA.ApprovalRemarks as Approval  from InvestmentRapid IR 
                                         left join Donation d on IR.Type = d.Id
                                         left join InvestmentRapidAppr IRA on IR.Id = IRA.InvestmentRapidId
                                         where  IR.InitiatorId={0} and IRA.ApprovedStatus is  null or IRA.ApprovedStatus ='Pending'", employeeId);
@@ -537,7 +537,7 @@ namespace API.Controllers
                 }
                 else
                 {
-                    qry = string.Format(@" 	Select  IR.*,IRA.ApprovalAuthId,IT.PaymentRefNo,d.DonationTypeName,IRA.ApprovedStatus,IRA.ApprovalRemarks as Approval  from InvestmentRapid IR 
+                    qry = string.Format(@" 	Select  IR.*,IRA.ApproveBy ApprovalAuthId,IT.PaymentRefNo,d.DonationTypeName,IRA.ApprovedStatus,IRA.ApprovalRemarks as Approval  from InvestmentRapid IR 
                                         left join Donation d on IR.Type = d.Id
                                         left join InvestmentRapidAppr IRA on IR.Id = IRA.InvestmentRapidId
 									    left join InvestmentDetailTracker IT on IT.InvestmentInitId = IR.InvestmentInitId
