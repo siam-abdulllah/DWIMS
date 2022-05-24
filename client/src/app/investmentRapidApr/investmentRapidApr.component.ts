@@ -663,6 +663,7 @@ export class InvestmentRapidAprComponent implements OnInit {
         },
         err => { 
           console.log(err); 
+       
         }
       );
     }

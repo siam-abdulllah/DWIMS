@@ -148,8 +148,7 @@ namespace API.Controllers
                         invRapidApr.InvestmentInitId = investmentInit.Id;
                         invRapidApr.InvestmentRapidId = investmentForm.Id;
 
-                        invRapidApr.ApprovalRemarks = investmentRapidDto.Approval;
-                        invRapidApr.ApprovedStatus = investmentRapidDto.ApprovedStatus;
+         
                         invRapidApr.ApprovalAuthId = investmentRapidDto.ApprovalAuthId;
                         invRapidApr.ModifiedOn = DateTime.Now;
                         _InvestmentRapidApprRepo.Update(invRapidApr);
@@ -188,8 +187,7 @@ namespace API.Controllers
                     invRapidApr.InvestmentInitId = investmentInit.Id;
                     invRapidApr.InvestmentRapidId = investmentForm.Id;
                     invRapidApr.ApprovedBy = ApprovedBy;
-                    invRapidApr.ApprovalRemarks = investmentRapidDto.Approval;
-                    invRapidApr.ApprovedStatus = investmentRapidDto.ApprovedStatus;
+              
                     invRapidApr.ApprovalAuthId = investmentRapidDto.ApprovalAuthId;
                     invRapidApr.SetOn = investmentForm.SetOn;
                     invRapidApr.ModifiedOn = DateTime.Now;
