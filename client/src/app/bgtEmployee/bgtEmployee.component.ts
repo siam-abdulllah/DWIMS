@@ -265,9 +265,21 @@ export class BgtEmployeeComponent implements OnInit {
     }
 
     for (var i = 0; i < this.sbuData.length; i++) {
-      if(this.sbuData[i].expense > this.sbuData[i].ttlAmt)
+      if(this.sbuData[i].amount > 0 && this.sbuData[i].expense > this.sbuData[i].ttlAmt)
       {
             this.toastr.error('Insufficient allocation for SBU: '+ this.sbuData[i].sbu);
+            return;
+      }
+
+      if(this.sbuData[i].ttlAmt == null)
+      {
+            this.toastr.error('Input is necessary for SBU: '+ this.sbuData[i].sbu);
+            return;
+      }
+
+      if(this.sbuData[i].amount > 0 && (this.sbuData[i].limit == 0 || this.sbuData[i].limit == null))
+      {
+            this.toastr.error('Transaction limit needs to be set for SBU: '+ this.sbuData[i].sbu);
             return;
       }
     }

@@ -15,13 +15,13 @@ namespace API.Controllers
     {
         private readonly StoreContext _dbContext;
 
-        public BgtEmployeeController( StoreContext dbContext)
+        public BgtEmployeeController(StoreContext dbContext)
         {
             _dbContext = dbContext;
         }
 
 
-          [HttpGet("approvalAuthoritiesForConfig")]
+        [HttpGet("approvalAuthoritiesForConfig")]
         public IReadOnlyList<ApprovalAuthority> GetApprovalAuthorities()
         {
             try
@@ -44,9 +44,9 @@ namespace API.Controllers
                 string qry = "";
 
                 qry = " select 1 as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,  ISNULL(SUM(SBUAmount), 0)  Count from BgtSBUTotal " +
-                    " where DeptId = "+ deptId + " " +
-                    " and SBU = '"+ sbu + "' " +
-                    " and [Year] = '"+ year  + "' " +
+                    " where DeptId = " + deptId + " " +
+                    " and SBU = '" + sbu + "' " +
+                    " and [Year] = '" + year + "' " +
                     " and DataStatus = 1 ";
 
                 var result = _dbContext.CountLong.FromSqlRaw(qry).ToList();
@@ -68,9 +68,9 @@ namespace API.Controllers
                 string qry = "";
 
                 qry = " select 1 as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, ISNULL(SUM(Amount), 0) Count from BgtOwn " +
-                    " where DeptId = "+ deptId + " " +
-                    " and SBU = '"+ sbu + "' " +
-                    " and [Year] = '"+ year  + "' " +
+                    " where DeptId = " + deptId + " " +
+                    " and SBU = '" + sbu + "' " +
+                    " and [Year] = '" + year + "' " +
                     " and DataStatus = 1 ";
 
                 var result = _dbContext.CountLong.FromSqlRaw(qry).ToList();
@@ -84,7 +84,7 @@ namespace API.Controllers
         }
 
         [HttpGet("getSBUWiseDonationLocation/{donationId}/{deptId}/{year}/{authId}")]
-        public ActionResult<IReadOnlyList<BgtEmployeeLocationWiseSBUExp>> GetTotalAuthPerson(int donationId, int deptId, int year ,int authId)
+        public ActionResult<IReadOnlyList<BgtEmployeeLocationWiseSBUExp>> GetTotalAuthPerson(int donationId, int deptId, int year, int authId)
         {
             try
             {
@@ -134,16 +134,20 @@ namespace API.Controllers
         }
 
 
-         [HttpPost("insertBgtOwn")]
+        [HttpPost("insertBgtOwn")]
         //public Int32 BgtOwnInsert(BgtOwnInsertDto dto)
         public Int32 BgtOwnInsert(List<BgtOwnInsertDto> dto)
         {
             var results = 0;
-            
-            foreach(var a in dto)
+
+            foreach (var a in dto)
             {
-                try
+                if (a.Amount > 0)  
                 {
+                    try
+                    {
+
+
                     List<SqlParameter> parms = new List<SqlParameter>
                     {
                         new SqlParameter("@DeptId", a.DeptId),
@@ -157,29 +161,31 @@ namespace API.Controllers
                         new SqlParameter("@DonationId", a.DonationId),
                     };
 
-                    if (a.AuthId == 8)   // GPM
-                    {
-                        results = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsertPMD] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId", parms.ToArray());                  
+                        if (a.AuthId == 8)   // GPM
+                        {
+                            results = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsertPMD] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId", parms.ToArray());
+                        }
+                        else if (a.AuthId == 3)   // RSM
+                        {
+                            results = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsertRSM] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId", parms.ToArray());
+                        }
+                        else if (a.AuthId == 5)    // DSM
+                        {
+                            results = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsertDSM] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId", parms.ToArray());
+                        }
+                        else if (a.AuthId == 6)     // Management
+                        {
+                            results = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsert] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId", parms.ToArray());
+                        }
                     }
-                    else if (a.AuthId == 3)   // RSM
+
+                    catch (Exception ex)
                     {
-                        results = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsertRSM] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId", parms.ToArray());
+                        throw ex;
                     }
-                    else if (a.AuthId == 5)    // DSM
-                    {
-                        results = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsertDSM] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId", parms.ToArray());
-                    }
-                    else if (a.AuthId == 6)     // Management
-                    {
-                        results = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsert] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId", parms.ToArray());
-                    }  
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
                 }
             }
-             return results;
+            return results;
         }
     }
 }
