@@ -403,6 +403,21 @@ export class BgtOwnComponent implements OnInit {
           this.bgtOwns[i].newAmountLimit = this.bgtOwns[i].amtLimit;
           sum = sum + parseFloat(this.bgtOwns[i].totalAmount);
         }
+        this.bgtOwn.patchValue({
+          totalAmount: sum,
+        });
+        this.bgtService.getEmpWiseTotExp(this.bgtOwn.value.employee, this.bgtOwn.value.sbu, yr.getFullYear(), 1000, this.bgtOwn.getRawValue().deptId, this.bgtOwn.getRawValue().authId).subscribe(response => {
+          this.bgtOwn.patchValue({
+            totalExpense: response[0].count,
+          });
+          debugger;
+          this.bgtOwn.patchValue({
+            totalAmount: sum,
+            remaining: this.bgtOwn.value.prevAllocate - (sum + parseFloat(this.bgtOwn.value.totalExpense)),
+          });
+        }, error => {
+          console.log(error);
+        });
         this.bgtService.getEmpDonWiseTotExp(this.bgtOwn.value.employee, this.bgtOwn.value.sbu, yr.getFullYear(), 1000, this.bgtOwn.getRawValue().deptId, this.bgtOwn.getRawValue().authId).subscribe(response => {
           var data = response as IDonWiseExpByEmp[];
           debugger;
@@ -421,17 +436,7 @@ export class BgtOwnComponent implements OnInit {
       }, error => {
         console.log(error);
       });
-      this.bgtService.getEmpWiseTotExp(this.bgtOwn.value.employee, this.bgtOwn.value.sbu, yr.getFullYear(), 1000, this.bgtOwn.getRawValue().deptId, this.bgtOwn.getRawValue().authId).subscribe(response => {
-        this.bgtOwn.patchValue({
-          totalExpense: response[0].count,
-        });
-        this.bgtOwn.patchValue({
-          totalAmount: sum,
-          remaining: this.bgtOwn.value.prevAllocate - (sum + parseFloat(this.bgtOwn.value.totalExpense)),
-        });
-      }, error => {
-        console.log(error);
-      });
+     
     }, error => {
       console.log(error);
     });
@@ -679,18 +684,7 @@ export class BgtOwnComponent implements OnInit {
     );
   }
   insertBgtOwnDetail() {
-    if (this.bgtOwn.value.transLimit == 0 || this.bgtOwn.value.transLimit == "" || this.bgtOwn.value.transLimit == null || this.bgtOwn.value.transLimit == undefined) {
-      this.toastr.warning('Please insert transaction limit');
-      return;
-    }
-    if (this.bgtOwn.value.donationAmt == 0 || this.bgtOwn.value.donationAmt == "" || this.bgtOwn.value.donationAmt == null || this.bgtOwn.value.donationAmt == undefined) {
-      this.toastr.warning('Please insert transaction limit');
-      return;
-    }
-    if (this.bgtOwn.value.segment == 0 || this.bgtOwn.value.segment == "" || this.bgtOwn.value.segment == null || this.bgtOwn.value.segment == undefined) {
-      this.toastr.warning('Please insert transaction segment');
-      return;
-    }
+    
 
     if (this.bgtOwn.getRawValue().deptId == "" || this.bgtOwn.getRawValue().deptId == null) {
       this.toastr.warning('Select Department');
@@ -708,15 +702,16 @@ export class BgtOwnComponent implements OnInit {
       this.toastr.warning('Amount Can not be 0');
       return;
     }
-    if (this.bgtOwn.value.transLimit == "" || this.bgtOwn.value.transLimit == null || this.bgtOwn.value.transLimit == undefined) {
-      this.toastr.warning('Please Insert Transation Limit');
-      return;
-    }
-    if (this.bgtOwn.value.donationAmt == "" || this.bgtOwn.value.donationAmt == null || this.bgtOwn.value.donationAmt == undefined) {
-      this.toastr.warning('Please Insert Donation Amount');
-      return;
-    }
-    if (this.bgtOwn.value.donationId != "" && this.bgtOwn.value.donationId != null && this.bgtOwn.value.donationId != undefined) {
+    // if (this.bgtOwn.value.transLimit == "" || this.bgtOwn.value.transLimit == null || this.bgtOwn.value.transLimit == undefined) {
+    //   this.toastr.warning('Please Insert Transation Limit');
+    //   return;
+    // }
+    // if (this.bgtOwn.value.donationAmt == "" || this.bgtOwn.value.donationAmt == null || this.bgtOwn.value.donationAmt == undefined) {
+    //   this.toastr.warning('Please Insert Donation Amount');
+    //   return;
+    // }
+    if (this.bgtOwn.value.donationId != "" && this.bgtOwn.value.donationId != null && this.bgtOwn.value.donationId != undefined)
+     {
       for (let i = 0; i < this.bgtOwns.length; i++) {
         if (this.bgtOwns[i].donationId == this.bgtOwn.value.donationId) {
           this.toastr.error('Donation already existed');
@@ -725,6 +720,18 @@ export class BgtOwnComponent implements OnInit {
           });
           return;
         }
+      }
+      if (this.bgtOwn.value.transLimit == 0 || this.bgtOwn.value.transLimit == "" || this.bgtOwn.value.transLimit == null || this.bgtOwn.value.transLimit == undefined) {
+        this.toastr.warning('Please insert transaction limit');
+        return;
+      }
+      if (this.bgtOwn.value.donationAmt == 0 || this.bgtOwn.value.donationAmt == "" || this.bgtOwn.value.donationAmt == null || this.bgtOwn.value.donationAmt == undefined) {
+        this.toastr.warning('Please insert transaction limit');
+        return;
+      }
+      if (this.bgtOwn.value.segment == 0 || this.bgtOwn.value.segment == "" || this.bgtOwn.value.segment == null || this.bgtOwn.value.segment == undefined) {
+        this.toastr.warning('Please insert transaction segment');
+        return;
       }
       debugger;
       var yr = new Date(this.bgtOwn.value.year);
@@ -743,7 +750,8 @@ export class BgtOwnComponent implements OnInit {
       this.bgtOwns.push({ compId: 1000, deptId: this.bgtOwn.getRawValue().deptId, authId: this.bgtOwn.getRawValue().authId, year: yr.getFullYear(), SBU: this.bgtOwn.value.sbu, donationId: this.bgtOwn.value.donationId, employeeId: this.bgtOwn.value.employee, enteredBy: parseFloat(this.empId), amount: this.bgtOwn.value.donationAmt, amtLimit: this.bgtOwn.value.transLimit, segment: this.bgtOwn.value.segment, month: 0, newAmount: this.bgtOwn.value.donationAmt, newAmountLimit: this.bgtOwn.value.transLimit, expense: 0, pipeLine: 0, totalAmount: 0 });
     }
     else{
-      if(this.bgtOwns.length>=0)
+      debugger;
+      if(this.bgtOwns.length==0)
       {
         this.toastr.error('Donation can not be empty');
         return;

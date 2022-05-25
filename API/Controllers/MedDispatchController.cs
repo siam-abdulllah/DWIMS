@@ -150,6 +150,8 @@ namespace API.Controllers
                     {
                         InvestmentInitId = trackDto.InvestmentInitId,
                         ProductName = trackDto.ProductName,
+                        ProductCode=null,
+                        SBU=null,
                         ProductId = trackDto.ProductId,
                         BoxQuantity = trackDto.BoxQuantity,
                         TpVat = trackDto.TpVat,

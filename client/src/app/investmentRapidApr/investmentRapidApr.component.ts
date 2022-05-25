@@ -232,7 +232,14 @@ export class InvestmentRapidAprComponent implements OnInit {
       this.getBudgetForCampaign();
     }
     else {
-      this.getBudget();
+      if(this.investmentFormService.investmentFormData.proposeFor != 'Others')
+      {
+        this.getBudget();
+      }
+      else{
+        this.isBudgetVisible=false;
+        this.isBudgetForCampaignVisible=false;
+      }
     }
     this.getCampain();
      this.investmentFormService.investmentFormData.proposalDateStr =this.datePipe.transform(selectedRecord.propsalDate, 'dd/MM/YYYY');

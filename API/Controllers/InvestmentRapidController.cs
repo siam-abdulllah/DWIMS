@@ -36,18 +36,18 @@ namespace API.Controllers
         private readonly StoreContext _dbContext;
 
 
-        public InvestmentRapidController(IMapper mapper, IGenericRepository<InvestmentInit> investmentInitRepo,IGenericRepository<InvestmentRapid> investmentRapidRepo,
+        public InvestmentRapidController(IMapper mapper, IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<InvestmentRapid> investmentRapidRepo,
             IGenericRepository<InvestmentRapidAppr> InvestmentRapidApprRepo, IGenericRepository<InvestmentDetailTracker> investmentDetailTrackerRepo,
-        IGenericRepository<MedicineProduct> medicineProductRepo, IGenericRepository<InvestmentRecDepot> investmentRecDepotRepo,IGenericRepository<InvestmentMedicineProd> investmentMedicineProdRepo,
+        IGenericRepository<MedicineProduct> medicineProductRepo, IGenericRepository<InvestmentRecDepot> investmentRecDepotRepo, IGenericRepository<InvestmentMedicineProd> investmentMedicineProdRepo,
         IGenericRepository<InvestmentRecProducts> investmentRecProductsRepo, IGenericRepository<InvestmentRecComment> investmentRecCommentRepo,
-        IGenericRepository<ProductInfo> productInfoRepo, IGenericRepository<ApprAuthConfig> appAuthConfigRepo, IGenericRepository<Employee> employeeRepo, 
+        IGenericRepository<ProductInfo> productInfoRepo, IGenericRepository<ApprAuthConfig> appAuthConfigRepo, IGenericRepository<Employee> employeeRepo,
         IGenericRepository<ApprovalAuthority> approvalAuthorityRepo, IGenericRepository<InvestmentRec> investmentRecRepo, StoreContext dbContext)
         {
             _mapper = mapper;
             _investmentRapidRepo = investmentRapidRepo;
             _InvestmentRapidApprRepo = InvestmentRapidApprRepo;
             _investmentInitRepo = investmentInitRepo;
-             _dbContext = dbContext;
+            _dbContext = dbContext;
             _medicineProductRepo = medicineProductRepo;
             _productInfoRepo = productInfoRepo;
             _investmentRecDepotRepo = investmentRecDepotRepo;
@@ -148,7 +148,7 @@ namespace API.Controllers
                         invRapidApr.InvestmentInitId = investmentInit.Id;
                         invRapidApr.InvestmentRapidId = investmentForm.Id;
 
-         
+
                         invRapidApr.ApprovalAuthId = investmentRapidDto.ApprovalAuthId;
                         invRapidApr.ModifiedOn = DateTime.Now;
                         _InvestmentRapidApprRepo.Update(invRapidApr);
@@ -187,7 +187,7 @@ namespace API.Controllers
                     invRapidApr.InvestmentInitId = investmentInit.Id;
                     invRapidApr.InvestmentRapidId = investmentForm.Id;
                     invRapidApr.ApprovedBy = ApprovedBy;
-              
+
                     invRapidApr.ApprovalAuthId = investmentRapidDto.ApprovalAuthId;
                     invRapidApr.SetOn = investmentForm.SetOn;
                     invRapidApr.ModifiedOn = DateTime.Now;
@@ -309,7 +309,9 @@ namespace API.Controllers
                     {
                         if (investmentRapidDto.SubCampaignId == 0)
                         {
-                            List<SqlParameter> parms = new List<SqlParameter>
+                            if (investmentRapidDto.ProposeFor != "Otheres")
+                            {
+                                List<SqlParameter> parms = new List<SqlParameter>
                             {
                             new SqlParameter("@SBU", investmentForm.SBU),
                             new SqlParameter("@DID", investmentForm.Type),
@@ -319,13 +321,16 @@ namespace API.Controllers
                             new SqlParameter("@ASTATUS", investmentRapidDto.ApprovedStatus),
                             new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
                             };
-                            var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheckNew @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
-                            if (parms[6].Value.ToString() != "True")
-                            {
-                                return BadRequest(new ApiResponse(400, parms[6].Value.ToString()));
+                                var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheckNew @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
+                                if (parms[6].Value.ToString() != "True")
+                                {
+                                    return BadRequest(new ApiResponse(400, parms[6].Value.ToString()));
+                                }
                             }
+
                         }
-                        else {
+                        else
+                        {
                             List<SqlParameter> parms = new List<SqlParameter>
                                 {
                                     new SqlParameter("@SBU", investmentForm.SBU),
@@ -344,7 +349,7 @@ namespace API.Controllers
                             }
 
                         }
-                        
+
                         var alreadyDetailTrackerExistSpec = new InvestmentDetailTrackerSpecification(investmentForm.InvestmentInitId);
                         var alreadyDetailTrackerExistInvestmentAprList = await _investmentDetailTrackerRepo.ListAsync(alreadyDetailTrackerExistSpec);
                         if (alreadyDetailTrackerExistInvestmentAprList.Count > 0)
@@ -476,7 +481,7 @@ namespace API.Controllers
                     _InvestmentRapidApprRepo.Savechange();
                 }
                 #endregion
-             
+
                 return new InvestmentRapidDto
                 {
                     Id = investmentForm.Id,
