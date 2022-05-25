@@ -34,7 +34,7 @@ namespace API.Controllers
      
 
         [HttpGet("getAllSbuBgtList/{deptId}/{compId}/{year}")]
-        public async Task<List<SBUVM>> GetAllSbuBgtListAsync(int deptId,int compId,int year)
+        public List<SBUVM> GetAllSbuBgtListAsync(int deptId,int compId,int year)
         {
             List<SBUVM> dsResult = new List<SBUVM>();
             try
@@ -85,7 +85,7 @@ namespace API.Controllers
         }
 
         [HttpGet("getAllPipelineExpenseList/{deptId}/{compId}/{year}")]
-        public async Task<List<PipeLineExpense>> GetAllPipeLineExpenseListAsync(int deptId, int compId, int year)
+        public List<PipeLineExpense> GetAllPipeLineExpenseListAsync(int deptId, int compId, int year)
         {
             try
             {
@@ -132,7 +132,7 @@ namespace API.Controllers
         }
 
         [HttpGet("GetAppAuthDetails/{sbuCode}/{deptId}")]
-        public async Task<List<AppAuthDetails>> GetAppAuthDetails(string sbuCode,int deptId)
+        public List<AppAuthDetails> GetAppAuthDetails(string sbuCode,int deptId)
         {
             try
             {

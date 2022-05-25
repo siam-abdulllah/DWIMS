@@ -16,27 +16,27 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
-                <form novalidate autocomplete="off"  #investmentInitForm="ngForm">
+                <form novalidate autocomplete="off" #investmentInitForm="ngForm">
                     <div class="card card-primary">
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-sm-8">
                                     <h3 class="card-title">Investment Rapid</h3>
                                 </div>
-                          
+
                                 <div class="col-sm-1">
-                                    <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="investmentInitForm.invalid" (click)="confirmSubmission()" ><i class="fa fa-save"></i>&nbsp; Save</button>
+                                    <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="investmentInitForm.invalid" (click)="confirmSubmission()"><i class="fa fa-save"></i>&nbsp; Save</button>
                                 </div>
                                 <div class="col-sm-1">
-                                    <button class="btn btn-info btn-lg btn-block" type="button"(click)="getInvestmentRapid(null)" ><i class="fa fa-search" ></i>Search</button>
+                                    <button class="btn btn-info btn-lg btn-block" type="button" (click)="getInvestmentRapid(null)"><i class="fa fa-search" ></i>Search</button>
                                 </div>
                                 <div class="col-sm-1">
-                                    <button class="btn btn-danger btn-lg btn-block" type="button"(click)="resetPageLoad()" ><i class="fa fa-undo"></i>Reset</button>
+                                    <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetPageLoad()"><i class="fa fa-undo"></i>Reset</button>
                                 </div>
                             </div>
                         </div>
                         <div class="card-body">
-                          
+
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-1">
@@ -44,12 +44,12 @@
                                         <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-2">
-                                    
+
                                         <select class="form-control" name="ProposeFor" required [(ngModel)]="investmentFormService.investmentFormData.proposeFor">
                                             <option  [ngValue]="null">Select Propose For</option>
                                             <option value="Sales">Sales</option>
                                             <option value="PMD">PMD</option>
-                                            <option value="Others">Others</option>
+                                            <option value="Others Rapid">Others</option>
                                         </select>
                                     </div>
                                     <div class="col-md-1">
@@ -57,7 +57,7 @@
                                         <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-2">
-                                        <select class="form-control " id="sbu"  name="sbu" #sbu="ngModel" (change)="ChangeSBU()" [(ngModel)]="investmentFormService.investmentFormData.sbu" required [class.invalid]="sbu.invalid && sbu.touched">
+                                        <select class="form-control " id="sbu" name="sbu" #sbu="ngModel" (change)="ChangeSBU()" [(ngModel)]="investmentFormService.investmentFormData.sbu" required [class.invalid]="sbu.invalid && sbu.touched">
                                             <option  [ngValue]="null">Select SBU</option>
                                             <option *ngFor="let a of SBUs" [value]="a.sbuCode">{{a.sbuName}}</option>
                                         </select>
@@ -114,7 +114,7 @@
                                                 <span style="color:red;">*</span>
                                             </div>
                                             <div class="col-md-2">
-                                                <input class="form-control" placeholder="Proposal Date"   name="proposalDateStr" [(ngModel)]="investmentFormService.investmentFormData.proposalDateStr" readonly>
+                                                <input class="form-control" placeholder="Proposal Date" name="proposalDateStr" [(ngModel)]="investmentFormService.investmentFormData.proposalDateStr" readonly>
                                             </div>
 
                                             <div class="col-md-1">
@@ -128,7 +128,7 @@
                                                 <label>Address </label>
                                             </div>
                                             <div class="col-md-4">
-                                                <textarea id="address" class="form-control"  rows="1" cols="60" [(ngModel)]="investmentFormService.investmentFormData.address" name="address">
+                                                <textarea id="address" class="form-control" rows="1" cols="60" [(ngModel)]="investmentFormService.investmentFormData.address" name="address">
 
                                                 </textarea>
                                             </div>
@@ -136,10 +136,10 @@
                                     </div>
                                     <fieldset *ngIf="investmentFormService.investmentFormData.type=='4'">
                                         <div>
-                                    
+
                                             <legend>Add Donated Medicine</legend>
-                                     
-                                     
+
+
                                             <div class="row">
                                                 <div class="col-md-1">
                                                     <label>Product</label>
@@ -156,12 +156,12 @@
                                                     <input class="form-control" placeholder="Box Quantity" name="boxQuantity" id="boxQuantity" #boxQuantity="ngModel" [(ngModel)]="investmentFormService.investmentMedicineProdFormData.boxQuantity" [pattern]="numberPattern">
                                                     <div class="invalid-feedback" *ngIf="boxQuantity.errors?.pattern">Only numeric value</div>
                                                 </div>
-                                                <div class="col-md-2" >
+                                                <div class="col-md-2">
                                                     <button class="btn btn-primary btn-lg btn-block" type="button" (click)="insertInvestmentMedicineProd()"><i class="fa fa-plus"></i>&nbsp; Add</button>
                                                 </div>
                                             </div>
-                                       
-                                    
+
+
                                             <table class="table table-bordered" style="margin-top: 20px;">
                                                 <tr class="HeaderRow">
                                                     <td>Product Name</td>
@@ -171,7 +171,7 @@
                                                 </tr>
                                                 <tr *ngFor="let a of investmentMedicineProds">
                                                     <td>
-                                                      {{a.medicineProduct.productName}} 
+                                                        {{a.medicineProduct.productName}}
                                                     </td>
                                                     <td>
                                                         {{a.boxQuantity}}
@@ -180,21 +180,21 @@
                                                         {{a.tpVat}}
                                                     </td>
                                                     <td>
-                                                        <input type="button"  (click)="removeInvestmentMedicineProd(a)" value="Remove"> 
+                                                        <input type="button" (click)="removeInvestmentMedicineProd(a)" value="Remove">
                                                     </td>
                                                 </tr>
                                             </table>
-                                      
+
                                         </div>
                                     </fieldset>
-                                 
+
                                     <div class="form-group" style="margin-top: 20px;">
                                         <div class="row">
                                             <div class="col-md-1">
                                                 <label>Amount</label>
-                                          
+
                                             </div>
-                                            <div class="col-md-4"> 
+                                            <div class="col-md-4">
                                                 <input class="form-control" [disabled]="investmentFormService.investmentFormData.type=='4'" placeholder="Amount" name="proposedAmount" id="proposedAmount" #proposedAmount="ngModel" [(ngModel)]="investmentFormService.investmentFormData.proposedAmount"
                                                     [pattern]="numberPattern">
                                                 <div class="invalid-feedback" *ngIf="proposedAmount.errors?.pattern">Only numeric value</div>
@@ -204,7 +204,7 @@
                                                 <span style="color:red;">*</span>
                                             </div>
                                             <div class="col-md-4">
-                                                <select *ngIf="investmentFormService.investmentFormData.type !='4'" (change)="onChangePayMethod()"  required class="form-control" [disabled]="isInvOther && !isAdmin" name="paymentMethod" id="paymentMethod" #paymentMethod="ngModel"  [(ngModel)]="investmentFormService.investmentFormData.paymentMethod">
+                                                <select *ngIf="investmentFormService.investmentFormData.type !='4'" (change)="onChangePayMethod()" required class="form-control" [disabled]="isInvOther && !isAdmin" name="paymentMethod" id="paymentMethod" #paymentMethod="ngModel" [(ngModel)]="investmentFormService.investmentFormData.paymentMethod">
                                                 
                                                     <option  [ngValue]="null">Select Payment Method</option>
                                                     <option value="Cash">Cash</option>
@@ -213,13 +213,13 @@
                                                     <option value="TT">TT</option>
                                                     <option value="PO">PO</option>
                                                 </select>
-                                                <select *ngIf="investmentFormService.investmentFormData.type =='4'" class="form-control" [disabled]="isInvOther && !isAdmin" name="paymentMethod" id="paymentMethod" #paymentMethod="ngModel"  [(ngModel)]="investmentFormService.investmentFormData.paymentMethod">
+                                                <select *ngIf="investmentFormService.investmentFormData.type =='4'" class="form-control" [disabled]="isInvOther && !isAdmin" name="paymentMethod" id="paymentMethod" #paymentMethod="ngModel" [(ngModel)]="investmentFormService.investmentFormData.paymentMethod">
                                             
                                                     <option  [ngValue]="null">Select Payment Method</option>
                                                     <option value="Cash">Cash</option>
                                                 </select>
                                             </div>
-                                           
+
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -228,7 +228,7 @@
                                                 <label>Remarks</label>
                                             </div>
                                             <div class="col-md-4">
-                                                <input class="form-control"  placeholder="Remarks" name="Remarks" id="Remarks" [(ngModel)]="investmentFormService.investmentFormData.remarks" >
+                                                <input class="form-control" placeholder="Remarks" name="Remarks" id="Remarks" [(ngModel)]="investmentFormService.investmentFormData.remarks">
                                             </div>
                                             <div class="col-md-2">
                                                 <label>Cheque Title</label>
@@ -237,7 +237,7 @@
                                             <div class="col-md-4">
                                                 <input class="form-control" maxlength="100" [disabled]="investmentFormService.investmentFormData.paymentMethod !='Cheque'" placeholder="Cheque Title" name="chequeTitle" id="chequeTitle" #chequeTitle="ngModel" [(ngModel)]="investmentFormService.investmentFormData.chequeTitle">
                                             </div>
-                                       
+
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -246,7 +246,8 @@
                                                 <label>Depot </label>
                                             </div>
                                             <div class="col-md-4">
-                                                <ng-select [virtualScroll]="true" [disabled]="investmentFormService.investmentFormData.paymentMethod !='Cash'"  [items]="depots" bindLabel="depotName" bindValue="depotCode" placeholder="Select Depot" name="depotCode" id="depotCode" #depotCode="ngModel" [(ngModel)]="investmentFormService.investmentFormData.depotCode">
+                                                <ng-select [virtualScroll]="true" [disabled]="investmentFormService.investmentFormData.paymentMethod !='Cash'" [items]="depots" bindLabel="depotName" bindValue="depotCode" placeholder="Select Depot" name="depotCode" id="depotCode" #depotCode="ngModel"
+                                                    [(ngModel)]="investmentFormService.investmentFormData.depotCode">
                                                 </ng-select>
                                             </div>
 
@@ -254,8 +255,8 @@
                                                 <label>Approved Authority</label>
                                             </div>
                                             <div class="col-md-4">
-                                                <ng-select [virtualScroll]="true" [items]="employees"  bindLabel="employeeName" bindValue="id"   placeholder="Select" [searchFn]="customSearchFn" name="ApprovalAuthId" #employeeId="ngModel" [(ngModel)]="investmentFormService.investmentFormData.approvalAuthId"
-                                                required [class.invalid]="employeeId.invalid && employeeId.touched">
+                                                <ng-select [virtualScroll]="true" [items]="employees" bindLabel="employeeName" bindValue="id" placeholder="Select" [searchFn]="customSearchFn" name="ApprovalAuthId" #employeeId="ngModel" [(ngModel)]="investmentFormService.investmentFormData.approvalAuthId"
+                                                    required [class.invalid]="employeeId.invalid && employeeId.touched">
                                                     <ng-template ng-label-tmp let-item="item">
                                                         <span [ngOptionHighlight]="search">{{ item.employeeSAPCode }} - {{ item.employeeName }}</span>
                                                     </ng-template>
@@ -369,7 +370,7 @@
                                         <th scope="col" style="width: 8%">Propose Type</th>
                                         <th scope="col" style="width: 8%">Amount</th>
                                         <th scope="col" style="width: 14%">Pay Method</th>
-                        
+
                                     </tr>
                                 </thead>
                                 <tbody>
