@@ -118,11 +118,11 @@ namespace API.Controllers
             string ProposeFor = "";
             if (deptId == 1)
             {
-                ProposeFor = "Others";
+                ProposeFor = "'Others','Sales'";
             }
             else if (deptId == 2)
             {
-                ProposeFor = "BrandCampaign";
+                ProposeFor = "'BrandCampaign','PMD'";
             }
             try
             {
@@ -134,7 +134,7 @@ namespace API.Controllers
 
                                         INNER JOIN InvestmentInit c ON c.Id = e.InvestmentInitId
 
-                                        WHERE  C.ProposeFor='{0}'
+                                        WHERE  C.ProposeFor IN ({0})
 
                                         AND e.Year={1}", ProposeFor,year);
     
@@ -233,6 +233,26 @@ namespace API.Controllers
                     TotalBudget = bgtyearly.TotalAmount;
                 }
                 return TotalBudget;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpGet("getTotalAllocated/{deptId}/{year}")]
+        public double GetTotalAllocated(int deptId, int year)
+        {
+          
+            try
+            {
+                string qry = "";
+
+                qry = string.Format(@"select CAST('1' AS INT) AS Id ,1 AS DataStatus , SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, ISNULL(ROUND(SUM(SBUAmount),0),0) Count  from BgtSBUTotal where DataStatus = 1 and  DeptId = {0} and Year = {1}  ", deptId, year);
+
+                var result = _dbContext.CountLong.FromSqlRaw(qry).ToList().FirstOrDefault();
+          
+               
+                return result.Count;
             }
             catch (System.Exception ex)
             {

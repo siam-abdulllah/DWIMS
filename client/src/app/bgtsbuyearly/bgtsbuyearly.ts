@@ -153,10 +153,10 @@ export class BgtSbuYearlyComponent implements OnInit {
 
 
   getYearlyBudget() {
-    debugger;
     if(typeof(this.bugetSbuYearlyService.budgetSbuYearly.year) == 'undefined')
     {
-      this.bugetSbuYearlyService.budgetSbuYearly.year = 2022;
+      this.toastr.warning('Plaease Select Year First!');
+      return;
     }
  
     if (this.bugetSbuYearlyService.budgetSbuYearly.year != null && this.bugetSbuYearlyService.budgetSbuYearly.year  != undefined && typeof(this.bugetSbuYearlyService.budgetSbuYearly.year)  != 'number') {
@@ -338,7 +338,7 @@ export class BgtSbuYearlyComponent implements OnInit {
              
               }
             }
-            this.sbuDetails[i].remaining = parseInt(this.sbuDetails[i].sbuAmount) -(parseInt(this.sbuDetails[i].expense) + parseInt(this.sbuDetails[i].totalAlowcated) )
+            this.sbuDetails[i].remaining = parseInt(this.sbuDetails[i].sbuAmount) - parseInt(this.sbuDetails[i].totalAlowcated) 
           }
         },
         err => { 

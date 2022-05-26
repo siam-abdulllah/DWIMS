@@ -19,6 +19,7 @@ export interface IBudgetYearly {
     totalExpense:any;
     totalPipeline:any;
     totalRemaining:any;
+    totalAllocated:any;
    
 }
  
@@ -36,6 +37,7 @@ export class BudgetYearly implements IBudgetYearly {
     totalExpense:any;
     totalPipeline:any;
     totalRemaining:any;
+    totalAllocated:any;
 
 }
 

@@ -121,48 +121,72 @@ export class BgtYearlyComponent implements OnInit {
     });
   }
   getTotalExpense() {
-    debugger;
-
-    this.SpinnerService.show();
+    //this.SpinnerService.show();
     this.bugetYearlyService.getTotalExpense(this.bugetYearlyService.budgetYearly.deptId,this.bugetYearlyService.budgetYearly.year).subscribe(response => {
      this.bugetYearlyService.budgetYearly.totalExpense = response;
+     this.getTotalPipeline();
     }, error => {
       this.SpinnerService.hide();
       console.log(error);
     });
   }
   getTotalBudget() {
-    debugger;
-
-    this.SpinnerService.show();
+   // this.SpinnerService.show();
     this.bugetYearlyService.getBudgetAmount(this.bugetYearlyService.budgetYearly.deptId,this.bugetYearlyService.budgetYearly.year).subscribe(response => {
      this.bugetYearlyService.budgetYearly.totalAmount = response as number;
+     //this.bugetYearlyService.budgetYearly.totalRemaining = parseInt(this.bugetYearlyService.budgetYearly.totalAmount) -   parseInt(this.bugetYearlyService.budgetYearly.totalExpense);
+     this.getTotalAllocated();
+     //this.SpinnerService.hide();
     }, error => {
       this.SpinnerService.hide();
       console.log(error);
     });
   }
+  getTotalAllocated(){
+    this.bugetYearlyService.getTotalAllocated(this.bugetYearlyService.budgetYearly.deptId,this.bugetYearlyService.budgetYearly.year).subscribe(
+      res => {
+        this.bugetYearlyService.budgetYearly.totalAllocated = res as number;
+        this.bugetYearlyService.budgetYearly.totalRemaining = parseInt(this.bugetYearlyService.budgetYearly.totalAmount) - parseInt(this.bugetYearlyService.budgetYearly.totalExpense);
+        this.SpinnerService.hide();
+      },
+      err => { console.log(err); }
+    );
+  }
+  // getTotalAllocated() {
+  //  // this.SpinnerService.show();
+  //   this.bugetYearlyService.getTotalAllocated(this.bugetYearlyService.budgetYearly.deptId,this.bugetYearlyService.budgetYearly.year).subscribe(response => {
+  //   //   this.bugetYearlyService.budgetYearly.totalAllocated = response as number;
+  //   //  this.bugetYearlyService.budgetYearly.totalRemaining = parseInt(this.bugetYearlyService.budgetYearly.totalAmount) -   parseInt(this.bugetYearlyService.budgetYearly.totalExpense);
+  //   //  this.SpinnerService.hide();
+  //   }, error => {
+  //     this.SpinnerService.hide();
+  //     console.log(error);
+  //   });
+  // }
   LoadForm()
   {
-
-    this.getTotalExpense()
-    this.getTotalPipeline()
-    this.getTotalBudget()
-    setTimeout(() => {
-     
-        this.bugetYearlyService.budgetYearly.totalRemaining = parseInt(this.bugetYearlyService.budgetYearly.totalAmount) -  (parseInt(this.bugetYearlyService.budgetYearly.totalExpense)+ parseInt(this.bugetYearlyService.budgetYearly.totalPipeline));
+    this.SpinnerService.show();
+    this.getTotalExpense();
+    //this.getTotalPipeline();
+    //this.getTotalBudget();
+    //this.SpinnerService.show();
+    //setTimeout(() => {
+      //this.SpinnerService.show();
+        //this.bugetYearlyService.budgetYearly.totalRemaining = parseInt(this.bugetYearlyService.budgetYearly.totalAmount) -  (parseInt(this.bugetYearlyService.budgetYearly.totalExpense)+ parseInt(this.bugetYearlyService.budgetYearly.totalPipeline));
+        //this.bugetYearlyService.budgetYearly.totalRemaining = parseInt(this.bugetYearlyService.budgetYearly.totalAmount) -   parseInt(this.bugetYearlyService.budgetYearly.totalExpense);
+        //this.SpinnerService.hide();
     
+    //}, 3000);
     
-    }, 3000);
   }
   getTotalPipeline() {
-    debugger;
-
-    this.SpinnerService.show();
+    //this.SpinnerService.show();
     this.bugetYearlyService.getTotalPipeline(this.bugetYearlyService.budgetYearly.deptId,this.bugetYearlyService.budgetYearly.year).subscribe(response => {
      this.bugetYearlyService.budgetYearly.totalPipeline = response;
+     this.getTotalBudget();
+     //this.SpinnerService.hide();
     }, error => {
-      this.SpinnerService.hide();
+     this.SpinnerService.hide();
       console.log(error);
     });
   }

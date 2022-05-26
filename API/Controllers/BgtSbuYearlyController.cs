@@ -43,11 +43,11 @@ namespace API.Controllers
                 string ProposeFor = "";
                 if(deptId == 1)
                 {
-                    ProposeFor = "Others";
+                    ProposeFor = "'Others','Sales'";
                 }
                 else if(deptId == 2)
                 {
-                    ProposeFor = "BrandCampaign";
+                    ProposeFor = "'BrandCampaign','PMD'";
                 }
                 string qry = "";
               
@@ -57,7 +57,7 @@ namespace API.Controllers
                                     FROM InvestmentDetailTracker e
                                     INNER JOIN InvestmentInit c ON c.Id = e.InvestmentInitId
                                     WHERE c.SBU = SB.SBUCode
-                                    AND C.ProposeFor = '{3}'
+                                    AND C.ProposeFor IN ({3})
                                     AND e.Year = {0}
                                     ) Expense,
                                     (select SUM(Amount) from BgtEmployee where DeptId ={1} and SBU = sb.SBUCode and DataStatus = 1) TotalAllowcated

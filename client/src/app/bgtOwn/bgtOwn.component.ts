@@ -90,16 +90,18 @@ export class BgtOwnComponent implements OnInit {
           var remMonth = 12 - d.getMonth();
           this.bgtOwn.patchValue({
             totalAmount: sum + (parseFloat(this.bgtOwn.value.donationAmt)*remMonth),
-            remaining: this.bgtOwn.value.prevAllocate - (sum + parseFloat(this.bgtOwn.value.donationAmt) + parseFloat(this.bgtOwn.value.totalExpense))
+            //remaining: this.bgtOwn.value.prevAllocate - (sum + parseFloat(this.bgtOwn.value.donationAmt) + parseFloat(this.bgtOwn.value.totalExpense))
+            //remaining: this.bgtOwn.value.prevAllocate - sum + parseFloat(this.bgtOwn.value.donationAmt)
           });
           this.bgtOwn.patchValue({
-            remaining: parseFloat(this.bgtOwn.value.prevAllocate) - (parseFloat(this.bgtOwn.getRawValue().totalAmount) + parseFloat(this.bgtOwn.value.totalExpense)),
+           // remaining: parseFloat(this.bgtOwn.value.prevAllocate) - (parseFloat(this.bgtOwn.getRawValue().totalAmount) + parseFloat(this.bgtOwn.value.totalExpense)),
+            remaining: parseFloat(this.bgtOwn.value.prevAllocate) - parseFloat(this.bgtOwn.getRawValue().totalAmount),
           });
         }
         else{
           this.bgtOwn.patchValue({
             totalAmount: sum + parseFloat(this.bgtOwn.value.donationAmt),
-            remaining: this.bgtOwn.value.prevAllocate - (sum + parseFloat(this.bgtOwn.value.donationAmt) + parseFloat(this.bgtOwn.value.totalExpense))
+            //remaining: this.bgtOwn.value.prevAllocate - (sum + parseFloat(this.bgtOwn.value.donationAmt) + parseFloat(this.bgtOwn.value.totalExpense))
           });
           this.bgtOwn.patchValue({
             remaining: parseFloat(this.bgtOwn.value.prevAllocate) - (parseFloat(this.bgtOwn.getRawValue().totalAmount) + parseFloat(this.bgtOwn.value.totalExpense)),
@@ -117,7 +119,8 @@ export class BgtOwnComponent implements OnInit {
           }
           this.bgtOwn.patchValue({
             totalAmount: sum,
-            remaining: this.bgtOwn.value.prevAllocate - (sum + parseFloat(this.bgtOwn.value.totalExpense))
+           // remaining: this.bgtOwn.value.prevAllocate - (sum + parseFloat(this.bgtOwn.value.totalExpense))
+            remaining: this.bgtOwn.value.prevAllocate - sum
           });
         }
       }
@@ -131,10 +134,11 @@ export class BgtOwnComponent implements OnInit {
         });
          this.bgtOwn.patchValue({
             totalAmount: sum + parseFloat(this.bgtOwn.value.donationAmt),
-            remaining: this.bgtOwn.value.prevAllocate - (sum + parseFloat(this.bgtOwn.value.donationAmt) + parseFloat(this.bgtOwn.value.totalExpense))
+            //remaining: this.bgtOwn.value.prevAllocate - (sum + parseFloat(this.bgtOwn.value.donationAmt) + parseFloat(this.bgtOwn.value.totalExpense))
           });
           this.bgtOwn.patchValue({
-            remaining: parseFloat(this.bgtOwn.value.prevAllocate) - (parseFloat(this.bgtOwn.getRawValue().totalAmount) + parseFloat(this.bgtOwn.value.totalExpense)),
+           // remaining: parseFloat(this.bgtOwn.value.prevAllocate) - (parseFloat(this.bgtOwn.getRawValue().totalAmount) + parseFloat(this.bgtOwn.value.totalExpense)),
+            remaining: parseFloat(this.bgtOwn.value.prevAllocate) - parseFloat(this.bgtOwn.getRawValue().totalAmount),
           });
       }
     }
@@ -160,7 +164,8 @@ export class BgtOwnComponent implements OnInit {
         this.bgtOwn.patchValue({
           //totalAmount: (sum - parseFloat(selectedRecord.amount))+ parseFloat(selectedRecord.newAmount),
           totalAmount: sum,
-          remaining: this.bgtOwn.value.prevAllocate - (sum + parseFloat(this.bgtOwn.value.totalExpense))
+          //remaining: this.bgtOwn.value.prevAllocate - (sum + parseFloat(this.bgtOwn.value.totalExpense))
+          remaining: this.bgtOwn.value.prevAllocate - sum
         });
       }
       else {
@@ -170,7 +175,8 @@ export class BgtOwnComponent implements OnInit {
         }
         this.bgtOwn.patchValue({
           totalAmount: sum,
-          remaining: this.bgtOwn.value.prevAllocate - (sum + parseFloat(this.bgtOwn.value.totalExpense))
+          //remaining: this.bgtOwn.value.prevAllocate - (sum + parseFloat(this.bgtOwn.value.totalExpense))
+          remaining: this.bgtOwn.value.prevAllocate - sum
         });
       }
      if (this.bgtOwn.value.remaining < 0) 
@@ -184,7 +190,8 @@ export class BgtOwnComponent implements OnInit {
         }
         this.bgtOwn.patchValue({
           totalAmount: sum,
-          remaining: this.bgtOwn.value.prevAllocate - (sum + parseFloat(this.bgtOwn.value.totalExpense))
+         // remaining: this.bgtOwn.value.prevAllocate - (sum + parseFloat(this.bgtOwn.value.totalExpense))
+          remaining: this.bgtOwn.value.prevAllocate - sum 
         });
       }
     }
@@ -197,7 +204,8 @@ export class BgtOwnComponent implements OnInit {
         }
         this.bgtOwn.patchValue({
           totalAmount: sum,
-          remaining: this.bgtOwn.value.prevAllocate - (sum + parseFloat(this.bgtOwn.value.totalExpense))
+          //remaining: this.bgtOwn.value.prevAllocate - (sum + parseFloat(this.bgtOwn.value.totalExpense))
+          remaining: this.bgtOwn.value.prevAllocate - sum 
         });
     }
     // if (this.bgtOwn.value.totalAmount != 0 && this.bgtOwn.value.totalAmount != "" || this.bgtOwn.value.totalAmount != undefined) {
@@ -413,7 +421,8 @@ export class BgtOwnComponent implements OnInit {
           debugger;
           this.bgtOwn.patchValue({
             totalAmount: sum,
-            remaining: this.bgtOwn.value.prevAllocate - (sum + parseFloat(this.bgtOwn.value.totalExpense)),
+            //remaining: this.bgtOwn.value.prevAllocate - (sum + parseFloat(this.bgtOwn.value.totalExpense)),
+            remaining: this.bgtOwn.value.prevAllocate - sum 
           });
         }, error => {
           console.log(error);
@@ -516,7 +525,6 @@ export class BgtOwnComponent implements OnInit {
     });
   }
 
-
   ngOnInit() {
     this.createbgtOwnForm();
     this.reset();
@@ -536,7 +544,6 @@ export class BgtOwnComponent implements OnInit {
   getEmployeeId() {
     this.empId = this.accountService.getEmployeeId();
     this.userRole = this.accountService.getUserRole();
-
   }
   getEmployee() {
     this.bgtService.getAllEmp().subscribe(response => {
@@ -593,61 +600,43 @@ export class BgtOwnComponent implements OnInit {
     });
   }
 
-  // insertbgtOwn() {
-
-  //   alert(this.bgtOwn.value.permEdit);
-
-  //   if (this.bgtOwn.getRawValue().deptId == "" || this.bgtOwn.getRawValue().deptId == null) {
-  //     this.toastr.error('Select Department');
-  //     return;
-  //   }
-  //   if (this.bgtOwn.value.sbu == "" || this.bgtOwn.value.sbu == null) {
-  //     this.toastr.error('Select SBU');
-  //     return;
-  //   }
-  //   if (this.bgtOwn.value.year == "" || this.bgtOwn.value.year == null) {
-  //     this.toastr.error('Enter Year');
-  //     return;
-  //   }
-  //   if (this.bgtOwn.value.amount == "" || this.bgtOwn.value.amount == null) {
-  //     this.toastr.error('Amount Can not be 0');
-  //     return;
-  //   }
-
-
-  //   // this.pendingService.medDispatchFormData.investmentInitId = this.medDispatchForm.value.investmentInitId;
-  //   // this.pendingService.medDispatchFormData.issueReference = this.medDispatchForm.value.issueReference;
-  //   // this.pendingService.medDispatchFormData.issueDate = this.medDispatchForm.value.issueDate;
-  //   // this.pendingService.medDispatchFormData.sapRefNo = this.medDispatchForm.value.issueReference;
-  //   // this.pendingService.medDispatchFormData.payRefNo = this.medDispatchForm.value.payRefNo;
-  //   // this.pendingService.medDispatchFormData.depotName = "";
-  //   // this.pendingService.medDispatchFormData.depotCode = "";
-  //   // this.pendingService.medDispatchFormData.employeeId = parseFloat(this.empId);
-  //   // this.pendingService.medDispatchFormData.remarks = this.medDispatchForm.value.remarks;
-  //   // this.pendingService.medDispatchFormData.dispatchAmt = this.medDispatchForm.value.dispatchAmt;
-  //   // this.pendingService.medDispatchFormData.proposeAmt = this.medDispatchForm.value.proposeAmt;
-
-
-  //   // this.pendingService.insertDispatch(this.pendingService.medDispatchFormData).subscribe(
-  //   //   res => {
-  //   //     this.SaveMedicineDetail();
-  //   //     this.toastr.success('Data Saved successfully', 'Medicine Dispatch') 
-  //   //     this.isValid = false;
-  //   //   },
-  //   //   err => { console.log(err); }
-  //   // );
-  // }
   insertbgtEmpDetail() {
-    //var a = this.bgtOwns;
-    // if(this.bgtOwn.value.remaining <= 0)
-    // {
-    //   this.toastr.error('There is not enough budget left to be allocated');
-    //   return;
-    // }
-    // if (this.bgtOwn.value.remaining < 0) {
-    //   this.toastr.warning('Donation wise budget can not be greater than total budget');
-    //   return;
-    // }
+    if (this.bgtOwn.getRawValue().deptId == "" || this.bgtOwn.getRawValue().deptId == null) {
+      this.toastr.error('Select Department');
+      return;
+    }
+    if (this.bgtOwn.value.sbu == "" || this.bgtOwn.value.sbu == null) {
+      this.toastr.error('Select SBU');
+      return;
+    }
+    if (this.bgtOwn.value.year == "" || this.bgtOwn.value.year == null) {
+      this.toastr.error('Enter Year');
+      return;
+    }
+    if (this.bgtOwn.getRawValue().totalAmount == "" || this.bgtOwn.getRawValue().totalAmount == null) {
+      this.toastr.error('Amount Can not be 0');
+      return;
+    }
+    var yr = new Date(this.bgtOwn.value.year);
+    this.bgtService.bgtEmpFormData.compId = 1000;
+    this.bgtService.bgtEmpFormData.deptId = this.bgtOwn.getRawValue().deptId;
+    this.bgtService.bgtEmpFormData.year = yr.getFullYear();
+    this.bgtService.bgtEmpFormData.sbu = this.bgtOwn.value.sbu;
+    this.bgtService.bgtEmpFormData.authId = this.bgtOwn.getRawValue().authId;
+    this.bgtService.bgtEmpFormData.amount = this.bgtOwn.getRawValue().prevAllocate;
+    this.bgtService.bgtEmpFormData.employeeId = this.bgtOwn.value.employee;
+    this.bgtService.bgtEmpFormData.permEdit = this.bgtOwn.value.permEdit;
+    this.bgtService.bgtEmpFormData.permView = this.bgtOwn.value.permView;
+    this.bgtService.bgtEmpFormData.enteredBy = parseFloat(this.empId);
+
+    this.bgtService.insertBgtEmp(this.bgtService.bgtEmpFormData).subscribe(
+      res => {
+        this.toastr.success('Master Budget Data Saved successfully', 'Budget Dispatch');
+      },
+      err => { console.log(err); }
+    );
+  }
+  insertbgtEmpTotal() {
     if (this.bgtOwn.getRawValue().deptId == "" || this.bgtOwn.getRawValue().deptId == null) {
       this.toastr.error('Select Department');
       return;
@@ -684,8 +673,6 @@ export class BgtOwnComponent implements OnInit {
     );
   }
   insertBgtOwnDetail() {
-    
-
     if (this.bgtOwn.getRawValue().deptId == "" || this.bgtOwn.getRawValue().deptId == null) {
       this.toastr.warning('Select Department');
       return;
@@ -778,24 +765,7 @@ export class BgtOwnComponent implements OnInit {
 
 
   }
-  // modifyData(selectedRecord: IMedicineDispatchDtl)
-  // {
-  //   this.valShow = false;
-  //   this.isHide = true;
-  //   this.medDispatchForm.patchValue({
-  //     productName: selectedRecord.productName,
-  //     productId: selectedRecord.productId,
-  //     originVal:  selectedRecord.tpVat,
-  //     originQty: selectedRecord.boxQuantity,
-  //     dispVal:  selectedRecord.dispatchTpVat,
-  //     dispQty:  selectedRecord.dispatchQuantity,
-  //     // formControlName2: myValue2 (can be omitted)
-  //   });
-
-  //   const index = this.investmentMedicineProds.indexOf(selectedRecord);
-  //   this.investmentMedicineProds.splice(index, 1);
-  // }
-
+  
   private formatDate(date) {
     const d = new Date(date);
     let month = '' + (d.getMonth() + 1);
@@ -806,11 +776,9 @@ export class BgtOwnComponent implements OnInit {
     return [day, month, year].join('-');
   }
 
-
   resetSearch() {
     this.searchText = '';
   }
-
   openPendingListModal(template: TemplateRef<any>) {
     this.pendingListModalRef = this.modalService.show(template, this.config);
   }

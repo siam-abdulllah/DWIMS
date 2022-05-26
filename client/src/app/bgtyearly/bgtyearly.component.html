@@ -1,44 +1,41 @@
-
 <section class="content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
-                <form novalidate autocomplete="off"  #bgtyearlyForm="ngForm">
+                <form novalidate autocomplete="off" #bgtyearlyForm="ngForm">
                     <div class="card card-primary">
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-sm-8">
                                     <h3 class="card-title">Budget Yearly</h3>
                                 </div>
-                          
+
                                 <div class="col-sm-1">
-                                    <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="" (click)="confirmSubmission()" [disabled]="bgtyearlyForm.invalid"  ><i class="fa fa-save"></i>&nbsp; Save</button>
+                                    <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="" (click)="confirmSubmission()" [disabled]="bgtyearlyForm.invalid"><i class="fa fa-save"></i>&nbsp; Save</button>
                                 </div>
                                 <div class="col-sm-1">
                                     <button class="btn btn-info btn-lg btn-block" type="button" (click)="getBgtYearly()"><i class="fa fa-search" ></i>Search</button>
                                 </div>
-                                <div class="col-sm-1">
-                                    <button class="btn btn-danger btn-lg btn-block" type="button"><i class="fa fa-undo"></i>Reset</button>
-                                </div>
+                                <!-- <div class="col-sm-1">
+                                    <button class="btn btn-danger btn-lg btn-block"  (click)="reset()" type="button"><i class="fa fa-undo"></i>Reset</button>
+                                </div> -->
                             </div>
                         </div>
-                       
+
                     </div>
                     <div class="card-body">
                         <fieldset style="margin-top: 10px;">
                             <div class="updateamount" style="display: flex;">
                                 <div (click)="isNewChecked()">
-                                    <input id="newAmount" type="radio"  name="amount"  [(ngModel)]="newAmountShow" value="New Amount"ng-value="true">
-                                      <label for="newAmount">New Amount</label><br>
+                                    <input id="newAmount" type="radio" name="amount" [(ngModel)]="newAmountShow" value="New Amount" ng-value="true">   <label for="newAmount">New Amount</label><br>
                                 </div>
                                 <div (click)="isAddChecked()" style="margin-left: 10px;">
-                                    <input id="addAmount" type="radio"  name="amount" [(ngModel)]="addAmountShow" value="Add Amount"ng-value="true">
-                                      <label for="addAmount">Add Amount</label><br>
+                                    <input id="addAmount" type="radio" name="amount" [(ngModel)]="addAmountShow" value="Add Amount" ng-value="true">   <label for="addAmount">Add Amount</label><br>
                                 </div>
-                           
+
                             </div>
-                           
-                           
+
+
                             <div class="form-group" style="padding: 5px;">
                                 <div class="row" style="padding: 10px;">
                                     <div class="col-md-2">
@@ -47,12 +44,12 @@
                                         <label>Company Name</label>
                                     </div>
                                     <div class="col-md-4">
-                                        <select class="form-control" name="company" id="compId" name="compId" required  [(ngModel)]="bugetYearlyService.budgetYearly.compId" readonly>
+                                        <select class="form-control" name="company" id="compId" name="compId" required [(ngModel)]="bugetYearlyService.budgetYearly.compId" readonly>
                                             <option  [ngValue]="0">Select Company</option>
                                             <option value="1000">Square Pharmaceuticals Limited</option>
                                         </select>
                                     </div>
-                                    
+
                                 </div>
                                 <div class="row" style="padding: 10px;">
                                     <div class="col-md-2">
@@ -61,13 +58,13 @@
                                         <label>Dept. Name</label>
                                     </div>
                                     <div class="col-md-4">
-                                        <select class="form-control" name="deptId"  id="deptId" required [(ngModel)]="bugetYearlyService.budgetYearly.deptId"  (change)="LoadForm()">
+                                        <select class="form-control" name="deptId" id="deptId" required [(ngModel)]="bugetYearlyService.budgetYearly.deptId" (change)="LoadForm()">
                                             <!-- <option  [ngValue]="0">Select Department</option> -->
                                             <option value="1">Sales</option>
                                             <option value="2">PMD</option>
                                         </select>
                                     </div>
-                                    
+
                                 </div>
                                 <div class="row" style="padding: 10px;">
                                     <div class="col-md-2">
@@ -76,10 +73,10 @@
                                         <label>Budget Year</label>
                                     </div>
                                     <div class="col-md-4">
-                                        <input class="form-control" (onHidden)="onYearchange()" [ngModelOptions]="{standalone: true}" id="year" name="year"   [bsValue]="bsValue" bsDatepicker [bsConfig]="{ minMode:'year', adaptivePosition: true, dateInputFormat: 'YYYY' }" required [(ngModel)]="bugetYearlyService.budgetYearly.year">
-                                      
+                                        <input class="form-control" (onHidden)="onYearchange()" [ngModelOptions]="{standalone: true}" id="year" name="year" [bsValue]="bsValue" bsDatepicker [bsConfig]="{ minMode:'year', adaptivePosition: true, dateInputFormat: 'YYYY' }" required [(ngModel)]="bugetYearlyService.budgetYearly.year">
+
                                     </div>
-                                    
+
                                 </div>
                                 <div class="row" style="padding: 10px;">
                                     <div class="col-md-2">
@@ -88,9 +85,20 @@
                                         <label>Budget Amount</label>
                                     </div>
                                     <div class="col-md-4">
-                                        <input type="text" class="form-control"  id="totalAmount" name="totalAmount" readonly [(ngModel)]="bugetYearlyService.budgetYearly.totalAmount" >
+                                        <input type="text" class="form-control" id="totalAmount" name="totalAmount" readonly [(ngModel)]="bugetYearlyService.budgetYearly.totalAmount">
                                     </div>
-                                    
+
+                                </div>
+                                <div class="row" style="padding: 10px;">
+                                    <div class="col-md-2">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Total Allocated</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" id="totalAllocated" name="totalAllocated" readonly [(ngModel)]="bugetYearlyService.budgetYearly.totalAllocated">
+                                    </div>
+
                                 </div>
                                 <div class="row" style="padding: 10px;">
                                     <div class="col-md-2">
@@ -99,9 +107,9 @@
                                         <label>Total Expense</label>
                                     </div>
                                     <div class="col-md-4">
-                                        <input type="text" class="form-control"  id="totalExpense" name="totalExpense" readonly [(ngModel)]="bugetYearlyService.budgetYearly.totalExpense" >
+                                        <input type="text" class="form-control" id="totalExpense" name="totalExpense" readonly [(ngModel)]="bugetYearlyService.budgetYearly.totalExpense">
                                     </div>
-                                    
+
                                 </div>
                                 <div class="row" style="padding: 10px;">
                                     <div class="col-md-2">
@@ -110,9 +118,9 @@
                                         <label>Total Pipeline</label>
                                     </div>
                                     <div class="col-md-4">
-                                        <input type="text" class="form-control"  id="totalPipeline" name="totalPipeline" readonly [(ngModel)]="bugetYearlyService.budgetYearly.totalPipeline" >
+                                        <input type="text" class="form-control" id="totalPipeline" name="totalPipeline" readonly [(ngModel)]="bugetYearlyService.budgetYearly.totalPipeline">
                                     </div>
-                                    
+
                                 </div>
                                 <div class="row" style="padding: 10px;">
                                     <div class="col-md-2">
@@ -121,21 +129,21 @@
                                         <label>Total Remaining</label>
                                     </div>
                                     <div class="col-md-4">
-                                        <input type="text" class="form-control"  id="totalRemaining" name="totalRemaining" readonly [(ngModel)]="bugetYearlyService.budgetYearly.totalRemaining" [ngClass]="{'text-danger' : bugetYearlyService.budgetYearly.totalRemaining<0}">
-                                       
+                                        <input type="text" class="form-control" id="totalRemaining" name="totalRemaining" readonly [(ngModel)]="bugetYearlyService.budgetYearly.totalRemaining" [ngClass]="{'text-danger' : bugetYearlyService.budgetYearly.totalRemaining<0}">
+
                                     </div>
-                                    
+
                                 </div>
-                                <div  [hidden]="!addAmountShow" class="row" style="padding: 10px;">
+                                <div [hidden]="!addAmountShow" class="row" style="padding: 10px;">
                                     <div class="col-md-2">
                                     </div>
                                     <div class="col-md-2">
                                         <label>Add Amount</label>
                                     </div>
                                     <div class="col-md-4">
-                                        <input type="text" class="form-control"  id="addAmount" name="addAmount"  ng-required="!addAmountShow" [(ngModel)]="bugetYearlyService.budgetYearly.addAmount" [disabled]="bugetYearlyService.budgetYearly.year != this.yyyy">
+                                        <input type="text" class="form-control" id="addAmount" name="addAmount" ng-required="!addAmountShow" [(ngModel)]="bugetYearlyService.budgetYearly.addAmount" [disabled]="bugetYearlyService.budgetYearly.year != this.yyyy">
                                     </div>
-                                    
+
                                 </div>
                                 <div [hidden]="!newAmountShow" class="row" style="padding: 10px;">
                                     <div class="col-md-2">
@@ -144,15 +152,15 @@
                                         <label>New Amount</label>
                                     </div>
                                     <div class="col-md-4">
-                                        <input type="text" class="form-control"  id="newAmount" name="newAmount" ng-required="!newAmountShow" [(ngModel)]="bugetYearlyService.budgetYearly.newAmount" [disabled]="bugetYearlyService.budgetYearly.year != this.yyyy">
+                                        <input type="text" class="form-control" id="newAmount" name="newAmount" ng-required="!newAmountShow" [(ngModel)]="bugetYearlyService.budgetYearly.newAmount" [disabled]="bugetYearlyService.budgetYearly.year != this.yyyy">
                                     </div>
-                                    
+
                                 </div>
-                                       
+
                             </div>
                         </fieldset>
                     </div>
-               
+
                 </form>
             </div>
         </div>
@@ -223,3 +231,6 @@
         <button type="button" class="btn btn-danger" (click)="declineSubmit()">No</button>
     </div>
 </ng-template>
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
+    <p style="color: black">Please Wait. </p>
+</ngx-spinner>
