@@ -34,7 +34,7 @@ namespace API.Controllers
      
 
         [HttpGet("getAllSbuBgtList/{deptId}/{compId}/{year}")]
-        public async Task<List<SBUVM>> GetAllSbuBgtListAsync(int deptId,int compId,int year)
+        public List<SBUVM> GetAllSbuBgtListAsync(int deptId,int compId,int year)
         {
             List<SBUVM> dsResult = new List<SBUVM>();
             try
@@ -43,11 +43,11 @@ namespace API.Controllers
                 string ProposeFor = "";
                 if(deptId == 1)
                 {
-                    ProposeFor = "Others";
+                    ProposeFor = "'Others','Sales'";
                 }
                 else if(deptId == 2)
                 {
-                    ProposeFor = "BrandCampaign";
+                    ProposeFor = "'BrandCampaign','PMD'";
                 }
                 string qry = "";
               
@@ -57,10 +57,10 @@ namespace API.Controllers
                                     FROM InvestmentDetailTracker e
                                     INNER JOIN InvestmentInit c ON c.Id = e.InvestmentInitId
                                     WHERE c.SBU = SB.SBUCode
-                                    AND C.ProposeFor = '{3}'
+                                    AND C.ProposeFor IN ({3})
                                     AND e.Year = {0}
                                     ) Expense,
-                                    (select SUM(Amount) from BgtEmployee where DeptId =1 and SBU = sb.SBUCode) TotalAllowcated
+                                    (select SUM(Amount) from BgtEmployee where DeptId ={1} and SBU = sb.SBUCode and DataStatus = 1) TotalAllowcated
                                     FROM SBU sb
                                     LEFT JOIN BgtSBUTotal bs ON bs.SBU = sb.SbuCode
                                     AND bs.DeptId = {1}
@@ -85,7 +85,7 @@ namespace API.Controllers
         }
 
         [HttpGet("getAllPipelineExpenseList/{deptId}/{compId}/{year}")]
-        public async Task<List<PipeLineExpense>> GetAllPipeLineExpenseListAsync(int deptId, int compId, int year)
+        public List<PipeLineExpense> GetAllPipeLineExpenseListAsync(int deptId, int compId, int year)
         {
             try
             {
@@ -132,7 +132,7 @@ namespace API.Controllers
         }
 
         [HttpGet("GetAppAuthDetails/{sbuCode}/{deptId}")]
-        public async Task<List<AppAuthDetails>> GetAppAuthDetails(string sbuCode,int deptId)
+        public List<AppAuthDetails> GetAppAuthDetails(string sbuCode,int deptId)
         {
             try
             {
@@ -336,20 +336,21 @@ namespace API.Controllers
             BgtSBUTotal sbuTotal = new BgtSBUTotal();
             qry = string.Format(@" select * from BgtSBUTotal where  DeptId={0}", setSbuBgtDto.DeptId);
             List<BgtSBUTotal> bgtList = _dbContext.BgtSBUTotal.FromSqlRaw(qry).ToList();
-            if(bgtList != null && bgtList.Count > 0)
+            if (bgtList != null && bgtList.Count > 0)
             {
-                foreach(var item in bgtList)
+                foreach (var item in bgtList)
                 {
+                    item.ModifiedOn = DateTime.Now;
                     item.DataStatus = 0;
                     _bgtSbuRepo.Update(item);
                     _bgtSbuRepo.Savechange();
                 }
             }
-           
+
             if (setSbuBgtDto.SbuDetailsList != null && setSbuBgtDto.SbuDetailsList.Count > 0)
             {
                 foreach (var item in setSbuBgtDto.SbuDetailsList)
-                {
+                { 
                     sbuTotal = new BgtSBUTotal
                     {
                         CompId = setSbuBgtDto.CompId,

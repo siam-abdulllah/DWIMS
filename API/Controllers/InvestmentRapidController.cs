@@ -309,7 +309,7 @@ namespace API.Controllers
                     {
                         if (investmentRapidDto.SubCampaignId == 0)
                         {
-                            if (investmentRapidDto.ProposeFor != "Otheres")
+                            if (investmentRapidDto.ProposeFor != "Others Rapid")
                             {
                                 List<SqlParameter> parms = new List<SqlParameter>
                             {

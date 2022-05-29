@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <!-- form start -->
-                <form novalidate autocomplete="off"  #bgtsbuForm="ngForm" >
+                <form novalidate autocomplete="off" #bgtsbuForm="ngForm">
                     <!-- general form elements -->
                     <div class="card card-primary">
                         <div class="card-header">
@@ -18,7 +18,7 @@
                                     <button class="btn btn-info btn-lg btn-block"><i class="fa fa-search"></i>Search</button>
                                 </div> -->
                                 <div class="col-sm-1">
-                                    <button class="btn btn-danger btn-lg btn-block" type="button" ><i class="fa fa-undo"></i> Reset</button>
+                                    <button class="btn btn-danger btn-lg btn-block" type="button"><i class="fa fa-undo"></i> Reset</button>
                                 </div>
                             </div>
                         </div>
@@ -31,7 +31,7 @@
                                         <label>Company Name</label>
                                     </div>
                                     <div class="col-md-2">
-                                        <select class="form-control" name="company" id="compId" name="compId" required  [(ngModel)]="bugetSbuYearlyService.budgetSbuYearly.compId" readonly>
+                                        <select class="form-control" name="company" id="compId" name="compId" required [(ngModel)]="bugetSbuYearlyService.budgetSbuYearly.compId" readonly>
                                             <option  [ngValue]="0">Select Company</option>
                                             <option value="1000">Square Pharmaceuticals Limited</option>
                                         </select>
@@ -40,26 +40,26 @@
                                         <label>Year</label>
                                     </div>
                                     <div class="col-md-2">
-                                        <input class="form-control" placeholder="Year" name="Year"  [ngModelOptions]="{standalone: true}" id="year" name="year" (onHidden)="getYearlyBudget()"   [bsValue]="bsValue" bsDatepicker [bsConfig]="{ minMode:'year', adaptivePosition: true, dateInputFormat: 'YYYY' }" (change)="getYearlyBudget()" [(ngModel)]="bugetSbuYearlyService.budgetSbuYearly.year" >
+                                        <input class="form-control" placeholder="Year" name="Year" [ngModelOptions]="{standalone: true}" id="year" name="year" (onHidden)="getYearlyBudget()" [bsValue]="bsValue" bsDatepicker [bsConfig]="{ minMode:'year', adaptivePosition: true, dateInputFormat: 'YYYY' }"
+                                            (change)="getYearlyBudget()" [(ngModel)]="bugetSbuYearlyService.budgetSbuYearly.year">
                                     </div>
                                     <div class="col-md-2">
                                         <label>Total Budget</label>
                                     </div>
                                     <div class="col-md-2">
-                                        <input class="form-control " placeholder="Total Budget Amount" name="totalAmount"  [(ngModel)]="bugetSbuYearlyService.budgetSbuYearly.totalBudget" 
-                                        readonly >
+                                        <input class="form-control " placeholder="Total Budget Amount" name="totalAmount" [(ngModel)]="bugetSbuYearlyService.budgetSbuYearly.totalBudget" readonly>
                                     </div>
-                                   
+
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-1">
                                         <label>Dept. Name</label>
-                                        <span style="color:red;">*</span> 
+                                        <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-2">
-                                        <select class="form-control" name="deptId"  #deptId="ngModel" (change)="getYearlyBudget()" required [(ngModel)]="bugetSbuYearlyService.budgetSbuYearly.deptId" [class.invalid]="deptId.invalid && deptId.touched" >
+                                        <select class="form-control" name="deptId" #deptId="ngModel" (change)="getYearlyBudget()" required [(ngModel)]="bugetSbuYearlyService.budgetSbuYearly.deptId" [class.invalid]="deptId.invalid && deptId.touched">
                                             <option  [ngValue]="0">Select Department</option>
                                             <option value="1">Sales</option>
                                             <option value="2">PMD</option>
@@ -78,9 +78,9 @@
                                         <input class="form-control" placeholder="Remarks" name="Remarks" [(ngModel)]="bugetSbuYearlyService.budgetSbuYearly.remarks">
                                     </div>
                                 </div>
-                              
+
                             </div>
-                        
+
                             <br/>
 
                             <div class="form-group">
@@ -90,16 +90,16 @@
                                         <td>Budget Amount</td>
                                         <td>No Of Layer</td>
                                         <td>Expense</td>
-                                        <td>Total Allowcated</td>
+                                        <td>Total Allocated</td>
                                         <td>Pipeline</td>
                                         <td>Remaining</td>
                                         <td>New Amount (Yearly)</td>
-                                        <td >Action</td>
-                                        <td >Approval Authority Wise Budget Distribution</td>
+                                        <td>Action</td>
+                                        <td>Approval Authority Wise Budget Distribution</td>
                                     </tr>
                                     <tr *ngFor="let a of sbuDetails; let index = index">
                                         <td>
-                                          {{a.sbuName}}
+                                            {{a.sbuName}}
                                         </td>
                                         <td>
                                             {{a.sbuAmount | number: '1.0-0'}}
@@ -116,22 +116,22 @@
                                         <td>
                                             {{a.pipeLine | number: '1.0-0'}}
                                         </td>
-                                     
+
                                         <td>
                                             {{a.remaining | number: '1.0-0'}}
                                         </td>
                                         <td>
-                                            <input class="form-control ng-valid ng-touched ng-dirty" type="text" placeholder="New Amount" name="{{a.newAmount}}"  id="sbuDetails" name="sbuDetails{{index}}"  #newAmount="ngModel"  [(ngModel)]="sbuDetails[index].newAmount" [disabled]="bugetSbuYearlyService.budgetSbuYearly.year != this.yyyy">
+                                            <input class="form-control ng-valid ng-touched ng-dirty" type="text" placeholder="New Amount" name="{{a.newAmount}}" id="sbuDetails" name="sbuDetails{{index}}" #newAmount="ngModel" [(ngModel)]="sbuDetails[index].newAmount" [disabled]="bugetSbuYearlyService.budgetSbuYearly.year != this.yyyy">
                                         </td>
                                         <td>
-                                            <button class="btn btn-success btn-lg btn-block" [disabled]="bugetSbuYearlyService.budgetSbuYearly.year != this.yyyy" (click)="UpdateSbuDetails(a.bgtSbuId,a.newAmount,a.expense)" [disabled]="bugetSbuYearlyService.budgetSbuYearly.year != this.yyyy || a.sbuAmount == 0" ><i class="fa fa-save"></i>&nbsp; Update</button>
+                                            <button class="btn btn-success btn-lg btn-block" [disabled]="bugetSbuYearlyService.budgetSbuYearly.year != this.yyyy" (click)="UpdateSbuDetails(a.bgtSbuId,a.newAmount,a.expense)" [disabled]="bugetSbuYearlyService.budgetSbuYearly.year != this.yyyy || a.sbuAmount == 0"><i class="fa fa-save"></i>&nbsp; Update</button>
                                         </td>
                                         <td>
-                                            <button class="btn btn-success btn-lg btn-block" [disabled]="bugetSbuYearlyService.budgetSbuYearly.year != this.yyyy" (click)="getApprovalAuth(a.sbuName,a.sbuCode,a.sbuAmount,a.expense)" style="width: 100px;" ><i class="fa fa-save"></i>&nbsp; Distribution</button>
+                                            <button class="btn btn-success btn-lg btn-block" [disabled]="bugetSbuYearlyService.budgetSbuYearly.year != this.yyyy" (click)="getApprovalAuth(a.sbuName,a.sbuCode,a.sbuAmount,a.expense)" style="width: 100px;"><i class="fa fa-save"></i>&nbsp; Distribution</button>
                                         </td>
                                     </tr>
                                 </table>
-                    
+
                             </div>
                         </div>
                         <!-- /.card -->
@@ -150,27 +150,27 @@
 <ng-template #authDetailsModal>
     <div class="modal-header" style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));color: black;">
         <h4 class="modal-title pull-left">SBU Details</h4>
-    
+
         <button type="button" class="close pull-right" aria-label="Close" (click)="AuthDetailsModalRef.hide()">
         <span aria-hidden="true">&times;</span>
       </button>
-      
+
     </div>
     <div class="modal-body" style="padding: 20px 30px 20px 30px;">
         <div class="row">
             <div class="col-md-12">
-             
+
                 <div class="row">
                     <div class="col-md-12">
                         <div class="col-md-4">
                             <h6>Sbu: {{SbuName}}</h6>
                             <h6>Total Budget: {{sbuIndividualAmount | number: '1.0-0'}}</h6>
-                            <h6>Allowcated Budget: {{allowcatedBudget | number: '1.0-0'}}</h6>
+                            <h6>Allocated Budget: {{allowcatedBudget | number: '1.0-0'}}</h6>
                             <h6>Total Expense: {{expense | number: '1.0-0'}}</h6>
                             <h6>Remaining Budget: {{sbuIndividualAmount -(allowcatedBudget+expense) | number: '1.0-0'}}</h6>
                         </div>
-                        <div class="col-md-2" style="float:right; margin-bottom: 10px;">     
-                            <button class="btn btn-success btn-lg btn-block" (click)="saveAuthSbuDetails()" ><i class="fa fa-save"></i>&nbsp; Save</button>
+                        <div class="col-md-2" style="float:right; margin-bottom: 10px;">
+                            <button class="btn btn-success btn-lg btn-block" (click)="saveAuthSbuDetails()"><i class="fa fa-save"></i>&nbsp; Save</button>
                         </div>
                         <div class="table-responsive" style="border: 1px solid #bed2c9; width: 100%;">
                             <table class="table table-bordered table-responsive table-hover table-striped">
@@ -196,20 +196,20 @@
                                         </td>
                                         <td>{{a.authority}}</td>
                                         <td>{{a.noOfEmployee}}</td>
-                                        <td>{{a.amount  | number: '1.0-0'}}</td>
-                                        <td>{{a.expense  | number: '1.0-0'}}</td>
-                                        <td>{{a.amount - a.expense  | number: '1.0-0'}}</td>
+                                        <td>{{a.amount | number: '1.0-0'}}</td>
+                                        <td>{{a.expense | number: '1.0-0'}}</td>
+                                        <td>{{a.amount - a.expense | number: '1.0-0'}}</td>
                                         <td>
-                                            <input class="form-control ng-valid ng-touched ng-dirty" type="text" placeholder="New Amount"   id="sbuDetails" name="a.newAmount"  #newAmount="ngModel"  [(ngModel)]="a.newAmount">
+                                            <input class="form-control ng-valid ng-touched ng-dirty" type="text" placeholder="New Amount" id="sbuDetails" name="a.newAmount" #newAmount="ngModel" [(ngModel)]="a.newAmount">
                                         </td>
                                         <td>
-                                            <input type="checkbox" id="canEdit" [(ngModel)]="a.permView"/>
+                                            <input type="checkbox" id="canEdit" [(ngModel)]="a.permView" />
                                         </td>
                                         <td>
-                                            <input type="checkbox" id="canView" [(ngModel)]="a.permEdit"/>
+                                            <input type="checkbox" id="canView" [(ngModel)]="a.permEdit" />
                                         </td>
                                         <td>
-                                            <button class="btn btn-success btn-lg btn-block" [disabled]="bugetSbuYearlyService.budgetSbuYearly.year != this.yyyy || a.amount == 0" (click)="UpdateAppAuthDetails(a.id,a.newAmount,a.expense,a.permView,a.permEdit)"  ><i class="fa fa-save"></i>&nbsp; Update</button>
+                                            <button class="btn btn-success btn-lg btn-block" [disabled]="bugetSbuYearlyService.budgetSbuYearly.year != this.yyyy || a.amount == 0" (click)="UpdateAppAuthDetails(a.id,a.newAmount,a.expense,a.permView,a.permEdit)"><i class="fa fa-save"></i>&nbsp; Update</button>
                                         </td>
                                     </tr>
                                 </tbody>

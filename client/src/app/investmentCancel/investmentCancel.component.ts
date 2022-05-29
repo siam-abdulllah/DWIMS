@@ -555,6 +555,14 @@ export class InvestmentCancelComponent implements OnInit {
     });
   }
   onSubmit(form: NgForm) {
+    debugger;
+    if(this.apprDetail.length>0)
+    {
+      this.toastr.warning('Investment can not be deleted, Payement existed!')
+    }
+    else{
+      
+    }
   }
   
   resetPage(form: NgForm) {
@@ -604,21 +612,31 @@ export class InvestmentCancelComponent implements OnInit {
       this.SpinnerService.show();
       debugger;
       //this.investmentCancelService.removeInvestmentDetal(selectedRecord.id).subscribe(
-      this.investmentCancelService.removeInvestmentDetail(selectedRecord.id,parseInt(this.empId) ).subscribe(
-        res => {
-          var message=res as string;
-          //this.isDonationValid=false;
-          //this.investmentInitService.investmentMedicineProdFormData = new InvestmentMedicineProd();
-          
-          this.getInvestmentDetailTracker();
-          this.SpinnerService.hide();
-          this.toastr.success(message);
-        },
-        err => {
-          this.SpinnerService.hide();
-          console.log(err);
-        }
-      );
+        this.investmentCancelService.isInvestmentDetailExist(selectedRecord.id,parseInt(this.empId) ).subscribe(
+          res => {
+            var message=res as string;
+            this.investmentCancelService.removeInvestmentDetail(selectedRecord.id,parseInt(this.empId) ).subscribe(
+              res => {
+                var message=res as string;
+                //this.isDonationValid=false;
+                //this.investmentInitService.investmentMedicineProdFormData = new InvestmentMedicineProd();
+                
+                this.getInvestmentDetailTracker();
+                this.SpinnerService.hide();
+                this.toastr.success(message);
+              },
+              err => {
+                this.SpinnerService.hide();
+                console.log(err);
+              }
+            );
+          },
+          err => {
+            this.SpinnerService.hide();
+            console.log(err);
+          }
+        );
+     
     }
   }
 }

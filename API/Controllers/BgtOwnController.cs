@@ -306,8 +306,6 @@ namespace API.Controllers
                 var results = _dbContext.DonWiseExpByEmp.FromSqlRaw("EXECUTE [SP_InvestmentDonWiseExpByEmp] @EID, @Year,@SBU", parms.ToArray()).ToList();
                 return results;
 
-
-
             }
             catch (System.Exception ex)
             {

@@ -112,14 +112,10 @@ export class BgtSbuYearlyComponent implements OnInit {
       this.approvalAuthDetails = response as IApprovalAuthDetails[];
       if(this.approvalAuthDetails == null || this.approvalAuthDetails.length == 0)
       {
-      
-     
         this.bugetSbuYearlyService.getAppAuthDetails(SbuCode,this.bugetSbuYearlyService.budgetSbuYearly.deptId).subscribe(response => {
           debugger;
           this.approvalAuthDetails = response as IApprovalAuthDetails[];
-    
           if (this.approvalAuthDetails.length > 0) {
-
             for(var i=0;i<this.approvalAuthDetails.length;i++)
             {
               this.approvalAuthDetails[i].deptId = this.bugetSbuYearlyService.budgetSbuYearly.deptId;
@@ -127,7 +123,6 @@ export class BgtSbuYearlyComponent implements OnInit {
               this.approvalAuthDetails[i].sbu = this.SbuName;
               this.approvalAuthDetails[i].enteredBy = this.empId;
             }
-      
             }
             else {
               this.toastr.warning('No Data Found');
@@ -153,10 +148,10 @@ export class BgtSbuYearlyComponent implements OnInit {
 
 
   getYearlyBudget() {
-    debugger;
     if(typeof(this.bugetSbuYearlyService.budgetSbuYearly.year) == 'undefined')
     {
-      this.bugetSbuYearlyService.budgetSbuYearly.year = 2022;
+      this.toastr.warning('Plaease Select Year First!');
+      return;
     }
  
     if (this.bugetSbuYearlyService.budgetSbuYearly.year != null && this.bugetSbuYearlyService.budgetSbuYearly.year  != undefined && typeof(this.bugetSbuYearlyService.budgetSbuYearly.year)  != 'number') {
@@ -338,7 +333,7 @@ export class BgtSbuYearlyComponent implements OnInit {
              
               }
             }
-            this.sbuDetails[i].remaining = parseInt(this.sbuDetails[i].sbuAmount) -(parseInt(this.sbuDetails[i].expense) + parseInt(this.sbuDetails[i].totalAlowcated) )
+            this.sbuDetails[i].remaining = parseInt(this.sbuDetails[i].sbuAmount) - parseInt(this.sbuDetails[i].totalAlowcated) 
           }
         },
         err => { 

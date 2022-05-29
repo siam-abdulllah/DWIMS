@@ -232,7 +232,7 @@ export class InvestmentRapidAprComponent implements OnInit {
       this.getBudgetForCampaign();
     }
     else {
-      if(this.investmentFormService.investmentFormData.proposeFor != 'Others')
+      if(this.investmentFormService.investmentFormData.proposeFor != 'Others Rapid')
       {
         this.getBudget();
       }

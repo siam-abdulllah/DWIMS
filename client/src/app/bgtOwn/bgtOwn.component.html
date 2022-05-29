@@ -89,6 +89,7 @@
                                         <div class="col-md-2">
                                             <input class="form-control" id="prevAllocate" name="prevAllocate" formControlName="prevAllocate" readonly>
                                         </div>
+
                                         <div class="col-md-1 ">
                                             <label>Total Expense</label>
                                         </div>
@@ -111,6 +112,12 @@
                                 </div>
                                 <div class="form-group ">
                                     <div class="row ">
+                                        <div class="col-md-1">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button *ngIf="isAdmin" class="btn btn-primary btn-block" (click)="insertbgtEmpTotal()" style=" text-shadow: 3em #000; "><i class="fa fa-plus "></i>&nbsp;
+                                                Total Budget Add</button>
+                                        </div>
                                         <div class="col-md-2 ">
                                             <input type="checkbox" id="permEdit" formControlName="permEdit" value="1">
                                             <label for="permEdit"> Can Edit</label>
@@ -119,7 +126,7 @@
                                             <input [readonly]="!isAdmin" type="checkbox" id="permView" formControlName="permView" value="1">
                                             <label for="permView"> Can View</label>
                                         </div>
-                                        <div class="col-md-6 ">
+                                        <div class="col-md-3">
                                         </div>
                                         <div class="col-md-1">
                                             <button *ngIf="isAdmin" class="btn btn-success btn-block" (click)="insertbgtEmpDetail()" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp;

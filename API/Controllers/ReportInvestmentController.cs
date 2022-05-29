@@ -474,9 +474,9 @@ namespace API.Controllers
                             " AND rc.Id = (" +
                             " SELECT id" +
                             " FROM InvestmentRecComment" +
-                            " WHERE InvestmentInitId = a.Id AND CompletionStatus=1 AND RecStatus = 'Approved'" +                     
+                            " WHERE InvestmentInitId = a.Id AND CompletionStatus=1 AND RecStatus = 'Approved'" +
                             " ) AND b.Priority=rc.Priority";
-       
+
 
                 if (dt.FromDate != null && dt.ToDate != null)
                 {
@@ -1895,7 +1895,7 @@ namespace API.Controllers
                            " AND inDetail.PaymentMethod = 'Cash' " +
                            " AND e.DataStatus = 1 " +
                            " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
-                           " AND ir.RecStatus = 'Approved' "+
+                           " AND ir.RecStatus = 'Approved' " +
                            " UNION " +
                             // NEW RAPID
                             " SELECT a.id	,a.SetOn,e.EmployeeName,SYSDATETIMEOFFSET() AS ModifiedOn,1 AS DataStatus,a.DonationTo,e.Id AS EmpId,e.DesignationName +', '+ e.DepartmentName  DesignationName,'' MarketName,dtl.PaymentRefNo ReferenceNo, " +
@@ -2020,8 +2020,8 @@ namespace API.Controllers
                            " AND  ir.EmployeeId = inDetail.EmployeeId AND dtl.PaymentRefNo is NOT NULL " +
                            " AND e.DataStatus = 1 " +
                            " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id) " +
-                           " AND ir.RecStatus = 'Approved' "+
-                           
+                           " AND ir.RecStatus = 'Approved' " +
+
                            " UNION " +
                             // NEW RAPID
                             " Select dtl.id, a.SetOn, e.EmployeeName, SYSDATETIMEOFFSET() AS ModifiedOn, 1 AS DataStatus,  a.DonationTo, e.Id as EmpId, e.DesignationName +', '+ e.DepartmentName  DesignationName, '' MarketName, dtl.PaymentRefNo ReferenceNo, d.DonationTypeName,  " +
@@ -2038,7 +2038,7 @@ namespace API.Controllers
                             " AND  ir.EmployeeId = inDetail.EmployeeId AND dtl.PaymentRefNo is NOT NULL " +
                             " AND e.DataStatus = 1  " +
                             " AND inDetail.Id in (select max(ID) from investmentrec where InvestmentInitId = a.Id)  " +
-                           
+
                            " ) x  " +
                            // " AND inDetail.PaymentMethod = 'Cash'  " +
                            "  WHERE X.ReferenceNo = '" + referenceNo + "' ";
@@ -2159,60 +2159,99 @@ namespace API.Controllers
         {
             try
             {
-                List<SqlParameter> parms = new List<SqlParameter>
+                string qry = " SELECT [Id],[DataStatus],[SetOn],[ModifiedOn],[InvestmentInitId],[EmployeeId],[Month],[Year],[FromDate],[ToDate],[ApprovedAmount],[PaidStatus],[DonationId],[PaymentRefNo]" +
+                        " FROM  [dbo].[InvestmentDetailTracker] " +
+                    " WHERE InvestmentInitId = " + id + " " +
+                    " ";
+
+                    var results = _db.InvestmentDetailTracker.FromSqlRaw(qry).ToList();
+                    if (results.Count > 0)
+                    {
+                        return Ok("Existed");
+                    }
+                    else { return Ok("Not Existed"); }
+                    //var alreadyExistInvestmentDetailTracker = await _investmentDetailTrackerRepo.GetByIdAsync(id);
+                    ////var alreadyExistInvestmentDetailTrackerList = await _investmentDetailTrackerRepo.ListAsync(alreadyExistSpec);
+                    ////if (alreadyExistInvestmentDetailTrackerList.Count > 0)
+                    //if (alreadyExistInvestmentDetailTracker.InvestmentInitId != null)
+                    //{
+                    //    var alreadyExistSpec = new InvestmentDetailTrackerSpecification(id);
+
+                    //    var alreadyExistInvestmentDetailTrackerList = await _investmentDetailTrackerRepo.ListAsync(alreadyExistSpec);
+                    //    //foreach (var v in alreadyExistInvestmentDetailTrackerList)
+                    //    //{
+
+                    //    _investmentDetailTrackerRepo.Delete(alreadyExistInvestmentDetailTracker);
+                    //    _investmentDetailTrackerRepo.Savechange();
+                    //    //}
+
+                    // Ok("Succsessfuly Deleted!!!");
+
+                }
+                catch (System.Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        [HttpGet("isInvestmentDetailExist/{id}/{empId}")]
+            public IActionResult IsInvestmentDetailExist(int id, int empId)
+            {
+                try
+                {
+                    List<SqlParameter> parms = new List<SqlParameter>
                     {
                         new SqlParameter("@ID", id),
                         new SqlParameter("@EID", empId),
                         new SqlParameter("@IPADD", GetIPAddress()),
                         new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
                     };
-                var result = _db.Database.ExecuteSqlRaw("EXECUTE SP_InvApprIndividualDelete @ID,@EID,@IPADD,@r out", parms.ToArray());
-                if (parms[4].Value.ToString() != "True")
+                    var result = _db.Database.ExecuteSqlRaw("EXECUTE SP_InvApprIndividualDelete @ID,@EID,@IPADD,@r out", parms.ToArray());
+                    if (parms[4].Value.ToString() != "True")
+                    {
+                        return BadRequest(new ApiResponse(400, parms[7].Value.ToString()));
+                    }
+
+                    //var alreadyExistInvestmentDetailTracker = await _investmentDetailTrackerRepo.GetByIdAsync(id);
+                    ////var alreadyExistInvestmentDetailTrackerList = await _investmentDetailTrackerRepo.ListAsync(alreadyExistSpec);
+                    ////if (alreadyExistInvestmentDetailTrackerList.Count > 0)
+                    //if (alreadyExistInvestmentDetailTracker.InvestmentInitId != null)
+                    //{
+                    //    var alreadyExistSpec = new InvestmentDetailTrackerSpecification(id);
+
+                    //    var alreadyExistInvestmentDetailTrackerList = await _investmentDetailTrackerRepo.ListAsync(alreadyExistSpec);
+                    //    //foreach (var v in alreadyExistInvestmentDetailTrackerList)
+                    //    //{
+
+                    //    _investmentDetailTrackerRepo.Delete(alreadyExistInvestmentDetailTracker);
+                    //    _investmentDetailTrackerRepo.Savechange();
+                    //    //}
+
+                    return Ok("Succsessfuly Deleted!!!");
+
+                }
+                catch (System.Exception ex)
                 {
-                    return BadRequest(new ApiResponse(400, parms[7].Value.ToString()));
+                    throw ex;
+                }
+            }
+
+            [HttpPost]
+            public string GetIPAddress()
+            {
+                IPAddress ip;
+                var headers = Request.Headers.ToList();
+                if (headers.Exists((kvp) => kvp.Key == "X-Forwarded-For"))
+                {
+                    var header = headers.First((kvp) => kvp.Key == "X-Forwarded-For").Value.ToString();
+                    ip = IPAddress.Parse(header.Remove(header.IndexOf(':')));
+                }
+                else
+                {
+                    ip = Request.HttpContext.Connection.RemoteIpAddress;
                 }
 
-                //var alreadyExistInvestmentDetailTracker = await _investmentDetailTrackerRepo.GetByIdAsync(id);
-                ////var alreadyExistInvestmentDetailTrackerList = await _investmentDetailTrackerRepo.ListAsync(alreadyExistSpec);
-                ////if (alreadyExistInvestmentDetailTrackerList.Count > 0)
-                //if (alreadyExistInvestmentDetailTracker.InvestmentInitId != null)
-                //{
-                //    var alreadyExistSpec = new InvestmentDetailTrackerSpecification(id);
-
-                //    var alreadyExistInvestmentDetailTrackerList = await _investmentDetailTrackerRepo.ListAsync(alreadyExistSpec);
-                //    //foreach (var v in alreadyExistInvestmentDetailTrackerList)
-                //    //{
-
-                //    _investmentDetailTrackerRepo.Delete(alreadyExistInvestmentDetailTracker);
-                //    _investmentDetailTrackerRepo.Savechange();
-                //    //}
-
-                return Ok("Succsessfuly Deleted!!!");
-
+                return ip.ToString();
             }
-            catch (System.Exception ex)
-            {
-                throw ex;
-            }
+
         }
-
-        [HttpPost]
-        public string GetIPAddress()
-        {
-            IPAddress ip;
-            var headers = Request.Headers.ToList();
-            if (headers.Exists((kvp) => kvp.Key == "X-Forwarded-For"))
-            {
-                var header = headers.First((kvp) => kvp.Key == "X-Forwarded-For").Value.ToString();
-                ip = IPAddress.Parse(header.Remove(header.IndexOf(':')));
-            }
-            else
-            {
-                ip = Request.HttpContext.Connection.RemoteIpAddress;
-            }
-
-            return ip.ToString();
-        }
-
     }
-}

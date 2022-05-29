@@ -42,6 +42,10 @@ export class BudgetYearlyService {
     debugger;
     return this.http.get(this.baseUrl + 'BgtYearly/getBudgetAmount/'+deptId+'/'+year);
   }
+  getTotalAllocated(deptId:number,year:number){    
+    debugger;
+    return this.http.get(this.baseUrl + 'BgtYearly/getTotalAllocated/'+deptId+'/'+year);
+  }
   getGenParams(){
     return this.genParams;
   }
