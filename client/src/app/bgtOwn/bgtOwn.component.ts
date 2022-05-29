@@ -179,6 +179,20 @@ export class BgtOwnComponent implements OnInit {
           remaining: this.bgtOwn.value.prevAllocate - sum
         });
       }
+      if(selectedRecord.totalAmount<selectedRecord.expense)
+      {
+        this.toastr.warning('Donation wise budget can not be less than expense');
+        selectedRecord.newAmount = 0;
+        selectedRecord.totalAmount = selectedRecord.newAmount;
+        sum = 0;
+        for (let i = 0; i < this.bgtOwns.length; i++) {
+          sum = sum + parseFloat(this.bgtOwns[i].totalAmount);
+        }
+        this.bgtOwn.patchValue({
+          totalAmount: sum,
+          remaining: this.bgtOwn.value.prevAllocate - sum 
+        });
+      }
      if (this.bgtOwn.value.remaining < 0) 
      {
         this.toastr.warning('Donation wise budget can not be greater than total budget');
@@ -194,6 +208,7 @@ export class BgtOwnComponent implements OnInit {
           remaining: this.bgtOwn.value.prevAllocate - sum 
         });
       }
+      
     }
     else{
       selectedRecord.newAmount=0;

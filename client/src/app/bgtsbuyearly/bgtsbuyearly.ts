@@ -112,14 +112,10 @@ export class BgtSbuYearlyComponent implements OnInit {
       this.approvalAuthDetails = response as IApprovalAuthDetails[];
       if(this.approvalAuthDetails == null || this.approvalAuthDetails.length == 0)
       {
-      
-     
         this.bugetSbuYearlyService.getAppAuthDetails(SbuCode,this.bugetSbuYearlyService.budgetSbuYearly.deptId).subscribe(response => {
           debugger;
           this.approvalAuthDetails = response as IApprovalAuthDetails[];
-    
           if (this.approvalAuthDetails.length > 0) {
-
             for(var i=0;i<this.approvalAuthDetails.length;i++)
             {
               this.approvalAuthDetails[i].deptId = this.bugetSbuYearlyService.budgetSbuYearly.deptId;
@@ -127,7 +123,6 @@ export class BgtSbuYearlyComponent implements OnInit {
               this.approvalAuthDetails[i].sbu = this.SbuName;
               this.approvalAuthDetails[i].enteredBy = this.empId;
             }
-      
             }
             else {
               this.toastr.warning('No Data Found');
