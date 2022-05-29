@@ -149,7 +149,7 @@ export class PendingPrintDepotComponent implements OnInit {
     pdf.text('Inter-department communication', pageWidth / 2, 75, {align: 'center'});
     pdf.setFontSize(12);
     //const pDate = this.datePipe.transform(new Date, "dd/MM/yyyy");
-    pdf.text('From: Sales Department', 65, 100);
+    // pdf.text('From: Sales Department', 65, 100);
     pdf.text('Place: Dhaka', 680, 100);
     pdf.text('Approved By: '+ r[0].approvedBy,  65, 120);
       const pDate = this.datePipe.transform(r[0].setOn, "dd/MM/yyyy");

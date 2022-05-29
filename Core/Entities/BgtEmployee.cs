@@ -30,6 +30,7 @@
         public int AuthId { get; set; }
         public string ApprovalAuthorityName { get; set; }
         public int TotalPerson { get; set; }
+        public int TotalLoc { get; set; }
         public int Amount { get; set; }
         public int Limit { get; set; }
         public long? DonationTypeAllocated { get; set; }

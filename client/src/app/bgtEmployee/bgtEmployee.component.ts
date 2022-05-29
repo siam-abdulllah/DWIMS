@@ -388,6 +388,7 @@ interface ISbuData {
   donationTypeName: string;
   authId: number;
   totalPerson: number;
+  totalLoc: number;
   amount: number;
   limit: number;
   ttlAmt: number;
@@ -408,6 +409,7 @@ export class SbuData implements ISbuData {
   donationTypeName: string;
   authId: number;
   totalPerson: number;
+  totalLoc: number;
   amount: number;
   limit: number;
   ttlAmt: number;
