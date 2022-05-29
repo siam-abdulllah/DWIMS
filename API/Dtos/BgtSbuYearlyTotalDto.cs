@@ -20,6 +20,7 @@ namespace API.Dtos
     }
     public class SbuDetails
     {
+        public int bgtSbuId { get; set; }
         public string SBUName { get; set; }
         public string SBUCode { get; set; }
         public long SBUAmount { get; set; }

@@ -94,7 +94,7 @@
                                         <td>Pipeline</td>
                                         <td>Remaining</td>
                                         <td>New Amount (Yearly)</td>
-                                        <td>Action</td>
+                         
                                         <td>Approval Authority Wise Budget Distribution</td>
                                     </tr>
                                     <tr *ngFor="let a of sbuDetails; let index = index">
@@ -123,9 +123,9 @@
                                         <td>
                                             <input class="form-control ng-valid ng-touched ng-dirty" type="text" placeholder="New Amount" name="{{a.newAmount}}" id="sbuDetails" name="sbuDetails{{index}}" #newAmount="ngModel" [(ngModel)]="sbuDetails[index].newAmount" [disabled]="bugetSbuYearlyService.budgetSbuYearly.year != this.yyyy">
                                         </td>
-                                        <td>
+                                        <!-- <td>
                                             <button class="btn btn-success btn-lg btn-block" [disabled]="bugetSbuYearlyService.budgetSbuYearly.year != this.yyyy" (click)="UpdateSbuDetails(a.bgtSbuId,a.newAmount,a.expense)" [disabled]="bugetSbuYearlyService.budgetSbuYearly.year != this.yyyy || a.sbuAmount == 0"><i class="fa fa-save"></i>&nbsp; Update</button>
-                                        </td>
+                                        </td> -->
                                         <td>
                                             <button class="btn btn-success btn-lg btn-block" [disabled]="bugetSbuYearlyService.budgetSbuYearly.year != this.yyyy" (click)="getApprovalAuth(a.sbuName,a.sbuCode,a.sbuAmount,a.expense)" style="width: 100px;"><i class="fa fa-save"></i>&nbsp; Distribution</button>
                                         </td>

@@ -146,7 +146,7 @@ export class BgtYearlyComponent implements OnInit {
     this.bugetYearlyService.getTotalAllocated(this.bugetYearlyService.budgetYearly.deptId,this.bugetYearlyService.budgetYearly.year).subscribe(
       res => {
         this.bugetYearlyService.budgetYearly.totalAllocated = res as number;
-        this.bugetYearlyService.budgetYearly.totalRemaining = parseInt(this.bugetYearlyService.budgetYearly.totalAmount) - parseInt(this.bugetYearlyService.budgetYearly.totalExpense);
+        this.bugetYearlyService.budgetYearly.totalRemaining = parseInt(this.bugetYearlyService.budgetYearly.totalAmount) - parseInt(this.bugetYearlyService.budgetYearly.totalAllocated);
         this.SpinnerService.hide();
       },
       err => { console.log(err); }
@@ -218,7 +218,7 @@ export class BgtYearlyComponent implements OnInit {
     var totalAmount = parseInt(this.bugetYearlyService.budgetYearly.totalAmount);
     if(newAmount != '' && newAmount >0)
     {
-      if((newAmount > totalExpense+ totalPipeline))
+      if((newAmount > totalExpense) && (newAmount >=  this.bugetYearlyService.budgetYearly.totalAllocated))
       {
         this.SpinnerService.show();
         this.bugetYearlyService.submitBudgetYearly().subscribe(
@@ -233,14 +233,14 @@ export class BgtYearlyComponent implements OnInit {
         );
       }
       else{
-        this.toastr.warning('Budget can not be lower then expense!');
+        this.toastr.warning('Budget can not be lower then expense or allocated amount!');
         this.SpinnerService.hide();
         return;
       }
     }
     else if(addAmount>0)
     {
-      if((totalAmount+addAmount  > totalExpense+ totalPipeline))
+      if((totalAmount+addAmount  > totalExpense) && (totalAmount+addAmount  >=  this.bugetYearlyService.budgetYearly.totalAllocated))
       {
         this.SpinnerService.show();
         this.bugetYearlyService.submitBudgetYearly().subscribe(
@@ -255,7 +255,7 @@ export class BgtYearlyComponent implements OnInit {
         );
       }
       else{
-        this.toastr.warning('Budget can not be lower then expense!');
+        this.toastr.warning('Budget can not be lower then expense or allocated amount!!');
         this.SpinnerService.hide();
         return;
       }

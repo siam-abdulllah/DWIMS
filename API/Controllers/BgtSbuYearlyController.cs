@@ -334,16 +334,22 @@ namespace API.Controllers
 
             string qry = "";
             BgtSBUTotal sbuTotal = new BgtSBUTotal();
-            qry = string.Format(@" select * from BgtSBUTotal where  DeptId={0}", setSbuBgtDto.DeptId);
-            List<BgtSBUTotal> bgtList = _dbContext.BgtSBUTotal.FromSqlRaw(qry).ToList();
-            if (bgtList != null && bgtList.Count > 0)
+            //qry = string.Format(@" select * from BgtSBUTotal where  DeptId={0}", setSbuBgtDto.DeptId);
+            //List<BgtSBUTotal> bgtList = _dbContext.BgtSBUTotal.FromSqlRaw(qry).ToList();
+            if (setSbuBgtDto.SbuDetailsList != null && setSbuBgtDto.SbuDetailsList.Count > 0)
             {
-                foreach (var item in bgtList)
+                foreach (var item in setSbuBgtDto.SbuDetailsList)
                 {
-                    item.ModifiedOn = DateTime.Now;
-                    item.DataStatus = 0;
-                    _bgtSbuRepo.Update(item);
-                    _bgtSbuRepo.Savechange();
+                    if(item.bgtSbuId > 0)
+                    {
+                        sbuTotal = await _bgtSbuRepo.GetByIdAsync(item.bgtSbuId);
+
+                        sbuTotal.ModifiedOn = DateTime.Now;
+                        sbuTotal.DataStatus = 0;
+                        _bgtSbuRepo.Update(sbuTotal);
+                        _bgtSbuRepo.Savechange();
+                    }
+                    
                 }
             }
 
