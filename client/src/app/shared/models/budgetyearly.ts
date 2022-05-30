@@ -129,6 +129,7 @@ export class AuthExpense implements IAuthExpense {
 
 export interface IApprovalAuthDetails {
     id:number;
+    bgtEmpId:number;
     authority:string;
     authId:number;
     noOfEmployee:number;
@@ -147,6 +148,7 @@ export interface IApprovalAuthDetails {
 }
 export class ApprovalAuthDetails implements IApprovalAuthDetails {
     id:number;
+    bgtEmpId:number;
     authority:string;
     authId:number;
     noOfEmployee:number;

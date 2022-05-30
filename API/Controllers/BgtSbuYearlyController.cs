@@ -140,7 +140,7 @@ namespace API.Controllers
                 string filterQry = "";
                 if(deptId == 1)
                 {
-                    filterQry = " where aa.Id in (3,4,5,6,7)";
+                    filterQry = " where aa.Id in (3,4,5,6,7,12)";
                 }
                 else
                 {
@@ -195,7 +195,7 @@ namespace API.Controllers
             try
             {
 
-                string qry = string.Format(@" select be.*,aa.Remarks Authority,aa.Priority from BgtEmployee be 
+                string qry = string.Format(@" select be.Id as BgtEmpId, be.*,aa.Remarks Authority,aa.Priority from BgtEmployee be 
 									left join ApprovalAuthority aa on aa.Id = be.AuthId
 									where be.Sbu = '{0}' and  be.DeptId={1} and be.Year = {2} and be.compId={3} and be.DataStatus = 1", sbu, deptId, year,compId);
              
@@ -214,7 +214,15 @@ namespace API.Controllers
             List<AuthExpense> bgtEmpList = new List<AuthExpense>();
             try
             {
-
+                string ProposeFor = "";
+                if (deptId == 1)
+                {
+                    ProposeFor = "'Others','Sales'";
+                }
+                else if (deptId == 2)
+                {
+                    ProposeFor = "'BrandCampaign','PMD'";
+                }
                 string qry = string.Format(@" SELECT   DISTINCT  CAST(ROW_NUMBER() OVER (ORDER BY  D.Remarks) AS INT)  AS Id,
                                                 1 AS DataStatus,SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,
                                                 ISNULL(Round(SUM(ApprovedAmount), 0), 0) Expense,D.Remarks
@@ -224,17 +232,18 @@ namespace API.Controllers
                                                 INNER JOIN InvestmentInit F ON F.Id = A.InvestmentInitId
                                                 --INNER JOIN ApprAuthConfig C ON A.EmployeeId = C.EmployeeId
                                                 INNER JOIN ApprovalAuthority D ON B.Priority = D.Priority
-                                                WHERE B.CompletionStatus = 1
+                                                WHERE B.CompletionStatus = 1                                 
+                                                AND F.ProposeFor IN ({4})  
                                                 AND B.RecStatus = 'Approved'
                                                 AND B.CompletionStatus = 1
                                                 AND F.DataStatus = 1
                                                 --AND C.STATUS = 'A'
 
-                                                And B.SBU = '{0}'
+                                                And F.SBU = '{0}'
                                                 And D.DeptId = '{1}'
                                                 And A.Year = '{2}'
                                                 And D.CompId = '{3}'
-                                                GROUP BY D.Remarks", sbu, deptId, year,compId);
+                                                GROUP BY D.Remarks", sbu, deptId, year,compId, ProposeFor);
 
                 var results = _dbContext.AuthExpense.FromSqlRaw(qry).ToList();
                 List<AuthExpense> dsResult = _dbContext.ExecSQL<AuthExpense>(qry).ToList();
@@ -252,18 +261,25 @@ namespace API.Controllers
             BgtEmployee bgtEmp = new BgtEmployee();
             try
             {
-                string qry = string.Format(@" select * from BgtEmployee where  DeptId={0} and Sbu = '{1}' and Year = {2}", model.DeptId,model.SBUCode,model.Year);
-                bgtEmpList = _dbContext.BgtEmployee.FromSqlRaw(qry).ToList();
-             
-                if (bgtEmpList != null && bgtEmpList.Count>0)
+                //string qry = string.Format(@" select * from BgtEmployee where  DeptId={0} and Sbu = '{1}' and Year = {2}", model.DeptId,model.SBUCode,model.Year);
+                //bgtEmpList = _dbContext.BgtEmployee.FromSqlRaw(qry).ToList();
+                if (model.bgtEmpList != null && model.bgtEmpList.Count > 0)
                 {
-                    foreach (var item in bgtEmpList)
+                    foreach (var item in model.bgtEmpList)
                     {
-                        item.DataStatus = 0;
-                        _bgtEmployee.Update(item);
-                        _bgtEmployee.Savechange();
+                        if (item.BgtEmpId > 0)
+                        {
+                            bgtEmp = await _bgtEmployee.GetByIdAsync(item.BgtEmpId);
+
+                            bgtEmp.ModifiedOn = DateTime.Now;
+                            bgtEmp.DataStatus = 0;
+                            _bgtEmployee.Update(bgtEmp);
+                            _bgtEmployee.Savechange();
+                        }
+
                     }
                 }
+            
                if(model.bgtEmpList != null && model.bgtEmpList.Count > 0)
                 {
                     foreach (var item in model.bgtEmpList)

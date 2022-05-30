@@ -8,6 +8,7 @@ namespace API.Dtos
     public class BgtEmployeeDto
     {
         public int Id { get; set; }
+        public int BgtEmpId { get; set; }
         public int CompId { get; set; }
         public int DeptId { get; set; }
         public int Year { get; set; }
