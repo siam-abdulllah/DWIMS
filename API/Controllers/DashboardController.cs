@@ -154,7 +154,7 @@ namespace API.Controllers
                         " where  Exists (select InvestmentInitId from InvestmentRecComment a " +
                             //" where RegionCode in (select RegionCode from Employee " +
                             //" where Id = "+empCode+"  ) and CompletionStatus = 0 and [Priority] = 3) "
-                            " where " +
+                            " where I.DataStatus=1 AND " +
                             " (a.SBU = COALESCE(NULLIF('" + empData[0].SBU + "',''), 'All')" +
                             " OR COALESCE(NULLIF('" + empData[0].SBU + "',''), 'All') = 'All'" +
                             " )" +
