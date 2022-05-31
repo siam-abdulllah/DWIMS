@@ -151,6 +151,88 @@ export class BgtOwnComponent implements OnInit {
   }
   donAmountCal(selectedRecord: IBgtOwn) {
     debugger;
+    var oldNewAmount=selectedRecord.newAmount;
+    if (selectedRecord.newAmount != 0 && selectedRecord.newAmount != "" && selectedRecord.newAmount != undefined) 
+    {
+      var sum = 0;
+      if (selectedRecord.segment == 'Monthly') {
+        const d = new Date();
+        var remMonth = 12 - d.getMonth();
+        selectedRecord.totalAmount = selectedRecord.newAmount * remMonth;
+        for (let i = 0; i < this.bgtOwns.length; i++) {
+          sum = sum + parseFloat(this.bgtOwns[i].totalAmount);
+        }
+        this.bgtOwn.patchValue({
+          //totalAmount: (sum - parseFloat(selectedRecord.amount))+ parseFloat(selectedRecord.newAmount),
+          totalAmount: sum,
+          //remaining: this.bgtOwn.value.prevAllocate - (sum + parseFloat(this.bgtOwn.value.totalExpense))
+          remaining: this.bgtOwn.value.prevAllocate - sum
+        });
+      }
+      else {
+        selectedRecord.totalAmount = selectedRecord.newAmount;
+        for (let i = 0; i < this.bgtOwns.length; i++) {
+          sum = sum + parseFloat(this.bgtOwns[i].totalAmount);
+        }
+        this.bgtOwn.patchValue({
+          totalAmount: sum,
+          //remaining: this.bgtOwn.value.prevAllocate - (sum + parseFloat(this.bgtOwn.value.totalExpense))
+          remaining: this.bgtOwn.value.prevAllocate - sum
+        });
+      }
+      // if(selectedRecord.totalAmount<selectedRecord.expense)
+      // {
+      //   this.toastr.warning('Donation wise budget can not be less than expense');
+      //   selectedRecord.newAmount = oldNewAmount;
+      //   selectedRecord.totalAmount = selectedRecord.newAmount;
+      //   sum = 0;
+      //   for (let i = 0; i < this.bgtOwns.length; i++) {
+      //     sum = sum + parseFloat(this.bgtOwns[i].totalAmount);
+      //   }
+      //   this.bgtOwn.patchValue({
+      //     totalAmount: sum,
+      //     remaining: this.bgtOwn.value.prevAllocate - sum 
+      //   });
+      // }
+     if (this.bgtOwn.value.remaining < 0) 
+     {
+        this.toastr.warning('Donation wise budget can not be greater than total budget');
+        selectedRecord.newAmount = 0;
+        selectedRecord.totalAmount = selectedRecord.newAmount;
+        sum = 0;
+        for (let i = 0; i < this.bgtOwns.length; i++) {
+          sum = sum + parseFloat(this.bgtOwns[i].totalAmount);
+        }
+        this.bgtOwn.patchValue({
+          totalAmount: sum,
+         // remaining: this.bgtOwn.value.prevAllocate - (sum + parseFloat(this.bgtOwn.value.totalExpense))
+          remaining: this.bgtOwn.value.prevAllocate - sum 
+        });
+      }
+      
+    }
+    else{
+      selectedRecord.newAmount=0;
+      sum=0;
+      selectedRecord.totalAmount = selectedRecord.newAmount;
+        for (let i = 0; i < this.bgtOwns.length; i++) {
+          sum = sum + parseFloat(this.bgtOwns[i].totalAmount);
+        }
+        this.bgtOwn.patchValue({
+          totalAmount: sum,
+          //remaining: this.bgtOwn.value.prevAllocate - (sum + parseFloat(this.bgtOwn.value.totalExpense))
+          remaining: this.bgtOwn.value.prevAllocate - sum 
+        });
+    }
+    // if (this.bgtOwn.value.totalAmount != 0 && this.bgtOwn.value.totalAmount != "" || this.bgtOwn.value.totalAmount != undefined) {
+    //   this.bgtOwn.patchValue({
+    //     remaining: parseFloat(this.bgtOwn.value.prevAllocate) - parseFloat(this.bgtOwn.value.totalAmount),
+    //   });
+    // }
+  }
+  onBlurdonAmountCal(selectedRecord: IBgtOwn) {
+    debugger;
+    var oldNewAmount=selectedRecord.newAmount;
     if (selectedRecord.newAmount != 0 && selectedRecord.newAmount != "" && selectedRecord.newAmount != undefined) 
     {
       var sum = 0;
@@ -761,6 +843,12 @@ export class BgtOwnComponent implements OnInit {
     }
     
     for (let i = 0; i < this.bgtOwns.length; i++) {
+      if(this.bgtOwns[i].totalAmount<this.bgtOwns[i].expense)
+      {
+        this.toastr.warning('Detail Budget Can not be less than expense');
+        break;
+        return;
+      }
       this.bgtOwns[i].employeeId = this.bgtOwn.value.employee;
       this.bgtOwns[i].amount = this.bgtOwns[i].newAmount;
       this.bgtOwns[i].amtLimit = this.bgtOwns[i].newAmountLimit;

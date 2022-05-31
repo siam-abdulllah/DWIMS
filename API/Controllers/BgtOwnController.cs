@@ -278,9 +278,17 @@ namespace API.Controllers
                          new SqlParameter("@SBU", sbu),
 
                     };
+                if (deptId == 1)
+                {
+                    return _dbContext.CountDouble.FromSqlRaw("EXECUTE [SP_InvestmentExpByEmpSales] @EID, @Year,@SBU", parms.ToArray()).ToList();
 
-                var results = _dbContext.CountDouble.FromSqlRaw("EXECUTE [SP_InvestmentExpByEmp] @EID, @Year,@SBU", parms.ToArray()).ToList();
-                return results;
+                }
+                else
+                {
+                    return _dbContext.CountDouble.FromSqlRaw("EXECUTE [SP_InvestmentExpByEmpPMD] @EID, @Year,@SBU", parms.ToArray()).ToList();
+
+                }
+                 
 
 
             }
@@ -302,9 +310,17 @@ namespace API.Controllers
                          new SqlParameter("@SBU", sbu),
 
                     };
+                if (deptId == 1)
+                {
+                    return _dbContext.DonWiseExpByEmp.FromSqlRaw("EXECUTE [SP_InvestmentDonWiseExpByEmpSales] @EID, @Year,@SBU", parms.ToArray()).ToList();
 
-                var results = _dbContext.DonWiseExpByEmp.FromSqlRaw("EXECUTE [SP_InvestmentDonWiseExpByEmp] @EID, @Year,@SBU", parms.ToArray()).ToList();
-                return results;
+                }
+                else
+                {
+                    return _dbContext.DonWiseExpByEmp.FromSqlRaw("EXECUTE [SP_InvestmentDonWiseExpByEmpPMD] @EID, @Year,@SBU", parms.ToArray()).ToList();
+
+                }
+                
 
             }
             catch (System.Exception ex)

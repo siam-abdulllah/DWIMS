@@ -265,11 +265,11 @@ export class BgtEmployeeComponent implements OnInit {
     }
 
     for (var i = 0; i < this.sbuData.length; i++) {
-      if(this.sbuData[i].amount > 0 && this.sbuData[i].expense > this.sbuData[i].ttlAmt)
-      {
-            this.toastr.error('Insufficient allocation for SBU: '+ this.sbuData[i].sbu);
-            return;
-      }
+      // if(this.sbuData[i].amount > 0 && this.sbuData[i].expense > this.sbuData[i].ttlAmt)
+      // {
+      //       this.toastr.error('Insufficient allocation for SBU: '+ this.sbuData[i].sbu);
+      //       return;
+      // }
 
       if(this.sbuData[i].ttlAmt == null)
       {
@@ -309,7 +309,7 @@ export class BgtEmployeeComponent implements OnInit {
     if (this.bgtEmployee.value.segment == "Monthly") {
       const d = new Date();
       var remMonth = 12 - d.getMonth();
-      var ttl = selectedRow.totalPerson * selectedRow.amount * remMonth;
+      var ttl = selectedRow.totalLoc * selectedRow.amount * remMonth;
 
       var rem = selectedRow.sbuAmount + selectedRow.donationTypeAllocated - selectedRow.expense - selectedRow.totalAllocated - ttl;
       if (rem >= 0) {
@@ -323,7 +323,7 @@ export class BgtEmployeeComponent implements OnInit {
       }
     }
     else if (this.bgtEmployee.value.segment == "Yearly") {
-      var ttl = selectedRow.totalPerson * selectedRow.amount;
+      var ttl = selectedRow.totalLoc * selectedRow.amount;
       var rem = selectedRow.sbuAmount + selectedRow.donationTypeAllocated - selectedRow.expense - selectedRow.totalAllocated - ttl;
 
       if (rem >= 0) {
