@@ -110,7 +110,26 @@
 
                                 <div class="form-group ">
                                     <div class="row ">
-                                        <div class="col-md-10">
+                                        <div class="col-md-1 ">
+                                            <label>Start Month <div class="invalid-feedback" *ngIf="bgtEmployee.controls.month.errors?.required">*</div> </label>
+                                        </div>
+                                        <div class="col-md-3 ">
+                                            <select class="form-control" id="month" formControlName="month" (change)="validateMonth()" required>
+                                        <option value="1">January</option>
+                                        <option value="2">February</option>
+                                        <option value="3">March</option>
+                                        <option value="4">April</option>
+                                        <option value="5">May</option>
+                                        <option value="6">June</option>
+                                        <option value="7">July</option>
+                                        <option value="8">August</option>
+                                        <option value="9">September</option>
+                                        <option value="10">October</option>
+                                        <option value="11">November</option>
+                                        <option value="12">December</option>
+                                        </select>
+                                        </div>
+                                        <div class="col-md-6">
                                         </div>
 
                                         <!-- <div class="col-md-1">
@@ -185,7 +204,7 @@
                                         </td> -->
 
                                         <td>
-                                            <input class="form-control ng-valid ng-touched ng-dirty" type="text" placeholder="Amount" [(ngModel)]="a.amount" [ngModelOptions]="{standalone: true}" (keyup)="getTotal(a)">
+                                            <input class="form-control ng-valid ng-touched ng-dirty" type="text" placeholder="Amount" [(ngModel)]="a.amount" [ngModelOptions]="{standalone: true}" (focusout)="getTotal(a)">
                                         </td>
                                         <td>
                                             <input class="form-control ng-valid ng-touched ng-dirty" type="text" placeholder="Limit" [(ngModel)]="a.limit" [ngModelOptions]="{standalone: true}">

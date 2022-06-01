@@ -25,5 +25,6 @@ namespace API.Dtos
         public string Segment { get; set; }
         public int EnteredBy { get; set; }
         public int DonationId { get; set; }
+        public int StMonth { get; set; }
     }
 }

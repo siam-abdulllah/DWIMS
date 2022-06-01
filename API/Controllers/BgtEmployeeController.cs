@@ -159,6 +159,7 @@ namespace API.Controllers
                         new SqlParameter("@Segment", a.Segment),
                         new SqlParameter("@EnteredBy", a.EnteredBy),
                         new SqlParameter("@DonationId", a.DonationId),
+                        new SqlParameter("@StMonth", a.StMonth),
                     };
 
                         if (a.AuthId == 8)   // GPM
@@ -167,7 +168,7 @@ namespace API.Controllers
                         }
                         else if (a.AuthId == 3)   // RSM
                         {
-                            results = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsertRSM] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId", parms.ToArray());
+                            results = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsertRSM] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId, @StMonth ", parms.ToArray());
                         }
                         else if (a.AuthId == 5)    // DSM
                         {

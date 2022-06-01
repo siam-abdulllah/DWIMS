@@ -85,6 +85,7 @@ export class BgtEmployeeComponent implements OnInit {
 
       grdAmount: [''],
       grdLimit: [''],
+      month: [''],
     });
   }
 
@@ -215,7 +216,24 @@ export class BgtEmployeeComponent implements OnInit {
     );
   }
 
+  validateMonth()
+  {
+    debugger;
+    const d = new Date();
+    if (this.bgtEmployee.value.month < d.getMonth() + 1) {
+      this.toastr.error('Previous Months can not be selected');
+      this.bgtEmployee.patchValue({
+        month: d.getMonth() + 1,
+      });
+      return;
+    }
+  }
+
   generateData() {
+    if (this.bgtEmployee.value.month == "" || this.bgtEmployee.value.month == null) {
+      this.toastr.error('Starting month needs to be selected');
+      return;
+    }
     if (this.bgtEmployee.value.deptId == "" || this.bgtEmployee.value.deptId == null) {
       this.toastr.error('Select Department');
       return;
@@ -292,6 +310,7 @@ export class BgtEmployeeComponent implements OnInit {
       this.sbuData[i].segment = this.bgtEmployee.value.segment;
       this.sbuData[i].year = yr.getFullYear();
       this.sbuData[i].enteredBy = parseInt(this.empId);
+      this.sbuData[i].stMonth = this.bgtEmployee.value.month;
     }
 
     this.bgtService.insertBgtOwnList(this.sbuData).subscribe(
@@ -308,7 +327,7 @@ export class BgtEmployeeComponent implements OnInit {
     debugger;
     if (this.bgtEmployee.value.segment == "Monthly") {
       const d = new Date();
-      var remMonth = 12 - d.getMonth();
+      var remMonth = 12 - this.bgtEmployee.value.month +1;
       var ttl = selectedRow.totalLoc * selectedRow.amount * remMonth;
 
       var rem = selectedRow.sbuAmount + selectedRow.donationTypeAllocated - selectedRow.expense - selectedRow.totalAllocated - ttl;
@@ -370,6 +389,7 @@ export class BgtEmployeeComponent implements OnInit {
       transLimit: "",
       grdAmount: "",
       grdLimit: "",
+      month: "",
     });
 
     this.sbuData = [];
@@ -395,6 +415,7 @@ interface ISbuData {
   donationTypeAllocated: number;
   totalAllocated: number;
   enteredBy: number;
+  stMonth: number;
 }
 
 export class SbuData implements ISbuData {
@@ -416,4 +437,5 @@ export class SbuData implements ISbuData {
   donationTypeAllocated: number;
   totalAllocated: number;
   enteredBy: number;
+  stMonth: number;
 } 
