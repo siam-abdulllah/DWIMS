@@ -164,7 +164,7 @@ namespace API.Controllers
 
                         if (a.AuthId == 8)   // GPM
                         {
-                            results = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsertPMD] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId", parms.ToArray());
+                            results = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsertPMD] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId, @StMonth", parms.ToArray());
                         }
                         else if (a.AuthId == 3)   // RSM
                         {
@@ -172,11 +172,11 @@ namespace API.Controllers
                         }
                         else if (a.AuthId == 5)    // DSM
                         {
-                            results = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsertDSM] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId", parms.ToArray());
+                            results = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsertDSM] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId, @StMonth ", parms.ToArray());
                         }
                         else if (a.AuthId == 6)     // Management
                         {
-                            results = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsert] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId", parms.ToArray());
+                            results = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsert] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId, @StMonth ", parms.ToArray());
                         }
                     }
 

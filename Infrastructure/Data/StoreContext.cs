@@ -144,6 +144,7 @@ namespace Infrastructure.Data
         public DbSet<EmpSbuMapping> EmpSbuMapping { get; set; }
         public DbSet<BgtYearlyTotal> BgtYearlyTotal { get; set; }
         public DbSet<BgtSBUTotal> BgtSBUTotal { get; set; }
+        public DbSet<BgtCampaign> BgtCampaign { get; set; }
         public DbSet<BgtEmployee> BgtEmployee { get; set; }
         public DbSet<BgtOwn> BgtOwn { get; set; }
         public DbSet<MarketInfo> MarketInfo { get; set; }
