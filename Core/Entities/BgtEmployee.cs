@@ -40,6 +40,7 @@
     {
         public string Authority { get; set; }
         public int Priority { get; set; }
+        public int NoOfLoc { get; set; }
         public int BgtEmpId { get; set; }
 
     }
