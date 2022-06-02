@@ -133,6 +133,7 @@ export interface IApprovalAuthDetails {
     authority:string;
     authId:number;
     noOfEmployee:number;
+    noOfLoc:number;
     priority:number;
     expense:any;
     amount:any;
@@ -152,6 +153,7 @@ export class ApprovalAuthDetails implements IApprovalAuthDetails {
     authority:string;
     authId:number;
     noOfEmployee:number;
+    noOfLoc:number;
     priority:number;
     expense:any;
     amount:any;

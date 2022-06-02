@@ -36,6 +36,7 @@ export class BudgetSbuYearlyService {
   getAppAuthDetails(sbuCode:string,deptId:number){    
     return this.http.get(this.baseUrl + 'BgtSbuYearly/getAppAuthDetails/'+sbuCode+'/'+deptId);
   }
+  
   getbgtEmployeeForSbu(sbuName:string,deptId:number,year:number,comId:number){    
     return this.http.get(this.baseUrl + 'BgtSbuYearly/getBudgetEmpForSbu/'+sbuName+'/'+deptId+'/'+year+'/'+comId);
   }

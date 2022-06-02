@@ -103,7 +103,8 @@ export class BgtSbuYearlyComponent implements OnInit {
   }
   getApprovalAuth(SbuName:string,SbuCode:string,sbuAmount:any,expense:any) {
     this.getAllAuthWiseExpenseList(SbuCode, this.bugetSbuYearlyService.budgetSbuYearly.deptId, this.bugetSbuYearlyService.budgetSbuYearly.year,
-      this.bugetSbuYearlyService.budgetSbuYearly.compId)
+      this.bugetSbuYearlyService.budgetSbuYearly.compId);
+      
     this.sbuIndividualAmount = sbuAmount;
     this.SbuName = SbuName;
     this.SbuCode = SbuCode;

@@ -31,13 +31,11 @@ namespace API.Controllers
             try
             {
                 string qry = "";
-
                 qry = " select 1 as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, CAST(SBUAmount AS INT)  Count from BgtSBUTotal " +
                     " where DeptId = " + deptId + " " +
                     " and SBU = '" + sbu + "' " +
                     " and [Year] = '" + year + "' " +
                     " and DataStatus = 1 ";
-
                 var result = _dbContext.CountInt.FromSqlRaw(qry).ToList();
 
                 return result;

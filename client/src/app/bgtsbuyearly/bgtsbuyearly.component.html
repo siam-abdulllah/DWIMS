@@ -94,7 +94,7 @@
                                         <td>Pipeline</td>
                                         <td>Remaining</td>
                                         <td>New Amount (Yearly)</td>
-                         
+
                                         <td>Approval Authority Wise Budget Distribution</td>
                                     </tr>
                                     <tr *ngFor="let a of sbuDetails; let index = index">
@@ -159,7 +159,6 @@
     <div class="modal-body" style="padding: 20px 30px 20px 30px;">
         <div class="row">
             <div class="col-md-12">
-
                 <div class="row">
                     <div class="col-md-12">
                         <div class="col-md-4">
@@ -167,7 +166,7 @@
                             <h6>Total Budget: {{sbuIndividualAmount | number: '1.0-0'}}</h6>
                             <h6>Allocated Budget: {{allowcatedBudget | number: '1.0-0'}}</h6>
                             <h6>Total Expense: {{expense | number: '1.0-0'}}</h6>
-                            <h6>Remaining Budget: {{sbuIndividualAmount -(allowcatedBudget+expense) | number: '1.0-0'}}</h6>
+                            <h6>Remaining Budget: {{sbuIndividualAmount -allowcatedBudget | number: '1.0-0'}}</h6>
                         </div>
                         <div class="col-md-2" style="float:right; margin-bottom: 10px;">
                             <button class="btn btn-success btn-lg btn-block" (click)="saveAuthSbuDetails()"><i class="fa fa-save"></i>&nbsp; Save</button>
@@ -179,6 +178,7 @@
                                         <th scope="col" style="width: 1%">Layer</th>
                                         <th scope="col" style="width: 1%;">Approval Auth</th>
                                         <th scope="col" style="width: 1%">Total Person</th>
+                                        <th scope="col" style="width: 1%">Total Loc</th>
                                         <th scope="col" style="width: 3%">Total Amount (yearly)</th>
                                         <th scope="col" style="width: 3%">Expense</th>
                                         <th scope="col" style="width: 3%">Remaining</th>
@@ -196,6 +196,7 @@
                                         </td>
                                         <td>{{a.authority}}</td>
                                         <td>{{a.noOfEmployee}}</td>
+                                        <td>{{a.noOfLoc}}</td>
                                         <td>{{a.amount | number: '1.0-0'}}</td>
                                         <td>{{a.expense | number: '1.0-0'}}</td>
                                         <td>{{a.amount - a.expense | number: '1.0-0'}}</td>
@@ -216,6 +217,55 @@
                             </table>
                             <!-- <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls> -->
                         </div>
+                        <fieldset *ngIf="bugetSbuYearlyService.budgetSbuYearly.deptId==2">
+                            <legend>Campaign</legend>
+                            <div class="table-responsive" style="border: 1px solid #bed2c9; width: 100%;">
+                                <table class="table table-bordered table-responsive table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" style="width: 1%">Layer</th>
+                                            <th scope="col" style="width: 1%;">Approval Auth</th>
+                                            <th scope="col" style="width: 1%">Total Person</th>
+                                            <th scope="col" style="width: 1%">Total Loc</th>
+                                            <th scope="col" style="width: 3%">Total Amount (yearly)</th>
+                                            <th scope="col" style="width: 3%">Expense</th>
+                                            <th scope="col" style="width: 3%">Remaining</th>
+                                            <th scope="col" style="width: 4%">New Amount</th>
+                                            <th scope="col" style="width: 1%">Can View</th>
+                                            <th scope="col" style="width: 1%">Can Edit</th>
+                                            <th scope="col" style="width: 4%">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- <tr *ngFor="let a of investmentInits | paginate: configs | filter: searchText"> -->
+                                        <tr *ngFor="let a of approvalAuthDetails  | filter: searchText">
+                                            <td>
+                                                {{a.priority}}
+                                            </td>
+                                            <td>{{a.authority}}</td>
+                                            <td>{{a.noOfEmployee}}</td>
+                                            <td>{{a.noOfLoc}}</td>
+                                            <td>{{a.amount | number: '1.0-0'}}</td>
+                                            <td>{{a.expense | number: '1.0-0'}}</td>
+                                            <td>{{a.amount - a.expense | number: '1.0-0'}}</td>
+                                            <td>
+                                                <input class="form-control ng-valid ng-touched ng-dirty" type="text" placeholder="New Amount" id="sbuDetails" name="a.newAmount" #newAmount="ngModel" [(ngModel)]="a.newAmount">
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" id="canEdit" [(ngModel)]="a.permView" />
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" id="canView" [(ngModel)]="a.permEdit" />
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-success btn-lg btn-block" [disabled]="bugetSbuYearlyService.budgetSbuYearly.year != this.yyyy || a.amount == 0" (click)="UpdateAppAuthDetails(a.id,a.newAmount,a.expense,a.permView,a.permEdit)"><i class="fa fa-save"></i>&nbsp; Update</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <!-- <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls> -->
+                            </div>
+                        </fieldset>
                     </div>
                 </div>
             </div>

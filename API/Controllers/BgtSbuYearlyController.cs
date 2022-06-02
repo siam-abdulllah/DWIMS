@@ -132,7 +132,7 @@ namespace API.Controllers
         }
 
         [HttpGet("GetAppAuthDetails/{sbuCode}/{deptId}")]
-        public List<AppAuthDetails> GetAppAuthDetails(string sbuCode,int deptId)
+        public List<AppAuthDetailsDto> GetAppAuthDetails(string sbuCode,int deptId)
         {
             try
             {
@@ -151,11 +151,16 @@ namespace API.Controllers
                                      aa.Remarks Authority,0 as Expense,0 as Amount,0 as NewAmount, (select COUNT(*) from ApprAuthConfig ac
                                     left join EmpSbuMapping emp on emp.EmployeeId = ac.EmployeeId
                                     where ac.ApprovalAuthorityId = aa.Id and emp.SBU = '{0}' and emp.DataStatus = 1) NoOfEmployee
+                                    ,CASE  WHEN aa.Id = 3 THEN ( SELECT COUNT(*) FROM RegionInfo r WHERE r.SBU = '{0}' AND r.DataStatus = 1 )
+		                            WHEN aa.Id = 5 THEN (  SELECT COUNT(*) FROM ZoneInfo r WHERE r.SBU = '{0}' AND r.DataStatus = 1 )
+		                            ELSE ( SELECT COUNT(*) FROM ApprAuthConfig ac LEFT JOIN EmpSbuMapping emp ON emp.EmployeeId = ac.EmployeeId
+				                    WHERE ac.ApprovalAuthorityId = aa.Id AND emp.SBU = '{0}' AND emp.DataStatus = 1 )
+		                            END NoOfLoc
                                     from ApprovalAuthority aa {1}", sbuCode, filterQry);
 
 
-                var results = _dbContext.AppAuthDetails.FromSqlRaw(qry).ToList();
-                List<AppAuthDetails> dsResult = _dbContext.ExecSQL<AppAuthDetails>(qry).ToList();
+                //var results = _dbContext.AppAuthDetails.FromSqlRaw(qry).ToList();
+                List<AppAuthDetailsDto> dsResult = _dbContext.ExecSQL<AppAuthDetailsDto>(qry).ToList();
                 return dsResult;
             }
             catch (System.Exception ex)
@@ -163,6 +168,8 @@ namespace API.Controllers
                 throw ex;
             }
         }
+        
+        
         [HttpGet("getYearlyBudget/{deptId}/{year}")]
         public BgtYearlyTotal GetBudgetYearly(int deptId,int year)
         {
@@ -195,7 +202,12 @@ namespace API.Controllers
             try
             {
 
-                string qry = string.Format(@" select be.Id as BgtEmpId, be.*,aa.Remarks Authority,aa.Priority from BgtEmployee be 
+                string qry = string.Format(@" select be.Id as BgtEmpId, be.*,aa.Remarks Authority,aa.Priority
+                                    ,CASE  WHEN aa.Id = 3 THEN ( SELECT COUNT(*) FROM RegionInfo r WHERE r.SBU = '{0}' AND r.DataStatus = 1 )
+		                            WHEN aa.Id = 5 THEN (  SELECT COUNT(*) FROM ZoneInfo r WHERE r.SBU = '{0}' AND r.DataStatus = 1 )
+		                            ELSE ( SELECT COUNT(*) FROM ApprAuthConfig ac LEFT JOIN EmpSbuMapping emp ON emp.EmployeeId = ac.EmployeeId
+				                    WHERE ac.ApprovalAuthorityId = aa.Id AND emp.SBU = '{0}' AND emp.DataStatus = 1 )
+		                            END NoOfLoc from BgtEmployee be 
 									left join ApprovalAuthority aa on aa.Id = be.AuthId
 									where be.Sbu = '{0}' and  be.DeptId={1} and be.Year = {2} and be.compId={3} and be.DataStatus = 1", sbu, deptId, year,compId);
              
