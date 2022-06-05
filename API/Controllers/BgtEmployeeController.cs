@@ -174,7 +174,7 @@ namespace API.Controllers
                         {
                             results = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsertDSM] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId, @StMonth ", parms.ToArray());
                         }
-                        else if (a.AuthId == 6)     // Management
+                        else if (a.AuthId == 6 || a.AuthId == 4 || a.AuthId == 7 || a.AuthId == 12)     // SM  - GM - Director - MD
                         {
                             results = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsert] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId, @StMonth ", parms.ToArray());
                         }
