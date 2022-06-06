@@ -54,7 +54,7 @@ export class InvestmentAprNoSbuService {
     return this.http.get(this.baseUrl + 'product/getMedicineProductForInvestment');
   }
   getBudget(sbu:string,empID:number,donationId:number){    
-    return this.http.get(this.baseUrl + 'approvalCeiling/getBudgetCeiling/'+empID+'/'+sbu+'/'+donationId);
+    return this.http.get(this.baseUrl + 'approvalCeiling/getBudgetCeilingNoSBU/'+empID+'/'+sbu+'/'+donationId);
   }
   getLastFiveInvestment(marketCode:string,toDayDate:string){    
     return this.http.get(this.baseUrl + 'investment/getLastFiveInvestment/'+marketCode+'/'+toDayDate);

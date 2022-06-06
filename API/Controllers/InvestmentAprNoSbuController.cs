@@ -259,7 +259,8 @@ namespace API.Controllers
                         new SqlParameter("@ASTATUS", aprStatus),
                         new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
                     };
-                    var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheckNew @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
+                    //var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheckNew @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
+                    var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheckNoSBUNew @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
                     if (parms[6].Value.ToString() != "True")
                     {
                         return BadRequest(new ApiResponse(400, parms[6].Value.ToString()));
@@ -546,7 +547,8 @@ namespace API.Controllers
                         new SqlParameter("@ASTATUS", aprStatus),
                         new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
                     };
-                    var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheckNew @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
+                   // var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheckNew @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
+                    var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheckNoSBUNew @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
                     if (parms[6].Value.ToString() != "True")
                     {
                         return BadRequest(new ApiResponse(400, parms[6].Value.ToString()));
@@ -840,7 +842,8 @@ namespace API.Controllers
                         new SqlParameter("@ASTATUS", aprStatus),
                         new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
                     };
-                    var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheckNew @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
+                   // var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheckNew @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
+                    var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheckNoSBUNew @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
                     //var param=parms[6].Value;
                     if (parms[6].Value.ToString() != "True")
                     //if (result.Result == 0)

@@ -56,7 +56,7 @@ namespace API.Controllers
             }
         }
       
-        [HttpGet("GetBudgetCeiling/{empID}/{sbu}/{DonationId}")]
+        [HttpGet("getBudgetCeiling/{empID}/{sbu}/{DonationId}")]
         // [Authorize(Roles = "Owner,Administrator")]
         // [Authorize(Policy = "DetailUserPolicy")]
         public ActionResult<IReadOnlyList<BudgetCeiling>> GetBudgetCeiling(int empID, string sbu, string DonationId)
@@ -78,7 +78,29 @@ namespace API.Controllers
                 throw ex;
             }
         }
-         [HttpGet("GetBudgetCeilingForCampaign/{empID}/{sbu}/{DonationId}/{CampaignDtlId}")]
+        [HttpGet("getBudgetCeilingNoSBU/{empID}/{sbu}/{DonationId}")]
+        // [Authorize(Roles = "Owner,Administrator")]
+        // [Authorize(Policy = "DetailUserPolicy")]
+        public ActionResult<IReadOnlyList<BudgetCeiling>> GetBudgetCeilingNoSBU(int empID, string sbu, string DonationId)
+        {
+            try
+            {
+                List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                        new SqlParameter("@SBU", sbu),
+                        new SqlParameter("@EID", empID),
+                        new SqlParameter("@DID", DonationId)
+                    };
+                var results = _dbContext.BudgetCeiling.FromSqlRaw<BudgetCeiling>("EXECUTE SP_BudgetCeilingSearchNoSBUNew @SBU,@EID,@DID", parms.ToArray()).ToList();
+                return results;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        [HttpGet("getBudgetCeilingForCampaign/{empID}/{sbu}/{DonationId}/{CampaignDtlId}")]
         // [Authorize(Roles = "Owner,Administrator")]
         // [Authorize(Policy = "DetailUserPolicy")]
         public ActionResult<IReadOnlyList<BudgetCeilingForCampaign>> GetBudgetCeilingForCampaign(int empID, string sbu, int DonationId, int CampaignDtlId)

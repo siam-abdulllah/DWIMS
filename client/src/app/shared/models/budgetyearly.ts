@@ -127,6 +127,34 @@ export class AuthExpense implements IAuthExpense {
     expense:any;
 }
 
+export interface ICampaignBgtDetails {
+    id:number;
+    noOfCamp:number;
+    allocatedBgt:any;
+    expense:any;
+    amount:any;
+    newAmount:any;
+    deptId:number;
+    sbu:string;
+    sbuCode:string;
+    year:number;
+    compId:number;
+    enteredBy : string;
+}
+export class CampaignBgtDetails implements ICampaignBgtDetails{
+    id:number;
+    noOfCamp:number;
+    allocatedBgt:any;
+    expense:any;
+    amount:any;
+    newAmount:any;
+    deptId:number;
+    sbu:string;
+    sbuCode:string;
+    year:number;
+    compId:number;
+    enteredBy : string;
+}
 export interface IApprovalAuthDetails {
     id:number;
     bgtEmpId:number;

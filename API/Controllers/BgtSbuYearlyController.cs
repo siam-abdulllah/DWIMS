@@ -167,6 +167,32 @@ namespace API.Controllers
             {
                 throw ex;
             }
+        } 
+        [HttpGet("GetCampaignDetails/{sbuCode}/{deptId}")]
+        public List<CampaignBgtDetailsDto> GetCampaignDetails(string sbuCode,int deptId)
+        {
+            try
+            {
+                string qry = "";
+               
+
+                qry = string.Format(@"SELECT  CAST(ROW_NUMBER() OVER (ORDER BY A.SBU) AS INT)  AS Id,1 AS DataStatus,SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,
+                                    COUNT(Distinct B.SubCampaignId) NoOfCamp,SUM(ISNULL(B.Budget,0)) AllocatedBgt,A.SBU,
+                                    (SELECT Amount FROM BgtCampaign WHERE SBU=A.SBU AND YEAR=YEAR(GETDATE()) AND DeptId={0} AND CompId={1} AND DataStatus=1) Amount,
+                                    (SELECT ROUND(SUM(ISNULL(invd.ApprovedAmount,0)),0) FROM InvestmentDetailTracker invd INNER JOIN InvestmentInit invi ON invd.InvestmentInitId=invi.Id WHERE invi.SBU=A.SBU AND invi.ProposeFor='BrandCampaign' AND invd.Year=YEAR(GETDATE())) Expense
+                                     FROM  CampaignMst A INNER JOIN CampaignDtl B ON A.Id=B.MstId 
+                                    WHERE A.SBU='{2}' AND YEAR(B.SubCampEndDate)=YEAR(GETDATE())
+                                    GROUP BY A.SBU", deptId,1000, sbuCode);
+
+
+                //var results = _dbContext.AppAuthDetails.FromSqlRaw(qry).ToList();
+                List<CampaignBgtDetailsDto> dsResult = _dbContext.ExecSQL<CampaignBgtDetailsDto>(qry).ToList();
+                return dsResult;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
         }
         
         
@@ -233,7 +259,8 @@ namespace API.Controllers
                 }
                 else if (deptId == 2)
                 {
-                    ProposeFor = "'BrandCampaign','PMD'";
+                    //ProposeFor = "'BrandCampaign','PMD'";
+                    ProposeFor = "'PMD'";
                 }
                 string qry = string.Format(@" SELECT   DISTINCT  CAST(ROW_NUMBER() OVER (ORDER BY  D.Remarks) AS INT)  AS Id,
                                                 1 AS DataStatus,SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,
