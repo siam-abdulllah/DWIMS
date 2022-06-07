@@ -27,6 +27,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { SheetJSComponent } from './sheetjs.component';
 
 
+
 @NgModule({
   declarations: [
     SheetJSComponent,
@@ -35,6 +36,7 @@ import { SheetJSComponent } from './sheetjs.component';
     // AsidenavComponent,
     // FooterComponent,
     HomeComponent,
+ 
   ],
   imports: [
     BrowserModule,

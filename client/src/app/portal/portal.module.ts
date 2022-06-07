@@ -66,6 +66,7 @@ import { BgtEmployeeComponent } from '../bgtEmployee/bgtEmployee.component';
 import { BgtOwnComponent } from '../bgtOwn/bgtOwn.component';
 import { InvestmentCancelComponent } from '../investmentCancel/investmentCancel.component';
 import { BgtEmpSbuMapComponent } from '../bgtEmpSbuMap/bgtEmpSbuMap';
+import { UploadComponent } from '../upload/upload.component';
 
 
 @NgModule({
@@ -142,6 +143,7 @@ import { BgtEmpSbuMapComponent } from '../bgtEmpSbuMap/bgtEmpSbuMap';
     ChangePasswordComponent,
     BgtEmployeeComponent,
     BgtOwnComponent,
+    UploadComponent
   ],
   providers: [DatePipe]
 })

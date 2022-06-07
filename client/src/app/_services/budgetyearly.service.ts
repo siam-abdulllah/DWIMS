@@ -54,6 +54,9 @@ export class BudgetYearlyService {
     return this.http.post(this.baseUrl + 'BgtYearly/SaveBgtYearly', this.budgetYearly);
   }
  
-  
+  uploadBudgetYearlyFile(file:any) {
+    debugger;
+    return this.http.post(this.baseUrl + 'fileUpload/SaveFile', file);
+  }
 }
 

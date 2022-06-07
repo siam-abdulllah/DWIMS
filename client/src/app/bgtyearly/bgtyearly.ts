@@ -1,4 +1,5 @@
 import { DatePipe } from "@angular/common";
+import { Byte } from "@angular/compiler/src/util";
 import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -20,12 +21,14 @@ import { BudgetYearlyService } from "../_services/budgetYearly.service";
   providers: [DatePipe]
 })
 export class BgtYearlyComponent implements OnInit {
+  [x: string]: any;
   @ViewChild('search', { static: false }) searchTerm: ElementRef;
   @ViewChild('budgetYearlySearchModal', { static: false }) budgetYearlySearchModal: TemplateRef<any>;
   @ViewChild('submissionConfirmModal', { static: false }) submissionConfirmModal: TemplateRef<any>;
   submissionConfirmRef: BsModalRef;
   BudgetYearlySearchModalRef: BsModalRef;
   bsValue: Date = new Date();
+  response: {dbPath: ''};
   today = new Date();
   addAmountShow:boolean=false;
   newAmountShow:boolean=true;
@@ -33,6 +36,7 @@ export class BgtYearlyComponent implements OnInit {
   empId: string;
   deptId: any;
   userRole:string;
+  UserPhoto:any;
   budgetTotalForm: NgForm;
   isValid: boolean = false;
   searchText:string;
@@ -264,5 +268,44 @@ export class BgtYearlyComponent implements OnInit {
   
       
   }
+
+  uploadPhoto(event: any)
+  {
+
+   debugger;
+
+    var file=event.target.files[0];
+    const formData:FormData=new FormData();
+    var filePath = "";
+    if(this.bugetYearlyService.budgetYearly.compId == 1000)
+    {
+        filePath = "Square Pharmaceuticals Limited/"
+    }
+    if(this.bugetYearlyService.budgetYearly.deptId == 1)
+    {
+        filePath += "Sales/"
+    }
+    if(this.bugetYearlyService.budgetYearly.deptId == 2)
+    {
+        filePath += "PMD/"
+    }
+    filePath += this.bugetYearlyService.budgetYearly.year+"/";
+    formData.append(filePath,file,file.Name);
+    debugger;
+    this.bugetYearlyService.uploadBudgetYearlyFile(formData).subscribe(
+      res => {
+       debugger;
+        this.UserPhoto = res as Byte[];
+      },
+      err => { 
+        console.log(err); 
+      }
+    );
+  }
+  uploadFinished = (event) => { 
+    this.response = event; 
+  }
+
+
 }
 

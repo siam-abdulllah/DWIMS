@@ -32,8 +32,7 @@ namespace API
             
             services.AddAutoMapper(typeof(MappingProfiles));
             services.AddControllers().AddNewtonsoftJson();
-           
-            
+         
             services.AddDbContext<StoreContext>(x =>
             x.UseSqlServer(_config.GetConnectionString("DefaultConnection"),
             sqlServerOptions => sqlServerOptions.CommandTimeout(300)));
@@ -51,7 +50,14 @@ namespace API
             services.AddIdentityServices(_config);
             
             services.AddSwaggerDocumentation();
-           
+
+            services.Configure<FormOptions>(o =>
+            {
+                o.ValueLengthLimit = int.MaxValue;
+                o.MultipartBodyLengthLimit = int.MaxValue;
+                o.MemoryBufferThreshold = int.MaxValue;
+            });
+
             services.AddCors(opt => 
             {
                 opt.AddPolicy("CorsPolicy", policy => 

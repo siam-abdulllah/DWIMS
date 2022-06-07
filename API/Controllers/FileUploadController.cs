@@ -1,65 +1,80 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using API.Helpers;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace API.Controllers
 {
-    public class FileUploadController : Controller
+    public class FileUploadController :  BaseApiController
     {
-        public IActionResult Index()
+
+        [HttpPost("uploadBudgetYearlyFile/{file}")]
+        public void UploadBudgetYearlyFile(IFormFile file)
         {
-            return View();
+            
         }
-        //public void FTPUpload(string fileNameStr, EventArgs e)
-        //{
-        //    //FTP Server URL.
-        //    string ftp = "ftp://yourserver.com/";
+        [Route("SaveFile")]
+        [HttpPost, DisableRequestSizeLimit]
+        public void SaveFile()
+        {
+            try
+            {
+                 
+                IFormFile file = Request.Form.Files[0];
+                 string monthname = DateTime.Now.ToString("MMM")+"/";
+                UploadDocumentInFtp.MakeFTPDir("172.16.201.161", "21", file.Name+monthname , null, null);
+               
+                var filerName = file.Name+monthname+file.FileName;
+                UploadDocumentInFtp.UploadFile(file, filerName);             
+                UploadDocumentInFtp.Download(filerName);             
+                       
+            }
+            catch (Exception ex)
+            {
+              
+            }
+        }
 
-        //    //FTP Folder name. Leave blank if you want to upload to root folder.
-        //    string ftpFolder = "Uploads/";
+        // public  void DownloadFile(object sender, EventArgs e)
+        // {
+        //     try
+        //     {
+        //         string url = "ftp://172.16.201.161:21/Square Pharmaceuticals Limited/PMD/2022/Jun/" + "nid.jpg";
+        //         /* Create an FTP Request */
+        //         var ftpRequest = (FtpWebRequest)FtpWebRequest.Create(url);
+        //         /* Log in to the FTP Server with the User Name and Password Provided */
+        //         // ftpRequest.Credentials = new NetworkCredential(user, pass);
+        //         /* When in doubt, use these options */
+        //         ftpRequest.UseBinary = true;
+        //         ftpRequest.UsePassive = true;
+        //         ftpRequest.KeepAlive = true;
+        //         /* Specify the Type of FTP Request */
+        //         ftpRequest.Method = WebRequestMethods.Ftp.DownloadFile;
+        //         /* Establish Return Communication with the FTP Server */
+        //         var ftpResponse = (FtpWebResponse)ftpRequest.GetResponse();
+        //         /* Get the FTP Server's Response Stream */
+        //         var ftpStream = ftpResponse.GetResponseStream();
 
-        //    byte[] fileBytes = null;
+        //         // TODO: you might need to extract these settings from the FTP response
+        //         const string contentType = "application/zip";
+        //         const string fileNameDisplayedToUser = "FileName.zip";
 
-        //    //Read the FileName and convert it to Byte array.
-        //    string fileName = Path.GetFileName(fileNameStr);
-        //    using (StreamReader fileStream = new StreamReader(FileUpload1.PostedFile.InputStream))
-        //    {
-        //        fileBytes = Encoding.UTF8.GetBytes(fileStream.ReadToEnd());
-        //        fileStream.Close();
-        //    }
+        //         return File(ftpStream, contentType, fileNameDisplayedToUser);
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         // _logger.Error(ex);
+        //     }
+        // }
 
-        //    try
-        //    {
-        //        //Create FTP Request.
-        //        FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftp + ftpFolder + fileName);
-        //        request.Method = WebRequestMethods.Ftp.UploadFile;
 
-        //        //Enter FTP Server credentials.
-        //        request.Credentials = new NetworkCredential("UserName", "Password");
-        //        request.ContentLength = fileBytes.Length;
-        //        request.UsePassive = true;
-        //        request.UseBinary = true;
-        //        request.ServicePoint.ConnectionLimit = fileBytes.Length;
-        //        request.EnableSsl = false;
 
-        //        using (Stream requestStream = request.GetRequestStream())
-        //        {
-        //            requestStream.Write(fileBytes, 0, fileBytes.Length);
-        //            requestStream.Close();
-        //        }
-
-        //        FtpWebResponse response = (FtpWebResponse)request.GetResponse();
-        //        response.Close();
-        //    }
-        //    catch (WebException ex)
-        //    {
-        //        throw new Exception((ex.Response as FtpWebResponse).StatusDescription);
-        //    }
-        //}
     }
 }
