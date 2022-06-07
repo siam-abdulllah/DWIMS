@@ -6,9 +6,12 @@ using Core.Interfaces;
 using Core.Specifications;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -19,14 +22,16 @@ namespace API.Controllers
         private readonly IGenericRepository<CampaignDtlProduct> _campaignDtlProductRepo;
         private readonly IGenericRepository<Employee> _employeeRepo;
         private readonly IMapper _mapper;
+        private readonly StoreContext _dbContext;
         public CampaignController(IGenericRepository<CampaignMst> campaignMstRepo, IGenericRepository<CampaignDtlProduct> campaignDtlProductRepo, IGenericRepository<CampaignDtl> campaignDtlRepo,
-       IGenericRepository<Employee> employeeRepo, IMapper mapper)
+       IGenericRepository<Employee> employeeRepo, IMapper mapper, StoreContext dbContext)
         {
             _mapper = mapper;
             _campaignMstRepo = campaignMstRepo;
             _campaignDtlRepo = campaignDtlRepo;
             _campaignDtlProductRepo = campaignDtlProductRepo;
             _employeeRepo = employeeRepo;
+            _dbContext = dbContext;
         }
         [HttpPost("insertMst")]
         public ActionResult<CampaignMstDto> InsertCampaignMst(CampaignMstDto campaignMstDto)
@@ -397,5 +402,29 @@ namespace API.Controllers
                 throw ex;
             }
         }
+
+
+        [HttpGet("getSubCampaignExpense/{subCampId}/{sbu}")]
+        public ActionResult<IReadOnlyList<CampaignExp>> BgtEmpInsert(int subCampId,string sbu)
+        {
+            try
+            {
+                List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                        new SqlParameter("@DeptId", 2),
+                        new SqlParameter("@Year", 2022),
+                        new SqlParameter("@SBU ", sbu),
+                        new SqlParameter("@SubCampaignId", subCampId),
+                    };
+
+                var results = _dbContext.CampaignExp.FromSqlRaw("EXECUTE [SP_BgtGetCampaingExp] @DeptId, @Year, @SBU , @SubCampaignId", parms.ToArray()).ToList();
+                return results;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }
