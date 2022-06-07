@@ -40,6 +40,10 @@ export class CampaignComponent implements OnInit {
   subCampaigns: ISubCampaign[];
   products: IProduct[];
   totalCount = 0;
+  sbuBudget: any;
+  totalAlloc: any;
+  totalExp: any;
+  totalCampExp: any;
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date = new Date();
   config = {
@@ -246,6 +250,7 @@ export class CampaignComponent implements OnInit {
 
 
   }
+
   addSubCampaign() {
     debugger;
     if (this.masterService.campaignMstFormData.id == 0) {
@@ -391,6 +396,41 @@ export class CampaignComponent implements OnInit {
   }
 
 
+getSubCampaignExpense(subCampaignId: any, sbu:string)
+{
+  this.masterService.getSubCampaignExpense(subCampaignId, sbu).subscribe(
+    res => {
+      this.sbuBudget = res[0].amount;
+      this.totalAlloc= res[0].totalAlloc;
+      this.totalExp= res[0].totalExp;
+      this.totalCampExp= res[0].campExp;
+    },
+    err => { console.log(err); }
+  );
+}
+
+getCount()
+{
+  var sbbudg = Number(this.sbuBudget);
+  var expttl = Number(this.totalExp);
+
+
+  if(Number (this.masterService.campaignDtlFormData.budget) < Number(expttl))
+  {
+    this.masterService.campaignDtlFormData.budget = "0";
+    this.toastr.error('Allocation needs to be greater than expense', 'Campaign Master');
+    return;
+  }
+
+  if(Number (this.masterService.campaignDtlFormData.budget) > Number(sbbudg- expttl))
+  {
+    this.masterService.campaignDtlFormData.budget = "0";
+    this.toastr.error('Insuficient Budget', 'Campaign Master');
+    return;
+  }
+
+}
+
   showProductModal(selectedRecord: ICampaignDtl) {
     this.masterService.campaignDtlFormData = Object.assign({}, selectedRecord);
     this.masterService.campaignDtlFormData.subCampStartDate = new Date(selectedRecord.subCampStartDate);
@@ -406,6 +446,7 @@ export class CampaignComponent implements OnInit {
     this.getBrand();
     this.getProduct();
     this.getCampaignDtl();
+    this.getSubCampaignExpense(selectedRecord.campaignNo, this.masterService.campaignMstFormData.sbu);
     this.closeSearchModalCampaignMst();
   }
   resetPage(form: NgForm) {
@@ -415,6 +456,10 @@ export class CampaignComponent implements OnInit {
     this.masterService.campaignDtlProductFormData = new CampaignDtlProduct();
     this.campaignMsts = [];
     this.campaignDtls = [];
+    this.sbuBudget = "";
+    this.totalAlloc= "";
+    this.totalExp= "";
+    this.totalCampExp= "";
     this.campaignDtlProducts = [];
     this.configs = {
       currentPage: 1,

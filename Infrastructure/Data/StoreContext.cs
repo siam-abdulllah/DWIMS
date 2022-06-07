@@ -160,9 +160,10 @@ namespace Infrastructure.Data
         public DbSet<DonWiseExpByEmp> DonWiseExpByEmp { get; set; }
         [NotMapped]
         public DbSet<BgtOwnTotal> BgtOwnTotal { get; set; }
-
         [NotMapped]
         public DbSet<BgtEmployeeLocationWiseSBUExp> BgtEmployeeLocationWiseSBUExp { get; set; }
+        [NotMapped]
+        public DbSet<CampaignExp> CampaignExp { get; set; }
 
 
         public List<T> ExecSQL<T>(string query)

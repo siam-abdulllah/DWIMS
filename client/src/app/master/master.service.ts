@@ -110,6 +110,11 @@ export class MasterService {
     return this.http.post(this.baseUrl + 'campaign/removeDtlProduct',selectedRecord);
   }
   
+  getSubCampaignExpense(subCampId:any, sbu:string){    
+    return this.http.get(this.baseUrl + 'campaign/getSubCampaignExpense/'+ subCampId+ '/'+ sbu);
+  }
+  
+
   getCampaignDtl(mstId:number){ 
     let params = new HttpParams();
     

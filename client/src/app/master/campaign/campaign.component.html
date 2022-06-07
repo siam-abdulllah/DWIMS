@@ -88,6 +88,19 @@
 
                             <fieldset>
                                 <div class="form-group">
+                                    <table class="table  table-bordered">
+                                        <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #eca451), color-stop(1, #f9fafc));">
+                                            <tr class="HeaderRow">
+                                                <td>SBU Budget: {{sbuBudget | number}}</td>
+                                                <td>Total Allocated: {{totalAlloc | number}} </td>
+                                                <td>Total Expense: {{totalExp | number}} </td>
+                                                <td>Campaign Expense: {{totalCampExp | number}}</td>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+
+                                <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-2">
                                             <label>Sub Campaign</label>
@@ -95,7 +108,8 @@
                                         </div>
                                         <div class="col-md-3">
                                             <input class="form-control " name="id" #id="ngModel" [(ngModel)]="masterService.campaignDtlFormData.id" [class.invalid]="id.invalid && id.touched" readonly style="display: none;">
-                                            <select class="form-control " id="subCampaignId" name="subCampaignId" #subCampaignId="ngModel" [(ngModel)]="masterService.campaignDtlFormData.subCampaignId" [class.invalid]="subCampaignId.invalid && subCampaignId.touched">
+                                            <select class="form-control " id="subCampaignId" name="subCampaignId" #subCampaignId="ngModel" (change)="getSubCampaignExpense(masterService.campaignDtlFormData.subCampaignId, masterService.campaignMstFormData.sbu)" [(ngModel)]="masterService.campaignDtlFormData.subCampaignId"
+                                                [class.invalid]="subCampaignId.invalid && subCampaignId.touched">
                                             <option  [ngValue]="null">Select Sub Campaign</option>
                                             <option *ngFor="let subCampaign of subCampaigns" [value]="subCampaign.id">{{subCampaign.subCampaignName}}</option>
                                         </select>
@@ -108,7 +122,7 @@
                                             <small style="color:#888889;"> numeric value</small>
                                         </div>
                                         <div class="col-md-3">
-                                            <input class="form-control " placeholder="Budget" name="budget" #budget="ngModel" [(ngModel)]="masterService.campaignDtlFormData.budget" [class.invalid]="budget.invalid && budget.touched" [pattern]="numberPattern">
+                                            <input class="form-control " placeholder="Budget" name="budget" #budget="ngModel" (focusout)="getCount()" [(ngModel)]="masterService.campaignDtlFormData.budget" [class.invalid]="budget.invalid && budget.touched" [pattern]="numberPattern">
                                             <div class="invalid-feedback" *ngIf="budget.errors?.pattern">Only numeric value</div>
 
                                         </div>
