@@ -114,7 +114,7 @@ export class InvestmentRapidAprComponent implements OnInit {
     this.convertedDate = this.datePipe.transform(this.today, 'dd/MM/YYYY');
     this.getDonation()
     this.getDepot()
-    this.getCampain()
+    //this.getCampain()
     this.getSBU() 
     this.getEmployees()
     this.getEmployeeId() 
@@ -144,10 +144,11 @@ export class InvestmentRapidAprComponent implements OnInit {
       console.log(error);
     });
   }
-  getCampain() {
+  getCampain(subCampaignId:any) {
     this.investmentFormService.getRapidSubCampaigns(this.investmentFormService.investmentFormData.sbu).subscribe(response => {
       debugger;
       this.subCampaignRapid = response as ISubCampaignRapid[];
+      this.investmentFormService.investmentFormData.subCampaignId=subCampaignId;
       debugger;
     }, error => {
       console.log(error);
@@ -170,7 +171,7 @@ export class InvestmentRapidAprComponent implements OnInit {
   }
   ChangeSBU(){
     this.getProduct();
-    this.getCampain();
+    //this.getCampain();
     if(this.investmentFormService.investmentFormData.subCampaignId != 0)
     {
       this.investmentFormService.investmentFormData.subCampaignId  = 0;
@@ -214,6 +215,7 @@ export class InvestmentRapidAprComponent implements OnInit {
   resetPageLoad() {
 
     this.investmentFormService.investmentFormData = new InvestmentForm();
+    this.subCampaignRapid = [];
     this.investmentMedicineProds = [];
     this.investmentTargetedProds =[];
     this.donationName=''; 
@@ -241,7 +243,7 @@ export class InvestmentRapidAprComponent implements OnInit {
         this.isBudgetForCampaignVisible=false;
       }
     }
-    this.getCampain();
+    this.getCampain(selectedRecord.subCampaignId);
      this.investmentFormService.investmentFormData.proposalDateStr =this.datePipe.transform(selectedRecord.propsalDate, 'dd/MM/YYYY');
      if(this.investmentFormService.investmentFormData.type=='4')
      {
@@ -624,21 +626,59 @@ export class InvestmentRapidAprComponent implements OnInit {
     if(this.investmentFormService.investmentFormData.paymentMethod == 'Cash' && this.investmentFormService.investmentFormData.depotCode == null )
     {
       this.toastr.warning('Depot is required!');
+      return;
     }
-    else if(this.investmentFormService.investmentFormData.paymentMethod == 'Cheque' && this.investmentFormService.investmentFormData.chequeTitle == null)
+    if(this.investmentFormService.investmentFormData.paymentMethod == 'Cheque' && this.investmentFormService.investmentFormData.chequeTitle == null)
     {
       this.toastr.warning('Cheque Title is required!');
+      return;
     }
-    else if((this.investmentTargetedProds == null ||  this.investmentTargetedProds.length == 0) && (this.investmentMedicineProds == null || this.investmentMedicineProds.length == 0))
+    if((this.investmentTargetedProds == null ||  this.investmentTargetedProds.length == 0) && (this.investmentMedicineProds == null || this.investmentMedicineProds.length == 0))
     {
       this.toastr.warning('No Product is added.');
+      return;
     }
-    else if((this.investmentTargetedProds == null ||  this.investmentTargetedProds.length == 0) && (this.investmentMedicineProds == null || this.investmentMedicineProds.length == 0))
+    if((this.investmentTargetedProds == null ||  this.investmentTargetedProds.length == 0) && (this.investmentMedicineProds == null || this.investmentMedicineProds.length == 0))
     {
       this.toastr.warning('No Product is added.');
+      return;
     }
-    else{
-      debugger;
+    if(this.investmentFormService.investmentFormData.proposeFor=='Sales')
+    {
+      if(this.investmentFormService.investmentFormData.proposedAmount>this.budgetCeiling.monthlyRemaining)
+      {
+        this.toastr.warning('Amount can not be greater than remaining budget');
+      return;
+      }
+      if(this.investmentFormService.investmentFormData.proposedAmount>this.budgetCeiling.amountPerTransacion)
+      {
+        this.toastr.warning('Amount can not be greater than remaining budget');
+      return;
+      }
+    }
+    if(this.investmentFormService.investmentFormData.proposeFor=='PMD')
+    {
+      if(this.investmentFormService.investmentFormData.subCampaignId==0 || this.investmentFormService.investmentFormData.subCampaignId==null || this.investmentFormService.investmentFormData.subCampaignId==undefined)
+      {
+        if(this.investmentFormService.investmentFormData.proposedAmount>this.budgetCeiling.monthlyRemaining)
+        {
+          this.toastr.warning('Amount can not be greater than remaining budget');
+        return;
+        }
+      }
+      else{
+        if(this.investmentFormService.investmentFormData.proposedAmount>this.budgetCeilingForCampaign.totalRemaining)
+        {
+          this.toastr.warning('Amount can not be greater than remaining budget');
+        return;
+        }
+      }
+    }
+    if(this.investmentFormService.investmentFormData.proposeFor=='Others Rapid')
+    {
+      
+    }
+      
       this.SpinnerService.show();
       this.investmentFormService.investmentFormData.investmentMedicineProd = this.investmentMedicineProds;
       this.investmentFormService.investmentFormData.investmentRecProducts = this.investmentTargetedProds;
@@ -673,7 +713,7 @@ export class InvestmentRapidAprComponent implements OnInit {
        
         }
       );
-    }
+    
     
   }
   openSubmissionConfirmModal(template: TemplateRef<any>) {

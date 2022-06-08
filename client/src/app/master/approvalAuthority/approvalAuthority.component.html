@@ -44,6 +44,29 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-2">
+                                        <label>Company Name</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select class="form-control" name="company" id="compId" name="compId" required [(ngModel)]="masterService.approvalAuthorityFormData.compId" readonly>
+                                        <option  [ngValue]="0">Select Company</option>
+                                        <option value="1000">Square Pharmaceuticals Limited</option>
+                                    </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Dept. Name</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select class="form-control" name="deptId" id="deptId" required [(ngModel)]="masterService.approvalAuthorityFormData.deptId">
+                                        <!-- <option  [ngValue]="0">Select Department</option> -->
+                                        <option value="1">Sales</option>
+                                        <option value="2">PMD</option>
+                                    </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
                                         <label>Priority</label>
                                         <span style="color:red;">*</span>
                                     </div>
@@ -65,6 +88,8 @@
                                     <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));">
                                         <tr class="HeaderRow">
                                             <td>Authority Name</td>
+                                            <td>Company</td>
+                                            <td>Department</td>
                                             <td>Priority</td>
                                             <td>Status</td>
                                             <td>Remarks</td>
@@ -75,6 +100,17 @@
                                         <tr *ngFor="let approvalAuthority of approvalAuthoritys">
                                             <td>
                                                 {{approvalAuthority.approvalAuthorityName}}
+                                            </td>
+                                            <td>
+                                                <select class="form-control" [(ngModel)]="approvalAuthority.compId" [ngModelOptions]="{standalone: true}" [disabled]="true">
+                                                <option value="1000">Square Pharmaceuticals Limited</option>
+                                            </select>
+                                            </td>
+                                            <td>
+                                                <select class="form-control" [(ngModel)]="approvalAuthority.deptId" [ngModelOptions]="{standalone: true}" [disabled]="true">
+                                                    <option value="1">Sales</option>
+                                                    <option value="2">PMD</option>
+                                            </select>
                                             </td>
                                             <td>
                                                 {{approvalAuthority.priority}}

@@ -156,6 +156,7 @@ export class InvestmentCancelComponent implements OnInit {
       this.getInvestmentSociety();
     }
     this.getInvestmentDetails();
+    debugger;
     this.getInvestmentDetailTracker();
     this.getInvestmentTargetedProd();
     this.getInvestmentTargetedGroupStatus();
@@ -222,7 +223,7 @@ export class InvestmentCancelComponent implements OnInit {
     this.investmentCancelService.getInvestmentDetails(this.investmentCancelService.investmentDetailFormData.investmentInitId, parseInt(this.empId), this.userRole).subscribe(response => {
       var data = response[0] as IInvestmentDetail;
       if (data !== undefined) {
-        debugger;
+         
         this.investmentCancelService.investmentDetailFormData = data;
         this.investmentCancelService.investmentDetailFormData.fromDate = new Date(data.fromDate);
         this.investmentCancelService.investmentDetailFormData.toDate = new Date(data.toDate);
@@ -240,7 +241,7 @@ export class InvestmentCancelComponent implements OnInit {
     this.investmentCancelService.getInvestmentDetailTracker(this.investmentCancelService.investmentDetailFormData.investmentInitId).subscribe(response => {
       var data = response as IInvestmentDetailTracker[];
       if (data !== undefined) {
-        debugger;
+         
         this.apprDetail = data;
 
 
@@ -263,7 +264,7 @@ export class InvestmentCancelComponent implements OnInit {
         this.investmentCancelService.investmentCampaignFormData.subCampEndDate = new DatePipe('en-US').transform(data.campaignDtl.subCampEndDate, 'dd/MM/yyyy')
         this.investmentCancelService.getCampaignMsts(data.campaignDtl.mstId).subscribe(response => {
           this.campaignMsts = response as ICampaignMst[];
-          debugger;
+           
           for (let i = 0; i < this.campaignMsts.length; i++) {
             if (this.campaignMsts[i].id == this.investmentCancelService.investmentCampaignFormData.campaignDtl.mstId) {
               this.investmentCancelService.investmentCampaignFormData.campaignName = this.campaignMsts[i].campaignName;
@@ -364,7 +365,7 @@ export class InvestmentCancelComponent implements OnInit {
     });
   }
   getInvestmentTargetedProd() {
-    debugger;
+     
     this.investmentCancelService.getInvestmentTargetedProds(this.investmentCancelService.investmentCancelFormData.id, this.sbu).subscribe(response => {
 
       var data = response as IInvestmentTargetedProd[];
@@ -555,7 +556,7 @@ export class InvestmentCancelComponent implements OnInit {
     });
   }
   onSubmit(form: NgForm) {
-    debugger;
+     
     if(this.apprDetail.length>0)
     {
       this.toastr.warning('Investment can not be deleted, Payement existed!')
@@ -587,13 +588,13 @@ export class InvestmentCancelComponent implements OnInit {
       }
     }
     this.investmentCancelService.GetInvestmentSummarySingleDoc(this.investmentCancelService.investmentCancelFormData.referenceNo).subscribe(response => {
-      debugger;
+       
       this.investmentInit = response as InvestmentInit;
       if(this.investmentInit[0].dataStatus==0)
       {
       //  this.isDeleted=true;
       }
-      debugger;
+       
        this.investmentCancelService.investmentCancelFormData.id = this.investmentInit[0].id;
         this.investmentCancelService.investmentCancelFormData.proposeFor = this.investmentInit[0].proposeFor;
         this.investmentCancelService.investmentCancelFormData.referenceNo = this.investmentInit[0].referenceNo;
@@ -610,26 +611,29 @@ export class InvestmentCancelComponent implements OnInit {
     var c = confirm("Are you sure you want to delete that?");
     if (c == true) {
       this.SpinnerService.show();
-      debugger;
       //this.investmentCancelService.removeInvestmentDetal(selectedRecord.id).subscribe(
         this.investmentCancelService.isInvestmentDetailExist(selectedRecord.id,parseInt(this.empId) ).subscribe(
           res => {
+             
             var message=res as string;
-            this.investmentCancelService.removeInvestmentDetail(selectedRecord.id,parseInt(this.empId) ).subscribe(
-              res => {
-                var message=res as string;
-                //this.isDonationValid=false;
-                //this.investmentInitService.investmentMedicineProdFormData = new InvestmentMedicineProd();
-                
-                this.getInvestmentDetailTracker();
-                this.SpinnerService.hide();
-                this.toastr.success(message);
-              },
-              err => {
-                this.SpinnerService.hide();
-                console.log(err);
-              }
-            );
+            if(message=='Not Existed')
+            {
+              this.investmentCancelService.removeInvestmentDetail(selectedRecord.id,parseInt(this.empId) ).subscribe(
+                res => {
+                  this.getInvestmentDetailTracker();
+                  this.SpinnerService.hide();
+                  this.toastr.success('Removed Successfully');
+                },
+                err => {
+                  this.SpinnerService.hide();
+                  console.log(err);
+                }
+              );
+            }
+            else{
+              this.SpinnerService.hide();
+                  this.toastr.warning('Already disbursed');
+            }
           },
           err => {
             this.SpinnerService.hide();

@@ -27,6 +27,8 @@ namespace API.Controllers
             var ApprovalAuthority = new ApprovalAuthority
             {
                 ApprovalAuthorityName = ApprovalAuthorityToReturnDto.ApprovalAuthorityName,
+                CompId = ApprovalAuthorityToReturnDto.CompId,
+                DeptId = ApprovalAuthorityToReturnDto.DeptId,
                 Priority = ApprovalAuthorityToReturnDto.Priority,
                 Remarks = ApprovalAuthorityToReturnDto.Remarks,
                 Status = ApprovalAuthorityToReturnDto.Status
@@ -52,6 +54,8 @@ namespace API.Controllers
             {
                 Id = ApprovalAuthorityToReturnDto.Id,
                 ApprovalAuthorityName = ApprovalAuthorityToReturnDto.ApprovalAuthorityName,
+                DeptId = ApprovalAuthorityToReturnDto.DeptId,
+                CompId = ApprovalAuthorityToReturnDto.CompId,
                 Remarks = ApprovalAuthorityToReturnDto.Remarks
             };
         }
@@ -65,6 +69,8 @@ namespace API.Controllers
             {
                 Id = ApprovalAuthorityToReturnDto.Id,
                 ApprovalAuthorityName = ApprovalAuthorityToReturnDto.ApprovalAuthorityName,
+                DeptId = ApprovalAuthorityToReturnDto.DeptId,
+                CompId = ApprovalAuthorityToReturnDto.CompId,
                 Priority = ApprovalAuthorityToReturnDto.Priority,
                 Remarks = ApprovalAuthorityToReturnDto.Remarks,
                 Status = ApprovalAuthorityToReturnDto.Status
@@ -91,6 +97,8 @@ namespace API.Controllers
             {
                 Id = ApprovalAuthorityToReturnDto.Id,
                 ApprovalAuthorityName = ApprovalAuthorityToReturnDto.ApprovalAuthorityName,
+                DeptId = ApprovalAuthorityToReturnDto.DeptId,
+                CompId = ApprovalAuthorityToReturnDto.CompId,
                 Remarks = ApprovalAuthorityToReturnDto.Remarks,
                 Status = ApprovalAuthorityToReturnDto.Status
             };
