@@ -1898,7 +1898,7 @@ namespace API.Controllers
                            " AND ir.RecStatus = 'Approved' " +
                            " UNION " +
                             // NEW RAPID
-                            " SELECT a.id	,a.SetOn,e.EmployeeName,SYSDATETIMEOFFSET() AS ModifiedOn,1 AS DataStatus,a.DonationTo,e.Id AS EmpId,e.DesignationName +', '+ e.DepartmentName  DesignationName,'' MarketName,dtl.PaymentRefNo ReferenceNo, " +
+                            " SELECT a.id,a.SetOn,e.EmployeeName,SYSDATETIMEOFFSET() AS ModifiedOn,1 AS DataStatus,a.DonationTo,e.Id AS EmpId,e.DesignationName +', '+ e.DepartmentName  DesignationName,'' MarketName,dtl.PaymentRefNo ReferenceNo, " +
                             " d.DonationTypeName,0 AS DocId,a.DonationTo DoctorName,'' [Address],inDetail.ProposedAmount,inDetail.ChequeTitle, aprBy.EmployeeName + ',' + aprBy.DesignationName + ',' + aprBy.DepartmentName 'ApprovedBy', depo.DepotName " +
                             " FROM InvestmentInit a " +
                             " INNER JOIN InvestmentRec inDetail ON a.id = inDetail.InvestmentInitId " +
@@ -1907,7 +1907,7 @@ namespace API.Controllers
                             " LEFT JOIN InvestmentRecDepot depo ON depo.InvestmentInitId = ir.InvestmentInitId " +
                             " LEFT JOIN Employee e ON a.EmployeeId = e.Id LEFT JOIN Donation d ON a.DonationId = d.Id " +
                             " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id " +
-                            " WHERE a.DonationTo NOT IN ('Doctor'	,'Campaign'	,'Society','Bcds','Institution') " +
+                            " WHERE a.DonationTo NOT IN ('Doctor','Campaign','Society','Bcds','Institution') " +
                             " AND ir.RecStatus = 'Approved' " +
                             " AND a.DataStatus = 1 " +
                             " AND inDetail.PaymentMethod = 'Cash' " +
@@ -2033,7 +2033,7 @@ namespace API.Controllers
                             " left join Employee e on a.EmployeeId = e.Id  left join Donation d on a.DonationId = d.Id   " +
                             " LEFT JOIN employee aprBy ON ir.employeeid = aprBy.id  " +
                             " inner join InvestmentRec inDetail on a.id = inDetail.InvestmentInitId  " +
-                            " where a.DonationTo NOT IN ('Doctor','Campaign'	,'Society','Bcds','Institution') AND  ir.RecStatus = 'Approved'  " +
+                            " where a.DonationTo NOT IN ('Doctor','Campaign','Society','Bcds','Institution') AND  ir.RecStatus = 'Approved'  " +
                             " AND inDetail.PaymentMethod = 'Cheque'" +
                             " AND  ir.EmployeeId = inDetail.EmployeeId AND dtl.PaymentRefNo is NOT NULL " +
                             " AND e.DataStatus = 1  " +
