@@ -45,7 +45,7 @@
                                     </div>
                                     <div class="col-md-2">
 
-                                        <select class="form-control" name="ProposeFor" required [(ngModel)]="investmentFormService.investmentFormData.proposeFor">
+                                        <select class="form-control" name="ProposeFor" required [(ngModel)]="investmentFormService.investmentFormData.proposeFor" (change)="ChangeProposeFor()">
                                             <option  [ngValue]="null">Select Propose For</option>
                                             <option value="Sales">Sales</option>
                                             <option value="PMD">PMD</option>

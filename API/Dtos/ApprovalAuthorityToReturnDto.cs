@@ -6,6 +6,8 @@ namespace API.Dtos
     public class ApprovalAuthorityToReturnDto
     {
         public int Id { get; set; }
+        public int DeptId { get; set; }
+        public int CompId { get; set; }
         public string ApprovalAuthorityName { get; set; }
         public string Remarks { get; set; }
          public string Status { get; set; }

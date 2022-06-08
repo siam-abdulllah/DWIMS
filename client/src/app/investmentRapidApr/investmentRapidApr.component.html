@@ -51,7 +51,7 @@
                                     </div>
                                     <div class="col-md-2">
 
-                                        <select class="form-control" name="ProposeFor" required [(ngModel)]="investmentFormService.investmentFormData.proposeFor">
+                                        <select class="form-control" name="ProposeFor" required [(ngModel)]="investmentFormService.investmentFormData.proposeFor" [disabled]=true>
                                             <option  [ngValue]="null">Select Propose For</option>
                                             <option value="Sales">Sales</option>
                                             <option value="PMD">PMD</option>
@@ -63,7 +63,7 @@
                                         <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-2">
-                                        <select class="form-control " id="sbu" name="sbu" #sbu="ngModel" [(ngModel)]="investmentFormService.investmentFormData.sbu" (change)="ChangeSBU()" required [class.invalid]="sbu.invalid && sbu.touched">
+                                        <select class="form-control " id="sbu" name="sbu" #sbu="ngModel" [(ngModel)]="investmentFormService.investmentFormData.sbu" (change)="ChangeSBU()" required [class.invalid]="sbu.invalid && sbu.touched" [disabled]=true>
                                             <option  [ngValue]="null">Select SBU</option>
                                             <option *ngFor="let a of SBUs" [value]="a.sbuCode">{{a.sbuName}}</option>
                                         </select>
@@ -73,7 +73,7 @@
                                         <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-2">
-                                        <select class="form-control" [disabled]="isInvOther && !isAdmin" id="donationId" name="Type" #donationId="ngModel" [(ngModel)]="investmentFormService.investmentFormData.type" required [class.invalid]="donationId.invalid && donationId.touched">
+                                        <select class="form-control" [disabled]="isInvOther && !isAdmin" id="donationId" name="Type" #donationId="ngModel" [(ngModel)]="investmentFormService.investmentFormData.type" required [class.invalid]="donationId.invalid && donationId.touched" [disabled]=true>
                                             <option  [ngValue]="null">Select Donation Type</option>
                                             <option *ngFor="let a of donations" [value]="a.id">{{a.donationTypeName}}</option>
                                         </select>
@@ -88,7 +88,7 @@
                                         <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-2" *ngIf="investmentFormService.investmentFormData.proposeFor=='PMD'">
-                                        <select class="form-control" [disabled]="isInvOther && !isAdmin" id="subCampaignId" (change)="onChangeSubCampaignInCamp()" name="subCampaignId" [(ngModel)]="investmentFormService.investmentFormData.subCampaignId" required>
+                                        <select class="form-control" [disabled]="isInvOther && !isAdmin" id="subCampaignId" (change)="onChangeSubCampaignInCamp()" name="subCampaignId" [(ngModel)]="investmentFormService.investmentFormData.subCampaignId" required [disabled]=true>
                                             <option  [ngValue]="0">Select Campaign Name</option>
                                             <option *ngFor="let a of subCampaignRapid" [value]="a.subCampId">{{a.subCampaignName}}</option>
                                             <!-- <option value="Donation">Donation</option>
@@ -353,7 +353,7 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <ng-select [virtualScroll]="true" [items]="employees" bindLabel="employeeName" bindValue="id" placeholder="Select" [searchFn]="customSearchFn" name="ApprovalAuthId" #employeeId="ngModel" [(ngModel)]="investmentFormService.investmentFormData.approvalAuthId"
-                                                    required [class.invalid]="employeeId.invalid && employeeId.touched" disabled>
+                                                    required [class.invalid]="employeeId.invalid && employeeId.touched" [disabled]=true>
                                                     <ng-template ng-label-tmp let-item="item">
                                                         <span [ngOptionHighlight]="search">{{ item.employeeSAPCode }} - {{ item.employeeName }}</span>
                                                     </ng-template>

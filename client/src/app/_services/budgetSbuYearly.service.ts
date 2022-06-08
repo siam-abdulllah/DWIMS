@@ -12,7 +12,7 @@ import { BehaviorSubject, ReplaySubject, of, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { GenericParams } from '../shared/models/genericParams';
-import { ApprovalAuthDetails, ApprovalAuthDetailsModel, BudgetSbuYearly, BudgetYearly, IBudgetYearly, SbuDetails } from '../shared/models/budgetyearly';
+import { ApprovalAuthDetails, ApprovalAuthDetailsModel, BudgetSbuYearly, BudgetYearly, CampaignBgtDetails, IBudgetYearly, SbuDetails } from '../shared/models/budgetyearly';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +21,7 @@ export class BudgetSbuYearlyService {
   budgetSbuYearly: BudgetSbuYearly = new BudgetSbuYearly();
   budgetEmployee: ApprovalAuthDetails = new ApprovalAuthDetails();
   approvalAuthDetailsModel: ApprovalAuthDetailsModel = new ApprovalAuthDetailsModel();
+ // campaignBgtDetails: CampaignBgtDetails = new CampaignBgtDetails();
   sbuDetailsYearly: SbuDetails = new SbuDetails();
   baseUrl = environment.apiUrl;
   genParams = new GenericParams();
@@ -75,6 +76,10 @@ export class BudgetSbuYearlyService {
   saveAuthSbuDetails() {
     debugger;
     return this.http.post(this.baseUrl + 'BgtSbuYearly/saveAuthSbuDetails', this.approvalAuthDetailsModel);
+  }
+  saveCampaignBgtDetails(employeeId:any,campaignBgtDetails:CampaignBgtDetails) {
+    debugger;
+    return this.http.post(this.baseUrl + 'BgtSbuYearly/saveCampaignBgtDetails/'+employeeId, campaignBgtDetails);
   }
   submitSbuBudgetYearly() {
     debugger;

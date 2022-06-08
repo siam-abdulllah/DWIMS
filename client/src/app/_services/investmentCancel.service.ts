@@ -169,7 +169,9 @@ export class InvestmentCancelService {
     return this.http.get(this.baseUrl + 'reportInvestment/removeInvestmentDetalTracker/'+id+'/'+empId);
   }
   isInvestmentDetailExist(id: number,empId:number) {
-    return this.http.get(this.baseUrl + 'reportInvestment/isInvestmentDetailExist/'+id+'/'+empId);
+    //return this.http.post(this.baseUrl + 'reportInvestment/isInvestmentDetailExist/'+id+'/'+empId,
+    return this.http.post(this.baseUrl + 'reportInvestment/isInvestmentDetailExist',id,
+    { responseType: 'text' });
   }
 }
 export interface IInvestmentInit {

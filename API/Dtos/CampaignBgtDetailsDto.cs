@@ -10,11 +10,13 @@ namespace API.Dtos
         public DateTimeOffset SetOn { get; set; }
         public DateTimeOffset ModifiedOn { get; set; }
         public string SBU { get; set; }
+        public int DeptId { get; set; }
+        public int Year { get; set; }
         public int NoOfCamp { get; set; }
-        public long Expense { get; set; }
-        public long NewAmount { get; set; }
-        public long Amount { get; set; }
-        public long AllocatedBgt { get; set; }
+        public double Expense { get; set; }
+        public double NewAmount { get; set; }
+        public double Amount { get; set; }
+        public double AllocatedBgt { get; set; }
 
     }
 }

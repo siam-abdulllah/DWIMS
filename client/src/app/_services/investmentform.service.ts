@@ -177,6 +177,18 @@ insertInvestmentMedicineProd() {
     return this.http.get(this.baseUrl + 'investmentrapid/employeesForRapid');
    
   }
+  getEmployeesforRapidByDpt(proposeFor:any,sbu:any){    
+    return this.http.get(this.baseUrl + 'investmentrapid/getEmployeesforRapidByDpt/'+proposeFor+'/'+sbu);
+   
+  }
+  getEmployeesforRapidByCamp(subCampaignId:any){    
+    return this.http.get(this.baseUrl + 'investmentrapid/getEmployeesforRapidByCamp/'+subCampaignId);
+   
+  }
+  getEmployeesforRapidBySBU(proposeFor:any,sbu:any){    
+    return this.http.get(this.baseUrl + 'investmentrapid/getEmployeesforRapidBySBU/'+proposeFor+'/'+sbu);
+   
+  }
   getInvestmentTargetedProds(investmentInitId: number, sbu: string) {
     return this.http.get(this.baseUrl + 'investmentrapid/investmentTargetedProds/' + investmentInitId + '/' + sbu);
   }

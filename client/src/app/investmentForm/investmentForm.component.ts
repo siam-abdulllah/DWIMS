@@ -161,6 +161,10 @@ export class InvestmentFormComponent implements OnInit {
   }
 
   ChangeSBU(){
+    if(this.investmentFormService.investmentFormData.proposeFor=='' || this.investmentFormService.investmentFormData.proposeFor==null || this.investmentFormService.investmentFormData.proposeFor==undefined)
+    {this.toastr.warning('Please Select Propose For first!');
+    this.investmentFormService.investmentFormData.sbu='null';
+  return;}
     this.getProduct();
     this.getCampain();
     if(this.investmentFormService.investmentFormData.subCampaignId != 0)
@@ -169,6 +173,22 @@ export class InvestmentFormComponent implements OnInit {
       this.campaignDtlProducts =[];
       this.investmentTargetedProds =[];
     }
+    this.investmentFormService.getEmployeesforRapidBySBU(this.investmentFormService.investmentFormData.proposeFor,this.investmentFormService.investmentFormData.sbu).subscribe(response => {
+     
+    this.investmentFormService.investmentFormData.approvalAuthId=null;
+      this.employees = response as IEmployee[];
+     }, error => {
+        console.log(error);
+     });
+  }
+  ChangeProposeFor(){
+    this.subCampaignRapid=[];
+    this.investmentFormService.investmentFormData.approvalAuthId=null;
+    this.investmentFormService.getEmployeesforRapidByDpt(this.investmentFormService.investmentFormData.proposeFor,this.investmentFormService.investmentFormData.sbu).subscribe(response => {
+      this.employees = response as IEmployee[];
+     }, error => {
+        console.log(error);
+     });
   }
   getProduct() {
     debugger;
@@ -318,6 +338,12 @@ export class InvestmentFormComponent implements OnInit {
         data.productInfo = productData;
         this.investmentTargetedProds.push(data);
       }
+      this.investmentFormService.investmentFormData.approvalAuthId=null;
+    this.investmentFormService.getEmployeesforRapidByCamp(this.investmentFormService.investmentFormData.subCampaignId).subscribe(response => {
+      this.employees = response as IEmployee[];
+     }, error => {
+        console.log(error);
+     });
     }, error => {
       console.log(error);
     });

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace API.Controllers
 {
-   
+
     public class BgtSbuYearlyController : BaseApiController
     {
         private readonly IGenericRepository<BgtSBUTotal> _bgtSbuRepo;
@@ -31,26 +31,46 @@ namespace API.Controllers
             _bgtEmployee = bgtEmployee;
         }
 
-     
+
 
         [HttpGet("getAllSbuBgtList/{deptId}/{compId}/{year}")]
-        public List<SBUVM> GetAllSbuBgtListAsync(int deptId,int compId,int year)
+        public List<SBUVM> GetAllSbuBgtListAsync(int deptId, int compId, int year)
         {
             List<SBUVM> dsResult = new List<SBUVM>();
             try
             {
                 string statusQuery = "";
                 string ProposeFor = "";
-                if(deptId == 1)
+                string allocatedQry = "";
+                if (deptId == 1)
                 {
                     ProposeFor = "'Others','Sales'";
+                    allocatedQry = "(select SUM(Amount) from BgtEmployee where DeptId =1 and SBU = sb.SBUCode and DataStatus = 1) TotalAllowcated ";
                 }
-                else if(deptId == 2)
+                else if (deptId == 2)
                 {
                     ProposeFor = "'BrandCampaign','PMD'";
+                    allocatedQry = "(SELECT ((select SUM(Amount) from BgtEmployee where DeptId =2 and SBU = sb.SBUCode and DataStatus = 1)" +
+                                    "+(select SUM(Amount) from BgtCampaign where DeptId =2 and SBU = sb.SBUCode and DataStatus = 1))) TotalAllowcated";
                 }
                 string qry = "";
-              
+
+                //qry = string.Format(@"SELECT sb.*, bs.SBUAmount
+                //                    ,bs.Id BgtSbuId,(
+                //                    SELECT ISNULL(Round(SUM(ApprovedAmount), 0), 0)
+                //                    FROM InvestmentDetailTracker e
+                //                    INNER JOIN InvestmentInit c ON c.Id = e.InvestmentInitId
+                //                    WHERE c.SBU = SB.SBUCode
+                //                    AND C.ProposeFor IN ({3})
+                //                    AND e.Year = {0}
+                //                    ) Expense,
+                //                    (select SUM(Amount) from BgtEmployee where DeptId ={1} and SBU = sb.SBUCode and DataStatus = 1) TotalAllowcated
+                //                    FROM SBU sb
+                //                    LEFT JOIN BgtSBUTotal bs ON bs.SBU = sb.SbuCode
+                //                    AND bs.DeptId = {1}
+                //                    AND bs.DataStatus = 1
+                //                    AND bs.CompId = {2}
+                //                    AND bs.Year = {0}", year, deptId, compId, ProposeFor); 
                 qry = string.Format(@"SELECT sb.*, bs.SBUAmount
                                     ,bs.Id BgtSbuId,(
                                     SELECT ISNULL(Round(SUM(ApprovedAmount), 0), 0)
@@ -60,22 +80,22 @@ namespace API.Controllers
                                     AND C.ProposeFor IN ({3})
                                     AND e.Year = {0}
                                     ) Expense,
-                                    (select SUM(Amount) from BgtEmployee where DeptId ={1} and SBU = sb.SBUCode and DataStatus = 1) TotalAllowcated
+                                    {4}
                                     FROM SBU sb
                                     LEFT JOIN BgtSBUTotal bs ON bs.SBU = sb.SbuCode
                                     AND bs.DeptId = {1}
                                     AND bs.DataStatus = 1
                                     AND bs.CompId = {2}
-                                    AND bs.Year = {0}", year, deptId, compId,ProposeFor);
-                
+                                    AND bs.Year = {0}", year, deptId, compId, ProposeFor, allocatedQry);
+
 
 
                 dsResult = _dbContext.ExecSQL<SBUVM>(qry).ToList();
-                if(dsResult == null)
+                if (dsResult == null)
                 {
                     dsResult = new List<SBUVM>();
                 }
-            
+
                 return dsResult;
             }
             catch (System.Exception ex)
@@ -132,19 +152,21 @@ namespace API.Controllers
         }
 
         [HttpGet("GetAppAuthDetails/{sbuCode}/{deptId}")]
-        public List<AppAuthDetailsDto> GetAppAuthDetails(string sbuCode,int deptId)
+        public List<AppAuthDetailsDto> GetAppAuthDetails(string sbuCode, int deptId)
         {
             try
             {
                 string qry = "";
                 string filterQry = "";
-                if(deptId == 1)
+                if (deptId == 1)
                 {
-                    filterQry = " where aa.Id in (3,4,5,6,7,12)";
+                    //filterQry = " where aa.Id in (3,4,5,6,7,12)";
+                    filterQry = " where aa.Id not in (1,2,9,10,11)";
                 }
                 else
                 {
-                    filterQry = " where aa.Id = 8";
+                    //filterQry = " where aa.Id = 8";
+                    filterQry = " where aa.Id not in (15) and aa.DeptId = 2";
                 }
 
                 qry = string.Format(@"select  CAST(ROW_NUMBER() OVER (ORDER BY Priority) AS INT)  AS Id,aa.Id as AuthId,1 AS DataStatus,SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,aa.Priority,
@@ -167,22 +189,24 @@ namespace API.Controllers
             {
                 throw ex;
             }
-        } 
+        }
         [HttpGet("GetCampaignDetails/{sbuCode}/{deptId}")]
-        public List<CampaignBgtDetailsDto> GetCampaignDetails(string sbuCode,int deptId)
+        public List<CampaignBgtDetailsDto> GetCampaignDetails(string sbuCode, int deptId)
         {
             try
             {
                 string qry = "";
-               
+
 
                 qry = string.Format(@"SELECT  CAST(ROW_NUMBER() OVER (ORDER BY A.SBU) AS INT)  AS Id,1 AS DataStatus,SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,
-                                    COUNT(Distinct B.SubCampaignId) NoOfCamp,SUM(ISNULL(B.Budget,0)) AllocatedBgt,A.SBU,
+                                    A.SBU,COUNT(Distinct B.SubCampaignId) NoOfCamp,Year(GetDate()) Year,2 DeptId, 
+                                    (SELECT ROUND(SUM(ISNULL(invd.ApprovedAmount,0)),0) FROM InvestmentDetailTracker invd INNER JOIN InvestmentInit invi ON invd.InvestmentInitId=invi.Id WHERE invi.SBU=A.SBU AND invi.ProposeFor='BrandCampaign' AND invd.Year=YEAR(GETDATE())) Expense,
+                                    0 NewAmount,
                                     (SELECT Amount FROM BgtCampaign WHERE SBU=A.SBU AND YEAR=YEAR(GETDATE()) AND DeptId={0} AND CompId={1} AND DataStatus=1) Amount,
-                                    (SELECT ROUND(SUM(ISNULL(invd.ApprovedAmount,0)),0) FROM InvestmentDetailTracker invd INNER JOIN InvestmentInit invi ON invd.InvestmentInitId=invi.Id WHERE invi.SBU=A.SBU AND invi.ProposeFor='BrandCampaign' AND invd.Year=YEAR(GETDATE())) Expense
+                                    SUM(ISNULL(B.Budget,0)) AllocatedBgt
                                      FROM  CampaignMst A INNER JOIN CampaignDtl B ON A.Id=B.MstId 
                                     WHERE A.SBU='{2}' AND YEAR(B.SubCampEndDate)=YEAR(GETDATE())
-                                    GROUP BY A.SBU", deptId,1000, sbuCode);
+                                    GROUP BY A.SBU", deptId, 1000, sbuCode);
 
 
                 //var results = _dbContext.AppAuthDetails.FromSqlRaw(qry).ToList();
@@ -194,21 +218,21 @@ namespace API.Controllers
                 throw ex;
             }
         }
-        
-        
+
+
         [HttpGet("getYearlyBudget/{deptId}/{year}")]
-        public BgtYearlyTotal GetBudgetYearly(int deptId,int year)
+        public BgtYearlyTotal GetBudgetYearly(int deptId, int year)
         {
             BgtYearlyTotal bgt = new BgtYearlyTotal();
             try
             {
-               
+
                 string qry = "";
 
-                qry = string.Format(@" select * from BgtYearlyTotal where DataStatus=1 and DeptId={0} and year={1}",deptId,year);
+                qry = string.Format(@" select * from BgtYearlyTotal where DataStatus=1 and DeptId={0} and year={1}", deptId, year);
 
-                 bgt = _dbContext.BgtYearlyTotal.FromSqlRaw(qry).ToList().FirstOrDefault();
-                if(bgt == null)
+                bgt = _dbContext.BgtYearlyTotal.FromSqlRaw(qry).ToList().FirstOrDefault();
+                if (bgt == null)
                 {
                     bgt = new BgtYearlyTotal();
                 }
@@ -221,7 +245,7 @@ namespace API.Controllers
         }
 
         [HttpGet("getBudgetEmpForSbu/{sbu}/{deptId}/{year}/{compId}")]
-        public List<BgtEmployeeVM> GetBudgetEmpForSbu(string sbu,int deptId, int year,int compId)
+        public List<BgtEmployeeVM> GetBudgetEmpForSbu(string sbu, int deptId, int year, int compId)
         {
             BgtYearlyTotal bgt = new BgtYearlyTotal();
             List<BgtEmployeeVM> bgtEmpList = new List<BgtEmployeeVM>();
@@ -235,8 +259,8 @@ namespace API.Controllers
 				                    WHERE ac.ApprovalAuthorityId = aa.Id AND emp.SBU = '{0}' AND emp.DataStatus = 1 )
 		                            END NoOfLoc from BgtEmployee be 
 									left join ApprovalAuthority aa on aa.Id = be.AuthId
-									where be.Sbu = '{0}' and  be.DeptId={1} and be.Year = {2} and be.compId={3} and be.DataStatus = 1", sbu, deptId, year,compId);
-             
+									where be.Sbu = '{0}' and  be.DeptId={1} and be.Year = {2} and be.compId={3} and be.DataStatus = 1", sbu, deptId, year, compId);
+
                 bgtEmpList = _dbContext.ExecSQL<BgtEmployeeVM>(qry).ToList();
                 return bgtEmpList;
             }
@@ -244,9 +268,9 @@ namespace API.Controllers
             {
                 return bgtEmpList;
             }
-        }        
+        }
         [HttpGet("getAllAuthExpenseList/{sbu}/{deptId}/{year}/{compId}")]
-        public List<AuthExpense> GetAllAuthExpenseList(string sbu,int deptId, int year,int compId)
+        public List<AuthExpense> GetAllAuthExpenseList(string sbu, int deptId, int year, int compId)
         {
             BgtYearlyTotal bgt = new BgtYearlyTotal();
             List<AuthExpense> bgtEmpList = new List<AuthExpense>();
@@ -282,7 +306,7 @@ namespace API.Controllers
                                                 And D.DeptId = '{1}'
                                                 And A.Year = '{2}'
                                                 And D.CompId = '{3}'
-                                                GROUP BY D.Remarks", sbu, deptId, year,compId, ProposeFor);
+                                                GROUP BY D.Remarks", sbu, deptId, year, compId, ProposeFor);
 
                 var results = _dbContext.AuthExpense.FromSqlRaw(qry).ToList();
                 List<AuthExpense> dsResult = _dbContext.ExecSQL<AuthExpense>(qry).ToList();
@@ -318,28 +342,30 @@ namespace API.Controllers
 
                     }
                 }
-            
-               if(model.bgtEmpList != null && model.bgtEmpList.Count > 0)
+
+                if (model.bgtEmpList != null && model.bgtEmpList.Count > 0)
                 {
                     foreach (var item in model.bgtEmpList)
                     {
-                        bgtEmp = new BgtEmployee();
-                        bgtEmp.Amount = item.NewAmount;
-                        bgtEmp.DeptId = model.DeptId;
-                        bgtEmp.CompId = model.CompId;
-                        bgtEmp.Year = model.Year;
-                        bgtEmp.SBU = model.SBUCode;
-                        bgtEmp.AuthId = item.AuthId;
-                        bgtEmp.NoOfEmployee = item.NoOfEmployee;
-                        bgtEmp.ModifiedOn = DateTime.Now;
-                        bgtEmp.EnteredBy = item.EnteredBy;
-                        bgtEmp.PermView = item.PermView;
-                        bgtEmp.PermEdit = item.PermEdit;
-                        _bgtEmployee.Add(bgtEmp);
-                        _bgtEmployee.Savechange();
-                        var Amount = bgtEmp.Amount / bgtEmp.NoOfEmployee;
-                        List<SqlParameter> parms = new List<SqlParameter>
+                        if (item.NoOfEmployee > 0)
                         {
+                            bgtEmp = new BgtEmployee();
+                            bgtEmp.Amount = item.NewAmount;
+                            bgtEmp.DeptId = model.DeptId;
+                            bgtEmp.CompId = model.CompId;
+                            bgtEmp.Year = model.Year;
+                            bgtEmp.SBU = model.SBUCode;
+                            bgtEmp.AuthId = item.AuthId;
+                            bgtEmp.NoOfEmployee = item.NoOfEmployee;
+                            bgtEmp.ModifiedOn = DateTime.Now;
+                            bgtEmp.EnteredBy = item.EnteredBy;
+                            bgtEmp.PermView = item.PermView;
+                            bgtEmp.PermEdit = item.PermEdit;
+                            _bgtEmployee.Add(bgtEmp);
+                            _bgtEmployee.Savechange();
+                            var Amount = bgtEmp.Amount / bgtEmp.NoOfEmployee;
+                            List<SqlParameter> parms = new List<SqlParameter>
+                            {
                             new SqlParameter("@DeptId", bgtEmp.DeptId),
                             new SqlParameter("@Year", bgtEmp.Year),
                             new SqlParameter("@SBU ", bgtEmp.SBU),
@@ -348,21 +374,23 @@ namespace API.Controllers
                             new SqlParameter("@PermView", bgtEmp.PermView),
                             new SqlParameter("@PermEdit", bgtEmp.PermEdit),
                             new SqlParameter("@EnteredBy", bgtEmp.EnteredBy),
-                        };
-                        if(item.AuthId == 3)
-                        {
-                            _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtEmployeeInsertRSM] @DeptId, @Year, @SBU , @AuthId, @Amount, @PermView, @PermEdit, @EnteredBy", parms.ToArray());
+                             };
+                            if (item.AuthId == 3)
+                            {
+                                _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtEmployeeInsertRSM] @DeptId, @Year, @SBU , @AuthId, @Amount, @PermView, @PermEdit, @EnteredBy", parms.ToArray());
+                            }
+                            else if (item.AuthId == 5)
+                            {
+                                _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtEmployeeInsertDSM] @DeptId, @Year, @SBU , @AuthId, @Amount, @PermView, @PermEdit, @EnteredBy", parms.ToArray());
+                            }
+                            //else if (bgtEmp.AuthId == 4 || bgtEmp.AuthId == 6 || bgtEmp.AuthId == 8)
+                            else
+                            {
+
+                                _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtEmployeeInsert] @DeptId, @Year, @SBU , @AuthId, @Amount, @PermView, @PermEdit, @EnteredBy", parms.ToArray());
+                            }
                         }
-                        else if(item.AuthId == 5)
-                        {
-                            _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtEmployeeInsertDSM] @DeptId, @Year, @SBU , @AuthId, @Amount, @PermView, @PermEdit, @EnteredBy", parms.ToArray());
-                        }
-                        else if (bgtEmp.AuthId == 4 || bgtEmp.AuthId == 6 || bgtEmp.AuthId == 8)
-                        {
-                           
-                            _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtEmployeeInsert] @DeptId, @Year, @SBU , @AuthId, @Amount, @PermView, @PermEdit, @EnteredBy", parms.ToArray());
-                        }
-                       
+
                     }
                 }
             }
@@ -370,7 +398,6 @@ namespace API.Controllers
             {
 
             }
-            
 
             return new BgtEmployeeDto
             {
@@ -381,6 +408,42 @@ namespace API.Controllers
                 CompId = bgtEmp.CompId,
                 SBU = bgtEmp.SBU
             };
+        }
+        [HttpPost("saveCampaignBgtDetails/{empId}")]
+        public ActionResult<CampaignBgtDetailsDto> SaveCampaignBgtDetails(int empId, CampaignBgtDetailsDto model)
+        {
+
+            try
+            {
+                List<SqlParameter> parms = new List<SqlParameter>
+                        {
+                            new SqlParameter("@CompId", 1000),
+                            new SqlParameter("@DeptId", model.DeptId),
+                            new SqlParameter("@Year", DateTime.Now.Year),
+                            new SqlParameter("@SBU ", model.SBU),
+                            new SqlParameter("@Amount", model.NewAmount),
+                            new SqlParameter("@EnteredBy", empId),
+                        };
+
+                _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtCampaignInsert] @CompId,@DeptId, @Year, @SBU , @Amount, @EnteredBy", parms.ToArray());
+
+                return new CampaignBgtDetailsDto
+                {
+                    Id = model.Id,
+                    DeptId = model.DeptId,
+                    Amount = model.Amount,
+                    Year = model.Year,
+                    SBU = model.SBU
+                };
+
+
+            }
+            catch (Exception ex)
+            {
+                return Ok("Failed");
+            }
+
+
         }
 
         [HttpPost("SaveSbuBgtYearly")]
@@ -395,7 +458,7 @@ namespace API.Controllers
             {
                 foreach (var item in setSbuBgtDto.SbuDetailsList)
                 {
-                    if(item.bgtSbuId > 0)
+                    if (item.bgtSbuId > 0)
                     {
                         sbuTotal = await _bgtSbuRepo.GetByIdAsync(item.bgtSbuId);
 
@@ -404,14 +467,14 @@ namespace API.Controllers
                         _bgtSbuRepo.Update(sbuTotal);
                         _bgtSbuRepo.Savechange();
                     }
-                    
+
                 }
             }
 
             if (setSbuBgtDto.SbuDetailsList != null && setSbuBgtDto.SbuDetailsList.Count > 0)
             {
                 foreach (var item in setSbuBgtDto.SbuDetailsList)
-                { 
+                {
                     sbuTotal = new BgtSBUTotal
                     {
                         CompId = setSbuBgtDto.CompId,
@@ -446,7 +509,7 @@ namespace API.Controllers
         {
             BgtSBUTotal sbuTotal = new BgtSBUTotal();
             sbuTotal = await _bgtSbuRepo.GetByIdAsync(setSbuBgtDto.Id);
-            if(sbuTotal != null)
+            if (sbuTotal != null)
             {
                 sbuTotal.SBUAmount = setSbuBgtDto.SBUAmount;
                 sbuTotal.ModifiedOn = DateTime.Now;
@@ -462,7 +525,7 @@ namespace API.Controllers
                 CompId = sbuTotal.CompId,
                 SBU = setSbuBgtDto.SBU
             };
-      
+
         }
 
         [HttpPost("updateBgtEmployee")]
@@ -499,7 +562,7 @@ namespace API.Controllers
                 {
                     _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtEmployeeInsertDSM] @DeptId, @Year, @SBU , @AuthId, @Amount, @PermView, @PermEdit, @EnteredBy", parms.ToArray());
                 }
-                else if(bgtEmp.AuthId == 4 || bgtEmp.AuthId == 6 || bgtEmp.AuthId == 8)
+                else if (bgtEmp.AuthId == 4 || bgtEmp.AuthId == 6 || bgtEmp.AuthId == 8)
                 {
                     _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtEmployeeInsert] @DeptId, @Year, @SBU , @AuthId, @Amount, @PermView, @PermEdit, @EnteredBy", parms.ToArray());
                 }

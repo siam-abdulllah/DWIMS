@@ -20,6 +20,7 @@ namespace API.Controllers
     {
         private readonly IGenericRepository<InvestmentInit> _investmentInitRepo;
         private readonly IGenericRepository<InvestmentRapid> _investmentRapidRepo;
+        private readonly IGenericRepository<InvestmentCampaign> _investmentCampaignRepo;
         private readonly IGenericRepository<InvestmentRapidAppr> _InvestmentRapidApprRepo;
         private readonly IGenericRepository<MedicineProduct> _medicineProductRepo;
         private readonly IGenericRepository<ProductInfo> _productInfoRepo;
@@ -39,11 +40,12 @@ namespace API.Controllers
         public InvestmentRapidController(IMapper mapper, IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<InvestmentRapid> investmentRapidRepo,
             IGenericRepository<InvestmentRapidAppr> InvestmentRapidApprRepo, IGenericRepository<InvestmentDetailTracker> investmentDetailTrackerRepo,
         IGenericRepository<MedicineProduct> medicineProductRepo, IGenericRepository<InvestmentRecDepot> investmentRecDepotRepo, IGenericRepository<InvestmentMedicineProd> investmentMedicineProdRepo,
-        IGenericRepository<InvestmentRecProducts> investmentRecProductsRepo, IGenericRepository<InvestmentRecComment> investmentRecCommentRepo,
+        IGenericRepository<InvestmentCampaign> investmentCampaignRepo, IGenericRepository<InvestmentRecProducts> investmentRecProductsRepo, IGenericRepository<InvestmentRecComment> investmentRecCommentRepo,
         IGenericRepository<ProductInfo> productInfoRepo, IGenericRepository<ApprAuthConfig> appAuthConfigRepo, IGenericRepository<Employee> employeeRepo,
         IGenericRepository<ApprovalAuthority> approvalAuthorityRepo, IGenericRepository<InvestmentRec> investmentRecRepo, StoreContext dbContext)
         {
             _mapper = mapper;
+            _investmentCampaignRepo = investmentCampaignRepo;
             _investmentRapidRepo = investmentRapidRepo;
             _InvestmentRapidApprRepo = InvestmentRapidApprRepo;
             _investmentInitRepo = investmentInitRepo;
@@ -111,8 +113,25 @@ namespace API.Controllers
                     };
                     var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentRefNoInsert @IID,@r out", parms.ToArray());
                     investmentInit.ReferenceNo = parms[1].Value.ToString();
-                }
 
+                   if (investmentRapidDto.SubCampaignId != 0)
+                        { 
+
+                    var investmentCampaign = new InvestmentCampaign
+                    {
+                        //ReferenceNo = investmentCampaignDto.ReferenceNo,
+                        InvestmentInitId = investmentInit.Id,
+                        CampaignDtlId = investmentRapidDto.SubCampaignId,
+                        DoctorId = 90000,
+                        InstitutionId = 99999,
+                        SetOn = DateTimeOffset.Now,
+                        ModifiedOn = DateTimeOffset.Now
+                    };
+                    _investmentCampaignRepo.Add(investmentCampaign);
+                    _investmentCampaignRepo.Savechange();
+
+                }
+                }
                 #endregion
 
                 #region Save On Investment Rapid
@@ -348,6 +367,7 @@ namespace API.Controllers
                                 return BadRequest(new ApiResponse(400, parms[7].Value.ToString()));
                             }
 
+
                         }
 
                         var alreadyDetailTrackerExistSpec = new InvestmentDetailTrackerSpecification(investmentForm.InvestmentInitId);
@@ -516,6 +536,99 @@ namespace API.Controllers
             }
             return empList;
         }
+
+        [HttpGet("getEmployeesforRapidByDpt/{proposeFor}/{sbu}")]
+        public IReadOnlyList<Employee> GetEmployeesforRapidByDpt(string proposeFor, string sbu)
+        {
+            var deptId = "";
+            var sbuQry = "";
+            if (proposeFor == "Sales")
+            {
+                deptId = " AND DepartmentId=1";
+            }
+            else if (proposeFor == "PMD")
+            {
+                deptId = " AND DepartmentId=2";
+            }
+            else 
+            { deptId = " AND DepartmentId IN (1,2)"; }
+            if (!string.IsNullOrEmpty(sbu))
+            {
+                sbuQry = " AND emp.SBU='" + sbu + "'";
+            }
+
+            else
+            { sbuQry = ""; }
+            List<Employee> empList = new List<Employee>();
+            try
+            {
+                string qry = string.Format(@"select emp.* from Employee emp 
+                                        left join ApprAuthConfig ac on emp.Id = ac.EmployeeId
+                                        where ac.ApprovalAuthorityId in(3,4,5,6,7,8) {0} {1}", deptId, sbuQry);
+                empList = _dbContext.Employee.FromSqlRaw(qry).ToList();
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+            return empList;
+        }
+        [HttpGet("getEmployeesforRapidBySBU/{proposeFor}/{sbu}")]
+        public IReadOnlyList<Employee> GetEmployeesforRapidBySBU(string proposeFor,string sbu)
+        {
+            var deptId = "";
+            var sbuQry = "";
+            if (proposeFor == "Sales")
+            {
+                deptId = " AND emp.DepartmentId=1";
+            }
+            else if (proposeFor == "PMD")
+            {
+                deptId = " AND emp.DepartmentId=2";
+            }
+            else 
+            { deptId = " AND emp.DepartmentId IN (1,2)"; }
+
+            if (!string.IsNullOrEmpty(sbu))
+            {
+                sbuQry = " AND emp.SBU='"+sbu+"'";
+            }
+            
+            else
+            { sbuQry = ""; }
+            List<Employee> empList = new List<Employee>();
+            try
+            {
+                string qry = string.Format(@"select emp.* from Employee emp 
+                                        left join ApprAuthConfig ac on emp.Id = ac.EmployeeId
+                                        where ac.ApprovalAuthorityId in(3,4,5,6,7,8){0} {1}", deptId, sbuQry);
+                empList = _dbContext.Employee.FromSqlRaw(qry).ToList();
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+            return empList;
+        }  [HttpGet("getEmployeesforRapidByCamp/{subCampaignId}")]
+        public IReadOnlyList<Employee> GetEmployeesforRapidByCamp(string subCampaignId)
+        {
+            
+            List<Employee> empList = new List<Employee>();
+            try
+            {
+                string qry = string.Format(@"select A.* from Employee A 
+                                            INNER JOIN CampaignMst B ON A.Id=B.EmployeeId INNER JOIN CampaignDtl C ON B.Id=C.MstId
+                                        WHERE  C.SubCampaignId={0} ", subCampaignId);
+                empList = _dbContext.Employee.FromSqlRaw(qry).ToList();
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+            return empList;
+        }
+
+
         [HttpGet]
         [Route("getInvestmentRapids/{employeeId}/{from}/{For}")]
         public IReadOnlyList<InvestmentRapidVM> GetInvestmentRapids(int employeeId, string from, string For)

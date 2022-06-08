@@ -1,6 +1,8 @@
 
 export interface IApprovalAuthority {
     id: number;
+    compId: number;
+    deptId: number;
     approvalAuthorityName: string;
     priority: number;
     remarks: string; 
@@ -10,6 +12,8 @@ export interface IApprovalAuthority {
  
 export class ApprovalAuthority implements IApprovalAuthority {
     id: number=0;
+    compId: number;
+    deptId: number;
     approvalAuthorityName: string;
     remarks: string; 
     priority: number=null;
