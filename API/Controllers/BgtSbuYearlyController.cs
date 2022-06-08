@@ -103,6 +103,39 @@ namespace API.Controllers
                 return dsResult;
             }
         }
+        [HttpGet("getLayerCountByDept/{deptId}/{compId}/{year}")]
+        public int GetLayerCountByDept(int deptId, int compId, int year)
+        {
+
+            try
+            {
+                string qry = "";
+                string filterQry = "";
+                if (deptId == 1)
+                {
+                    filterQry = " where aa.Id not in (1,2,9,10,11,13) and aa.DeptId=1";
+                }
+                else
+                {
+                    filterQry = " where aa.Id not in (15) and aa.DeptId = 2";
+
+                }
+
+
+                qry = string.Format(@"SELECT  CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) COUNT FROM ApprovalAuthority aa {0}", filterQry);
+
+
+
+                var dsResult = _dbContext.ExecSQL<CountInt>(qry).ToList();
+
+
+                return dsResult[0].Count;
+            }
+            catch (System.Exception ex)
+            {
+                return 0;
+            }
+        }
 
         [HttpGet("getAllPipelineExpenseList/{deptId}/{compId}/{year}")]
         public List<PipeLineExpense> GetAllPipeLineExpenseListAsync(int deptId, int compId, int year)
@@ -161,7 +194,7 @@ namespace API.Controllers
                 if (deptId == 1)
                 {
                     //filterQry = " where aa.Id in (3,4,5,6,7,12)";
-                    filterQry = " where aa.Id not in (1,2,9,10,11)";
+                    filterQry = " where aa.Id not in (1,2,9,10,11,13) and aa.DeptId=1";
                 }
                 else
                 {
@@ -252,7 +285,29 @@ namespace API.Controllers
             try
             {
 
-                string qry = string.Format(@" select be.Id as BgtEmpId, be.*,aa.Remarks Authority,aa.Priority
+                string qry = string.Format(@" select be.Id as BgtEmpId,be.[Id]
+	                                        ,be.[DataStatus]
+	                                        ,be.[SetOn]
+	                                        ,be.[ModifiedOn]
+	                                        ,be.[CompId]
+	                                        ,be.[DeptId]
+	                                        ,be.[Year]
+	                                        ,be.[SBU]
+	                                        ,be.[AuthId]
+	                                        ,be.[Amount]
+	                                        ,be.[PermEdit]
+	                                        ,be.[PermView]
+	                                        ,be.[PermAmt]
+	                                        ,be.[PermDonation]
+	                                        ,be.[Remarks]
+	                                        ,be.[EnteredBy]
+		                                        ,(SELECT COUNT(*)
+		                                        FROM ApprAuthConfig ac
+		                                        LEFT JOIN EmpSbuMapping emp ON emp.EmployeeId = ac.EmployeeId
+		                                        WHERE ac.ApprovalAuthorityId = aa.Id
+			                                        AND emp.SBU = '{0}'
+			                                        AND emp.DataStatus = 1
+		                                        ) NoOfEmployee,aa.Remarks Authority,aa.Priority
                                     ,CASE  WHEN aa.Id = 3 THEN ( SELECT COUNT(*) FROM RegionInfo r WHERE r.SBU = '{0}' AND r.DataStatus = 1 )
 		                            WHEN aa.Id = 5 THEN (  SELECT COUNT(*) FROM ZoneInfo r WHERE r.SBU = '{0}' AND r.DataStatus = 1 )
 		                            ELSE ( SELECT COUNT(*) FROM ApprAuthConfig ac LEFT JOIN EmpSbuMapping emp ON emp.EmployeeId = ac.EmployeeId

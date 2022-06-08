@@ -49,6 +49,10 @@ export class BudgetSbuYearlyService {
     debugger;
     return this.http.get(this.baseUrl + 'BgtSbuYearly/getAllSbuBgtList/'+deptId+'/'+compId+'/'+year);
   }
+  getLayerCountByDept(deptId:number,compId:number,year:number) {
+    debugger;
+    return this.http.get(this.baseUrl + 'BgtSbuYearly/getLayerCountByDept/'+deptId+'/'+compId+'/'+year);
+  }
   getSbuWisePipeLineExpense(deptId:number,compId:number,year:number) {
     debugger;
     return this.http.get(this.baseUrl + 'BgtSbuYearly/getAllSbuBgtList/'+deptId+'/'+compId+'/'+year);

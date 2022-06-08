@@ -368,10 +368,11 @@
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-1">
-                                                <label>Approved Status</label>
+                                                <label>Appr. Status</label>
+                                                <span style="color:red;">*</span>
                                             </div>
                                             <div class="col-md-4">
-                                                <select class="form-control" name="approvedStatus" [(ngModel)]="investmentFormService.investmentFormData.approvedStatus">
+                                                <select class="form-control" name="approvedStatus" [(ngModel)]="investmentFormService.investmentFormData.approvedStatus" required>
                                                     <option [ngValue]="null">Select Status</option>
                                                     <option value="Approved">Approved</option>
                                                     <option value="Canceled">Canceled</option>

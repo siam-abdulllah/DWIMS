@@ -70,12 +70,229 @@ namespace API.Controllers
             {
                 int ApprovedBy = investmentRapidDto.ApprovalAuthId;
 
-                #region Save On Investment Init
                 InvestmentInit investmentInit = new InvestmentInit();
                 ApprovalAuthority appAuth = new ApprovalAuthority();
                 Employee emp = new Employee();
                 ApprAuthConfig authConfig = new ApprAuthConfig();
                 investmentInit = await _investmentInitRepo.GetByIdAsync(investmentRapidDto.InvestmentInitId);
+
+
+                InvestmentRapid investmentForm = new InvestmentRapid();
+                InvestmentRapidAppr invRapidApr = new InvestmentRapidAppr();
+                investmentForm = await _investmentRapidRepo.GetByIdAsync(investmentRapidDto.Id);
+
+
+
+                #region Investment Rapid Approved
+                //InvestmentRapidAppr invRapidApr = new InvestmentRapidAppr();
+                if (!string.IsNullOrEmpty(investmentRapidDto.ApprovedStatus))
+                {
+                    if (investmentRapidDto.ApprovedStatus == "Approved")
+                    {
+                        if (investmentRapidDto.SubCampaignId == 0)
+                        {
+                            if (investmentRapidDto.ProposeFor != "Others Rapid")
+                            {
+                                if (investmentRapidDto.ProposeFor == "Sales")
+                                {
+                                    List<SqlParameter> parms = new List<SqlParameter>
+                                 {
+                                    new SqlParameter("@SBU", investmentForm.SBU),
+                                    new SqlParameter("@DID", investmentForm.Type),
+                                    new SqlParameter("@EID", ApprovedBy),
+                                    new SqlParameter("@IID", investmentForm.InvestmentInitId),
+                                    new SqlParameter("@PRAMOUNT", investmentRapidDto.ProposedAmount),
+                                    new SqlParameter("@ASTATUS", investmentRapidDto.ApprovedStatus),
+                                    new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
+                                 };
+                                    var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheckNewRapidSales @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
+                                    if (parms[6].Value.ToString() != "True")
+                                    {
+                                        return BadRequest(new ApiResponse(400, parms[6].Value.ToString()));
+                                    }
+                                }
+                                else
+                                {
+                                    List<SqlParameter> parms = new List<SqlParameter>
+                                 {
+                                    new SqlParameter("@SBU", investmentForm.SBU),
+                                    new SqlParameter("@DID", investmentForm.Type),
+                                    new SqlParameter("@EID", ApprovedBy),
+                                    new SqlParameter("@IID", investmentForm.InvestmentInitId),
+                                    new SqlParameter("@PRAMOUNT", investmentRapidDto.ProposedAmount),
+                                    new SqlParameter("@ASTATUS", investmentRapidDto.ApprovedStatus),
+                                    new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
+                                 };
+                                    var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheckNewRapidPMD @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
+                                    if (parms[6].Value.ToString() != "True")
+                                    {
+                                        return BadRequest(new ApiResponse(400, parms[6].Value.ToString()));
+                                    }
+
+                                }
+                            }
+                        }
+                        else
+                        {
+                            List<SqlParameter> parms = new List<SqlParameter>
+                                {
+                                    new SqlParameter("@SBU", investmentForm.SBU),
+                                    new SqlParameter("@DID", investmentForm.Type),
+                                    new SqlParameter("@EID", ApprovedBy),
+                                    new SqlParameter("@IID", investmentForm.InvestmentInitId),
+                                    new SqlParameter("@PRAMOUNT", investmentRapidDto.ProposedAmount),
+                                    new SqlParameter("@ASTATUS", investmentRapidDto.ApprovedStatus),
+                                    new SqlParameter("@CDTLID", investmentRapidDto.SubCampaignId),
+                                    new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
+                                };
+                            var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheckForCampaign @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@CDTLID,@r out", parms.ToArray());
+                            if (parms[7].Value.ToString() != "True")
+                            {
+                                return BadRequest(new ApiResponse(400, parms[7].Value.ToString()));
+                            }
+
+
+                        }
+
+                        var alreadyDetailTrackerExistSpec = new InvestmentDetailTrackerSpecification(investmentForm.InvestmentInitId);
+                        var alreadyDetailTrackerExistInvestmentAprList = await _investmentDetailTrackerRepo.ListAsync(alreadyDetailTrackerExistSpec);
+                        if (alreadyDetailTrackerExistInvestmentAprList.Count > 0)
+                        {
+                            foreach (var v in alreadyDetailTrackerExistInvestmentAprList)
+                            {
+                                _investmentDetailTrackerRepo.Delete(v);
+                                _investmentDetailTrackerRepo.Savechange();
+                            }
+                        }
+                        var invDT = new InvestmentDetailTracker
+                        {
+                            InvestmentInitId = investmentForm.InvestmentInitId,
+                            DonationId = investmentForm.Type != null ? Convert.ToInt32(investmentForm.Type) : 0,
+                            ApprovedAmount = investmentRapidDto.ProposedAmount,
+                            Month = DateTime.Now.Month,
+                            Year = DateTime.Now.Year,
+                            FromDate = DateTime.Now,
+                            ToDate = DateTime.Now,
+                            PaidStatus = "Paid",
+                            EmployeeId = ApprovedBy,
+                            SetOn = DateTimeOffset.Now
+                        };
+                        _investmentDetailTrackerRepo.Add(invDT);
+                        _investmentDetailTrackerRepo.Savechange();
+
+
+                    }
+                    else
+                    {
+                        var alreadyDetailTrackerExistSpec = new InvestmentDetailTrackerSpecification(investmentForm.InvestmentInitId);
+                        var alreadyDetailTrackerExistInvestmentAprList = await _investmentDetailTrackerRepo.ListAsync(alreadyDetailTrackerExistSpec);
+                        if (alreadyDetailTrackerExistInvestmentAprList.Count > 0)
+                        {
+                            foreach (var v in alreadyDetailTrackerExistInvestmentAprList)
+                            {
+                                _investmentDetailTrackerRepo.Delete(v);
+                                _investmentDetailTrackerRepo.Savechange();
+                            }
+                        }
+                    }
+                    #region Insert Into Rec Comment
+
+                    emp = await _employeeRepo.GetByIdAsync(ApprovedBy);
+                    var investmentRecCmntSpec = new InvestmentRecCommentSpecification((int)investmentForm.InvestmentInitId, emp.Id);
+                    var investmentRecCmnts = await _investmentRecCommentRepo.ListAsync(investmentRecCmntSpec);
+                    if (investmentRecCmnts.Count > 0)
+                    {
+                        foreach (var v in investmentRecCmnts)
+                        {
+                            _investmentRecCommentRepo.Delete(v);
+                            _investmentRecCommentRepo.Savechange();
+                        }
+                    }
+                    bool complitionStatus = false;
+                    if (investmentRapidDto.ApprovedStatus == "Approved")
+                    {
+                        complitionStatus = true;
+                    }
+                    var invRecComment = new InvestmentRecComment
+                    {
+                        InvestmentInitId = investmentForm.InvestmentInitId,
+                        SBU = emp.SBU,
+                        SBUName = emp.SBUName,
+                        ZoneCode = emp.ZoneCode,
+                        ZoneName = emp.ZoneName,
+                        RegionName = emp.RegionName,
+                        RegionCode = emp.RegionCode,
+                        TerritoryCode = emp.TerritoryCode,
+                        TerritoryName = emp.TerritoryName,
+                        MarketCode = emp.MarketCode,
+                        MarketName = emp.MarketName,
+                        MarketGroupCode = emp.MarketGroupCode,
+                        MarketGroupName = emp.MarketGroupName,
+                        Comments = investmentForm.Remarks,
+                        RecStatus = investmentRapidDto.ApprovedStatus,
+                        CompletionStatus = complitionStatus,
+                        Priority = appAuth.Priority,
+                        EmployeeId = emp.Id,
+                        SetOn = DateTime.Now
+
+                    };
+                    _investmentRecCommentRepo.Add(invRecComment);
+                    _investmentRecCommentRepo.Savechange();
+                    #endregion
+                    #region Insert Into Investment Rec
+                    var alreadyExistRecSpec = new InvestmentRecSpecification((int)investmentForm.InvestmentInitId, emp.Id);
+                    var alreadyExistInvestmentAprList = await _investmentRecRepo.ListAsync(alreadyExistRecSpec);
+                    if (alreadyExistInvestmentAprList.Count > 0)
+                    {
+                        foreach (var v in alreadyExistInvestmentAprList)
+                        {
+                            _investmentRecRepo.Delete(v);
+                            _investmentRecRepo.Savechange();
+                        }
+                    }
+                    var invRec = new InvestmentRec
+                    {
+                        InvestmentInitId = investmentForm.InvestmentInitId,
+                        ProposedAmount = investmentForm.ProposedAmount,
+                        //Purpose = investmenAprForOwnSBUInsert.InvestmentApr.Purpose,
+                        PaymentFreq = "Yearly",
+                        //CommitmentAllSBU = investmenAprForOwnSBUInsert.InvestmentApr.CommitmentAllSBU,
+                        //CommitmentOwnSBU = investmenAprForOwnSBUInsert.InvestmentApr.CommitmentOwnSBU,
+                        FromDate = DateTime.Now,
+                        ToDate = DateTime.Now,
+                        CommitmentFromDate = DateTime.Now,
+                        CommitmentToDate = DateTime.Now,
+                        TotalMonth = 1,
+                        CommitmentTotalMonth = 1,
+                        PaymentMethod = investmentForm.PaymentMethod,
+                        ChequeTitle = investmentForm.ChequeTitle,
+                        EmployeeId = emp.Id,
+                        Priority = appAuth.Priority,
+                        CompletionStatus = true,
+                        SetOn = DateTimeOffset.Now
+                    };
+                    _investmentRecRepo.Add(invRec);
+                    _investmentRecRepo.Savechange();
+                    #endregion
+                    string qry = string.Format(@"select * from InvestmentRapidAppr where InvestmentRapidId = {0}", investmentForm.Id);
+                    invRapidApr = _dbContext.InvestmentRapidAppr.FromSqlRaw(qry).ToList().FirstOrDefault();
+
+                    invRapidApr.InvestmentInitId = investmentInit.Id;
+                    invRapidApr.InvestmentRapidId = investmentForm.Id;
+
+                    invRapidApr.ApprovalRemarks = investmentRapidDto.Approval;
+                    invRapidApr.ApprovedStatus = investmentRapidDto.ApprovedStatus;
+                    invRapidApr.ModifiedOn = DateTime.Now;
+                    _InvestmentRapidApprRepo.Update(invRapidApr);
+
+                    _InvestmentRapidApprRepo.Savechange();
+                }
+                #endregion
+
+
+
+                #region Save On Investment Init
+               
                 if (investmentInit != null)
                 {
                     //investmentInit.ProposeFor = investmentRapidDto.ProposeFor;
@@ -114,31 +331,29 @@ namespace API.Controllers
                     var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentRefNoInsert @IID,@r out", parms.ToArray());
                     investmentInit.ReferenceNo = parms[1].Value.ToString();
 
-                   if (investmentRapidDto.SubCampaignId != 0)
-                        { 
-
-                    var investmentCampaign = new InvestmentCampaign
+                    if (investmentRapidDto.SubCampaignId != 0)
                     {
-                        //ReferenceNo = investmentCampaignDto.ReferenceNo,
-                        InvestmentInitId = investmentInit.Id,
-                        CampaignDtlId = investmentRapidDto.SubCampaignId,
-                        DoctorId = 90000,
-                        InstitutionId = 99999,
-                        SetOn = DateTimeOffset.Now,
-                        ModifiedOn = DateTimeOffset.Now
-                    };
-                    _investmentCampaignRepo.Add(investmentCampaign);
-                    _investmentCampaignRepo.Savechange();
 
-                }
+                        var investmentCampaign = new InvestmentCampaign
+                        {
+                            //ReferenceNo = investmentCampaignDto.ReferenceNo,
+                            InvestmentInitId = investmentInit.Id,
+                            CampaignDtlId = investmentRapidDto.SubCampaignId,
+                            DoctorId = 90000,
+                            InstitutionId = 99999,
+                            SetOn = DateTimeOffset.Now,
+                            ModifiedOn = DateTimeOffset.Now
+                        };
+                        _investmentCampaignRepo.Add(investmentCampaign);
+                        _investmentCampaignRepo.Savechange();
+
+                    }
                 }
                 #endregion
 
+
                 #region Save On Investment Rapid
 
-                InvestmentRapid investmentForm = new InvestmentRapid();
-                InvestmentRapidAppr invRapidApr = new InvestmentRapidAppr();
-                investmentForm = await _investmentRapidRepo.GetByIdAsync(investmentRapidDto.Id);
                 if (investmentForm != null)
                 {
                     if (!string.IsNullOrEmpty(investmentForm.DepotCode) && investmentRapidDto.PaymentMethod != "Cash")
@@ -320,187 +535,7 @@ namespace API.Controllers
                 }
                 #endregion
 
-                #region Investment Rapid Approved
-                //InvestmentRapidAppr invRapidApr = new InvestmentRapidAppr();
-                if (!string.IsNullOrEmpty(investmentRapidDto.ApprovedStatus))
-                {
-                    if (investmentRapidDto.ApprovedStatus == "Approved")
-                    {
-                        if (investmentRapidDto.SubCampaignId == 0)
-                        {
-                            if (investmentRapidDto.ProposeFor != "Others Rapid")
-                            {
-                                List<SqlParameter> parms = new List<SqlParameter>
-                            {
-                            new SqlParameter("@SBU", investmentForm.SBU),
-                            new SqlParameter("@DID", investmentForm.Type),
-                            new SqlParameter("@EID", ApprovedBy),
-                            new SqlParameter("@IID", investmentForm.InvestmentInitId),
-                            new SqlParameter("@PRAMOUNT", investmentForm.ProposedAmount),
-                            new SqlParameter("@ASTATUS", investmentRapidDto.ApprovedStatus),
-                            new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
-                            };
-                                var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheckNew @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
-                                if (parms[6].Value.ToString() != "True")
-                                {
-                                    return BadRequest(new ApiResponse(400, parms[6].Value.ToString()));
-                                }
-                            }
-
-                        }
-                        else
-                        {
-                            List<SqlParameter> parms = new List<SqlParameter>
-                                {
-                                    new SqlParameter("@SBU", investmentForm.SBU),
-                                    new SqlParameter("@DID", investmentForm.Type),
-                                    new SqlParameter("@EID", ApprovedBy),
-                                    new SqlParameter("@IID", investmentForm.InvestmentInitId),
-                                    new SqlParameter("@PRAMOUNT", investmentForm.ProposedAmount),
-                                    new SqlParameter("@ASTATUS", investmentRapidDto.ApprovedStatus),
-                                    new SqlParameter("@CDTLID", investmentRapidDto.SubCampaignId),
-                                    new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
-                                };
-                            var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheckForCampaign @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@CDTLID,@r out", parms.ToArray());
-                            if (parms[7].Value.ToString() != "True")
-                            {
-                                return BadRequest(new ApiResponse(400, parms[7].Value.ToString()));
-                            }
-
-
-                        }
-
-                        var alreadyDetailTrackerExistSpec = new InvestmentDetailTrackerSpecification(investmentForm.InvestmentInitId);
-                        var alreadyDetailTrackerExistInvestmentAprList = await _investmentDetailTrackerRepo.ListAsync(alreadyDetailTrackerExistSpec);
-                        if (alreadyDetailTrackerExistInvestmentAprList.Count > 0)
-                        {
-                            foreach (var v in alreadyDetailTrackerExistInvestmentAprList)
-                            {
-                                _investmentDetailTrackerRepo.Delete(v);
-                                _investmentDetailTrackerRepo.Savechange();
-                            }
-                        }
-                        var invDT = new InvestmentDetailTracker
-                        {
-                            InvestmentInitId = investmentForm.InvestmentInitId,
-                            DonationId = investmentForm.Type != null ? Convert.ToInt32(investmentForm.Type) : 0,
-                            ApprovedAmount = investmentForm.ProposedAmount,
-                            Month = DateTime.Now.Month,
-                            Year = DateTime.Now.Year,
-                            FromDate = DateTime.Now,
-                            ToDate = DateTime.Now,
-                            PaidStatus = "Paid",
-                            EmployeeId = ApprovedBy,
-                            SetOn = DateTimeOffset.Now
-                        };
-                        _investmentDetailTrackerRepo.Add(invDT);
-                        _investmentDetailTrackerRepo.Savechange();
-
-
-                    }
-                    else
-                    {
-                        var alreadyDetailTrackerExistSpec = new InvestmentDetailTrackerSpecification(investmentForm.InvestmentInitId);
-                        var alreadyDetailTrackerExistInvestmentAprList = await _investmentDetailTrackerRepo.ListAsync(alreadyDetailTrackerExistSpec);
-                        if (alreadyDetailTrackerExistInvestmentAprList.Count > 0)
-                        {
-                            foreach (var v in alreadyDetailTrackerExistInvestmentAprList)
-                            {
-                                _investmentDetailTrackerRepo.Delete(v);
-                                _investmentDetailTrackerRepo.Savechange();
-                            }
-                        }
-                    }
-                    #region Insert Into Rec Comment
-
-                    emp = await _employeeRepo.GetByIdAsync(invRapidApr.ApprovedBy);
-                    var investmentRecCmntSpec = new InvestmentRecCommentSpecification((int)investmentForm.InvestmentInitId, emp.Id);
-                    var investmentRecCmnts = await _investmentRecCommentRepo.ListAsync(investmentRecCmntSpec);
-                    if (investmentRecCmnts.Count > 0)
-                    {
-                        foreach (var v in investmentRecCmnts)
-                        {
-                            _investmentRecCommentRepo.Delete(v);
-                            _investmentRecCommentRepo.Savechange();
-                        }
-                    }
-                    bool complitionStatus = false;
-                    if (investmentRapidDto.ApprovedStatus == "Approved")
-                    {
-                        complitionStatus = true;
-                    }
-                    var invRecComment = new InvestmentRecComment
-                    {
-                        InvestmentInitId = investmentForm.InvestmentInitId,
-                        SBU = emp.SBU,
-                        SBUName = emp.SBUName,
-                        ZoneCode = emp.ZoneCode,
-                        ZoneName = emp.ZoneName,
-                        RegionName = emp.RegionName,
-                        RegionCode = emp.RegionCode,
-                        TerritoryCode = emp.TerritoryCode,
-                        TerritoryName = emp.TerritoryName,
-                        MarketCode = emp.MarketCode,
-                        MarketName = emp.MarketName,
-                        MarketGroupCode = emp.MarketGroupCode,
-                        MarketGroupName = emp.MarketGroupName,
-                        Comments = investmentForm.Remarks,
-                        RecStatus = investmentRapidDto.ApprovedStatus,
-                        CompletionStatus = complitionStatus,
-                        Priority = appAuth.Priority,
-                        EmployeeId = emp.Id,
-                        SetOn = DateTime.Now
-
-                    };
-                    _investmentRecCommentRepo.Add(invRecComment);
-                    _investmentRecCommentRepo.Savechange();
-                    #endregion
-                    #region Insert Into Investment Rec
-                    var alreadyExistRecSpec = new InvestmentRecSpecification((int)investmentForm.InvestmentInitId, emp.Id);
-                    var alreadyExistInvestmentAprList = await _investmentRecRepo.ListAsync(alreadyExistRecSpec);
-                    if (alreadyExistInvestmentAprList.Count > 0)
-                    {
-                        foreach (var v in alreadyExistInvestmentAprList)
-                        {
-                            _investmentRecRepo.Delete(v);
-                            _investmentRecRepo.Savechange();
-                        }
-                    }
-                    var invRec = new InvestmentRec
-                    {
-                        InvestmentInitId = investmentForm.InvestmentInitId,
-                        ProposedAmount = investmentForm.ProposedAmount,
-                        //Purpose = investmenAprForOwnSBUInsert.InvestmentApr.Purpose,
-                        PaymentFreq = "Yearly",
-                        //CommitmentAllSBU = investmenAprForOwnSBUInsert.InvestmentApr.CommitmentAllSBU,
-                        //CommitmentOwnSBU = investmenAprForOwnSBUInsert.InvestmentApr.CommitmentOwnSBU,
-                        FromDate = DateTime.Now,
-                        ToDate = DateTime.Now,
-                        CommitmentFromDate = DateTime.Now,
-                        CommitmentToDate = DateTime.Now,
-                        TotalMonth = 1,
-                        CommitmentTotalMonth = 1,
-                        PaymentMethod = investmentForm.PaymentMethod,
-                        ChequeTitle = investmentForm.ChequeTitle,
-                        EmployeeId = emp.Id,
-                        Priority = appAuth.Priority,
-                        CompletionStatus = true,
-                        SetOn = DateTimeOffset.Now
-                    };
-                    _investmentRecRepo.Add(invRec);
-                    _investmentRecRepo.Savechange();
-                    #endregion
-                    invRapidApr.InvestmentInitId = investmentInit.Id;
-                    invRapidApr.InvestmentRapidId = investmentForm.Id;
-
-                    invRapidApr.ApprovalRemarks = investmentRapidDto.Approval;
-                    invRapidApr.ApprovedStatus = investmentRapidDto.ApprovedStatus;
-                    invRapidApr.ModifiedOn = DateTime.Now;
-                    _InvestmentRapidApprRepo.Update(invRapidApr);
-
-                    _InvestmentRapidApprRepo.Savechange();
-                }
-                #endregion
+              
 
                 return new InvestmentRapidDto
                 {
@@ -550,7 +585,7 @@ namespace API.Controllers
             {
                 deptId = " AND DepartmentId=2";
             }
-            else 
+            else
             { deptId = " AND DepartmentId IN (1,2)"; }
             if (!string.IsNullOrEmpty(sbu))
             {
@@ -574,7 +609,7 @@ namespace API.Controllers
             return empList;
         }
         [HttpGet("getEmployeesforRapidBySBU/{proposeFor}/{sbu}")]
-        public IReadOnlyList<Employee> GetEmployeesforRapidBySBU(string proposeFor,string sbu)
+        public IReadOnlyList<Employee> GetEmployeesforRapidBySBU(string proposeFor, string sbu)
         {
             var deptId = "";
             var sbuQry = "";
@@ -586,14 +621,14 @@ namespace API.Controllers
             {
                 deptId = " AND emp.DepartmentId=2";
             }
-            else 
+            else
             { deptId = " AND emp.DepartmentId IN (1,2)"; }
 
             if (!string.IsNullOrEmpty(sbu))
             {
-                sbuQry = " AND emp.SBU='"+sbu+"'";
+                sbuQry = " AND emp.SBU='" + sbu + "'";
             }
-            
+
             else
             { sbuQry = ""; }
             List<Employee> empList = new List<Employee>();
@@ -601,7 +636,10 @@ namespace API.Controllers
             {
                 string qry = string.Format(@"select emp.* from Employee emp 
                                         left join ApprAuthConfig ac on emp.Id = ac.EmployeeId
-                                        where ac.ApprovalAuthorityId in(3,4,5,6,7,8){0} {1}", deptId, sbuQry);
+                                        where ac.ApprovalAuthorityId in (3,5,6,7,8){0} {1}
+                                        UNION select emp.* from Employee emp 
+                                        left join ApprAuthConfig ac on emp.Id = ac.EmployeeId
+                                        where ac.ApprovalAuthorityId in (4) {0} ", deptId, sbuQry);
                 empList = _dbContext.Employee.FromSqlRaw(qry).ToList();
             }
             catch (System.Exception ex)
@@ -609,10 +647,11 @@ namespace API.Controllers
                 throw ex;
             }
             return empList;
-        }  [HttpGet("getEmployeesforRapidByCamp/{subCampaignId}")]
+        }
+        [HttpGet("getEmployeesforRapidByCamp/{subCampaignId}")]
         public IReadOnlyList<Employee> GetEmployeesforRapidByCamp(string subCampaignId)
         {
-            
+
             List<Employee> empList = new List<Employee>();
             try
             {

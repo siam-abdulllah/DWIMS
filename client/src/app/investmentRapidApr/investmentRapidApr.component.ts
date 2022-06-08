@@ -724,7 +724,7 @@ export class InvestmentRapidAprComponent implements OnInit {
     });
   }
   getBudget() {
-    this.investmentFormService.getBudget(this.investmentFormService.investmentFormData.sbu, parseInt(this.empId), parseInt(this.investmentFormService.investmentFormData.type)).subscribe(response => {
+    this.investmentFormService.getBudget(this.investmentFormService.investmentFormData.sbu, parseInt(this.empId), parseInt(this.investmentFormService.investmentFormData.type),this.investmentFormService.investmentFormData.proposeFor).subscribe(response => {
       this.budgetCeiling = response[0] as IBudgetCeiling;
       this.isBudgetVisible = true;
       this.isBudgetForCampaignVisible = false;

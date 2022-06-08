@@ -88,6 +88,7 @@ export interface ISbuDetails {
     sbuAmount:any;
     newAmount:any;
     expense:any;
+    noOfLayer:number;
     pipeLine:any;
     totalAlowcated:any;
     remaining:any;
@@ -99,6 +100,7 @@ export class SbuDetails implements ISbuDetails {
     sbuAmount:any;
     newAmount:any;
     expense:number;
+    noOfLayer:number;
     totalAlowcated:any;
     pipeLine:any;
     remaining:any;

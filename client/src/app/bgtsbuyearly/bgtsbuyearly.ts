@@ -94,7 +94,7 @@ export class BgtSbuYearlyComponent implements OnInit {
   getbgtEmployeeForSbu(SbuName: string, deptId: number, year: number, comId: number) {
 
     this.bugetSbuYearlyService.getbgtEmployeeForSbu(SbuName, deptId, year, comId).subscribe(response => {
-       
+
       this.approvalAuthDetails = response as IApprovalAuthDetails[];
       return this.approvalAuthDetails;
       this.SpinnerService.hide();
@@ -115,9 +115,12 @@ export class BgtSbuYearlyComponent implements OnInit {
 
     this.bugetSbuYearlyService.getbgtEmployeeForSbu(SbuCode, this.bugetSbuYearlyService.budgetSbuYearly.deptId, this.bugetSbuYearlyService.budgetSbuYearly.year,
       this.bugetSbuYearlyService.budgetSbuYearly.compId).subscribe(response => {
+        debugger;
         this.approvalAuthDetails = response as IApprovalAuthDetails[];
         this.bugetSbuYearlyService.getAppAuthDetails(SbuCode, this.bugetSbuYearlyService.budgetSbuYearly.deptId).subscribe(response => {
+          debugger;
           if (this.approvalAuthDetails == null || this.approvalAuthDetails.length == 0) {
+           
             this.approvalAuthDetails = response as IApprovalAuthDetails[];
             if (this.approvalAuthDetails.length > 0) {
               for (var i = 0; i < this.approvalAuthDetails.length; i++) {
@@ -159,8 +162,8 @@ export class BgtSbuYearlyComponent implements OnInit {
           if (this.bugetSbuYearlyService.budgetSbuYearly.deptId == 2) {
             this.bugetSbuYearlyService.getCampaignBgtDetails(SbuCode, this.bugetSbuYearlyService.budgetSbuYearly.deptId).subscribe(response => {
               this.campaignBgtDetails = response as ICampaignBgtDetails[];
-               
-            this.allowcatedBudget = this.allowcatedBudget + this.campaignBgtDetails[0].amount;
+
+              this.allowcatedBudget = this.allowcatedBudget + this.campaignBgtDetails[0].amount;
             }, error => {
               console.log(error);
             });
@@ -201,7 +204,7 @@ export class BgtSbuYearlyComponent implements OnInit {
     });
   }
   confirmSubmission() {
-     
+
     this.openSubmissionConfirmModal(this.submissionConfirmModal);
   }
   confirmSubmit() {
@@ -223,7 +226,7 @@ export class BgtSbuYearlyComponent implements OnInit {
     this.sbuDetails = [];
   }
   UpdateSbuDetails(id: number, newAmount: any, expense: any) {
-     
+
     this.bugetSbuYearlyService.budgetSbuYearly.id = id;
     this.bugetSbuYearlyService.budgetSbuYearly.sbuAmount = newAmount;
     if (newAmount < expense) {
@@ -271,7 +274,7 @@ export class BgtSbuYearlyComponent implements OnInit {
 
     // totalAllowcatedAuthbudget=totalAllowcatedAuthbudget+this.campaignBgtDetails[i].amount;
     if (totalAllowcatedAuthbudget > this.sbuIndividualAmount) {
-       
+
       this.toastr.warning('Budget limit has exceeded.');
       return;
     }
@@ -326,45 +329,52 @@ export class BgtSbuYearlyComponent implements OnInit {
   getAllSbuBgtList() {
     this.sbuDetails = [];
     this.SpinnerService.show();
-     
+
     this.bugetSbuYearlyService.getAllSbuBgtList(this.bugetSbuYearlyService.budgetSbuYearly.deptId, this.bugetSbuYearlyService.budgetSbuYearly.compId, this.bugetSbuYearlyService.budgetSbuYearly.year).subscribe(
       res => {
         this.bgtSbuYearlyList = res as IBudgetSbuYearly[];
+        this.bugetSbuYearlyService.getLayerCountByDept(this.bugetSbuYearlyService.budgetSbuYearly.deptId, this.bugetSbuYearlyService.budgetSbuYearly.compId, this.bugetSbuYearlyService.budgetSbuYearly.year).subscribe(
+          res => {
+            var a=res as number;
+            this.totalBudget = 0;
 
-        this.totalBudget = 0;
+            if (this.bgtSbuYearlyList != null) {
+              for (var i = 0; i < this.bgtSbuYearlyList.length; i++) {
+                let sbu = new SbuDetails();
 
-        if (this.bgtSbuYearlyList != null) {
-          for (var i = 0; i < this.bgtSbuYearlyList.length; i++) {
-            let sbu = new SbuDetails();
+                sbu.sbuAmount = this.bgtSbuYearlyList[i].sbuAmount;
+                sbu.sbuName = this.bgtSbuYearlyList[i].sbuName;
+                sbu.sbuCode = this.bgtSbuYearlyList[i].sbuCode;
+                sbu.bgtSbuId = this.bgtSbuYearlyList[i].bgtSbuId;
+                sbu.noOfLayer = a;
+                sbu.newAmount = 0;
+                sbu.expense = this.bgtSbuYearlyList[i].expense;
+                sbu.totalAlowcated = this.bgtSbuYearlyList[i].totalAllowcated;
+                this.sbuDetails.push(sbu);
+                const total = parseInt(this.totalBudget);
+                const next = parseInt(this.bgtSbuYearlyList[i].sbuAmount);
+                this.totalBudget = total + next;
 
-            sbu.sbuAmount = this.bgtSbuYearlyList[i].sbuAmount;
-            sbu.sbuName = this.bgtSbuYearlyList[i].sbuName;
-            sbu.sbuCode = this.bgtSbuYearlyList[i].sbuCode;
-            sbu.bgtSbuId = this.bgtSbuYearlyList[i].bgtSbuId;
-            sbu.newAmount = 0;
-            sbu.expense = this.bgtSbuYearlyList[i].expense;
-            sbu.totalAlowcated = this.bgtSbuYearlyList[i].totalAllowcated;
-            this.sbuDetails.push(sbu);
-            const total = parseInt(this.totalBudget);
-            const next = parseInt(this.bgtSbuYearlyList[i].sbuAmount);
-            this.totalBudget = total + next;
+              }
+            }
+            setTimeout(() => {
 
+              this.bugetSbuYearlyService.getTotalExpense(this.bugetSbuYearlyService.budgetSbuYearly.deptId, this.bugetSbuYearlyService.budgetSbuYearly.year).subscribe(response => {
+                this.bugetSbuYearlyService.budgetSbuYearly.totalExpense = response;
+                var RemainingBudget = parseInt(this.bugetSbuYearlyService.budgetSbuYearly.totalBudget) - (this.totalBudget)
+                this.bugetSbuYearlyService.budgetSbuYearly.remainingBudget = RemainingBudget;
+              }, error => {
+
+                console.log(error);
+              });
+              this.getAllPipeLineExpenseList();
+            }, 1000);
+
+          },
+          err => {
+            console.log(err);
           }
-        }
-        setTimeout(() => {
-           
-          this.bugetSbuYearlyService.getTotalExpense(this.bugetSbuYearlyService.budgetSbuYearly.deptId, this.bugetSbuYearlyService.budgetSbuYearly.year).subscribe(response => {
-            this.bugetSbuYearlyService.budgetSbuYearly.totalExpense = response;
-            var RemainingBudget = parseInt(this.bugetSbuYearlyService.budgetSbuYearly.totalBudget) - (this.totalBudget)
-            this.bugetSbuYearlyService.budgetSbuYearly.remainingBudget = RemainingBudget;
-          }, error => {
-
-            console.log(error);
-          });
-          this.getAllPipeLineExpenseList();
-        }, 1000);
-
-
+        );
       },
       err => {
         console.log(err);
@@ -373,10 +383,10 @@ export class BgtSbuYearlyComponent implements OnInit {
   }
   getAllPipeLineExpenseList() {
     this.SpinnerService.show();
-     
+
     this.bugetSbuYearlyService.getAllPipelineExpenseList(this.bugetSbuYearlyService.budgetSbuYearly.deptId, this.bugetSbuYearlyService.budgetSbuYearly.compId, this.bugetSbuYearlyService.budgetSbuYearly.year).subscribe(
       res => {
-         
+
         this.pipelineList = res as IPipelineDetails[];
         for (var i = 0; i < this.sbuDetails.length; i++) {
           for (var j = 0; j < this.pipelineList.length; j++) {
@@ -441,8 +451,8 @@ export class BgtSbuYearlyComponent implements OnInit {
           this.campaignBgtDetails[0].newAmount = 0;
         }
         if (this.campaignBgtDetails[0].amount != parseInt(this.campaignBgtDetails[0].newAmount) && this.campaignBgtDetails[0].newAmount != 0) {
-        this.saveCampaignBgtDetails();
-        return;
+          this.saveCampaignBgtDetails();
+          return;
         }
         else {
           this.toastr.warning('No new amount has entered!');
@@ -460,24 +470,24 @@ export class BgtSbuYearlyComponent implements OnInit {
     var flag = 0;
     var totalAllowcatedAuthbudget = 0;
     for (var i = 0; i < this.approvalAuthDetails.length; i++) {
-      var num3=0;
+      var num3 = 0;
       if (this.approvalAuthDetails[i].newAmount == '' || this.approvalAuthDetails[i].newAmount == 0 || this.approvalAuthDetails[i].newAmount == undefined) {
-         num3 = parseInt(this.approvalAuthDetails[i].amount);
+        num3 = parseInt(this.approvalAuthDetails[i].amount);
       }
-      else{
-      if (this.approvalAuthDetails[i].newAmount < this.approvalAuthDetails[i].expense || this.approvalAuthDetails[i].newAmount == undefined) {
-        flag = 1;
+      else {
+        if (this.approvalAuthDetails[i].newAmount < this.approvalAuthDetails[i].expense || this.approvalAuthDetails[i].newAmount == undefined) {
+          flag = 1;
+        }
+        num3 = parseInt(this.approvalAuthDetails[i].newAmount);
       }
-       num3 = parseInt(this.approvalAuthDetails[i].newAmount);
-    }
       totalAllowcatedAuthbudget = totalAllowcatedAuthbudget + num3;
     }
     if (this.bugetSbuYearlyService.budgetSbuYearly.deptId == 2) {
       if (this.campaignBgtDetails[0].newAmount == '' || this.campaignBgtDetails[0].newAmount == 0 || this.campaignBgtDetails[0].newAmount == undefined) {
         totalAllowcatedAuthbudget = totalAllowcatedAuthbudget + parseInt(this.campaignBgtDetails[0].amount);
       }
-      else{
-      totalAllowcatedAuthbudget = totalAllowcatedAuthbudget + parseInt(this.campaignBgtDetails[0].newAmount);
+      else {
+        totalAllowcatedAuthbudget = totalAllowcatedAuthbudget + parseInt(this.campaignBgtDetails[0].newAmount);
       }
     }
     if (totalAllowcatedAuthbudget > (this.sbuIndividualAmount)) {
@@ -498,10 +508,10 @@ export class BgtSbuYearlyComponent implements OnInit {
           if (this.campaignBgtDetails[0].amount != parseInt(this.campaignBgtDetails[0].newAmount) && this.campaignBgtDetails[0].newAmount != 0) {
             this.saveCampaignBgtDetails();
           }
-          else{
-          this.AuthDetailsModalRef.hide()
-          this.getApprovalAuth(this.SbuName, this.SbuCode, this.sbuIndividualAmount, this.expense)
-          this.toastr.success('Submitted successfully', 'Sbu Budget');
+          else {
+            this.AuthDetailsModalRef.hide()
+            this.getApprovalAuth(this.SbuName, this.SbuCode, this.sbuIndividualAmount, this.expense)
+            this.toastr.success('Submitted successfully', 'Sbu Budget');
           }
         }
         else {
@@ -523,19 +533,19 @@ export class BgtSbuYearlyComponent implements OnInit {
       if (this.approvalAuthDetails[i].newAmount < this.approvalAuthDetails[i].expense || this.approvalAuthDetails[i].newAmount == undefined) {
         flag = 1;
       }
-      var num2=0;
-      if (this.approvalAuthDetails[i].newAmount == '' || this.approvalAuthDetails[i].newAmount == 0 ||this.approvalAuthDetails[i].newAmount == undefined) {
-         num2 = parseInt(this.approvalAuthDetails[i].amount);
+      var num2 = 0;
+      if (this.approvalAuthDetails[i].newAmount == '' || this.approvalAuthDetails[i].newAmount == 0 || this.approvalAuthDetails[i].newAmount == undefined) {
+        num2 = parseInt(this.approvalAuthDetails[i].amount);
       }
-      else{
-         num2 = parseInt(this.approvalAuthDetails[i].newAmount);
+      else {
+        num2 = parseInt(this.approvalAuthDetails[i].newAmount);
       }
       //const num2 = parseInt(this.submitedApprovalAuthDetails[i].newAmount);
       totalAllowcatedAuthbudget = totalAllowcatedAuthbudget + num2;
     }
     totalAllowcatedAuthbudget = totalAllowcatedAuthbudget + parseInt(this.campaignBgtDetails[0].newAmount);
     if (totalAllowcatedAuthbudget > (this.sbuIndividualAmount)) {
-       
+
       this.toastr.warning('Budget limit has exceeded!');
       return;
     }
@@ -546,7 +556,7 @@ export class BgtSbuYearlyComponent implements OnInit {
     }
     //this.bugetSbuYearlyService.approvalAuthDetailsModel.bgtEmpList = this.submitedApprovalAuthDetails;
     this.getEmployeeId();
-    this.bugetSbuYearlyService.saveCampaignBgtDetails(this.empId,this.campaignBgtDetails[0]).subscribe(
+    this.bugetSbuYearlyService.saveCampaignBgtDetails(this.empId, this.campaignBgtDetails[0]).subscribe(
       res => {
         this.AuthDetailsModalRef.hide()
         this.getApprovalAuth(this.SbuName, this.SbuCode, this.sbuIndividualAmount, this.expense)
@@ -591,7 +601,7 @@ export class BgtSbuYearlyComponent implements OnInit {
     console.log(this.totalSbuBudget);
     //if (this.totalSbuBudget > (this.bugetSbuYearlyService.budgetSbuYearly.totalBudget - this.bugetSbuYearlyService.budgetSbuYearly.totalExpense)) {
     if (this.totalSbuBudget > this.bugetSbuYearlyService.budgetSbuYearly.totalBudget) {
-       
+
       this.toastr.warning('Budget limit has exceeded!');
       this.SpinnerService.hide();
       return;

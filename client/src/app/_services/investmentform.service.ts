@@ -27,8 +27,15 @@ export class InvestmentFormService {
 
 
   constructor(private http: HttpClient, private router: Router) { }
-  getBudget(sbu: string, empID: number, donationId: number) {
-    return this.http.get(this.baseUrl + 'approvalCeiling/getBudgetCeiling/' + empID + '/' + sbu + '/' + donationId);
+  getBudget(sbu: string, empID: number, donationId: number,proposeFor:any) {
+    if(proposeFor=='Sales')
+    {
+      return this.http.get(this.baseUrl + 'approvalCeiling/getBudgetCeilingForRapidSales/' + empID + '/' + sbu + '/' + donationId);
+    }
+    else if(proposeFor=='PMD'){
+      return this.http.get(this.baseUrl + 'approvalCeiling/getBudgetCeilingForRapidPMD/' + empID + '/' + sbu + '/' + donationId);
+    }
+    
   }
   getBudgetForCampaign(sbu: string, empID: number, donationId: number, campaignDtlId: number) {
     debugger;
