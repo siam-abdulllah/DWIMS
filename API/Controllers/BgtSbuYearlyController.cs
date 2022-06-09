@@ -50,8 +50,8 @@ namespace API.Controllers
                 else if (deptId == 2)
                 {
                     ProposeFor = "'BrandCampaign','PMD'";
-                    allocatedQry = "(SELECT ((select SUM(Amount) from BgtEmployee where DeptId =2 and SBU = sb.SBUCode and DataStatus = 1)" +
-                                    "+(select SUM(Amount) from BgtCampaign where DeptId =2 and SBU = sb.SBUCode and DataStatus = 1))) TotalAllowcated";
+                    allocatedQry = "(SELECT ((select ISNULL(SUM(ISNULL(Amount,0)),0) from BgtEmployee where DeptId =2 and SBU = sb.SBUCode and DataStatus = 1)" +
+                                    "+(select ISNULL(SUM(ISNULL(Amount,0)),0) from BgtCampaign where DeptId =2 and SBU = sb.SBUCode and DataStatus = 1))) TotalAllowcated";
                 }
                 string qry = "";
 
@@ -205,11 +205,11 @@ namespace API.Controllers
                 qry = string.Format(@"select  CAST(ROW_NUMBER() OVER (ORDER BY Priority) AS INT)  AS Id,aa.Id as AuthId,1 AS DataStatus,SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,aa.Priority,
                                      aa.Remarks Authority,0 as Expense,0 as Amount,0 as NewAmount, (select COUNT(*) from ApprAuthConfig ac
                                     left join EmpSbuMapping emp on emp.EmployeeId = ac.EmployeeId
-                                    where ac.ApprovalAuthorityId = aa.Id and emp.SBU = '{0}' and emp.DataStatus = 1) NoOfEmployee
+                                    where ac.ApprovalAuthorityId = aa.Id AND ac.Status='A'  and emp.SBU = '{0}' and emp.DataStatus = 1) NoOfEmployee
                                     ,CASE  WHEN aa.Id = 3 THEN ( SELECT COUNT(*) FROM RegionInfo r WHERE r.SBU = '{0}' AND r.DataStatus = 1 )
 		                            WHEN aa.Id = 5 THEN (  SELECT COUNT(*) FROM ZoneInfo r WHERE r.SBU = '{0}' AND r.DataStatus = 1 )
 		                            ELSE ( SELECT COUNT(*) FROM ApprAuthConfig ac LEFT JOIN EmpSbuMapping emp ON emp.EmployeeId = ac.EmployeeId
-				                    WHERE ac.ApprovalAuthorityId = aa.Id AND emp.SBU = '{0}' AND emp.DataStatus = 1 )
+				                    WHERE ac.ApprovalAuthorityId = aa.Id AND ac.Status='A' AND emp.SBU = '{0}' AND emp.DataStatus = 1 )
 		                            END NoOfLoc
                                     from ApprovalAuthority aa {1}", sbuCode, filterQry);
 
@@ -305,13 +305,14 @@ namespace API.Controllers
 		                                        FROM ApprAuthConfig ac
 		                                        LEFT JOIN EmpSbuMapping emp ON emp.EmployeeId = ac.EmployeeId
 		                                        WHERE ac.ApprovalAuthorityId = aa.Id
+                                                    AND ac.Status='A' 
 			                                        AND emp.SBU = '{0}'
 			                                        AND emp.DataStatus = 1
 		                                        ) NoOfEmployee,aa.Remarks Authority,aa.Priority
                                     ,CASE  WHEN aa.Id = 3 THEN ( SELECT COUNT(*) FROM RegionInfo r WHERE r.SBU = '{0}' AND r.DataStatus = 1 )
 		                            WHEN aa.Id = 5 THEN (  SELECT COUNT(*) FROM ZoneInfo r WHERE r.SBU = '{0}' AND r.DataStatus = 1 )
 		                            ELSE ( SELECT COUNT(*) FROM ApprAuthConfig ac LEFT JOIN EmpSbuMapping emp ON emp.EmployeeId = ac.EmployeeId
-				                    WHERE ac.ApprovalAuthorityId = aa.Id AND emp.SBU = '{0}' AND emp.DataStatus = 1 )
+				                    WHERE ac.ApprovalAuthorityId = aa.Id AND ac.Status='A'  AND emp.SBU = '{0}' AND emp.DataStatus = 1 )
 		                            END NoOfLoc from BgtEmployee be 
 									left join ApprovalAuthority aa on aa.Id = be.AuthId
 									where be.Sbu = '{0}' and  be.DeptId={1} and be.Year = {2} and be.compId={3} and be.DataStatus = 1", sbu, deptId, year, compId);

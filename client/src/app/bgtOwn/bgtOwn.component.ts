@@ -78,7 +78,14 @@ export class BgtOwnComponent implements OnInit {
     });
   }
   amountCal() {
-    debugger;
+    
+    if (this.bgtOwn.getRawValue().prevAllocate == "" || this.bgtOwn.getRawValue().prevAllocate == undefined || this.bgtOwn.getRawValue().prevAllocate == null) {
+      this.toastr.warning('Total Budget Can not be empty');
+      this.bgtOwn.patchValue({
+        donationAmt: 0,
+      });
+      return;
+    }
     if (this.bgtOwn.value.donationId != 0 && this.bgtOwn.value.donationId != "" && this.bgtOwn.value.donationId != undefined) {
       if (this.bgtOwn.value.donationAmt != 0 && this.bgtOwn.value.donationAmt != "" && this.bgtOwn.value.donationAmt != undefined) {
         var sum = 0;
@@ -150,7 +157,10 @@ export class BgtOwnComponent implements OnInit {
     }
   }
   donAmountCal(selectedRecord: IBgtOwn) {
-    debugger;
+    if (this.bgtOwn.getRawValue().prevAllocate == "" || this.bgtOwn.getRawValue().prevAllocate == undefined || this.bgtOwn.getRawValue().prevAllocate == null) {
+      this.toastr.warning('Total Budget Can not be empty');
+      return;
+    }
     var oldNewAmount=selectedRecord.newAmount;
     if (selectedRecord.newAmount != 0 && selectedRecord.newAmount != "" && selectedRecord.newAmount != undefined) 
     {
@@ -698,6 +708,10 @@ export class BgtOwnComponent implements OnInit {
   }
 
   insertbgtEmpDetail() {
+    if (this.bgtOwn.getRawValue().prevAllocate == "" || this.bgtOwn.getRawValue().prevAllocate == undefined || this.bgtOwn.getRawValue().prevAllocate == null) {
+      this.toastr.warning('Total Budget Can not be empty');
+      return;
+    }
     if (this.bgtOwn.getRawValue().deptId == "" || this.bgtOwn.getRawValue().deptId == null) {
       this.toastr.error('Select Department');
       return;
@@ -770,6 +784,10 @@ export class BgtOwnComponent implements OnInit {
     );
   }
   insertBgtOwnDetail() {
+    if (this.bgtOwn.getRawValue().prevAllocate == "" || this.bgtOwn.getRawValue().prevAllocate == undefined || this.bgtOwn.getRawValue().prevAllocate == null) {
+      this.toastr.warning('Total Budget Can not be empty');
+      return;
+    }
     if (this.bgtOwn.getRawValue().deptId == "" || this.bgtOwn.getRawValue().deptId == null) {
       this.toastr.warning('Select Department');
       return;

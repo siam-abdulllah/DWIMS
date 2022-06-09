@@ -97,7 +97,8 @@
                                         </select>
                                         </div>
                                         <div class="col-md-1 ">
-                                            <label>Segment <div class="invalid-feedback" *ngIf="bgtEmployee.controls.segment.errors?.required">*</div>  </label>
+                                            <!-- <label>Segment <div class="invalid-feedback" *ngIf="bgtEmployee.controls.segment.errors?.required">*</div>  </label> -->
+                                            <label>Segment </label>
                                         </div>
                                         <div class="col-md-3 ">
                                             <select class="form-control" id="segment" formControlName="segment" required>
@@ -111,7 +112,8 @@
                                 <div class="form-group ">
                                     <div class="row ">
                                         <div class="col-md-1 ">
-                                            <label>Start Month <div class="invalid-feedback" *ngIf="bgtEmployee.controls.month.errors?.required">*</div> </label>
+                                            <!-- <label>Start Month <div class="invalid-feedback" *ngIf="bgtEmployee.controls.month.errors?.required">*</div> </label> -->
+                                            <label>Start Month </label>
                                         </div>
                                         <div class="col-md-3 ">
                                             <select class="form-control" id="month" formControlName="month" (change)="validateMonth()" required>

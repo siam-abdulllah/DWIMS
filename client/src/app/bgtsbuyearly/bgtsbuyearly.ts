@@ -120,7 +120,7 @@ export class BgtSbuYearlyComponent implements OnInit {
         this.bugetSbuYearlyService.getAppAuthDetails(SbuCode, this.bugetSbuYearlyService.budgetSbuYearly.deptId).subscribe(response => {
           debugger;
           if (this.approvalAuthDetails == null || this.approvalAuthDetails.length == 0) {
-           
+
             this.approvalAuthDetails = response as IApprovalAuthDetails[];
             if (this.approvalAuthDetails.length > 0) {
               for (var i = 0; i < this.approvalAuthDetails.length; i++) {
@@ -162,8 +162,9 @@ export class BgtSbuYearlyComponent implements OnInit {
           if (this.bugetSbuYearlyService.budgetSbuYearly.deptId == 2) {
             this.bugetSbuYearlyService.getCampaignBgtDetails(SbuCode, this.bugetSbuYearlyService.budgetSbuYearly.deptId).subscribe(response => {
               this.campaignBgtDetails = response as ICampaignBgtDetails[];
-
-              this.allowcatedBudget = this.allowcatedBudget + this.campaignBgtDetails[0].amount;
+              if (this.campaignBgtDetails.length > 0) {
+                this.allowcatedBudget = this.allowcatedBudget + this.campaignBgtDetails[0].amount;
+              }
             }, error => {
               console.log(error);
             });
@@ -335,7 +336,7 @@ export class BgtSbuYearlyComponent implements OnInit {
         this.bgtSbuYearlyList = res as IBudgetSbuYearly[];
         this.bugetSbuYearlyService.getLayerCountByDept(this.bugetSbuYearlyService.budgetSbuYearly.deptId, this.bugetSbuYearlyService.budgetSbuYearly.compId, this.bugetSbuYearlyService.budgetSbuYearly.year).subscribe(
           res => {
-            var a=res as number;
+            var a = res as number;
             this.totalBudget = 0;
 
             if (this.bgtSbuYearlyList != null) {
@@ -447,17 +448,19 @@ export class BgtSbuYearlyComponent implements OnInit {
     }
     if (this.submitedApprovalAuthDetails.length == 0) {
       if (this.bugetSbuYearlyService.budgetSbuYearly.deptId == 2) {
-        if (this.campaignBgtDetails[0].newAmount == '' || this.campaignBgtDetails[0].newAmount == undefined) {
-          this.campaignBgtDetails[0].newAmount = 0;
-        }
-        if (this.campaignBgtDetails[0].amount != parseInt(this.campaignBgtDetails[0].newAmount) && this.campaignBgtDetails[0].newAmount != 0) {
-          this.saveCampaignBgtDetails();
-          return;
-        }
-        else {
-          this.toastr.warning('No new amount has entered!');
-          this.SpinnerService.hide();
-          return;
+        if (this.campaignBgtDetails.length > 0) {
+          if (this.campaignBgtDetails[0].newAmount == '' || this.campaignBgtDetails[0].newAmount == undefined) {
+            this.campaignBgtDetails[0].newAmount = 0;
+          }
+          if (this.campaignBgtDetails[0].amount != parseInt(this.campaignBgtDetails[0].newAmount) && this.campaignBgtDetails[0].newAmount != 0) {
+            this.saveCampaignBgtDetails();
+            return;
+          }
+          else {
+            this.toastr.warning('No new amount has entered!');
+            this.SpinnerService.hide();
+            return;
+          }
         }
       }
       else {
@@ -483,11 +486,15 @@ export class BgtSbuYearlyComponent implements OnInit {
       totalAllowcatedAuthbudget = totalAllowcatedAuthbudget + num3;
     }
     if (this.bugetSbuYearlyService.budgetSbuYearly.deptId == 2) {
-      if (this.campaignBgtDetails[0].newAmount == '' || this.campaignBgtDetails[0].newAmount == 0 || this.campaignBgtDetails[0].newAmount == undefined) {
-        totalAllowcatedAuthbudget = totalAllowcatedAuthbudget + parseInt(this.campaignBgtDetails[0].amount);
-      }
-      else {
-        totalAllowcatedAuthbudget = totalAllowcatedAuthbudget + parseInt(this.campaignBgtDetails[0].newAmount);
+      if (this.campaignBgtDetails.length > 0) {
+
+
+        if (this.campaignBgtDetails[0].newAmount == '' || this.campaignBgtDetails[0].newAmount == 0 || this.campaignBgtDetails[0].newAmount == undefined) {
+          totalAllowcatedAuthbudget = totalAllowcatedAuthbudget + parseInt(this.campaignBgtDetails[0].amount);
+        }
+        else {
+          totalAllowcatedAuthbudget = totalAllowcatedAuthbudget + parseInt(this.campaignBgtDetails[0].newAmount);
+        }
       }
     }
     if (totalAllowcatedAuthbudget > (this.sbuIndividualAmount)) {
@@ -505,8 +512,15 @@ export class BgtSbuYearlyComponent implements OnInit {
       res => {
         //this.bugetSbuYearlyService.budgetSbuYearly = res as IBudgetSbuYearly;
         if (this.bugetSbuYearlyService.budgetSbuYearly.deptId == 2) {
-          if (this.campaignBgtDetails[0].amount != parseInt(this.campaignBgtDetails[0].newAmount) && this.campaignBgtDetails[0].newAmount != 0) {
-            this.saveCampaignBgtDetails();
+          if (this.campaignBgtDetails.length > 0) {
+            if (this.campaignBgtDetails[0].amount != parseInt(this.campaignBgtDetails[0].newAmount) && this.campaignBgtDetails[0].newAmount != 0) {
+              this.saveCampaignBgtDetails();
+            }
+            else {
+              this.AuthDetailsModalRef.hide()
+              this.getApprovalAuth(this.SbuName, this.SbuCode, this.sbuIndividualAmount, this.expense)
+              this.toastr.success('Submitted successfully', 'Sbu Budget');
+            }
           }
           else {
             this.AuthDetailsModalRef.hide()

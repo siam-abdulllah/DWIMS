@@ -230,6 +230,7 @@ export class BgtEmployeeComponent implements OnInit {
   }
 
   generateData() {
+    debugger;
     if (this.bgtEmployee.value.month == "" || this.bgtEmployee.value.month == null) {
       this.toastr.error('Starting month needs to be selected');
       return;
@@ -254,14 +255,21 @@ export class BgtEmployeeComponent implements OnInit {
       return;
     }
 
-    if (this.bgtEmployee.value.deptId == 1 && this.bgtEmployee.value.authId == 8) {
+    if (this.bgtEmployee.value.deptId == 1 ) {
+      if(this.bgtEmployee.value.authId == 8 || this.bgtEmployee.value.authId == 15 ||  this.bgtEmployee.value.authId == 16 || this.bgtEmployee.value.authId == 17 || this.bgtEmployee.value.authId == 18)
+      {
       this.toastr.error('Wrong Department / Authorization Combination');
       return;
+      }
     }
 
-    if (this.bgtEmployee.value.deptId == 2 && this.bgtEmployee.value.authId != 8) {
+    if (this.bgtEmployee.value.deptId == 2) {
+      if(this.bgtEmployee.value.authId != 8 && this.bgtEmployee.value.authId != 15 &&  this.bgtEmployee.value.authId != 16 && this.bgtEmployee.value.authId != 17 && this.bgtEmployee.value.authId != 18)
+      {
       this.toastr.error('Wrong Department / Authorization Combination');
       return;
+      }
+     
     }
 
     this.donationTypeName = this.donations.filter(v => v.id == this.bgtEmployee.get('donationId').value)[0].donationTypeName;

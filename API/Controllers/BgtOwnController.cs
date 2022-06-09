@@ -78,7 +78,7 @@ namespace API.Controllers
                     " C.[RegionCode],C.[RegionName],C.[TerritoryCode],C.[TerritoryName],C.[MarketCode],C.[MarketName]," +
                     " C.[MarketGroupCode],C.[MarketGroupName],C.[DepotCode],C.[DepotName] " +
                     " FROM ApprovalAuthority A INNER JOIN ApprAuthConfig B ON A.Id = B.ApprovalAuthorityId INNER JOIN Employee C ON B.EmployeeId = C.Id" +
-                    " WHERE C.DataStatus=1 AND (A.ApprovalAuthorityName = 'GPM' OR A.Priority > 2)";
+                    " WHERE C.DataStatus=1 AND  A.ID NOT IN (1,2,9,10,11,13,15) AND B.Status = 'A'";
 
 
                 var results = _dbContext.Employee.FromSqlRaw(qry).ToList();
@@ -130,7 +130,8 @@ namespace API.Controllers
             {
                 string qry = "SELECT DISTINCT A.[Id], A.[DataStatus],A.[SetOn],A.[ModifiedOn],A.[ApprovalAuthorityName],A.[Remarks],A.[Status]," +
                     " A.[Priority],A.[CompId],A.[DeptId] FROM ApprovalAuthority A INNER JOIN ApprAuthConfig B ON A.Id = B.ApprovalAuthorityId INNER JOIN Employee C ON B.EmployeeId = C.Id" +
-                    " WHERE C.DataStatus=1 AND (A.ApprovalAuthorityName = 'GPM' OR A.Priority > 2) AND C.Id=" + employeeId;
+                    // " WHERE C.DataStatus=1 AND (A.ApprovalAuthorityName = 'GPM' OR A.Priority > 2) AND C.Id=" + employeeId;
+                    " WHERE C.DataStatus=1 AND B.Status='A' AND C.Id=" + employeeId;
 
 
                 var results = _dbContext.ApprovalAuthority.FromSqlRaw(qry).ToList();
@@ -194,14 +195,14 @@ namespace API.Controllers
                 //    "[DonationId],[Amount],[AmtLimit],[Segment],[Remarks],[EnteredBy]" +
                 //    " FROM BgtOwn WHERE [DataStatus]=1 AND [EmployeeId]=" + employeeId + " AND [SBU]='" + sbu + "' AND [CompId]=" + compId + " AND [DeptId]=" + deptId + " " +
                 //    " AND [Month]=Month(GETDATE()) AND [Year]=" + year;
-                string qry = "SELECT A.[Id] , A.[DataStatus] ,A.[SetOn] ,A.[ModifiedOn] ,A.[CompId] ,A.[DeptId] ,A.[Year] ,A.[Month] ,A.[SBU] " +
+                string qry = "SELECT  A.[Id] , A.[DataStatus] ,A.[SetOn] ,A.[ModifiedOn] ,A.[CompId] ,A.[DeptId] ,A.[Year] ,A.[Month] ,A.[SBU] " +
                   " ,A.[DonationId] ,A.[Amount] ,A.[AmtLimit] ,A.[Segment] ,A.[Remarks] ,A.[EnteredBy] ,A.[AuthId] ,A.[Code] ,A.[CompoCode] " +
                   ",(SELECT isnull(sum(ISNULL(C.[Amount], 0)), 0) FROM BgtOwn C WHERE C.SBU = A.SBU AND C.CompoCode = A.CompoCode" +
                   " AND C.DeptId = A.DeptId AND C.CompId = A.CompId AND C.AuthId = A.AuthId AND C.DataStatus = 1 AND C.DonationId = A.DonationId" +
                   " AND C.[Year] = A.[Year]) TotalAmount" +
                   " FROM BgtOwn A INNER JOIN EmpSbuMapping B ON A.Code = B.TagCode " +
                   " WHERE B.EmployeeId =" + employeeId + " AND B.SBU = '" + sbu + "'  AND B.DeptId = " + deptId + " " +
-                  " AND B.CompId = " + compId + " AND A.AuthId = " + authId + "  AND A.DataStatus = 1 " +
+                  " AND B.CompId = " + compId + " AND B.DataStatus=1 AND A.AuthId = " + authId + "  AND A.DataStatus = 1 " +
                   " AND ( A.Month = Month(GETDATE()) OR A.Month=0)  AND [Year]=" + year;
 
                 var results = _dbContext.BgtOwnTotal.FromSqlRaw(qry).ToList();
