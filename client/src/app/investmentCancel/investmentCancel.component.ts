@@ -655,17 +655,23 @@ export class InvestmentCancelComponent implements OnInit {
             debugger;
 
             //alert(message);
-            // if (message === "Deleted") { 
-            //   this.toastr.success('Removed Successfully'); 
-            // }
-            // else {
-            //   this.toastr.warning('Already disbursed');
-            // }
+             if (message === "Deleted") { 
+              this.toastr.success('Removed Successfully'); 
+             }
+            else {
+               this.toastr.warning('Already disbursed');
+             }
 
           },
           err => {
+            // if (err.error.message == 'Deleted') {
+            //   this.toastr.success('Deleted Successfully');
+            // }
+            // else {
+            //   this.toastr.warning(err.error.message);
+            // }
             this.SpinnerService.hide();
-            console.log(err);
+            //console.log(err.error.message);
           }
         );
       }

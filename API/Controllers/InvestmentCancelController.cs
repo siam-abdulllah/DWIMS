@@ -132,7 +132,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("cancelInv/{invId}/{empId}")]
+        [HttpPost("cancelInv/{invId}")]
         public IActionResult CancelInvestment(int invId, int empId)
         {
             try
@@ -147,7 +147,8 @@ namespace API.Controllers
                 var result = _db.Database.ExecuteSqlRaw("EXECUTE SP_InvCancel @InvID,@EID,@IPADD,@r OUTPUT", parms.ToArray());
                 // if (parms[3].Value.ToString() != "True")
                 // {
-                    return Ok(new ApiResponse(400, parms[3].Value.ToString()));
+                    //return BadRequest(new ApiResponse(400, parms[3].Value.ToString()));
+                    return Ok(parms[3].Value.ToString());
                 // }
 
                 // return Ok("Succsessfuly Deleted!!!");

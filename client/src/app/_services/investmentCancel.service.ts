@@ -170,7 +170,8 @@ export class InvestmentCancelService {
   }
 
   cancelInv(invId: number,empId:number) {
-    return this.http.get(this.baseUrl + 'InvestmentCancel/cancelInv/'+invId+'/'+empId);
+    return this.http.post(this.baseUrl + 'InvestmentCancel/cancelInv/'+invId,empId,
+    { responseType: 'text' });
   }
   isInvestmentDetailExist(id: number,empId:number) {
     //return this.http.post(this.baseUrl + 'reportInvestment/isInvestmentDetailExist/'+id+'/'+empId,
