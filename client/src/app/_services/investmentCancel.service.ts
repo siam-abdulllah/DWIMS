@@ -168,6 +168,10 @@ export class InvestmentCancelService {
   removeInvestmentDetail(id: number,empId:number) {
     return this.http.get(this.baseUrl + 'reportInvestment/removeInvestmentDetalTracker/'+id+'/'+empId);
   }
+
+  cancelInv(invId: number,empId:number) {
+    return this.http.get(this.baseUrl + 'InvestmentCancel/cancelInv/'+invId+'/'+empId);
+  }
   isInvestmentDetailExist(id: number,empId:number) {
     //return this.http.post(this.baseUrl + 'reportInvestment/isInvestmentDetailExist/'+id+'/'+empId,
     return this.http.post(this.baseUrl + 'reportInvestment/isInvestmentDetailExist',id,
