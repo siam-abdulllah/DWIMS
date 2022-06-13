@@ -84,6 +84,18 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input name="filterText" class="form-control m-input Searchbox" type="text" [(ngModel)]="searchText" placeholder="Search..">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button class="btn btn-danger" type="button" (click)="resetSearch()"><i class="fa fa-undo"></i>&nbsp; Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <table class="table">
                                     <thead style="background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #28b9da), color-stop(1, #f9fafc));">
                                         <tr class="HeaderRow">
@@ -97,7 +109,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let approvalAuthority of approvalAuthoritys">
+                                        <tr *ngFor="let approvalAuthority of approvalAuthoritys | filter: searchText ">
                                             <td>
                                                 {{approvalAuthority.approvalAuthorityName}}
                                             </td>

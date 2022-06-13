@@ -44,7 +44,9 @@ export class InvestmentFormService {
   getDepot() {
     return this.http.get(this.baseUrl + 'employee/depotForInvestment');
   }
-
+  getBrand(sbu:string){    
+    return this.http.get(this.baseUrl + 'product/getBrand/'+sbu);
+  }
   getSBU(){    
     return this.http.get(this.baseUrl + 'employee/getSBU');
   }

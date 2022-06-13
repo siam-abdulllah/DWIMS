@@ -105,23 +105,27 @@ namespace API.Controllers
         }
 
         [HttpGet("approvalAuthorities")]
-        public async Task<ActionResult<Pagination<ApprovalAuthorityToReturnDto>>> GetApprovalAuthorities(
-          [FromQuery] ApprovalAuthoritySpecParams approvalAuthorityParrams)
+        //public async Task<ActionResult<Pagination<ApprovalAuthorityToReturnDto>>> GetApprovalAuthorities(
+        //  [FromQuery] ApprovalAuthoritySpecParams approvalAuthorityParrams)
+        public async Task<IReadOnlyList<ApprovalAuthority>> GetApprovalAuthorities()
         {
             try
             {
-                var spec = new ApprovalAuthoritySpecification(approvalAuthorityParrams);
+                //var spec = new ApprovalAuthoritySpecification("Active");
 
-                var countSpec = new ApprovalAuthorityWithFiltersForCountSpecificication(approvalAuthorityParrams);
+                // //var countSpec = new ApprovalAuthorityWithFiltersForCountSpecificication(approvalAuthorityParrams);
 
-                var totalItems = await _approvalAuthorityRepo.CountAsync(countSpec);
+                //// var totalItems = await _approvalAuthorityRepo.CountAsync(countSpec);
 
-                var approvalAuthority = await _approvalAuthorityRepo.ListAsync(spec);
+                // var approvalAuthority = await _approvalAuthorityRepo.ListAsync(spec);
 
-                var data = _mapper.Map<IReadOnlyList<ApprovalAuthority>, IReadOnlyList<ApprovalAuthorityToReturnDto>>(approvalAuthority);
+                // var data = _mapper.Map<IReadOnlyList<ApprovalAuthority>, IReadOnlyList<ApprovalAuthorityToReturnDto>>(approvalAuthority);
 
-                return Ok(new Pagination<ApprovalAuthorityToReturnDto>(approvalAuthorityParrams.PageIndex, approvalAuthorityParrams.PageSize, totalItems, data));
-                 //var data = await _repository.GetDateWiseProformaInfos(searchDto);
+                // return Ok(new Pagination<ApprovalAuthorityToReturnDto>(approvalAuthorityParrams.PageIndex, approvalAuthorityParrams.PageSize, totalItems, data));
+                //  //var data = await _repository.GetDateWiseProformaInfos(searchDto);
+                var spec = new ApprovalAuthoritySpecification("Active");
+                var totalAmtValidityDto = await _approvalAuthorityRepo.ListAsync(spec);
+                return totalAmtValidityDto;
             }
             catch (System.Exception ex)
             {
@@ -131,7 +135,7 @@ namespace API.Controllers
         }
        
         [HttpGet("approvalAuthoritiesForConfig")]
-        public async Task<IReadOnlyList<ApprovalAuthority>> GetApprovalAuthorities()
+        public async Task<IReadOnlyList<ApprovalAuthority>> GetApprovalAuthoritiesForConfig()
         {
             try
             {

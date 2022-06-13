@@ -16,10 +16,12 @@ export class ApprovalAuthorityComponent implements OnInit {
   @ViewChild('search', {static: false}) 
   searchTerm!: ElementRef;
   genParams!: GenericParams;
+  searchText = '';
   approvalAuthoritys!: IApprovalAuthority[];
   //totalCount = 0;
   //priorities =Array.from(Array(100).keys());
-  priorities =Array.from({length: 100}, (_, i) => i + 1);
+  //priorities =Array.from({length: 100}, (_, i) => i + 1);
+  priorities =Array.from(Array(100).keys());
   constructor(public masterService: MasterService, private router: Router,
     private toastr: ToastrService
     ) { 
@@ -30,13 +32,15 @@ export class ApprovalAuthorityComponent implements OnInit {
     this.resetPage();
     this.getapprovalAuthority();
   }
+  resetSearch(){
+    this.searchText = '';
+}
   counter(i: number) {
     return new Array(i);
 }
   getapprovalAuthority(){
     this.masterService.getApprovalAuthority().subscribe(response => {
-      debugger;
-      this.approvalAuthoritys = response.data;
+      this.approvalAuthoritys = response as IApprovalAuthority[];
       //this.totalCount = response.count;
     }, error => {
         console.log(error);
@@ -53,7 +57,6 @@ export class ApprovalAuthorityComponent implements OnInit {
   insertapprovalAuthority(form: NgForm) {
     this.masterService.insertApprovalAuthority().subscribe(
       res => {
-        debugger;
         this.resetForm(form);
         this.getapprovalAuthority();
         this.toastr.success('Submitted successfully', 'Payment Detail Register')

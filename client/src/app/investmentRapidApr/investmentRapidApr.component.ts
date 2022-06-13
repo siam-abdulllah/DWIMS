@@ -112,14 +112,14 @@ export class InvestmentRapidAprComponent implements OnInit {
     private SpinnerService: NgxSpinnerService) { }
   ngOnInit() {
     this.convertedDate = this.datePipe.transform(this.today, 'dd/MM/YYYY');
-    this.getDonation()
-    this.getDepot()
+    this.getDonation();
+    this.getDepot();
     //this.getCampain()
-    this.getSBU() 
-    this.getEmployees()
-    this.getEmployeeId() 
-    this.getProduct()
-    this.getMedicineProds()
+    this.getSBU() ;
+    this.getEmployees();
+    this.getEmployeeId() ;
+    this.getProduct();
+    this.getMedicineProds();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-blue' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
     const currentDate = new Date();
@@ -128,9 +128,19 @@ export class InvestmentRapidAprComponent implements OnInit {
     this.investmentMedicineProds = [];
     this.investmentFormService.investmentMedicineProdFormData.medicineProduct = new MedicineProduct()
     this.investmentTargetedProds = [];
-   
     this.investmentFormService.investmentTargetedProdFormData.productInfo = new Product()
     this.investmentFormService.investmentFormData.proposalDateStr = this.convertedDate
+  }
+  resetPageLoad() {
+    this.investmentFormService.investmentFormData = new InvestmentForm();
+    this.subCampaignRapid = [];
+    this.investmentMedicineProds = [];
+    this.investmentTargetedProds =[];
+    this.donationName=''; 
+    this.isBudgetForCampaignVisible=false;
+    this.isBudgetVisible=false;
+    this.initiatorName='';
+    this.getEmployeeId() ;
   }
   customSearchFn(term: string, item: any) {
     term = term.toLocaleLowerCase();
@@ -146,10 +156,8 @@ export class InvestmentRapidAprComponent implements OnInit {
   }
   getCampain(subCampaignId:any) {
     this.investmentFormService.getRapidSubCampaigns(this.investmentFormService.investmentFormData.sbu).subscribe(response => {
-      debugger;
       this.subCampaignRapid = response as ISubCampaignRapid[];
       this.investmentFormService.investmentFormData.subCampaignId=subCampaignId;
-      debugger;
     }, error => {
       console.log(error);
     });
@@ -171,7 +179,6 @@ export class InvestmentRapidAprComponent implements OnInit {
   }
   ChangeSBU(){
     this.getProduct();
-    //this.getCampain();
     if(this.investmentFormService.investmentFormData.subCampaignId != 0)
     {
       this.investmentFormService.investmentFormData.subCampaignId  = 0;
@@ -180,11 +187,9 @@ export class InvestmentRapidAprComponent implements OnInit {
     }
   }
   getProduct() {
-    debugger;
     this.SpinnerService.show();
     this.investmentFormService.getProduct(this.investmentFormService.investmentFormData.sbu).subscribe(response => {
       this.products = response as IProduct[];
-
       this.SpinnerService.hide();
     }, error => {
       this.SpinnerService.hide();
@@ -205,29 +210,15 @@ export class InvestmentRapidAprComponent implements OnInit {
     var data =  this.investmentTargetedProds;
     if (data !== undefined && data.length>0) {
       this.investmentTargetedProds = data;
-      
     }
     else {
       this.investmentTargetedProds =[];
     }
-    
-  }
-  resetPageLoad() {
-
-    this.investmentFormService.investmentFormData = new InvestmentForm();
-    this.subCampaignRapid = [];
-    this.investmentMedicineProds = [];
-    this.investmentTargetedProds =[];
-    this.donationName=''; 
-    this.isBudgetForCampaignVisible=false;
-    this.isBudgetVisible=false;
-    this.initiatorName='';
   }
   resetSearch() {
     this.searchText = '';
   }
   selectInvestmentRapid(selectedRecord: IInvestmentForm) {
-    debugger;
     this.investmentFormService.investmentFormData = Object.assign({}, selectedRecord);
     this.donationName=selectedRecord.donationTypeName;
     if(selectedRecord.subCampaignId>0){
@@ -263,7 +254,6 @@ export class InvestmentRapidAprComponent implements OnInit {
     this.investmentFormService.getInitiatorName(selectedRecord.initiatorId).subscribe(response => {
     var data = response as Employee;
     this.initiatorName = data.employeeName;
-
     }, error => {
       console.log(error);
     });
@@ -271,15 +261,12 @@ export class InvestmentRapidAprComponent implements OnInit {
   }
   getEmployees(){
     this.investmentFormService.getEmployeesforrapid().subscribe(response => {
-      debugger;
       this.employees = response as IEmployee[];
-    //   this.totalCount = response.count;
      }, error => {
         console.log(error);
      });
   }
   confirmSubmission() {
-    debugger;
     this.openSubmissionConfirmModal(this.submissionConfirmModal);
   }
   confirmSubmit() {
@@ -327,7 +314,7 @@ export class InvestmentRapidAprComponent implements OnInit {
 
       let data = new InvestmentTargetedProd();
       let productData = new Product();
-      debugger;
+      
       for (let i = 0; i < this.campaignDtlProducts.length; i++) {
         data = new InvestmentTargetedProd();
         data.productId =this.campaignDtlProducts[i].productId;
@@ -352,11 +339,11 @@ export class InvestmentRapidAprComponent implements OnInit {
 
   }
   onChangeProduct() {
-    debugger;
+    
     if (this.medicineProducts !== undefined) {
       for (let i = 0; i < this.medicineProducts.length; i++) {
         if (this.medicineProducts[i].id === this.investmentFormService.investmentMedicineProdFormData.productId) {
-          debugger;
+          
 
           this.investmentFormService.investmentMedicineProdFormData.medicineProduct.productName = this.medicineProducts[i].productName;
           this.investmentFormService.investmentMedicineProdFormData.medicineProduct.unitTp = this.medicineProducts[i].unitTp;
@@ -371,11 +358,11 @@ export class InvestmentRapidAprComponent implements OnInit {
     
   }
   onChangeTargetedProduct() {
-    debugger;
+    
     if (this.products !== undefined) {
       for (let i = 0; i < this.products.length; i++) {
         if (this.products[i].id === this.investmentFormService.investmentTargetedProdFormData.productId) {
-          debugger;
+          
           this.investmentFormService.investmentTargetedProdFormData.productInfo.productName = this.products[i].productName;
           this.investmentFormService.investmentTargetedProdFormData.productInfo.productCode = this.products[i].productCode;
           this.investmentFormService.investmentTargetedProdFormData.productInfo.sbu = this.products[i].sbu;
@@ -400,10 +387,7 @@ export class InvestmentRapidAprComponent implements OnInit {
       this.investmentFormService.investmentFormData.chequeTitle = "";
     } 
   }
-
   insertInvestmentTargetedProd() {
-    
-
     if (this.investmentFormService.investmentTargetedProdFormData.productId == null || this.investmentFormService.investmentTargetedProdFormData.productId == undefined || this.investmentFormService.investmentTargetedProdFormData.productId == 0) {
       this.toastr.warning('Select Product First', 'Investment Product');
       return false;
@@ -446,10 +430,6 @@ export class InvestmentRapidAprComponent implements OnInit {
       return false;
     }
     else {
-
-      debugger;
- 
-
       this.investmentTargetedProds.push(data);
       this.isDonationValid = true;
       this.toastr.success('Save successfully', 'Targeted  Product');
@@ -487,7 +467,7 @@ export class InvestmentRapidAprComponent implements OnInit {
   }
   insertInvestmentMedicineProd() {
    
-    debugger;
+    
     if (this.investmentFormService.investmentMedicineProdFormData.productId == null || this.investmentFormService.investmentMedicineProdFormData.productId == undefined || this.investmentFormService.investmentMedicineProdFormData.productId == 0) {
       this.toastr.warning('Select Product First');
       return false;
@@ -511,7 +491,7 @@ export class InvestmentRapidAprComponent implements OnInit {
     medicineProductdata.unitTp =  this.investmentFormService.investmentMedicineProdFormData.medicineProduct.unitTp;
     medicineProductdata.unitVat =  this.investmentFormService.investmentMedicineProdFormData.medicineProduct.unitVat;
     medicineProductdata.sorgaCode =  this.investmentFormService.investmentMedicineProdFormData.medicineProduct.sorgaCode;
-    debugger;
+    
     data.tpVat =     (medicineProductdata.unitTp+ medicineProductdata.unitVat)*this.investmentFormService.investmentMedicineProdFormData.boxQuantity;
     data.medicineProduct = medicineProductdata;
     if (this.investmentMedicineProds !== undefined) {
@@ -531,7 +511,7 @@ export class InvestmentRapidAprComponent implements OnInit {
       this.investmentFormService.investmentMedicineProdFormData.investmentInitId = this.investmentFormService.investmentFormData.id;
       this.investmentFormService.investmentMedicineProdFormData.employeeId = parseInt(this.empId);
         this.SpinnerService.show();
-        debugger;
+        
  
 
         this.investmentMedicineProds.push(data);
@@ -558,7 +538,7 @@ export class InvestmentRapidAprComponent implements OnInit {
     if (c == true) {
       this.investmentFormService.investmentMedicineProdFormData = Object.assign({}, selectedRecord);
       this.SpinnerService.show();
-      debugger;
+      
       const index: number = this.investmentMedicineProds.indexOf(selectedRecord);
       if (index !== -1) {
           this.investmentMedicineProds.splice(index, 1);
@@ -572,7 +552,7 @@ export class InvestmentRapidAprComponent implements OnInit {
     if (c == true) {
       this.investmentFormService.investmentTargetedProdFormData = Object.assign({}, selectedRecord);
       this.SpinnerService.show();
-      debugger;
+      
       const index: number = this.investmentTargetedProds.indexOf(selectedRecord);
       if (index !== -1) {
           this.investmentTargetedProds.splice(index, 1);
@@ -582,9 +562,7 @@ export class InvestmentRapidAprComponent implements OnInit {
     }
   }
   getInvestmentMedicineProd() {
-    debugger;
     var data =  this.investmentMedicineProds;
-
     if (data !== undefined && data.length>0) {
       this.investmentMedicineProds = data;
       let sum=0;
@@ -603,13 +581,13 @@ export class InvestmentRapidAprComponent implements OnInit {
     this.InvestmentInitSearchModalRef = this.modalService.show(template, this.config);
   }
   getInvestmentRapid(For:string) {
-    debugger;
+    
     const params = this.investmentFormService.getGenParams();
     this.SpinnerService.show();
     this.investmentFormService.getInvestmentRapids(parseInt(this.empId),"appr",For).subscribe(response => {
       this.SpinnerService.hide();
       this.investmentForms = response as IInvestmentForm[];
-     debugger;
+     
       if (this.investmentForms.length > 0) {
           this.openInvestmentInitSearchModal(this.investmentInitSearchModal);
       }
@@ -621,8 +599,7 @@ export class InvestmentRapidAprComponent implements OnInit {
       console.log(error);
     });
   }
-  submitInvestmentForm() {
-    debugger;
+  submitInvestmentForm() { 
     if(this.investmentFormService.investmentFormData.paymentMethod == 'Cash' && this.investmentFormService.investmentFormData.depotCode == null )
     {
       this.toastr.warning('Depot is required!');
@@ -678,7 +655,6 @@ export class InvestmentRapidAprComponent implements OnInit {
     {
       
     }
-      
       this.SpinnerService.show();
       this.investmentFormService.investmentFormData.investmentMedicineProd = this.investmentMedicineProds;
       this.investmentFormService.investmentFormData.investmentRecProducts = this.investmentTargetedProds;
@@ -689,14 +665,14 @@ export class InvestmentRapidAprComponent implements OnInit {
         }
       }
       for (let i = 0; i < this.subCampaignRapid.length; i++) {
-        debugger;
+        
         if (this.subCampaignRapid[i].subCampId == this.investmentFormService.investmentFormData.subCampaignId) {
           this.investmentFormService.investmentFormData.subCampaignName = this.subCampaignRapid[i].subCampaignName;
           break;
         }
       }
       for (let i = 0; i < this.SBUs.length; i++) {
-        debugger;
+        
         if (this.SBUs[i].sbuCode == this.investmentFormService.investmentFormData.sbu) {
           this.investmentFormService.investmentFormData.sbuName = this.SBUs[i].sbuName;
           break;
@@ -713,8 +689,6 @@ export class InvestmentRapidAprComponent implements OnInit {
        
         }
       );
-    
-    
   }
   openSubmissionConfirmModal(template: TemplateRef<any>) {
     this.submissionConfirmRef = this.modalService.show(template, {

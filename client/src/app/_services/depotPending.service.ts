@@ -35,17 +35,12 @@ export class DepotPendingService {
    setGenParams(genParams: GenericParams) {
     this.genParams = genParams;
   }
-
   getPendingReport(empId:number,userRole:string){    
     return this.http.get(this.baseUrl + 'depotPrinting/pendingForPrint/'+ empId+'/'+userRole);
   }
-
   getRptDepotLetter(initId:any) {
     return this.http.get(this.baseUrl+ 'reportInvestment/rptInvestDepo/'+initId);
   }
-
-
-  
   getPendingChequeReport(empId:number){    
     return this.http.get(this.baseUrl + 'depotPrinting/pendingChqForPrint/'+ empId);
   }

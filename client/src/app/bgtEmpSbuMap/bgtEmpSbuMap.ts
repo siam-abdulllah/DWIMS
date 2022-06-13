@@ -7,6 +7,7 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from "rxjs/internal/Observable";
 import { AccountService } from "../account/account.service";
+import { IApprovalAuthority } from "../shared/models/approvalAuthority";
 import { BudgetEmpSbuMap, IBudgetEmpSbuMap } from "../shared/models/BudgetEmpSbuMap";
 import { BudgetYearly, IBudgetYearly } from "../shared/models/budgetyearly";
 import { IEmployee } from "../shared/models/employee";
@@ -29,6 +30,7 @@ export class BgtEmpSbuMapComponent implements OnInit {
   @ViewChild('submissionConfirmModal', { static: false }) submissionConfirmModal: TemplateRef<any>;
   submissionConfirmRef: BsModalRef;
   BudgetYearlySearchModalRef: BsModalRef;
+  approvalAuthorities: IApprovalAuthority[];
   bsValue: Date = new Date();
   today = new Date();
   serials = Array.from({ length: 100 }, (_, i) => i + 1);
@@ -56,8 +58,9 @@ export class BgtEmpSbuMapComponent implements OnInit {
     private SpinnerService: NgxSpinnerService) { }
   ngOnInit() {
     // this.getEmployeeId()
-    this.getEmployees()
-    this.getSBU()
+    this.getEmployees();
+    this.getSBU();
+    this.getApprovalAuthority();
   }
   customSearchFnEmp(term: string, item: any) {
     term = term.toLocaleLowerCase();
@@ -72,6 +75,13 @@ export class BgtEmpSbuMapComponent implements OnInit {
     }, error => {
       console.log(error);
     });
+  }
+  getApprovalAuthority(){
+    this.budgetEmpSbuMapService.getApprovalAuthority().subscribe(response => {
+      this.approvalAuthorities = response as IApprovalAuthority[];
+     }, error => {
+        console.log(error);
+     });
   }
   getSBU() {
     this.budgetEmpSbuMapService.getSBU().subscribe(response => {
@@ -110,7 +120,25 @@ export class BgtEmpSbuMapComponent implements OnInit {
       ignoreBackdropClick: true
     });
   }
-
+  onChangeEmployee() {
+    this.budgetEmpSbuMapService.getEmpWiseData(this.budgetEmpSbuMapService.budgetSbuMap.employeeId).subscribe(response => {
+      var data = response as IApprovalAuthority[];
+      this.budgetEmpSbuMapService.budgetSbuMap.approvalAuthorityId= data[0].id;
+      this.budgetEmpSbuMapService.getEmpSbuMappingListByEmp(this.budgetEmpSbuMapService.budgetSbuMap.employeeId,this.budgetEmpSbuMapService.budgetSbuMap.approvalAuthorityId,this.budgetEmpSbuMapService.budgetSbuMap.sbu,this.budgetEmpSbuMapService.budgetSbuMap.deptId).subscribe(response => {
+        var data = response as IBudgetEmpSbuMap[];
+        if (data !== undefined) {
+          this.budgetSbuMapList = data;
+        }
+      }, error => {
+        console.log(error);
+      });
+    }, error => {
+      console.log(error);
+    });
+   
+    
+    
+  }
 
   resetPageLoad() {
     this.budgetEmpSbuMapService.budgetSbuMap = new BudgetEmpSbuMap();

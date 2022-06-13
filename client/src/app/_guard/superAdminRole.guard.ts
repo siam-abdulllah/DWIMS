@@ -40,6 +40,7 @@ export class SuperAdminRoleGuard implements CanActivate {
           // console.log(this.loginService.getUserRole());
           return true;
       }
+
       this.toastr.error('UnAuthorized Access!!!');
       this.router.navigate(['login']);
       return false;

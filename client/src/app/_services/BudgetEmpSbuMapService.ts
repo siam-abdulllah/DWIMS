@@ -24,32 +24,41 @@ export class BudgetEmpSbuMapervice {
   genParams = new GenericParams();
 
   constructor(private http: HttpClient, private router: Router) { }
-
+  getEmpWiseData(employeeId: any ){    
+    return this.http.get(this.baseUrl + 'bgtOwn/getEmpWiseData/'+employeeId);
+  }
+  getEmpSbuMappingListByEmp(empId: any,authId: any,sbu:any,deptId ){    
+    return this.http.get(this.baseUrl + 'bgtOwn/getEmpSbuMappingListByEmp/'+empId+'/'+authId+'/'+sbu+'/'+deptId);
+  }
   getEmployees(){    
     return this.http.get(this.baseUrl + 'employee/employeesForSbuMapping');
+  }
+  getApprovalAuthority(){    
+    return this.http.get(this.baseUrl + 'approvalAuthority/approvalAuthoritiesForConfig');
+   
   }
   getSBU(){    
     return this.http.get(this.baseUrl + 'employee/getSBU');
   }
 
   getEmpSbuMappingListByDept(deptId:number) {
-    return this.http.get(this.baseUrl + 'employee/getEmpSbuMappingListByDept/'+deptId);
+    return this.http.get(this.baseUrl + 'empSbuMap/getEmpSbuMappingListByDept/'+deptId);
   }
   getEmpSbuMappingListBySbu(sbu:string) {
-    return this.http.get(this.baseUrl + 'employee/getEmpSbuMappingListBySbu/'+sbu);
+    return this.http.get(this.baseUrl + 'empSbuMap/getEmpSbuMappingListBySbu/'+sbu);
   }
   getEmpSbuMappingList(deptId:number,sbu:string) {
-    return this.http.get(this.baseUrl + 'employee/getEmpSbuMappingList/'+deptId+'/'+sbu);
+    return this.http.get(this.baseUrl + 'empSbuMap/getEmpSbuMappingList/'+deptId+'/'+sbu);
   }
   removeEmpSbuMapping(selectedRecord:BudgetEmpSbuMap) {
-    return this.http.post(this.baseUrl + 'employee/removeEmpSbuMapping', selectedRecord,
+    return this.http.post(this.baseUrl + 'empSbuMap/removeEmpSbuMapping', selectedRecord,
       { responseType: 'text' });
 
   }
   
   SaveEmpSbuMapping() {
     debugger;
-    return this.http.post(this.baseUrl + 'employee/SaveEmpSbuMapping', this.budgetSbuMap);
+    return this.http.post(this.baseUrl + 'empSbuMap/SaveEmpSbuMapping', this.budgetSbuMap);
   }
  
   

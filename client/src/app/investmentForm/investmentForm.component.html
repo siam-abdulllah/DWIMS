@@ -284,6 +284,15 @@
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-2">
+                                            <label>Brand</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="form-control " id="brandCode" name="brandCode" [(ngModel)]="brandCode">
+                                                <option  [ngValue]="null">Select Brand</option>
+                                                <option *ngFor="let brand of brands" [value]="brand.brandCode">{{brand.brandName}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-1">
                                             <label>Product</label>
                                         </div>
                                         <div class="col-md-3">
@@ -291,7 +300,6 @@
                                                 [class.invalid]="productId.invalid && productId.touched">
                                             </ng-select>
                                         </div>
-                                        <div class="col-md-3"></div>
                                         <div class="col-md-2">
                                             <button class="btn btn-primary btn-lg btn-block" type="button" (click)="insertInvestmentTargetedProd()"><i class="fa fa-plus"></i>&nbsp; Add</button>
                                         </div>

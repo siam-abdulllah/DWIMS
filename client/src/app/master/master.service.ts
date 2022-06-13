@@ -260,23 +260,23 @@ updateDonation() {
 
 
 getApprovalAuthority(){    
-  let params = new HttpParams();
+  // let params = new HttpParams();
   
-  if (this.genParams.search) {
-    params = params.append('search', this.genParams.search);
-  }
-  params = params.append('sort', this.genParams.sort);
-  params = params.append('pageIndex', this.genParams.pageIndex.toString());
-  params = params.append('pageSize', this.genParams.pageSize.toString());
-
-  return this.http.get<IApprovalAuthorityPagination>(this.baseUrl + 'ApprovalAuthority/approvalAuthorities', { observe: 'response', params })
-  .pipe(
-    map(response => {
-      this.approvalAuthoritys = [...this.approvalAuthoritys, ...response.body.data]; 
-      this.approvalAuthorityPagination = response.body;
-      return this.approvalAuthorityPagination;
-    })
-  );
+  // if (this.genParams.search) {
+  //   params = params.append('search', this.genParams.search);
+  // }
+  // params = params.append('sort', this.genParams.sort);
+  // params = params.append('pageIndex', this.genParams.pageIndex.toString());
+  // params = params.append('pageSize', this.genParams.pageSize.toString());
+  return this.http.get(this.baseUrl+ 'ApprovalAuthority/approvalAuthorities',);
+  // return this.http.get<IApprovalAuthorityPagination>(this.baseUrl + 'ApprovalAuthority/approvalAuthorities', { observe: 'response', params })
+  // .pipe(
+  //   map(response => {
+  //     this.approvalAuthoritys = [...this.approvalAuthoritys, ...response.body.data]; 
+  //     this.approvalAuthorityPagination = response.body;
+  //     return this.approvalAuthorityPagination;
+  //   })
+  // );
   
 }
 insertApprovalAuthority() {

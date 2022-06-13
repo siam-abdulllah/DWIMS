@@ -16,6 +16,7 @@ export interface IBudgetEmpSbuMap {
     sbu:string; 
     tagCode:string;
     serial: number;
+    approvalAuthorityId: number;
 }
  
 export class BudgetEmpSbuMap implements IBudgetEmpSbuMap {
@@ -29,6 +30,7 @@ export class BudgetEmpSbuMap implements IBudgetEmpSbuMap {
     sbu:string=null;
     tagCode:string=null;
     serial: number=0;
+    approvalAuthorityId: number;
 }
 
 

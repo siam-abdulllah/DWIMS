@@ -45,6 +45,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
+       
         [HttpGet("employeesForSbuMapping")]
         public async Task<IReadOnlyList<Employee>> GetEmployeesForSbuMapping()
         {
@@ -58,6 +59,7 @@ namespace API.Controllers
                 throw ex;
             }
         }
+   
         [HttpGet("getEmployeesCampaign")]
         public async Task<IReadOnlyList<Employee>> GetgetEmployeesCampaign()
         {
@@ -451,129 +453,6 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost("SaveEmpSbuMapping")]
-        public ActionResult<EmpSbuMappingDto> SaveEmpSbuMapping(EmpSbuMappingDto empSbuMappingDto)
-        {
-            //#region Updating existing Entry
-            var qry = string.Format(@"select * from EmpSbuMapping where EmployeeId = {0}
-                                    and SBU = {1} and Serial = {1} and DataStatus=1", 
-                                    empSbuMappingDto.EmployeeId, empSbuMappingDto.SBU, empSbuMappingDto.Serial);
-
-            List<EmpSbuMapping> existingRecord = _db.ExecSQL<EmpSbuMapping>(qry).ToList();
-            var empMapping = new EmpSbuMapping();
-            if (existingRecord == null || existingRecord.Count == 0)
-            {
-                #region Insert New Budget
-                //string bgtYear = setBgtDto.Year.ToString("yyyy");
-                empMapping = new EmpSbuMapping
-                {
-                    CompId = empSbuMappingDto.CompId,
-                    SBU = empSbuMappingDto.SBU,
-                    SBUName = empSbuMappingDto.SBUName,
-                    DeptId = empSbuMappingDto.DeptId,
-                    SetOn = DateTimeOffset.Now,
-                    ModifiedOn = DateTimeOffset.Now,
-                    DataStatus = 1,
-                    EmployeeId = empSbuMappingDto.EmployeeId,
-                    TagCode = empSbuMappingDto.SBUName + empSbuMappingDto.Serial,
-                    Serial = empSbuMappingDto.Serial,
-
-                };
-
-                _empSbuMappingRepo.Add(empMapping);
-                _empSbuMappingRepo.Savechange();
-                #endregion
-          
-            }
-            return new EmpSbuMappingDto
-            {
-                Id = empMapping.Id,
-                DeptId = empMapping.DeptId,
-                EmployeeId = empMapping.EmployeeId,
-                SBU = empMapping.SBU,
-                CompId = empMapping.CompId
-
-            };
-        }
-        [HttpPost("removeEmpSbuMapping")]
-        public async Task<IActionResult> RemoveEmpSbuMappingAsync(EmpSbuMappingDto empSbuMappingDto)
-        {
-            #region Updating existing Entry
-            try
-            {
-                var empSbuMapping = await _empSbuMappingRepo.GetByIdAsync(empSbuMappingDto.Id);
-                if (empSbuMapping != null)
-                {
-                    empSbuMapping.DataStatus = 0;
-
-                    _empSbuMappingRepo.Update(empSbuMapping);
-                    _empSbuMappingRepo.Savechange();
-                    return Ok("Succsessfuly Deleted!!!");
-                }
-                return NotFound();
-            }
-            catch(Exception ex)
-            {
-                throw ex;
-            }
-            #endregion
-     
-        }
-       
-        [HttpGet]
-        [Route("getEmpSbuMappingList/{deptID}/{sbu}")]
-        public IReadOnlyList<EmpSbuMappingVM> GetEmpSbuMappingList(int deptID,string sbu)
-        {
-            try
-            {
-                 var qry = string.Format(@" select em.*,emp.EmployeeName from EmpSbuMapping em
-                                            left join employee emp on emp.Id = em.EmployeeId
-                                            where em.DeptId={0} and em.SBU={1} and em.DataStatus=1", deptID,sbu);
-
-                List<EmpSbuMappingVM> dsResult = _db.ExecSQL<EmpSbuMappingVM>(qry).ToList();
-                return dsResult;
-            }
-            catch (System.Exception ex)
-            {
-                throw ex;
-            }
-        }
-       
-        [HttpGet]
-        [Route("getEmpSbuMappingListBySbu/{sbu}")]
-        public IReadOnlyList<EmpSbuMappingVM> GetEmpSbuMappingListBySbu(string sbu)
-        {
-            try
-            {
-                var qry = string.Format(@" select em.*,emp.EmployeeName from EmpSbuMapping em
-                                            left join employee emp on emp.Id = em.EmployeeId
-                                            where em.SBU={0} and em.DataStatus=1", sbu);
-
-                List<EmpSbuMappingVM> dsResult = _db.ExecSQL<EmpSbuMappingVM>(qry).ToList();
-                return dsResult;
-            }
-            catch (System.Exception ex)
-            {
-                throw ex;
-            }
-        }
-        [HttpGet]
-        [Route("getEmpSbuMappingListByDept/{deptID}")]
-        public IReadOnlyList<EmpSbuMappingVM> GetEmpSbuMappingListByDept(int deptID)
-        {
-            try
-            {
-                 var qry = string.Format(@" select em.*,emp.EmployeeName from EmpSbuMapping em
-                                            left join employee emp on emp.Id = em.EmployeeId
-                                            where em.DeptId={0} and em.DataStatus=1", deptID);
-
-                List<EmpSbuMappingVM> dsResult = _db.ExecSQL<EmpSbuMappingVM>(qry).ToList();
-                return dsResult;
-            }
-            catch (System.Exception ex)
-            {
-                throw ex;
-            }
-        }
+        
     }
 }

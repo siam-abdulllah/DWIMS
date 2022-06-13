@@ -35,6 +35,7 @@ namespace API.Controllers
         private readonly IGenericRepository<ApprovalAuthority> _approvalAuthorityRepo;
         private readonly IMapper _mapper;
         private readonly StoreContext _dbContext;
+        private readonly IGenericRepository<ApprAuthConfig> _apprAuthConfigRepo;
 
 
         public InvestmentRapidController(IMapper mapper, IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<InvestmentRapid> investmentRapidRepo,
@@ -42,7 +43,8 @@ namespace API.Controllers
         IGenericRepository<MedicineProduct> medicineProductRepo, IGenericRepository<InvestmentRecDepot> investmentRecDepotRepo, IGenericRepository<InvestmentMedicineProd> investmentMedicineProdRepo,
         IGenericRepository<InvestmentCampaign> investmentCampaignRepo, IGenericRepository<InvestmentRecProducts> investmentRecProductsRepo, IGenericRepository<InvestmentRecComment> investmentRecCommentRepo,
         IGenericRepository<ProductInfo> productInfoRepo, IGenericRepository<ApprAuthConfig> appAuthConfigRepo, IGenericRepository<Employee> employeeRepo,
-        IGenericRepository<ApprovalAuthority> approvalAuthorityRepo, IGenericRepository<InvestmentRec> investmentRecRepo, StoreContext dbContext)
+        IGenericRepository<ApprovalAuthority> approvalAuthorityRepo, IGenericRepository<InvestmentRec> investmentRecRepo, StoreContext dbContext,
+            IGenericRepository<ApprAuthConfig> apprAuthConfigRepo)
         {
             _mapper = mapper;
             _investmentCampaignRepo = investmentCampaignRepo;
@@ -61,6 +63,7 @@ namespace API.Controllers
             _approvalAuthorityRepo = approvalAuthorityRepo;
             _appAuthConfigRepo = appAuthConfigRepo;
             _investmentRecRepo = investmentRecRepo;
+            _apprAuthConfigRepo = apprAuthConfigRepo;
         }
 
         [HttpPost("saveInvestmentRapid")]
@@ -81,7 +84,22 @@ namespace API.Controllers
                 InvestmentRapidAppr invRapidApr = new InvestmentRapidAppr();
                 investmentForm = await _investmentRapidRepo.GetByIdAsync(investmentRapidDto.Id);
 
-
+                #region Get Auth Id
+                //int ApprovedBy = investmentRapidDto.ApprovalAuthId;
+                //authConfig = new ApprAuthConfigSpecification(ApprovedBy, "A");
+                var spec = new ApprAuthConfigSpecification(ApprovedBy, "A");
+                 authConfig = await _apprAuthConfigRepo.GetEntityWithSpec(spec);
+                //if (authConfig != null)
+                //{
+                // appAuth = await _approvalAuthorityRepo.GetByIdAsync(authConfig.ApprovalAuthorityId);
+                // investmentRapidDto.ApprovalAuthId = appAuth.Id;
+                //}
+                if (authConfig == null)
+                {
+                    investmentRapidDto.ApprovalAuthId = 0;
+                }
+                emp = await _employeeRepo.GetByIdAsync(ApprovedBy);
+                #endregion
 
                 #region Investment Rapid Approved
                 //InvestmentRapidAppr invRapidApr = new InvestmentRapidAppr();
@@ -197,7 +215,7 @@ namespace API.Controllers
                     }
                     #region Insert Into Rec Comment
 
-                    emp = await _employeeRepo.GetByIdAsync(ApprovedBy);
+                   
                     var investmentRecCmntSpec = new InvestmentRecCommentSpecification((int)investmentForm.InvestmentInitId, emp.Id);
                     var investmentRecCmnts = await _investmentRecCommentRepo.ListAsync(investmentRecCmntSpec);
                     if (investmentRecCmnts.Count > 0)
@@ -231,7 +249,8 @@ namespace API.Controllers
                         Comments = investmentForm.Remarks,
                         RecStatus = investmentRapidDto.ApprovedStatus,
                         CompletionStatus = complitionStatus,
-                        Priority = appAuth.Priority,
+                       // Priority = appAuth.Priority,
+                        Priority = authConfig.ApprovalAuthority.Priority,
                         EmployeeId = emp.Id,
                         SetOn = DateTime.Now
 
@@ -267,7 +286,8 @@ namespace API.Controllers
                         PaymentMethod = investmentForm.PaymentMethod,
                         ChequeTitle = investmentForm.ChequeTitle,
                         EmployeeId = emp.Id,
-                        Priority = appAuth.Priority,
+                        //Priority = appAuth.Priority,
+                        Priority = authConfig.ApprovalAuthority.Priority,
                         CompletionStatus = true,
                         SetOn = DateTimeOffset.Now
                     };
@@ -403,20 +423,7 @@ namespace API.Controllers
                     investmentForm = _mapper.Map<InvestmentRapid>(investmentRapidDto);
                     _investmentRapidRepo.Add(investmentForm);
                     _investmentRapidRepo.Savechange();
-                    #region Get Auth Id
-                    //int ApprovedBy = investmentRapidDto.ApprovalAuthId;
-                    authConfig = await _appAuthConfigRepo.GetByIdAsync(investmentRapidDto.ApprovalAuthId);
-                    if (authConfig != null)
-                    {
-                        appAuth = await _approvalAuthorityRepo.GetByIdAsync(authConfig.ApprovalAuthorityId);
-                        investmentRapidDto.ApprovalAuthId = appAuth.Id;
-                    }
-                    else
-                    {
-                        investmentRapidDto.ApprovalAuthId = 0;
-                    }
-
-                    #endregion
+                    
                     invRapidApr = new InvestmentRapidAppr();
                     invRapidApr.InvestmentInitId = investmentInit.Id;
                     invRapidApr.InvestmentRapidId = investmentForm.Id;
