@@ -706,6 +706,7 @@ namespace API.Controllers
                 string qry = "";
                 if (from == "init")
                 {
+
                     qry = string.Format(@" Select  IR.*,IRA.ApprovedBy ApprovalAuthId,d.DonationTypeName,IRA.ApprovedStatus,IRA.ApprovalRemarks as Approval  from InvestmentRapid IR 
                                         left join Donation d on IR.Type = d.Id
                                         left join InvestmentRapidAppr IRA on IR.Id = IRA.InvestmentRapidId
