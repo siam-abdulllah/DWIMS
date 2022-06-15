@@ -13,9 +13,7 @@ import { DatePipe, getLocaleDateTimeFormat } from '@angular/common';
 import { BgtOwnService } from '../_services/bgtOwn.service';
 import { IApprovalAuthority } from '../shared/models/approvalAuthority';
 import { ISBU } from '../shared/models/sbu';
-import { DATE } from 'ngx-bootstrap/chronos/units/constants';
 import { IEmployeeInfo } from '../shared/models/employeeInfo';
-import { IEmployee } from '../shared/models/employee';
 import { IDonation } from '../shared/models/donation';
 import { BDCurrencyPipe } from '../bdNumberPipe';
 
