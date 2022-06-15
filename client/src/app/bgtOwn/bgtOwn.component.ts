@@ -17,6 +17,7 @@ import { DATE } from 'ngx-bootstrap/chronos/units/constants';
 import { IEmployeeInfo } from '../shared/models/employeeInfo';
 import { IEmployee } from '../shared/models/employee';
 import { IDonation } from '../shared/models/donation';
+import { BDCurrencyPipe } from '../bdNumberPipe';
 
 @Component({
   selector: 'bgtOwn',
@@ -51,7 +52,7 @@ export class BgtOwnComponent implements OnInit {
   isAdmin: boolean = false;
   isEdit: boolean = true;
   isView: boolean = true;
-  constructor(public bgtService: BgtOwnService, private SpinnerService: NgxSpinnerService, private modalService: BsModalService, private accountService: AccountService,
+  constructor(public bgtService: BgtOwnService,public BDCurrency: BDCurrencyPipe, private SpinnerService: NgxSpinnerService, private modalService: BsModalService, private accountService: AccountService,
     private router: Router, private toastr: ToastrService, private datePipe: DatePipe,) {
   }
   createbgtOwnForm() {

@@ -171,10 +171,10 @@
                                     <tr *ngFor="let a of sbuData; let index = index">
                                         <td>{{a.sbu}}</td>
                                         <td>
-                                            {{a.sbuAmount | number}}
+                                            {{a.sbuAmount | BDCurrency}}
                                         </td>
                                         <td>
-                                            {{a.expense | number}}
+                                            {{a.expense | BDCurrency}}
                                         </td>
                                         <td>
                                             {{a.approvalAuthorityName}}
@@ -190,13 +190,13 @@
                                             {{a.donationId}}
                                         </td>
                                         <td>
-                                            {{a.totalAllocated | number}}
+                                            {{a.totalAllocated | BDCurrency}}
                                         </td>
                                         <td>
                                             {{donationTypeName}}
                                         </td>
                                         <td>
-                                            {{a.donationTypeAllocated| number}}
+                                            {{a.donationTypeAllocated| BDCurrency}}
                                         </td>
                                         <!-- <td>
                                             <input class="form-control" type="text" placeholder="Amount" name="{{a.amount}}" (change)="getTotal(a)" formControlName="grdAmount" id="sbuData" name="sbuData{{index}}" [(ngModel)]="sbuData[index].amount">
@@ -215,7 +215,7 @@
                                             {{bgtEmployee.controls.segment.value}}
                                         </td>
                                         <td>
-                                            {{a.ttlAmt | number}}
+                                            {{a.ttlAmt | BDCurrency}}
                                         </td>
                                     </tr>
                                 </table>

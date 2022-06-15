@@ -10,7 +10,7 @@ import { ApprovalAuthDetails, BudgetSbuYearly, BudgetYearly, CampaignBgtDetails,
 import { IEmployeeInfo } from "../shared/models/employeeInfo";
 import { ISBU } from "../shared/models/sbu";
 import { BudgetSbuYearlyService } from "../_services/budgetSbuYearly.service";
-
+import { BDCurrencyPipe } from '../bdNumberPipe';
 
 
 @Component({
@@ -64,7 +64,7 @@ export class BgtSbuYearlyComponent implements OnInit {
     ignoreBackdropClick: true
   };
   institutionType: string;
-  constructor(private accountService: AccountService, private router: Router, public bugetSbuYearlyService: BudgetSbuYearlyService, private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe,
+  constructor(private accountService: AccountService, public BDCurrency: BDCurrencyPipe, private router: Router, public bugetSbuYearlyService: BudgetSbuYearlyService, private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe,
     private SpinnerService: NgxSpinnerService) { }
   ngOnInit() {
     this.resetPageLoad();

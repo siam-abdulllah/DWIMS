@@ -102,23 +102,23 @@
                                             {{a.sbuName}}
                                         </td>
                                         <td>
-                                            {{a.sbuAmount | number: '1.0-0'}}
+                                            {{a.sbuAmount | BDCurrency}}
                                         </td>
                                         <td>
                                             {{a.noOfLayer}}
                                         </td>
                                         <td>
-                                            {{a.expense | number: '1.0-0'}}
+                                            {{a.expense | BDCurrency}}
                                         </td>
                                         <td>
-                                            {{a.totalAlowcated | number: '1.0-0'}}
+                                            {{a.totalAlowcated | BDCurrency}}
                                         </td>
                                         <td>
-                                            {{a.pipeLine | number: '1.0-0'}}
+                                            {{a.pipeLine | BDCurrency}}
                                         </td>
 
                                         <td>
-                                            {{a.remaining | number: '1.0-0'}}
+                                            {{a.remaining | BDCurrency}}
                                         </td>
                                         <td>
                                             <input class="form-control ng-valid ng-touched ng-dirty" type="text" placeholder="New Amount" name="{{a.newAmount}}" id="sbuDetails" name="sbuDetails{{index}}" #newAmount="ngModel" [(ngModel)]="sbuDetails[index].newAmount" [disabled]="bugetSbuYearlyService.budgetSbuYearly.year != this.yyyy">
@@ -163,10 +163,10 @@
                     <div class="col-md-12">
                         <div class="col-md-4">
                             <h6>Sbu: {{SbuName}}</h6>
-                            <h6>Total Budget: {{sbuIndividualAmount | number: '1.0-0'}}</h6>
-                            <h6>Allocated Budget: {{allowcatedBudget | number: '1.0-0'}}</h6>
-                            <h6>Total Expense: {{expense | number: '1.0-0'}}</h6>
-                            <h6>Remaining Budget: {{sbuIndividualAmount -allowcatedBudget | number: '1.0-0'}}</h6>
+                            <h6>Total Budget: {{sbuIndividualAmount | BDCurrency}}</h6>
+                            <h6>Allocated Budget: {{allowcatedBudget | BDCurrency}}</h6>
+                            <h6>Total Expense: {{expense | BDCurrency}}</h6>
+                            <h6>Remaining Budget: {{sbuIndividualAmount -allowcatedBudget | BDCurrency}}</h6>
                         </div>
                         <div class="col-md-2" style="float:right; margin-bottom: 10px;">
                             <button class="btn btn-success btn-lg btn-block" (click)="saveAuthSbuDetails()"><i class="fa fa-save"></i>&nbsp; Save</button>
@@ -197,9 +197,9 @@
                                         <td>{{a.authority}}</td>
                                         <td>{{a.noOfEmployee}}</td>
                                         <td>{{a.noOfLoc}}</td>
-                                        <td>{{a.amount | number: '1.0-0'}}</td>
-                                        <td>{{a.expense | number: '1.0-0'}}</td>
-                                        <td>{{a.amount - a.expense | number: '1.0-0'}}</td>
+                                        <td>{{a.amount | BDCurrency}}</td>
+                                        <td>{{a.expense | BDCurrency}}</td>
+                                        <td>{{a.amount - a.expense | BDCurrency}}</td>
                                         <td>
                                             <input class="form-control ng-valid ng-touched ng-dirty" type="text" placeholder="New Amount" id="sbuDetails" name="a.newAmount" #newAmount="ngModel" [(ngModel)]="a.newAmount">
                                         </td>
@@ -236,9 +236,9 @@
                                         <tr *ngFor="let a of campaignBgtDetails  | filter: searchText">
 
                                             <td>{{a.noOfCamp}}</td>
-                                            <td>{{a.amount | number: '1.0-0'}}</td>
-                                            <td>{{a.expense | number: '1.0-0'}}</td>
-                                            <td>{{a.amount - a.expense | number: '1.0-0'}}</td>
+                                            <td>{{a.amount | BDCurrency}}</td>
+                                            <td>{{a.expense | BDCurrency}}</td>
+                                            <td>{{a.amount - a.expense | BDCurrency}}</td>
                                             <td>
                                                 <input class="form-control ng-valid ng-touched ng-dirty" type="text" placeholder="New Amount" id="sbuDetails" name="a.newAmount" #newAmount="ngModel" [(ngModel)]="a.newAmount">
                                             </td>

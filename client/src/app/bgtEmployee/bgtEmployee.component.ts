@@ -12,6 +12,7 @@ import { BgtEmployeeService } from '../_services/bgtEmployee.service';
 import { IApprovalAuthority } from '../shared/models/approvalAuthority';
 import { ISBU } from '../shared/models/sbu';
 import { IDonation } from '../shared/models/donation';
+import { BDCurrencyPipe } from '../bdNumberPipe';
 
 @Component({
   selector: 'bgtEmployee',
@@ -38,7 +39,7 @@ export class BgtEmployeeComponent implements OnInit {
   config: any;
   totalCount = 0;
   userRole: any;
-  constructor(public bgtService: BgtEmployeeService, private SpinnerService: NgxSpinnerService, private modalService: BsModalService, private accountService: AccountService,
+  constructor(public bgtService: BgtEmployeeService, public BDCurrency: BDCurrencyPipe, private SpinnerService: NgxSpinnerService, private modalService: BsModalService, private accountService: AccountService,
     private router: Router, private toastr: ToastrService, private datePipe: DatePipe, public _formBuilder: FormBuilder) {
   }
 
