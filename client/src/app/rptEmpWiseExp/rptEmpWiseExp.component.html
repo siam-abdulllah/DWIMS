@@ -27,18 +27,15 @@
                                         <div class="col-md-2">
                                             <input type="text" class="form-control" id="employeeId" name="employeeId" [(ngModel)]="employeeId">
                                         </div>
-                                        <!-- <div class="col-md-1">
-                                            <label>Approval Authority</label>
+                                        <div class="col-md-1">
+                                            <label>SBU</label>
                                         </div>
                                         <div class="col-md-2">
-                                             <ng-select [virtualScroll]="true" [items]="approvalAuthorities" bindLabel="approvalAuthorityName" bindValue="id" placeholder="Select" id="approvalAuthorityId" name="approvalAuthorityId" [(ngModel)]="approvalAuthorityId">
-                                            </ng-select> 
-
-                                            <select class="form-control" id="approvalAuthorityId" name="approvalAuthorityId" [(ngModel)]="approvalAuthorityId">
+                                            <select class="form-control" id="sbuCode" name="sbuCode" [(ngModel)]="sbuCode">
                                                 <option  [ngValue]="0">All</option>
-                                                <option *ngFor="let a of approvalAuthorities" [value]="a.id">{{a.approvalAuthorityName}}</option>
+                                                <option *ngFor="let a of sbu" [value]="a.sbuCode">{{a.sbuName}}</option>
                                             </select>
-                                        </div> -->
+                                        </div>
                                         <div class="col-md-1">
                                             <label>Donation</label>
                                         </div>
@@ -118,40 +115,40 @@
                                                     {{a.year}}
                                                 </td>
                                                 <td>
-                                                    {{a.january | currency:'INR':true}}
+                                                    {{a.january | BDCurrency}}
                                                 </td>
                                                 <td>
-                                                    {{a.february | currency:'INR':true}}
+                                                    {{a.february | BDCurrency}}
                                                 </td>
                                                 <td>
-                                                    {{a.march | currency:'INR':true}}
+                                                    {{a.march | BDCurrency}}
                                                 </td>
                                                 <td>
-                                                    {{a.april | number:'2.1-2'}}
+                                                    {{a.april | BDCurrency}}
                                                 </td>
                                                 <td>
-                                                    {{a.may | number:'2.1-2'}}
+                                                    {{a.may | BDCurrency}}
                                                 </td>
                                                 <td>
-                                                    {{a.june | number:'2.1-2'}}
+                                                    {{a.june | BDCurrency}}
                                                 </td>
                                                 <td>
-                                                    {{a.july | number:'2.1-2'}}
+                                                    {{a.july | BDCurrency}}
                                                 </td>
                                                 <td>
-                                                    {{a.august | number:'2.1-2'}}
+                                                    {{a.august | BDCurrency}}
                                                 </td>
                                                 <td>
-                                                    {{a.september | number:'2.1-2'}}
+                                                    {{a.september | BDCurrency}}
                                                 </td>
                                                 <td>
-                                                    {{a.october | number:'2.1-2'}}
+                                                    {{a.october | BDCurrency}}
                                                 </td>
                                                 <td>
-                                                    {{a.november | number:'2.1-2'}}
+                                                    {{a.november | BDCurrency}}
                                                 </td>
                                                 <td>
-                                                    {{a.december | number:'2.1-2'}}
+                                                    {{a.december | BDCurrency}}
                                                 </td>
 
                                             </tr>

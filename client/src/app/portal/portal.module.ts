@@ -67,6 +67,8 @@ import { BgtOwnComponent } from '../bgtOwn/bgtOwn.component';
 import { InvestmentCancelComponent } from '../investmentCancel/investmentCancel.component';
 import { BgtEmpSbuMapComponent } from '../bgtEmpSbuMap/bgtEmpSbuMap';
 import { UploadComponent } from '../upload/upload.component';
+import { BDCurrencyPipe } from '../bdNumberPipe';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -87,6 +89,7 @@ import { UploadComponent } from '../upload/upload.component';
     NgxSpinnerModule,
     NgxPaginationModule,
     Ng2SearchPipeModule,
+    SharedModule,
   ],
   declarations: [
     PortalComponent,
@@ -145,6 +148,6 @@ import { UploadComponent } from '../upload/upload.component';
     BgtOwnComponent,
     UploadComponent
   ],
-  providers: [DatePipe]
+  providers: [DatePipe, BDCurrencyPipe]
 })
 export class PortalModule { }

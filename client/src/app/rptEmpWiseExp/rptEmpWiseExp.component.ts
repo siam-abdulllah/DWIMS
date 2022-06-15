@@ -14,10 +14,10 @@ import { RptInvestSummaryService } from '../_services/report-investsummary.servi
 import { GenericParams } from '../shared/models/genericParams';
 import { AccountService } from '../account/account.service';
 import { DatePipe } from '@angular/common';
-import { IDoctor } from '../shared/models/docotor';
 import { CalendarCellViewModel } from 'ngx-bootstrap/datepicker/models';
 import { IApprovalAuthority } from '../shared/models/approvalAuthority';
-
+import { ISBU } from '../shared/models/sbu';
+import { BDCurrencyPipe } from '../bdNumberPipe';
 
 @Component({
   selector: 'rptEmpWiseExp',
@@ -34,6 +34,7 @@ export class RptEmpWiseExpComponent implements OnInit {
   searchText = '';
   donations: IDonation[];
   approvalAuthorities: IApprovalAuthority[];
+  sbu: ISBU[];
   //configs: any;
   searchDto: IReportSearchDto;
   numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
@@ -43,6 +44,7 @@ export class RptEmpWiseExpComponent implements OnInit {
   approvalAuthorityId: any;
   donationId: any;
   fromDate: Date;
+  sbuCode: any;
   rptDepotLetter :IrptDepotLetterSearch[] = [];
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date = new Date();
@@ -55,9 +57,8 @@ export class RptEmpWiseExpComponent implements OnInit {
   userRole: any;
   date: Date;
 
-
   constructor(private router: Router,
-    public datepipe: DatePipe,
+    public BDCurrency: BDCurrencyPipe,
     public reportService: RptInvestSummaryService, private datePipe: DatePipe,
     private toastr: ToastrService, private modalService: BsModalService,
     private SpinnerService: NgxSpinnerService,private accountService: AccountService,) { }
@@ -65,14 +66,15 @@ export class RptEmpWiseExpComponent implements OnInit {
   ngOnInit() {
     this.resetForm();
     this.getDonation();
-    this.getApprovalAuthority();
+    this.getSBU();
     this.bsConfig = Object.assign({}, { containerClass: 'theme-blue' }, { dateInputFormat: 'DD/MM/YYYY' });
     this.bsValue = new Date();
+    this.sbuCode = 0;
   }
 
-  getApprovalAuthority(){
-    this.reportService.getApprovalAuthority().subscribe(response => {
-      this.approvalAuthorities = response as IApprovalAuthority[];
+  getSBU(){
+    this.reportService.getSBU().subscribe(response => {
+      this.sbu = response as ISBU[];
      }, error => {
         console.log(error);
      });
@@ -106,7 +108,7 @@ export class RptEmpWiseExpComponent implements OnInit {
         
         const  searchDto: IReportSearchDto ={
           employeeId: this.employeeId,
-          sbu: "0",
+          sbu: this.sbuCode,
           donationId: this.donationId,
           year: this.fromDate,
 
@@ -145,5 +147,4 @@ interface IReportSearchDto {
   sbu: string;
   donationId: number;
   year: Date;
-
 }

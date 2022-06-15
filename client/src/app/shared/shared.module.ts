@@ -14,6 +14,7 @@ import {CdkStepperModule} from '@angular/cdk/stepper';
 import { StepperComponent } from './components/stepper/stepper.component';
 import { RouterModule } from '@angular/router';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { BDCurrencyPipe } from '../bdNumberPipe';
 @NgModule({
   imports: [
     CommonModule,
@@ -30,7 +31,8 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     PagingHeaderComponent,
     PagerComponent,
     TextInputComponent,
-    StepperComponent
+    StepperComponent,
+    BDCurrencyPipe,
   ],
   exports: [
     PaginationModule,
@@ -43,7 +45,8 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     TextInputComponent,
     CdkStepperModule,
     StepperComponent,
-    NgMultiSelectDropDownModule
+    NgMultiSelectDropDownModule,
+    BDCurrencyPipe,
   ]
 })
 export class SharedModule { }

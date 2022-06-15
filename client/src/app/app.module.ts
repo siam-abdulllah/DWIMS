@@ -25,6 +25,7 @@ import { AccountRoutingModule } from './account/account-routing.module';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { SheetJSComponent } from './sheetjs.component';
+import { SharedModule } from './shared/shared.module';
 
 
 
@@ -35,8 +36,7 @@ import { SheetJSComponent } from './sheetjs.component';
     // TopnavComponent,
     // AsidenavComponent,
     // FooterComponent,
-    HomeComponent,
- 
+    HomeComponent, 
   ],
   imports: [
     BrowserModule,
@@ -54,6 +54,7 @@ import { SheetJSComponent } from './sheetjs.component';
     PortalRoutingModule,
     MasterRoutingModule,
     NgxSpinnerModule,
+    SharedModule,
     ToastrModule.forRoot({
       timeOut: 5000,
     positionClass: 'toast-bottom-right',
