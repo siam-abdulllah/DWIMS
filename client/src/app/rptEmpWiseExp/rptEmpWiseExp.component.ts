@@ -106,7 +106,7 @@ export class RptEmpWiseExpComponent implements OnInit {
         
         const  searchDto: IReportSearchDto ={
           employeeId: this.employeeId,
-          approvalAuthorityId: this.approvalAuthorityId,
+          sbu: "0",
           donationId: this.donationId,
           year: this.fromDate,
 
@@ -142,7 +142,7 @@ export class RptEmpWiseExpComponent implements OnInit {
 
 interface IReportSearchDto {
   employeeId: number;
-  approvalAuthorityId: number;
+  sbu: string;
   donationId: number;
   year: Date;
 

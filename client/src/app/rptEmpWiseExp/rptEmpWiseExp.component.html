@@ -27,18 +27,18 @@
                                         <div class="col-md-2">
                                             <input type="text" class="form-control" id="employeeId" name="employeeId" [(ngModel)]="employeeId">
                                         </div>
-                                        <div class="col-md-1">
+                                        <!-- <div class="col-md-1">
                                             <label>Approval Authority</label>
                                         </div>
                                         <div class="col-md-2">
-                                            <!-- <ng-select [virtualScroll]="true" [items]="approvalAuthorities" bindLabel="approvalAuthorityName" bindValue="id" placeholder="Select" id="approvalAuthorityId" name="approvalAuthorityId" [(ngModel)]="approvalAuthorityId">
-                                            </ng-select> -->
+                                             <ng-select [virtualScroll]="true" [items]="approvalAuthorities" bindLabel="approvalAuthorityName" bindValue="id" placeholder="Select" id="approvalAuthorityId" name="approvalAuthorityId" [(ngModel)]="approvalAuthorityId">
+                                            </ng-select> 
 
                                             <select class="form-control" id="approvalAuthorityId" name="approvalAuthorityId" [(ngModel)]="approvalAuthorityId">
                                                 <option  [ngValue]="0">All</option>
                                                 <option *ngFor="let a of approvalAuthorities" [value]="a.id">{{a.approvalAuthorityName}}</option>
                                             </select>
-                                        </div>
+                                        </div> -->
                                         <div class="col-md-1">
                                             <label>Donation</label>
                                         </div>
@@ -69,34 +69,44 @@
                                     <div class="col-md-12">
                                         <table class="table  table-bordered">
                                             <tr class="HeaderRowFixed">
-                                                <td style="width: 0;display:none;">Approval Authority ID</td>
-                                                <td>Priority</td>
+                                                <td>Type</td>
                                                 <td>Employee ID</td>
                                                 <td>Employee Name</td>
+                                                <td>SBU</td>
                                                 <td style="width: 0;display:none;">Donation ID</td>
                                                 <td>Donation</td>
-                                                <td>Month</td>
                                                 <td>Year</td>
-                                                <td>Budget</td>
-                                                <td>Expense</td>
+                                                <td>January</td>
+                                                <td>February</td>
+                                                <td>March</td>
+                                                <td>April</td>
+                                                <td>May</td>
+                                                <td>June</td>
+                                                <td>July</td>
+                                                <td>August</td>
+                                                <td>September</td>
+                                                <td>October</td>
+                                                <td>November</td>
+                                                <td>December</td>
                                             </tr>
                                             <!-- <tr *ngFor="let a of reports | paginate: configs"> -->
                                             <tr *ngFor="let a of reports | filter: searchText ">
                                                 <!-- <td>
                                             {{a.id}}
                                         </td> -->
-                                                <td style="width: 0;display:none;">
-                                                    {{a.approvalAuthorityId}}
-                                                </td>
+
 
                                                 <td>
-                                                    {{a.priority}}
+                                                    {{a.budget}}
                                                 </td>
                                                 <td>
                                                     {{a.employeeId}}
                                                 </td>
                                                 <td>
                                                     {{a.employeeName}}
+                                                </td>
+                                                <td>
+                                                    {{a.sbu}}
                                                 </td>
                                                 <td style="width: 0;display:none;">
                                                     {{a.donationId}}
@@ -105,17 +115,45 @@
                                                     {{a.donationTypeName}}
                                                 </td>
                                                 <td>
-                                                    {{a.month}}
-                                                </td>
-                                                <td>
                                                     {{a.year}}
                                                 </td>
                                                 <td>
-                                                    {{a.budget | number:'2.1-2'}}
+                                                    {{a.january | currency:'INR':true}}
                                                 </td>
                                                 <td>
-                                                    {{a.expense | number:'2.1-2'}}
+                                                    {{a.february | currency:'INR':true}}
                                                 </td>
+                                                <td>
+                                                    {{a.march | currency:'INR':true}}
+                                                </td>
+                                                <td>
+                                                    {{a.april | number:'2.1-2'}}
+                                                </td>
+                                                <td>
+                                                    {{a.may | number:'2.1-2'}}
+                                                </td>
+                                                <td>
+                                                    {{a.june | number:'2.1-2'}}
+                                                </td>
+                                                <td>
+                                                    {{a.july | number:'2.1-2'}}
+                                                </td>
+                                                <td>
+                                                    {{a.august | number:'2.1-2'}}
+                                                </td>
+                                                <td>
+                                                    {{a.september | number:'2.1-2'}}
+                                                </td>
+                                                <td>
+                                                    {{a.october | number:'2.1-2'}}
+                                                </td>
+                                                <td>
+                                                    {{a.november | number:'2.1-2'}}
+                                                </td>
+                                                <td>
+                                                    {{a.december | number:'2.1-2'}}
+                                                </td>
+
                                             </tr>
                                         </table>
                                     </div>
