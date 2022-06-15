@@ -52,6 +52,7 @@ namespace API.Dtos
         public int EmployeeId { get; set; }
         public int ApprovalAuthorityId { get; set; }
         public int DonationId { get; set; }
+        public string SBU { get; set; }
         public DateTime Year { get; set; }
     }
 
