@@ -47,6 +47,9 @@ export class InvestmentFormService {
   getBrand(sbu:string){    
     return this.http.get(this.baseUrl + 'product/getBrand/'+sbu);
   }
+  getProductByBrand(brandCode:string,sbu:string){    
+    return this.http.get(this.baseUrl + 'product/getProductByBrand/'+brandCode+'/'+sbu);
+  }
   getSBU(){    
     return this.http.get(this.baseUrl + 'employee/getSBU');
   }

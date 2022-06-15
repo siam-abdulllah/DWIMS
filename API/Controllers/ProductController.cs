@@ -104,6 +104,38 @@ namespace API.Controllers
             }
         }
 
+
+        [HttpGet("getProductByBrand/{brandCode}/{sbu}")]
+        public async Task<List<ProductDto>> GetProductByBrand(string brandCode, string sbu)
+        {
+            try
+            {
+                var data = await _productRepo.ListAllAsync();
+                var productList = data.Where(p => p.BrandCode == brandCode && p.SBU == sbu && p.Status == "Active" && p.BrandCode != null && p.BrandName != null).OrderBy(x => x.ProductName).GroupBy(g => new { g.ProductCode, g.ProductName })
+                                 .Select(g => g.First())
+                                 .ToList();
+                var products = (from r in productList
+                                    //where r.Status == "Active" && r.BrandCode == brandCode
+                                    //orderby r.BrandName
+                                select new ProductDto
+                                {
+                                    Id = r.Id,
+                                    ProductCode = r.ProductCode,
+                                    ProductName = r.ProductName,
+                                    SBU=r.SBU,
+                                    SBUName=r.SBUName,
+                                    Status=r.Status
+                                }
+                            ).Distinct().ToList();
+                //var dataProd = _mapper.Map<IReadOnlyList<ProductInfo>, IReadOnlyList<ProductDto>>(products);
+                return products;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         [HttpGet("getMedicineProductForInvestment")]
         public async Task<IEnumerable<MedicineProduct>> GetMedicineProductForInvestment()
         {

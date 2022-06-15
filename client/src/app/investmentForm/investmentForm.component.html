@@ -287,17 +287,19 @@
                                             <label>Brand</label>
                                         </div>
                                         <div class="col-md-3">
-                                            <select class="form-control " id="brandCode" name="brandCode" [(ngModel)]="brandCode">
+                                            <!-- <select class="form-control " id="brandCode" name="brandCode" [(ngModel)]="brandCode" (change)="getProductByBrand()" [disabled]="isBrandDisable">
                                                 <option  [ngValue]="null">Select Brand</option>
                                                 <option *ngFor="let brand of brands" [value]="brand.brandCode">{{brand.brandName}}</option>
-                                            </select>
+                                            </select> -->
+                                            <ng-select [virtualScroll]="true" [items]="brands" bindLabel="brandName" bindValue="brandCode" placeholder="Select Brand" (change)="getProductByBrand()" id="brandCode" name="brandCode" [(ngModel)]="brandCode" [disabled]="isBrandDisable">
+                                            </ng-select>
                                         </div>
                                         <div class="col-md-1">
                                             <label>Product</label>
                                         </div>
                                         <div class="col-md-3">
                                             <ng-select [virtualScroll]="true" [items]="products" bindLabel="productName" bindValue="id" placeholder="Select Product" id="productId" (change)="onChangeTargetedProduct()" name="productId" #productId="ngModel" [(ngModel)]="investmentFormService.investmentTargetedProdFormData.productId"
-                                                [class.invalid]="productId.invalid && productId.touched">
+                                                [class.invalid]="productId.invalid && productId.touched" [disabled]="isProdDisable">
                                             </ng-select>
                                         </div>
                                         <div class="col-md-2">

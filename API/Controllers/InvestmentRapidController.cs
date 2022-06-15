@@ -586,17 +586,17 @@ namespace API.Controllers
             var sbuQry = "";
             if (proposeFor == "Sales")
             {
-                deptId = " AND DepartmentId=1";
+                deptId = " AND emp.DepartmentId=1";
             }
             else if (proposeFor == "PMD")
             {
-                deptId = " AND DepartmentId=2";
+                deptId = " AND emp.DepartmentId=2";
             }
             else
-            { deptId = " AND DepartmentId IN (1,2)"; }
-            if (!string.IsNullOrEmpty(sbu))
+            { deptId = " AND emp.DepartmentId IN (1,2)"; }
+            if (!string.IsNullOrEmpty(sbu) && sbu!="null")
             {
-                sbuQry = " AND emp.SBU='" + sbu + "'";
+                sbuQry = " AND esm.SBU='" + sbu + "'";
             }
 
             else
@@ -604,9 +604,14 @@ namespace API.Controllers
             List<Employee> empList = new List<Employee>();
             try
             {
-                string qry = string.Format(@"select emp.* from Employee emp 
-                                        left join ApprAuthConfig ac on emp.Id = ac.EmployeeId
-                                        where ac.ApprovalAuthorityId in(3,4,5,6,7,8) {0} {1}", deptId, sbuQry);
+                //string qry = string.Format(@"select emp.* from Employee emp 
+                //                        left join ApprAuthConfig ac on emp.Id = ac.EmployeeId
+                //                        where ac.ApprovalAuthorityId in(3,4,5,6,7,8) {0} {1}", deptId, sbuQry); 
+                string qry = string.Format(@"select DISTINCT emp.* from Employee emp 
+                                        INNER JOIN  ApprAuthConfig ac on emp.Id = ac.EmployeeId
+                                       INNER JOIN EmpSbuMapping esm ON emp.Id = esm.EmployeeId
+                                        where  ac.ApprovalAuthorityId not  in (1,2,9,10,11,13,15) AND ac.Status='A' 
+                                        AND esm.DataStatus=1 {0} {1}", deptId, sbuQry);
                 empList = _dbContext.Employee.FromSqlRaw(qry).ToList();
             }
             catch (System.Exception ex)
@@ -631,9 +636,9 @@ namespace API.Controllers
             else
             { deptId = " AND emp.DepartmentId IN (1,2)"; }
 
-            if (!string.IsNullOrEmpty(sbu))
+            if (!string.IsNullOrEmpty(sbu) && sbu!="null")
             {
-                sbuQry = " AND emp.SBU='" + sbu + "'";
+                sbuQry = " AND esm.SBU='" + sbu + "'";
             }
 
             else
@@ -641,12 +646,20 @@ namespace API.Controllers
             List<Employee> empList = new List<Employee>();
             try
             {
-                string qry = string.Format(@"select emp.* from Employee emp 
-                                        left join ApprAuthConfig ac on emp.Id = ac.EmployeeId
-                                        where ac.ApprovalAuthorityId in (3,5,6,7,8){0} {1}
-                                        UNION select emp.* from Employee emp 
-                                        left join ApprAuthConfig ac on emp.Id = ac.EmployeeId
-                                        where ac.ApprovalAuthorityId in (4) {0} ", deptId, sbuQry);
+                //string qry = string.Format(@"select emp.* from Employee emp 
+                //                        left join ApprAuthConfig ac on emp.Id = ac.EmployeeId
+                //                        where ac.ApprovalAuthorityId in (3,5,6,7,8)
+                //                        {0} {1}
+                //                        UNION select emp.* from Employee emp 
+                //                        left join ApprAuthConfig ac on emp.Id = ac.EmployeeId
+                //                        where ac.ApprovalAuthorityId in (4) {0} ", deptId, sbuQry); 
+                string qry = string.Format(@"select DISTINCT  emp.* from Employee emp 
+                                       INNER JOIN  ApprAuthConfig ac on emp.Id = ac.EmployeeId
+                                       INNER JOIN EmpSbuMapping esm ON emp.Id = esm.EmployeeId
+                                        where  ac.ApprovalAuthorityId not  in (1,2,9,10,11,13,15) AND ac.Status='A'
+                                        AND esm.DataStatus=1
+                                        {0} {1}
+                                        ", deptId, sbuQry);
                 empList = _dbContext.Employee.FromSqlRaw(qry).ToList();
             }
             catch (System.Exception ex)

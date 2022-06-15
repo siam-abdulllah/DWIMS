@@ -481,7 +481,7 @@ namespace API.Controllers
                             new SqlParameter("@EnteredBy", empId),
                         };
 
-                _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtCampaignInsert] @CompId,@DeptId, @Year, @SBU , @Amount, @EnteredBy", parms.ToArray());
+               var result= _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtCampaignInsert] @CompId,@DeptId, @Year, @SBU , @Amount, @EnteredBy", parms.ToArray());
 
                 return new CampaignBgtDetailsDto
                 {
