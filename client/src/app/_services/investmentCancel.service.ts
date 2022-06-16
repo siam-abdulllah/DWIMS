@@ -166,16 +166,17 @@ export class InvestmentCancelService {
   //   { responseType: 'text' });
   // }
   removeInvestmentDetail(id: number,empId:number) {
-    return this.http.get(this.baseUrl + 'reportInvestment/removeInvestmentDetalTracker/'+id+'/'+empId);
+    return this.http.post(this.baseUrl + 'investmentCancel/removeInvestmentDetalTracker/'+id+'/'+empId,"", { responseType: 'text' });
   }
 
   cancelInv(invId: number,empId:number) {
-    return this.http.post(this.baseUrl + 'InvestmentCancel/cancelInv/'+invId,empId,
+    return this.http.post(this.baseUrl + 'investmentCancel/cancelInv/'+invId+'/'+empId,"",
     { responseType: 'text' });
   }
   isInvestmentDetailExist(id: number,empId:number) {
+    debugger;
     //return this.http.post(this.baseUrl + 'reportInvestment/isInvestmentDetailExist/'+id+'/'+empId,
-    return this.http.post(this.baseUrl + 'reportInvestment/isInvestmentDetailExist',id,
+    return this.http.post(this.baseUrl + 'reportInvestment/isInvestmentDetailExist/'+id,"",
     { responseType: 'text' });
   }
 }

@@ -2147,14 +2147,14 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost("isInvestmentDetailExist")]
+        [HttpPost("isInvestmentDetailExist/{id}")]
         public IActionResult IsInvestmentDetailExist(int id)
         {
             try
             {
                 string qry = " SELECT [Id],[DataStatus],[SetOn],[ModifiedOn],[InvestmentInitId],[EmployeeId],[Month],[Year],[FromDate],[ToDate],[ApprovedAmount],[PaidStatus],[DonationId],[PaymentRefNo]" +
                         " FROM  [dbo].[InvestmentDetailTracker]" +
-                    " WHERE [Id] = " + id + "  AND [PaymentRefNo] NOT IN (SELECT PayRefNo FROM DepotPrintTrack WHERE PayRefNo IS NOT NULL " +
+                    " WHERE [Id] = " + id + "  AND [PaymentRefNo]  IN (SELECT PayRefNo FROM DepotPrintTrack WHERE PayRefNo IS NOT NULL " +
                     " UNION SELECT PayRefNo FROM MedicineDispatch  WHERE PayRefNo IS NOT NULL)" +
                     " ";
 
@@ -2188,7 +2188,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("removeInvestmentDetalTracker/{id}/{empId}")]
+        [HttpPost("removeInvestmentDetalTracker/{id}/{empId}")]
         public IActionResult RemoveInvestmentDetalTracker(int id, int empId)
         {
             try
@@ -2201,9 +2201,9 @@ namespace API.Controllers
                         new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
                     };
                 var result = _db.Database.ExecuteSqlRaw("EXECUTE SP_InvApprIndividualDelete @ID,@EID,@IPADD,@r out", parms.ToArray());
-                if (parms[3].Value.ToString() != "True")
+                if (parms[3].Value.ToString() != "Deleted")
                 {
-                    return BadRequest(new ApiResponse(400, parms[7].Value.ToString()));
+                    return BadRequest(new ApiResponse(400, parms[3].Value.ToString()));
                 }
 
                 //var alreadyExistInvestmentDetailTracker = await _investmentDetailTrackerRepo.GetByIdAsync(id);

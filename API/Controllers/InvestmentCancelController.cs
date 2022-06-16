@@ -56,7 +56,7 @@ namespace API.Controllers
             {
                 string qry = " SELECT [Id],[DataStatus],[SetOn],[ModifiedOn],[InvestmentInitId],[EmployeeId],[Month],[Year],[FromDate],[ToDate],[ApprovedAmount],[PaidStatus],[DonationId],[PaymentRefNo]" +
                         " FROM  [dbo].[InvestmentDetailTracker]" +
-                    " WHERE [Id] = " + id + "  AND [PaymentRefNo] NOT IN (SELECT PayRefNo FROM DepotPrintTrack WHERE PayRefNo IS NOT NULL " +
+                    " WHERE [Id] = " + id + "  AND [PaymentRefNo]  IN (SELECT PayRefNo FROM DepotPrintTrack WHERE PayRefNo IS NOT NULL " +
                     " UNION SELECT PayRefNo FROM MedicineDispatch  WHERE PayRefNo IS NOT NULL)" +
                     " ";
 
@@ -90,49 +90,49 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("removeInvestmentDetalTracker/{id}/{empId}")]
-        public IActionResult RemoveInvestmentDetalTracker(int id, int empId)
-        {
-            try
-            {
-                List<SqlParameter> parms = new List<SqlParameter>
-                    {
-                        new SqlParameter("@ID", id),
-                        new SqlParameter("@EID", empId),
-                        new SqlParameter("@IPADD", GetIPAddress()),
-                        new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
-                    };
-                var result = _db.Database.ExecuteSqlRaw("EXECUTE SP_InvApprIndividualDelete @ID,@EID,@IPADD,@r out", parms.ToArray());
-                if (parms[3].Value.ToString() != "True")
-                {
-                    return BadRequest(new ApiResponse(400, parms[7].Value.ToString()));
-                }
+        // [HttpGet("removeInvestmentDetalTracker/{id}/{empId}")]
+        // public IActionResult RemoveInvestmentDetalTracker(int id, int empId)
+        // {
+        //     try
+        //     {
+        //         List<SqlParameter> parms = new List<SqlParameter>
+        //             {
+        //                 new SqlParameter("@ID", id),
+        //                 new SqlParameter("@EID", empId),
+        //                 new SqlParameter("@IPADD", GetIPAddress()),
+        //                 new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
+        //             };
+        //         var result = _db.Database.ExecuteSqlRaw("EXECUTE SP_InvApprIndividualDelete @ID,@EID,@IPADD,@r out", parms.ToArray());
+        //         if (parms[3].Value.ToString() != "Deleted")
+        //         {
+        //             return BadRequest(new ApiResponse(400, parms[3].Value.ToString()));
+        //         }
 
-                //var alreadyExistInvestmentDetailTracker = await _investmentDetailTrackerRepo.GetByIdAsync(id);
-                ////var alreadyExistInvestmentDetailTrackerList = await _investmentDetailTrackerRepo.ListAsync(alreadyExistSpec);
-                ////if (alreadyExistInvestmentDetailTrackerList.Count > 0)
-                //if (alreadyExistInvestmentDetailTracker.InvestmentInitId != null)
-                //{
-                //    var alreadyExistSpec = new InvestmentDetailTrackerSpecification(id);
+        //         //var alreadyExistInvestmentDetailTracker = await _investmentDetailTrackerRepo.GetByIdAsync(id);
+        //         ////var alreadyExistInvestmentDetailTrackerList = await _investmentDetailTrackerRepo.ListAsync(alreadyExistSpec);
+        //         ////if (alreadyExistInvestmentDetailTrackerList.Count > 0)
+        //         //if (alreadyExistInvestmentDetailTracker.InvestmentInitId != null)
+        //         //{
+        //         //    var alreadyExistSpec = new InvestmentDetailTrackerSpecification(id);
 
-                //    var alreadyExistInvestmentDetailTrackerList = await _investmentDetailTrackerRepo.ListAsync(alreadyExistSpec);
-                //    //foreach (var v in alreadyExistInvestmentDetailTrackerList)
-                //    //{
+        //         //    var alreadyExistInvestmentDetailTrackerList = await _investmentDetailTrackerRepo.ListAsync(alreadyExistSpec);
+        //         //    //foreach (var v in alreadyExistInvestmentDetailTrackerList)
+        //         //    //{
 
-                //    _investmentDetailTrackerRepo.Delete(alreadyExistInvestmentDetailTracker);
-                //    _investmentDetailTrackerRepo.Savechange();
-                //    //}
+        //         //    _investmentDetailTrackerRepo.Delete(alreadyExistInvestmentDetailTracker);
+        //         //    _investmentDetailTrackerRepo.Savechange();
+        //         //    //}
 
-                return Ok("Succsessfuly Deleted!!!");
+        //         return Ok("Succsessfuly Deleted!!!");
 
-            }
-            catch (System.Exception ex)
-            {
-                throw ex;
-            }
-        }
+        //     }
+        //     catch (System.Exception ex)
+        //     {
+        //         throw ex;
+        //     }
+        // }
 
-        [HttpPost("cancelInv/{invId}")]
+        [HttpPost("cancelInv/{invId}/{empId}")]
         public IActionResult CancelInvestment(int invId, int empId)
         {
             try
@@ -152,6 +152,31 @@ namespace API.Controllers
                 // }
 
                 // return Ok("Succsessfuly Deleted!!!");
+
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+ [HttpPost("removeInvestmentDetalTracker/{id}/{empId}")]
+        public IActionResult RemoveInvestmentDetalTracker(int id, int empId)
+        {
+            try
+            {
+                List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                        new SqlParameter("@ID", id),
+                        new SqlParameter("@EID", empId),
+                        new SqlParameter("@IPADD", GetIPAddress()),
+                        new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
+                    };
+                var result = _db.Database.ExecuteSqlRaw("EXECUTE SP_InvApprIndividualDelete @ID,@EID,@IPADD,@r out", parms.ToArray());
+                // if (parms[3].Value.ToString() != "Deleted")
+                // {
+                //     return BadRequest(new ApiResponse(400, parms[3].Value.ToString()));
+                // }
+                return Ok(parms[3].Value.ToString());
 
             }
             catch (System.Exception ex)

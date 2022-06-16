@@ -617,9 +617,19 @@ export class InvestmentCancelComponent implements OnInit {
           if (message == 'Not Existed') {
             this.investmentCancelService.removeInvestmentDetail(selectedRecord.id, parseInt(this.empId)).subscribe(
               res => {
-                this.getInvestmentDetailTracker();
+                var message = res as string;
+                if (message === "Deleted") {
+                  this.getInvestmentDetailTracker();
+                  //this.ViewData();
+                  this.toastr.success('Removed Successfully');
+                }
+                else{
+                  this.toastr.warning(message);
+                }
+              
                 this.SpinnerService.hide();
-                this.toastr.success('Removed Successfully');
+
+               
               },
               err => {
                 this.SpinnerService.hide();
@@ -656,6 +666,7 @@ export class InvestmentCancelComponent implements OnInit {
 
             //alert(message);
              if (message === "Deleted") { 
+              this.ViewData();
               this.toastr.success('Removed Successfully'); 
              }
             else {
@@ -671,7 +682,8 @@ export class InvestmentCancelComponent implements OnInit {
             //   this.toastr.warning(err.error.message);
             // }
             this.SpinnerService.hide();
-            //console.log(err.error.message);
+            console.log(err);
+            this.toastr.warning(err.error.text);
           }
         );
       }
