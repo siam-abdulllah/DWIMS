@@ -95,6 +95,11 @@ export class InvestmentAprService {
       return this.http.get(this.baseUrl + 'investmentApr/investmentRecDetailsForGPM/' + investmentInitId + '/' + empId).toPromise();
     }
     if (userRole == 'M') {
+      if(this.investmentAprFormData.donationTo == "Campaign")
+      {
+        return this.http.get(this.baseUrl + 'investmentApr/investmentRecDetailsForM/' + investmentInitId + '/' + empId).toPromise();
+
+      }
       return this.http.get(this.baseUrl + 'investmentApr/investmentRecDetailsForM/' + investmentInitId + '/' + empId).toPromise();
     }
     else {
@@ -184,6 +189,9 @@ export class InvestmentAprService {
     var actionName = 'investmentApproved';
     if (userRole == 'RSM') {
       actionName = 'investmentApprovedForRSM';
+    }
+    else if (userRole == 'M') {
+      actionName = 'investmentApprovedForSM';
     }
     else if (userRole == 'GPM') {
       actionName = 'investmentApprovedForGPM';

@@ -426,6 +426,7 @@ namespace API.Controllers
                 throw e;
             }
         }
+        
         [HttpGet("investmentApprovedForRSM/{empId}/{sbu}/{userRole}")]
         public ActionResult<IReadOnlyList<InvestmentInitForApr>> GetinvestmentApprovedForRSM(int empId, string sbu, string userRole,
         [FromQuery] InvestmentInitSpecParams investmentInitParrams)
@@ -490,8 +491,73 @@ namespace API.Controllers
                 throw e;
             }
         }
+        [HttpGet("investmentApprovedForSM/{empId}/{sbu}/{userRole}")]
+        public ActionResult<IReadOnlyList<InvestmentInitForApr>> GetInvestmentApprovedForSM(int empId, string sbu, string userRole,
+        [FromQuery] InvestmentInitSpecParams investmentInitParrams)
+        {
+            try
+            {
+
+                List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                        new SqlParameter("@SBU", sbu),
+                        new SqlParameter("@EID", empId),
+                        new SqlParameter("@RSTATUS", "Recommended"),
+                        new SqlParameter("@ASTATUS", DBNull.Value)
+                    };
+                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentApprpvedSearchForMngr @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
+                //var data = _mapper
+                //    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
+                //var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
+                //var totalItems = await _investmentInitRepo.CountAsync(countSpec);
+
+                var data = (from r in results
+                            join d in _dbContext.Donation on r.DonationId equals d.Id
+                            join e in _dbContext.Employee on r.EmployeeId equals e.Id
+                            orderby r.SetOn descending
+                            orderby r.SetOn descending
+                            select new InvestmentInitForApr
+                            {
+                                Id = r.Id,
+                                DataStatus = r.DataStatus,
+                                SetOn = r.SetOn,
+                                ModifiedOn = r.ModifiedOn,
+                                ReferenceNo = r.ReferenceNo,
+                                ProposeFor = r.ProposeFor,
+                                DonationId = r.DonationId,
+                                DonationTo = r.DonationTo,
+                                EmployeeId = r.EmployeeId,
+                                MarketGroupCode = r.MarketGroupCode,
+                                MarketGroupName = r.MarketGroupName,
+                                MarketCode = r.MarketCode,
+                                MarketName = r.MarketName,
+                                RegionCode = r.RegionCode,
+                                RegionName = r.RegionName,
+                                ZoneCode = r.ZoneCode,
+                                ZoneName = r.ZoneName,
+                                TerritoryCode = r.TerritoryCode,
+                                TerritoryName = r.TerritoryName,
+                                SBU = r.SBU,
+                                SBUName = r.SBUName,
+                                Confirmation = r.Confirmation,
+                                SubmissionDate = r.SubmissionDate,
+                                RemainingSBU = null,
+                                Donation = d,
+                                Employee = e
+                            }
+                          ).Distinct().ToList();
+                return data;
+                //return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, results.Count(), data));
+            }
+
+            catch (System.Exception e)
+            {
+                throw e;
+            }
+        }
+        
         [HttpGet("investmentApprovedForGPM/{empId}/{sbu}/{userRole}")]
-        public ActionResult<IReadOnlyList<InvestmentInitForApr>> GetinvestmentApprovedForGPM(int empId, string sbu, string userRole,
+        public ActionResult<IReadOnlyList<InvestmentInitForApr>> GetInvestmentApprovedForGPM(int empId, string sbu, string userRole,
         [FromQuery] InvestmentInitSpecParams investmentInitParrams)
         {
             try

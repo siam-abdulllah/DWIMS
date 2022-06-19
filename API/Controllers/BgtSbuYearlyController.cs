@@ -39,7 +39,7 @@ namespace API.Controllers
             List<SBUVM> dsResult = new List<SBUVM>();
             try
             {
-                string statusQuery = "";
+               //string statusQuery = "";
                 string ProposeFor = "";
                 string allocatedQry = "";
                 if (deptId == 1)

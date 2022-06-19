@@ -398,8 +398,6 @@ export class InvestmentAprComponent implements OnInit {
         }, error => {
           console.log(error);
         });
-
-
         this.investmentAprService.getCampaignDtlProducts(data.campaignDtl.id).subscribe(response => {
           this.campaignDtlProducts = response as ICampaignDtlProduct[];
         }, error => {
