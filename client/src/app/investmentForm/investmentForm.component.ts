@@ -389,7 +389,7 @@ export class InvestmentFormComponent implements OnInit {
           break;
         }
       }
-      this.investmentFormService.submitInvestment().subscribe(
+      this.investmentFormService.submitInvestment(parseInt(this.empId)).subscribe(
         res => {
           this.investmentFormService.investmentFormData = res as IInvestmentForm;
           this.toastr.success('Submitted successfully', 'Investment');

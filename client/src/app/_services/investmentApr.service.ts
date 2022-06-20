@@ -97,7 +97,7 @@ export class InvestmentAprService {
     if (userRole == 'M') {
       if(this.investmentAprFormData.donationTo == "Campaign")
       {
-        return this.http.get(this.baseUrl + 'investmentApr/investmentRecDetailsForM/' + investmentInitId + '/' + empId).toPromise();
+        return this.http.get(this.baseUrl + 'investmentApr/investmentRecDetailsMCamp/' + investmentInitId + '/' + empId).toPromise();
 
       }
       return this.http.get(this.baseUrl + 'investmentApr/investmentRecDetailsForM/' + investmentInitId + '/' + empId).toPromise();

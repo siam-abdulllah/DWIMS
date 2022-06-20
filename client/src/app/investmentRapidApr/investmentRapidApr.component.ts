@@ -254,6 +254,12 @@ export class InvestmentRapidAprComponent implements OnInit {
     this.investmentFormService.getInitiatorName(selectedRecord.initiatorId).subscribe(response => {
     var data = response as Employee;
     this.initiatorName = data.employeeName;
+    this.investmentFormService.getEmployeesforRapidBySBU(selectedRecord.proposeFor, selectedRecord.sbu).subscribe(response => {
+      //this.investmentFormService.investmentFormData.approvalAuthId = null;
+      this.employees = response as IEmployee[];
+    }, error => {
+      console.log(error);
+    });
     }, error => {
       console.log(error);
     });
@@ -620,41 +626,45 @@ export class InvestmentRapidAprComponent implements OnInit {
       this.toastr.warning('No Product is added.');
       return;
     }
-    if(this.investmentFormService.investmentFormData.proposeFor=='Sales')
+    if(this.investmentFormService.investmentFormData.approvedStatus=='Approved')
     {
-      if(this.investmentFormService.investmentFormData.proposedAmount>this.budgetCeiling.monthlyRemaining)
-      {
-        this.toastr.warning('Amount can not be greater than remaining budget');
-      return;
-      }
-      if(this.investmentFormService.investmentFormData.proposedAmount>this.budgetCeiling.amountPerTransacion)
-      {
-        this.toastr.warning('Amount can not be greater than remaining budget');
-      return;
-      }
-    }
-    if(this.investmentFormService.investmentFormData.proposeFor=='PMD')
-    {
-      if(this.investmentFormService.investmentFormData.subCampaignId==0 || this.investmentFormService.investmentFormData.subCampaignId==null || this.investmentFormService.investmentFormData.subCampaignId==undefined)
+      if(this.investmentFormService.investmentFormData.proposeFor=='Sales')
       {
         if(this.investmentFormService.investmentFormData.proposedAmount>this.budgetCeiling.monthlyRemaining)
         {
           this.toastr.warning('Amount can not be greater than remaining budget');
         return;
         }
-      }
-      else{
-        if(this.investmentFormService.investmentFormData.proposedAmount>this.budgetCeilingForCampaign.totalRemaining)
+        if(this.investmentFormService.investmentFormData.proposedAmount>this.budgetCeiling.amountPerTransacion)
         {
           this.toastr.warning('Amount can not be greater than remaining budget');
         return;
         }
       }
+      if(this.investmentFormService.investmentFormData.proposeFor=='PMD')
+      {
+        if(this.investmentFormService.investmentFormData.subCampaignId==0 || this.investmentFormService.investmentFormData.subCampaignId==null || this.investmentFormService.investmentFormData.subCampaignId==undefined)
+        {
+          if(this.investmentFormService.investmentFormData.proposedAmount>this.budgetCeiling.monthlyRemaining)
+          {
+            this.toastr.warning('Amount can not be greater than remaining budget');
+          return;
+          }
+        }
+        else{
+          if(this.investmentFormService.investmentFormData.proposedAmount>this.budgetCeilingForCampaign.totalRemaining)
+          {
+            this.toastr.warning('Amount can not be greater than remaining budget');
+          return;
+          }
+        }
+      }
+      if(this.investmentFormService.investmentFormData.proposeFor=='Others Rapid')
+      {
+        
+      }
     }
-    if(this.investmentFormService.investmentFormData.proposeFor=='Others Rapid')
-    {
-      
-    }
+    
       this.SpinnerService.show();
       this.investmentFormService.investmentFormData.investmentMedicineProd = this.investmentMedicineProds;
       this.investmentFormService.investmentFormData.investmentRecProducts = this.investmentTargetedProds;
@@ -678,7 +688,7 @@ export class InvestmentRapidAprComponent implements OnInit {
           break;
         }
       }
-      this.investmentFormService.submitInvestment().subscribe(
+      this.investmentFormService.submitInvestment(parseInt(this.empId)).subscribe(
         res => {
           this.investmentFormService.investmentFormData = res as IInvestmentForm;
           this.toastr.success('Submitted successfully', 'Investment');

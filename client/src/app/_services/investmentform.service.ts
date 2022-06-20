@@ -207,9 +207,9 @@ insertInvestmentMedicineProd() {
   getRapidSubCampaigns(sbu:string) {
     return this.http.get(this.baseUrl + 'investmentrapid/getRapidSubCampaigns/' + sbu);
   }
-  submitInvestment() {
+  submitInvestment(empId:any) {
     debugger;
-    return this.http.post(this.baseUrl + 'investmentrapid/saveInvestmentRapid', this.investmentFormData);
+    return this.http.post(this.baseUrl + 'investmentrapid/saveInvestmentRapid/'+empId, this.investmentFormData);
   }
 }
 
