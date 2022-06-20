@@ -133,7 +133,7 @@ namespace API.Controllers
         {
             try
             {
-                var data = new DonationWithCommentsSpecification("Active");
+                var data = new DonationWithCommentsSpecification(1,"Active");
                 var donation = await _donationRepo.ListAsync(data);
                 return donation;
             }

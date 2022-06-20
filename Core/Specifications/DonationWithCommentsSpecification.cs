@@ -69,10 +69,16 @@ namespace Core.Specifications
             : base(x => x.Id == id)
         {
             
-        } public DonationWithCommentsSpecification(string  status)
+        } 
+        public DonationWithCommentsSpecification(string  status)
             : base(x => x.Status == status)
         {
            
+        }
+        public DonationWithCommentsSpecification(int deptId, string status)
+            : base(x => x.Status == status && x.DeptId== deptId)
+        {
+
         }
     }
 }

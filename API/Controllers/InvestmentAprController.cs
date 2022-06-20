@@ -4089,7 +4089,30 @@ namespace API.Controllers
             {
                 throw ex;
             }
+        }[HttpGet]
+        [Route("investmentRecDetailsMCamp/{investmentInitId}/{empId}")]
+        public async Task<IReadOnlyList<InvestmentRec>> GetInvestmentRecDetailsMCamp(int investmentInitId, int empId)
+        {
+            try
+            {
+                
+                var initData = await _investmentInitRepo.GetByIdAsync(investmentInitId);
+                var spec = new InvestmentRecSpecification(investmentInitId);
+                var investmentDetail = await _investmentRecRepo.ListAsync(spec);
+                // string qry = "SELECT CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn,  MAX(A.Priority) Count FROM ApprAuthConfig AC INNER JOIN ApprovalAuthority A ON AC.ApprovalAuthorityId = A.Id " +
+                //     " INNER JOIN Employee E ON Ac.EmployeeId = E.Id WHERE ( E.ZoneCode = '" + initData.ZoneCode + "' )";
+                // var result = _dbContext.CountInt.FromSqlRaw(qry).ToList();
+                //return result[0].Count.ToString();
+
+                //return investmentDetail.Where(x => x.Priority == apprAuthConfigAppr.ApprovalAuthority.Priority - 1).ToList();
+                return investmentDetail.Where(x => x.Priority == 3).ToList();
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
         }
+       
         [HttpGet]
         [Route("investmentRecDetailsForGPM/{investmentInitId}/{empId}")]
         public async Task<IReadOnlyList<InvestmentRec>> GetInvestmentRecDetailsForGPM(int investmentInitId, int empId)

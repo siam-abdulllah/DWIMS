@@ -6,6 +6,7 @@ namespace Core.Entities
         public string DonationShortName { get; set; }
         public string Remarks { get; set; }
         public string Status { get; set; }
+        public int DeptId { get; set; }
         
     }
 }
