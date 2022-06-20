@@ -389,7 +389,7 @@ export class InvestmentAprComponent implements OnInit {
                 this.investmentAprService.investmentCampaignFormData.subCampaignName = this.campaignDtls[i].subCampaign.subCampaignName;
               }
             }
-            if (this.sbu == this.investmentAprService.investmentAprFormData.sbu) {
+            if (this.sbu == this.investmentAprService.investmentAprFormData.sbu && this.userRole!='M') {
             this.getBudgetForCampaign();
             }
           }, error => {
@@ -737,6 +737,14 @@ export class InvestmentAprComponent implements OnInit {
     });
   }
   insertInvestmentAprForOwnSBU() {
+    if (this.investmentAprService.investmentAprFormData.donationTo == 'Campaign' && this.userRole=='M' && this.investmentAprService.investmentAprCommentFormData.recStatus=='Approved') {
+      this.toastr.warning('You are not authorised', 'Investment ');
+      return false;
+    }
+    if (this.investmentAprService.investmentAprFormData.donationTo == 'Campaign' && this.userRole=='M' && this.investmentAprService.investmentAprCommentFormData.recStatus=='Not Approved') {
+      this.toastr.warning('You are not authorised', 'Investment ');
+      return false;
+    }
     if (this.investmentAprService.investmentAprFormData.id == null || this.investmentAprService.investmentAprFormData.id == undefined || this.investmentAprService.investmentAprFormData.id == 0) {
       this.toastr.warning('Insert Investment Initialisation First', 'Investment ');
       return false;
@@ -865,6 +873,14 @@ export class InvestmentAprComponent implements OnInit {
     );
   }
   updateInvestmentAprForOwnSBU() {
+    if (this.investmentAprService.investmentAprFormData.donationTo == 'Campaign' && this.userRole=='M' && this.investmentAprService.investmentAprCommentFormData.recStatus=='Approved') {
+      this.toastr.warning('You are not authorised', 'Investment ');
+      return false;
+    }
+    if (this.investmentAprService.investmentAprFormData.donationTo == 'Campaign' && this.userRole=='M' && this.investmentAprService.investmentAprCommentFormData.recStatus=='Not Approved') {
+      this.toastr.warning('You are not authorised', 'Investment ');
+      return false;
+    }
     if (this.investmentAprService.investmentAprFormData.id == null || this.investmentAprService.investmentAprFormData.id == undefined || this.investmentAprService.investmentAprFormData.id == 0) {
       this.toastr.warning('Insert Investment Initialisation First', 'Investment ');
       return false;
