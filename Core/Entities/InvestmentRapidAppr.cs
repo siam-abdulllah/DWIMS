@@ -12,6 +12,6 @@ namespace Core.Entities
         public int ApprovedBy{get;set;}
         public string ApprovalRemarks { get; set; }
         public string ApprovedStatus{get;set;}
-        public int ApprovalAuthId { get; set; }
+        public int ApproverId { get; set; }
     }
 }

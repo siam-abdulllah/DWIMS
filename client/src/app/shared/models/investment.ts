@@ -57,7 +57,7 @@ export interface IInvestmentForm {
     paymentMethod:string
     remarks:string;
     initiatorId: number;
-    approvalAuthId: number;
+    approverId: number;
     sbu:string;
     sbuName:string;
     donationTo: string;
@@ -84,7 +84,7 @@ export class InvestmentForm implements IInvestmentForm {
     depotCode:string;
     depotName:string;
     initiatorId: number;
-    approvalAuthId: number;
+    approverId: number;
     employee: IEmployee;
     proposedAmount:string;
     paymentMethod:string=null;

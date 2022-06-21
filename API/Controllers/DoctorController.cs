@@ -76,6 +76,51 @@ namespace API.Controllers
                 throw ex;
             }
         }
+       
+        [HttpGet("doctorsForInvestmentRapid/{sbu}")]
+        [RequestFormLimits(ValueCountLimit = int.MaxValue)]
+        public ActionResult<IEnumerable<DoctorInfo>> GetDoctorsForInvestmentRapid(string sbu)
+        {
+            try
+            {
+                //var doctorMarketSpec = new DoctorMarketSpecification(marketCode);
+
+                //var doctorMarketData = await _doctorMarketRepo.ListAsync(doctorMarketSpec);
+                //var doctors = await _doctorRepo.ListAllAsync();
+                //var data = await _productRepo.ListAllAsync();
+                var doctors = (from d in _dbContext.DoctorInfo
+                               join dm in _dbContext.DoctorMarket on d.Id equals dm.DoctorCode
+                               join s in _dbContext.SBU on dm.SBU equals s.SBUName
+                               where s.SBUCode == sbu
+                               orderby d.DoctorName
+                               select new DoctorInfo
+                               {
+                                   DoctorName = d.DoctorName,
+                                   DoctorCode = d.DoctorCode,
+                                   Degree = d.Degree,
+                                   Designation = d.Designation,
+                                   Id = d.Id
+                               }
+                              ).Union(from d in _dbContext.DoctorInfo
+                                      where d.Id == 900000
+                                      orderby d.DoctorName
+                                      select new DoctorInfo
+                                      {
+                                          DoctorName = d.DoctorName,
+                                          DoctorCode = d.DoctorCode,
+                                          Degree = d.Degree,
+                                          Designation = d.Designation,
+                                          Id = d.Id
+                                      }).Distinct().ToList();
+                //return doctors.OrderBy(x=>x.DoctorName);
+                return doctors;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+       
         [HttpGet("doctorsForReport")]
         [RequestFormLimits(ValueCountLimit = int.MaxValue)]
         public ActionResult<IEnumerable<DoctorInfo>> GetDoctorsForReport()

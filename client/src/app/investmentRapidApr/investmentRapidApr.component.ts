@@ -255,7 +255,7 @@ export class InvestmentRapidAprComponent implements OnInit {
     var data = response as Employee;
     this.initiatorName = data.employeeName;
     this.investmentFormService.getEmployeesforRapidBySBU(selectedRecord.proposeFor, selectedRecord.sbu).subscribe(response => {
-      //this.investmentFormService.investmentFormData.approvalAuthId = null;
+      //this.investmentFormService.investmentFormData.approverId = null;
       this.employees = response as IEmployee[];
     }, error => {
       console.log(error);
@@ -688,7 +688,8 @@ export class InvestmentRapidAprComponent implements OnInit {
           break;
         }
       }
-      this.investmentFormService.submitInvestment(parseInt(this.empId)).subscribe(
+      //this.investmentFormService.submitInvestment(parseInt(this.empId)).subscribe(
+      this.investmentFormService.submitInvestmentAppr(parseInt(this.empId)).subscribe(
         res => {
           this.investmentFormService.investmentFormData = res as IInvestmentForm;
           this.toastr.success('Submitted successfully', 'Investment');

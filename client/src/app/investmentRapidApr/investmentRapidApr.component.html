@@ -352,8 +352,8 @@
                                                 <label>Approved Authority</label>
                                             </div>
                                             <div class="col-md-4">
-                                                <ng-select [virtualScroll]="true" [items]="employees" bindLabel="employeeName" bindValue="id" placeholder="Select" [searchFn]="customSearchFn" name="ApprovalAuthId" #employeeId="ngModel" [(ngModel)]="investmentFormService.investmentFormData.approvalAuthId"
-                                                    required [class.invalid]="employeeId.invalid && employeeId.touched">
+                                                <ng-select [virtualScroll]="true" [items]="employees" bindLabel="employeeName" bindValue="id" placeholder="Select" [searchFn]="customSearchFn" name="approverId" #employeeId="ngModel" [(ngModel)]="investmentFormService.investmentFormData.approverId" required
+                                                    [class.invalid]="employeeId.invalid && employeeId.touched">
                                                     <ng-template ng-label-tmp let-item="item">
                                                         <span [ngOptionHighlight]="search">{{ item.employeeSAPCode }} - {{ item.employeeName }}</span>
                                                     </ng-template>
@@ -376,7 +376,7 @@
                                                     <option [ngValue]="null">Select Status</option>
                                                     <option value="Approved">Approved</option>
                                                     <option value="Recommended">Recommended</option>
-                                                    <option value="Canceled">Canceled</option>
+                                                    <option value="Cancelled">Cancelled</option>
                                                     <option value="Panding">Panding</option>
                                                 </select>
                                             </div>

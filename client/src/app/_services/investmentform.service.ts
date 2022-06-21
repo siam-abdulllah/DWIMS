@@ -21,7 +21,12 @@ export class InvestmentFormService {
   investmentTargetedProdFormData: InvestmentTargetedProd = new InvestmentTargetedProd();
   investmentFormData: InvestmentForm = new InvestmentForm();
   investmentMedicineProdFormData: InvestmentMedicineProd = new InvestmentMedicineProd();
-  investmentDetailFormData: InvestmentDetail = new InvestmentDetail();
+  investmentDetailFormData: InvestmentDetail = new InvestmentDetail(); 
+  investmentDoctorFormData: InvestmentDoctor = new InvestmentDoctor();
+  investmentInstitutionFormData: InvestmentInstitution = new InvestmentInstitution();
+  investmentCampaignFormData: InvestmentCampaign = new InvestmentCampaign();
+  investmentBcdsFormData: InvestmentBcds = new InvestmentBcds();
+  investmentSocietyFormData: InvestmentSociety = new InvestmentSociety();
   baseUrl = environment.apiUrl;
   genParams = new GenericParams();
 
@@ -84,11 +89,11 @@ insertInvestmentMedicineProd() {
   return this.http.post(this.baseUrl + 'investment/insertInvestmentMedicineProd', this.investmentMedicineProdFormData);
 }
 
-  getInstitutions(marketCode:string) {
-    return this.http.get(this.baseUrl + 'institution/institutionsForInvestment/'+marketCode);
+  getInstitutions(sbu:string) {
+    return this.http.get(this.baseUrl + 'institution/institutionsForInvestmentRapid/'+sbu);
   }
-  getDoctors(marketCode:string) {
-    return this.http.get(this.baseUrl + 'doctor/doctorsForInvestment/'+marketCode);
+  getDoctors(sbu:string) {
+    return this.http.get(this.baseUrl + 'doctor/doctorsForInvestmentRapid/'+sbu);
   }
   getBcds() {
     return this.http.get(this.baseUrl + 'bcds/bcdsForInvestment');
@@ -97,10 +102,10 @@ insertInvestmentMedicineProd() {
     return this.http.get(this.baseUrl + 'society/societyForInvestment');
   }
   getCampaignMsts(empId:number) {
-    return this.http.get(this.baseUrl + 'campaign/campaignMstsForInvestment/'+empId);
+    return this.http.get(this.baseUrl + 'campaign/campaignMstsForInvestmentRapid/'+empId);
   }
   getCampaignDtls(mstId: number) {
-    return this.http.get(this.baseUrl + 'campaign/campaignDtlsForInvestment/' + mstId);
+    return this.http.get(this.baseUrl + 'campaign/campaignDtlsForInvestmentRapid/' + mstId);
   }
   
   getCampaignDtlProducts(dtlId: number) {
@@ -208,8 +213,10 @@ insertInvestmentMedicineProd() {
     return this.http.get(this.baseUrl + 'investmentrapid/getRapidSubCampaigns/' + sbu);
   }
   submitInvestment(empId:any) {
-    debugger;
     return this.http.post(this.baseUrl + 'investmentrapid/saveInvestmentRapid/'+empId, this.investmentFormData);
+  }
+  submitInvestmentAppr(empId:any) {
+    return this.http.post(this.baseUrl + 'investmentrapid/saveInvestmentRapidAppr/'+empId, this.investmentFormData);
   }
 }
 

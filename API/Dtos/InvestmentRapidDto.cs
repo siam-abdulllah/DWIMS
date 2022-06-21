@@ -31,7 +31,7 @@ namespace API.Dtos
         public DateTime ModifiedOn { get; set; }
         public DateTime SetOn { get; set; }
         public int InitiatorId { get; set; }
-        public int ApprovalAuthId { get; set; }
+        public int ApproverId { get; set; }
         public string ApprovedStatus { get; set; }
         public string Approval { get; set; }
         public List<InvestmentMedicineProd> investmentMedicineProd { get; set; }

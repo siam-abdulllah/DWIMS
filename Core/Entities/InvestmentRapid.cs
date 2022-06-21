@@ -33,7 +33,7 @@ namespace Core.Entities
     {
         public string donationTypeName { get; set; }
         public string ApprovedStatus { get; set; }
-        public int ApprovalAuthId { get; set; }
+        public int ApproverId { get; set; }
         public string Approval { get; set; }
     }
 }

@@ -183,6 +183,122 @@ export class InvestmentFormComponent implements OnInit {
       console.log(error);
     });
   }
+  getDoctor() {
+    this.SpinnerService.show();
+    this.investmentFormService.getDoctors(this.investmentFormService.investmentFormData.sbu).subscribe(response => {
+      this.doctors = response as IDoctor[];
+      this.investmentFormService.getInstitutions(this.investmentFormService.investmentFormData.sbu).subscribe(response => {
+        this.institutions = response as IInstitution[];
+        if (this.investmentFormService.investmentFormData.id != null && this.investmentFormService.investmentFormData.id != undefined && this.investmentFormService.investmentFormData.id != 0) {
+          //this.getInvestmentDoctor();
+        }
+        this.SpinnerService.hide();
+      }, error => {
+        this.SpinnerService.hide();
+        console.log(error);
+      });
+
+    }, error => {
+      this.SpinnerService.hide();
+      console.log(error);
+    });
+  }
+  customSearchFnDoc(term: string, item: any) {
+    term = term.toLocaleLowerCase();
+    return item.doctorCode.toLocaleLowerCase().indexOf(term) > -1 ||
+      item.doctorName.toLocaleLowerCase().indexOf(term) > -1;
+  }
+  getInstitution() {
+    this.SpinnerService.show();
+    this.investmentFormService.getInstitutions(this.investmentFormService.investmentFormData.sbu).subscribe(response => {
+      this.institutions = response as IInstitution[];
+      this.investmentFormService.getDoctors(this.investmentFormService.investmentFormData.sbu).subscribe(response => {
+        this.doctors = response as IDoctor[];
+        if (this.investmentFormService.investmentFormData.id != null && this.investmentFormService.investmentFormData.id != undefined && this.investmentFormService.investmentFormData.id != 0) {
+          //this.getInvestmentInstitution();
+        }
+        this.SpinnerService.hide();
+      }, error => {
+        this.SpinnerService.hide();
+        console.log(error);
+      });
+    }, error => {
+      this.SpinnerService.hide();
+      console.log(error);
+    });
+  }
+  customSearchFnIns(term: string, item: any) {
+    term = term.toLocaleLowerCase();
+    return item.institutionCode.toLocaleLowerCase().indexOf(term) > -1 ||
+      item.institutionName.toLocaleLowerCase().indexOf(term) > -1;
+  }
+  getCampaignMst(empId:number) {
+    this.SpinnerService.show();
+    this.investmentFormService.getCampaignMsts(empId).subscribe(response => {
+      this.campaignMsts = response as ICampaignMst[];
+      debugger;
+      this.investmentFormService.getDoctors(this.investmentFormService.investmentFormData.sbu).subscribe(response => {
+        this.doctors = response as IDoctor[];
+        this.investmentFormService.getInstitutions(this.investmentFormService.investmentFormData.sbu).subscribe(response => {
+          this.institutions = response as IInstitution[];
+          if (this.investmentFormService.investmentFormData.id != null && this.investmentFormService.investmentFormData.id != undefined && this.investmentFormService.investmentFormData.id != 0) {
+            //this.getInvestmentCampaign();
+          }
+          this.SpinnerService.hide();
+        }, error => {
+          this.SpinnerService.hide();
+          console.log(error);
+        });
+
+      }, error => {
+        this.SpinnerService.hide();
+        console.log(error);
+      });
+    }, error => {
+      this.SpinnerService.hide();
+      console.log(error);
+    });
+  }
+  getSociety() {
+    this.SpinnerService.show();
+    this.investmentFormService.getSociety().subscribe(response => {
+      this.society = response as ISocietyInfo[];
+      this.investmentFormService.getDoctors(this.investmentFormService.investmentFormData.sbu).subscribe(response => {
+        this.doctors = response as IDoctor[];
+        this.investmentFormService.investmentSocietyFormData.responsibleDoctorId=900000;
+        if (this.investmentFormService.investmentFormData.id != null && this.investmentFormService.investmentFormData.id != undefined && this.investmentFormService.investmentFormData.id != 0) {
+          //this.getInvestmentSociety();
+        }
+        this.SpinnerService.hide();
+      }, error => {
+        this.SpinnerService.hide();
+        console.log(error);
+      });
+    }, error => {
+      this.SpinnerService.hide();
+      console.log(error);
+    });
+  }
+  getBcds() {
+    this.SpinnerService.show();
+    this.investmentFormService.getBcds().subscribe(response => {
+      this.bcds = response as IBcdsInfo[];
+      this.investmentFormService.getDoctors(this.investmentFormService.investmentFormData.sbu).subscribe(response => {
+        this.doctors = response as IDoctor[];
+        this.investmentFormService.investmentBcdsFormData.responsibleDoctorId=900000;
+        if (this.investmentFormService.investmentFormData.id != null && this.investmentFormService.investmentFormData.id != undefined && this.investmentFormService.investmentFormData.id != 0) {
+          //this.getInvestmentBcds();
+        }
+        this.SpinnerService.hide();
+      }, error => {
+        this.SpinnerService.hide();
+        console.log(error);
+      });
+    }, error => {
+      this.SpinnerService.hide();
+      console.log(error);
+    });
+  }
   getSBU() {
     this.investmentFormService.getSBU().subscribe(response => {
       this.SBUs = response as ISBU[];
@@ -267,7 +383,7 @@ export class InvestmentFormComponent implements OnInit {
       for (let i = 0; i < this.investmentMedicineProds.length; i++) {
         sum = sum + this.investmentMedicineProds[i].tpVat;
       }
-      //this.investmentInitService.investmentDetailFormData.proposedAmount=sum.toString();
+      //this.investmentFormService.investmentDetailFormData.proposedAmount=sum.toString();
       this.investmentFormService.investmentFormData.proposedAmount = ((Math.round(sum * 100) / 100).toFixed(2));
     }
     else {
@@ -308,7 +424,7 @@ export class InvestmentFormComponent implements OnInit {
       this.investmentTargetedProds = [];
     }
     this.investmentFormService.getEmployeesforRapidBySBU(this.investmentFormService.investmentFormData.proposeFor, this.investmentFormService.investmentFormData.sbu).subscribe(response => {
-      this.investmentFormService.investmentFormData.approvalAuthId = null;
+      this.investmentFormService.investmentFormData.approverId = null;
       this.employees = response as IEmployee[];
     }, error => {
       console.log(error);
@@ -316,7 +432,7 @@ export class InvestmentFormComponent implements OnInit {
   }
   ChangeProposeFor() {
     this.subCampaignRapid = [];
-    this.investmentFormService.investmentFormData.approvalAuthId = null;
+    this.investmentFormService.investmentFormData.approverId = null;
     this.investmentFormService.getEmployeesforRapidByDpt(this.investmentFormService.investmentFormData.proposeFor, this.investmentFormService.investmentFormData.sbu).subscribe(response => {
       this.employees = response as IEmployee[];
     }, error => {
@@ -402,40 +518,40 @@ export class InvestmentFormComponent implements OnInit {
     }
   }
   //////////////////////////////////////////////////////////////////////////////
-  onChangeSubCampaignInCamp() {
-    this.investmentTargetedProds = [];
-    this.investmentFormService.getCampaignDtlProducts(this.investmentFormService.investmentFormData.subCampaignId).subscribe(response => {
-      this.campaignDtlProducts = response as ICampaignDtlProductRapid[];
-      let data = new InvestmentTargetedProd();
-      let productData = new Product();
-      for (let i = 0; i < this.campaignDtlProducts.length; i++) {
-        data = new InvestmentTargetedProd();
-        data.productId = this.campaignDtlProducts[i].productId;
-        data.investmentInitId = this.investmentFormService.investmentTargetedProdFormData.investmentInitId;
-        data.sbu = this.investmentFormService.investmentFormData.sbu;
-        data.employeeId = this.investmentFormService.investmentMedicineProdFormData.employeeId;
-        productData = new Product();
-        productData.productName = this.campaignDtlProducts[i].productInfo.productName;
-        productData.productCode = this.campaignDtlProducts[i].productInfo.productCode;
-        productData.sbu = this.campaignDtlProducts[i].productInfo.sbu;
-        productData.sbuName = this.campaignDtlProducts[i].productInfo.sbuName;
-        productData.setOn = this.campaignDtlProducts[i].productInfo.setOn;
-        productData.status = this.campaignDtlProducts[i].productInfo.status;
-        productData.id = this.campaignDtlProducts[i].productInfo.id;
+  // onChangeSubCampaignInCamp() {
+  //   this.investmentTargetedProds = [];
+  //   this.investmentFormService.getCampaignDtlProducts(this.investmentFormService.investmentFormData.subCampaignId).subscribe(response => {
+  //     this.campaignDtlProducts = response as ICampaignDtlProductRapid[];
+  //     let data = new InvestmentTargetedProd();
+  //     let productData = new Product();
+  //     for (let i = 0; i < this.campaignDtlProducts.length; i++) {
+  //       data = new InvestmentTargetedProd();
+  //       data.productId = this.campaignDtlProducts[i].productId;
+  //       data.investmentInitId = this.investmentFormService.investmentTargetedProdFormData.investmentInitId;
+  //       data.sbu = this.investmentFormService.investmentFormData.sbu;
+  //       data.employeeId = this.investmentFormService.investmentMedicineProdFormData.employeeId;
+  //       productData = new Product();
+  //       productData.productName = this.campaignDtlProducts[i].productInfo.productName;
+  //       productData.productCode = this.campaignDtlProducts[i].productInfo.productCode;
+  //       productData.sbu = this.campaignDtlProducts[i].productInfo.sbu;
+  //       productData.sbuName = this.campaignDtlProducts[i].productInfo.sbuName;
+  //       productData.setOn = this.campaignDtlProducts[i].productInfo.setOn;
+  //       productData.status = this.campaignDtlProducts[i].productInfo.status;
+  //       productData.id = this.campaignDtlProducts[i].productInfo.id;
 
-        data.productInfo = productData;
-        this.investmentTargetedProds.push(data);
-      }
-      this.investmentFormService.investmentFormData.approvalAuthId = null;
-      this.investmentFormService.getEmployeesforRapidByCamp(this.investmentFormService.investmentFormData.subCampaignId).subscribe(response => {
-        this.employees = response as IEmployee[];
-      }, error => {
-        console.log(error);
-      });
-    }, error => {
-      console.log(error);
-    });
-  }
+  //       data.productInfo = productData;
+  //       this.investmentTargetedProds.push(data);
+  //     }
+  //     this.investmentFormService.investmentFormData.approverId = null;
+  //     this.investmentFormService.getEmployeesforRapidByCamp(this.investmentFormService.investmentFormData.subCampaignId).subscribe(response => {
+  //       this.employees = response as IEmployee[];
+  //     }, error => {
+  //       console.log(error);
+  //     });
+  //   }, error => {
+  //     console.log(error);
+  //   });
+  // }
   onChangeProduct() {
     if (this.medicineProducts !== undefined) {
       for (let i = 0; i < this.medicineProducts.length; i++) {
@@ -485,6 +601,137 @@ export class InvestmentFormComponent implements OnInit {
     if (this.investmentFormService.investmentFormData.paymentMethod != "Cheque") {
       this.investmentFormService.investmentFormData.chequeTitle = "";
     }
+  }
+  onChangeDonationTo() {
+    if (this.investmentFormService.investmentFormData.proposeFor == "BrandCampaign" && this.investmentFormService.investmentFormData.donationTo != "Campaign" && this.investmentFormService.investmentFormData.donationTo != null) {
+      this.toastr.warning("For Brand Campaign, must select Campaign");
+      this.investmentFormService.investmentFormData.proposeFor = null;
+      return false;
+    }
+    if (this.investmentFormService.investmentFormData.proposeFor == "Others" && this.investmentFormService.investmentFormData.donationTo == "Campaign" && this.investmentFormService.investmentFormData.donationTo != null) {
+      this.toastr.warning("For Campaign, must select Brand Campaign");
+      this.investmentFormService.investmentFormData.proposeFor = null;
+      return false;
+    }
+ 
+      
+    if (this.investmentFormService.investmentFormData.donationTo == "Doctor") {
+      if (this.investmentFormService.investmentDoctorFormData.id == null || this.investmentFormService.investmentDoctorFormData.id == undefined || this.investmentFormService.investmentDoctorFormData.id == 0) {
+        this.investmentFormService.investmentDoctorFormData = new InvestmentDoctor();
+        this.getDoctor();
+        this.getInstitution();
+      }
+    }
+    else if (this.investmentFormService.investmentFormData.donationTo == "Institution") {
+      if (this.investmentFormService.investmentInstitutionFormData.id == null || this.investmentFormService.investmentInstitutionFormData.id == undefined || this.investmentFormService.investmentInstitutionFormData.id == 0) {
+        this.investmentFormService.investmentDoctorFormData = new InvestmentDoctor();
+        this.getDoctor();
+        this.getInstitution();
+      }
+    }
+    else if (this.investmentFormService.investmentFormData.donationTo == "Campaign") {
+      if (this.investmentFormService.investmentCampaignFormData.id == null || this.investmentFormService.investmentCampaignFormData.id == undefined || this.investmentFormService.investmentCampaignFormData.id == 0) {
+        this.investmentFormService.investmentCampaignFormData = new InvestmentCampaign();
+        this.getCampaignMst(parseInt(this.empId));
+        this.getDoctor();
+        this.getInstitution();
+      }
+    }
+    else if (this.investmentFormService.investmentFormData.donationTo == "Bcds") {
+      if (this.investmentFormService.investmentBcdsFormData.id == null || this.investmentFormService.investmentBcdsFormData.id == undefined || this.investmentFormService.investmentBcdsFormData.id == 0) {
+        this.investmentFormService.investmentBcdsFormData = new InvestmentBcds();
+        this.getBcds();
+      }
+    }
+    else if (this.investmentFormService.investmentFormData.donationTo == "Society") {
+      if (this.investmentFormService.investmentSocietyFormData.id == null || this.investmentFormService.investmentSocietyFormData.id == undefined || this.investmentFormService.investmentSocietyFormData.id == 0) {
+        this.investmentFormService.investmentSocietyFormData = new InvestmentSociety();
+        this.getSociety();
+      }
+    }
+    if (this.investmentFormService.investmentFormData.id != null && this.investmentFormService.investmentFormData.id != undefined && this.investmentFormService.investmentFormData.id != 0) {
+      this.investmentFormService.investmentDoctorFormData.investmentInitId = this.investmentFormService.investmentFormData.id;
+      this.investmentFormService.investmentInstitutionFormData.investmentInitId = this.investmentFormService.investmentFormData.id;
+      this.investmentFormService.investmentCampaignFormData.investmentInitId = this.investmentFormService.investmentFormData.id;
+      this.investmentFormService.investmentBcdsFormData.investmentInitId = this.investmentFormService.investmentFormData.id;
+      this.investmentFormService.investmentSocietyFormData.investmentInitId = this.investmentFormService.investmentFormData.id;
+    }
+  }
+  onChangeDoctorInDoc() {
+    for (var i = 0; i < this.doctors.length; i++) {
+      if (this.doctors[i].id == this.investmentFormService.investmentDoctorFormData.doctorId) {
+        //this.investmentFormService.investmentDoctorFormData.doctorName=this.doctors[i].doctorName;
+        this.investmentFormService.investmentDoctorFormData.doctorCode = this.doctors[i].doctorCode;
+        this.degree = this.doctors[i].degree;
+        this.designation = this.doctors[i].designation;
+        break;
+      }
+    }
+    //this.getLastFiveInvestment(this.investmentFormService.investmentInitFormData.marketCode, this.convertedDate);
+  }
+  onChangeInstitutionInDoc() {
+    for (var i = 0; i < this.institutions.length; i++) {
+      if (this.institutions[i].id == this.investmentFormService.investmentDoctorFormData.institutionId) {
+        this.docInstaddress = this.institutions[i].address;
+
+        break;
+      }
+    }
+  }
+  onChangeInstitutionInInst() {
+    for (var i = 0; i < this.institutions.length; i++) {
+      if (this.institutions[i].id == this.investmentFormService.investmentInstitutionFormData.institutionId) {
+        this.instaddress = this.institutions[i].address;
+        this.institutionType = this.institutions[i].institutionType;
+        debugger;
+        break;
+      }
+    }
+   // this.getLastFiveInvestment(this.investmentFormService.investmentInitFormData.marketCode, this.convertedDate);
+  }
+  onChangeCampaignInCamp() {
+    this.investmentFormService.getCampaignDtls(this.investmentFormService.investmentCampaignFormData.campaignMstId).subscribe(response => {
+      this.campaignDtls = response as ICampaignDtl[];
+      this.onChangeSubCampaignInCamp();
+    }, error => {
+      console.log(error);
+    });
+  }
+  onChangeSubCampaignInCamp() {
+    for (var i = 0; i < this.campaignDtls.length; i++) {
+      if (this.campaignDtls[i].id == this.investmentFormService.investmentCampaignFormData.campaignDtlId) {
+        this.investmentFormService.investmentCampaignFormData.subCampStartDate = new DatePipe('en-US').transform(this.campaignDtls[i].subCampStartDate, 'dd/MM/yyyy');
+        this.investmentFormService.investmentCampaignFormData.subCampEndDate = new DatePipe('en-US').transform(this.campaignDtls[i].subCampEndDate, 'dd/MM/yyyy');
+        break;
+      }
+    }
+    // this.investmentFormService.getCampaignDtlProducts(this.investmentFormService.investmentCampaignFormData.campaignDtlId).subscribe(response => {
+    //   this.campaignDtlProducts = response as ICampaignDtlProduct[];
+    // }, error => {
+    //   console.log(error);
+    // });
+
+  }
+  onChangeSocietyInSociety() {
+    for (var i = 0; i < this.society.length; i++) {
+      if (this.society[i].id == this.investmentFormService.investmentSocietyFormData.societyId) {
+        this.investmentFormService.investmentSocietyFormData.societyAddress = this.society[i].societyAddress;
+        this.investmentFormService.investmentSocietyFormData.noOfMember = this.society[i].noOfMember;
+
+        break;
+      }
+    }
+   // this.getLastFiveInvestment(this.investmentFormService.investmentInitFormData.marketCode, this.convertedDate);
+  }
+  onChangeBcdsInBcds() {
+    for (var i = 0; i < this.bcds.length; i++) {
+      if (this.bcds[i].id == this.investmentFormService.investmentBcdsFormData.bcdsId) {
+        this.investmentFormService.investmentBcdsFormData.bcdsAddress = this.bcds[i].bcdsAddress;
+        this.investmentFormService.investmentBcdsFormData.noOfMember = this.bcds[i].noOfMember;
+        break;
+      }
+    }
+   // this.getLastFiveInvestment(this.investmentFormService.investmentInitFormData.marketCode, this.convertedDate);
   }
   //////////////////////////////////////////////////////////////////////////////////
   insertInvestmentTargetedProd() {
