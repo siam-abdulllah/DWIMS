@@ -43,7 +43,6 @@ export class InvestmentFormService {
     
   }
   getBudgetForCampaign(sbu: string, empID: number, donationId: number, campaignDtlId: number) {
-    debugger;
     return this.http.get(this.baseUrl + 'approvalCeiling/getBudgetCeilingForCampaign/' + empID + '/' + sbu + '/' + donationId + '/' + campaignDtlId);
   }
   getDepot() {
@@ -101,11 +100,11 @@ insertInvestmentMedicineProd() {
   getSociety() {
     return this.http.get(this.baseUrl + 'society/societyForInvestment');
   }
-  getCampaignMsts(empId:number) {
-    return this.http.get(this.baseUrl + 'campaign/campaignMstsForInvestmentRapid/'+empId);
+  getCampaignMsts(sbu:string) {
+    return this.http.get(this.baseUrl + 'campaign/campaignMstsForInvestmentRapid/'+sbu);
   }
   getCampaignDtls(mstId: number) {
-    return this.http.get(this.baseUrl + 'campaign/campaignDtlsForInvestmentRapid/' + mstId);
+    return this.http.get(this.baseUrl + 'campaign/campaignDtlsForInvestment/' + mstId);
   }
   
   getCampaignDtlProducts(dtlId: number) {
@@ -190,7 +189,7 @@ insertInvestmentMedicineProd() {
     debugger;
     return this.http.get(this.baseUrl + 'investmentRapid/getInvestmentmedicineProducts/' + invInitId );
   }
-  getEmployeesforrapid(){    
+  getEmployeesforRapid(){    
     return this.http.get(this.baseUrl + 'investmentrapid/employeesForRapid');
    
   }
@@ -217,6 +216,26 @@ insertInvestmentMedicineProd() {
   }
   submitInvestmentAppr(empId:any) {
     return this.http.post(this.baseUrl + 'investmentrapid/saveInvestmentRapidAppr/'+empId, this.investmentFormData);
+  }
+  insertInvestmentDoctor() {
+    return this.http.post(this.baseUrl + 'investment/insertInvestmentDoctor', this.investmentDoctorFormData);
+
+  }
+  insertInvestmentInstitution() {
+    return this.http.post(this.baseUrl + 'investment/insertInvestmentInstitution', this.investmentInstitutionFormData);
+
+  }
+  insertInvestmentCampaign() {
+    return this.http.post(this.baseUrl + 'investment/insertInvestmentCampaign', this.investmentCampaignFormData);
+
+  }
+  insertInvestmentBcds() {
+    return this.http.post(this.baseUrl + 'investment/insertInvestmentBcds', this.investmentBcdsFormData);
+
+  }
+  insertInvestmentSociety() {
+    return this.http.post(this.baseUrl + 'investment/insertInvestmentSociety', this.investmentSocietyFormData);
+
   }
 }
 

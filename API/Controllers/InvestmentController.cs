@@ -39,14 +39,24 @@ namespace API.Controllers
         private readonly StoreContext _dbContext;
         private readonly IGenericRepository<MarketGroupDtl> _marketGroupDtlRepo;
 
-        public InvestmentController(IGenericRepository<InvestmentTargetedGroup> investmentTargetedGroupRepo, IGenericRepository<InvestmentTargetedProd> investmentTargetedProdRepo,
-            IGenericRepository<InvestmentMedicineProd> investmentMedicineProdRepo, IGenericRepository<MedicineProduct> medicineProductRepo,
-            IGenericRepository<InvestmentInit> investmentInitRepo, IGenericRepository<InvestmentDetail> investmentDetailRepo, IGenericRepository<InvestmentDoctor> investmentDoctorRepo,
-            IGenericRepository<InvestmentSociety> investmentSocietyRepo, IGenericRepository<InvestmentBcds> investmentBcdsRepo,
-            IGenericRepository<InvestmentCampaign> investmentCampaignRepo, IGenericRepository<InvestmentInstitution> investmentInstitutionRepo,
-            IGenericRepository<Employee> employeeRepo, IGenericRepository<ReportInvestmentInfo> reportInvestmentInfoRepo,
-            IGenericRepository<InvestmentRecComment> investmentRecCommentRepo, StoreContext dbContext, IGenericRepository<Donation> donationRepo,
-            IMapper mapper, IGenericRepository<MarketGroupDtl> marketGroupDtlRepo)
+        public InvestmentController(IGenericRepository<InvestmentTargetedGroup> investmentTargetedGroupRepo, 
+            IGenericRepository<InvestmentTargetedProd> investmentTargetedProdRepo,
+            IGenericRepository<InvestmentMedicineProd> investmentMedicineProdRepo, 
+            IGenericRepository<MedicineProduct> medicineProductRepo,
+            IGenericRepository<InvestmentInit> investmentInitRepo, 
+            IGenericRepository<InvestmentDetail> investmentDetailRepo, 
+            IGenericRepository<InvestmentDoctor> investmentDoctorRepo,
+            IGenericRepository<InvestmentSociety> investmentSocietyRepo, 
+            IGenericRepository<InvestmentBcds> investmentBcdsRepo,
+            IGenericRepository<InvestmentCampaign> investmentCampaignRepo, 
+            IGenericRepository<InvestmentInstitution> investmentInstitutionRepo,
+            IGenericRepository<Employee> employeeRepo, 
+            IGenericRepository<ReportInvestmentInfo> reportInvestmentInfoRepo,
+            IGenericRepository<InvestmentRecComment> investmentRecCommentRepo, 
+            StoreContext dbContext, 
+            IGenericRepository<Donation> donationRepo,
+            IMapper mapper, 
+            IGenericRepository<MarketGroupDtl> marketGroupDtlRepo)
         {
             _mapper = mapper;
             _investmentInitRepo = investmentInitRepo;

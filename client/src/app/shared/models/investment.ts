@@ -47,8 +47,8 @@ export interface IInvestmentForm {
     type:string;
     donationTypeName:string;
     proposalDateStr:string;
-    subCampaignId:number;
-    subCampaignName:string;
+    //subCampaignId:number;
+    //subCampaignName:string;
     propsalDate:Date;
     depotCode:string;
     depotName:string;
@@ -67,6 +67,11 @@ export interface IInvestmentForm {
     boxQuantity:number;
     investmentMedicineProd:InvestmentMedicineProd[];
     investmentRecProducts:InvestmentTargetedProd[];
+    investmentDoctor:InvestmentDoctor;
+    investmentInstitution:InvestmentInstitution;
+    investmentCampaign:InvestmentCampaign;
+    investmentBcds:InvestmentBcds;
+    investmentSociety:InvestmentSociety;
 
 }
 export class InvestmentForm implements IInvestmentForm {
@@ -78,8 +83,8 @@ export class InvestmentForm implements IInvestmentForm {
     donationTypeName:string;
     proposeFor: string=null;
     proposalDateStr:string;
-    subCampaignId:number=0;
-    subCampaignName:string;
+    //subCampaignId:number=0;
+    //subCampaignName:string;
     propsalDate:Date;
     depotCode:string;
     depotName:string;
@@ -91,13 +96,18 @@ export class InvestmentForm implements IInvestmentForm {
     remarks:string;
     sbu:string=null;
     sbuName:string;
-    donationTo: string;
+    donationTo: string=null;
     address:string;
     chequeTitle: string;
     approval:string;
     boxQuantity:number;
     investmentMedicineProd:InvestmentMedicineProd[];
     investmentRecProducts:InvestmentTargetedProd[];
+    investmentDoctor:InvestmentDoctor;
+    investmentInstitution:InvestmentInstitution;
+    investmentCampaign:InvestmentCampaign;
+    investmentBcds:InvestmentBcds;
+    investmentSociety:InvestmentSociety;
 }
 
 

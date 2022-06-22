@@ -323,6 +323,30 @@ namespace API.Controllers
             {
                 throw ex;
             }
+        }[HttpGet("campaignMstsForInvestmentRapid/{sbu}")]
+        public async Task<IReadOnlyList<CampaignMstDto>> GetCampaignMstsForInvestmentRapid(string sbu)
+        {
+            try
+            {
+                //var empData = await _employeeRepo.GetByIdAsync(empId);
+                var mstData = await _campaignMstRepo.ListAllAsync();
+                var dtlData = await _campaignDtlRepo.ListAllAsync();
+                var data = (from m in mstData
+                              join d in dtlData on m.Id equals d.MstId
+                              where d.SubCampStartDate<=DateTime.Now && d.SubCampEndDate>=DateTime.Now && m.SBU== sbu
+                            orderby m.CampaignName
+                              select new CampaignMstDto
+                              {
+                                  CampaignName = m.CampaignName.Trim(),
+                                   Id= m.Id
+                              }
+                              ).Distinct().ToList();
+                return data;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
         }
      [HttpGet("campaignMstsForInvSummaryReport/{mstId}")]
         public async Task<IReadOnlyList<CampaignMstDto>> GetCampaignMstsForInvSummaryReport(int mstId)

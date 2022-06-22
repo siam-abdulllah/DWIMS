@@ -86,7 +86,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="row">
-                                    <div class="col-md-1" *ngIf="investmentFormService.investmentFormData.proposeFor=='PMD'">
+                                    <!-- <div class="col-md-1" *ngIf="investmentFormService.investmentFormData.proposeFor=='PMD'">
                                         <label>Campaign</label>
                                         <span style="color:red;">*</span>
                                     </div>
@@ -94,17 +94,14 @@
                                         <select class="form-control" [disabled]="isInvOther && !isAdmin" id="subCampaignId" (change)="onChangeSubCampaignInCamp()" name="subCampaignId" [(ngModel)]="investmentFormService.investmentFormData.subCampaignId" required>
                                             <option  [ngValue]="0">Select Campaign Name</option>
                                             <option *ngFor="let a of subCampaignRapid" [value]="a.subCampId">{{a.subCampaignName}}</option>
-                                            <!-- <option value="Donation">Donation</option>
-                                            <option value="Gift">Gift</option>
-                                            <option value="Honorarium">Honorarium</option> -->
                                         </select>
-                                    </div>
+                                    </div> -->
                                     <div class="col-md-1">
                                         <label>Donation To</label>
                                         <span style="color:red;">*</span>
                                     </div>
                                     <div class="col-md-3">
-                                        <select class="form-control" (change)="onChangeDonationTo()" [disabled]="isDonationValid && isInvOther && !isAdmin" id="donationTo" name="donationTo" #donationTo="ngModel" [(ngModel)]="investmentFormService.investmentFormData.donationTo" required [class.invalid]="donationTo.invalid && donationTo.touched">
+                                        <select class="form-control" (change)="onChangeDonationTo()" [disabled]="isDonationValid" id="donationTo" name="donationTo" #donationTo="ngModel" [(ngModel)]="investmentFormService.investmentFormData.donationTo" required [class.invalid]="donationTo.invalid && donationTo.touched">
                                             <option  [ngValue]="null">Select Donation To</option>
                                             <option value="Doctor">Doctor</option>
                                             <option value="Institution">Institution</option>
@@ -244,20 +241,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <!-- <h6 class=""><strong>Doctor Profile</strong></h6> -->
-                                        </div>
-                                        <div class="col-sm-2"></div>
-                                        <div class="col-sm-2" *ngIf="(isValid && isAdmin) || (isValid && !isInvOther)">
-                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentDoctor()"><i class="fa fa-save"></i>&nbsp; Save</button>
-                                        </div>
-                                        <div class="col-sm-2" *ngIf="(isValid && isAdmin) || (isValid && !isInvOther)">
-                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentDoctor()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
-                                        </div>
-                                    </div>
-                                </div>
                             </fieldset>
                             <fieldset *ngIf="investmentFormService.investmentFormData.donationTo=='Institution'">
                                 <legend>Institution Profile</legend>
@@ -335,23 +318,6 @@
                                         <div class="col-md-3">
                                             <input class="form-control" maxlength="100" [disabled]="isInvOther && !isAdmin" name="departmentUnit" id="departmentUnit" #departmentUnit="ngModel" [(ngModel)]="investmentFormService.investmentInstitutionFormData.departmentUnit">
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <!-- <h6 class=""><strong>Institution Profile</strong></h6> -->
-                                        </div>
-                                        <div class="col-sm-2"></div>
-                                        <div class="col-sm-2" *ngIf="(isValid && isAdmin) || (isValid && !isInvOther)">
-                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentInstitution()"><i class="fa fa-save"></i>&nbsp; Save</button>
-                                        </div>
-                                        <div class="col-sm-2" *ngIf="(isValid && isAdmin) || (isValid && !isInvOther)">
-                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentInstitution()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
-                                        </div>
-                                        <!-- <div class="col-sm-2" *ngIf="isValid">
-                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="resetInvestmentInstitution()"><i class="fa fa-search"></i>Reset</button>
-                                        </div> -->
                                     </div>
                                 </div>
                             </fieldset>
@@ -444,7 +410,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <div class="form-group">
                                         <table class="table  table-bordered">
                                             <tr class="HeaderRow">
@@ -462,22 +428,7 @@
                                             </tr>
                                         </table>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <!-- <h6 class=""><strong>Campaign Info</strong></h6> -->
-                                        </div>
-                                        <div class="col-sm-2"></div>
-                                        <div class="col-sm-2" *ngIf="(isValid && isAdmin) || (isValid && !isInvOther)">
-                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentCampaign()"><i class="fa fa-save"></i>&nbsp; Save</button>
-                                        </div>
-                                        <div class="col-sm-2" *ngIf="(isValid && isAdmin) || (isValid && !isInvOther)">
-                                            <button class=" btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentCampaign()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
-                                        </div>
-
-                                    </div>
-                                </div>
+                                </div> -->
                             </fieldset>
                             <fieldset *ngIf="investmentFormService.investmentFormData.donationTo=='Bcds'">
                                 <legend>BCDS</legend>
@@ -531,20 +482,6 @@
                                         </div>
                                         <div class="col-md-3">
                                             <input class="form-control" name="noOfMember" id="noOfMember" #noOfMember="ngModel" [(ngModel)]="investmentFormService.investmentBcdsFormData.noOfMember" readonly>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <!-- <h6 class=""><strong>BCDS</strong></h6> -->
-                                        </div>
-                                        <div class="col-sm-2"></div>
-                                        <div class="col-sm-2" *ngIf="(isValid && isAdmin) || (isValid && !isInvOther)">
-                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentBcds()"><i class="fa fa-save"></i>&nbsp; Save</button>
-                                        </div>
-                                        <div class="col-sm-2" *ngIf="(isValid && isAdmin) || (isValid && !isInvOther)">
-                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentBcds()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
                                         </div>
                                     </div>
                                 </div>
@@ -603,21 +540,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <!-- <h6 class=""><strong>Society</strong></h6> -->
-                                        </div>
-                                        <div class="col-sm-2"></div>
-                                        <div class="col-sm-2" *ngIf="(isValid && isAdmin) || (isValid && !isInvOther)">
-                                            <button class="btn btn-success btn-lg btn-block" type="button" (click)="insertInvestmentSociety()"><i class="fa fa-save"></i>&nbsp; Save</button>
-                                        </div>
-                                        <div class="col-sm-2" *ngIf="(isValid && isAdmin) || (isValid && !isInvOther)">
-                                            <button class="btn btn-danger btn-lg btn-block" type="button" (click)="removeInvestmentSociety()"><i class="fa fa-trash"></i>&nbsp; Remove</button>
-                                        </div>
-
-                                    </div>
-                                </div>
                             </fieldset>
                             <fieldset>
                                 <div class="form-group">
@@ -629,7 +551,6 @@
                                         <div class="row">
                                             <div class="col-md-1">
                                                 <label>Proposal Date</label>
-                                                <span style="color:red;">*</span>
                                             </div>
                                             <div class="col-md-2">
                                                 <input class="form-control" placeholder="Proposal Date" name="proposalDateStr" [(ngModel)]="investmentFormService.investmentFormData.proposalDateStr" readonly>
@@ -642,17 +563,17 @@
                                             <div class="col-md-2">
                                                 <input class="form-control" required placeholder="To Whom" name="donationTo" id="donationTo" [(ngModel)]="investmentFormService.investmentFormData.donationTo">
                                             </div> -->
-                                            <div class="col-md-1">
+                                            <!-- <div class="col-md-1">
                                                 <label>Address </label>
                                             </div>
                                             <div class="col-md-4">
                                                 <textarea id="address" class="form-control" rows="1" cols="60" [(ngModel)]="investmentFormService.investmentFormData.address" name="address">
 
                                                 </textarea>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
-                                    <fieldset *ngIf="investmentFormService.investmentFormData.type=='4'">
+                                    <fieldset *ngIf="investmentFormService.investmentFormData.type=='4'" style="margin-bottom: 10px;">
                                         <div>
 
                                             <legend>Add Donated Medicine</legend>
@@ -706,7 +627,7 @@
                                         </div>
                                     </fieldset>
 
-                                    <div class="form-group" style="margin-top: 20px;">
+                                    <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-1">
                                                 <label>Amount</label>

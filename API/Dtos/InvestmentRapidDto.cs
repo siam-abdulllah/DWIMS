@@ -34,8 +34,13 @@ namespace API.Dtos
         public int ApproverId { get; set; }
         public string ApprovedStatus { get; set; }
         public string Approval { get; set; }
-        public List<InvestmentMedicineProd> investmentMedicineProd { get; set; }
-        public List<InvestmentRecProducts> investmentRecProducts { get; set; }
+        public List<InvestmentMedicineProd> InvestmentMedicineProd { get; set; }
+        public List<InvestmentRecProducts> InvestmentRecProducts { get; set; }
+        public InvestmentDoctor InvestmentDoctor { get; set; }
+        public InvestmentInstitution InvestmentInstitution { get; set; }
+        public InvestmentCampaign InvestmentCampaign { get; set; }
+        public InvestmentBcds InvestmentBcds { get; set; }
+        public InvestmentSociety InvestmentSociety { get; set; }
      
     }
 }
