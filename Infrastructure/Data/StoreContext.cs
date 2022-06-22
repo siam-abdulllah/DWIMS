@@ -164,6 +164,8 @@ namespace Infrastructure.Data
         public DbSet<BgtEmployeeLocationWiseSBUExp> BgtEmployeeLocationWiseSBUExp { get; set; }
         [NotMapped]
         public DbSet<CampaignExp> CampaignExp { get; set; }
+        [NotMapped]
+        public DbSet<BgtEmpSbuDisburse> BgtEmpSbuDisburse { get; set; }
 
 
         public List<T> ExecSQL<T>(string query)
