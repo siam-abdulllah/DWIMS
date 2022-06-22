@@ -27,4 +27,15 @@ namespace API.Dtos
         public int DonationId { get; set; }
         public int StMonth { get; set; }
     }
+
+    public class BgtEmpDetailsInsertDto
+    {
+        public int DeptId { get; set; }
+        public int Year { get; set; }
+        public string SBU { get; set; }
+        public int AuthId { get; set; }
+        public long NewAllocated { get; set; }
+        public int EnteredBy { get; set; }
+        public string Code { get; set; }
+    }
 }
