@@ -69,6 +69,7 @@ import { BgtEmpSbuMapComponent } from '../bgtEmpSbuMap/bgtEmpSbuMap';
 import { UploadComponent } from '../upload/upload.component';
 import { BDCurrencyPipe } from '../bdNumberPipe';
 import { SharedModule } from '../shared/shared.module';
+import { BgtEmpDisburseComponent } from '../bgtEmpDisburse/bgtEmpDisburse.component';
 
 
 @NgModule({
@@ -145,6 +146,7 @@ import { SharedModule } from '../shared/shared.module';
     MenuConfigComponent,
     ChangePasswordComponent,
     BgtEmployeeComponent,
+    BgtEmpDisburseComponent,
     BgtOwnComponent,
     UploadComponent
   ],

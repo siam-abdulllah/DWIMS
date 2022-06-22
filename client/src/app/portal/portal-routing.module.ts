@@ -53,6 +53,7 @@ import { BgtEmployeeComponent } from '../bgtEmployee/bgtEmployee.component';
 import { InvestmentCancelComponent } from '../investmentCancel/investmentCancel.component';
 import { BgtOwnComponent } from '../bgtOwn/bgtOwn.component';
 import { BgtEmpSbuMapComponent } from '../bgtEmpSbuMap/bgtEmpSbuMap';
+import { BgtEmpDisburseComponent } from '../bgtEmpDisburse/bgtEmpDisburse.component';
 
 
 //import { RptInvestStatusComponent } from '../rptInvestmentStatus/rptInvestmentStatus.component';
@@ -104,6 +105,7 @@ const portalRoutes: Routes = [
         {path: 'rptEmpExp', component: RptEmpWiseExpComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'changeDepot', component: ChangeDepotComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'bgtEmployee', component: BgtEmployeeComponent, canActivate: [SuperAdminRoleGuard]},
+        {path: 'bgtEmpDisburse', component: BgtEmpDisburseComponent },
         {path: 'bgtOwn', component: BgtOwnComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'paramInvestmentSummary/:param', component: ParamInvestSummaryComponent},
         //{path: 'rptInvestmentDetail', component: RptInvestmentDetailComponent},
@@ -123,6 +125,7 @@ const portalRoutes: Routes = [
         ]
 }
 ];
+
 @NgModule({
   imports: [RouterModule.forChild(portalRoutes)],
   exports: [RouterModule]
