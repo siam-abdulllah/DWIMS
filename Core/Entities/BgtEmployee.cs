@@ -44,4 +44,23 @@
         public int BgtEmpId { get; set; }
 
     }
+
+
+    public class BgtEmpSbuDisburse
+    {
+        public int Id { get; set; }
+        public int CompId { get; set; }
+        public int Year { get; set; }
+        public int DeptId { get; set; }
+        public string SBU { get; set; }
+        public int AuthId { get; set; }
+        public int EmployeeId { get; set; }
+        public string EmployeeName { get; set; }
+        public string CompoCode { get; set; }
+        public string Code { get; set; }
+        public long? Total { get; set; }
+        public long? Allocated { get; set; }
+        public double? Expense { get; set; }
+        public long? NewAllocated { get; set; }
+    }
 }

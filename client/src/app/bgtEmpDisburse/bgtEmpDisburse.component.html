@@ -1,0 +1,180 @@
+<style>
+    .CellWithComment {
+        position: relative;
+    }
+    
+    .CellComment {
+        visibility: hidden;
+        width: auto;
+        position: absolute;
+        z-index: 100;
+        text-align: Left;
+        opacity: 0.4;
+        transition: opacity 2s;
+        border-radius: 6px;
+        background-color: rgb(9, 242, 250);
+        padding: 3px;
+        top: -30px;
+        left: 0px;
+    }
+    
+    .CellWithComment:hover span.CellComment {
+        visibility: visible;
+        opacity: 1;
+    }
+</style>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <!-- form start -->
+                <form [formGroup]="bgtEmpDisburse">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-11">
+                                    <h3 class="card-title">Employee Budget Distribution</h3>
+                                </div>
+
+                                <div class="col-sm-1 ">
+                                    <button class="btn btn-danger btn-block" (click)="reset()" type="button "><i class="fa fa-undo "></i>&nbsp; Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body ">
+                            <fieldset>
+
+                                <div class="form-group ">
+                                    <div class="row ">
+                                        <div class="col-md-1 ">
+                                            <label>Company Name</label>
+                                        </div>
+                                        <div class="col-md-3 ">
+                                            <input class="form-control" value="Square Pharmaceuticals Ltd." readonly>
+                                        </div>
+                                        <div class="col-md-1 ">
+                                            <label>Department  <div class="invalid-feedback" *ngIf="bgtEmpDisburse.controls.deptId.errors?.required">*</div> </label>
+
+                                        </div>
+                                        <div class="col-md-3 ">
+                                            <select class="form-control" id="deptId" formControlName="deptId" required>
+                                        <option [ngValue]="null">Select Department</option>
+                                        <option [ngValue]="1">Sales</option>
+                                        <option [ngValue]="2">PMD</option>
+                                    </select>
+
+                                        </div>
+
+                                        <div class="col-md-1 ">
+                                            <label>Year <div class="invalid-feedback" *ngIf="bgtEmpDisburse.controls.year.errors?.required">*</div>  </label>
+                                        </div>
+                                        <div class="col-md-3 ">
+                                            <input class="form-control" id="year" name="year" placeholder="Select Year" formControlName="year" [bsValue]="bsValue" bsDatepicker [bsConfig]="{  containerClass: 'theme-blue', minMode:'year', adaptivePosition: true, dateInputFormat: 'YYYY' }">
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group ">
+                                    <div class="row ">
+                                        <div class="col-md-1 ">
+                                            <label>Authorize Level<div class="invalid-feedback" *ngIf="bgtEmpDisburse.controls.authId.errors?.required">*</div>  </label>
+                                        </div>
+                                        <div class="col-md-3 ">
+                                            <select class="form-control" id="authId" formControlName="authId">
+                                            <option *ngFor="let a of approvalAuthorities" [value]="a.id">{{a.approvalAuthorityName+ ' - ' +  a.remarks}}</option>
+                                        </select>
+                                        </div>
+                                        <div class="col-md-1 ">
+                                            <label>SBU<div class="invalid-feedback" *ngIf="bgtEmpDisburse.controls.sbu.errors?.required">*</div>  </label>
+                                        </div>
+                                        <div class="col-md-3 ">
+                                            <select class="form-control" id="sbu" formControlName="sbu">
+                                            <option [ngValue]="null">Select SBU</option>
+                                            <option *ngFor="let a of SBUs" [value]="a.sbuCode">{{a.sbuName}}</option>
+                                        </select>
+                                        </div>
+                                        <div class="col-md-1 ">
+
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button class="btn btn-info btn-block" (click)="generateData()" style=" text-shadow: 3em #000; "><i class="fa fa-save "></i>&nbsp; Generate Data</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <br/>
+                            <div class="form-group">
+
+                                <table class="table  table-bordered" style="font-weight: bold;font-size: 12px;">
+                                    <tr id="longHead">
+                                        <td>
+                                            Authority Budget: {{totalBudget | BDCurrency}}
+                                        </td>
+                                        <td>
+                                            Allocated: {{totalAlloc | BDCurrency}}
+                                        </td>
+                                        <td>
+                                            Not Allocated: {{totalBudget - totalAlloc | BDCurrency}}
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+                            <br/>
+
+                            <div class="form-group">
+                                <table class="table  table-bordered">
+                                    <tr class="HeaderRow">
+                                        <td>SBU</td>
+                                        <td>Employee ID</td>
+                                        <td style="width: 0;display:none; ">Code</td>
+                                        <td>Employee Name</td>
+                                        <td>Allocated</td>
+                                        <td>Donation Wise Allocated</td>
+                                        <td>Expense</td>
+                                        <td>New Total Amount</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr *ngFor="let a of sbuData; let index = index">
+                                        <td>{{a.sbu}}</td>
+                                        <td style="width: 0;display:none; ">
+                                            <!-- {{bgtEmployee.controls.donationId.value}} -->
+                                            {{a.code}}
+                                        </td>
+                                        <td>{{a.employeeId}}</td>
+                                        <td>{{a.employeeName}}</td>
+                                        <td>
+                                            {{a.total | BDCurrency}}
+                                        </td>
+                                        <td>
+                                            {{a.allocated | BDCurrency}}
+                                        </td>
+                                        <td>
+                                            {{a.expense | BDCurrency}}
+                                        </td>
+                                        <td>
+                                            <input class="form-control ng-valid ng-touched ng-dirty" type="text" placeholder="New Allocated" [(ngModel)]="a.newAllocated" [ngModelOptions]="{standalone: true}" (focusout)="getTotal(a)">
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-success btn-block" (click)="saveData(a)">Update Data</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <!-- /.card -->
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
+    <p style="color: black">Please Wait. </p>
+</ngx-spinner>
