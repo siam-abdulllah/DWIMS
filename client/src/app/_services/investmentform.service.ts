@@ -2,7 +2,7 @@ import { InvestmentInitPagination, IInvestmentInitPagination } from '../shared/m
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import {
-   InvestmentForm,IInvestmentForm,InvestmentMedicineProd ,InvestmentDetail, IInvestmentDetail,InvestmentTargetedProd
+   InvestmentForm,IInvestmentForm,InvestmentMedicineProd ,InvestmentDetail, IInvestmentDetail,InvestmentTargetedProd, InvestmentOther
 } from '../shared/models/investment';
 import { InvestmentDoctor, IInvestmentDoctor, InvestmentInstitution, IInvestmentInstitution, InvestmentCampaign, IInvestmentCampaign } from '../shared/models/investment';
 import { InvestmentBcds, IInvestmentBcds, InvestmentSociety, IInvestmentSociety } from '../shared/models/investment';
@@ -27,6 +27,7 @@ export class InvestmentFormService {
   investmentCampaignFormData: InvestmentCampaign = new InvestmentCampaign();
   investmentBcdsFormData: InvestmentBcds = new InvestmentBcds();
   investmentSocietyFormData: InvestmentSociety = new InvestmentSociety();
+  investmentOtherFormData: InvestmentOther = new InvestmentOther();
   baseUrl = environment.apiUrl;
   genParams = new GenericParams();
 
@@ -153,6 +154,9 @@ insertInvestmentMedicineProd() {
   getInvestmentSociety(investmentInitId: number) {
     return this.http.get(this.baseUrl + 'investment/investmentSociety/' + investmentInitId);
   }
+  getInvestmentOther(investmentInitId: number) {
+    return this.http.get(this.baseUrl + 'investmentRapid/investmentOther/' + investmentInitId);
+  }
   getInvestmentDetails(investmentInitId: number) {
     return this.http.get(this.baseUrl + 'investment/investmentDetails/' + investmentInitId);
   }
@@ -193,16 +197,16 @@ insertInvestmentMedicineProd() {
     return this.http.get(this.baseUrl + 'investmentrapid/employeesForRapid');
    
   }
-  getEmployeesforRapidByDpt(proposeFor:any,sbu:any){    
-    return this.http.get(this.baseUrl + 'investmentrapid/getEmployeesforRapidByDpt/'+proposeFor+'/'+sbu);
+  getEmployeesforRapidByDpt(proposeFor:any,sbu:any,empId:any){    
+    return this.http.get(this.baseUrl + 'investmentrapid/getEmployeesforRapidByDpt/'+proposeFor+'/'+sbu+'/'+empId);
    
   }
-  getEmployeesforRapidByCamp(subCampaignId:any){    
-    return this.http.get(this.baseUrl + 'investmentrapid/getEmployeesforRapidByCamp/'+subCampaignId);
+  getEmployeesforRapidByCamp(subCampaignId:any,empId:any){    
+    return this.http.get(this.baseUrl + 'investmentrapid/getEmployeesforRapidByCamp/'+subCampaignId+'/'+empId);
    
   }
-  getEmployeesforRapidBySBU(proposeFor:any,sbu:any){    
-    return this.http.get(this.baseUrl + 'investmentrapid/getEmployeesforRapidBySBU/'+proposeFor+'/'+sbu);
+  getEmployeesforRapidBySBU(proposeFor:any,sbu:any,empId:any){    
+    return this.http.get(this.baseUrl + 'investmentrapid/getEmployeesforRapidBySBU/'+proposeFor+'/'+sbu+'/'+empId);
    
   }
   getInvestmentTargetedProds(investmentInitId: number, sbu: string) {

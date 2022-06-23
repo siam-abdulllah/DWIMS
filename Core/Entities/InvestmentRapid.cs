@@ -14,7 +14,7 @@ namespace Core.Entities
         public string Type { get; set; }
         public DateTime PropsalDate { get; set; }
         public string DonationTo { get; set; }
-        public string Address { get; set; }
+        //public string Address { get; set; }
         public double ProposedAmount { get; set; }
         public string PaymentMethod { get; set; }
         public string Remarks { get; set; }
@@ -25,8 +25,8 @@ namespace Core.Entities
 
         public int InitiatorId { get;set;}
      
-        public int SubCampaignId { get;set;}
-        public string SubCampaignName { get;set;}
+        //public int SubCampaignId { get;set;}
+        //public string SubCampaignName { get;set;}
     }
     [NotMapped]
     public class InvestmentRapidVM : InvestmentRapid

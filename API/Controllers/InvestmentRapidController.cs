@@ -37,6 +37,7 @@ namespace API.Controllers
         private readonly IGenericRepository<InvestmentSociety> _investmentSocietyRepo;
         private readonly IGenericRepository<InvestmentBcds> _investmentBcdsRepo;
         private readonly IGenericRepository<InvestmentInstitution> _investmentInstitutionRepo;
+        private readonly IGenericRepository<InvestmentOther> _investmentOtherRepo;
         private readonly IMapper _mapper;
         private readonly StoreContext _dbContext;
         private readonly IGenericRepository<ApprAuthConfig> _apprAuthConfigRepo;
@@ -64,6 +65,7 @@ namespace API.Controllers
             IGenericRepository<InvestmentBcds> investmentBcdsRepo,
             //IGenericRepository<InvestmentCampaign> investmentCampaignRepo,
             IGenericRepository<InvestmentInstitution> investmentInstitutionRepo,
+            IGenericRepository<InvestmentOther> investmentOtherRepo,
             IGenericRepository<ApprAuthConfig> apprAuthConfigRepo)
         {
             _mapper = mapper;
@@ -89,6 +91,7 @@ namespace API.Controllers
             _investmentCampaignRepo = investmentCampaignRepo;
             _investmentBcdsRepo = investmentBcdsRepo;
             _investmentSocietyRepo = investmentSocietyRepo;
+            _investmentOtherRepo = investmentOtherRepo;
         }
 
         [HttpPost("saveInvestmentRapid/{empId}")]
@@ -200,6 +203,9 @@ namespace API.Controllers
                     else if (investmentRapidDto.DonationTo == "Society")
                     { investmentRapidDto.InvestmentSociety.InvestmentInitId=investmentInit.Id;
                         await InsertInvestmentSociety(investmentRapidDto.InvestmentSociety); }
+                    else if (investmentRapidDto.DonationTo == "Other")
+                    { investmentRapidDto.InvestmentOther.InvestmentInitId=investmentInit.Id;
+                        await InsertInvestmentOther(investmentRapidDto.InvestmentOther); }
                 }
                 #endregion
                 #region Save On Investment Rapid
@@ -428,7 +434,7 @@ namespace API.Controllers
                 {
                     if (investmentRapidDto.ApprovedStatus == "Approved")
                     {
-                        if (investmentRapidDto.SubCampaignId == 0)
+                        if (investmentRapidDto.DonationTo != "Campaign")
                         {
                             if (investmentRapidDto.ProposeFor != "Others Rapid")
                             {
@@ -481,7 +487,7 @@ namespace API.Controllers
                                     new SqlParameter("@IID", investmentForm.InvestmentInitId),
                                     new SqlParameter("@PRAMOUNT", investmentRapidDto.ProposedAmount),
                                     new SqlParameter("@ASTATUS", investmentRapidDto.ApprovedStatus),
-                                    new SqlParameter("@CDTLID", investmentRapidDto.SubCampaignId),
+                                    new SqlParameter("@CDTLID", investmentRapidDto.InvestmentCampaign.CampaignDtlId),
                                     new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
                                 };
                             var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheckForCampaign @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@CDTLID,@r out", parms.ToArray());
@@ -775,8 +781,8 @@ namespace API.Controllers
             return empList;
         }
 
-        [HttpGet("getEmployeesforRapidByDpt/{proposeFor}/{sbu}")]
-        public IReadOnlyList<Employee> GetEmployeesforRapidByDpt(string proposeFor, string sbu)
+        [HttpGet("getEmployeesforRapidByDpt/{proposeFor}/{sbu}/{empId}")]
+        public IReadOnlyList<Employee> GetEmployeesforRapidByDpt(string proposeFor, string sbu, int empId)
         {
             var deptId = "";
             var sbuQry = "";
@@ -807,7 +813,7 @@ namespace API.Controllers
                                         INNER JOIN  ApprAuthConfig ac on emp.Id = ac.EmployeeId
                                        INNER JOIN EmpSbuMapping esm ON emp.Id = esm.EmployeeId
                                         where  ac.ApprovalAuthorityId not  in (1,2,9,10,11,13,15) AND ac.Status='A' 
-                                        AND esm.DataStatus=1 {0} {1}", deptId, sbuQry);
+                                        AND esm.DataStatus=1  {0} {1}", deptId, sbuQry);
                 empList = _dbContext.Employee.FromSqlRaw(qry).ToList();
             }
             catch (System.Exception ex)
@@ -817,11 +823,13 @@ namespace API.Controllers
             return empList;
         }
 
-        [HttpGet("getEmployeesforRapidBySBU/{proposeFor}/{sbu}")]
-        public IReadOnlyList<Employee> GetEmployeesforRapidBySBU(string proposeFor, string sbu)
+        [HttpGet("getEmployeesforRapidBySBU/{proposeFor}/{sbu}/{empId}")]
+        public IReadOnlyList<Employee> GetEmployeesforRapidBySBU(string proposeFor, string sbu,int empId)
         {
             var deptId = "";
             var sbuQry = "";
+            //var spec = new ApprAuthConfigSpecification(empId, "A");
+            //var authConfig = await _apprAuthConfigRepo.GetEntityWithSpec(spec);
             if (proposeFor == "Sales")
             {
                 deptId = " AND emp.DepartmentId=1";
@@ -838,8 +846,8 @@ namespace API.Controllers
                 sbuQry = " AND esm.SBU='" + sbu + "'";
             }
 
-            else
-            { sbuQry = ""; }
+            //else
+            //{ sbuQry = ""; }
             List<Employee> empList = new List<Employee>();
             try
             {
@@ -854,7 +862,7 @@ namespace API.Controllers
                                        INNER JOIN  ApprAuthConfig ac on emp.Id = ac.EmployeeId
                                        INNER JOIN EmpSbuMapping esm ON emp.Id = esm.EmployeeId
                                         where  ac.ApprovalAuthorityId not  in (1,2,9,10,11,13,15) AND ac.Status='A'
-                                        AND esm.DataStatus=1
+                                        AND esm.DataStatus=1  
                                         {0} {1}
                                         ", deptId, sbuQry);
                 empList = _dbContext.Employee.FromSqlRaw(qry).ToList();
@@ -866,8 +874,8 @@ namespace API.Controllers
             return empList;
         }
 
-        [HttpGet("getEmployeesforRapidByCamp/{subCampaignId}")]
-        public IReadOnlyList<Employee> GetEmployeesforRapidByCamp(string subCampaignId)
+        [HttpGet("getEmployeesforRapidByCamp/{subCampaignId}/{empId}")]
+        public IReadOnlyList<Employee> GetEmployeesforRapidByCamp(string subCampaignId, int empId)
         {
 
             List<Employee> empList = new List<Employee>();
@@ -1653,6 +1661,124 @@ namespace API.Controllers
                     {
                         _investmentSocietyRepo.Delete(v);
                         _investmentSocietyRepo.Savechange();
+                    }
+
+                    return Ok("Succsessfuly Deleted!!!");
+                }
+                return NotFound();
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion 
+        #region investmentOther
+
+        [HttpPost("IsOtherInvestmentApprovalPending")]
+        public async Task<int> IsOtherInvestmentApprovalPending(int initId, int OtherId)
+        {
+            var iInit = await _investmentInitRepo.GetByIdAsync(initId);
+            string qry = " SELECT CAST('1'AS INT) as Id,  1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(*) Count " +
+                " FROM InvestmentOther d " +
+                " JOIN InvestmentInit i ON d.InvestmentInitId = i.Id " +
+                " WHERE   i.DataStatus=1 AND " +
+                //" EXISTS ( " +
+                //" SELECT InvestmentInitId " +
+                //" FROM InvestmentTargetedGroup IT " +
+                //" WHERE IT.InvestmentInitId = I.Id " +
+                //" AND " +
+                " NOT EXISTS ( " +
+                " SELECT InvestmentInitId " +
+                " FROM InvestmentRecComment ir " +
+                " WHERE ir.InvestmentInitId = I.Id " +
+                " AND (ir.RecStatus = 'Approved' OR ir.RecStatus = 'Not Approved' OR ir.RecStatus = 'Cancelled')" +
+                " ) " +
+                " AND  NOT EXISTS ( " +
+                " SELECT InvestmentInitId " +
+                " FROM InvestmentOther  " +
+                " WHERE InvestmentInitId = " + initId + " " +
+                " ) " +
+                " AND OtherId = " + OtherId + " " +
+                " AND i.MarketCode = '" + iInit.MarketCode + "' " +
+                " AND i.DonationId = '" + iInit.DonationId + "' " +
+                " AND d.OtherId = " + OtherId + "";
+            var result = _dbContext.CountInt.FromSqlRaw(qry).ToList();
+            return result[0].Count;
+        }
+        [HttpPost("insertInvestmentOther")]
+        public async Task<ActionResult<InvestmentOther>> InsertInvestmentOther(InvestmentOther investmentOtherDto)
+        {
+            try
+            {
+                
+                var alreadyExistSpec = new InvestmentOtherSpecification(investmentOtherDto.InvestmentInitId);
+                var alreadyExistInvestmentOtherList = await _investmentOtherRepo.ListAsync(alreadyExistSpec);
+                if (alreadyExistInvestmentOtherList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentOtherList)
+                    {
+                        _investmentOtherRepo.Delete(v);
+                        _investmentOtherRepo.Savechange();
+                    }
+                }
+
+                var investmentOther = new InvestmentOther
+                {
+                    //ReferenceNo = investmentOtherDto.ReferenceNo,
+                    InvestmentInitId = investmentOtherDto.InvestmentInitId,
+                    Name = investmentOtherDto.Name,
+                    Address = investmentOtherDto.Address,
+                    SetOn = DateTimeOffset.Now,
+                    ModifiedOn = DateTimeOffset.Now
+                };
+                _investmentOtherRepo.Add(investmentOther);
+                _investmentOtherRepo.Savechange();
+
+                return new InvestmentOther
+                {
+                    Id = investmentOther.Id,
+                    InvestmentInitId = investmentOtherDto.InvestmentInitId,
+                    Name = investmentOtherDto.Name,
+                    Address = investmentOtherDto.Address,
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        [HttpGet]
+        [Route("investmentOther/{investmentInitId}")]
+        public async Task<IReadOnlyList<InvestmentOther>> GetInvestmentOther(int investmentInitId)
+        {
+            try
+            {
+                var spec = new InvestmentOtherSpecification(investmentInitId);
+                var investmentOther = await _investmentOtherRepo.ListAsync(spec);
+                return investmentOther;
+            }
+            catch (System.Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpPost("removeInvestmentOther")]
+        public async Task<IActionResult> RemoveInvestmentOther(InvestmentOther investmentOther)
+        {
+            try
+            {
+                var alreadyExistSpec = new InvestmentOtherSpecification(investmentOther.InvestmentInitId);
+                var alreadyExistInvestmentOtherList = await _investmentOtherRepo.ListAsync(alreadyExistSpec);
+                if (alreadyExistInvestmentOtherList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentOtherList)
+                    {
+                        _investmentOtherRepo.Delete(v);
+                        _investmentOtherRepo.Savechange();
                     }
 
                     return Ok("Succsessfuly Deleted!!!");

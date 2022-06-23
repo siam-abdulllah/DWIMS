@@ -43,7 +43,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <input class="form-control" id="id" name="id" #id="ngModel" [(ngModel)]="investmentFormService.investmentFormData.id" readonly style="display: none;">
-                                        <input class="form-control" placeholder="Please Double Click Here" (dblclick)="getInvestmentRapid('reference')" id="referenceNo" name="referenceNo" #referenceNo="ngModel" [(ngModel)]="investmentFormService.investmentFormData.referenceNo" readonly>
+                                        <input class="form-control clickable" placeholder="Please Double Click Here" (dblclick)="getInvestmentRapid('reference')" id="referenceNo" name="referenceNo" #referenceNo="ngModel" [(ngModel)]="investmentFormService.investmentFormData.referenceNo" readonly>
                                     </div>
                                     <div class="col-md-1">
                                         <label style="float: right">Propose For</label>
@@ -97,7 +97,7 @@
                                         <label>Donation To</label>
                                         <span style="color:red;">*</span>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <select class="form-control" (change)="onChangeDonationTo()" [disabled]="isDonationValid" id="donationTo" name="donationTo" #donationTo="ngModel" [(ngModel)]="investmentFormService.investmentFormData.donationTo" required [class.invalid]="donationTo.invalid && donationTo.touched">
                                             <option  [ngValue]="null">Select Donation To</option>
                                             <option value="Doctor">Doctor</option>
@@ -544,6 +544,29 @@
                                     </div>
                                 </div>
                             </fieldset>
+                            <fieldset *ngIf="investmentFormService.investmentFormData.donationTo=='Other'">
+                                <legend>Society</legend>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Name</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" id="id" name="id" #id="ngModel" [(ngModel)]="investmentFormService.investmentOtherFormData.id" readonly style="display: none;">
+                                            <input class="form-control" id="investmentInitId" name="investmentInitId" #investmentInitId="ngModel" [(ngModel)]="investmentFormService.investmentOtherFormData.investmentInitId" readonly style="display:none;">
+                                            <input class="form-control" id="name" name="name" #name="ngModel" [(ngModel)]="investmentFormService.investmentOtherFormData.name">
+
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Address</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <textarea class="form-control" id="address" name="address" #address="ngModel" [(ngModel)]="investmentFormService.investmentOtherFormData.address"></textarea>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </fieldset>
                             <fieldset>
                                 <div class="form-group">
                                     <!-- <legend>Investment Details</legend> -->
@@ -760,10 +783,10 @@
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-1">
-                                                <label>Initiator Remarks</label>
+                                                <label>Remarks</label>
                                             </div>
                                             <div class="col-md-4">
-                                                <input class="form-control" placeholder="Remarks" name="Remarks" id="Remarks" [(ngModel)]="investmentFormService.investmentFormData.remarks">
+                                                <input class="form-control" placeholder="Initiator Remarks" name="Remarks" id="Remarks" [(ngModel)]="investmentFormService.investmentFormData.remarks" readonly>
                                             </div>
                                             <div class="col-md-2">
                                                 <label>Cheque Title</label>

@@ -8,7 +8,7 @@ namespace API.Dtos
 {
     public class InvestmentRapidDto
     {
-       public int Id { get; set; }
+        public int Id { get; set; }
         public int InvestmentInitId { get; set; }
         public string ReferenceNo { get; set; }
         public string ProposeFor { get; set; }
@@ -18,16 +18,15 @@ namespace API.Dtos
         public DateTime PropsalDate { get; set; }
         public string ProposalDateStr { get; set; }
         public string DonationTo { get; set; }
-        public string Address { get; set; }
+        //public string Address { get; set; }
         public double ProposedAmount { get; set; }
         public string PaymentMethod { get; set; }
         public string Remarks { get; set; }
         public string ChequeTitle { get; set; }
-
         public string DepotName { get; set; }
         public string DepotCode { get; set; }
-        public int SubCampaignId { get; set; }
-        public string SubCampaignName { get; set; }
+       // public int SubCampaignId { get; set; }
+       // public string SubCampaignName { get; set; }
         public DateTime ModifiedOn { get; set; }
         public DateTime SetOn { get; set; }
         public int InitiatorId { get; set; }
@@ -41,6 +40,7 @@ namespace API.Dtos
         public InvestmentCampaign InvestmentCampaign { get; set; }
         public InvestmentBcds InvestmentBcds { get; set; }
         public InvestmentSociety InvestmentSociety { get; set; }
+        public InvestmentOther InvestmentOther { get; set; }
      
     }
 }

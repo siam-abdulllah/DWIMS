@@ -100,7 +100,7 @@
                                         <label>Donation To</label>
                                         <span style="color:red;">*</span>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <select class="form-control" (change)="onChangeDonationTo()" [disabled]="isDonationValid" id="donationTo" name="donationTo" #donationTo="ngModel" [(ngModel)]="investmentFormService.investmentFormData.donationTo" required [class.invalid]="donationTo.invalid && donationTo.touched">
                                             <option  [ngValue]="null">Select Donation To</option>
                                             <option value="Doctor">Doctor</option>
@@ -175,9 +175,6 @@
                                             <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-3">
-                                            <!-- <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="institutions" bindLabel="institutionName" bindValue="id" placeholder="Select Institution" (change)="onChangeInstitutionInDoc()" id="institutionId" name="institutionId" #institutionId="ngModel"
-                                                [(ngModel)]="investmentFormService.investmentDoctorFormData.institutionId">
-                                            </ng-select> -->
                                             <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="institutions" [searchFn]="customSearchFnIns" bindLabel="institutionName" bindValue="id" placeholder="Select Institution" (change)="onChangeInstitutionInDoc()" id="institutionId"
                                                 name="institutionId" #institutionId="ngModel" [(ngModel)]="investmentFormService.investmentDoctorFormData.institutionId">
                                                 <ng-template ng-label-tmp let-item="item">
@@ -273,8 +270,6 @@
                                             <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-3">
-                                            <!-- <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="doctors" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="responsibleDoctorId" id="responsibleDoctorId" #responsibleDoctorId="ngModel" [(ngModel)]="investmentFormService.investmentInstitutionFormData.responsibleDoctorId">
-                                            </ng-select> -->
                                             <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="doctors" [searchFn]="customSearchFnDoc" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="responsibleDoctorId" id="responsibleDoctorId" #responsibleDoctorId="ngModel"
                                                 [(ngModel)]="investmentFormService.investmentInstitutionFormData.responsibleDoctorId">
                                                 <ng-template ng-label-tmp let-item="item">
@@ -333,10 +328,6 @@
                                             <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="campaignMsts" bindLabel="campaignName" bindValue="id" placeholder="Select Campaign" (change)="onChangeCampaignInCamp()" name="campaignMstId" id="campaignMstId" #campaignMstId="ngModel"
                                                 [(ngModel)]="investmentFormService.investmentCampaignFormData.campaignMstId">
                                             </ng-select>
-                                            <!-- <select class="form-control" (change)="onChangeCampaignInCamp()" name="campaignMstId" id="campaignMstId" #campaignMstId="ngModel" [(ngModel)]="investmentFormService.investmentCampaignFormData.campaignMstId">
-                                                <option  [ngValue]="null">Select Campaign</option>
-                                                <option *ngFor="let a of campaignMsts" [value]="a.id">{{a.campaignName}}</option>
-                                            </select> -->
                                         </div>
                                         <div class="col-md-2">
                                             <label>Sub-Campaign Name</label>
@@ -346,10 +337,6 @@
                                             <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="campaignDtls" bindLabel="subCampaign.subCampaignName" bindValue="id" placeholder="Select Sub-Campaign" (change)="onChangeSubCampaignInCamp()" name="campaignDtlId" id="campaignDtlId"
                                                 #campaignDtlId="ngModel" [(ngModel)]="investmentFormService.investmentCampaignFormData.campaignDtlId">
                                             </ng-select>
-                                            <!-- <select class="form-control" (change)="onChangeSubCampaignInCamp()" name="campaignDtlId" id="campaignDtlId" #campaignDtlId="ngModel" [(ngModel)]="investmentFormService.investmentCampaignFormData.campaignDtlId">
-                                                    <option  [ngValue]="null">Select Sub-Campaign</option>
-                                                    <option *ngFor="let a of campaignDtls" [value]="a.id">{{a.subCampaign.subCampaignName}}</option>
-                                                </select> -->
                                         </div>
                                     </div>
                                 </div>
@@ -376,8 +363,6 @@
                                             <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-3">
-                                            <!-- <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="doctors" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="doctorId" id="doctorId" #doctorId="ngModel" [(ngModel)]="investmentFormService.investmentCampaignFormData.doctorId">
-                                            </ng-select> -->
                                             <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="doctors" [searchFn]="customSearchFnDoc" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="doctorId" id="doctorId" #doctorId="ngModel" [(ngModel)]="investmentFormService.investmentCampaignFormData.doctorId">
                                                 <ng-template ng-label-tmp let-item="item">
                                                     <span [ngOptionHighlight]="search">{{ item.doctorCode}} - {{ item.doctorName}}</span>
@@ -394,15 +379,11 @@
                                         <div class="col-md-3">
                                             <input class="form-control" id="id" name="id" #id="ngModel" [(ngModel)]="investmentFormService.investmentCampaignFormData.id" readonly style="display: none;">
                                             <input class="form-control" id="investmentInitId" name="investmentInitId" #investmentInitId="ngModel" [(ngModel)]="investmentFormService.investmentCampaignFormData.investmentInitId" readonly style="display: none;">
-                                            <!-- <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="institutions" bindLabel="institutionName" bindValue="id" placeholder="Select Institution" (change)="onChangeInstitutionInInst()" name="institutionId" id="institutionId" #institutionId="ngModel"
-                                                [(ngModel)]="investmentFormService.investmentCampaignFormData.institutionId">
-                                            </ng-select> -->
                                             <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="institutions" [searchFn]="customSearchFnIns" bindLabel="institutionName" bindValue="id" placeholder="Select Institution" (change)="onChangeInstitutionInInst()" name="institutionId"
                                                 id="institutionId" #institutionId="ngModel" [(ngModel)]="investmentFormService.investmentCampaignFormData.institutionId">
                                                 <ng-template ng-label-tmp let-item="item">
                                                     <span [ngOptionHighlight]="search">{{ item.institutionCode}} - {{ item.institutionName}}</span>
                                                 </ng-template>
-
                                                 <ng-template ng-option-tmp let-item="item" let-search="searchTerm" let-index="index">
                                                     <span [ngOptionHighlight]="search">{{ item.institutionCode}} - {{ item.institutionName }}</span>
                                                 </ng-template>
@@ -443,20 +424,12 @@
                                             <input class="form-control" id="investmentInitId" name="investmentInitId" #investmentInitId="ngModel" [(ngModel)]="investmentFormService.investmentBcdsFormData.investmentInitId" readonly style="display:none;">
                                             <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="bcds" bindLabel="bcdsName" bindValue="id" placeholder="Select Bcds" (change)="onChangeBcdsInBcds()" name="bcdsId" id="bcdsId" #bcdsId="ngModel" [(ngModel)]="investmentFormService.investmentBcdsFormData.bcdsId">
                                             </ng-select>
-                                            <!-- <select class="form-control" (change)="onChangeBcdsInBcds()" name="bcdsId" id="bcdsId" #bcdsId="ngModel" [(ngModel)]="investmentFormService.investmentBcdsFormData.bcdsId">
-                                                <option  [ngValue]="null">Select Bcds</option>
-                                                <option *ngFor="let a of bcds" [value]="a.id">{{a.bcdsName}}</option>
-                                            </select> -->
                                         </div>
                                         <div class="col-md-2">
                                             <label>Responsible Doctor Id</label>
                                             <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-3">
-
-                                            <!-- <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="doctors" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="responsibleDoctorIdBcds" id="responsibleDoctorIdBcds
-                                        " #responsibleDoctorIdBcds="ngModel" [(ngModel)]="investmentFormService.investmentBcdsFormData.responsibleDoctorId">
-                                            </ng-select> -->
                                             <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="doctors" [searchFn]="customSearchFnDoc" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="responsibleDoctorIdBcds" id="responsibleDoctorIdBcds" #responsibleDoctorIdBcds="ngModel"
                                                 [(ngModel)]="investmentFormService.investmentBcdsFormData.responsibleDoctorId">
                                                 <ng-template ng-label-tmp let-item="item">
@@ -499,19 +472,12 @@
                                             <input class="form-control" id="investmentInitId" name="investmentInitId" #investmentInitId="ngModel" [(ngModel)]="investmentFormService.investmentSocietyFormData.investmentInitId" readonly style="display:none;">
                                             <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="society" bindLabel="societyName" bindValue="id" placeholder="Select Society" (change)="onChangeSocietyInSociety()" name="societyId" id="societyId" #societyId="ngModel" [(ngModel)]="investmentFormService.investmentSocietyFormData.societyId">
                                             </ng-select>
-                                            <!-- <select class="form-control" (change)="onChangeSocietyInSociety()" name="societyId" id="societyId" #societyId="ngModel" [(ngModel)]="investmentFormService.investmentSocietyFormData.societyId">
-                                                <option  [ngValue]="null">Select Society</option>
-                                                <option *ngFor="let a of society" [value]="a.id">{{a.societyName}}</option>
-                                            </select> -->
                                         </div>
                                         <div class="col-md-2">
                                             <label>Responsible Doctor Id</label>
                                             <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-3">
-                                            <!-- <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="doctors" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="responsibleDoctorIdSoc" id="responsibleDoctorIdSoc
-                                        " #responsibleDoctorIdSoc="ngModel" [(ngModel)]="investmentFormService.investmentSocietyFormData.responsibleDoctorId">
-                                            </ng-select> -->
                                             <ng-select [virtualScroll]="true" [disabled]="isInvOther && !isAdmin" [items]="doctors" [searchFn]="customSearchFnDoc" bindLabel="doctorName" bindValue="id" placeholder="Select Doctor" name="responsibleDoctorIdSoc" id="responsibleDoctorIdSoc" #responsibleDoctorIdSoc="ngModel"
                                                 [(ngModel)]="investmentFormService.investmentSocietyFormData.responsibleDoctorId">
                                                 <ng-template ng-label-tmp let-item="item">
@@ -537,6 +503,28 @@
                                         </div>
                                         <div class="col-md-3">
                                             <input class="form-control" name="noOfMembers" id="noOfMember" #noOfMember="ngModel" [(ngModel)]="investmentFormService.investmentSocietyFormData.noOfMember" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset *ngIf="investmentFormService.investmentFormData.donationTo=='Other'">
+                                <legend>Other</legend>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label>Name</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input class="form-control" id="id" name="id" #id="ngModel" [(ngModel)]="investmentFormService.investmentOtherFormData.id" readonly style="display: none;">
+                                            <input class="form-control" id="investmentInitId" name="investmentInitId" #investmentInitId="ngModel" [(ngModel)]="investmentFormService.investmentOtherFormData.investmentInitId" readonly style="display:none;">
+                                            <input class="form-control" id="name" name="name" #name="ngModel" [(ngModel)]="investmentFormService.investmentOtherFormData.name">
+
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label>Address</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <textarea class="form-control" id="address" row="1" name="address" #address="ngModel" [(ngModel)]="investmentFormService.investmentOtherFormData.address"></textarea>
                                         </div>
                                     </div>
                                 </div>

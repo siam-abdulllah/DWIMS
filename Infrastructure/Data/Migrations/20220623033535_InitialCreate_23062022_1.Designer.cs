@@ -4,14 +4,16 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    partial class StoreContextModelSnapshot : ModelSnapshot
+    [Migration("20220623033535_InitialCreate_23062022_1")]
+    partial class InitialCreate_23062022_1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2654,38 +2656,6 @@ namespace Infrastructure.Data.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("InvestmentMedicineProd");
-                });
-
-            modelBuilder.Entity("Core.Entities.InvestmentOther", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("DataStatus")
-                        .HasColumnType("int");
-
-                    b.Property<int>("InvestmentInitId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTimeOffset>("ModifiedOn")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset>("SetOn")
-                        .HasColumnType("datetimeoffset");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("InvestmentInitId");
-
-                    b.ToTable("InvestmentOther");
                 });
 
             modelBuilder.Entity("Core.Entities.InvestmentRapid", b =>
@@ -6277,15 +6247,6 @@ namespace Infrastructure.Data.Migrations
                     b.HasOne("Core.Entities.MedicineProduct", "MedicineProduct")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Core.Entities.InvestmentOther", b =>
-                {
-                    b.HasOne("Core.Entities.InvestmentInit", "InvestmentInit")
-                        .WithMany()
-                        .HasForeignKey("InvestmentInitId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

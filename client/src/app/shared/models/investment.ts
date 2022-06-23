@@ -72,6 +72,7 @@ export interface IInvestmentForm {
     investmentCampaign:InvestmentCampaign;
     investmentBcds:InvestmentBcds;
     investmentSociety:InvestmentSociety;
+    investmentOther:InvestmentOther;
 
 }
 export class InvestmentForm implements IInvestmentForm {
@@ -108,6 +109,7 @@ export class InvestmentForm implements IInvestmentForm {
     investmentCampaign:InvestmentCampaign;
     investmentBcds:InvestmentBcds;
     investmentSociety:InvestmentSociety;
+    investmentOther:InvestmentOther;
 }
 
 
@@ -372,4 +374,18 @@ export class InvestmentSociety implements IInvestmentSociety {
     societyAddress: string;
     noOfMember: string;
     responsibleDoctorId: number=null;
+}
+export interface IInvestmentOther {
+    id: number;
+    investmentInitId: number;
+    name: string;
+    address: string;
+    
+}
+ 
+export class InvestmentOther implements IInvestmentOther {
+    id: number=0;
+    investmentInitId: number;
+    name: string;
+    address: string;
 }
