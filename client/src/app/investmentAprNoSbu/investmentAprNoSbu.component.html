@@ -691,12 +691,12 @@
                                                         <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" placeholder="Calender" (onHidden)="changeDateInDetail()" name="fromDate" #fromDate="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched"
-                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentAprForm)" [minDate]="minDate" [maxDate]="maxDate">
+                                                        <input class="form-control clickable" [disabled]="isInvOther && !isAdmin" placeholder="Calender" (onHidden)="changeDateInDetail()" name="fromDate" #fromDate="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.fromDate" [class.invalid]="fromDate.invalid && fromDate.touched"
+                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentAprForm)" [minDate]="minDate" [maxDate]="maxDate" readonly>
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" placeholder="Calender" (onHidden)="changeDateInDetail()" name="toDate" #toDate="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched"
-                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentAprForm)" [minDate]="minDate" [maxDate]="maxDate">
+                                                        <input class="form-control clickable" [disabled]="isInvOther && !isAdmin" placeholder="Calender" (onHidden)="changeDateInDetail()" name="toDate" #toDate="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.toDate" [class.invalid]="toDate.invalid && toDate.touched"
+                                                            [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCompare(investmentAprForm)" [minDate]="minDate" [maxDate]="maxDate" readonly>
                                                     </div>
                                                     <div class="col-md-2">
                                                         <label>Pay. Tot. Mon.</label>
@@ -713,14 +713,14 @@
                                                         <span style="color:red;">*</span>
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" placeholder="Calender" (onHidden)="changeCommitmentDateInDetail()" name="commitmentFromDate" #commitmentFromDate="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.commitmentFromDate"
+                                                        <input class="form-control clickable" [disabled]="isInvOther && !isAdmin" placeholder="Calender" (onHidden)="changeCommitmentDateInDetail()" name="commitmentFromDate" #commitmentFromDate="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.commitmentFromDate"
                                                             [class.invalid]="commitmentFromDate.invalid && commitmentFromDate.touched" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCommitmentCompare(investmentAprForm)" [minDate]="minDate"
-                                                            [maxDate]="maxDate">
+                                                            [maxDate]="maxDate" readonly>
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <input class="form-control" [disabled]="isInvOther && !isAdmin" placeholder="Calender" (onHidden)="changeCommitmentDateInDetail()" name="commitmentToDate" #commitmentToDate="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.commitmentToDate"
+                                                        <input class="form-control clickable" [disabled]="isInvOther && !isAdmin" placeholder="Calender" (onHidden)="changeCommitmentDateInDetail()" name="commitmentToDate" #commitmentToDate="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.commitmentToDate"
                                                             [class.invalid]="commitmentToDate.invalid && commitmentToDate.touched" [bsValue]="bsValue" bsDatepicker [bsConfig]="bsConfig" (bsValueChange)="dateCommitmentCompare(investmentAprForm)" [minDate]="minDate"
-                                                            [maxDate]="maxDate">
+                                                            [maxDate]="maxDate" readonly>
 
                                                     </div>
                                                     <div class="col-md-2">

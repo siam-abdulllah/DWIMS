@@ -301,10 +301,10 @@ namespace API.Controllers
             var emps =  _db.Employee.ToList();
             foreach (var e in emps)
             {
-                if (CheckUserNameExistsAsync(e.EmployeeSAPCode).Result.Value)
+                if (!CheckUserNameExistsAsync(e.EmployeeSAPCode).Result.Value)
                 {
-                    return new BadRequestObjectResult(new ApiValidationErrorResponse { Errors = new[] { "User Id is in use" } });
-                }
+                   // return new BadRequestObjectResult(new ApiValidationErrorResponse { Errors = new[] { "User Id is in use" } });
+              
 
                 var user = new AppUser
                 {
@@ -313,15 +313,15 @@ namespace API.Controllers
                     DisplayName = e.EmployeeName,
                     Email = e.Email,
                     UserName = e.EmployeeSAPCode,
-                    EmailConfirmed = true,
+                    EmailConfirmed = false,
                     PhoneNumber = e.Phone
 
                 };
                 var userObj = await _userManager.CreateAsync(user, "@Aa123");
                 if (!userObj.Succeeded) return BadRequest(new ApiResponse(400));
 
+                }
 
-             
 
             }
 
@@ -444,9 +444,9 @@ namespace API.Controllers
                 var roleObj = await _userManager.AddToRoleAsync(user, regApprovalDto.Role);
                 if (!roleObj.Succeeded) return BadRequest(new ApiResponse(400, "User Role Set Faild."));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                await _userManager.DeleteAsync(user);
+                //await _userManager.DeleteAsync(user);
             }
             return new UserDto
             {

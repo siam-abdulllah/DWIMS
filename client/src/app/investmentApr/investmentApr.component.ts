@@ -737,11 +737,11 @@ export class InvestmentAprComponent implements OnInit {
     });
   }
   insertInvestmentAprForOwnSBU() {
-    if (this.investmentAprService.investmentAprFormData.donationTo == 'Campaign' && this.userRole=='M' && this.investmentAprService.investmentAprCommentFormData.recStatus=='Approved') {
+    if (this.investmentAprService.investmentAprFormData.donationTo == 'Campaign' && (this.userRole=='M' || this.userRole=='RSM') && this.investmentAprService.investmentAprCommentFormData.recStatus=='Approved') {
       this.toastr.warning('You are not authorised', 'Investment ');
       return false;
     }
-    if (this.investmentAprService.investmentAprFormData.donationTo == 'Campaign' && this.userRole=='M' && this.investmentAprService.investmentAprCommentFormData.recStatus=='Not Approved') {
+    if (this.investmentAprService.investmentAprFormData.donationTo == 'Campaign' &&  (this.userRole=='M' || this.userRole=='RSM') && this.investmentAprService.investmentAprCommentFormData.recStatus=='Not Approved') {
       this.toastr.warning('You are not authorised', 'Investment ');
       return false;
     }
@@ -873,11 +873,11 @@ export class InvestmentAprComponent implements OnInit {
     );
   }
   updateInvestmentAprForOwnSBU() {
-    if (this.investmentAprService.investmentAprFormData.donationTo == 'Campaign' && this.userRole=='M' && this.investmentAprService.investmentAprCommentFormData.recStatus=='Approved') {
+    if (this.investmentAprService.investmentAprFormData.donationTo == 'Campaign' && (this.userRole=='M' || this.userRole=='RSM') && this.investmentAprService.investmentAprCommentFormData.recStatus=='Approved') {
       this.toastr.warning('You are not authorised', 'Investment ');
       return false;
     }
-    if (this.investmentAprService.investmentAprFormData.donationTo == 'Campaign' && this.userRole=='M' && this.investmentAprService.investmentAprCommentFormData.recStatus=='Not Approved') {
+    if (this.investmentAprService.investmentAprFormData.donationTo == 'Campaign' &&  (this.userRole=='M' || this.userRole=='RSM') && this.investmentAprService.investmentAprCommentFormData.recStatus=='Not Approved') {
       this.toastr.warning('You are not authorised', 'Investment ');
       return false;
     }

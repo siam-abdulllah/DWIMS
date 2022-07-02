@@ -192,7 +192,7 @@ namespace API.Controllers
                       //  new SqlParameter("@RSTATUS", "Recommended"),
                         //new SqlParameter("@ASTATUS", DBNull.Value)
                     };
-                    var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentApprpvedSearchNoSbu @EID", parms.ToArray()).ToList();
+                    var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentApprovedSearchNoSbu @EID", parms.ToArray()).ToList();
                     //var data = _mapper
                     //    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
                     //var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);

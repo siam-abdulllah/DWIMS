@@ -40,7 +40,7 @@ export class BgtEmployeeService {
   }
 
   getDonations() {
-    return this.http.get(this.baseUrl + 'donation/donationsForInvestment');
+    return this.http.get(this.baseUrl + 'donation/allDonation');
   }
 
   getApprovalAuthority(){    

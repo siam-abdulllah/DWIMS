@@ -864,6 +864,13 @@
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-2">
+                                            <label>Brand</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <ng-select [virtualScroll]="true" [items]="brands" bindLabel="brandName" bindValue="brandCode" placeholder="Select Brand" (change)="getProductByBrand()" id="brandCode" name="brandCode" [(ngModel)]="brandCode" [disabled]="isBrandDisable">
+                                            </ng-select>
+                                        </div>
+                                        <div class="col-md-1">
                                             <label>Product</label>
                                         </div>
                                         <div class="col-md-3">
@@ -871,7 +878,6 @@
                                                 [class.invalid]="productId.invalid && productId.touched">
                                             </ng-select>
                                         </div>
-                                        <div class="col-md-3"></div>
                                         <div class="col-md-2">
                                             <button class="btn btn-primary btn-lg btn-block" type="button" (click)="insertInvestmentTargetedProd()"><i class="fa fa-plus"></i>&nbsp; Add</button>
                                         </div>

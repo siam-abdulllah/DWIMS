@@ -377,7 +377,7 @@ namespace API.Controllers
                         new SqlParameter("@RSTATUS", "Recommended"),
                         new SqlParameter("@ASTATUS", DBNull.Value)
                     };
-                    var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentApprpvedSearchNotCamp @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
+                    var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentApprovedSearchNotCamp @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
                     //var data = _mapper
                     //    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
                     //var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
@@ -441,7 +441,7 @@ namespace API.Controllers
                         new SqlParameter("@RSTATUS", "Recommended"),
                         new SqlParameter("@ASTATUS", DBNull.Value)
                     };
-                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentApprpvedSearchForRSM @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
+                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentApprovedSearchForRSM @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
                 //var data = _mapper
                 //    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
                 //var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
@@ -505,7 +505,7 @@ namespace API.Controllers
                         new SqlParameter("@RSTATUS", "Recommended"),
                         new SqlParameter("@ASTATUS", DBNull.Value)
                     };
-                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentApprpvedSearchForMngr @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
+                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentApprovedSearchForMngr @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
                 //var data = _mapper
                 //    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
                 //var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
@@ -569,7 +569,7 @@ namespace API.Controllers
                     new SqlParameter("@RSTATUS", "Recommended"),
                     new SqlParameter("@ASTATUS", DBNull.Value)
                  };
-                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentApprpvedSearchForGPM @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
+                var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentApprovedSearchForGPM @SBU,@EID,@RSTATUS,@ASTATUS", parms.ToArray()).ToList();
                 //var data = _mapper
                 //    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
                 //var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);

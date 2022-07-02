@@ -33,13 +33,13 @@ export class InvestmentFormService {
 
 
   constructor(private http: HttpClient, private router: Router) { }
-  getBudget(sbu: string, empID: number, donationId: number,proposeFor:any) {
+  async getBudget(sbu: string, empID: number, donationId: number,proposeFor:any) {
     if(proposeFor=='Sales')
     {
-      return this.http.get(this.baseUrl + 'approvalCeiling/getBudgetCeilingForRapidSales/' + empID + '/' + sbu + '/' + donationId);
+      return this.http.get(this.baseUrl + 'approvalCeiling/getBudgetCeilingForRapidSales/' + empID + '/' + sbu + '/' + donationId).toPromise();
     }
     else if(proposeFor=='PMD'){
-      return this.http.get(this.baseUrl + 'approvalCeiling/getBudgetCeilingForRapidPMD/' + empID + '/' + sbu + '/' + donationId);
+      return this.http.get(this.baseUrl + 'approvalCeiling/getBudgetCeilingForRapidPMD/' + empID + '/' + sbu + '/' + donationId).toPromise();
     }
     
   }
@@ -59,7 +59,7 @@ export class InvestmentFormService {
     return this.http.get(this.baseUrl + 'employee/getSBU');
   }
   getDonations() {
-    return this.http.get(this.baseUrl + 'donation/donationsForInvestment');
+    return this.http.get(this.baseUrl + 'donation/allDonation');
   }
   getMarkets() {
     return this.http.get(this.baseUrl + 'employee/marketForInvestment');
@@ -71,7 +71,7 @@ export class InvestmentFormService {
   }
   getInitiatorName(employeeId: any) {
   
-      return this.http.get(this.baseUrl + 'employee/getInitiatorName/' + employeeId);
+      return this.http.get(this.baseUrl + 'employee/getInitiatorName/' + employeeId).toPromise();
     
   }
   getMedicineProduct() {
@@ -89,33 +89,33 @@ insertInvestmentMedicineProd() {
   return this.http.post(this.baseUrl + 'investment/insertInvestmentMedicineProd', this.investmentMedicineProdFormData);
 }
 
-  getInstitutions(sbu:string) {
-    return this.http.get(this.baseUrl + 'institution/institutionsForInvestmentRapid/'+sbu);
+  async getInstitutions(sbu:string) {
+    return this.http.get(this.baseUrl + 'institution/institutionsForInvestmentRapid/'+sbu).toPromise();
   }
-  getDoctors(sbu:string) {
-    return this.http.get(this.baseUrl + 'doctor/doctorsForInvestmentRapid/'+sbu);
+  async getDoctors(sbu:string) {
+    return this.http.get(this.baseUrl + 'doctor/doctorsForInvestmentRapid/'+sbu).toPromise();
   }
-  getBcds() {
-    return this.http.get(this.baseUrl + 'bcds/bcdsForInvestment');
+  async getBcds() {
+    return this.http.get(this.baseUrl + 'bcds/bcdsForInvestment').toPromise();
   }
-  getSociety() {
-    return this.http.get(this.baseUrl + 'society/societyForInvestment');
+  async getSociety() {
+    return this.http.get(this.baseUrl + 'society/societyForInvestment').toPromise();
   }
-  getCampaignMsts(sbu:string) {
-    return this.http.get(this.baseUrl + 'campaign/campaignMstsForInvestmentRapid/'+sbu);
+  async getCampaignMsts(sbu:string) {
+    return this.http.get(this.baseUrl + 'campaign/campaignMstsForInvestmentRapid/'+sbu).toPromise();
   }
-  getCampaignDtls(mstId: number) {
-    return this.http.get(this.baseUrl + 'campaign/campaignDtlsForInvestment/' + mstId);
+  async getCampaignDtls(mstId: number) {
+    return this.http.get(this.baseUrl + 'campaign/campaignDtlsForInvestment/' + mstId).toPromise();
   }
   
-  getCampaignDtlProducts(dtlId: number) {
-    return this.http.get(this.baseUrl + 'campaign/campaignDtlProductsForInvestment/' + dtlId);
+  async getCampaignDtlProducts(dtlId: number) {
+    return this.http.get(this.baseUrl + 'campaign/campaignDtlProductsForInvestment/' + dtlId).toPromise();
   }
   getSubCampaigns() {
     return this.http.get(this.baseUrl + 'campaign/getCampaignForReport');
   }
-  getInvestmentDoctors(investmentInitId: number) {
-    return this.http.get(this.baseUrl + 'investment/investmentDoctors/' + investmentInitId);
+  async getInvestmentDoctors(investmentInitId: number) {
+    return this.http.get(this.baseUrl + 'investment/investmentDoctors/' + investmentInitId).toPromise();
   }
   getInvestmentMedicineProds(investmentInitId: number, sbu: string) {
     return this.http.get(this.baseUrl + 'investment/investmentMedicineProds/' + investmentInitId + '/' + sbu);
@@ -142,20 +142,20 @@ insertInvestmentMedicineProd() {
   getInvestmentTargetedGroups(investmentInitId: number) {
     return this.http.get(this.baseUrl + 'investment/investmentTargetedGroups/' + investmentInitId);
   }
-  getInvestmentInstitutions(investmentInitId: number) {
-    return this.http.get(this.baseUrl + 'investment/investmentInstitutions/' + investmentInitId);
+  async getInvestmentInstitutions(investmentInitId: number) {
+    return this.http.get(this.baseUrl + 'investment/investmentInstitutions/' + investmentInitId).toPromise();
   }
-  getInvestmentCampaigns(investmentInitId: number) {
-    return this.http.get(this.baseUrl + 'investment/investmentCampaigns/' + investmentInitId);
+  async getInvestmentCampaigns(investmentInitId: number) {
+    return this.http.get(this.baseUrl + 'investment/investmentCampaigns/' + investmentInitId).toPromise();
   }
-  getInvestmentBcds(investmentInitId: number) {
-    return this.http.get(this.baseUrl + 'investment/investmentBcds/' + investmentInitId);
+  async getInvestmentBcds(investmentInitId: number) {
+    return this.http.get(this.baseUrl + 'investment/investmentBcds/' + investmentInitId).toPromise();
   }
-  getInvestmentSociety(investmentInitId: number) {
-    return this.http.get(this.baseUrl + 'investment/investmentSociety/' + investmentInitId);
+  async getInvestmentSociety(investmentInitId: number) {
+    return this.http.get(this.baseUrl + 'investment/investmentSociety/' + investmentInitId).toPromise();
   }
-  getInvestmentOther(investmentInitId: number) {
-    return this.http.get(this.baseUrl + 'investmentRapid/investmentOther/' + investmentInitId);
+  async getInvestmentOther(investmentInitId: number) {
+    return this.http.get(this.baseUrl + 'investmentRapid/investmentOther/' + investmentInitId).toPromise();
   }
   getInvestmentDetails(investmentInitId: number) {
     return this.http.get(this.baseUrl + 'investment/investmentDetails/' + investmentInitId);
@@ -189,9 +189,8 @@ insertInvestmentMedicineProd() {
     debugger;
     return this.http.get(this.baseUrl + 'investmentRapid/getInvestmentRapids/' + empId  + '/' + from+'/'+For);
   }
-  getInvestmentmedicineProducts(invInitId: number){    
-    debugger;
-    return this.http.get(this.baseUrl + 'investmentRapid/getInvestmentmedicineProducts/' + invInitId );
+  getInvestmentmedicineProducts(invInitId: number){   
+    return this.http.get(this.baseUrl + 'investmentRapid/getInvestmentmedicineProducts/' + invInitId ).toPromise();
   }
   getEmployeesforRapid(){    
     return this.http.get(this.baseUrl + 'investmentrapid/employeesForRapid');
@@ -202,11 +201,11 @@ insertInvestmentMedicineProd() {
    
   }
   getEmployeesforRapidByCamp(subCampaignId:any,empId:any){    
-    return this.http.get(this.baseUrl + 'investmentrapid/getEmployeesforRapidByCamp/'+subCampaignId+'/'+empId);
+    return this.http.get(this.baseUrl + 'investmentrapid/getEmployeesforRapidByCamp/'+subCampaignId+'/'+empId).toPromise();
    
   }
   getEmployeesforRapidBySBU(proposeFor:any,sbu:any,empId:any){    
-    return this.http.get(this.baseUrl + 'investmentrapid/getEmployeesforRapidBySBU/'+proposeFor+'/'+sbu+'/'+empId);
+    return this.http.get(this.baseUrl + 'investmentrapid/getEmployeesforRapidBySBU/'+proposeFor+'/'+sbu+'/'+empId).toPromise();
    
   }
   getInvestmentTargetedProds(investmentInitId: number, sbu: string) {

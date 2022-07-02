@@ -62,6 +62,7 @@ export class InvestmentCancelComponent implements OnInit {
   isValid: boolean = false;
   isSaveButtonDisable: boolean = false;
   isInvOther: boolean = false;
+  isDeleted: boolean = false;
   isBudgetVisible: boolean = false;
   isBudgetForCampaignVisible: boolean = false;
   isDonationValid: boolean = false;
@@ -566,14 +567,16 @@ export class InvestmentCancelComponent implements OnInit {
   }
 
   resetPage(form: NgForm) {
-    window.close();
+    window.location.reload();
   }
   resetPageLoad() {
+    window.location.reload();
     this.investmentCancelService.investmentCancelFormData = new InvestmentInit();
     this.investmentCancelService.investmentCancelFormData.marketCode = this.marketCode;
     this.investmentTargetedGroups = [];
     this.investmentTargetedProds = [];
     this.investmentDetailsOld = [];
+    this.isDeleted=false;
   }
   ViewData() {
     if ((this.investmentCancelService.investmentCancelFormData.referenceNo == undefined || this.investmentCancelService.investmentCancelFormData.referenceNo == "")) {
@@ -590,12 +593,14 @@ export class InvestmentCancelComponent implements OnInit {
 
       this.investmentInit = response as InvestmentInit;
       if (this.investmentInit[0].dataStatus == 0) {
-        //  this.isDeleted=true;
+        this.isDeleted=true;
       }
-
+      else{
+        this.isDeleted=false;
+      }
       this.investmentCancelService.investmentCancelFormData.id = this.investmentInit[0].id;
       this.investmentCancelService.investmentCancelFormData.proposeFor = this.investmentInit[0].proposeFor;
-      this.investmentCancelService.investmentCancelFormData.referenceNo = this.investmentInit[0].referenceNo;
+      this.investmentCancelService.investmentCancelFormData.referenceNo = this.investmentInit[0].referenceNo.substring(0,11);
       this.investmentCancelService.investmentCancelFormData.donationTo = this.investmentInit[0].donationTo;
       this.investmentCancelService.investmentCancelFormData.donationTypeName = this.investmentInit[0].donationTypeName;
 
@@ -654,7 +659,11 @@ export class InvestmentCancelComponent implements OnInit {
 
 
   cancelInvestment() {
-
+    if (this.investmentInit[0].dataStatus == 0) {
+      this.toastr.warning("Alreday Inactive!");
+      return;
+    }
+   
     var c = confirm("Are you sure you want to delete that?");
     if (c == true) {
       this.SpinnerService.show();

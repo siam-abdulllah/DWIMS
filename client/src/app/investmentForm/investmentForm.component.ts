@@ -198,13 +198,13 @@ export class InvestmentFormComponent implements OnInit {
   //     console.log(error);
   //   });
   // }
-  getDoctor() {
+  async getDoctor() {
     this.investmentFormService.investmentDoctorFormData = new InvestmentDoctor();
 
     this.SpinnerService.show();
-    this.investmentFormService.getDoctors(this.investmentFormService.investmentFormData.sbu).subscribe(response => {
+    await this.investmentFormService.getDoctors(this.investmentFormService.investmentFormData.sbu).then(response => {
       this.doctors = response as IDoctor[];
-      this.investmentFormService.getInstitutions(this.investmentFormService.investmentFormData.sbu).subscribe(response => {
+      this.investmentFormService.getInstitutions(this.investmentFormService.investmentFormData.sbu).then(response => {
         this.institutions = response as IInstitution[];
         if (this.investmentFormService.investmentFormData.id != null && this.investmentFormService.investmentFormData.id != undefined && this.investmentFormService.investmentFormData.id != 0) {
           this.getInvestmentDoctor();
@@ -225,12 +225,12 @@ export class InvestmentFormComponent implements OnInit {
     return item.doctorCode.toLocaleLowerCase().indexOf(term) > -1 ||
       item.doctorName.toLocaleLowerCase().indexOf(term) > -1;
   }
-  getInstitution() {
+  async getInstitution() {
     this.investmentFormService.investmentDoctorFormData = new InvestmentDoctor();
     this.SpinnerService.show();
-    this.investmentFormService.getInstitutions(this.investmentFormService.investmentFormData.sbu).subscribe(response => {
+    await this.investmentFormService.getInstitutions(this.investmentFormService.investmentFormData.sbu).then(response => {
       this.institutions = response as IInstitution[];
-      this.investmentFormService.getDoctors(this.investmentFormService.investmentFormData.sbu).subscribe(response => {
+      this.investmentFormService.getDoctors(this.investmentFormService.investmentFormData.sbu).then(response => {
         this.doctors = response as IDoctor[];
         if (this.investmentFormService.investmentFormData.id != null && this.investmentFormService.investmentFormData.id != undefined && this.investmentFormService.investmentFormData.id != 0) {
           this.getInvestmentInstitution();
@@ -250,23 +250,39 @@ export class InvestmentFormComponent implements OnInit {
     return item.institutionCode.toLocaleLowerCase().indexOf(term) > -1 ||
       item.institutionName.toLocaleLowerCase().indexOf(term) > -1;
   }
-  getCampaignMst(empId: number) {
+  async getCampaignMst(empId: number) {
     this.investmentFormService.investmentCampaignFormData = new InvestmentCampaign();
     this.SpinnerService.show();
-    this.investmentFormService.getCampaignMsts(this.investmentFormService.investmentFormData.sbu).subscribe(response => {
+    await this.investmentFormService.getCampaignMsts(this.investmentFormService.investmentFormData.sbu).then(response => {
       this.campaignMsts = response as ICampaignMst[];
-      this.investmentFormService.getDoctors(this.investmentFormService.investmentFormData.sbu).subscribe(response => {
-        this.doctors = response as IDoctor[];
-        this.investmentFormService.getInstitutions(this.investmentFormService.investmentFormData.sbu).subscribe(response => {
-          this.institutions = response as IInstitution[];
-          if (this.investmentFormService.investmentFormData.id != null && this.investmentFormService.investmentFormData.id != undefined && this.investmentFormService.investmentFormData.id != 0) {
-            this.getInvestmentCampaign();
-          }
-          this.SpinnerService.hide();
-        }, error => {
-          this.SpinnerService.hide();
-          console.log(error);
-        });
+      this.investmentFormService.getInstitutions(this.investmentFormService.investmentFormData.sbu).then(response => {
+        this.institutions = response as IInstitution[];
+        if (this.investmentFormService.investmentFormData.id != null && this.investmentFormService.investmentFormData.id != undefined && this.investmentFormService.investmentFormData.id != 0) {
+          this.investmentFormService.getInvestmentCampaigns(this.investmentFormService.investmentFormData.investmentInitId).then(response => {
+            var data = response[0] as IInvestmentCampaign;
+            if (data !== undefined) {
+              this.investmentFormService.investmentCampaignFormData = data;
+              this.investmentFormService.investmentCampaignFormData.campaignMstId = data.campaignDtl.mstId;
+              this.investmentFormService.investmentCampaignFormData.subCampStartDate = new DatePipe('en-US').transform(data.campaignDtl.subCampStartDate, 'dd/MM/yyyy');
+              this.investmentFormService.investmentCampaignFormData.subCampEndDate = new DatePipe('en-US').transform(data.campaignDtl.subCampEndDate, 'dd/MM/yyyy');
+              this.onChangeCampaignInCamp();
+              this.onChangeSubCampaignInCamp();
+              this.investmentFormService.getDoctors(this.investmentFormService.investmentFormData.sbu).then(response => {
+                this.doctors = response as IDoctor[];
+              }, error => {
+                this.SpinnerService.hide();
+                console.log(error);
+              });
+            }
+            else {
+              this.toastr.warning('No Data Found', 'Investment');
+            }
+
+          }, error => {
+            console.log(error);
+          });
+        }
+
 
       }, error => {
         this.SpinnerService.hide();
@@ -277,13 +293,12 @@ export class InvestmentFormComponent implements OnInit {
       console.log(error);
     });
   }
-  getSociety() {
+  async getSociety() {
     this.investmentFormService.investmentSocietyFormData = new InvestmentSociety();
-
     this.SpinnerService.show();
-    this.investmentFormService.getSociety().subscribe(response => {
+    this.investmentFormService.getSociety().then(response => {
       this.society = response as ISocietyInfo[];
-      this.investmentFormService.getDoctors(this.investmentFormService.investmentFormData.sbu).subscribe(response => {
+      this.investmentFormService.getDoctors(this.investmentFormService.investmentFormData.sbu).then(response => {
         this.doctors = response as IDoctor[];
         this.investmentFormService.investmentSocietyFormData.responsibleDoctorId = 900000;
         if (this.investmentFormService.investmentFormData.id != null && this.investmentFormService.investmentFormData.id != undefined && this.investmentFormService.investmentFormData.id != 0) {
@@ -299,13 +314,13 @@ export class InvestmentFormComponent implements OnInit {
       console.log(error);
     });
   }
-  getOther() {
+  async getOther() {
     this.investmentFormService.investmentSocietyFormData = new InvestmentSociety();
 
     this.SpinnerService.show();
-    this.investmentFormService.getSociety().subscribe(response => {
+    await this.investmentFormService.getSociety().then(response => {
       this.society = response as ISocietyInfo[];
-      this.investmentFormService.getDoctors(this.investmentFormService.investmentFormData.sbu).subscribe(response => {
+      this.investmentFormService.getDoctors(this.investmentFormService.investmentFormData.sbu).then(response => {
         this.doctors = response as IDoctor[];
         this.investmentFormService.investmentSocietyFormData.responsibleDoctorId = 900000;
         if (this.investmentFormService.investmentFormData.id != null && this.investmentFormService.investmentFormData.id != undefined && this.investmentFormService.investmentFormData.id != 0) {
@@ -321,12 +336,12 @@ export class InvestmentFormComponent implements OnInit {
       console.log(error);
     });
   }
-  getBcds() {
+  async getBcds() {
     this.investmentFormService.investmentBcdsFormData = new InvestmentBcds();
     this.SpinnerService.show();
-    this.investmentFormService.getBcds().subscribe(response => {
+    await this.investmentFormService.getBcds().then(response => {
       this.bcds = response as IBcdsInfo[];
-      this.investmentFormService.getDoctors(this.investmentFormService.investmentFormData.sbu).subscribe(response => {
+      this.investmentFormService.getDoctors(this.investmentFormService.investmentFormData.sbu).then(response => {
         this.doctors = response as IDoctor[];
         this.investmentFormService.investmentBcdsFormData.responsibleDoctorId = 900000;
         if (this.investmentFormService.investmentFormData.id != null && this.investmentFormService.investmentFormData.id != undefined && this.investmentFormService.investmentFormData.id != 0) {
@@ -451,8 +466,8 @@ export class InvestmentFormComponent implements OnInit {
       console.log(error);
     });
   }
-  getInvestmentBcds() {
-    this.investmentFormService.getInvestmentBcds(this.investmentFormService.investmentFormData.investmentInitId).subscribe(response => {
+  async getInvestmentBcds() {
+    await this.investmentFormService.getInvestmentBcds(this.investmentFormService.investmentFormData.investmentInitId).then(response => {
       var data = response[0] as IInvestmentBcds;
       if (data !== undefined) {
         this.investmentFormService.investmentBcdsFormData = data;
@@ -465,8 +480,8 @@ export class InvestmentFormComponent implements OnInit {
       console.log(error);
     });
   }
-  getInvestmentSociety() {
-    this.investmentFormService.getInvestmentSociety(this.investmentFormService.investmentFormData.investmentInitId).subscribe(response => {
+  async getInvestmentSociety() {
+    await this.investmentFormService.getInvestmentSociety(this.investmentFormService.investmentFormData.investmentInitId).then(response => {
       var data = response[0] as IInvestmentSociety;
       if (data !== undefined) {
         this.investmentFormService.investmentSocietyFormData = data;
@@ -480,8 +495,8 @@ export class InvestmentFormComponent implements OnInit {
       console.log(error);
     });
   }
-  getInvestmentOther() {
-    this.investmentFormService.getInvestmentOther(this.investmentFormService.investmentFormData.investmentInitId).subscribe(response => {
+  async getInvestmentOther() {
+    await this.investmentFormService.getInvestmentOther(this.investmentFormService.investmentFormData.investmentInitId).then(response => {
       var data = response[0] as IInvestmentOther;
       if (data !== undefined) {
         this.investmentFormService.investmentOtherFormData = data;
@@ -495,9 +510,9 @@ export class InvestmentFormComponent implements OnInit {
       console.log(error);
     });
   }
-  
-  getInvestmentInstitution() {
-    this.investmentFormService.getInvestmentInstitutions(this.investmentFormService.investmentFormData.investmentInitId).subscribe(response => {
+
+  async getInvestmentInstitution() {
+    this.investmentFormService.getInvestmentInstitutions(this.investmentFormService.investmentFormData.investmentInitId).then(response => {
       var data = response[0] as IInvestmentInstitution;
       if (data !== undefined) {
         this.investmentFormService.investmentInstitutionFormData = data;
@@ -510,8 +525,8 @@ export class InvestmentFormComponent implements OnInit {
       console.log(error);
     });
   }
-  getInvestmentDoctor() {
-    this.investmentFormService.getInvestmentDoctors(this.investmentFormService.investmentFormData.investmentInitId).subscribe(response => {
+  async getInvestmentDoctor() {
+    await this.investmentFormService.getInvestmentDoctors(this.investmentFormService.investmentFormData.investmentInitId).then(response => {
       var data = response[0] as IInvestmentDoctor;
       if (data !== undefined) {
         this.investmentFormService.investmentDoctorFormData = data;
@@ -526,12 +541,11 @@ export class InvestmentFormComponent implements OnInit {
       console.log(error);
     });
   }
-  getInvestmentCampaign() {
-    this.investmentFormService.getInvestmentCampaigns(this.investmentFormService.investmentFormData.investmentInitId).subscribe(response => {
+  async getInvestmentCampaign() {
+    await this.investmentFormService.getInvestmentCampaigns(this.investmentFormService.investmentFormData.investmentInitId).then(response => {
       var data = response[0] as IInvestmentCampaign;
       if (data !== undefined) {
         this.investmentFormService.investmentCampaignFormData = data;
-        debugger;
         this.investmentFormService.investmentCampaignFormData.campaignMstId = data.campaignDtl.mstId;
         this.investmentFormService.investmentCampaignFormData.subCampStartDate = new DatePipe('en-US').transform(data.campaignDtl.subCampStartDate, 'dd/MM/yyyy');
         this.investmentFormService.investmentCampaignFormData.subCampEndDate = new DatePipe('en-US').transform(data.campaignDtl.subCampEndDate, 'dd/MM/yyyy');
@@ -551,11 +565,11 @@ export class InvestmentFormComponent implements OnInit {
   resetSearch() {
     this.searchText = '';
   }
-  selectInvestmentRapid(selectedRecord: IInvestmentForm) {
+  async selectInvestmentRapid(selectedRecord: IInvestmentForm) {
     this.investmentFormService.investmentFormData = Object.assign({}, selectedRecord);
     this.investmentFormService.investmentFormData.proposalDateStr = this.datePipe.transform(selectedRecord.propsalDate, 'dd/MM/YYYY');
     if (this.investmentFormService.investmentFormData.type == '4') {
-      this.investmentFormService.getInvestmentmedicineProducts(selectedRecord.investmentInitId).subscribe(response => {
+      await this.investmentFormService.getInvestmentmedicineProducts(selectedRecord.investmentInitId).then(response => {
         this.SpinnerService.hide();
         this.investmentMedicineProds = response as IInvestmentMedicineProd[];
       }, error => {
@@ -564,62 +578,62 @@ export class InvestmentFormComponent implements OnInit {
       });
     }
     if (this.investmentFormService.investmentFormData.donationTo != "Campaign") {
-    this.investmentFormService.getEmployeesforRapidBySBU(this.investmentFormService.investmentFormData.proposeFor, this.investmentFormService.investmentFormData.sbu,parseInt(this.empId)).subscribe(response => {
-      this.employees = response as IEmployee[];
-    }, error => {
-      console.log(error);
-    });
-  }
-  else{
-    this.investmentFormService.getEmployeesforRapidByCamp(this.investmentFormService.investmentCampaignFormData.campaignDtlId,parseInt(this.empId)).subscribe(response => {
-      this.employees = response as IEmployee[];
-      this.investmentFormService.investmentFormData.approverId =  selectedRecord.approverId;
-    }, error => {
-      console.log(error);
-    });
-  }
+      await this.investmentFormService.getEmployeesforRapidBySBU(this.investmentFormService.investmentFormData.proposeFor, this.investmentFormService.investmentFormData.sbu, parseInt(this.empId)).then(response => {
+        this.employees = response as IEmployee[];
+      }, error => {
+        console.log(error);
+      });
+    }
+    else {
+      await this.investmentFormService.getEmployeesforRapidByCamp(this.investmentFormService.investmentCampaignFormData.campaignDtlId, parseInt(this.empId)).then(response => {
+        this.employees = response as IEmployee[];
+        this.investmentFormService.investmentFormData.approverId = selectedRecord.approverId;
+      }, error => {
+        console.log(error);
+      });
+    }
     if (this.investmentFormService.investmentFormData.donationTo == "Doctor") {
       //if (this.investmentFormService.investmentDoctorFormData.id == null || this.investmentFormService.investmentDoctorFormData.id == undefined || this.investmentFormService.investmentDoctorFormData.id == 0) {
-        this.investmentFormService.investmentDoctorFormData = new InvestmentDoctor();
-        this.getDoctor();
-        //this.getInstitution();
+      this.investmentFormService.investmentDoctorFormData = new InvestmentDoctor();
+      await this.getDoctor();
+      //this.getInstitution();
       //}
     }
     else if (this.investmentFormService.investmentFormData.donationTo == "Institution") {
       //if (this.investmentFormService.investmentInstitutionFormData.id == null || this.investmentFormService.investmentInstitutionFormData.id == undefined || this.investmentFormService.investmentInstitutionFormData.id == 0) {
-        this.investmentFormService.investmentInstitutionFormData = new InvestmentInstitution();
-        //this.getDoctor();
-        this.getInstitution();
+      this.investmentFormService.investmentInstitutionFormData = new InvestmentInstitution();
+      //this.getDoctor();
+      await this.getInstitution();
       //}
     }
     else if (this.investmentFormService.investmentFormData.donationTo == "Campaign") {
       //if (this.investmentFormService.investmentCampaignFormData.id == null || this.investmentFormService.investmentCampaignFormData.id == undefined || this.investmentFormService.investmentCampaignFormData.id == 0) {
-        this.investmentFormService.investmentCampaignFormData = new InvestmentCampaign();
-        this.getCampaignMst(parseInt(this.empId));
-        //this.getDoctor();
-        //this.getInstitution();
+      this.investmentFormService.investmentCampaignFormData = new InvestmentCampaign();
+      await this.getCampaignMst(parseInt(this.empId));
+      //this.getDoctor();
+      //this.getInstitution();
       //}
     }
     else if (this.investmentFormService.investmentFormData.donationTo == "Bcds") {
       //if (this.investmentFormService.investmentBcdsFormData.id == null || this.investmentFormService.investmentBcdsFormData.id == undefined || this.investmentFormService.investmentBcdsFormData.id == 0) {
-        this.investmentFormService.investmentBcdsFormData = new InvestmentBcds();
-        this.getBcds();
+      this.investmentFormService.investmentBcdsFormData = new InvestmentBcds();
+      await this.getBcds();
       //}
     }
     else if (this.investmentFormService.investmentFormData.donationTo == "Society") {
       //if (this.investmentFormService.investmentSocietyFormData.id == null || this.investmentFormService.investmentSocietyFormData.id == undefined || this.investmentFormService.investmentSocietyFormData.id == 0) {
-        this.investmentFormService.investmentSocietyFormData = new InvestmentSociety();
-        this.getSociety();
+      this.investmentFormService.investmentSocietyFormData = new InvestmentSociety();
+      await this.getSociety();
       //}
     }
     else if (this.investmentFormService.investmentFormData.donationTo == "Other") {
       //if (this.investmentFormService.investmentSocietyFormData.id == null || this.investmentFormService.investmentSocietyFormData.id == undefined || this.investmentFormService.investmentSocietyFormData.id == 0) {
-        this.investmentFormService.investmentOtherFormData = new InvestmentOther();
-        this.getInvestmentOther();
+      this.investmentFormService.investmentOtherFormData = new InvestmentOther();
+      await this.getInvestmentOther();
       //}
     }
-    this.getInvestmentRecProd()
-    this.getProduct()
+    await this.getInvestmentRecProd();
+    await this.getProduct();
     this.isDonationValid = true;
     this.isValid = true;
     this.InvestmentInitSearchModalRef.hide();
@@ -777,7 +791,6 @@ export class InvestmentFormComponent implements OnInit {
         this.toastr.success('Save successfully', 'Investment Institution');
       },
       err => {
-        debugger;
         console.log(err);
       }
     );
@@ -989,8 +1002,7 @@ export class InvestmentFormComponent implements OnInit {
       this.investmentFormService.investmentFormData.donationTo = "";
       return false;
     }
-    if(this.investmentFormService.investmentFormData.sbu == "" || this.investmentFormService.investmentFormData.sbu == null || this.investmentFormService.investmentFormData.sbu == undefined )
-    {
+    if (this.investmentFormService.investmentFormData.sbu == "" || this.investmentFormService.investmentFormData.sbu == null || this.investmentFormService.investmentFormData.sbu == undefined) {
       this.toastr.warning("Please Select SBU first");
       this.investmentFormService.investmentFormData.donationTo = "";
       return false;
@@ -1070,65 +1082,66 @@ export class InvestmentFormComponent implements OnInit {
       if (this.institutions[i].id == this.investmentFormService.investmentInstitutionFormData.institutionId) {
         this.instaddress = this.institutions[i].address;
         this.institutionType = this.institutions[i].institutionType;
-        debugger;
         break;
       }
     }
     // this.getLastFiveInvestment(this.investmentFormService.investmentFormData.marketCode, this.convertedDate);
   }
-  onChangeCampaignInCamp() {
-    this.investmentFormService.getCampaignDtls(this.investmentFormService.investmentCampaignFormData.campaignMstId).subscribe(response => {
+  async onChangeCampaignInCamp() {
+    await this.investmentFormService.getCampaignDtls(this.investmentFormService.investmentCampaignFormData.campaignMstId).then(response => {
       this.campaignDtls = response as ICampaignDtl[];
       this.onChangeSubCampaignInCamp();
     }, error => {
       console.log(error);
     });
   }
-  onChangeSubCampaignInCamp() {
-    for (var i = 0; i < this.campaignDtls.length; i++) {
-      if (this.campaignDtls[i].id == this.investmentFormService.investmentCampaignFormData.campaignDtlId) {
-        this.investmentFormService.investmentCampaignFormData.subCampStartDate = new DatePipe('en-US').transform(this.campaignDtls[i].subCampStartDate, 'dd/MM/yyyy');
-        this.investmentFormService.investmentCampaignFormData.subCampEndDate = new DatePipe('en-US').transform(this.campaignDtls[i].subCampEndDate, 'dd/MM/yyyy');
-        break;
-      }
-    }
-    this.investmentFormService.getCampaignDtlProducts(this.investmentFormService.investmentCampaignFormData.campaignDtlId).subscribe(response => {
-      this.campaignDtlProducts = response as ICampaignDtlProductRapid[];
-      if(this.campaignDtlProducts.length>0)
-      {
-      for (let i = 0; i < this.campaignDtlProducts.length; i++) {
-        let data = new InvestmentTargetedProd();
-        let productData = new Product();
-        data = new InvestmentTargetedProd();
-        data.productId = this.campaignDtlProducts[i].productId;
-        data.investmentInitId = this.investmentFormService.investmentTargetedProdFormData.investmentInitId;
-        data.sbu = this.investmentFormService.investmentFormData.sbu;
-        data.employeeId = this.investmentFormService.investmentMedicineProdFormData.employeeId;
-        productData = new Product();
-        productData.productName = this.campaignDtlProducts[i].productInfo.productName;
-        productData.productCode = this.campaignDtlProducts[i].productInfo.productCode;
-        productData.sbu = this.campaignDtlProducts[i].productInfo.sbu;
-        productData.sbuName = this.campaignDtlProducts[i].productInfo.sbuName;
-        productData.setOn = this.campaignDtlProducts[i].productInfo.setOn;
-        productData.status = this.campaignDtlProducts[i].productInfo.status;
-        productData.id = this.campaignDtlProducts[i].productInfo.id;
-
-        data.productInfo = productData;
-        this.investmentTargetedProds.push(data);
-      }
-    }
-    if( this.investmentFormService.investmentFormData.id==null || this.investmentFormService.investmentFormData.id==undefined ||this.investmentFormService.investmentFormData.id==0)
+  async onChangeSubCampaignInCamp() {
+    if(this.campaignDtls!=undefined)
     {
+      for (var i = 0; i < this.campaignDtls.length; i++) {
+        if (this.campaignDtls[i].id == this.investmentFormService.investmentCampaignFormData.campaignDtlId) {
+          this.investmentFormService.investmentCampaignFormData.subCampStartDate = new DatePipe('en-US').transform(this.campaignDtls[i].subCampStartDate, 'dd/MM/yyyy');
+          this.investmentFormService.investmentCampaignFormData.subCampEndDate = new DatePipe('en-US').transform(this.campaignDtls[i].subCampEndDate, 'dd/MM/yyyy');
+          break;
+        }
+      }
+    }
+   
+    await this.investmentFormService.getCampaignDtlProducts(this.investmentFormService.investmentCampaignFormData.campaignDtlId).then(response => {
+      this.campaignDtlProducts = response as ICampaignDtlProductRapid[];
+      if (this.campaignDtlProducts.length > 0) {
+        for (let i = 0; i < this.campaignDtlProducts.length; i++) {
+          let data = new InvestmentTargetedProd();
+          let productData = new Product();
+          data = new InvestmentTargetedProd();
+          data.productId = this.campaignDtlProducts[i].productId;
+          data.investmentInitId = this.investmentFormService.investmentTargetedProdFormData.investmentInitId;
+          data.sbu = this.investmentFormService.investmentFormData.sbu;
+          data.employeeId = this.investmentFormService.investmentMedicineProdFormData.employeeId;
+          productData = new Product();
+          productData.productName = this.campaignDtlProducts[i].productInfo.productName;
+          productData.productCode = this.campaignDtlProducts[i].productInfo.productCode;
+          productData.sbu = this.campaignDtlProducts[i].productInfo.sbu;
+          productData.sbuName = this.campaignDtlProducts[i].productInfo.sbuName;
+          productData.setOn = this.campaignDtlProducts[i].productInfo.setOn;
+          productData.status = this.campaignDtlProducts[i].productInfo.status;
+          productData.id = this.campaignDtlProducts[i].productInfo.id;
+
+          data.productInfo = productData;
+          this.investmentTargetedProds.push(data);
+        }
+      }
+      if (this.investmentFormService.investmentFormData.id == null || this.investmentFormService.investmentFormData.id == undefined || this.investmentFormService.investmentFormData.id == 0) {
         this.investmentFormService.investmentFormData.approverId = null;
       }
-        this.investmentFormService.getEmployeesforRapidByCamp(this.investmentFormService.investmentCampaignFormData.campaignDtlId,parseInt(this.empId)).subscribe(response => {
+      this.investmentFormService.getEmployeesforRapidByCamp(this.investmentFormService.investmentCampaignFormData.campaignDtlId, parseInt(this.empId)).then(response => {
         this.employees = response as IEmployee[];
       }, error => {
         console.log(error);
       });
-      }, error => {
-        console.log(error);
-      });
+    }, error => {
+      console.log(error);
+    });
 
   }
   onChangeSocietyInSociety() {
@@ -1167,7 +1180,7 @@ export class InvestmentFormComponent implements OnInit {
     //   this.campaignDtlProducts = [];
     //   this.investmentTargetedProds = [];
     // }
-    this.investmentFormService.getEmployeesforRapidBySBU(this.investmentFormService.investmentFormData.proposeFor, this.investmentFormService.investmentFormData.sbu,parseInt(this.empId)).subscribe(response => {
+    this.investmentFormService.getEmployeesforRapidBySBU(this.investmentFormService.investmentFormData.proposeFor, this.investmentFormService.investmentFormData.sbu, parseInt(this.empId)).then(response => {
       this.investmentFormService.investmentFormData.approverId = null;
       this.employees = response as IEmployee[];
     }, error => {
@@ -1177,7 +1190,7 @@ export class InvestmentFormComponent implements OnInit {
   ChangeProposeFor() {
     this.subCampaignRapid = [];
     this.investmentFormService.investmentFormData.approverId = null;
-    this.investmentFormService.getEmployeesforRapidByDpt(this.investmentFormService.investmentFormData.proposeFor, this.investmentFormService.investmentFormData.sbu,parseInt(this.empId)).subscribe(response => {
+    this.investmentFormService.getEmployeesforRapidByDpt(this.investmentFormService.investmentFormData.proposeFor, this.investmentFormService.investmentFormData.sbu, parseInt(this.empId)).subscribe(response => {
       this.employees = response as IEmployee[];
     }, error => {
       console.log(error);
