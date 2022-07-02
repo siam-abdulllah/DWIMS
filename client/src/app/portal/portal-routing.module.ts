@@ -75,7 +75,7 @@ const portalRoutes: Routes = [
         {path: 'investmentrapidapr', component: InvestmentRapidAprComponent},
         {path: 'bgtYearly', component: BgtYearlyComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'bgtSBUYearly', component: BgtSbuYearlyComponent, canActivate: [SuperAdminRoleGuard]},
-        {path: 'empsbumap', component: BgtEmpSbuMapComponent},
+        {path: 'empSbuMap', component: BgtEmpSbuMapComponent},
         {path: 'investmentRec', component: InvestmentRecComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'investmentRec', component: InvestmentRecComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'investmentApr', component: InvestmentAprComponent, canActivate: [SuperAdminRoleGuard]},

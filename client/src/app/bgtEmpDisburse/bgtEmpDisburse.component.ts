@@ -183,6 +183,11 @@ totalAlloc: number = 0;
             return;
       }
 
+      if( selectedRow.newAllocated > (selectedRow.total + this.totalBudget - this.totalAlloc))
+      {
+        this.toastr.error('No Sufficient Budget For Allocation');
+        return;
+      }
       if(selectedRow.newAllocated < selectedRow.expense || selectedRow.newAllocated < selectedRow.allocated )
       {
             this.toastr.error('Allocated Amount Should be Higher than Expense & Current Allocation');

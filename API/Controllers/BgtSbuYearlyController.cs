@@ -6,6 +6,7 @@ using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace API.Controllers
 {
-
+    [Authorize]
     public class BgtSbuYearlyController : BaseApiController
     {
         private readonly IGenericRepository<BgtSBUTotal> _bgtSbuRepo;
