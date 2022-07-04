@@ -2,7 +2,7 @@ import { InvestmentInitPagination, IInvestmentInitPagination } from '../shared/m
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import {
-   InvestmentForm,IInvestmentForm,InvestmentMedicineProd ,InvestmentDetail, IInvestmentDetail,InvestmentTargetedProd, InvestmentOther
+  InvestmentForm, IInvestmentForm, InvestmentMedicineProd, InvestmentDetail, IInvestmentDetail, InvestmentTargetedProd, InvestmentOther
 } from '../shared/models/investment';
 import { InvestmentDoctor, IInvestmentDoctor, InvestmentInstitution, IInvestmentInstitution, InvestmentCampaign, IInvestmentCampaign } from '../shared/models/investment';
 import { InvestmentBcds, IInvestmentBcds, InvestmentSociety, IInvestmentSociety } from '../shared/models/investment';
@@ -21,7 +21,7 @@ export class InvestmentFormService {
   investmentTargetedProdFormData: InvestmentTargetedProd = new InvestmentTargetedProd();
   investmentFormData: InvestmentForm = new InvestmentForm();
   investmentMedicineProdFormData: InvestmentMedicineProd = new InvestmentMedicineProd();
-  investmentDetailFormData: InvestmentDetail = new InvestmentDetail(); 
+  investmentDetailFormData: InvestmentDetail = new InvestmentDetail();
   investmentDoctorFormData: InvestmentDoctor = new InvestmentDoctor();
   investmentInstitutionFormData: InvestmentInstitution = new InvestmentInstitution();
   investmentCampaignFormData: InvestmentCampaign = new InvestmentCampaign();
@@ -33,15 +33,22 @@ export class InvestmentFormService {
 
 
   constructor(private http: HttpClient, private router: Router) { }
-  async getBudget(sbu: string, empID: number, donationId: number,proposeFor:any) {
-    if(proposeFor=='Sales')
-    {
-      return this.http.get(this.baseUrl + 'approvalCeiling/getBudgetCeilingForRapidSales/' + empID + '/' + sbu + '/' + donationId).toPromise();
+  async getBudget(sbu: string, empID: number, donationId: number, proposeFor: any, userRole: any) {
+    if (proposeFor == 'Sales') {
+      if (userRole == 'M' || userRole == 'RSM' || userRole == 'DSM') {
+        return this.http.get(this.baseUrl + 'approvalCeiling/getBudgetCeilingForRapidSales/' + empID + '/' + sbu + '/' + donationId).toPromise();
+      }
+      else if (userRole == 'GM' || userRole == 'Director' || userRole == 'MD') {
+        return this.http.get(this.baseUrl + 'approvalCeiling/getBudgetCeilingForRapidSalesNoSBU/' + empID + '/' + sbu + '/' + donationId).toPromise();
+      }
+      else {
+        return this.http.get(this.baseUrl + 'approvalCeiling/getBudgetCeilingForRapidSales/' + empID + '/' + sbu + '/' + donationId).toPromise();
+      }
     }
-    else if(proposeFor=='PMD'){
+    else if (proposeFor == 'PMD') {
       return this.http.get(this.baseUrl + 'approvalCeiling/getBudgetCeilingForRapidPMD/' + empID + '/' + sbu + '/' + donationId).toPromise();
     }
-    
+
   }
   getBudgetForCampaign(sbu: string, empID: number, donationId: number, campaignDtlId: number) {
     return this.http.get(this.baseUrl + 'approvalCeiling/getBudgetCeilingForCampaign/' + empID + '/' + sbu + '/' + donationId + '/' + campaignDtlId);
@@ -49,13 +56,13 @@ export class InvestmentFormService {
   getDepot() {
     return this.http.get(this.baseUrl + 'employee/depotForInvestment');
   }
-  getBrand(sbu:string){    
-    return this.http.get(this.baseUrl + 'product/getBrand/'+sbu);
+  getBrand(sbu: string) {
+    return this.http.get(this.baseUrl + 'product/getBrand/' + sbu);
   }
-  getProductByBrand(brandCode:string,sbu:string){    
-    return this.http.get(this.baseUrl + 'product/getProductByBrand/'+brandCode+'/'+sbu);
+  getProductByBrand(brandCode: string, sbu: string) {
+    return this.http.get(this.baseUrl + 'product/getProductByBrand/' + brandCode + '/' + sbu);
   }
-  getSBU(){    
+  getSBU() {
     return this.http.get(this.baseUrl + 'employee/getSBU');
   }
   getDonations() {
@@ -65,17 +72,17 @@ export class InvestmentFormService {
     return this.http.get(this.baseUrl + 'employee/marketForInvestment');
   }
   getProduct(sbu: string) {
-  
-      return this.http.get(this.baseUrl + 'product/getProductForInvestment/' + sbu);
-    
+
+    return this.http.get(this.baseUrl + 'product/getProductForInvestment/' + sbu);
+
   }
   getInitiatorName(employeeId: any) {
-  
-      return this.http.get(this.baseUrl + 'employee/getInitiatorName/' + employeeId).toPromise();
-    
+
+    return this.http.get(this.baseUrl + 'employee/getInitiatorName/' + employeeId).toPromise();
+
   }
   getMedicineProduct() {
-      return this.http.get(this.baseUrl + 'product/getMedicineProductForInvestment');
+    return this.http.get(this.baseUrl + 'product/getMedicineProductForInvestment');
   }
   getMarketGroupMsts(empId: string) {
     return this.http.get(this.baseUrl + 'marketGroup/getMarketGroupMstsForInvestment/' + empId);
@@ -83,17 +90,17 @@ export class InvestmentFormService {
   getApprovalAuthority() {
     return this.http.get(this.baseUrl + 'approvalAuthority/approvalAuthoritiesForConfig');
   }
- 
 
-insertInvestmentMedicineProd() {
-  return this.http.post(this.baseUrl + 'investment/insertInvestmentMedicineProd', this.investmentMedicineProdFormData);
-}
 
-  async getInstitutions(sbu:string) {
-    return this.http.get(this.baseUrl + 'institution/institutionsForInvestmentRapid/'+sbu).toPromise();
+  insertInvestmentMedicineProd() {
+    return this.http.post(this.baseUrl + 'investment/insertInvestmentMedicineProd', this.investmentMedicineProdFormData);
   }
-  async getDoctors(sbu:string) {
-    return this.http.get(this.baseUrl + 'doctor/doctorsForInvestmentRapid/'+sbu).toPromise();
+
+  async getInstitutions(sbu: string) {
+    return this.http.get(this.baseUrl + 'institution/institutionsForInvestmentRapid/' + sbu).toPromise();
+  }
+  async getDoctors(sbu: string) {
+    return this.http.get(this.baseUrl + 'doctor/doctorsForInvestmentRapid/' + sbu).toPromise();
   }
   async getBcds() {
     return this.http.get(this.baseUrl + 'bcds/bcdsForInvestment').toPromise();
@@ -101,13 +108,13 @@ insertInvestmentMedicineProd() {
   async getSociety() {
     return this.http.get(this.baseUrl + 'society/societyForInvestment').toPromise();
   }
-  async getCampaignMsts(sbu:string) {
-    return this.http.get(this.baseUrl + 'campaign/campaignMstsForInvestmentRapid/'+sbu).toPromise();
+  async getCampaignMsts(sbu: string) {
+    return this.http.get(this.baseUrl + 'campaign/campaignMstsForInvestmentRapid/' + sbu).toPromise();
   }
   async getCampaignDtls(mstId: number) {
     return this.http.get(this.baseUrl + 'campaign/campaignDtlsForInvestment/' + mstId).toPromise();
   }
-  
+
   async getCampaignDtlProducts(dtlId: number) {
     return this.http.get(this.baseUrl + 'campaign/campaignDtlProductsForInvestment/' + dtlId).toPromise();
   }
@@ -124,20 +131,20 @@ insertInvestmentMedicineProd() {
   getLastFiveInvestment(marketCode: string, toDayDate: string) {
     return this.http.get(this.baseUrl + 'investment/getLastFiveInvestment/' + marketCode + '/' + toDayDate).toPromise();
   }
-  getLastFiveInvestmentForDoc(donationId:number,docId:number,marketCode: string, toDayDate: string) {
-    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForDoc/' + donationId + '/' + docId + '/' +marketCode + '/' +toDayDate).toPromise();
+  getLastFiveInvestmentForDoc(donationId: number, docId: number, marketCode: string, toDayDate: string) {
+    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForDoc/' + donationId + '/' + docId + '/' + marketCode + '/' + toDayDate).toPromise();
   }
-  getLastFiveInvestmentForInstitute(donationId:number,instituteId:number,marketCode: string, toDayDate: string) {
-    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForInstitute/' + donationId + '/' + instituteId + '/' +marketCode + '/' +toDayDate).toPromise();
+  getLastFiveInvestmentForInstitute(donationId: number, instituteId: number, marketCode: string, toDayDate: string) {
+    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForInstitute/' + donationId + '/' + instituteId + '/' + marketCode + '/' + toDayDate).toPromise();
   }
-  getLastFiveInvestmentForCampaign(donationId:number,campaignId:number,marketCode: string, toDayDate: string) {
-    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForCampaign/' + donationId + '/' + campaignId + '/' +marketCode + '/' +toDayDate).toPromise();
+  getLastFiveInvestmentForCampaign(donationId: number, campaignId: number, marketCode: string, toDayDate: string) {
+    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForCampaign/' + donationId + '/' + campaignId + '/' + marketCode + '/' + toDayDate).toPromise();
   }
-  getLastFiveInvestmentForBcds(donationId:number,bcdsId:number,marketCode: string, toDayDate: string) {
-    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForBcds/' + donationId + '/' + bcdsId + '/' +marketCode + '/' +toDayDate).toPromise();
+  getLastFiveInvestmentForBcds(donationId: number, bcdsId: number, marketCode: string, toDayDate: string) {
+    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForBcds/' + donationId + '/' + bcdsId + '/' + marketCode + '/' + toDayDate).toPromise();
   }
-  getLastFiveInvestmentForSociety(donationId:number,societyId:number,marketCode: string, toDayDate: string) {
-    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForSociety/' + donationId + '/' + societyId + '/' +marketCode + '/' +toDayDate).toPromise();
+  getLastFiveInvestmentForSociety(donationId: number, societyId: number, marketCode: string, toDayDate: string) {
+    return this.http.get(this.baseUrl + 'investment/getLastFiveInvestmentForSociety/' + donationId + '/' + societyId + '/' + marketCode + '/' + toDayDate).toPromise();
   }
   getInvestmentTargetedGroups(investmentInitId: number) {
     return this.http.get(this.baseUrl + 'investment/investmentTargetedGroups/' + investmentInitId);
@@ -160,13 +167,13 @@ insertInvestmentMedicineProd() {
   getInvestmentDetails(investmentInitId: number) {
     return this.http.get(this.baseUrl + 'investment/investmentDetails/' + investmentInitId);
   }
-  getGenParams(){
+  getGenParams() {
     return this.genParams;
   }
   setGenParams(genParams: GenericParams) {
     this.genParams = genParams;
   }
-  getInvestmentInit(empId: number, sbu: string,userRole:string) {
+  getInvestmentInit(empId: number, sbu: string, userRole: string) {
     // let params = new HttpParams();
     // if (this.genParams.search) {
     //   params = params.append('search', this.genParams.search);
@@ -183,42 +190,42 @@ insertInvestmentMedicineProd() {
     //       return this.investmentInitPagination;
     //     })
     //   );
-    return this.http.get(this.baseUrl + 'investment/investmentInits/' + empId + '/' + sbu+'/'+userRole);
+    return this.http.get(this.baseUrl + 'investment/investmentInits/' + empId + '/' + sbu + '/' + userRole);
   }
-  getInvestmentRapids(empId: number,from:string,For:string){    
+  getInvestmentRapids(empId: number, from: string, For: string) {
     debugger;
-    return this.http.get(this.baseUrl + 'investmentRapid/getInvestmentRapids/' + empId  + '/' + from+'/'+For);
+    return this.http.get(this.baseUrl + 'investmentRapid/getInvestmentRapids/' + empId + '/' + from + '/' + For);
   }
-  getInvestmentmedicineProducts(invInitId: number){   
-    return this.http.get(this.baseUrl + 'investmentRapid/getInvestmentmedicineProducts/' + invInitId ).toPromise();
+  getInvestmentmedicineProducts(invInitId: number) {
+    return this.http.get(this.baseUrl + 'investmentRapid/getInvestmentmedicineProducts/' + invInitId).toPromise();
   }
-  getEmployeesforRapid(){    
+  getEmployeesforRapid() {
     return this.http.get(this.baseUrl + 'investmentrapid/employeesForRapid');
-   
+
   }
-  getEmployeesforRapidByDpt(proposeFor:any,sbu:any,empId:any){    
-    return this.http.get(this.baseUrl + 'investmentrapid/getEmployeesforRapidByDpt/'+proposeFor+'/'+sbu+'/'+empId);
-   
+  getEmployeesforRapidByDpt(proposeFor: any, sbu: any, empId: any) {
+    return this.http.get(this.baseUrl + 'investmentrapid/getEmployeesforRapidByDpt/' + proposeFor + '/' + sbu + '/' + empId);
+
   }
-  getEmployeesforRapidByCamp(subCampaignId:any,empId:any){    
-    return this.http.get(this.baseUrl + 'investmentrapid/getEmployeesforRapidByCamp/'+subCampaignId+'/'+empId).toPromise();
-   
+  getEmployeesforRapidByCamp(subCampaignId: any, empId: any) {
+    return this.http.get(this.baseUrl + 'investmentrapid/getEmployeesforRapidByCamp/' + subCampaignId + '/' + empId).toPromise();
+
   }
-  getEmployeesforRapidBySBU(proposeFor:any,sbu:any,empId:any){    
-    return this.http.get(this.baseUrl + 'investmentrapid/getEmployeesforRapidBySBU/'+proposeFor+'/'+sbu+'/'+empId).toPromise();
-   
+  getEmployeesforRapidBySBU(proposeFor: any, sbu: any, empId: any) {
+    return this.http.get(this.baseUrl + 'investmentrapid/getEmployeesforRapidBySBU/' + proposeFor + '/' + sbu + '/' + empId).toPromise();
+
   }
   getInvestmentTargetedProds(investmentInitId: number, sbu: string) {
     return this.http.get(this.baseUrl + 'investmentrapid/investmentTargetedProds/' + investmentInitId + '/' + sbu);
   }
-  getRapidSubCampaigns(sbu:string) {
+  getRapidSubCampaigns(sbu: string) {
     return this.http.get(this.baseUrl + 'investmentrapid/getRapidSubCampaigns/' + sbu);
   }
-  submitInvestment(empId:any) {
-    return this.http.post(this.baseUrl + 'investmentrapid/saveInvestmentRapid/'+empId, this.investmentFormData);
+  submitInvestment(empId: any) {
+    return this.http.post(this.baseUrl + 'investmentrapid/saveInvestmentRapid/' + empId, this.investmentFormData);
   }
-  submitInvestmentAppr(empId:any) {
-    return this.http.post(this.baseUrl + 'investmentrapid/saveInvestmentRapidAppr/'+empId, this.investmentFormData);
+  submitInvestmentAppr(empId: any) {
+    return this.http.post(this.baseUrl + 'investmentrapid/saveInvestmentRapidAppr/' + empId, this.investmentFormData);
   }
   insertInvestmentDoctor() {
     return this.http.post(this.baseUrl + 'investment/insertInvestmentDoctor', this.investmentDoctorFormData);

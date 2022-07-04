@@ -132,8 +132,8 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("investmentApproved/{empId}/{sbu}/{userRole}")]
-        public async Task<ActionResult<IReadOnlyList<InvestmentInit>>> GetinvestmentApproved(int empId, string sbu, string userRole,
+        [HttpGet("investmentApproved/{empId}/{userRole}")]
+        public async Task<ActionResult<IReadOnlyList<InvestmentInit>>> GetinvestmentApproved(int empId,  string userRole,
         [FromQuery] InvestmentInitSpecParams investmentInitParrams)
         {
             try

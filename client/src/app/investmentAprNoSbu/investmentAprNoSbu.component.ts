@@ -663,7 +663,7 @@ export class InvestmentAprNoSbuComponent implements OnInit {
     });
   }
   getBudget() {
-    this.investmentAprService.getBudget(this.sbu, parseInt(this.empId), this.investmentAprService.investmentAprFormData.donationId).subscribe(response => {
+    this.investmentAprService.getBudget(this.investmentAprService.investmentAprFormData.sbu, parseInt(this.empId), this.investmentAprService.investmentAprFormData.donationId).subscribe(response => {
       this.budgetCeiling = response[0] as IBudgetCeiling;
       this.isBudgetVisible = true;
     }, error => {
