@@ -33,6 +33,7 @@ import { IBudgetCeiling } from '../shared/models/budgetCeiling';
 import { IDepotInfo } from '../shared/models/depotInfo';
 import { IInvestmentRecDepot, InvestmentRecDepot } from '../shared/models/InvestmentRecDepot';
 import { IMedicineProduct } from '../shared/models/medicineProduct';
+import { BDCurrencyPipe } from '../bdNumberPipe';
 
 @Component({
   selector: 'app-investmentAprNoSbu',
@@ -98,7 +99,7 @@ export class InvestmentAprNoSbuComponent implements OnInit {
   };
   userRole: any;
   convertedDate: string;
-  constructor(private accountService: AccountService, public investmentAprService: InvestmentAprNoSbuService, private router: Router,
+  constructor(private accountService: AccountService, public BDCurrency: BDCurrencyPipe, public investmentAprService: InvestmentAprNoSbuService, private router: Router,
     private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe, private SpinnerService: NgxSpinnerService) { }
   ngOnInit() {
     this.resetForm();

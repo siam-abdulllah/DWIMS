@@ -32,6 +32,7 @@ import { ISBU } from '../shared/models/sbu';
 import { IBudgetCeiling } from '../shared/models/budgetCeiling';
 import { IBudgetCeilingForCampaign } from '../shared/models/budgetCeilingForCampaign';
 import { IBrand } from '../shared/models/brand';
+import { BDCurrencyPipe } from '../bdNumberPipe';
 @Component({
   selector: 'app-investmentRapidApr',
   templateUrl: './investmentRapidApr.component.html',
@@ -113,7 +114,7 @@ export class InvestmentRapidAprComponent implements OnInit {
   isBudgetForCampaignVisible: boolean;
   budgetCeilingForCampaign: IBudgetCeilingForCampaign;
   initiatorName: any;
-  constructor(private accountService: AccountService, public investmentFormService: InvestmentFormService,
+  constructor(private accountService: AccountService, public BDCurrency: BDCurrencyPipe, public investmentFormService: InvestmentFormService,
     private router: Router, private toastr: ToastrService, private modalService: BsModalService, private datePipe: DatePipe,
     private SpinnerService: NgxSpinnerService) { }
   ngOnInit() {
