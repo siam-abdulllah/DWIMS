@@ -30,7 +30,7 @@
                                         <div class="col-md-1">
                                             <label>SBU</label>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-1">
                                             <select class="form-control" id="sbuCode" name="sbuCode" [(ngModel)]="sbuCode">
                                                 <option  [ngValue]="0">All</option>
                                                 <option *ngFor="let a of sbu" [value]="a.sbuCode">{{a.sbuName}}</option>
@@ -49,6 +49,9 @@
                                         <div class="col-sm-1">
                                             <button class="btn btn-info btn-lg btn-block" type="button" (click)="ViewDataDoc()"><i class="fa fa-eye"></i>&nbsp;View</button>
                                         </div>
+                                        <div class="col-sm-1">
+                                            <button class="btn btn-info btn-lg btn-block" type="button" (click)="exportexcel()"><i class="fa fa-eye"></i>&nbsp;Excel</button>
+                                        </div>
 
                                     </div>
                                     <div class="form-group">
@@ -64,7 +67,7 @@
                             <div class="form-group" style="overflow: auto; max-height: 400px;" *ngIf="!isInvestmentInActive">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <table class="table  table-bordered">
+                                        <table class="table  table-bordered" id="excel-table">
                                             <tr class="HeaderRowFixed">
                                                 <td>Type</td>
                                                 <td>Employee ID</td>
