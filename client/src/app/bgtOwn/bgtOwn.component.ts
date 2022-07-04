@@ -47,6 +47,7 @@ export class BgtOwnComponent implements OnInit {
   userRole: any;
   donations: IDonation[];
   bgtOwns: IBgtOwn[];
+  insertBgtOwn: IBgtOwn[];
   isAdmin: boolean = false;
   isEdit: boolean = true;
   isView: boolean = true;
@@ -469,6 +470,7 @@ export class BgtOwnComponent implements OnInit {
 
   }
   onChangeYear() {
+    debugger;
     if (this.bgtOwn.value.sbu == "" || this.bgtOwn.value.sbu == null) {
       this.toastr.error('Select SBU');
       this.bgtOwn.patchValue({
@@ -783,6 +785,7 @@ export class BgtOwnComponent implements OnInit {
     );
   }
   insertBgtOwnDetail() {
+    var yr = new Date(this.bgtOwn.value.year);
     if (this.bgtOwn.getRawValue().prevAllocate == "" || this.bgtOwn.getRawValue().prevAllocate == undefined || this.bgtOwn.getRawValue().prevAllocate == null) {
       this.toastr.warning('Total Budget Can not be empty');
       return;
@@ -835,7 +838,7 @@ export class BgtOwnComponent implements OnInit {
         return;
       }
       debugger;
-      var yr = new Date(this.bgtOwn.value.year);
+     
       let data = new BgtOwn();
       data.compId = 1000;
       data.deptId = this.bgtOwn.getRawValue().deptId;
@@ -858,7 +861,8 @@ export class BgtOwnComponent implements OnInit {
         return;
       }
     }
-    
+    //var insertBgtOwn:IBgtOwn[];
+    this.insertBgtOwn=[];
     for (let i = 0; i < this.bgtOwns.length; i++) {
       if(this.bgtOwns[i].totalAmount<this.bgtOwns[i].expense)
       {
@@ -866,21 +870,35 @@ export class BgtOwnComponent implements OnInit {
         break;
         return;
       }
+      if((this.bgtOwns[i].newAmount!=this.bgtOwns[i].amount) || (this.bgtOwns[i].newAmountLimit!=this.bgtOwns[i].amtLimit))
+      {
+        this.insertBgtOwn.push({ compId: 1000, deptId: this.bgtOwn.getRawValue().deptId, authId: this.bgtOwn.getRawValue().authId, year: yr.getFullYear(), SBU: this.bgtOwn.value.sbu, donationId: this.bgtOwns[i].donationId, employeeId: this.bgtOwn.value.employee, enteredBy: parseFloat(this.empId), amount: this.bgtOwns[i].newAmount, amtLimit: this.bgtOwns[i].newAmountLimit, segment: this.bgtOwns[i].segment, month: 0, newAmount: this.bgtOwns[i].newAmount, newAmountLimit: this.bgtOwns[i].newAmountLimit, expense: 0, pipeLine: 0, totalAmount: 0 });
+   
+      }
       this.bgtOwns[i].employeeId = this.bgtOwn.value.employee;
       this.bgtOwns[i].amount = this.bgtOwns[i].newAmount;
       this.bgtOwns[i].amtLimit = this.bgtOwns[i].newAmountLimit;
-    }
-    this.bgtService.insertBgtOwn(this.bgtOwns).subscribe(
-      res => {
-        this.toastr.success('Detail Budget Data Saved successfully', 'Budget Dispatch')
 
-      },
-      err => {
-        debugger;
-        console.log(err);
-        alert(err);
-      }
-    );
+    }
+    if(this.insertBgtOwn.length>0)
+    {
+      this.bgtService.insertBgtOwn(this.insertBgtOwn).subscribe(
+        res => {
+          this.toastr.success('Detail Budget Data Saved successfully', 'Budget Dispatch')
+  
+        },
+        err => {
+          debugger;
+          console.log(err);
+          alert(err);
+        }
+      );
+    }
+    else{
+      this.toastr.warning('No data to update!');
+      return;
+    }
+   
 
 
 

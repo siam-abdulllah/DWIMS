@@ -61,7 +61,8 @@ export class BgtOwnService {
   getEmpWiseSBU(employeeId: any ){    
     return this.http.get(this.baseUrl + 'BgtOwn/getEmpWiseSBU/'+employeeId);
   }
-  getEmpWiseBgt(employeeId: any, sbu: string , year: any,compId:any,deptId:any,authId:any  ){    
+  getEmpWiseBgt(employeeId: any, sbu: string , year: any,compId:any,deptId:any,authId:any  ){   
+    debugger; 
     return this.http.get(this.baseUrl + 'BgtOwn/getEmpWiseBgt/'+employeeId+'/'+sbu+'/'+year+'/'+compId+'/'+deptId+'/'+authId);
   }
   getEmpWiseTotExp(employeeId: any, sbu: string , year: any,compId:any,deptId:any ,authId:any  ){    
@@ -89,6 +90,7 @@ export class BgtOwnService {
     return this.http.post(this.baseUrl+ 'BgtOwn/insertBgtEmployeeDetail', bgtEmpFormData);
   }
   insertBgtOwn(bgtOwnFormData: any) {
+    debugger;
     return this.http.post(this.baseUrl+ 'BgtOwn/insertBgtOwnDetail', bgtOwnFormData);
   }
 }

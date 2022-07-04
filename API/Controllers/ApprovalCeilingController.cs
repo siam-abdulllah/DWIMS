@@ -99,8 +99,8 @@ namespace API.Controllers
                 throw ex;
             }
         }
+
          [HttpGet("getBudgetCeilingForRapidSales/{empID}/{sbu}/{DonationId}")]
-        
         public ActionResult<IReadOnlyList<BudgetCeiling>> GetBudgetCeilingForRapidSales(int empID, string sbu, string DonationId)
         {
             try
@@ -120,7 +120,28 @@ namespace API.Controllers
                 throw ex;
             }
         }
+        [HttpGet("getBudgetCeilingForRapidSalesNoSBU/{empID}/{sbu}/{DonationId}")]
+        public ActionResult<IReadOnlyList<BudgetCeiling>> GettBudgetCeilingForRapidSalesNoSBU(int empID, string sbu, string DonationId)
+        {
+            try
+            {
+                List<SqlParameter> parms = new List<SqlParameter>
+                    {
+                        new SqlParameter("@SBU", sbu),
+                        new SqlParameter("@EID", empID),
+                        new SqlParameter("@DID", DonationId)
+                    };
+                var results = _dbContext.BudgetCeiling.FromSqlRaw<BudgetCeiling>("EXECUTE SP_BudgetCeilingSearchNewRapidSalesNoSBU @SBU,@EID,@DID", parms.ToArray()).ToList();
+                return results;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
         
+
         [HttpGet("getBudgetCeilingNoSBU/{empID}/{sbu}/{DonationId}")]
         // [Authorize(Roles = "Owner,Administrator")]
         // [Authorize(Policy = "DetailUserPolicy")]

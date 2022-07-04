@@ -163,7 +163,7 @@ export class InvestmentAprNoSbuService {
     //     return this.investmentInitPagination;
     //   })
     // );
-    return this.http.get(this.baseUrl + 'investmentAprNoSbu/investmentApproved/'+empId+'/'+sbu+'/'+userRole);
+    return this.http.get(this.baseUrl + 'investmentAprNoSbu/investmentApproved/'+empId+'/'+userRole);
   }
   insertInvestmentApr() {
     
