@@ -17,6 +17,7 @@ namespace Core.Entities
         public string Remarks { get; set; }
         public int EnteredBy { get; set; }
         public long TotalAmount { get; set; }  
+        public long PrevMonthsAmount { get; set; }  
         
     }
 

@@ -168,7 +168,7 @@ export class BgtOwnComponent implements OnInit {
       if (selectedRecord.segment == 'Monthly') {
         const d = new Date();
         var remMonth = 12 - d.getMonth();
-        selectedRecord.totalAmount = selectedRecord.newAmount * remMonth;
+        selectedRecord.totalAmount = (selectedRecord.newAmount * remMonth)+selectedRecord.prevMonthsAmount;
         for (let i = 0; i < this.bgtOwns.length; i++) {
           sum = sum + parseFloat(this.bgtOwns[i].totalAmount);
         }
@@ -224,7 +224,7 @@ export class BgtOwnComponent implements OnInit {
     else{
       selectedRecord.newAmount=0;
       sum=0;
-      selectedRecord.totalAmount = selectedRecord.newAmount;
+      selectedRecord.totalAmount = selectedRecord.newAmount+selectedRecord.prevMonthsAmount;
         for (let i = 0; i < this.bgtOwns.length; i++) {
           sum = sum + parseFloat(this.bgtOwns[i].totalAmount);
         }
@@ -249,7 +249,7 @@ export class BgtOwnComponent implements OnInit {
       if (selectedRecord.segment == 'Monthly') {
         const d = new Date();
         var remMonth = 12 - d.getMonth();
-        selectedRecord.totalAmount = selectedRecord.newAmount * remMonth;
+        selectedRecord.totalAmount = (selectedRecord.newAmount * remMonth)+selectedRecord.prevMonthsAmount;
         for (let i = 0; i < this.bgtOwns.length; i++) {
           sum = sum + parseFloat(this.bgtOwns[i].totalAmount);
         }
@@ -851,7 +851,7 @@ export class BgtOwnComponent implements OnInit {
       data.amtLimit = this.bgtOwn.value.transLimit;
       data.segment = this.bgtOwn.value.segment;
       //this.bgtOwns.push(data);
-      this.bgtOwns.push({ compId: 1000, deptId: this.bgtOwn.getRawValue().deptId, authId: this.bgtOwn.getRawValue().authId, year: yr.getFullYear(), SBU: this.bgtOwn.value.sbu, donationId: this.bgtOwn.value.donationId, employeeId: this.bgtOwn.value.employee, enteredBy: parseFloat(this.empId), amount: this.bgtOwn.value.donationAmt, amtLimit: this.bgtOwn.value.transLimit, segment: this.bgtOwn.value.segment, month: 0, newAmount: this.bgtOwn.value.donationAmt, newAmountLimit: this.bgtOwn.value.transLimit, expense: 0, pipeLine: 0, totalAmount: 0 });
+      this.bgtOwns.push({ compId: 1000, deptId: this.bgtOwn.getRawValue().deptId, authId: this.bgtOwn.getRawValue().authId, year: yr.getFullYear(), SBU: this.bgtOwn.value.sbu, donationId: this.bgtOwn.value.donationId, employeeId: this.bgtOwn.value.employee, enteredBy: parseFloat(this.empId), amount: this.bgtOwn.value.donationAmt, amtLimit: this.bgtOwn.value.transLimit, segment: this.bgtOwn.value.segment, month: 0, newAmount: this.bgtOwn.value.donationAmt, newAmountLimit: this.bgtOwn.value.transLimit, expense: 0, pipeLine: 0, totalAmount: 0 ,prevMonthsAmount: 0});
     }
     else{
       debugger;
@@ -872,7 +872,7 @@ export class BgtOwnComponent implements OnInit {
       }
       if((this.bgtOwns[i].newAmount!=this.bgtOwns[i].amount) || (this.bgtOwns[i].newAmountLimit!=this.bgtOwns[i].amtLimit))
       {
-        this.insertBgtOwn.push({ compId: 1000, deptId: this.bgtOwn.getRawValue().deptId, authId: this.bgtOwn.getRawValue().authId, year: yr.getFullYear(), SBU: this.bgtOwn.value.sbu, donationId: this.bgtOwns[i].donationId, employeeId: this.bgtOwn.value.employee, enteredBy: parseFloat(this.empId), amount: this.bgtOwns[i].newAmount, amtLimit: this.bgtOwns[i].newAmountLimit, segment: this.bgtOwns[i].segment, month: 0, newAmount: this.bgtOwns[i].newAmount, newAmountLimit: this.bgtOwns[i].newAmountLimit, expense: 0, pipeLine: 0, totalAmount: 0 });
+        this.insertBgtOwn.push({ compId: 1000, deptId: this.bgtOwn.getRawValue().deptId, authId: this.bgtOwn.getRawValue().authId, year: yr.getFullYear(), SBU: this.bgtOwn.value.sbu, donationId: this.bgtOwns[i].donationId, employeeId: this.bgtOwn.value.employee, enteredBy: parseFloat(this.empId), amount: this.bgtOwns[i].newAmount, amtLimit: this.bgtOwns[i].newAmountLimit, segment: this.bgtOwns[i].segment, month: 0, newAmount: this.bgtOwns[i].newAmount, newAmountLimit: this.bgtOwns[i].newAmountLimit, expense: 0, pipeLine: 0, totalAmount: 0 ,prevMonthsAmount: 0});
    
       }
       this.bgtOwns[i].employeeId = this.bgtOwn.value.employee;
@@ -973,6 +973,7 @@ export interface IBgtOwn {
   newAmount: any;
   newAmountLimit: any;
   totalAmount: any;
+  prevMonthsAmount: any;
   expense: any;
   pipeLine: any;
 }
@@ -992,6 +993,7 @@ export class BgtOwn implements IBgtOwn {
   newAmount: any;
   newAmountLimit: any;
   totalAmount: any;
+  prevMonthsAmount: any;
   expense: any;
   pipeLine: any;
 }

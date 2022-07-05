@@ -1434,7 +1434,7 @@ export class InvestmentRapidAprComponent implements OnInit {
     });
   }
   async getBudget() {
-    this.investmentFormService.getBudget(this.investmentFormService.investmentFormData.sbu, parseInt(this.empId), parseInt(this.investmentFormService.investmentFormData.type), this.investmentFormService.investmentFormData.proposeFor).then(response => {
+    this.investmentFormService.getBudget(this.investmentFormService.investmentFormData.sbu, parseInt(this.empId), parseInt(this.investmentFormService.investmentFormData.type), this.investmentFormService.investmentFormData.proposeFor,this.userRole).then(response => {
       this.budgetCeiling = response[0] as IBudgetCeiling;
       this.isBudgetVisible = true;
       this.isBudgetForCampaignVisible = false;

@@ -201,7 +201,9 @@ namespace API.Controllers
                   " ,A.[DonationId] ,A.[Amount] ,A.[AmtLimit] ,A.[Segment] ,A.[Remarks] ,A.[EnteredBy] ,A.[AuthId] ,A.[Code] ,A.[CompoCode] " +
                   ",(SELECT isnull(sum(ISNULL(C.[Amount], 0)), 0) FROM BgtOwn C WHERE C.SBU = A.SBU AND C.CompoCode = A.CompoCode" +
                   " AND C.DeptId = A.DeptId AND C.CompId = A.CompId AND C.AuthId = A.AuthId AND C.DataStatus = 1 AND C.DonationId = A.DonationId" +
-                  " AND C.[Year] = A.[Year]) TotalAmount" +
+                  " AND C.[Year] = A.[Year] ) TotalAmount ,(SELECT isnull(sum(ISNULL(C.[Amount], 0)), 0) FROM BgtOwn C WHERE C.SBU = A.SBU AND " +
+                  " C.CompoCode = A.CompoCode AND C.DeptId = A.DeptId AND C.CompId = A.CompId AND C.AuthId = A.AuthId AND C.DataStatus = 1 " +
+                  " AND C.DonationId = A.DonationId AND C.[Year] = A.[Year] AND C.Month Between 1 and (Month(GETDATE())-1) ) PrevMonthsAmount" +
                   " FROM BgtOwn A INNER JOIN EmpSbuMapping B ON A.Code = B.TagCode " +
                   " WHERE B.EmployeeId =" + employeeId + " AND B.SBU = '" + sbu + "'  AND B.DeptId = " + deptId + " " +
                   " AND B.CompId = " + compId + " AND B.DataStatus=1 AND A.AuthId = " + authId + "  AND A.DataStatus = 1 " +
