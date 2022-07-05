@@ -58,7 +58,7 @@ export class InvestmentAprService {
   getBudget(sbu: string, empID: number, donationId: number) {
     return this.http.get(this.baseUrl + 'approvalCeiling/getBudgetCeiling/' + empID + '/' + sbu + '/' + donationId);
   }
-  
+
   getBudgetForCampaign(sbu: string, empID: number, donationId: number, campaignDtlId: number) {
     debugger;
     return this.http.get(this.baseUrl + 'approvalCeiling/getBudgetCeilingForCampaign/' + empID + '/' + sbu + '/' + donationId + '/' + campaignDtlId);
@@ -95,8 +95,7 @@ export class InvestmentAprService {
       return this.http.get(this.baseUrl + 'investmentApr/investmentRecDetailsForGPM/' + investmentInitId + '/' + empId).toPromise();
     }
     if (userRole == 'M') {
-      if(this.investmentAprFormData.donationTo == "Campaign")
-      {
+      if (this.investmentAprFormData.donationTo == "Campaign") {
         return this.http.get(this.baseUrl + 'investmentApr/investmentRecDetailsMCamp/' + investmentInitId + '/' + empId).toPromise();
 
       }
@@ -219,8 +218,11 @@ export class InvestmentAprService {
     var investmentRecProducts = investmentTargetedProds;
     var investmentAprForOwnSBUInsertDto = { investmentRecComment, investmentApr, investmentRecProducts, investmentRecDepot }
     //var actionName='insertAprForOwnSBU';
-    if (userRole == 'GPM') {
-      return this.http.post(this.baseUrl + 'investmentApr/insertAprForOwnSBUGPM/' + empId + '/' + this.investmentAprCommentFormData.recStatus + '/' + sbu + '/' + this.investmentAprFormData.donationId+ '/' + this.investmentCampaignFormData.campaignDtlId, investmentAprForOwnSBUInsertDto);
+    //if (userRole == 'GPM') {
+      debugger;
+    if (this.investmentAprFormData.donationTo == 'Campaign' && userRole != 'RSM' && userRole != 'M') {
+
+      return this.http.post(this.baseUrl + 'investmentApr/insertAprForOwnSBUGPM/' + empId + '/' + this.investmentAprCommentFormData.recStatus + '/' + sbu + '/' + this.investmentAprFormData.donationId + '/' + this.investmentCampaignFormData.campaignDtlId, investmentAprForOwnSBUInsertDto);
     }
     if (this.investmentAprFormData.donationTo == 'Campaign' && userRole == 'RSM') {
       return this.http.post(this.baseUrl + 'investmentApr/insertAprForOwnSBUCampaign/' + empId + '/' + this.investmentAprCommentFormData.recStatus + '/' + sbu + '/' + this.investmentAprFormData.donationId + '/' + this.investmentCampaignFormData.campaignDtlId, investmentAprForOwnSBUInsertDto);
@@ -238,9 +240,12 @@ export class InvestmentAprService {
     var investmentApr = this.investmentDetailFormData;
     var investmentRecProducts = investmentTargetedProds;
     var investmentAprForOwnSBUInsertDto = { investmentRecComment, investmentApr, investmentRecProducts, investmentRecDepot }
-     //var actionName = 'updateAprForOwnSBU';
-    if (userRole == 'GPM') {
-      return this.http.post(this.baseUrl + 'investmentApr/updateAprForOwnSBUGPM/' + empId + '/' + this.investmentAprCommentFormData.recStatus + '/' + sbu + '/' + this.investmentAprFormData.donationId+ '/' + this.investmentCampaignFormData.campaignDtlId, investmentAprForOwnSBUInsertDto);
+    //var actionName = 'updateAprForOwnSBU';
+    //if (userRole == 'GPM') {
+      debugger;
+      if (this.investmentAprFormData.donationTo == 'Campaign' && userRole != 'RSM' && userRole != 'M') {
+  
+      return this.http.post(this.baseUrl + 'investmentApr/updateAprForOwnSBUGPM/' + empId + '/' + this.investmentAprCommentFormData.recStatus + '/' + sbu + '/' + this.investmentAprFormData.donationId + '/' + this.investmentCampaignFormData.campaignDtlId, investmentAprForOwnSBUInsertDto);
     }
     if (this.investmentAprFormData.donationTo == 'Campaign' && userRole == 'RSM') {
       return this.http.post(this.baseUrl + 'investmentApr/updateAprForOwnSBUCampaign/' + empId + '/' + this.investmentAprCommentFormData.recStatus + '/' + sbu + '/' + this.investmentAprFormData.donationId + '/' + this.investmentCampaignFormData.campaignDtlId, investmentAprForOwnSBUInsertDto);
