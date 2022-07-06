@@ -222,7 +222,7 @@ export class BgtOwnComponent implements OnInit {
       
     }
     else{
-      selectedRecord.newAmount=0;
+      //selectedRecord.newAmount=0;
       sum=0;
       selectedRecord.totalAmount = selectedRecord.newAmount+selectedRecord.prevMonthsAmount;
         for (let i = 0; i < this.bgtOwns.length; i++) {
@@ -261,7 +261,7 @@ export class BgtOwnComponent implements OnInit {
         });
       }
       else {
-        selectedRecord.totalAmount = selectedRecord.newAmount;
+        selectedRecord.totalAmount = selectedRecord.newAmount+selectedRecord.prevMonthsAmount;
         for (let i = 0; i < this.bgtOwns.length; i++) {
           sum = sum + parseFloat(this.bgtOwns[i].totalAmount);
         }
@@ -275,7 +275,7 @@ export class BgtOwnComponent implements OnInit {
       {
         this.toastr.warning('Donation wise budget can not be less than expense');
         selectedRecord.newAmount = 0;
-        selectedRecord.totalAmount = selectedRecord.newAmount;
+        selectedRecord.totalAmount = selectedRecord.newAmount+selectedRecord.prevMonthsAmount;
         sum = 0;
         for (let i = 0; i < this.bgtOwns.length; i++) {
           sum = sum + parseFloat(this.bgtOwns[i].totalAmount);
@@ -289,7 +289,7 @@ export class BgtOwnComponent implements OnInit {
      {
         this.toastr.warning('Donation wise budget can not be greater than total budget');
         selectedRecord.newAmount = 0;
-        selectedRecord.totalAmount = selectedRecord.newAmount;
+        selectedRecord.totalAmount = selectedRecord.newAmount+selectedRecord.prevMonthsAmount;
         sum = 0;
         for (let i = 0; i < this.bgtOwns.length; i++) {
           sum = sum + parseFloat(this.bgtOwns[i].totalAmount);
@@ -305,7 +305,7 @@ export class BgtOwnComponent implements OnInit {
     else{
       selectedRecord.newAmount=0;
       sum=0;
-      selectedRecord.totalAmount = selectedRecord.newAmount;
+      selectedRecord.totalAmount = selectedRecord.newAmount+selectedRecord.prevMonthsAmount;
         for (let i = 0; i < this.bgtOwns.length; i++) {
           sum = sum + parseFloat(this.bgtOwns[i].totalAmount);
         }

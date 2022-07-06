@@ -218,7 +218,7 @@
                                             {{a.remaining}}
                                         </td> -->
                                         <td>
-                                            <input class="form-control ng-valid ng-touched ng-dirty" type="text" placeholder="New Transation Limit" [(ngModel)]="a.newAmountLimit" [ngModelOptions]="{standalone: true}">
+                                            <input class="form-control ng-valid ng-touched ng-dirty" [readonly]="!isAdmin" type="text" placeholder="New Transation Limit" [(ngModel)]="a.newAmountLimit" [ngModelOptions]="{standalone: true}">
                                         </td>
                                         <td>
                                             <input class="form-control ng-valid ng-touched ng-dirty" type="text" placeholder="New Amount" [(ngModel)]="a.newAmount" [ngModelOptions]="{standalone: true}" (keyup)="donAmountCal(a)" (blur)="onBlurdonAmountCal(a)">
