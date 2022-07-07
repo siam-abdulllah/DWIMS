@@ -595,6 +595,12 @@ export class InvestmentRecComponent implements OnInit {
       this.updateInvestmentRec();
   }
   insertInvestmentRec() {
+    if (this.investmentRecService.investmentRecFormData.donationId == 2 || this.investmentRecService.investmentRecFormData.donationId == 4) {
+      if (this.investmentRecService.investmentDetailFormData.paymentFreq != 'Yearly') {
+        this.toastr.warning('Gift or Medicine can be only Yearly');
+        return false;
+      }
+    }
     this.investmentRecService.investmentRecCommentFormData.employeeId = parseInt(this.empId);
     if (this.investmentRecService.investmentDetailFormData.proposedAmount == null || this.investmentRecService.investmentDetailFormData.proposedAmount == undefined || this.investmentRecService.investmentDetailFormData.proposedAmount == "") {
       this.toastr.warning('Enter Proposed Amount First', 'Investment ');
@@ -725,6 +731,12 @@ export class InvestmentRecComponent implements OnInit {
     // }
   }
   updateInvestmentRec() {
+    if (this.investmentRecService.investmentRecFormData.donationId == 2 || this.investmentRecService.investmentRecFormData.donationId == 4) {
+      if (this.investmentRecService.investmentDetailFormData.paymentFreq != 'Yearly') {
+        this.toastr.warning('Gift or Medicine can be only Yearly');
+        return false;
+      }
+    }
     if (this.investmentRecService.investmentDetailFormData.proposedAmount == null || this.investmentRecService.investmentDetailFormData.proposedAmount == undefined || this.investmentRecService.investmentDetailFormData.proposedAmount == "") {
       this.toastr.warning('Enter Proposed Amount First', 'Investment');
       return false;

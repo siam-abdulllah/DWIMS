@@ -1055,6 +1055,12 @@ export class InvestmentInitComponent implements OnInit {
     this.submissionConfirmRef.hide();
   }
   submitInvestment() {
+    if (this.investmentInitService.investmentInitFormData.donationId == 2 || this.investmentInitService.investmentInitFormData.donationId == 4) {
+      if (this.investmentInitService.investmentDetailFormData.paymentFreq != 'Yearly') {
+        this.toastr.warning('Gift or Medicine can be only Yearly');
+        return false;
+      }
+    }
     if (this.investmentInitService.investmentInitFormData.donationTo == "Doctor") {
       if (this.investmentInitService.investmentDoctorFormData.id == null || this.investmentInitService.investmentDoctorFormData.id == undefined || this.investmentInitService.investmentDoctorFormData.id == 0) {
         this.toastr.warning('Insert Doctor Information First', 'Investment Doctor');
@@ -1233,6 +1239,12 @@ export class InvestmentInitComponent implements OnInit {
     if (this.investmentInitService.investmentDetailFormData.paymentFreq == 'Half Yearly') {
       if (this.investmentInitService.investmentDetailFormData.totalMonth  <6) {
         this.toastr.warning('Duration can not be less than 6 Month for Half Yearly Investment');
+        return false;
+      }
+    }
+    if (this.investmentInitService.investmentInitFormData.donationId == 2 || this.investmentInitService.investmentInitFormData.donationId == 4) {
+      if (this.investmentInitService.investmentDetailFormData.paymentFreq != 'Yearly') {
+        this.toastr.warning('Gift or Medicine can be only Yearly');
         return false;
       }
     }

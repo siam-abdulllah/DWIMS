@@ -671,6 +671,21 @@ export class InvestmentAprNoSbuComponent implements OnInit {
     });
   }
   insertInvestmentApr() {
+    if (this.investmentAprService.investmentAprCommentFormData.recStatus == 'Approved') {
+      let dateFrom = this.investmentAprService.investmentDetailFormData.commitmentFromDate;
+      let todate = new Date();
+      if(dateFrom.getMonth()<todate.getMonth())
+      {
+        this.toastr.warning('From date can not be greater than Current Month');
+        return false;
+      }
+    }
+    if (this.investmentAprService.investmentAprFormData.donationId == 2 || this.investmentAprService.investmentAprFormData.donationId == 4) {
+      if (this.investmentAprService.investmentDetailFormData.paymentFreq != 'Yearly') {
+        this.toastr.warning('Gift or Medicine can be only Yearly');
+        return false;
+      }
+    }
     if (this.investmentAprService.investmentAprFormData.id == null || this.investmentAprService.investmentAprFormData.id == undefined || this.investmentAprService.investmentAprFormData.id == 0) {
       this.toastr.warning('Insert Investment Initialisation First', 'Investment ');
       return false;
@@ -843,6 +858,21 @@ if (this.investmentAprService.investmentDetailFormData.paymentFreq == 'Quarterly
     // );
   }
   updateInvestmentApr() {
+    if (this.investmentAprService.investmentAprCommentFormData.recStatus == 'Approved') {
+      let dateFrom = this.investmentAprService.investmentDetailFormData.commitmentFromDate;
+      let todate = new Date();
+      if(dateFrom.getMonth()<todate.getMonth())
+      {
+        this.toastr.warning('From date can not be greater than Current Month');
+        return false;
+      }
+    }
+    if (this.investmentAprService.investmentAprFormData.donationId == 2 || this.investmentAprService.investmentAprFormData.donationId == 4) {
+      if (this.investmentAprService.investmentDetailFormData.paymentFreq != 'Yearly') {
+        this.toastr.warning('Gift or Medicine can be only Yearly');
+        return false;
+      }
+    }
     if (this.investmentAprService.investmentAprFormData.id == null || this.investmentAprService.investmentAprFormData.id == undefined || this.investmentAprService.investmentAprFormData.id == 0) {
       this.toastr.warning('Insert Investment Initialisation First', 'Investment ');
       return false;

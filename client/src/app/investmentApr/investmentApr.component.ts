@@ -737,6 +737,12 @@ export class InvestmentAprComponent implements OnInit {
     });
   }
   insertInvestmentAprForOwnSBU() {
+    if (this.investmentAprService.investmentAprFormData.donationId == 2 || this.investmentAprService.investmentAprFormData.donationId == 4) {
+      if (this.investmentAprService.investmentDetailFormData.paymentFreq != 'Yearly') {
+        this.toastr.warning('Gift or Medicine can be only Yearly');
+        return false;
+      }
+    }
     if (this.investmentAprService.investmentAprFormData.donationTo == 'Campaign' && (this.userRole=='M' || this.userRole=='RSM') && this.investmentAprService.investmentAprCommentFormData.recStatus=='Approved') {
       this.toastr.warning('You are not authorised', 'Investment ');
       return false;
@@ -823,6 +829,15 @@ export class InvestmentAprComponent implements OnInit {
         }
       }
     }
+    if (this.investmentAprService.investmentAprCommentFormData.recStatus == 'Approved') {
+      let dateFrom = this.investmentAprService.investmentDetailFormData.commitmentFromDate;
+      let todate = new Date();
+      if(dateFrom.getMonth()<todate.getMonth())
+      {
+        this.toastr.warning('From date can not be greater than Current Month');
+        return false;
+      }
+    }
     if (this.investmentAprService.investmentAprCommentFormData.recStatus == 'Not Recommended') {
       if (this.investmentAprService.investmentAprCommentFormData.comments == null || this.investmentAprService.investmentAprCommentFormData.comments == undefined || this.investmentAprService.investmentAprCommentFormData.comments == "") {
         this.toastr.warning('Please Insert Comment For Not Recommendation', 'Investment');
@@ -873,6 +888,12 @@ export class InvestmentAprComponent implements OnInit {
     );
   }
   updateInvestmentAprForOwnSBU() {
+    if (this.investmentAprService.investmentAprFormData.donationId == 2 || this.investmentAprService.investmentAprFormData.donationId == 4) {
+      if (this.investmentAprService.investmentDetailFormData.paymentFreq != 'Yearly') {
+        this.toastr.warning('Gift or Medicine can be only Yearly');
+        return false;
+      }
+    }
     if (this.investmentAprService.investmentAprFormData.donationTo == 'Campaign' && (this.userRole=='M' || this.userRole=='RSM') && this.investmentAprService.investmentAprCommentFormData.recStatus=='Approved') {
       this.toastr.warning('You are not authorised', 'Investment ');
       return false;
@@ -936,6 +957,15 @@ export class InvestmentAprComponent implements OnInit {
     if (this.investmentAprService.investmentDetailFormData.paymentMethod == 'Cheque') {
       if (this.investmentAprService.investmentDetailFormData.chequeTitle == null || this.investmentAprService.investmentDetailFormData.chequeTitle == undefined || this.investmentAprService.investmentDetailFormData.chequeTitle == "") {
         this.toastr.warning('Enter Cheque Title First', 'Investment Detail');
+        return false;
+      }
+    }
+    if (this.investmentAprService.investmentAprCommentFormData.recStatus == 'Approved') {
+      let dateFrom = this.investmentAprService.investmentDetailFormData.commitmentFromDate;
+      let todate = new Date();
+      if(dateFrom.getMonth()<todate.getMonth())
+      {
+        this.toastr.warning('From date can not be greater than Current Month');
         return false;
       }
     }
