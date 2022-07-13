@@ -53,6 +53,7 @@ export class InvestmentRecComponent implements OnInit {
   isValid: boolean = false;
   isInvOther: boolean = false;
   isDonationValid: boolean = false;
+  isPayFreq: boolean = false;
   numberPattern = "^[0-9]+(.[0-9]{1,10})?$";
   bcds: IBcdsInfo[];
   society: ISocietyInfo[];
@@ -118,6 +119,12 @@ export class InvestmentRecComponent implements OnInit {
     this.investmentRecService.investmentMedicineProdFormData.investmentInitId = selectedRecord.id;
     this.isDonationValid = true;
     this.convertedDate = this.datePipe.transform(selectedRecord.setOn, 'ddMMyyyy');
+    if (this.investmentRecService.investmentRecFormData.donationId == 2 || this.investmentRecService.investmentRecFormData.donationId == 4) {
+      this.isPayFreq=true;
+    }
+    else{
+      this.isPayFreq=false;
+    }
     if (this.investmentRecService.investmentRecFormData.donationTo == "Doctor") {
       await this.getInvestmentDoctor();
     }
@@ -157,6 +164,12 @@ export class InvestmentRecComponent implements OnInit {
     this.investmentRecService.investmentMedicineProdFormData.investmentInitId = selectedRecord.id;
     this.convertedDate = this.datePipe.transform(selectedRecord.setOn, 'ddMMyyyy');
     this.isDonationValid = true;
+    if (this.investmentRecService.investmentRecFormData.donationId == 2 || this.investmentRecService.investmentRecFormData.donationId == 4) {
+      this.isPayFreq=true;
+    }
+    else{
+      this.isPayFreq=false;
+    }
     if (this.investmentRecService.investmentRecFormData.donationTo == "Doctor") {
       await this.getInvestmentDoctor();
     }
@@ -517,16 +530,16 @@ export class InvestmentRecComponent implements OnInit {
     });
   }
   resetTargetedGroup() {
-    if(this.investmentRecService.investmentRecFormData.id!=null && this.investmentRecService.investmentRecFormData.id!=undefined && this.investmentRecService.investmentRecFormData.id!=0){
-    this.investmentRecService.getInvestmentTargetedGroups(this.investmentRecService.investmentRecFormData.id, parseInt(this.empId)).subscribe(response => {
-      var data = response as IInvestmentTargetedGroup[];
-      if (data !== undefined) {
-        this.investmentTargetedGroups = data;
-      }
-    }, error => {
-      console.log(error);
-    });
-  }
+    if (this.investmentRecService.investmentRecFormData.id != null && this.investmentRecService.investmentRecFormData.id != undefined && this.investmentRecService.investmentRecFormData.id != 0) {
+      this.investmentRecService.getInvestmentTargetedGroups(this.investmentRecService.investmentRecFormData.id, parseInt(this.empId)).subscribe(response => {
+        var data = response as IInvestmentTargetedGroup[];
+        if (data !== undefined) {
+          this.investmentTargetedGroups = data;
+        }
+      }, error => {
+        console.log(error);
+      });
+    }
   }
   changeDateInDetail() {
     if (this.investmentRecService.investmentDetailFormData.fromDate == null || this.investmentRecService.investmentDetailFormData.fromDate == undefined) {
@@ -555,9 +568,9 @@ export class InvestmentRecComponent implements OnInit {
   }
   changePaymentMethod() {
     if (this.investmentRecService.investmentDetailFormData.paymentMethod != 'Cheque') {
-      this.investmentRecService.investmentDetailFormData.chequeTitle = "" ;
+      this.investmentRecService.investmentDetailFormData.chequeTitle = "";
     }
-   }
+  }
   getProduct() {
     this.investmentRecService.getProduct(this.sbu).subscribe(response => {
       this.products = response as IProduct[];
@@ -595,12 +608,15 @@ export class InvestmentRecComponent implements OnInit {
       this.updateInvestmentRec();
   }
   insertInvestmentRec() {
-    if (this.investmentRecService.investmentRecFormData.donationId == 2 || this.investmentRecService.investmentRecFormData.donationId == 4) {
-      if (this.investmentRecService.investmentDetailFormData.paymentFreq != 'Yearly') {
-        this.toastr.warning('Gift or Medicine can be only Yearly');
-        return false;
+    if (this.sbu == this.investmentRecService.investmentRecFormData.sbu) {
+      if (this.investmentRecService.investmentRecFormData.donationId == 2 || this.investmentRecService.investmentRecFormData.donationId == 4) {
+        if (this.investmentRecService.investmentDetailFormData.paymentFreq != 'Yearly') {
+          this.toastr.warning('Gift or Medicine can be only Yearly');
+          return false;
+        }
       }
     }
+
     this.investmentRecService.investmentRecCommentFormData.employeeId = parseInt(this.empId);
     if (this.investmentRecService.investmentDetailFormData.proposedAmount == null || this.investmentRecService.investmentDetailFormData.proposedAmount == undefined || this.investmentRecService.investmentDetailFormData.proposedAmount == "") {
       this.toastr.warning('Enter Proposed Amount First', 'Investment ');
@@ -622,7 +638,7 @@ export class InvestmentRecComponent implements OnInit {
       this.toastr.warning('Select Payment Dur. To Date  First', 'Investment Detail');
       return false;
     }
-    if (this.investmentRecService.investmentDetailFormData.totalMonth  == null || this.investmentRecService.investmentDetailFormData.totalMonth  == undefined || this.investmentRecService.investmentDetailFormData.totalMonth==0) {
+    if (this.investmentRecService.investmentDetailFormData.totalMonth == null || this.investmentRecService.investmentDetailFormData.totalMonth == undefined || this.investmentRecService.investmentDetailFormData.totalMonth == 0) {
       this.toastr.warning('Invalid Payment Total Month', 'Investment Detail');
       return false;
     }
@@ -634,7 +650,7 @@ export class InvestmentRecComponent implements OnInit {
       this.toastr.warning('Select Commitment To Date  First', 'Investment Detail');
       return false;
     }
-    if (this.investmentRecService.investmentDetailFormData.commitmentTotalMonth  == null || this.investmentRecService.investmentDetailFormData.commitmentTotalMonth  == undefined || this.investmentRecService.investmentDetailFormData.commitmentTotalMonth==0) {
+    if (this.investmentRecService.investmentDetailFormData.commitmentTotalMonth == null || this.investmentRecService.investmentDetailFormData.commitmentTotalMonth == undefined || this.investmentRecService.investmentDetailFormData.commitmentTotalMonth == 0) {
       this.toastr.warning('Invalid Commitment Total Month', 'Investment Detail');
       return false;
     }
@@ -667,52 +683,52 @@ export class InvestmentRecComponent implements OnInit {
       return false;
     }
     if (this.investmentRecService.investmentDetailFormData.paymentFreq == 'Quarterly') {
-      if (this.investmentRecService.investmentDetailFormData.totalMonth  <3) {
+      if (this.investmentRecService.investmentDetailFormData.totalMonth < 3) {
         this.toastr.warning('Duration can not be less than 3 Month for Quarterly Investment ');
         return false;
       }
     }
     if (this.investmentRecService.investmentDetailFormData.paymentFreq == 'Half Yearly') {
-      if (this.investmentRecService.investmentDetailFormData.totalMonth  <6) {
+      if (this.investmentRecService.investmentDetailFormData.totalMonth < 6) {
         this.toastr.warning('Duration can not be less than 6 Month for Half Yearly Investment');
         return false;
       }
     }
     this.SpinnerService.show();
     //if (this.sbu == this.investmentRecService.investmentRecFormData.sbu) {
-      this.investmentRecService.investmentDetailFormData.fromDate  = this.datePipe.transform(this.investmentRecService.investmentDetailFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
-      this.investmentRecService.investmentDetailFormData.toDate= this.datePipe.transform(this.investmentRecService.investmentDetailFormData.toDate, 'yyyy-MM-dd HH:mm:ss');
-    
-      this.investmentRecService.investmentDetailFormData.commitmentFromDate  = this.datePipe.transform(this.investmentRecService.investmentDetailFormData.commitmentFromDate, 'yyyy-MM-dd HH:mm:ss');
-      this.investmentRecService.investmentDetailFormData.commitmentToDate= this.datePipe.transform(this.investmentRecService.investmentDetailFormData.commitmentToDate, 'yyyy-MM-dd HH:mm:ss');
-    
-      this.investmentRecService.investmentDetailFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
-      this.investmentRecService.insertRecommendForOwnSBU(parseInt(this.empId), this.sbu,this.investmentTargetedProds).subscribe(
-        res => {
-          this.investmentRecService.investmentRecCommentFormData = res as IInvestmentRecComment;
-          this.isDonationValid = true;
-          this.isValid = true;
-          this.getInvestmentRecDetails();
-          this.getInvestmentTargetedGroup();
-          this.SpinnerService.hide();
-          this.toastr.info('Save successfully')
-          
-        },
-        err => { 
-          this.investmentRecService.investmentDetailFormData.fromDate = new Date(this.investmentRecService.investmentDetailFormData.fromDate);
-        this.investmentRecService.investmentDetailFormData.toDate = new Date(this.investmentRecService.investmentDetailFormData.toDate); 
+    this.investmentRecService.investmentDetailFormData.fromDate = this.datePipe.transform(this.investmentRecService.investmentDetailFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
+    this.investmentRecService.investmentDetailFormData.toDate = this.datePipe.transform(this.investmentRecService.investmentDetailFormData.toDate, 'yyyy-MM-dd HH:mm:ss');
+
+    this.investmentRecService.investmentDetailFormData.commitmentFromDate = this.datePipe.transform(this.investmentRecService.investmentDetailFormData.commitmentFromDate, 'yyyy-MM-dd HH:mm:ss');
+    this.investmentRecService.investmentDetailFormData.commitmentToDate = this.datePipe.transform(this.investmentRecService.investmentDetailFormData.commitmentToDate, 'yyyy-MM-dd HH:mm:ss');
+
+    this.investmentRecService.investmentDetailFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
+    this.investmentRecService.insertRecommendForOwnSBU(parseInt(this.empId), this.sbu, this.investmentTargetedProds).subscribe(
+      res => {
+        this.investmentRecService.investmentRecCommentFormData = res as IInvestmentRecComment;
+        this.isDonationValid = true;
+        this.isValid = true;
+        this.getInvestmentRecDetails();
+        this.getInvestmentTargetedGroup();
+        this.SpinnerService.hide();
+        this.toastr.info('Save successfully')
+
+      },
+      err => {
+        this.investmentRecService.investmentDetailFormData.fromDate = new Date(this.investmentRecService.investmentDetailFormData.fromDate);
+        this.investmentRecService.investmentDetailFormData.toDate = new Date(this.investmentRecService.investmentDetailFormData.toDate);
         this.investmentRecService.investmentDetailFormData.commitmentFromDate = new Date(this.investmentRecService.investmentDetailFormData.commitmentFromDate);
         this.investmentRecService.investmentDetailFormData.commitmentToDate = new Date(this.investmentRecService.investmentDetailFormData.commitmentToDate);
-        
-          console.log(err);
-          this.SpinnerService.hide();
-         }
-      );
+
+        console.log(err);
+        this.SpinnerService.hide();
+      }
+    );
 
     //}
     // else {
     //   this.investmentRecService.investmentDetailFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
-  
+
     //   this.investmentRecService.insertRecommendForOtherSBU(parseInt(this.empId), this.sbu,this.investmentTargetedProds).subscribe(
     //     res => {
     //       this.investmentRecService.investmentRecCommentFormData = res as IInvestmentRecComment;
@@ -731,10 +747,12 @@ export class InvestmentRecComponent implements OnInit {
     // }
   }
   updateInvestmentRec() {
-    if (this.investmentRecService.investmentRecFormData.donationId == 2 || this.investmentRecService.investmentRecFormData.donationId == 4) {
-      if (this.investmentRecService.investmentDetailFormData.paymentFreq != 'Yearly') {
-        this.toastr.warning('Gift or Medicine can be only Yearly');
-        return false;
+    if (this.sbu == this.investmentRecService.investmentRecFormData.sbu) {
+      if (this.investmentRecService.investmentRecFormData.donationId == 2 || this.investmentRecService.investmentRecFormData.donationId == 4) {
+        if (this.investmentRecService.investmentDetailFormData.paymentFreq != 'Yearly') {
+          this.toastr.warning('Gift or Medicine can be only Yearly');
+          return false;
+        }
       }
     }
     if (this.investmentRecService.investmentDetailFormData.proposedAmount == null || this.investmentRecService.investmentDetailFormData.proposedAmount == undefined || this.investmentRecService.investmentDetailFormData.proposedAmount == "") {
@@ -757,7 +775,7 @@ export class InvestmentRecComponent implements OnInit {
       this.toastr.warning('Select Payment Dur. To Date  First', 'Investment Detail');
       return false;
     }
-    if (this.investmentRecService.investmentDetailFormData.totalMonth  == null || this.investmentRecService.investmentDetailFormData.totalMonth  == undefined || this.investmentRecService.investmentDetailFormData.totalMonth==0) {
+    if (this.investmentRecService.investmentDetailFormData.totalMonth == null || this.investmentRecService.investmentDetailFormData.totalMonth == undefined || this.investmentRecService.investmentDetailFormData.totalMonth == 0) {
       this.toastr.warning('Invalid Payment Total Month', 'Investment Detail');
       return false;
     }
@@ -769,7 +787,7 @@ export class InvestmentRecComponent implements OnInit {
       this.toastr.warning('Select Commitment To Date  First', 'Investment Detail');
       return false;
     }
-    if (this.investmentRecService.investmentDetailFormData.commitmentTotalMonth  == null || this.investmentRecService.investmentDetailFormData.commitmentTotalMonth  == undefined || this.investmentRecService.investmentDetailFormData.commitmentTotalMonth==0) {
+    if (this.investmentRecService.investmentDetailFormData.commitmentTotalMonth == null || this.investmentRecService.investmentDetailFormData.commitmentTotalMonth == undefined || this.investmentRecService.investmentDetailFormData.commitmentTotalMonth == 0) {
       this.toastr.warning('Invalid Commitment Total Month', 'Investment Detail');
       return false;
     }
@@ -803,49 +821,49 @@ export class InvestmentRecComponent implements OnInit {
       return false;
     }
     if (this.investmentRecService.investmentDetailFormData.paymentFreq == 'Quarterly') {
-      if (this.investmentRecService.investmentDetailFormData.totalMonth  <3) {
+      if (this.investmentRecService.investmentDetailFormData.totalMonth < 3) {
         this.toastr.warning('Duration can not be less than 3 Month for Quarterly Investment ');
         return false;
       }
     }
     if (this.investmentRecService.investmentDetailFormData.paymentFreq == 'Half Yearly') {
-      if (this.investmentRecService.investmentDetailFormData.totalMonth  <6) {
+      if (this.investmentRecService.investmentDetailFormData.totalMonth < 6) {
         this.toastr.warning('Duration can not be less than 6 Month for Half Yearly Investment');
         return false;
       }
     }
     this.SpinnerService.show();
     //if (this.sbu == this.investmentRecService.investmentRecFormData.sbu) {
-      this.investmentRecService.investmentDetailFormData.fromDate  = this.datePipe.transform(this.investmentRecService.investmentDetailFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
-      this.investmentRecService.investmentDetailFormData.toDate= this.datePipe.transform(this.investmentRecService.investmentDetailFormData.toDate, 'yyyy-MM-dd HH:mm:ss');
-    
-      this.investmentRecService.investmentDetailFormData.commitmentFromDate  = this.datePipe.transform(this.investmentRecService.investmentDetailFormData.commitmentFromDate, 'yyyy-MM-dd HH:mm:ss');
-      this.investmentRecService.investmentDetailFormData.commitmentToDate= this.datePipe.transform(this.investmentRecService.investmentDetailFormData.commitmentToDate, 'yyyy-MM-dd HH:mm:ss');
-    
-      this.investmentRecService.investmentDetailFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
-      this.investmentRecService.updateRecommendForOwnSBU(parseInt(this.empId), this.sbu,this.investmentTargetedProds).subscribe(
-        res => {
-          this.investmentRecService.investmentRecCommentFormData = res as IInvestmentRecComment;
-          this.isDonationValid = true;
-          this.isValid = true;
-          this.getInvestmentRecDetails();
-          this.getInvestmentTargetedGroup();
-          this.SpinnerService.hide();
-          this.toastr.info('Updated successfully', 'Investment ')
-        },
-        err => { 
-          this.investmentRecService.investmentDetailFormData.fromDate = new Date(this.investmentRecService.investmentDetailFormData.fromDate);
-          this.investmentRecService.investmentDetailFormData.toDate = new Date(this.investmentRecService.investmentDetailFormData.toDate); 
-          this.investmentRecService.investmentDetailFormData.commitmentFromDate = new Date(this.investmentRecService.investmentDetailFormData.commitmentFromDate);
-          this.investmentRecService.investmentDetailFormData.commitmentToDate = new Date(this.investmentRecService.investmentDetailFormData.commitmentToDate);
-          console.log(err); 
-          this.SpinnerService.hide();
-        }
-      );
+    this.investmentRecService.investmentDetailFormData.fromDate = this.datePipe.transform(this.investmentRecService.investmentDetailFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
+    this.investmentRecService.investmentDetailFormData.toDate = this.datePipe.transform(this.investmentRecService.investmentDetailFormData.toDate, 'yyyy-MM-dd HH:mm:ss');
+
+    this.investmentRecService.investmentDetailFormData.commitmentFromDate = this.datePipe.transform(this.investmentRecService.investmentDetailFormData.commitmentFromDate, 'yyyy-MM-dd HH:mm:ss');
+    this.investmentRecService.investmentDetailFormData.commitmentToDate = this.datePipe.transform(this.investmentRecService.investmentDetailFormData.commitmentToDate, 'yyyy-MM-dd HH:mm:ss');
+
+    this.investmentRecService.investmentDetailFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
+    this.investmentRecService.updateRecommendForOwnSBU(parseInt(this.empId), this.sbu, this.investmentTargetedProds).subscribe(
+      res => {
+        this.investmentRecService.investmentRecCommentFormData = res as IInvestmentRecComment;
+        this.isDonationValid = true;
+        this.isValid = true;
+        this.getInvestmentRecDetails();
+        this.getInvestmentTargetedGroup();
+        this.SpinnerService.hide();
+        this.toastr.info('Updated successfully', 'Investment ')
+      },
+      err => {
+        this.investmentRecService.investmentDetailFormData.fromDate = new Date(this.investmentRecService.investmentDetailFormData.fromDate);
+        this.investmentRecService.investmentDetailFormData.toDate = new Date(this.investmentRecService.investmentDetailFormData.toDate);
+        this.investmentRecService.investmentDetailFormData.commitmentFromDate = new Date(this.investmentRecService.investmentDetailFormData.commitmentFromDate);
+        this.investmentRecService.investmentDetailFormData.commitmentToDate = new Date(this.investmentRecService.investmentDetailFormData.commitmentToDate);
+        console.log(err);
+        this.SpinnerService.hide();
+      }
+    );
     // }
     // else {
     //   this.investmentRecService.investmentDetailFormData.investmentInitId = this.investmentRecService.investmentRecFormData.id;
-      
+
     //   this.investmentRecService.updateRecommendForOtherSBU(parseInt(this.empId), this.sbu,this.investmentTargetedProds).subscribe(
     //     res => {
     //       this.investmentRecService.investmentRecCommentFormData = res as IInvestmentRecComment;
@@ -855,7 +873,7 @@ export class InvestmentRecComponent implements OnInit {
     //       this.getInvestmentTargetedGroup();
     //       this.SpinnerService.hide();
     //       this.toastr.info('Updated successfully', 'Investment ')
-          
+
     //     },
     //     err => { 
     //       console.log(err); 
@@ -894,7 +912,7 @@ export class InvestmentRecComponent implements OnInit {
   //       this.investmentRecService.investmentDetailFormData.commitmentToDate = new Date(data.commitmentToDate);
   //       this.isDonationValid = true;
   //     },
-      
+
   //     err => {
   //       this.investmentRecService.investmentDetailFormData.fromDate  = this.datePipe.transform(this.investmentRecService.investmentDetailFormData.fromDate, 'yyyy-MM-dd HH:mm:ss');
   //       this.investmentRecService.investmentDetailFormData.toDate= this.datePipe.transform(this.investmentRecService.investmentDetailFormData.toDate, 'yyyy-MM-dd HH:mm:ss');
@@ -1080,6 +1098,7 @@ export class InvestmentRecComponent implements OnInit {
     this.isAdmin = false;
     this.isValid = false;
     this.isInvOther = false;
+    this.isPayFreq=false;
     // this.configs = {
     //   currentPage: 1,
     //   itemsPerPage: 10,
@@ -1106,6 +1125,7 @@ export class InvestmentRecComponent implements OnInit {
     this.isAdmin = false;
     this.isValid = false;
     this.isInvOther = false;
+    this.isPayFreq=false;
     // this.configs = {
     //   currentPage: 1,
     //   itemsPerPage: 10,
