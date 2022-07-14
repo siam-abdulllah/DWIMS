@@ -1,0 +1,80 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <form novalidate autocomplete="off" #form="ngForm">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h3 class="card-title">Campaign Budget Report</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <fieldset>
+                                <div class="form-group">
+                                    <div class="row">
+
+                                        <!-- <div class="col-sm-1">
+                                            <button class="btn btn-info btn-lg btn-block" type="button" (click)="ViewDataDoc()"><i class="fa fa-eye"></i>&nbsp;View</button>
+                                        </div> -->
+                                        <div class="col-sm-1">
+                                            <button class="btn btn-info btn-lg btn-block" type="button" (click)="exportexcel()"><i class="fa fa-eye"></i>&nbsp;Excel</button>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </fieldset>
+                            <br/>
+                            <div class="form-group" style="overflow: auto; max-height: 400px;" *ngIf="!isInvestmentInActive">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table  table-bordered" id="excel-table">
+                                            <tr class="HeaderRowFixed">
+                                                <td>SBU</td>
+                                                <td>Campaign Name</td>
+                                                <td>Budget</td>
+                                                <td>Expense</td>
+                                                <td>Remaining</td>
+                                            </tr>
+                                            <!-- <tr *ngFor="let a of reports | paginate: configs"> -->
+                                            <tr *ngFor="let a of reports | filter: searchText ">
+                                                <!-- <td>
+                                            {{a.id}}
+                                        </td> -->
+
+
+                                                <td>
+                                                    {{a.sbu}}
+                                                </td>
+                                                <td>
+                                                    {{a.campaignName}}
+                                                </td>
+                                                <td>
+                                                    {{a.budget | BDCurrency}}
+                                                </td>
+                                                <td>
+                                                    {{a.expense | BDCurrency}}
+                                                </td>
+                                                <td>
+                                                    {{a.remaining | BDCurrency}}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- <pagination-controls (pageChange)="onPageChanged($event)" class="my-pagination"></pagination-controls> -->
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
+    <p style="color: black">Please Wait. </p>
+</ngx-spinner>

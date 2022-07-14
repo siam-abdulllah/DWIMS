@@ -108,6 +108,34 @@ namespace API.Controllers
             return results;
         }
 
+        [HttpGet("getCampaignBgtExpRpt/{employeeId}")]
+        public ActionResult<IReadOnlyList<RptCampaignBgtExp>> getCampaignWiseBudgetExpense(int employeeId)
+        {
+            string qry = "SELECT CAST(ABS(CHECKSUM(NewId())) % 200 AS int) as Id, 1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, " +      
+                        " b.SBU, cm.CampaignName, cd.Budget, SUM(a.ApprovedAmount) Expense,  " +
+                        " ( cd.Budget - SUM(a.ApprovedAmount)) Remaining " +
+                        " from InvestmentDetailTracker a " +
+                        " inner join InvestmentInit b  on a.InvestmentInitId = b.Id " +
+                        " inner join InvestmentCampaign c  on c.InvestmentInitId = b.Id " +
+                        " inner join CampaignDtl cd on c.CampaignDtlId = cd.Id " +
+                        " INNER join CampaignMst cm on cd.MstId = cm.Id " +
+                        " where b.ProposeFor in  ('BrandCampaign') and b.DataStatus = 1 " +
+                        " and cd.SubCampStartDate <= GETDATE() AND cd.SubCampEndDate >= GETDATE() ";
+                       
+            if (employeeId != 0)
+            {
+                qry = qry + " and cm.EmployeeId = " + employeeId + " ";
+            }
+
+            qry = qry +  " group by cm.CampaignName, b.SBU, cd.Budget,cd.Id " +
+            " order by b.SBU, cm.CampaignName ";
+
+            var results = _db.RptCampaignBgtExp.FromSqlRaw(qry).ToList();
+
+            return results;
+        }
+
+
         [HttpGet("IsInvestmentInActiveDoc/{referenceNo}/{doctorId}/{doctorName}")]
         public ActionResult<IReadOnlyList<CountInt>> IsInvestmentInActiveDoc(string referenceNo, int doctorId, string doctorName)
         {

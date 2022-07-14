@@ -54,6 +54,7 @@ import { InvestmentCancelComponent } from '../investmentCancel/investmentCancel.
 import { BgtOwnComponent } from '../bgtOwn/bgtOwn.component';
 import { BgtEmpSbuMapComponent } from '../bgtEmpSbuMap/bgtEmpSbuMap';
 import { BgtEmpDisburseComponent } from '../bgtEmpDisburse/bgtEmpDisburse.component';
+import { RptCampExpBgtComponent } from '../rptCampExpBgt/rptCampExpBgt.component';
 
 
 //import { RptInvestStatusComponent } from '../rptInvestmentStatus/rptInvestmentStatus.component';
@@ -109,8 +110,9 @@ const portalRoutes: Routes = [
         {path: 'bgtOwn', component: BgtOwnComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'paramInvestmentSummary/:param', component: ParamInvestSummaryComponent},
         //{path: 'rptInvestmentDetail', component: RptInvestmentDetailComponent},
-        {path: 'rptInvestmentDetail/:id', component: RptInvestmentDetailComponent},
+        {path: 'rptInvestmentDetail/:id', component: RptInvestmentDetailComponent},        
         {path: 'rptInvDtlSummary/:id', component: RptInvestmentDetailSummaryComponent},
+        {path: 'rptCampExpBgt', component: RptCampExpBgtComponent },
         {path: 'cluster', component: ClusterInfoComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'menuHead', component: MenuHeadComponent, canActivate: [SuperAdminRoleGuard]},
         {path: 'subMenu', component: SubMenuComponent, canActivate: [SuperAdminRoleGuard]},

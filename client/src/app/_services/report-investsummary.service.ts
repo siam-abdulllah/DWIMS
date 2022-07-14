@@ -141,6 +141,10 @@ export class RptInvestSummaryService {
   getSummaryReport(model: any) {
     return this.http.post(this.baseUrl+ 'reportInvestment/GetSummaryReport/', model);
   }
+  getCampExpBgt(employeeId: number) {
+    debugger;
+    return this.http.get(this.baseUrl+ 'reportInvestment/getCampaignBgtExpRpt/'+ employeeId);
+  }
 
 }
 

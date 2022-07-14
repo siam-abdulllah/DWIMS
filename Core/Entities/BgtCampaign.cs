@@ -14,4 +14,14 @@ namespace Core.Entities
         public string Remarks { get; set; }
         public int EnteredBy { get; set; }
     }
+
+
+    public class RptCampaignBgtExp : BaseEntity
+    {
+        public string SBU { get; set; }
+        public string CampaignName { get; set; }
+        public long Budget { get; set; }
+        public double Expense { get; set; }
+        public double Remaining { get; set; }
+    }
 }

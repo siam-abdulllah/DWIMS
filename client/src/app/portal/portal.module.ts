@@ -70,6 +70,7 @@ import { UploadComponent } from '../upload/upload.component';
 import { BDCurrencyPipe } from '../bdNumberPipe';
 import { SharedModule } from '../shared/shared.module';
 import { BgtEmpDisburseComponent } from '../bgtEmpDisburse/bgtEmpDisburse.component';
+import { RptCampExpBgtComponent } from '../rptCampExpBgt/rptCampExpBgt.component';
 
 
 @NgModule({
@@ -147,6 +148,7 @@ import { BgtEmpDisburseComponent } from '../bgtEmpDisburse/bgtEmpDisburse.compon
     ChangePasswordComponent,
     BgtEmployeeComponent,
     BgtEmpDisburseComponent,
+    RptCampExpBgtComponent,
     BgtOwnComponent,
     UploadComponent
   ],
