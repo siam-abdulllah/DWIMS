@@ -249,16 +249,47 @@ namespace API.Controllers
                 var apprAuthConfig = await _apprAuthConfigRepo.GetEntityWithSpec(spec);
                 if (aprStatus == "Approved")
                 {
-                    List<SqlParameter> parms = new List<SqlParameter>
+                    double proposedAmountTot = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount;
+                    int m = 1;
+                    if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Monthly")
                     {
-                        new SqlParameter("@SBU", sbu),
-                        new SqlParameter("@DID", donationId),
-                        new SqlParameter("@EID", empId),
-                        new SqlParameter("@IID", investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId),
-                        new SqlParameter("@PRAMOUNT", investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount),
-                        new SqlParameter("@ASTATUS", aprStatus),
-                        new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
-                    };
+
+                        proposedAmountTot = proposedAmountTot * ((DateTimeOffset.Now.Month - investmentNoSBUAprInsertDto.InvestmentApr.FromDate.Month) + 1);
+                    }
+                    else if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Quarterly")
+                    {
+                        m = (((DateTimeOffset.Now.Month - investmentNoSBUAprInsertDto.InvestmentApr.FromDate.Month) + 1) / 3);
+                        m = m == 0 ? 1 : m;
+                        proposedAmountTot = proposedAmountTot * m;
+                    }
+                    else if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Half Yearly")
+                    {
+                        m = (((DateTimeOffset.Now.Month - investmentNoSBUAprInsertDto.InvestmentApr.FromDate.Month) + 1) / 6);
+                        m = m == 0 ? 1 : m;
+                        proposedAmountTot = proposedAmountTot * m;
+                        //proposedAmountTot = proposedAmountTot * (((DateTimeOffset.Now.Month - investmentNoSBUAprInsertDto.InvestmentApr.FromDate.Month) + 1) / 6);
+                    }
+                    List<SqlParameter> parms = new List<SqlParameter>
+                          {
+                            new SqlParameter("@SBU", sbu),
+                            new SqlParameter("@DID", donationId),
+                            new SqlParameter("@EID", empId),
+                            new SqlParameter("@IID", investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId),
+                            new SqlParameter("@PRAMOUNT", proposedAmountTot),
+                            //new SqlParameter("@PRAMOUNT", investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount),
+                            new SqlParameter("@ASTATUS", aprStatus),
+                            new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
+                          };
+                    //List<SqlParameter> parms = new List<SqlParameter>
+                    //{
+                    //    new SqlParameter("@SBU", sbu),
+                    //    new SqlParameter("@DID", donationId),
+                    //    new SqlParameter("@EID", empId),
+                    //    new SqlParameter("@IID", investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId),
+                    //    new SqlParameter("@PRAMOUNT", investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount),
+                    //    new SqlParameter("@ASTATUS", aprStatus),
+                    //    new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
+                    //};
                     //var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheckNew @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
                     var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheckNoSBUNew @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
                     if (parms[6].Value.ToString() != "True")
@@ -311,72 +342,275 @@ namespace API.Controllers
                             _investmentDetailTrackerRepo.Savechange();
                         }
                     }
-                    //var donation = await _donationRepo.GetByIdAsync(donationId);
+                    //if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Monthly")
+                    //{
+                    //    for (int i = 0; i < investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth; i++)
+                    //    {
+                    //        DateTimeOffset calcDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate;
+                    //        calcDate = calcDate.AddMonths(i);
+                    //        var invDT = new InvestmentDetailTracker
+                    //        {
+                    //            InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
+                    //            DonationId = donationId,
+                    //            ApprovedAmount = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount,
+                    //            Month = calcDate.Month,
+                    //            Year = calcDate.Year,
+                    //            FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
+                    //            ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
+                    //            PaidStatus = "Paid",
+                    //            EmployeeId = empId,
+                    //            SetOn = DateTimeOffset.Now
+                    //        };
+                    //        _investmentDetailTrackerRepo.Add(invDT);
+                    //    }
+                    //    _investmentDetailTrackerRepo.Savechange();
+                    //}
+                    //else if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Quarterly")
+                    //{
+                    //    DateTimeOffset calcDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate;
+                    //    for (int i = 0; i < investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth/3; i++)
+                    //    {
+                    //        var invDT = new InvestmentDetailTracker
+                    //        {
+                    //            InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
+                    //            DonationId = donationId,
+                    //            ApprovedAmount = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount,
+                    //            Month = calcDate.Month,
+                    //            Year = calcDate.Year,
+                    //            FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
+                    //            ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
+                    //            PaidStatus = "Paid",
+                    //            EmployeeId = empId,
+                    //            SetOn = DateTimeOffset.Now
+                    //        };
+                    //        _investmentDetailTrackerRepo.Add(invDT);
+                    //        calcDate = calcDate.AddMonths(3);
+                    //    }
+                    //    _investmentDetailTrackerRepo.Savechange();
+                    //} 
+                    //else if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Half Yearly")
+                    //{
+                    //    DateTimeOffset calcDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate;
+                    //    for (int i = 0; i < investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth/6; i++)
+                    //    {
+                    //        var invDT = new InvestmentDetailTracker
+                    //        {
+                    //            InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
+                    //            DonationId = donationId,
+                    //            ApprovedAmount = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount,
+                    //            Month = calcDate.Month,
+                    //            Year = calcDate.Year,
+                    //            FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
+                    //            ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
+                    //            PaidStatus = "Paid",
+                    //            EmployeeId = empId,
+                    //            SetOn = DateTimeOffset.Now
+                    //        };
+                    //        _investmentDetailTrackerRepo.Add(invDT);
+                    //        calcDate = calcDate.AddMonths(6);
+                    //    }
+                    //    _investmentDetailTrackerRepo.Savechange();
+                    //}
+                    //else if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Yearly")
+                    //{
+                    //    var invDT = new InvestmentDetailTracker
+                    //    {
+                    //        InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
+                    //        DonationId = donationId,
+                    //        ApprovedAmount = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount,
+                    //        Month = DateTime.Now.Month,
+                    //        Year = DateTime.Now.Year,
+                    //        FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
+                    //        ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
+                    //        PaidStatus = "Paid",
+                    //        EmployeeId = empId,
+                    //        SetOn = DateTimeOffset.Now
+                    //    };
+                    //    _investmentDetailTrackerRepo.Add(invDT);
+                    //    _investmentDetailTrackerRepo.Savechange();
+                    //}
                     if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Monthly")
                     {
+                        double proposedAmountMonth = 0;
                         for (int i = 0; i < investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth; i++)
                         {
                             DateTimeOffset calcDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate;
+
                             calcDate = calcDate.AddMonths(i);
-                            var invDT = new InvestmentDetailTracker
+
+                            if (calcDate.Month < DateTimeOffset.Now.Month)
                             {
-                                InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
-                                DonationId = donationId,
-                                ApprovedAmount = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount,
-                                Month = calcDate.Month,
-                                Year = calcDate.Year,
-                                FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
-                                ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
-                                PaidStatus = "Paid",
-                                EmployeeId = empId,
-                                SetOn = DateTimeOffset.Now
-                            };
-                            _investmentDetailTrackerRepo.Add(invDT);
+                                proposedAmountMonth = proposedAmountMonth + investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount;
+                            }
+                            else if (calcDate.Month == DateTimeOffset.Now.Month)
+                            {
+                                var invDT = new InvestmentDetailTracker
+                                {
+                                    InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
+                                    DonationId = donationId,
+                                    ApprovedAmount = proposedAmountMonth + investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount,
+                                    //Month = calcDate.Month,
+                                    Month = DateTimeOffset.Now.Month,
+                                    Year = calcDate.Year,
+                                    FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
+                                    ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
+                                    PaidStatus = "Paid",
+                                    EmployeeId = empId,
+                                    SetOn = DateTimeOffset.Now
+                                };
+                                _investmentDetailTrackerRepo.Add(invDT);
+                            }
+                            else
+                            {
+
+                                var invDT = new InvestmentDetailTracker
+                                {
+                                    InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
+                                    DonationId = donationId,
+                                    ApprovedAmount = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount,
+                                    Month = calcDate.Month,
+                                    Year = calcDate.Year,
+                                    FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
+                                    ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
+                                    PaidStatus = "Paid",
+                                    EmployeeId = empId,
+                                    SetOn = DateTimeOffset.Now
+                                };
+                                _investmentDetailTrackerRepo.Add(invDT);
+                            }
                         }
                         _investmentDetailTrackerRepo.Savechange();
                     }
                     else if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Quarterly")
                     {
                         DateTimeOffset calcDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate;
-                        for (int i = 0; i < investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth/3; i++)
+                        double proposedAmountMonth = 0;
+                        for (int i = 0; i < investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth / 3; i++)
                         {
-                            var invDT = new InvestmentDetailTracker
+                            if (calcDate.Month <= DateTimeOffset.Now.Month)
                             {
-                                InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
-                                DonationId = donationId,
-                                ApprovedAmount = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount,
-                                Month = calcDate.Month,
-                                Year = calcDate.Year,
-                                FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
-                                ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
-                                PaidStatus = "Paid",
-                                EmployeeId = empId,
-                                SetOn = DateTimeOffset.Now
-                            };
-                            _investmentDetailTrackerRepo.Add(invDT);
+                                proposedAmountMonth = proposedAmountMonth + investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount;
+                                if (investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth / 3 == i + 1)
+                                {
+                                    var invDTPrev = new InvestmentDetailTracker
+                                    {
+                                        InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
+                                        DonationId = donationId,
+                                        ApprovedAmount = proposedAmountMonth,
+                                        Month = DateTimeOffset.Now.Month,
+                                        Year = calcDate.Year,
+                                        FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
+                                        ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
+                                        PaidStatus = "Paid",
+                                        EmployeeId = empId,
+                                        SetOn = DateTimeOffset.Now
+                                    };
+                                    _investmentDetailTrackerRepo.Add(invDTPrev);
+                                }
+                            }
+                            else
+                            {
+                                var a = calcDate.AddMonths(-3);
+                                if (a.Month <= DateTimeOffset.Now.Month && proposedAmountMonth > 0)
+                                {
+                                    var invDTPrev = new InvestmentDetailTracker
+                                    {
+                                        InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
+                                        DonationId = donationId,
+                                        ApprovedAmount = proposedAmountMonth,
+                                        Month = DateTimeOffset.Now.Month,
+                                        Year = calcDate.Year,
+                                        FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
+                                        ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
+                                        PaidStatus = "Paid",
+                                        EmployeeId = empId,
+                                        SetOn = DateTimeOffset.Now
+                                    };
+                                    _investmentDetailTrackerRepo.Add(invDTPrev);
+                                }
+
+                                var invDT = new InvestmentDetailTracker
+                                {
+                                    InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
+                                    DonationId = donationId,
+                                    ApprovedAmount = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount,
+                                    Month = calcDate.Month,
+                                    Year = calcDate.Year,
+                                    FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
+                                    ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
+                                    PaidStatus = "Paid",
+                                    EmployeeId = empId,
+                                    SetOn = DateTimeOffset.Now
+                                };
+                                _investmentDetailTrackerRepo.Add(invDT);
+                            }
                             calcDate = calcDate.AddMonths(3);
                         }
                         _investmentDetailTrackerRepo.Savechange();
-                    } 
+                    }
                     else if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Half Yearly")
                     {
+                        double proposedAmountMonth = 0;
                         DateTimeOffset calcDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate;
-                        for (int i = 0; i < investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth/6; i++)
+                        for (int i = 0; i < investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth / 6; i++)
                         {
-                            var invDT = new InvestmentDetailTracker
+                            if (calcDate.Month <= DateTimeOffset.Now.Month)
                             {
-                                InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
-                                DonationId = donationId,
-                                ApprovedAmount = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount,
-                                Month = calcDate.Month,
-                                Year = calcDate.Year,
-                                FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
-                                ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
-                                PaidStatus = "Paid",
-                                EmployeeId = empId,
-                                SetOn = DateTimeOffset.Now
-                            };
-                            _investmentDetailTrackerRepo.Add(invDT);
+                                proposedAmountMonth = proposedAmountMonth + investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount;
+                                if (investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth / 6 == i + 1)
+                                {
+                                    var invDTPrev = new InvestmentDetailTracker
+                                    {
+                                        InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
+                                        DonationId = donationId,
+                                        ApprovedAmount = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount,
+                                        Month = DateTimeOffset.Now.Month,
+                                        Year = calcDate.Year,
+                                        FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
+                                        ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
+                                        PaidStatus = "Paid",
+                                        EmployeeId = empId,
+                                        SetOn = DateTimeOffset.Now
+                                    };
+                                    _investmentDetailTrackerRepo.Add(invDTPrev);
+                                }
+                            }
+                            else
+                            {
+                                var a = calcDate.AddMonths(-6);
+                                if (a.Month <= DateTimeOffset.Now.Month && proposedAmountMonth > 0)
+                                {
+                                    var invDTPrev = new InvestmentDetailTracker
+                                    {
+                                        InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
+                                        DonationId = donationId,
+                                        ApprovedAmount = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount,
+                                        Month = DateTimeOffset.Now.Month,
+                                        Year = calcDate.Year,
+                                        FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
+                                        ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
+                                        PaidStatus = "Paid",
+                                        EmployeeId = empId,
+                                        SetOn = DateTimeOffset.Now
+                                    };
+                                    _investmentDetailTrackerRepo.Add(invDTPrev);
+                                }
+                                var invDT = new InvestmentDetailTracker
+                                {
+                                    InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
+                                    DonationId = donationId,
+                                    ApprovedAmount = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount,
+                                    Month = calcDate.Month,
+                                    Year = calcDate.Year,
+                                    FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
+                                    ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
+                                    PaidStatus = "Paid",
+                                    EmployeeId = empId,
+                                    SetOn = DateTimeOffset.Now
+                                };
+                                _investmentDetailTrackerRepo.Add(invDT);
+                            }
+
                             calcDate = calcDate.AddMonths(6);
                         }
                         _investmentDetailTrackerRepo.Savechange();
@@ -537,16 +771,48 @@ namespace API.Controllers
                 var apprAuthConfig = await _apprAuthConfigRepo.GetEntityWithSpec(spec);
                 if (aprStatus == "Approved")
                 {
-                    List<SqlParameter> parms = new List<SqlParameter>
+                    double proposedAmountTot = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount;
+                    int m = 1;
+                    if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Monthly")
                     {
-                        new SqlParameter("@SBU", sbu),
-                        new SqlParameter("@DID", donationId),
-                        new SqlParameter("@EID", empId),
-                        new SqlParameter("@IID", investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId),
-                        new SqlParameter("@PRAMOUNT", investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount),
-                        new SqlParameter("@ASTATUS", aprStatus),
-                        new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
-                    };
+
+                        proposedAmountTot = proposedAmountTot * ((DateTimeOffset.Now.Month - investmentNoSBUAprInsertDto.InvestmentApr.FromDate.Month) + 1);
+                    }
+                    else if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Quarterly")
+                    {
+                        m = (((DateTimeOffset.Now.Month - investmentNoSBUAprInsertDto.InvestmentApr.FromDate.Month) + 1) / 3);
+                        m = m == 0 ? 1 : m;
+                        proposedAmountTot = proposedAmountTot * m;
+                    }
+                    else if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Half Yearly")
+                    {
+                        m = (((DateTimeOffset.Now.Month - investmentNoSBUAprInsertDto.InvestmentApr.FromDate.Month) + 1) / 6);
+                        m = m == 0 ? 1 : m;
+                        proposedAmountTot = proposedAmountTot * m;
+                        //proposedAmountTot = proposedAmountTot * (((DateTimeOffset.Now.Month - investmentNoSBUAprInsertDto.InvestmentApr.FromDate.Month) + 1) / 6);
+                    }
+
+                    List<SqlParameter> parms = new List<SqlParameter>
+                          {
+                            new SqlParameter("@SBU", sbu),
+                            new SqlParameter("@DID", donationId),
+                            new SqlParameter("@EID", empId),
+                            new SqlParameter("@IID", investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId),
+                            new SqlParameter("@PRAMOUNT", proposedAmountTot),
+                            //new SqlParameter("@PRAMOUNT", investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount),
+                            new SqlParameter("@ASTATUS", aprStatus),
+                            new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
+                          };
+                    //List<SqlParameter> parms = new List<SqlParameter>
+                    //{
+                    //    new SqlParameter("@SBU", sbu),
+                    //    new SqlParameter("@DID", donationId),
+                    //    new SqlParameter("@EID", empId),
+                    //    new SqlParameter("@IID", investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId),
+                    //    new SqlParameter("@PRAMOUNT", investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount),
+                    //    new SqlParameter("@ASTATUS", aprStatus),
+                    //    new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
+                    //};
                    // var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheckNew @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
                     var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheckNoSBUNew @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
                     if (parms[6].Value.ToString() != "True")
@@ -597,72 +863,275 @@ namespace API.Controllers
                             _investmentDetailTrackerRepo.Savechange();
                         }
                     }
-                    //var donation = await _donationRepo.GetByIdAsync(donationId);
+                    //if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Monthly")
+                    //{
+                    //    for (int i = 0; i < investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth; i++)
+                    //    {
+                    //        DateTimeOffset calcDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate;
+                    //        calcDate = calcDate.AddMonths(i);
+                    //        var invDT = new InvestmentDetailTracker
+                    //        {
+                    //            InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
+                    //            DonationId = donationId,
+                    //            ApprovedAmount = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount,
+                    //            Month = calcDate.Month,
+                    //            Year = calcDate.Year,
+                    //            FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
+                    //            ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
+                    //            PaidStatus = "Paid",
+                    //            EmployeeId = empId,
+                    //            SetOn = DateTimeOffset.Now
+                    //        };
+                    //        _investmentDetailTrackerRepo.Add(invDT);
+                    //    }
+                    //    _investmentDetailTrackerRepo.Savechange();
+                    //}
+                    //else if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Quarterly")
+                    //{
+                    //    DateTimeOffset calcDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate;
+                    //    for (int i = 0; i < investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth / 3; i++)
+                    //    {
+                    //        var invDT = new InvestmentDetailTracker
+                    //        {
+                    //            InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
+                    //            DonationId = donationId,
+                    //            ApprovedAmount = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount,
+                    //            Month = calcDate.Month,
+                    //            Year = calcDate.Year,
+                    //            FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
+                    //            ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
+                    //            PaidStatus = "Paid",
+                    //            EmployeeId = empId,
+                    //            SetOn = DateTimeOffset.Now
+                    //        };
+                    //        _investmentDetailTrackerRepo.Add(invDT);
+                    //        calcDate = calcDate.AddMonths(3);
+                    //    }
+                    //    _investmentDetailTrackerRepo.Savechange();
+                    //}
+                    //else if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Half Yearly")
+                    //{
+                    //    DateTimeOffset calcDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate;
+                    //    for (int i = 0; i < investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth / 6; i++)
+                    //    {
+                    //        var invDT = new InvestmentDetailTracker
+                    //        {
+                    //            InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
+                    //            DonationId = donationId,
+                    //            ApprovedAmount = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount,
+                    //            Month = calcDate.Month,
+                    //            Year = calcDate.Year,
+                    //            FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
+                    //            ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
+                    //            PaidStatus = "Paid",
+                    //            EmployeeId = empId,
+                    //            SetOn = DateTimeOffset.Now
+                    //        };
+                    //        _investmentDetailTrackerRepo.Add(invDT);
+                    //        calcDate = calcDate.AddMonths(6);
+                    //    }
+                    //    _investmentDetailTrackerRepo.Savechange();
+                    //}
+                    //else if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Yearly")
+                    //{
+                    //    var invDT = new InvestmentDetailTracker
+                    //    {
+                    //        InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
+                    //        DonationId = donationId,
+                    //        ApprovedAmount = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount,
+                    //        Month = DateTime.Now.Month,
+                    //        Year = DateTime.Now.Year,
+                    //        FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
+                    //        ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
+                    //        PaidStatus = "Paid",
+                    //        EmployeeId = empId,
+                    //        SetOn = DateTimeOffset.Now
+                    //    };
+                    //    _investmentDetailTrackerRepo.Add(invDT);
+                    //    _investmentDetailTrackerRepo.Savechange();
+                    //}
                     if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Monthly")
                     {
+                        double proposedAmountMonth = 0;
                         for (int i = 0; i < investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth; i++)
                         {
                             DateTimeOffset calcDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate;
+
                             calcDate = calcDate.AddMonths(i);
-                            var invDT = new InvestmentDetailTracker
+
+                            if (calcDate.Month < DateTimeOffset.Now.Month)
                             {
-                                InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
-                                DonationId = donationId,
-                                ApprovedAmount = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount,
-                                Month = calcDate.Month,
-                                Year = calcDate.Year,
-                                FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
-                                ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
-                                PaidStatus = "Paid",
-                                EmployeeId = empId,
-                                SetOn = DateTimeOffset.Now
-                            };
-                            _investmentDetailTrackerRepo.Add(invDT);
+                                proposedAmountMonth = proposedAmountMonth + investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount;
+                            }
+                            else if (calcDate.Month == DateTimeOffset.Now.Month)
+                            {
+                                var invDT = new InvestmentDetailTracker
+                                {
+                                    InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
+                                    DonationId = donationId,
+                                    ApprovedAmount = proposedAmountMonth + investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount,
+                                    //Month = calcDate.Month,
+                                    Month = DateTimeOffset.Now.Month,
+                                    Year = calcDate.Year,
+                                    FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
+                                    ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
+                                    PaidStatus = "Paid",
+                                    EmployeeId = empId,
+                                    SetOn = DateTimeOffset.Now
+                                };
+                                _investmentDetailTrackerRepo.Add(invDT);
+                            }
+                            else
+                            {
+
+                                var invDT = new InvestmentDetailTracker
+                                {
+                                    InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
+                                    DonationId = donationId,
+                                    ApprovedAmount = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount,
+                                    Month = calcDate.Month,
+                                    Year = calcDate.Year,
+                                    FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
+                                    ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
+                                    PaidStatus = "Paid",
+                                    EmployeeId = empId,
+                                    SetOn = DateTimeOffset.Now
+                                };
+                                _investmentDetailTrackerRepo.Add(invDT);
+                            }
                         }
                         _investmentDetailTrackerRepo.Savechange();
                     }
                     else if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Quarterly")
                     {
                         DateTimeOffset calcDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate;
+                        double proposedAmountMonth = 0;
                         for (int i = 0; i < investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth / 3; i++)
                         {
-                            var invDT = new InvestmentDetailTracker
+                            if (calcDate.Month <= DateTimeOffset.Now.Month)
                             {
-                                InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
-                                DonationId = donationId,
-                                ApprovedAmount = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount,
-                                Month = calcDate.Month,
-                                Year = calcDate.Year,
-                                FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
-                                ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
-                                PaidStatus = "Paid",
-                                EmployeeId = empId,
-                                SetOn = DateTimeOffset.Now
-                            };
-                            _investmentDetailTrackerRepo.Add(invDT);
+                                proposedAmountMonth = proposedAmountMonth + investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount;
+                                if (investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth / 3 == i + 1)
+                                {
+                                    var invDTPrev = new InvestmentDetailTracker
+                                    {
+                                        InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
+                                        DonationId = donationId,
+                                        ApprovedAmount = proposedAmountMonth,
+                                        Month = DateTimeOffset.Now.Month,
+                                        Year = calcDate.Year,
+                                        FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
+                                        ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
+                                        PaidStatus = "Paid",
+                                        EmployeeId = empId,
+                                        SetOn = DateTimeOffset.Now
+                                    };
+                                    _investmentDetailTrackerRepo.Add(invDTPrev);
+                                }
+                            }
+                            else
+                            {
+                                var a = calcDate.AddMonths(-3);
+                                if (a.Month <= DateTimeOffset.Now.Month && proposedAmountMonth > 0)
+                                {
+                                    var invDTPrev = new InvestmentDetailTracker
+                                    {
+                                        InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
+                                        DonationId = donationId,
+                                        ApprovedAmount = proposedAmountMonth,
+                                        Month = DateTimeOffset.Now.Month,
+                                        Year = calcDate.Year,
+                                        FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
+                                        ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
+                                        PaidStatus = "Paid",
+                                        EmployeeId = empId,
+                                        SetOn = DateTimeOffset.Now
+                                    };
+                                    _investmentDetailTrackerRepo.Add(invDTPrev);
+                                }
+
+                                var invDT = new InvestmentDetailTracker
+                                {
+                                    InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
+                                    DonationId = donationId,
+                                    ApprovedAmount = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount,
+                                    Month = calcDate.Month,
+                                    Year = calcDate.Year,
+                                    FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
+                                    ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
+                                    PaidStatus = "Paid",
+                                    EmployeeId = empId,
+                                    SetOn = DateTimeOffset.Now
+                                };
+                                _investmentDetailTrackerRepo.Add(invDT);
+                            }
                             calcDate = calcDate.AddMonths(3);
                         }
                         _investmentDetailTrackerRepo.Savechange();
                     }
                     else if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Half Yearly")
                     {
+                        double proposedAmountMonth = 0;
                         DateTimeOffset calcDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate;
                         for (int i = 0; i < investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth / 6; i++)
                         {
-                            var invDT = new InvestmentDetailTracker
+                            if (calcDate.Month <= DateTimeOffset.Now.Month)
                             {
-                                InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
-                                DonationId = donationId,
-                                ApprovedAmount = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount,
-                                Month = calcDate.Month,
-                                Year = calcDate.Year,
-                                FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
-                                ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
-                                PaidStatus = "Paid",
-                                EmployeeId = empId,
-                                SetOn = DateTimeOffset.Now
-                            };
-                            _investmentDetailTrackerRepo.Add(invDT);
+                                proposedAmountMonth = proposedAmountMonth + investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount;
+                                if (investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth / 6 == i + 1)
+                                {
+                                    var invDTPrev = new InvestmentDetailTracker
+                                    {
+                                        InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
+                                        DonationId = donationId,
+                                        ApprovedAmount = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount,
+                                        Month = DateTimeOffset.Now.Month,
+                                        Year = calcDate.Year,
+                                        FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
+                                        ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
+                                        PaidStatus = "Paid",
+                                        EmployeeId = empId,
+                                        SetOn = DateTimeOffset.Now
+                                    };
+                                    _investmentDetailTrackerRepo.Add(invDTPrev);
+                                }
+                            }
+                            else
+                            {
+                                var a = calcDate.AddMonths(-6);
+                                if (a.Month <= DateTimeOffset.Now.Month && proposedAmountMonth > 0)
+                                {
+                                    var invDTPrev = new InvestmentDetailTracker
+                                    {
+                                        InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
+                                        DonationId = donationId,
+                                        ApprovedAmount = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount,
+                                        Month = calcDate.Month,
+                                        Year = calcDate.Year,
+                                        FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
+                                        ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
+                                        PaidStatus = "Paid",
+                                        EmployeeId = empId,
+                                        SetOn = DateTimeOffset.Now
+                                    };
+                                    _investmentDetailTrackerRepo.Add(invDTPrev);
+                                }
+                                var invDT = new InvestmentDetailTracker
+                                {
+                                    InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
+                                    DonationId = donationId,
+                                    ApprovedAmount = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount,
+                                    Month = calcDate.Month,
+                                    Year = calcDate.Year,
+                                    FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
+                                    ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
+                                    PaidStatus = "Paid",
+                                    EmployeeId = empId,
+                                    SetOn = DateTimeOffset.Now
+                                };
+                                _investmentDetailTrackerRepo.Add(invDT);
+                            }
+
                             calcDate = calcDate.AddMonths(6);
                         }
                         _investmentDetailTrackerRepo.Savechange();

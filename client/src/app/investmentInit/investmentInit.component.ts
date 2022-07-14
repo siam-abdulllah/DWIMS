@@ -62,6 +62,7 @@ export class InvestmentInitComponent implements OnInit {
   investmentDoctors: IInvestmentDoctor[];
   isValid: boolean = false;
   isInvOther: boolean = false;
+  isPayFreq: boolean = false;
   isAdmin: boolean = false;
   isDonationValid: boolean = false;
   isSubmitted: boolean = false;
@@ -123,6 +124,14 @@ export class InvestmentInitComponent implements OnInit {
     this.investmentInitService.investmentDetailFormData.investmentInitId = selectedRecord.id;
     this.convertedDate = this.datePipe.transform(selectedRecord.setOn, 'ddMMyyyy');
     this.isDonationValid = true;
+    if (this.investmentInitService.investmentInitFormData.donationId == 2 || this.investmentInitService.investmentInitFormData.donationId == 4) {
+      this.isPayFreq=true;
+      //this.investmentInitService.investmentDetailFormData.paymentFreq='Yearly';
+    }
+    else{
+      this.isPayFreq=false;
+        
+    }
     if (this.investmentInitService.investmentInitFormData.donationId == 4) {
       this.getInvestmentMedicineProd();
     }
@@ -701,6 +710,18 @@ export class InvestmentInitComponent implements OnInit {
       this.investmentInitService.investmentSocietyFormData.investmentInitId = this.investmentInitService.investmentInitFormData.id;
     }
   }
+  onChangeDonationType() {
+    if (this.investmentInitService.investmentInitFormData.donationId == 2 || this.investmentInitService.investmentInitFormData.donationId == 4) {
+      //if (this.investmentInitService.investmentDetailFormData.paymentFreq != 'Yearly') {
+        this.isPayFreq=true;
+        this.investmentInitService.investmentDetailFormData.paymentFreq='Yearly';
+      //}
+    }
+    else{
+      this.isPayFreq=false;
+        
+    }
+  }
   onChangeDoctorInDoc() {
     for (var i = 0; i < this.doctors.length; i++) {
       if (this.doctors[i].id == this.investmentInitService.investmentDoctorFormData.doctorId) {
@@ -1055,6 +1076,12 @@ export class InvestmentInitComponent implements OnInit {
     this.submissionConfirmRef.hide();
   }
   submitInvestment() {
+    if (this.investmentInitService.investmentInitFormData.donationId == 2 || this.investmentInitService.investmentInitFormData.donationId == 4) {
+      if (this.investmentInitService.investmentDetailFormData.paymentFreq != 'Yearly') {
+        this.toastr.warning('Gift or Medicine can be only Yearly');
+        return false;
+      }
+    }
     if (this.investmentInitService.investmentInitFormData.donationTo == "Doctor") {
       if (this.investmentInitService.investmentDoctorFormData.id == null || this.investmentInitService.investmentDoctorFormData.id == undefined || this.investmentInitService.investmentDoctorFormData.id == 0) {
         this.toastr.warning('Insert Doctor Information First', 'Investment Doctor');
@@ -1233,6 +1260,12 @@ export class InvestmentInitComponent implements OnInit {
     if (this.investmentInitService.investmentDetailFormData.paymentFreq == 'Half Yearly') {
       if (this.investmentInitService.investmentDetailFormData.totalMonth  <6) {
         this.toastr.warning('Duration can not be less than 6 Month for Half Yearly Investment');
+        return false;
+      }
+    }
+    if (this.investmentInitService.investmentInitFormData.donationId == 2 || this.investmentInitService.investmentInitFormData.donationId == 4) {
+      if (this.investmentInitService.investmentDetailFormData.paymentFreq != 'Yearly') {
+        this.toastr.warning('Gift or Medicine can be only Yearly');
         return false;
       }
     }
@@ -1612,6 +1645,7 @@ export class InvestmentInitComponent implements OnInit {
     this.isSubmitted = false;
     this.isInvOther = false;
     this.isDonationValid = false;
+    this.isPayFreq=false;
     this.investmentTargetedGroups = [];
     this.investmentTargetedProds = [];
     this.lastFiveInvestmentDetail = [];
@@ -1644,6 +1678,7 @@ export class InvestmentInitComponent implements OnInit {
     this.isSubmitted = false;
     this.isInvOther = false;
     this.isDonationValid = false;
+    this.isPayFreq=false;
     this.investmentTargetedGroups = [];
     this.investmentTargetedProds = [];
     this.lastFiveInvestmentDetail = [];

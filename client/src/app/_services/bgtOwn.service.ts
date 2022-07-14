@@ -84,7 +84,7 @@ export class BgtOwnService {
     return this.http.get(this.baseUrl + 'BgtOwn/getAuthPersonCount/'+authId);
   }
   getDonations() {
-    return this.http.get(this.baseUrl + 'donation/donationsForInvestment');
+    return this.http.get(this.baseUrl + 'donation/allDonation');
   }
   insertBgtEmp(bgtEmpFormData: any) {
     return this.http.post(this.baseUrl+ 'BgtOwn/insertBgtEmployeeDetail', bgtEmpFormData);

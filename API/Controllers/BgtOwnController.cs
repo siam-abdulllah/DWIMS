@@ -432,7 +432,7 @@ namespace API.Controllers
                     {
                         result = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsertSingleDSM] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId, @EmployeeId", parms.ToArray());
                     }
-                    else if (item.AuthId == 8)//for ONLY GPM
+                    else if (item.DeptId == 2)//for ONLY PMD
                     {
                         result = _dbContext.Database.ExecuteSqlRaw("EXECUTE [SP_BgtOwnInsertSinglePMD] @DeptId, @Year, @SBU , @AuthId, @Amount, @AmtLimit, @Segment, @EnteredBy, @DonationId, @EmployeeId", parms.ToArray());
                     }

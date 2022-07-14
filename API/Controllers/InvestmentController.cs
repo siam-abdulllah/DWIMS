@@ -1217,6 +1217,46 @@ namespace API.Controllers
                 {
                     return BadRequest(new ApiResponse(0, "Investment Approval is Pending for this Doctor!"));
                 }
+                var alreadyExistSpecSoc = new InvestmentSocietySpecification(investmentDoctorDto.InvestmentInitId);
+                var alreadyExistInvestmentSocietyList = await _investmentSocietyRepo.ListAsync(alreadyExistSpecSoc);
+                if (alreadyExistInvestmentSocietyList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentSocietyList)
+                    {
+                        _investmentSocietyRepo.Delete(v);
+                        _investmentSocietyRepo.Savechange();
+                    }
+                }
+                var alreadyExistSpecBcds = new InvestmentBcdsSpecification(investmentDoctorDto.InvestmentInitId);
+                var alreadyExistInvestmentBcdsList = await _investmentBcdsRepo.ListAsync(alreadyExistSpecBcds);
+                if (alreadyExistInvestmentBcdsList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentBcdsList)
+                    {
+                        _investmentBcdsRepo.Delete(v);
+                        _investmentBcdsRepo.Savechange();
+                    }
+                }
+                var alreadyExistSpecCamp = new InvestmentCampaignSpecification(investmentDoctorDto.InvestmentInitId);
+                var alreadyExistInvestmentCampaignList = await _investmentCampaignRepo.ListAsync(alreadyExistSpecCamp);
+                if (alreadyExistInvestmentCampaignList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentCampaignList)
+                    {
+                        _investmentCampaignRepo.Delete(v);
+                        _investmentCampaignRepo.Savechange();
+                    }
+                }
+                var alreadyExistSpecInst = new InvestmentInstitutionSpecification(investmentDoctorDto.InvestmentInitId);
+                var alreadyExistInvestmentInstitutionList = await _investmentInstitutionRepo.ListAsync(alreadyExistSpecInst);
+                if (alreadyExistInvestmentInstitutionList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentInstitutionList)
+                    {
+                        _investmentInstitutionRepo.Delete(v);
+                        _investmentInstitutionRepo.Savechange();
+                    }
+                }
                 var alreadyExistSpec = new InvestmentDoctorSpecification(investmentDoctorDto.InvestmentInitId);
                 var alreadyExistInvestmentDoctorList = await _investmentDoctorRepo.ListAsync(alreadyExistSpec);
                 if (alreadyExistInvestmentDoctorList.Count > 0)
@@ -1346,8 +1386,38 @@ namespace API.Controllers
                 {
                     return BadRequest(new ApiResponse(0, "Investment Approval is Pending for this Institution!"));
                 }
-                var alreadyExistSpec = new InvestmentInstitutionSpecification(investmentInstitutionDto.InvestmentInitId);
-                var alreadyExistInvestmentInstitutionList = await _investmentInstitutionRepo.ListAsync(alreadyExistSpec);
+                var alreadyExistSpecSoc = new InvestmentSocietySpecification(investmentInstitutionDto.InvestmentInitId);
+                var alreadyExistInvestmentSocietyList = await _investmentSocietyRepo.ListAsync(alreadyExistSpecSoc);
+                if (alreadyExistInvestmentSocietyList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentSocietyList)
+                    {
+                        _investmentSocietyRepo.Delete(v);
+                        _investmentSocietyRepo.Savechange();
+                    }
+                }
+                var alreadyExistSpecBcds = new InvestmentBcdsSpecification(investmentInstitutionDto.InvestmentInitId);
+                var alreadyExistInvestmentBcdsList = await _investmentBcdsRepo.ListAsync(alreadyExistSpecBcds);
+                if (alreadyExistInvestmentBcdsList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentBcdsList)
+                    {
+                        _investmentBcdsRepo.Delete(v);
+                        _investmentBcdsRepo.Savechange();
+                    }
+                }
+                var alreadyExistSpecCamp = new InvestmentCampaignSpecification(investmentInstitutionDto.InvestmentInitId);
+                var alreadyExistInvestmentCampaignList = await _investmentCampaignRepo.ListAsync(alreadyExistSpecCamp);
+                if (alreadyExistInvestmentCampaignList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentCampaignList)
+                    {
+                        _investmentCampaignRepo.Delete(v);
+                        _investmentCampaignRepo.Savechange();
+                    }
+                }
+                var alreadyExistSpecInst = new InvestmentInstitutionSpecification(investmentInstitutionDto.InvestmentInitId);
+                var alreadyExistInvestmentInstitutionList = await _investmentInstitutionRepo.ListAsync(alreadyExistSpecInst);
                 if (alreadyExistInvestmentInstitutionList.Count > 0)
                 {
                     foreach (var v in alreadyExistInvestmentInstitutionList)
@@ -1356,6 +1426,26 @@ namespace API.Controllers
                         _investmentInstitutionRepo.Savechange();
                     }
                 }
+                var alreadyExistSpec = new InvestmentDoctorSpecification(investmentInstitutionDto.InvestmentInitId);
+                var alreadyExistInvestmentDoctorList = await _investmentDoctorRepo.ListAsync(alreadyExistSpec);
+                if (alreadyExistInvestmentDoctorList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentDoctorList)
+                    {
+                        _investmentDoctorRepo.Delete(v);
+                        _investmentDoctorRepo.Savechange();
+                    }
+                }
+                //var alreadyExistSpec = new InvestmentInstitutionSpecification(investmentInstitutionDto.InvestmentInitId);
+                //var alreadyExistInvestmentInstitutionList = await _investmentInstitutionRepo.ListAsync(alreadyExistSpec);
+                //if (alreadyExistInvestmentInstitutionList.Count > 0)
+                //{
+                //    foreach (var v in alreadyExistInvestmentInstitutionList)
+                //    {
+                //        _investmentInstitutionRepo.Delete(v);
+                //        _investmentInstitutionRepo.Savechange();
+                //    }
+                //}
                     var investmentInstitution = new InvestmentInstitution
                 {
                     //ReferenceNo = investmentInstitutionDto.ReferenceNo,
@@ -1475,8 +1565,28 @@ namespace API.Controllers
                 {
                     return BadRequest(new ApiResponse(0, "Investment Approval is Pending for this Campaign!"));
                 }
-                var alreadyExistSpec = new InvestmentCampaignSpecification(investmentCampaignDto.InvestmentInitId);
-                var alreadyExistInvestmentCampaignList = await _investmentCampaignRepo.ListAsync(alreadyExistSpec);
+                var alreadyExistSpecSoc = new InvestmentSocietySpecification(investmentCampaignDto.InvestmentInitId);
+                var alreadyExistInvestmentSocietyList = await _investmentSocietyRepo.ListAsync(alreadyExistSpecSoc);
+                if (alreadyExistInvestmentSocietyList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentSocietyList)
+                    {
+                        _investmentSocietyRepo.Delete(v);
+                        _investmentSocietyRepo.Savechange();
+                    }
+                }
+                var alreadyExistSpecBcds = new InvestmentBcdsSpecification(investmentCampaignDto.InvestmentInitId);
+                var alreadyExistInvestmentBcdsList = await _investmentBcdsRepo.ListAsync(alreadyExistSpecBcds);
+                if (alreadyExistInvestmentBcdsList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentBcdsList)
+                    {
+                        _investmentBcdsRepo.Delete(v);
+                        _investmentBcdsRepo.Savechange();
+                    }
+                }
+                var alreadyExistSpecCamp = new InvestmentCampaignSpecification(investmentCampaignDto.InvestmentInitId);
+                var alreadyExistInvestmentCampaignList = await _investmentCampaignRepo.ListAsync(alreadyExistSpecCamp);
                 if (alreadyExistInvestmentCampaignList.Count > 0)
                 {
                     foreach (var v in alreadyExistInvestmentCampaignList)
@@ -1485,6 +1595,36 @@ namespace API.Controllers
                         _investmentCampaignRepo.Savechange();
                     }
                 }
+                var alreadyExistSpecInst = new InvestmentInstitutionSpecification(investmentCampaignDto.InvestmentInitId);
+                var alreadyExistInvestmentInstitutionList = await _investmentInstitutionRepo.ListAsync(alreadyExistSpecInst);
+                if (alreadyExistInvestmentInstitutionList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentInstitutionList)
+                    {
+                        _investmentInstitutionRepo.Delete(v);
+                        _investmentInstitutionRepo.Savechange();
+                    }
+                }
+                var alreadyExistSpec = new InvestmentDoctorSpecification(investmentCampaignDto.InvestmentInitId);
+                var alreadyExistInvestmentDoctorList = await _investmentDoctorRepo.ListAsync(alreadyExistSpec);
+                if (alreadyExistInvestmentDoctorList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentDoctorList)
+                    {
+                        _investmentDoctorRepo.Delete(v);
+                        _investmentDoctorRepo.Savechange();
+                    }
+                }
+                //var alreadyExistSpec = new InvestmentCampaignSpecification(investmentCampaignDto.InvestmentInitId);
+                //var alreadyExistInvestmentCampaignList = await _investmentCampaignRepo.ListAsync(alreadyExistSpec);
+                //if (alreadyExistInvestmentCampaignList.Count > 0)
+                //{
+                //    foreach (var v in alreadyExistInvestmentCampaignList)
+                //    {
+                //        _investmentCampaignRepo.Delete(v);
+                //        _investmentCampaignRepo.Savechange();
+                //    }
+                //}
 
                 var investmentCampaign = new InvestmentCampaign
                 {
@@ -1601,8 +1741,18 @@ namespace API.Controllers
                 {
                     return BadRequest(new ApiResponse(0, "Investment Approval is Pending for this Bcds!"));
                 }
-                var alreadyExistSpec = new InvestmentBcdsSpecification(investmentBcdsDto.InvestmentInitId);
-                var alreadyExistInvestmentBcdsList = await _investmentBcdsRepo.ListAsync(alreadyExistSpec);
+                var alreadyExistSpecSoc = new InvestmentSocietySpecification(investmentBcdsDto.InvestmentInitId);
+                var alreadyExistInvestmentSocietyList = await _investmentSocietyRepo.ListAsync(alreadyExistSpecSoc);
+                if (alreadyExistInvestmentSocietyList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentSocietyList)
+                    {
+                        _investmentSocietyRepo.Delete(v);
+                        _investmentSocietyRepo.Savechange();
+                    }
+                }
+                var alreadyExistSpecBcds = new InvestmentBcdsSpecification(investmentBcdsDto.InvestmentInitId);
+                var alreadyExistInvestmentBcdsList = await _investmentBcdsRepo.ListAsync(alreadyExistSpecBcds);
                 if (alreadyExistInvestmentBcdsList.Count > 0)
                 {
                     foreach (var v in alreadyExistInvestmentBcdsList)
@@ -1611,6 +1761,46 @@ namespace API.Controllers
                         _investmentBcdsRepo.Savechange();
                     }
                 }
+                var alreadyExistSpecCamp = new InvestmentCampaignSpecification(investmentBcdsDto.InvestmentInitId);
+                var alreadyExistInvestmentCampaignList = await _investmentCampaignRepo.ListAsync(alreadyExistSpecCamp);
+                if (alreadyExistInvestmentCampaignList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentCampaignList)
+                    {
+                        _investmentCampaignRepo.Delete(v);
+                        _investmentCampaignRepo.Savechange();
+                    }
+                }
+                var alreadyExistSpecInst = new InvestmentInstitutionSpecification(investmentBcdsDto.InvestmentInitId);
+                var alreadyExistInvestmentInstitutionList = await _investmentInstitutionRepo.ListAsync(alreadyExistSpecInst);
+                if (alreadyExistInvestmentInstitutionList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentInstitutionList)
+                    {
+                        _investmentInstitutionRepo.Delete(v);
+                        _investmentInstitutionRepo.Savechange();
+                    }
+                }
+                var alreadyExistSpec = new InvestmentDoctorSpecification(investmentBcdsDto.InvestmentInitId);
+                var alreadyExistInvestmentDoctorList = await _investmentDoctorRepo.ListAsync(alreadyExistSpec);
+                if (alreadyExistInvestmentDoctorList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentDoctorList)
+                    {
+                        _investmentDoctorRepo.Delete(v);
+                        _investmentDoctorRepo.Savechange();
+                    }
+                }
+                //var alreadyExistSpec = new InvestmentBcdsSpecification(investmentBcdsDto.InvestmentInitId);
+                //var alreadyExistInvestmentBcdsList = await _investmentBcdsRepo.ListAsync(alreadyExistSpec);
+                //if (alreadyExistInvestmentBcdsList.Count > 0)
+                //{
+                //    foreach (var v in alreadyExistInvestmentBcdsList)
+                //    {
+                //        _investmentBcdsRepo.Delete(v);
+                //        _investmentBcdsRepo.Savechange();
+                //    }
+                //}
 
                 var investmentBcds = new InvestmentBcds
                 {
@@ -1723,8 +1913,8 @@ namespace API.Controllers
                 {
                     return BadRequest(new ApiResponse(0, "Investment Approval is Pending for this Society!"));
                 }
-                var alreadyExistSpec = new InvestmentSocietySpecification(investmentSocietyDto.InvestmentInitId);
-                var alreadyExistInvestmentSocietyList = await _investmentSocietyRepo.ListAsync(alreadyExistSpec);
+                var alreadyExistSpecSoc = new InvestmentSocietySpecification(investmentSocietyDto.InvestmentInitId);
+                var alreadyExistInvestmentSocietyList = await _investmentSocietyRepo.ListAsync(alreadyExistSpecSoc);
                 if (alreadyExistInvestmentSocietyList.Count > 0)
                 {
                     foreach (var v in alreadyExistInvestmentSocietyList)
@@ -1733,6 +1923,56 @@ namespace API.Controllers
                         _investmentSocietyRepo.Savechange();
                     }
                 }
+                var alreadyExistSpecBcds = new InvestmentBcdsSpecification(investmentSocietyDto.InvestmentInitId);
+                var alreadyExistInvestmentBcdsList = await _investmentBcdsRepo.ListAsync(alreadyExistSpecBcds);
+                if (alreadyExistInvestmentBcdsList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentBcdsList)
+                    {
+                        _investmentBcdsRepo.Delete(v);
+                        _investmentBcdsRepo.Savechange();
+                    }
+                }
+                var alreadyExistSpecCamp = new InvestmentCampaignSpecification(investmentSocietyDto.InvestmentInitId);
+                var alreadyExistInvestmentCampaignList = await _investmentCampaignRepo.ListAsync(alreadyExistSpecCamp);
+                if (alreadyExistInvestmentCampaignList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentCampaignList)
+                    {
+                        _investmentCampaignRepo.Delete(v);
+                        _investmentCampaignRepo.Savechange();
+                    }
+                }
+                var alreadyExistSpecInst = new InvestmentInstitutionSpecification(investmentSocietyDto.InvestmentInitId);
+                var alreadyExistInvestmentInstitutionList = await _investmentInstitutionRepo.ListAsync(alreadyExistSpecInst);
+                if (alreadyExistInvestmentInstitutionList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentInstitutionList)
+                    {
+                        _investmentInstitutionRepo.Delete(v);
+                        _investmentInstitutionRepo.Savechange();
+                    }
+                }
+                var alreadyExistSpec = new InvestmentDoctorSpecification(investmentSocietyDto.InvestmentInitId);
+                var alreadyExistInvestmentDoctorList = await _investmentDoctorRepo.ListAsync(alreadyExistSpec);
+                if (alreadyExistInvestmentDoctorList.Count > 0)
+                {
+                    foreach (var v in alreadyExistInvestmentDoctorList)
+                    {
+                        _investmentDoctorRepo.Delete(v);
+                        _investmentDoctorRepo.Savechange();
+                    }
+                }
+                //var alreadyExistSpec = new InvestmentSocietySpecification(investmentSocietyDto.InvestmentInitId);
+                //var alreadyExistInvestmentSocietyList = await _investmentSocietyRepo.ListAsync(alreadyExistSpec);
+                //if (alreadyExistInvestmentSocietyList.Count > 0)
+                //{
+                //    foreach (var v in alreadyExistInvestmentSocietyList)
+                //    {
+                //        _investmentSocietyRepo.Delete(v);
+                //        _investmentSocietyRepo.Savechange();
+                //    }
+                //}
 
                 var investmentSociety = new InvestmentSociety
                 {

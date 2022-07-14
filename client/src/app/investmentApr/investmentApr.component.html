@@ -624,13 +624,13 @@
                                                         <label>Payment Freq</label>
                                                         <span style="color:red;">*</span>
                                                     </div>
-                                                    <div class="col-md-3">
-                                                        <select class="form-control" [disabled]="isInvOther && !isAdmin" id="paymentFreq" name="paymentFreq" #paymentFreq="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.paymentFreq" [class.invalid]="paymentFreq.invalid && paymentFreq.touched">
+                                                    <div class="col-md-4">
+                                                        <select class="form-control" [disabled]="(isInvOther && !isAdmin) || isPayFreq" id="paymentFreq" name="paymentFreq" #paymentFreq="ngModel" [(ngModel)]="investmentAprService.investmentDetailFormData.paymentFreq" [class.invalid]="paymentFreq.invalid && paymentFreq.touched">
                                                             <option  [ngValue]="null">Select Payment Freq</option>
                                                             <option value="Monthly">Monthly</option>
                                                             <option value="Quarterly">Quarterly</option>
                                                             <option value="Half Yearly">Half Yearly</option>
-                                                            <option value="Yearly">Yearly</option>
+                                                            <option value="Yearly">Yearly/One Time</option>
                                                         </select>
                                                     </div>
                                                 </div>
