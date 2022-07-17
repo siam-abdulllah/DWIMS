@@ -32,73 +32,79 @@
                                     </div>
                                 </div>
                                 <br/>
-                                <div class="form-group">
-                                    <table class="table  table-bordered">
-                                        <tr class="HeaderRow">
-                                            <td>Payment Ref No</td>
-                                            <!-- <td style="width: 0;display:none; ">Reference No</td> -->
-                                            <td>Donation Type</td>
-                                            <td>Proposed For</td>
-                                            <td>Donation To</td>
-                                            <td>SBU</td>
-                                            <td>Id</td>
-                                            <td>Name</td>
-                                            <td>Cheque Title</td>
-                                            <td>Approved Amount</td>
-                                            <td>Market</td>
-                                            <td>Proposed By</td>
-                                            <td>Approved By</td>
-                                            <td>Approved Date</td>
-                                            <td>Details</td>
-                                        </tr>
-                                        <tr *ngFor="let a of rptDepotLetter | filter: searchText ">
-                                            <td>{{a.payRefNo}}</td>
-                                            <!-- <td style="width: 0;display:none; ">
+                            </fieldset>
+                            <div class="form-group" style="overflow: auto; max-height: 400px;">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table  table-bordered">
+
+                                            <tr class="HeaderRowFixed">
+                                                <td>Payment Ref No</td>
+                                                <!-- <td style="width: 0;display:none; ">Reference No</td> -->
+                                                <td>Donation Type</td>
+                                                <td>Proposed For</td>
+                                                <td>Donation To</td>
+                                                <td>SBU</td>
+                                                <td>Id</td>
+                                                <td>Name</td>
+                                                <td>Cheque Title</td>
+                                                <td>Approved Amount</td>
+                                                <td>Market</td>
+                                                <td>Proposed By</td>
+                                                <td>Approved By</td>
+                                                <td>Approved Date</td>
+                                                <td>Details</td>
+                                            </tr>
+                                            <tr *ngFor="let a of rptDepotLetter | filter: searchText ">
+                                                <td>{{a.payRefNo}}</td>
+                                                <!-- <td style="width: 0;display:none; ">
                                                 {{a.referenceNo}}
                                             </td> -->
-                                            <td>
-                                                {{a.donationTypeName}}
-                                            </td>
-                                            <td>
-                                                {{a.proposeFor}}
-                                            </td>
-                                            <td>
-                                                {{a.donationTo}}
-                                            </td>
-                                            <td>
-                                                {{a.sbuName}}
-                                            </td>
-                                            <td>
-                                                {{a.dId}}
-                                            </td>
-                                            <td>
-                                                {{a.doctorName}}
-                                            </td>
-                                            <td>
-                                                {{a.chequeTitle}}
-                                            </td>
-                                            <td>
-                                                {{a.proposedAmount | number:'2.1-2'}}
-                                            </td>
-                                            <td>
-                                                {{a.marketName}}
-                                            </td>
-                                            <td>
-                                                {{a.employeeName}}
-                                            </td>
-                                            <td>
-                                                {{a.approvedBy}}
-                                            </td>
-                                            <td>
-                                                {{a.approvedDate | date:'dd/MM/yyyy'}}
-                                            </td>
-                                            <td>
-                                                <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="ViewReport(a)" style="width: 100px;"><i class="fa fa-eye"></i>View Detail</button>
-                                            </td>
-                                        </tr>
-                                    </table>
+                                                <td>
+                                                    {{a.donationTypeName}}
+                                                </td>
+                                                <td>
+                                                    {{a.proposeFor}}
+                                                </td>
+                                                <td>
+                                                    {{a.donationTo}}
+                                                </td>
+                                                <td>
+                                                    {{a.sbuName}}
+                                                </td>
+                                                <td>
+                                                    {{a.dId}}
+                                                </td>
+                                                <td>
+                                                    {{a.doctorName}}
+                                                </td>
+                                                <td>
+                                                    {{a.chequeTitle}}
+                                                </td>
+                                                <td>
+                                                    {{a.proposedAmount | number:'2.1-2'}}
+                                                </td>
+                                                <td>
+                                                    {{a.marketName}}
+                                                </td>
+                                                <td>
+                                                    {{a.employeeName}}
+                                                </td>
+                                                <td>
+                                                    {{a.approvedBy}}
+                                                </td>
+                                                <td>
+                                                    {{a.approvedDate | date:'dd/MM/yyyy'}}
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-embossed btn-success" type="button" (click)="ViewReport(a)" style="width: 100px;"><i class="fa fa-eye"></i>View Detail</button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
                                 </div>
-                            </fieldset>
+                            </div>
+
                         </div>
                     </div>
                 </form>
