@@ -42,21 +42,47 @@ namespace API.Controllers
 
                 string qry = "";
                 var appPriority = await GetApprAuth(Convert.ToInt32(empCode));
+                string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode= '" + empCode + "' ";
+                var empData = _dbContext.Employee.FromSqlRaw(empQry).ToList();
                 //string qry = " select CAST(a.Id AS INT) as Id ,1 AS DataStatus, SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, a.ReferenceNo, d.DonationTypeName, a.DonationTo, b.ProposedAmount, b.FromDate, b.ToDate, dbo.fnGetInvestmentStatus(a.Id) InvStatus, e.EmployeeName,dbo.fnGetInvestmentApprovedBy(a.Id) ApprovedBy,e.MarketName, ISNULL(rcv.ReceiveStatus, 'Not Completed') ReceiveStatus, ISNULL(rcvBy.EmployeeName, 'N/A') ReceiveBy " +
 
                 if (role == "Administrator")
                 {
-                     qry = " SELECT CAST('1' AS INT) AS Id ,1 AS DataStatus , SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(a.Id) Count " +
-                   "  FROM InvestmentRecComment a LEFT JOIN InvestmentRecv rcv ON a.Id = rcv.InvestmentInitId " +
-                   " WHERE  a.RecStatus = 'Approved'  AND rcv.ReceiveStatus IS NULL ";
+                    //  qry = " SELECT CAST('1' AS INT) AS Id ,1 AS DataStatus , SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(a.Id) Count " +
+                    //"  FROM InvestmentRecComment a INNER JOIN InvestmentInit b on b.Id=a.InvestmentInitId LEFT JOIN InvestmentRecv rcv ON a.InvestmentInitId = rcv.InvestmentInitId " +
+                    //" WHERE  a.RecStatus = 'Approved' AND b.DataStatus=1  AND rcv.ReceiveStatus IS NULL ";
+
+                    qry = @"SELECT CAST('1' AS INT) AS Id,1 AS DataStatus,SYSDATETIMEOFFSET() AS SetOn,SYSDATETIMEOFFSET() AS ModifiedOn,COUNT(b.Id) Count
+                            FROM InvestmentRecComment a INNER JOIN InvestmentInit b ON B.Id = a.InvestmentInitId WHERE a.RecStatus = 'Approved' 
+                            AND b.DataStatus = 1 ";
+                           // --AND NOT EXISTS(SELECT InvestmentInitId FROM VW_InvestmentDispatch c where a.InvestmentInitId=c.InvestmentInitId)";
                 }
-                else if (appPriority.Priority == 1 || appPriority.Priority == 2)
+                else if (empData[0].DepartmentId == 2)
                 {
-                    string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode= '" + empCode + "' ";
-                    var empData = _dbContext.Employee.FromSqlRaw(empQry).ToList();
-                     qry = " SELECT CAST('1' AS INT) AS Id ,1 AS DataStatus , SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(a.Id) Count " +
-                    "  FROM InvestmentRecComment a LEFT JOIN InvestmentRecv rcv ON a.Id = rcv.InvestmentInitId " +
-                    " WHERE  a.RecStatus = 'Approved'  AND rcv.ReceiveStatus IS NULL ";
+                    //string empQry = "SELECT * FROM Employee WHERE EmployeeSAPCode= '" + empCode + "' ";
+                    //var empData = _dbContext.Employee.FromSqlRaw(empQry).ToList();
+                    qry = string.Format(@"SELECT Id,DataStatus,SetOn,ModifiedOn,SUM(ISNULL(CountCamp, 0) + ISNULL(CountOther, 0))  Count FROM ( SELECT CAST('1' AS INT) AS Id ,1 AS DataStatus
+                         ,SYSDATETIMEOFFSET() AS SetOn,SYSDATETIMEOFFSET() AS ModifiedOn,COUNT(DISTINCT b.Id) CountCamp,0 CountOther FROM InvestmentDetailTracker a
+                         INNER JOIN InvestmentInit b ON a.InvestmentInitId = b.Id INNER JOIN InvestmentCampaign c ON c.InvestmentInitId = b.Id INNER JOIN CampaignDtl 
+                         cd ON c.CampaignDtlId = cd.Id INNER JOIN CampaignMst cm ON cd.MstId = cm.Id WHERE cm.EmployeeId = {0} AND A.Year=Year(GETDATE()) UNION ALL SELECT CAST('1' AS INT) AS Id
+                         ,1 AS DataStatus,SYSDATETIMEOFFSET() AS SetOn,SYSDATETIMEOFFSET() AS ModifiedOn,0 CountCamp,COUNT(DISTINCT b.Id) CountOther FROM InvestmentDetailTracker a
+                         INNER JOIN InvestmentInit b ON a.InvestmentInitId = b.Id WHERE a.EmployeeId = {0} AND A.Year=Year(GETDATE()) AND b.ProposeFor IN ( 'PMD','Others Rapid')) A GROUP BY Id
+                         ,DataStatus,SetOn,ModifiedOn", empCode);
+                }
+                else if (empData[0].DepartmentId == 1 && string.IsNullOrEmpty(empData[0].SBU))
+                {
+                    qry = string.Format(@"SELECT CAST('1' AS INT) AS Id,1 AS DataStatus,SYSDATETIMEOFFSET() AS SetOn,SYSDATETIMEOFFSET() AS ModifiedOn
+                                        ,COUNT(DISTINCT b.Id) Count FROM InvestmentDetailTracker a INNER JOIN InvestmentInit b ON a.InvestmentInitId = b.Id 
+                                        WHERE a.EmployeeId = {0} AND b.ProposeFor IN ('Sales','Others Rapid','Others') AND A.Year=Year(GETDATE())", empCode);
+                }
+               // else if (appPriority.Priority == 1 || appPriority.Priority == 2)
+                else if (empData[0].DepartmentId == 1 && !string.IsNullOrEmpty(empData[0].SBU))
+                {
+                    
+                     qry = " SELECT CAST('1' AS INT) AS Id ,1 AS DataStatus , SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, " +
+                        "   COUNT(DISTINCT b.Id) Count  FROM InvestmentRecComment a INNER JOIN InvestmentInit b ON a.InvestmentInitId = b.Id " +
+                        " INNER JOIN InvestmentDetailTracker c ON c.InvestmentInitId = b.Id" +
+                    " WHERE  a.RecStatus = 'Approved'  AND B.DataStatus=1 AND c.Year=Year(GETDATE())";
                     qry = qry + " AND a.SBU='" + empData[0].SBU + "' AND (" +
                                 " a.MarketGroupCode = COALESCE(NULLIF('" + empData[0].MarketGroupCode + "',''), 'All')" +
                                 " OR COALESCE(NULLIF('" + empData[0].MarketGroupCode + "',''), 'All') = 'All'" +
@@ -79,9 +105,12 @@ namespace API.Controllers
                                 " )";
                 }
                 else {
-                     qry = "SELECT CAST('1' AS INT) AS Id ,1 AS DataStatus , SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(A.Id) Count " +
-                        " FROM [dbo].[InvestmentRecComment] A" +
-                        " WHere RecStatus = 'Approved' AND CompletionStatus = 1 AND NOT EXISTS (SELECT InvestmentInitId FROM InvestmentRecv WHERE InvestmentInitId=A.InvestmentInitId) AND EmployeeId=" + empCode;
+                     qry = "SELECT CAST('1' AS INT) AS Id ,1 AS DataStatus , SYSDATETIMEOFFSET() AS SetOn, SYSDATETIMEOFFSET() AS ModifiedOn, COUNT(DISTINCT b.Id) Count " +
+                        " FROM InvestmentRecComment a INNER JOIN InvestmentInit b ON a.InvestmentInitId = b.Id" +
+                        " INNER JOIN InvestmentDetailTracker c ON c.InvestmentInitId = b.Id" +
+                        " Where a.RecStatus = 'Approved' AND a.CompletionStatus = 1 AND B.DataStatus=1 AND c.Year=Year(GETDATE())" +
+                        //" AND NOT EXISTS (SELECT InvestmentInitId  FROM InvestmentRecv WHERE InvestmentInitId=A.InvestmentInitId) " +
+                        " AND EmployeeId=" + empCode;
                 }
                    
 

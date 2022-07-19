@@ -659,25 +659,43 @@ namespace API.Controllers
                     {
                         double proposedAmountTot = investmenAprForOwnSBUInsert.InvestmentApr.ProposedAmount;
                         int m = 1;
-                        if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Monthly")
+                        if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Monthly" && DateTimeOffset.Now.Month <= investmenAprForOwnSBUInsert.InvestmentApr.ToDate.Month)
                         {
-                            
-                            proposedAmountTot = proposedAmountTot * ((DateTimeOffset.Now.Month- investmenAprForOwnSBUInsert.InvestmentApr.FromDate.Month)+1);
+
+                            proposedAmountTot = proposedAmountTot * ((DateTimeOffset.Now.Month - investmenAprForOwnSBUInsert.InvestmentApr.FromDate.Month) + 1);
                         }
-                        else if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Quarterly")
+                        else if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Monthly" && DateTimeOffset.Now.Month > investmenAprForOwnSBUInsert.InvestmentApr.ToDate.Month)
                         {
-                            m= (((DateTimeOffset.Now.Month - investmenAprForOwnSBUInsert.InvestmentApr.FromDate.Month) + 1) / 3);
+
+                            proposedAmountTot = proposedAmountTot * investmenAprForOwnSBUInsert.InvestmentApr.TotalMonth;
+                        }
+                        else if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Quarterly" && DateTimeOffset.Now.Month <= investmenAprForOwnSBUInsert.InvestmentApr.ToDate.Month)
+                        {
+                            m = (((DateTimeOffset.Now.Month - investmenAprForOwnSBUInsert.InvestmentApr.FromDate.Month) + 1) / 3);
                             m = m == 0 ? 1 : m;
                             proposedAmountTot = proposedAmountTot * m;
                         }
-                        else if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Half Yearly")
+                        else if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Quarterly" && DateTimeOffset.Now.Month > investmenAprForOwnSBUInsert.InvestmentApr.ToDate.Month)
+                        {
+                            m = investmenAprForOwnSBUInsert.InvestmentApr.TotalMonth / 3;
+                            m = m == 0 ? 1 : m;
+                            proposedAmountTot = proposedAmountTot * m;
+                        }
+                        else if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Half Yearly" && DateTimeOffset.Now.Month <= investmenAprForOwnSBUInsert.InvestmentApr.ToDate.Month)
                         {
                             m = (((DateTimeOffset.Now.Month - investmenAprForOwnSBUInsert.InvestmentApr.FromDate.Month) + 1) / 6);
                             m = m == 0 ? 1 : m;
                             proposedAmountTot = proposedAmountTot * m;
                             //proposedAmountTot = proposedAmountTot * (((DateTimeOffset.Now.Month - investmenAprForOwnSBUInsert.InvestmentApr.FromDate.Month) + 1) / 6);
                         }
-                        
+                        else if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Half Yearly" && DateTimeOffset.Now.Month > investmenAprForOwnSBUInsert.InvestmentApr.ToDate.Month)
+                        {
+                            m = investmenAprForOwnSBUInsert.InvestmentApr.TotalMonth / 6;
+                            m = m == 0 ? 1 : m;
+                            proposedAmountTot = proposedAmountTot * m;
+                            //proposedAmountTot = proposedAmountTot * (((DateTimeOffset.Now.Month - investmenAprForOwnSBUInsert.InvestmentApr.FromDate.Month) + 1) / 6);
+                        }
+
                         List<SqlParameter> parms = new List<SqlParameter>
                           {
                             new SqlParameter("@SBU", sbu),
@@ -752,6 +770,25 @@ namespace API.Controllers
                                 if (calcDate.Month < DateTimeOffset.Now.Month)
                                 {
                                     proposedAmountMonth = proposedAmountMonth + investmenAprForOwnSBUInsert.InvestmentApr.ProposedAmount;
+                                    if( investmenAprForOwnSBUInsert.InvestmentApr.TotalMonth==i+1)
+                                    {
+                                        var invDTPrev = new InvestmentDetailTracker
+                                        {
+                                            InvestmentInitId = investmenAprForOwnSBUInsert.InvestmentApr.InvestmentInitId,
+                                            DonationId = donationId,
+                                            ApprovedAmount = proposedAmountMonth,
+                                            Month = DateTimeOffset.Now.Month,
+                                            Year = calcDate.Year,
+                                            FromDate = investmenAprForOwnSBUInsert.InvestmentApr.FromDate,
+                                            ToDate = investmenAprForOwnSBUInsert.InvestmentApr.ToDate,
+                                            PaidStatus = "Paid",
+                                            EmployeeId = empId,
+                                            SetOn = DateTimeOffset.Now
+                                        };
+                                        _investmentDetailTrackerRepo.Add(invDTPrev);
+
+                                    }
+                                
                                 }
                                 else if (calcDate.Month == DateTimeOffset.Now.Month)
                                 {
@@ -1112,20 +1149,38 @@ namespace API.Controllers
                     {
                         double proposedAmountTot = investmenAprForOwnSBUInsert.InvestmentApr.ProposedAmount;
                         int m = 1;
-                        if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Monthly")
+                        if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Monthly" && DateTimeOffset.Now.Month <= investmenAprForOwnSBUInsert.InvestmentApr.ToDate.Month)
                         {
 
                             proposedAmountTot = proposedAmountTot * ((DateTimeOffset.Now.Month - investmenAprForOwnSBUInsert.InvestmentApr.FromDate.Month) + 1);
                         }
-                        else if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Quarterly")
+                        else if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Monthly" && DateTimeOffset.Now.Month > investmenAprForOwnSBUInsert.InvestmentApr.ToDate.Month)
+                        {
+
+                            proposedAmountTot = proposedAmountTot * investmenAprForOwnSBUInsert.InvestmentApr.TotalMonth;
+                        }
+                        else if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Quarterly" && DateTimeOffset.Now.Month <= investmenAprForOwnSBUInsert.InvestmentApr.ToDate.Month)
                         {
                             m = (((DateTimeOffset.Now.Month - investmenAprForOwnSBUInsert.InvestmentApr.FromDate.Month) + 1) / 3);
                             m = m == 0 ? 1 : m;
                             proposedAmountTot = proposedAmountTot * m;
                         }
-                        else if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Half Yearly")
+                        else if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Quarterly" && DateTimeOffset.Now.Month > investmenAprForOwnSBUInsert.InvestmentApr.ToDate.Month)
+                        {
+                            m = investmenAprForOwnSBUInsert.InvestmentApr.TotalMonth / 3;
+                            m = m == 0 ? 1 : m;
+                            proposedAmountTot = proposedAmountTot * m;
+                        }
+                        else if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Half Yearly" && DateTimeOffset.Now.Month <= investmenAprForOwnSBUInsert.InvestmentApr.ToDate.Month)
                         {
                             m = (((DateTimeOffset.Now.Month - investmenAprForOwnSBUInsert.InvestmentApr.FromDate.Month) + 1) / 6);
+                            m = m == 0 ? 1 : m;
+                            proposedAmountTot = proposedAmountTot * m;
+                            //proposedAmountTot = proposedAmountTot * (((DateTimeOffset.Now.Month - investmenAprForOwnSBUInsert.InvestmentApr.FromDate.Month) + 1) / 6);
+                        }
+                        else if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Half Yearly" && DateTimeOffset.Now.Month > investmenAprForOwnSBUInsert.InvestmentApr.ToDate.Month)
+                        {
+                            m = investmenAprForOwnSBUInsert.InvestmentApr.TotalMonth / 6;
                             m = m == 0 ? 1 : m;
                             proposedAmountTot = proposedAmountTot * m;
                             //proposedAmountTot = proposedAmountTot * (((DateTimeOffset.Now.Month - investmenAprForOwnSBUInsert.InvestmentApr.FromDate.Month) + 1) / 6);
@@ -1205,6 +1260,24 @@ namespace API.Controllers
                                 if (calcDate.Month < DateTimeOffset.Now.Month)
                                 {
                                     proposedAmountMonth = proposedAmountMonth + investmenAprForOwnSBUInsert.InvestmentApr.ProposedAmount;
+                                    if (investmenAprForOwnSBUInsert.InvestmentApr.TotalMonth == i + 1)
+                                    {
+                                        var invDTPrev = new InvestmentDetailTracker
+                                        {
+                                            InvestmentInitId = investmenAprForOwnSBUInsert.InvestmentApr.InvestmentInitId,
+                                            DonationId = donationId,
+                                            ApprovedAmount = proposedAmountMonth,
+                                            Month = DateTimeOffset.Now.Month,
+                                            Year = calcDate.Year,
+                                            FromDate = investmenAprForOwnSBUInsert.InvestmentApr.FromDate,
+                                            ToDate = investmenAprForOwnSBUInsert.InvestmentApr.ToDate,
+                                            PaidStatus = "Paid",
+                                            EmployeeId = empId,
+                                            SetOn = DateTimeOffset.Now
+                                        };
+                                        _investmentDetailTrackerRepo.Add(invDTPrev);
+
+                                    }
                                 }
                                 else if (calcDate.Month == DateTimeOffset.Now.Month)
                                 {
@@ -1573,20 +1646,38 @@ namespace API.Controllers
                     {
                         double proposedAmountTot = investmenAprForOwnSBUInsert.InvestmentApr.ProposedAmount;
                         int m = 1;
-                        if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Monthly")
+                        if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Monthly" && DateTimeOffset.Now.Month <= investmenAprForOwnSBUInsert.InvestmentApr.ToDate.Month)
                         {
 
                             proposedAmountTot = proposedAmountTot * ((DateTimeOffset.Now.Month - investmenAprForOwnSBUInsert.InvestmentApr.FromDate.Month) + 1);
                         }
-                        else if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Quarterly")
+                        else if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Monthly" && DateTimeOffset.Now.Month > investmenAprForOwnSBUInsert.InvestmentApr.ToDate.Month)
+                        {
+
+                            proposedAmountTot = proposedAmountTot * investmenAprForOwnSBUInsert.InvestmentApr.TotalMonth;
+                        }
+                        else if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Quarterly" && DateTimeOffset.Now.Month <= investmenAprForOwnSBUInsert.InvestmentApr.ToDate.Month)
                         {
                             m = (((DateTimeOffset.Now.Month - investmenAprForOwnSBUInsert.InvestmentApr.FromDate.Month) + 1) / 3);
                             m = m == 0 ? 1 : m;
                             proposedAmountTot = proposedAmountTot * m;
                         }
-                        else if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Half Yearly")
+                        else if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Quarterly" && DateTimeOffset.Now.Month > investmenAprForOwnSBUInsert.InvestmentApr.ToDate.Month)
+                        {
+                            m = investmenAprForOwnSBUInsert.InvestmentApr.TotalMonth / 3;
+                            m = m == 0 ? 1 : m;
+                            proposedAmountTot = proposedAmountTot * m;
+                        }
+                        else if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Half Yearly" && DateTimeOffset.Now.Month <= investmenAprForOwnSBUInsert.InvestmentApr.ToDate.Month)
                         {
                             m = (((DateTimeOffset.Now.Month - investmenAprForOwnSBUInsert.InvestmentApr.FromDate.Month) + 1) / 6);
+                            m = m == 0 ? 1 : m;
+                            proposedAmountTot = proposedAmountTot * m;
+                            //proposedAmountTot = proposedAmountTot * (((DateTimeOffset.Now.Month - investmenAprForOwnSBUInsert.InvestmentApr.FromDate.Month) + 1) / 6);
+                        }
+                        else if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Half Yearly" && DateTimeOffset.Now.Month > investmenAprForOwnSBUInsert.InvestmentApr.ToDate.Month)
+                        {
+                            m = investmenAprForOwnSBUInsert.InvestmentApr.TotalMonth / 6;
                             m = m == 0 ? 1 : m;
                             proposedAmountTot = proposedAmountTot * m;
                             //proposedAmountTot = proposedAmountTot * (((DateTimeOffset.Now.Month - investmenAprForOwnSBUInsert.InvestmentApr.FromDate.Month) + 1) / 6);
@@ -1666,6 +1757,24 @@ namespace API.Controllers
                                 if (calcDate.Month < DateTimeOffset.Now.Month)
                                 {
                                     proposedAmountMonth = proposedAmountMonth + investmenAprForOwnSBUInsert.InvestmentApr.ProposedAmount;
+                                    if (investmenAprForOwnSBUInsert.InvestmentApr.TotalMonth == i + 1)
+                                    {
+                                        var invDTPrev = new InvestmentDetailTracker
+                                        {
+                                            InvestmentInitId = investmenAprForOwnSBUInsert.InvestmentApr.InvestmentInitId,
+                                            DonationId = donationId,
+                                            ApprovedAmount = proposedAmountMonth,
+                                            Month = DateTimeOffset.Now.Month,
+                                            Year = calcDate.Year,
+                                            FromDate = investmenAprForOwnSBUInsert.InvestmentApr.FromDate,
+                                            ToDate = investmenAprForOwnSBUInsert.InvestmentApr.ToDate,
+                                            PaidStatus = "Paid",
+                                            EmployeeId = empId,
+                                            SetOn = DateTimeOffset.Now
+                                        };
+                                        _investmentDetailTrackerRepo.Add(invDTPrev);
+
+                                    }
                                 }
                                 else if (calcDate.Month == DateTimeOffset.Now.Month)
                                 {
@@ -2056,20 +2165,38 @@ namespace API.Controllers
                     {
                         double proposedAmountTot = investmenAprForOwnSBUInsert.InvestmentApr.ProposedAmount;
                         int m = 1;
-                        if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Monthly")
+                        if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Monthly" && DateTimeOffset.Now.Month<= investmenAprForOwnSBUInsert.InvestmentApr.ToDate.Month)
                         {
 
                             proposedAmountTot = proposedAmountTot * ((DateTimeOffset.Now.Month - investmenAprForOwnSBUInsert.InvestmentApr.FromDate.Month) + 1);
                         }
-                        else if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Quarterly")
+                        else if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Monthly" && DateTimeOffset.Now.Month > investmenAprForOwnSBUInsert.InvestmentApr.ToDate.Month)
+                        {
+
+                            proposedAmountTot = proposedAmountTot * investmenAprForOwnSBUInsert.InvestmentApr.TotalMonth;
+                        }
+                        else if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Quarterly" && DateTimeOffset.Now.Month <= investmenAprForOwnSBUInsert.InvestmentApr.ToDate.Month)
                         {
                             m = (((DateTimeOffset.Now.Month - investmenAprForOwnSBUInsert.InvestmentApr.FromDate.Month) + 1) / 3);
                             m = m == 0 ? 1 : m;
                             proposedAmountTot = proposedAmountTot * m;
                         }
-                        else if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Half Yearly")
+                        else if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Quarterly" && DateTimeOffset.Now.Month >investmenAprForOwnSBUInsert.InvestmentApr.ToDate.Month)
+                        {
+                            m = investmenAprForOwnSBUInsert.InvestmentApr.TotalMonth / 3;
+                            m = m == 0 ? 1 : m;
+                            proposedAmountTot = proposedAmountTot * m;
+                        }
+                        else if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Half Yearly" && DateTimeOffset.Now.Month <= investmenAprForOwnSBUInsert.InvestmentApr.ToDate.Month)
                         {
                             m = (((DateTimeOffset.Now.Month - investmenAprForOwnSBUInsert.InvestmentApr.FromDate.Month) + 1) / 6);
+                            m = m == 0 ? 1 : m;
+                            proposedAmountTot = proposedAmountTot * m;
+                            //proposedAmountTot = proposedAmountTot * (((DateTimeOffset.Now.Month - investmenAprForOwnSBUInsert.InvestmentApr.FromDate.Month) + 1) / 6);
+                        }
+                        else if (investmenAprForOwnSBUInsert.InvestmentApr.PaymentFreq == "Half Yearly" && DateTimeOffset.Now.Month > investmenAprForOwnSBUInsert.InvestmentApr.ToDate.Month)
+                        {
+                            m = investmenAprForOwnSBUInsert.InvestmentApr.TotalMonth / 6;
                             m = m == 0 ? 1 : m;
                             proposedAmountTot = proposedAmountTot * m;
                             //proposedAmountTot = proposedAmountTot * (((DateTimeOffset.Now.Month - investmenAprForOwnSBUInsert.InvestmentApr.FromDate.Month) + 1) / 6);
@@ -2149,6 +2276,24 @@ namespace API.Controllers
                                 if (calcDate.Month < DateTimeOffset.Now.Month)
                                 {
                                     proposedAmountMonth = proposedAmountMonth + investmenAprForOwnSBUInsert.InvestmentApr.ProposedAmount;
+                                    if (investmenAprForOwnSBUInsert.InvestmentApr.TotalMonth == i + 1)
+                                    {
+                                        var invDTPrev = new InvestmentDetailTracker
+                                        {
+                                            InvestmentInitId = investmenAprForOwnSBUInsert.InvestmentApr.InvestmentInitId,
+                                            DonationId = donationId,
+                                            ApprovedAmount = proposedAmountMonth,
+                                            Month = DateTimeOffset.Now.Month,
+                                            Year = calcDate.Year,
+                                            FromDate = investmenAprForOwnSBUInsert.InvestmentApr.FromDate,
+                                            ToDate = investmenAprForOwnSBUInsert.InvestmentApr.ToDate,
+                                            PaidStatus = "Paid",
+                                            EmployeeId = empId,
+                                            SetOn = DateTimeOffset.Now
+                                        };
+                                        _investmentDetailTrackerRepo.Add(invDTPrev);
+
+                                    }
                                 }
                                 else if (calcDate.Month == DateTimeOffset.Now.Month)
                                 {

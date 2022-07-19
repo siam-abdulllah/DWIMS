@@ -685,9 +685,9 @@ export class InvestmentAprNoSbuComponent implements OnInit {
   }
   insertInvestmentApr() {
     if (this.investmentAprService.investmentAprCommentFormData.recStatus == 'Approved') {
-      let dateFrom = this.investmentAprService.investmentDetailFormData.commitmentFromDate;
+      let dateFrom = this.investmentAprService.investmentDetailFormData.fromDate;
       let todate = new Date();
-      if (dateFrom.getMonth() < todate.getMonth()) {
+      if (dateFrom.getMonth() > todate.getMonth()) {
         this.toastr.warning('From date can not be greater than Current Month');
         return false;
       }
@@ -872,7 +872,7 @@ export class InvestmentAprNoSbuComponent implements OnInit {
   }
   updateInvestmentApr() {
     if (this.investmentAprService.investmentAprCommentFormData.recStatus == 'Approved') {
-      let dateFrom = this.investmentAprService.investmentDetailFormData.commitmentFromDate;
+      let dateFrom = this.investmentAprService.investmentDetailFormData.fromDate;
       let todate = new Date();
       if (dateFrom.getMonth() < todate.getMonth()) {
         this.toastr.warning('From date can not be greater than Current Month');

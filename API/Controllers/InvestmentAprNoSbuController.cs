@@ -133,7 +133,7 @@ namespace API.Controllers
         }
 
         [HttpGet("investmentApproved/{empId}/{userRole}")]
-        public async Task<ActionResult<IReadOnlyList<InvestmentInit>>> GetinvestmentApproved(int empId,  string userRole,
+        public async Task<ActionResult<IReadOnlyList<InvestmentInit>>> GetinvestmentApproved(int empId, string userRole,
         [FromQuery] InvestmentInitSpecParams investmentInitParrams)
         {
             try
@@ -251,20 +251,38 @@ namespace API.Controllers
                 {
                     double proposedAmountTot = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount;
                     int m = 1;
-                    if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Monthly")
+                    if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Monthly" && DateTimeOffset.Now.Month <= investmentNoSBUAprInsertDto.InvestmentApr.ToDate.Month)
                     {
 
                         proposedAmountTot = proposedAmountTot * ((DateTimeOffset.Now.Month - investmentNoSBUAprInsertDto.InvestmentApr.FromDate.Month) + 1);
                     }
-                    else if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Quarterly")
+                    else if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Monthly" && DateTimeOffset.Now.Month > investmentNoSBUAprInsertDto.InvestmentApr.ToDate.Month)
+                    {
+
+                        proposedAmountTot = proposedAmountTot * investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth;
+                    }
+                    else if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Quarterly" && DateTimeOffset.Now.Month <= investmentNoSBUAprInsertDto.InvestmentApr.ToDate.Month)
                     {
                         m = (((DateTimeOffset.Now.Month - investmentNoSBUAprInsertDto.InvestmentApr.FromDate.Month) + 1) / 3);
                         m = m == 0 ? 1 : m;
                         proposedAmountTot = proposedAmountTot * m;
                     }
-                    else if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Half Yearly")
+                    else if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Quarterly" && DateTimeOffset.Now.Month > investmentNoSBUAprInsertDto.InvestmentApr.ToDate.Month)
+                    {
+                        m = investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth / 3;
+                        m = m == 0 ? 1 : m;
+                        proposedAmountTot = proposedAmountTot * m;
+                    }
+                    else if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Half Yearly" && DateTimeOffset.Now.Month <= investmentNoSBUAprInsertDto.InvestmentApr.ToDate.Month)
                     {
                         m = (((DateTimeOffset.Now.Month - investmentNoSBUAprInsertDto.InvestmentApr.FromDate.Month) + 1) / 6);
+                        m = m == 0 ? 1 : m;
+                        proposedAmountTot = proposedAmountTot * m;
+                        //proposedAmountTot = proposedAmountTot * (((DateTimeOffset.Now.Month - investmentNoSBUAprInsertDto.InvestmentApr.FromDate.Month) + 1) / 6);
+                    }
+                    else if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Half Yearly" && DateTimeOffset.Now.Month > investmentNoSBUAprInsertDto.InvestmentApr.ToDate.Month)
+                    {
+                        m = investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth / 6;
                         m = m == 0 ? 1 : m;
                         proposedAmountTot = proposedAmountTot * m;
                         //proposedAmountTot = proposedAmountTot * (((DateTimeOffset.Now.Month - investmentNoSBUAprInsertDto.InvestmentApr.FromDate.Month) + 1) / 6);
@@ -441,6 +459,24 @@ namespace API.Controllers
                             if (calcDate.Month < DateTimeOffset.Now.Month)
                             {
                                 proposedAmountMonth = proposedAmountMonth + investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount;
+                                if (investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth == i + 1)
+                                {
+                                    var invDTPrev = new InvestmentDetailTracker
+                                    {
+                                        InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
+                                        DonationId = donationId,
+                                        ApprovedAmount = proposedAmountMonth,
+                                        Month = DateTimeOffset.Now.Month,
+                                        Year = calcDate.Year,
+                                        FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
+                                        ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
+                                        PaidStatus = "Paid",
+                                        EmployeeId = empId,
+                                        SetOn = DateTimeOffset.Now
+                                    };
+                                    _investmentDetailTrackerRepo.Add(invDTPrev);
+
+                                }
                             }
                             else if (calcDate.Month == DateTimeOffset.Now.Month)
                             {
@@ -773,20 +809,38 @@ namespace API.Controllers
                 {
                     double proposedAmountTot = investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount;
                     int m = 1;
-                    if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Monthly")
+                    if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Monthly" && DateTimeOffset.Now.Month <= investmentNoSBUAprInsertDto.InvestmentApr.ToDate.Month)
                     {
 
                         proposedAmountTot = proposedAmountTot * ((DateTimeOffset.Now.Month - investmentNoSBUAprInsertDto.InvestmentApr.FromDate.Month) + 1);
                     }
-                    else if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Quarterly")
+                    else if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Monthly" && DateTimeOffset.Now.Month > investmentNoSBUAprInsertDto.InvestmentApr.ToDate.Month)
+                    {
+
+                        proposedAmountTot = proposedAmountTot * investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth;
+                    }
+                    else if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Quarterly" && DateTimeOffset.Now.Month <= investmentNoSBUAprInsertDto.InvestmentApr.ToDate.Month)
                     {
                         m = (((DateTimeOffset.Now.Month - investmentNoSBUAprInsertDto.InvestmentApr.FromDate.Month) + 1) / 3);
                         m = m == 0 ? 1 : m;
                         proposedAmountTot = proposedAmountTot * m;
                     }
-                    else if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Half Yearly")
+                    else if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Quarterly" && DateTimeOffset.Now.Month > investmentNoSBUAprInsertDto.InvestmentApr.ToDate.Month)
+                    {
+                        m = investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth / 3;
+                        m = m == 0 ? 1 : m;
+                        proposedAmountTot = proposedAmountTot * m;
+                    }
+                    else if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Half Yearly" && DateTimeOffset.Now.Month <= investmentNoSBUAprInsertDto.InvestmentApr.ToDate.Month)
                     {
                         m = (((DateTimeOffset.Now.Month - investmentNoSBUAprInsertDto.InvestmentApr.FromDate.Month) + 1) / 6);
+                        m = m == 0 ? 1 : m;
+                        proposedAmountTot = proposedAmountTot * m;
+                        //proposedAmountTot = proposedAmountTot * (((DateTimeOffset.Now.Month - investmentNoSBUAprInsertDto.InvestmentApr.FromDate.Month) + 1) / 6);
+                    }
+                    else if (investmentNoSBUAprInsertDto.InvestmentApr.PaymentFreq == "Half Yearly" && DateTimeOffset.Now.Month > investmentNoSBUAprInsertDto.InvestmentApr.ToDate.Month)
+                    {
+                        m = investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth / 6;
                         m = m == 0 ? 1 : m;
                         proposedAmountTot = proposedAmountTot * m;
                         //proposedAmountTot = proposedAmountTot * (((DateTimeOffset.Now.Month - investmentNoSBUAprInsertDto.InvestmentApr.FromDate.Month) + 1) / 6);
@@ -813,7 +867,7 @@ namespace API.Controllers
                     //    new SqlParameter("@ASTATUS", aprStatus),
                     //    new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
                     //};
-                   // var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheckNew @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
+                    // var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheckNew @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
                     var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheckNoSBUNew @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
                     if (parms[6].Value.ToString() != "True")
                     {
@@ -962,6 +1016,24 @@ namespace API.Controllers
                             if (calcDate.Month < DateTimeOffset.Now.Month)
                             {
                                 proposedAmountMonth = proposedAmountMonth + investmentNoSBUAprInsertDto.InvestmentApr.ProposedAmount;
+                                if (investmentNoSBUAprInsertDto.InvestmentApr.TotalMonth == i + 1)
+                                {
+                                    var invDTPrev = new InvestmentDetailTracker
+                                    {
+                                        InvestmentInitId = investmentNoSBUAprInsertDto.InvestmentApr.InvestmentInitId,
+                                        DonationId = donationId,
+                                        ApprovedAmount = proposedAmountMonth,
+                                        Month = DateTimeOffset.Now.Month,
+                                        Year = calcDate.Year,
+                                        FromDate = investmentNoSBUAprInsertDto.InvestmentApr.FromDate,
+                                        ToDate = investmentNoSBUAprInsertDto.InvestmentApr.ToDate,
+                                        PaidStatus = "Paid",
+                                        EmployeeId = empId,
+                                        SetOn = DateTimeOffset.Now
+                                    };
+                                    _investmentDetailTrackerRepo.Add(invDTPrev);
+
+                                }
                             }
                             else if (calcDate.Month == DateTimeOffset.Now.Month)
                             {
@@ -1311,7 +1383,7 @@ namespace API.Controllers
                         new SqlParameter("@ASTATUS", aprStatus),
                         new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
                     };
-                   // var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheckNew @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
+                    // var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheckNew @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
                     var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentCeilingCheckNoSBUNew @SBU,@DID,@EID,@IID,@PRAMOUNT,@ASTATUS,@r out", parms.ToArray());
                     //var param=parms[6].Value;
                     if (parms[6].Value.ToString() != "True")
@@ -1775,16 +1847,16 @@ namespace API.Controllers
         {
             try
             {
-                string qry = " select CAST(a.EmployeeId AS INT) AS Id, a.SetOn, a.ModifiedOn, a.DataStatus, a.MarketCode,  a.MarketName, " +
+                string qry = " select CAST(ABS(CHECKSUM(NewId())) % 200 AS int) as Id, a.SetOn, a.ModifiedOn, a.DataStatus, a.MarketCode,  a.MarketName, " +
                 " a.TerritoryCode, a.TerritoryName, a.RegionCode, a.RegionName, a.ZoneCode, a.ZoneName, dbo.fnGetEmpNamedesig(a.EmployeeId) EmployeeName, a.[Priority],a.RecStatus, a.Comments " +
                 " from InvestmentRecComment a inner join InvestmentInit b on b.Id = a.InvestmentInitId " +
                 " where InvestmentInitId = '" + investmentInitId + "' " +
                 " UNION " +
-                " select CAST(a.EmployeeId AS INT) AS Id, a.SetOn, a.ModifiedOn, a.DataStatus, a.MarketCode,  a.MarketName,  " +
+                " select CAST(ABS(CHECKSUM(NewId())) % 200 AS int) as Id, a.SetOn, a.ModifiedOn, a.DataStatus, a.MarketCode,  a.MarketName,  " +
                 " a.TerritoryCode, a.TerritoryName, a.RegionCode, a.RegionName, a.ZoneCode, a.ZoneName, dbo.fnGetEmpNamedesig(a.EmployeeId) EmployeeName, '1','Inititator', '' Comments " +
                 " From InvestmentInit a where a.Id = '" + investmentInitId + "' AND a.Confirmation = 1 " +
                 " UNION " +
-                " select CAST(a.Id AS INT) AS Id, a.SetOn, a.ModifiedOn, a.DataStatus, a.MarketCode,  a.MarketName,  a.TerritoryCode, a.TerritoryName, a.RegionCode, a.RegionName, a.ZoneCode, a.ZoneName, dbo.fnGetEmpNamedesigByMarket(a.MarketCode) EmployeeName, '1'," +
+                " select CAST(ABS(CHECKSUM(NewId())) % 200 AS int) as Id, a.SetOn, a.ModifiedOn, a.DataStatus, a.MarketCode,  a.MarketName,  a.TerritoryCode, a.TerritoryName, a.RegionCode, a.RegionName, a.ZoneCode, a.ZoneName, dbo.fnGetEmpNamedesigByMarket(a.MarketCode) EmployeeName, '1'," +
                 " RecStatus =CASE CompletionStatus WHEN 1 THEN 'Recommended' ELSE 'Not Recommended' END,'' Comments " +
                 " from InvestmentTargetedGroup a " +
                 " where a.InvestmentInitId = '" + investmentInitId + "' " +
