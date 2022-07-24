@@ -39,23 +39,23 @@ namespace API.Controllers
         private readonly StoreContext _dbContext;
         private readonly IGenericRepository<MarketGroupDtl> _marketGroupDtlRepo;
 
-        public InvestmentController(IGenericRepository<InvestmentTargetedGroup> investmentTargetedGroupRepo, 
+        public InvestmentController(IGenericRepository<InvestmentTargetedGroup> investmentTargetedGroupRepo,
             IGenericRepository<InvestmentTargetedProd> investmentTargetedProdRepo,
-            IGenericRepository<InvestmentMedicineProd> investmentMedicineProdRepo, 
+            IGenericRepository<InvestmentMedicineProd> investmentMedicineProdRepo,
             IGenericRepository<MedicineProduct> medicineProductRepo,
-            IGenericRepository<InvestmentInit> investmentInitRepo, 
-            IGenericRepository<InvestmentDetail> investmentDetailRepo, 
+            IGenericRepository<InvestmentInit> investmentInitRepo,
+            IGenericRepository<InvestmentDetail> investmentDetailRepo,
             IGenericRepository<InvestmentDoctor> investmentDoctorRepo,
-            IGenericRepository<InvestmentSociety> investmentSocietyRepo, 
+            IGenericRepository<InvestmentSociety> investmentSocietyRepo,
             IGenericRepository<InvestmentBcds> investmentBcdsRepo,
-            IGenericRepository<InvestmentCampaign> investmentCampaignRepo, 
+            IGenericRepository<InvestmentCampaign> investmentCampaignRepo,
             IGenericRepository<InvestmentInstitution> investmentInstitutionRepo,
-            IGenericRepository<Employee> employeeRepo, 
+            IGenericRepository<Employee> employeeRepo,
             IGenericRepository<ReportInvestmentInfo> reportInvestmentInfoRepo,
-            IGenericRepository<InvestmentRecComment> investmentRecCommentRepo, 
-            StoreContext dbContext, 
+            IGenericRepository<InvestmentRecComment> investmentRecCommentRepo,
+            StoreContext dbContext,
             IGenericRepository<Donation> donationRepo,
-            IMapper mapper, 
+            IMapper mapper,
             IGenericRepository<MarketGroupDtl> marketGroupDtlRepo)
         {
             _mapper = mapper;
@@ -87,47 +87,11 @@ namespace API.Controllers
         {
             try
             {
-                //var empData = await _employeeRepo.GetByIdAsync(empId);
-                //investmentInitParrams.Search = sbu;
-                //var spec = new InvestmentInitSpecification(investmentInitParrams);
 
-                //var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
-
-                //var totalItems = await _investmentInitRepo.CountAsync(countSpec);
-
-                //var investmentInits = await _investmentInitRepo.ListAsync(spec);
-
-                //investmentRecCommentParrams.Search = sbu;
-                //var investmentRecCommentSpec = new InvestmentRecCommentSpecification(investmentRecCommentParrams);
-                //var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
-
-                //var data = (from i in investmentInits
-                //            where i.MarketCode == empData.MarketCode && i.SBU==sbu
-                //            && !(from rc in investmentRecComments
-                //                 where rc.RecStatus == "Recommended"
-                //                 select rc.InvestmentInitId).Contains(i.Id)
-                //            orderby i.SetOn descending
-                //            select new InvestmentInitDto
-                //            {
-                //                Id = i.Id,
-                //                ReferenceNo = i.ReferenceNo,
-                //                ProposeFor = i.ProposeFor,
-                //                DonationId = i.DonationId,
-                //                DonationTo = i.DonationTo,
-                //                EmployeeId = i.EmployeeId
-                //            }
-                //              ).Distinct().ToList();
-                // var results = _dbContext.Query<InvestmentInitDto>().FromSql("EXECUTE dbo.SP_InvestmentInitSearch {0},{1}", sbu,empId).ToList();
                 if (userRole == "Administrator")
                 {
 
-                    //var spec = new InvestmentInitSpecification(investmentInitParrams);
 
-                    //var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
-
-                    // var totalItems = await _investmentInitRepo.CountAsync(countSpec);
-
-                    // var investmentInits = await _investmentInitRepo.ListAsync(spec);
                     var results = await _investmentInitRepo.ListAllAsync();
                     var data = (from r in results
                                 join d in _dbContext.Donation on r.DonationId equals d.Id
@@ -162,29 +126,7 @@ namespace API.Controllers
                                     Employee = e
                                 }
                             ).Distinct().ToList();
-                    //investmentRecCommentParrams.Search = sbu;
-                    //var investmentRecCommentSpec = new InvestmentRecCommentSpecification(investmentRecCommentParrams);
-                    //var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
 
-                    //var data = (from i in investmentInits
-                    //            where i.MarketCode == empData.MarketCode && i.SBU==sbu
-                    //            && !(from rc in investmentRecComments
-                    //                 where rc.RecStatus == "Recommended"
-                    //                 select rc.InvestmentInitId).Contains(i.Id)
-                    //            orderby i.SetOn descending
-                    //            select new InvestmentInitDto
-                    //            {
-                    //                Id = i.Id,
-                    //                ReferenceNo = i.ReferenceNo,
-                    //                ProposeFor = i.ProposeFor,
-                    //                DonationId = i.DonationId,
-                    //                DonationTo = i.DonationTo,
-                    //                EmployeeId = i.EmployeeId
-                    //            }
-                    //              ).Distinct().ToList();
-                    //var data = _mapper
-                    //    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(investmentInits);
-                    //return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, totalItems, data));
                     return data;
                 }
 
@@ -230,12 +172,6 @@ namespace API.Controllers
                                     Employee = e
                                 }
                             ).Distinct().ToList();
-
-                    //var data = _mapper
-                    //    .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
-
-                    //  return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, totalItems, results));
-                    //return Ok(new Pagination<InvestmentInitDto>(investmentInitParrams.PageIndex, investmentInitParrams.PageSize, 10, data));
                     return data;
                 }
             }
@@ -252,42 +188,6 @@ namespace API.Controllers
         {
             try
             {
-                //investmentInitParrams.Search = sbu;
-                //var investmentInitSpec = new InvestmentInitSpecification(investmentInitParrams);
-                //var investmentInits = await _investmentInitRepo.ListAsync(investmentInitSpec);
-
-                //var empData = await _employeeRepo.GetByIdAsync(empId);
-
-                //investmentTargetedGroupParrams.Search = empData.MarketCode;
-                //var spec = new InvestmentTargetedGroupSpecification(investmentTargetedGroupParrams);
-                //var investmentTargetedGroup = await _investmentTargetedGroupRepo.ListAsync(spec);
-
-                //investmentRecCommentParrams.Search = empData.SBU;
-                //var investmentRecCommentSpec = new InvestmentRecCommentSpecification(investmentRecCommentParrams);
-                //var investmentRecComments = await _investmentRecCommentRepo.ListAsync(investmentRecCommentSpec);
-
-                //var data = (from i in investmentInits
-                //            join t in investmentTargetedGroup on i.Id equals t.InvestmentInitId
-                //            where t.MarketCode == empData.MarketCode && !(from rc in investmentRecComments
-                //                                                          select rc.InvestmentInitId).Contains(i.Id)
-                //            orderby t.MarketName
-                //            select new InvestmentInitDto
-                //            {
-                //                Id = i.Id,
-                //                ReferenceNo = i.ReferenceNo,
-                //                ProposeFor = i.ProposeFor,
-                //                DonationId = i.DonationId,
-                //                DonationTo = i.DonationTo,
-                //                EmployeeId = i.EmployeeId
-                //            }
-                //              ).Distinct().ToList();
-
-
-                //var countSpec = new InvestmentInitWithFiltersForCountSpecificication(investmentInitParrams);
-                //var totalItems = await _investmentInitRepo.CountAsync(countSpec);
-
-
-
                 List<SqlParameter> parms = new List<SqlParameter>
                     {
                         new SqlParameter("@SBU", sbu),
@@ -295,8 +195,6 @@ namespace API.Controllers
                         new SqlParameter("@RSTATUS", "Recommended")
                     };
                 var results = _dbContext.InvestmentInit.FromSqlRaw<InvestmentInit>("EXECUTE SP_InvestmentInitSearch @SBU,@EID", parms.ToArray()).ToList();
-
-
                 var data = _mapper
                     .Map<IReadOnlyList<InvestmentInit>, IReadOnlyList<InvestmentInitDto>>(results);
 
@@ -314,28 +212,10 @@ namespace API.Controllers
         {
             try
             {
-                //var data = await _investmentInitRepo.ListAllAsync();
-                //var referenceNo = "";
-                //if (data.Count > 0)
-                //{
-                //    var investmentInitLastId = (from r in data
-                //                                orderby r.Id
-                //                                select new InvestmentInitDto
-                //                                {
-                //                                    Id = r.Id,
-                //                                }
-                //                     ).Last();
-                //    referenceNo = DateTimeOffset.Now.ToString("yyyyMM") + (investmentInitLastId.Id + 1).ToString("00000");
-                //}
-                //else
-                //{
-                //    referenceNo = DateTimeOffset.Now.ToString("yyyyMM") + (0 + 1).ToString("00000");
-                //}
+
                 var empData = await _employeeRepo.GetByIdAsync(investmentInitDto.EmployeeId);
                 var investmentInit = new InvestmentInit
                 {
-                    //ReferenceNo = investmentInitDto.ReferenceNo,
-                    //ReferenceNo = referenceNo,
                     ReferenceNo = null,
                     ProposeFor = investmentInitDto.ProposeFor,
                     DonationTo = investmentInitDto.DonationTo,
@@ -358,13 +238,14 @@ namespace API.Controllers
                 };
                 _investmentInitRepo.Add(investmentInit);
                 _investmentInitRepo.Savechange();
+                #region Create Reference No
                 List<SqlParameter> parms = new List<SqlParameter>
-                    {
-
-                        new SqlParameter("@IID", investmentInit.Id),
-                        new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
-                    };
+                {
+                    new SqlParameter("@IID", investmentInit.Id),
+                    new SqlParameter("@r", SqlDbType.VarChar,200){ Direction = ParameterDirection.Output }
+                };
                 var result = _dbContext.Database.ExecuteSqlRaw("EXECUTE SP_InvestmentRefNoInsert @IID,@r out", parms.ToArray());
+                #endregion
                 return new InvestmentInitDto
                 {
                     Id = investmentInit.Id,
@@ -668,7 +549,7 @@ namespace API.Controllers
                         _investmentDetailRepo.Savechange();
                     }
                 }
-                investmentDetailDto.FromDate = new DateTimeOffset(investmentDetailDto.FromDate.Year, investmentDetailDto.FromDate.Month, investmentDetailDto.FromDate.Day,0,0,0,new TimeSpan(6, 0, 0));
+                investmentDetailDto.FromDate = new DateTimeOffset(investmentDetailDto.FromDate.Year, investmentDetailDto.FromDate.Month, investmentDetailDto.FromDate.Day, 0, 0, 0, new TimeSpan(6, 0, 0));
                 investmentDetailDto.ToDate = new DateTimeOffset(investmentDetailDto.ToDate.Year, investmentDetailDto.ToDate.Month, investmentDetailDto.ToDate.Day, 0, 0, 0, new TimeSpan(6, 0, 0));
                 var investmentDetail = new InvestmentDetail
                 {
@@ -1446,7 +1327,7 @@ namespace API.Controllers
                 //        _investmentInstitutionRepo.Savechange();
                 //    }
                 //}
-                    var investmentInstitution = new InvestmentInstitution
+                var investmentInstitution = new InvestmentInstitution
                 {
                     //ReferenceNo = investmentInstitutionDto.ReferenceNo,
                     InvestmentInitId = investmentInstitutionDto.InvestmentInitId,
